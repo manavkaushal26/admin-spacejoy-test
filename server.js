@@ -2,11 +2,11 @@ const express = require("express");
 const cluster = require("cluster");
 const helmet = require("helmet");
 const next = require("next");
-const { parse } = require("url");
 const path = require("path");
 const compression = require("compression");
 const LRUCache = require("lru-cache");
 const bodyParser = require("body-parser");
+const getParsedUrl = require("./_utils/getParsedUrl");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -15,25 +15,25 @@ const handle = app.getRequestHandler();
 
 const workers = [];
 
-const serve = (path, cache) =>
-  express.static(path, {
-    maxAge: cache && dev ? getMaxAge() : 0
-  });
-
-const ssrCache = new LRUCache({
-  max: 100,
-  maxAge: 1000 * 60 * 60
-});
-
 const getMaxAge = function() {
   const futureDate = new Date();
   futureDate.setFullYear(futureDate.getFullYear() + 1);
   return futureDate - new Date();
 };
 
+const serve = (path, cache) =>
+  express.static(path, {
+    maxAge: cache && !dev ? getMaxAge() : 0
+  });
+
 function getCacheKey(req) {
   return `${req.url}`;
 }
+
+const ssrCache = new LRUCache({
+  max: 100,
+  maxAge: 1000 * 60 * 60
+});
 
 async function renderAndCache(req, res, pagePath, queryParams) {
   const key = getCacheKey(req);
@@ -78,7 +78,7 @@ app.prepare().then(() => {
       });
     });
   } else {
-    // server.use(helmet({ hsts: false }));
+    server.use(helmet({}));
     server.use(compression({ threshold: 0 }));
     server.use(bodyParser.json());
     server.get("/demo", (req, res) => {
@@ -99,8 +99,9 @@ app.prepare().then(() => {
     server.use("/robots.txt", serve(path.join(__dirname, "/static/robots.txt"), true));
     server.use("/favicon.ico", serve(path.join(__dirname, "/static/favicon.ico"), true));
     server.get("*", (req, res) => {
+      const parsedUrl = getParsedUrl(req);
       if (!dev) res.setHeader("Cache-Control", `public, max-age=${getMaxAge()}, immutable`);
-      return handle(req, res);
+      return handle(req, res, parsedUrl);
     });
     server.listen(port, err => {
       if (err) throw err;

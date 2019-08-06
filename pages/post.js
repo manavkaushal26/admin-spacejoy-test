@@ -1,10 +1,40 @@
-import { useRouter } from "next/router";
+import Layout from "@components/Layout";
+import Link from "next/link";
+import PropTypes from "prop-types";
+import React, { PureComponent } from "react";
 
-const Post = () => {
-  const router = useRouter();
-  const { slug } = router.query;
+class Post extends PureComponent {
+	render() {
+		const { slug } = this.props;
+		return (
+			<Layout header="transparent">
+				<h1>My blog Post #{slug}</h1>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+					magna aliqua.
+				</p>
+				<ul>
+					<li>
+						<Link href="/" as="/">
+							<a href="/">home</a>
+						</Link>
+					</li>
+					<li>
+						<Link href="/post?slug=something" as="/post/something">
+							<a href="/post/something">post Us</a>
+						</Link>
+					</li>
+				</ul>
+			</Layout>
+		);
+	}
+}
 
-  return <p>My Blog Post: {slug}</p>;
+Post.getInitialProps = async ({ query: { slug } }) => {
+	return { slug };
 };
 
+Post.propTypes = {
+	slug: PropTypes.string.isRequired
+};
 export default Post;

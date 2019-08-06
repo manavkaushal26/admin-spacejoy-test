@@ -1,30 +1,30 @@
 {
-  "name": "spacejoy",
-  "short_name": "spacejoy",
-  "lang": "en",
-  "start_url": "/",
-  "orientation": "portrait",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "theme_color": "#ffffff",
-  "icons": [
-    {
-      "src": "https://res.cloudinary.com/swiggy/image/upload/portal/c/icon-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "https://res.cloudinary.com/swiggy/image/upload/portal/c/icon-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
-    }
-  ],
-  "prefer_related_applications": false,
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.spacejoy&referrer=utm_source%3Dmsite-native-download",
-      "id": "com.homefuly"
-    }
-  ]
+	"name": "spacejoy",
+	"short_name": "spacejoy",
+	"lang": "en",
+	"start_url": "/",
+	"orientation": "portrait",
+	"background_color": "#ffffff",
+	"display": "standalone",
+	"theme_color": "#ffffff",
+	"icons": [
+		{
+			"src": "https://res.cloudinary.com/swiggy/image/upload/portal/c/icon-192x192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "https://res.cloudinary.com/swiggy/image/upload/portal/c/icon-512x512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	],
+	"prefer_related_applications": false,
+	"related_applications": [
+		{
+			"platform": "play",
+			"url": "https://play.google.com/store/apps/details?id=com.spacejoy&referrer=utm_source%3Dmsite-native-download",
+			"id": "com.homefuly"
+		}
+	]
 }

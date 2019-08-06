@@ -1,0 +1,8 @@
+{
+  "eslint.autoFixOnSave": true,
+  "eslint.validate": [
+    "javascript",https://github.com/saurabhdsachan/SpaceJoyWeb
+    "javascriptreact"
+  ],
+  "eslint.enable": true
+}

@@ -1,11 +1,28 @@
+import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
+import Header from "./Header";
 
-function Layout({ children }) {
+const LayoutStyled = styled.div`
+  background: white;
+`;
+
+function Layout({ header, children }) {
   return (
-    <div className="app-layout" style={{ background: "pink" }}>
+    <LayoutStyled>
+      <Header variant={header} />
       {children}
-    </div>
+    </LayoutStyled>
   );
 }
+
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+  header: PropTypes.string
+};
+
+Layout.defaultProps = {
+  header: "solid"
+};
 
 export default Layout;
