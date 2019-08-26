@@ -1,6 +1,15 @@
+import { page } from "@utils/config";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
+
+const prod = process.env.NODE_ENV === "production";
+
+const gtm = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+								new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+								j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+								'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+						})(window,document,'script','dataLayer','${page.gtm}');`;
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx) {
@@ -46,8 +55,23 @@ class MyDocument extends Document {
 						media="screen"
 					/>
 					<meta name="theme-color" content="#ffffff" />
+					<meta name="google-site-verification" content={page.googleSiteVerification} />
+					<meta name="mobile-web-app-capable" content="yes" />
+					<meta name="apple-mobile-web-app-capable" content="yes" />
+					<meta name="msapplication-starturl" content="/" />
+					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
 				</Head>
 				<body>
+					{prod && (
+						<noscript>
+							<iframe
+								title="GTM"
+								src={`https://www.googletagmanager.com/ns.html?id=${page.gtm}`}
+								height="0"
+								width="0"
+							/>
+						</noscript>
+					)}
 					<Main />
 					<NextScript />
 				</body>
