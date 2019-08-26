@@ -1,3 +1,5 @@
+@import "./flexboxgrid.min.css";
+
 /* Define the "system" font family */
 @font-face {
 	font-family: system;
@@ -15,4 +17,25 @@ html {
 	letter-spacing: 0.025em;
 	color: #2b2b2b;
 	-webkit-font-smoothing: antialiased;
+}
+
+.box-nested {
+	background: #036;
+	border-color: #007fff;
+}
+
+.box,
+.box-first,
+.box-large,
+.box-nested,
+.box-row {
+	padding: 1rem;
+	position: relative;
+	box-sizing: border-box;
+	min-height: 1rem;
+	margin-bottom: 0;
+	background: #007fff;
+	overflow: hidden;
+	text-align: center;
+	color: #fff;
 }
