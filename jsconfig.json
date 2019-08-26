@@ -1,13 +1,13 @@
 {
-  "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
-    "baseUrl": ".",
-    "paths": {
-      "@components/*": ["./_components/*"],
-      "@utils/*": ["./_utils/*"],
-      "@theme/*": ["./_theme/*"]
-    }
-  },
-  "exclude": ["node_modules", "**/node_modules/*", "**/.storybook/*", "**/assets/*", "**/build/*"]
+	"compilerOptions": {
+		"target": "ES6",
+		"module": "commonjs",
+		"baseUrl": ".",
+		"paths": {
+			"@components/*": ["./_components/*"],
+			"@utils/*": ["./_utils/*"],
+			"@theme/*": ["./_theme/*"]
+		}
+	},
+	"exclude": [".next", "node_modules", "**/node_modules/*", "**/.storybook/*", "**/assets/*", "**/build/*"]
 }
