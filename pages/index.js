@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import Image from "@components/Image";
 import Layout from "@components/Layout";
 import Head from "next/head";
@@ -20,6 +21,21 @@ function index() {
 						<h1>Made Easy</h1>
 						<p>Experience the joy of designing your home in 3D using products from brands you can buy immediately!</p>
 						PLANS STARTING AT $19
+						<Button type="primary" shape="round" size="sm" onClick={() => {}}>
+							Click Me
+						</Button>
+						<Button type="default" shape="round" size="md" onClick={() => {}}>
+							Click Me
+						</Button>
+						<Button type="dashed" shape="round" size="lg" onClick={() => {}}>
+							Click Me
+						</Button>
+						<Button type="danger" shape="round" onClick={() => {}}>
+							Click Me
+						</Button>
+						<Button large disabled>
+							Click Me
+						</Button>
 					</div>
 				</div>
 				<ul>
