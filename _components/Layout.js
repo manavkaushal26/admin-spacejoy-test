@@ -3,26 +3,27 @@ import React from "react";
 import styled from "styled-components";
 import Header from "./Header";
 
-const LayoutStyled = styled.div`
-  background: white;
+const MainStyled = styled.div`
+	background: white;
+	margin-top: 55px;
 `;
 
 function Layout({ header, children }) {
-  return (
-    <LayoutStyled>
-      <Header variant={header} />
-      {children}
-    </LayoutStyled>
-  );
+	return (
+		<>
+			<Header variant={header} />
+			<MainStyled>{children}</MainStyled>
+		</>
+	);
 }
 
 Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-  header: PropTypes.string
+	children: PropTypes.node.isRequired,
+	header: PropTypes.string
 };
 
 Layout.defaultProps = {
-  header: "solid"
+	header: "solid"
 };
 
 export default Layout;

@@ -20,6 +20,27 @@ html {
 	-webkit-font-smoothing: antialiased;
 }
 
+.align-left {
+	text-align: left;
+}
+
+.align-right {
+	text-align: right;
+}
+
+.align-center {
+	text-align: center;
+}
+
+.no-pad {
+	padding: 0;
+}
+
+.no-pad-vertical {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
 .box-nested {
 	background: #036;
 	border-color: #007fff;

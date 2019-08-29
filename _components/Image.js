@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const ImageStyled = styled.img`
-	background: "pink";
+	vertical-align: bottom;
 `;
 
 function Image({ src }) {
