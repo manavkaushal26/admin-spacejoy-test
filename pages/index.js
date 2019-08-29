@@ -2,8 +2,39 @@ import Button from "@components/Button";
 import Image from "@components/Image";
 import Layout from "@components/Layout";
 import Head from "next/head";
-import Link from "next/link";
 import React from "react";
+import styled from "styled-components";
+
+const HeroWrapperStyled = styled.section`
+	padding: 2rem 0;
+	background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+`;
+
+const SectionWrapperStyled = styled.section`
+	padding: 4rem 0;
+`;
+
+const HeroText = styled.h1`
+	font-weight: bold;
+	font-size: 4rem;
+	line-height: 5rem;
+	margin-bottom: 0;
+`;
+
+const HeroSubText = styled.h2`
+	font-family: system;
+	font-weight: normal;
+	width: 75%;
+	font-size: 1.25rem;
+`;
+
+const CenterTextStyled = styled.h2`
+	text-align: center;
+`;
+const CenterSubTextStyled = styled.p`
+	font-family: system;
+	font-weight: normal;
+`;
 
 function index() {
 	return (
@@ -11,102 +42,160 @@ function index() {
 			<Head>
 				<title>My page title</title>
 			</Head>
-			<div className="container">
-				<div className="grid">
-					<div className="col-xs-12 align-center no-pad-vertical">
-						<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567069731/web/couch_zwbuzf.png" />
-					</div>
-					<div className="col-xs-12 no-pad-vertical">
-						<h2>Home Designs</h2>
-						<h1>Made Easy</h1>
-						<p>Experience the joy of designing your home in 3D using products from brands you can buy immediately!</p>
-						PLANS STARTING AT $19
-						<Button type="primary" shape="round" size="sm" onClick={() => {}}>
-							Click Me
-						</Button>
-						<Button type="default" shape="round" size="md" onClick={() => {}}>
-							Click Me
-						</Button>
-						<Button type="dashed" shape="round" size="lg" onClick={() => {}}>
-							Click Me
-						</Button>
-						<Button type="danger" shape="round" onClick={() => {}}>
-							Click Me
-						</Button>
-						<Button large disabled>
-							Click Me
-						</Button>
+			<HeroWrapperStyled>
+				<div className="container">
+					<div className="grid">
+						<div className="col-xs-6 align-center align-middle">
+							<div>
+								<HeroText>
+									Home Decor
+									<br />
+									Made Easy
+								</HeroText>
+								<HeroSubText>
+									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
+									<p>Plans starting at 19$</p>
+								</HeroSubText>
+								<div>
+									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+										DESIGN MY SPACE
+									</Button>
+								</div>
+							</div>
+						</div>
+						<div className="col-xs-6 align-center">
+							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567069731/web/couch_zwbuzf.png" />
+						</div>
 					</div>
 				</div>
-				<ul>
-					<li>Home</li>
-					<li>
-						<Link href="/demo" as="/demo">
-							<a href="/demo">demo Us</a>
-						</Link>
-						<Link href="/post?slug=something" as="/post/something">
-							<a href="/post/something">post Us</a>
-						</Link>
-					</li>
-				</ul>
-				<h1>THIS IS OUR HOMEPAGE.</h1>
-				<p>Text</p>
-				<section className="page-section">
+			</HeroWrapperStyled>
+			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
+				<div className="container">
+					<div className="grid justify-space-between">
+						<div className="col-xs-5 align-center align-middle">
+							<div>
+								<h2>Get 3D Designs of Your Space</h2>
+								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+								<p>Ready to transform your home scape?</p>
+								<div>
+									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+										DESIGN MY SPACE
+									</Button>
+								</div>
+							</div>
+						</div>
+						<div className="col-xs-6 align-center">
+							<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/home/design-top-view.gif" />
+						</div>
+					</div>
+				</div>
+			</SectionWrapperStyled>
+			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" }}>
+				<div className="container">
+					<div className="grid justify-space-between">
+						<div className="col-xs-6 align-center">
+							<div className="grid">
+								<div className="col-xs-6 col-md-3">
+									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/designer4.jpg" />
+								</div>
+								<div className="col-xs-6 col-md-3">
+									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer5.jpg" />
+								</div>
+								<div className="col-xs-6 col-md-3">
+									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer1.jpg" />
+								</div>
+								<div className="col-xs-6 col-md-3">
+									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer3.jpg" />
+								</div>
+								<div className="col-xs-6 col-md-3">
+									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer2.jpg" />
+								</div>
+								<div className="col-xs-6 col-md-3">
+									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer0.jpg" />
+								</div>
+							</div>
+						</div>
+						<div className="col-xs-5 align-center align-middle">
+							<div>
+								<h2>Crafted By Our Design Experts</h2>
+								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+								<p>Ready to transform your home scape?</p>
+								<div>
+									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+										DESIGN MY SPACE
+									</Button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</SectionWrapperStyled>
+			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
+				<div className="container">
+					<div className="grid justify-space-between">
+						<div className="col-xs-5 align-center align-middle">
+							<div>
+								<h2>Shop Products From Your Designs</h2>
+								<p>Our designs feature products from your favorite brands</p>
+								<p>We will work within your budget to find those coveted pieces that spark joy</p>
+								<p>It&lsquo;s a hassle-free experience </p>
+								<div>
+									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+										DESIGN MY SPACE
+									</Button>
+								</div>
+							</div>
+						</div>
+						<div className="col-xs-6 align-center">
+							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1566975734/web/brand-items_nerkmq.jpg" />
+						</div>
+					</div>
+				</div>
+			</SectionWrapperStyled>
+			<SectionWrapperStyled
+				style={{ backgroundImage: "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)" }}
+			>
+				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12">
-							<div className="box-row" />
+							<div style={{ textAlign: "center" }}>
+								<CenterTextStyled>Doesn&lsquo;t Spark Joy?</CenterTextStyled>
+								<CenterSubTextStyled>
+									We&lsquo;ll revise your design until it reflects your perfect space Spacejoy designers are here to
+									help
+								</CenterSubTextStyled>
+								<div>
+									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+										DESIGN MY SPACE
+									</Button>
+								</div>
+							</div>
 						</div>
+						<div className="col-xs-12 align-center ">Slider</div>
 					</div>
+				</div>
+			</SectionWrapperStyled>
+			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
+				<div className="container">
 					<div className="grid">
-						<div className="col-xs-1">
-							<div className="box-row" />
-						</div>
-						<div className="col-xs-11">
-							<div className="box-row" />
-						</div>
-					</div>
-					<div className="grid">
-						<div className="col-xs-2">
-							<div className="box-row" />
-						</div>
-						<div className="col-xs-10">
-							<div className="box-row" />
-						</div>
-					</div>
-					<div className="grid">
-						<div className="col-xs-3">
-							<div className="box-row" />
-						</div>
-						<div className="col-xs-9">
-							<div className="box-row" />
+						<div className="col-xs-6 align-center align-middle">
+							<div>
+								<h2>Customer Delight</h2>
+								<p>Design stories straight from our customers</p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+								<p>Ready to transform your home scape?</p>
+								<div>
+									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+										DESIGN MY SPACE
+									</Button>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="grid">
-						<div className="col-xs-4">
-							<div className="box-row" />
-						</div>
-						<div className="col-xs-8">
-							<div className="box-row" />
-						</div>
-					</div>
-					<div className="grid">
-						<div className="col-xs-5">
-							<div className="box-row" />
-						</div>
-						<div className="col-xs-7">
-							<div className="box-row" />
-						</div>
-					</div>
-					<div className="grid">
-						<div className="col-xs-6">
-							<div className="box-row" />
-						</div>
-						<div className="col-xs-6">
-							<div className="box-row" />
-						</div>
-					</div>
-				</section>
-			</div>
+				</div>
+			</SectionWrapperStyled>
 		</Layout>
 	);
 }

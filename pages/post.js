@@ -8,23 +8,29 @@ class Post extends PureComponent {
 		const { slug } = this.props;
 		return (
 			<Layout header="transparent">
-				<h1>My blog Post #{slug}</h1>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-					magna aliqua.
-				</p>
-				<ul>
-					<li>
-						<Link href="/" as="/">
-							<a href="/">home</a>
-						</Link>
-					</li>
-					<li>
-						<Link href="/post?slug=something" as="/post/something">
-							<a href="/post/something">post Us</a>
-						</Link>
-					</li>
-				</ul>
+				<div className="container">
+					<div className="grid">
+						<div className="col-xs-12">
+							<h1>My blog Post #{slug}</h1>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+								dolore magna aliqua.
+							</p>
+							<ul>
+								<li>
+									<Link href="/" as="/">
+										<a href="/">home</a>
+									</Link>
+								</li>
+								<li>
+									<Link href="/post?slug=something" as="/post/something">
+										<a href="/post/something">post Us</a>
+									</Link>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
 			</Layout>
 		);
 	}

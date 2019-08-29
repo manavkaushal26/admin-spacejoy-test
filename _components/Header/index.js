@@ -1,3 +1,4 @@
+import Button from "@components/Button";
 import Logo from "@components/Logo";
 import PropTypes from "prop-types";
 import React from "react";
@@ -41,10 +42,10 @@ const renderHeaderBody = () => {
 	return (
 		<div className="container">
 			<div className="grid">
-				<div className="col-xs-3 align-left">
+				<div className="col-xs-3 align-left align-middle">
 					<Logo md />
 				</div>
-				<div className="col-xs-6 align-center">
+				<div className="col-xs-6 align-center align-middle">
 					<nav>
 						<HorizontalListStyled>
 							<li>Designs</li>
@@ -53,12 +54,15 @@ const renderHeaderBody = () => {
 						</HorizontalListStyled>
 					</nav>
 				</div>
-				<div className="col-xs-3 align-right">
+				<div className="col-xs-3 align-right align-middle">
 					<nav>
 						<HorizontalListStyled>
 							<li>Design My Space</li>
-							<li>{/* <span>S</span>
-								<div className="dropDown">Hi</div> */}</li>
+							<li>
+								<Button type="danger" shape="round" onClick={() => {}}>
+									Signin
+								</Button>
+							</li>
 						</HorizontalListStyled>
 					</nav>
 				</div>

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import Footer from "./Footer";
 import Header from "./Header";
 
 const MainStyled = styled.div`
@@ -13,6 +14,7 @@ function Layout({ header, children }) {
 		<>
 			<Header variant={header} />
 			<MainStyled>{children}</MainStyled>
+			<Footer />
 		</>
 	);
 }
