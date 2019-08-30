@@ -44,11 +44,6 @@ function index() {
 								</li>
 								<li>
 									<Link href="/feedback" as="/feedback">
-										<a href="/feedback">Feedback</a>
-									</Link>
-								</li>
-								<li>
-									<Link href="/feedback" as="/feedback">
 										<a href="/feedback">Privacy Policy</a>
 									</Link>
 								</li>

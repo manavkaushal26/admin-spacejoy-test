@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -48,8 +49,16 @@ const renderHeaderBody = () => {
 				<div className="col-xs-6 align-center align-middle">
 					<nav>
 						<HorizontalListStyled>
-							<li>Designs</li>
-							<li>Pricing</li>
+							<li>
+								<Link href="/design-projects" as="/design-projects">
+									<a href="/design-projects">Design Projects</a>
+								</Link>
+							</li>
+							<li>
+								<Link href="/post?slug=something" as="/post/something">
+									<a href="/post/something">post Us</a>
+								</Link>
+							</li>
 							<li>FAQs</li>
 						</HorizontalListStyled>
 					</nav>
@@ -57,7 +66,11 @@ const renderHeaderBody = () => {
 				<div className="col-xs-3 align-right align-middle">
 					<nav>
 						<HorizontalListStyled>
-							<li>Design My Space</li>
+							<li>
+								<Link href="/design-my-space?slug=something" as="/design-my-space/something">
+									<a href="/design-my-space/something">Design My Space</a>
+								</Link>
+							</li>
 							<li>
 								<Button type="danger" shape="round" onClick={() => {}}>
 									Signin

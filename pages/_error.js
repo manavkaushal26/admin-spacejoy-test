@@ -19,7 +19,13 @@ class Error extends React.Component {
 		const { status } = this.props;
 		return (
 			<Layout header="solid">
-				<p>{status ? `An error ${status} occurred on server` : "An error occurred on client"}</p>
+				<div className="container">
+					<div className="grid">
+						<div className="col-xs-12">
+							<p>{status ? `An error ${status} occurred on server` : "An error occurred on client"}</p>
+						</div>
+					</div>
+				</div>
 			</Layout>
 		);
 	}

@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import Layout from "@components/Layout";
 import Head from "next/head";
@@ -6,8 +7,21 @@ import React from "react";
 import styled from "styled-components";
 
 const HeroWrapperStyled = styled.section`
+	position: relative;
 	padding: 2rem 0;
 	background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+	/* &:before {
+		content: "";
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 0;
+		opacity: 0.75;
+		background-attachment: fixed;
+		background-image: url("data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 16c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zm33.414-6l5.95-5.95L45.95.636 40 6.586 34.05.636 32.636 2.05 38.586 8l-5.95 5.95 1.414 1.414L40 9.414l5.95 5.95 1.414-1.414L41.414 8zM40 48c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm0-2c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6zM9.414 40l5.95-5.95-1.414-1.414L8 38.586l-5.95-5.95L.636 34.05 6.586 40l-5.95 5.95 1.414 1.414L8 41.414l5.95 5.95 1.414-1.414L9.414 40z' fill='%23000000' fill-opacity='0.02' fill-rule='evenodd'/%3E%3C/svg%3E");
+	} */
 `;
 
 const SectionWrapperStyled = styled.section`
@@ -157,7 +171,7 @@ function index() {
 			<SectionWrapperStyled
 				style={{ backgroundImage: "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)" }}
 			>
-				<div className="container">
+				<div className="container-fluid">
 					<div className="grid">
 						<div className="col-xs-12">
 							<div style={{ textAlign: "center" }}>
@@ -166,6 +180,22 @@ function index() {
 									We&lsquo;ll revise your design until it reflects your perfect space Spacejoy designers are here to
 									help
 								</CenterSubTextStyled>
+								<Carousel>
+									<div className="grid">
+										<div className="col-xs-3">
+											<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/V1.jpg" />
+										</div>
+										<div className="col-xs-3">
+											<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v2.jpg" />
+										</div>
+										<div className="col-xs-3">
+											<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v3.jpg" />
+										</div>
+										<div className="col-xs-3">
+											<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v4.jpg" />
+										</div>
+									</div>
+								</Carousel>
 								<div>
 									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
@@ -173,7 +203,6 @@ function index() {
 								</div>
 							</div>
 						</div>
-						<div className="col-xs-12 align-center ">Slider</div>
 					</div>
 				</div>
 			</SectionWrapperStyled>
