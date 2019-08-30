@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 
 const PriceCardWrapperStyled = styled.div`
@@ -45,32 +45,60 @@ const PriceCardHeaderStyled = styled.div`
 const PriceCardBodyStyled = styled.div`
 	width: 250px;
 	margin: auto;
+	sup {
+		font-family: "system";
+		font-weight: normal;
+		font-size: 1rem;
+		color: ${({ theme }) => theme.colors.fc.dark2};
+	}
 `;
 const PriceCardFooterStyled = styled.div`
 	padding: 2rem 0;
 `;
 
-function PriceCard({ variant }) {
-	return (
-		<PriceCardWrapperStyled variant={variant}>
-			<PriceCardHeaderStyled>
-				{variant === "recommend" && <RecommendBannerStyled>Recommend</RecommendBannerStyled>}
-				<h2>
-					Consultation
-					<br />
-					<small>Advice & Inspiration</small>
-				</h2>
-			</PriceCardHeaderStyled>
-			<PriceCardBodyStyled>
-				<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Examples_Starter1.jpg" />
-				<h2>$19</h2>
-				<p>Need a new layout in 3D of your current space with the existing furniture & upgrade advice on key pieces</p>
-			</PriceCardBodyStyled>
-			<PriceCardFooterStyled>
-				<Button>Select</Button>
-			</PriceCardFooterStyled>
-		</PriceCardWrapperStyled>
+class PriceCard extends PureComponent {
+	static Header = ({ title, subTitle, variant }) => (
+		<PriceCardHeaderStyled>
+			{variant === "recommend" && <RecommendBannerStyled>Recommend</RecommendBannerStyled>}
+			<h2>
+				{title}
+				<br />
+				<small>{subTitle}</small>
+			</h2>
+		</PriceCardHeaderStyled>
 	);
+
+	static Body = ({ price, description, thumbnail }) => (
+		<PriceCardBodyStyled>
+			<Image src={thumbnail} />
+			<h2>
+				{price}
+				<sup>$</sup>
+			</h2>
+			<p>{description}</p>
+		</PriceCardBodyStyled>
+	);
+
+	static Step = ({ children }) => {
+		return (
+			<div className="small-steps">
+				<div className="step-icon">{children[0]}</div>
+				<div className="step-text">{children[1]}</div>
+			</div>
+		);
+	};
+
+	render() {
+		const { variant, children } = this.props;
+		return (
+			<PriceCardWrapperStyled variant={variant}>
+				{React.Children.map(children, child => React.cloneElement(child, { variant }))}
+				<PriceCardFooterStyled>
+					<Button>Select</Button>
+				</PriceCardFooterStyled>
+			</PriceCardWrapperStyled>
+		);
+	}
 }
 
 PriceCard.defaultProps = {
@@ -78,7 +106,8 @@ PriceCard.defaultProps = {
 };
 
 PriceCard.propTypes = {
-	variant: PropTypes.string
+	variant: PropTypes.string,
+	children: PropTypes.node.isRequired
 };
 
 export default PriceCard;
