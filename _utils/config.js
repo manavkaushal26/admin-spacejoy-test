@@ -12,6 +12,39 @@ module.exports = {
 		appStoreUrl: "https://apps.apple.com/us/app/homefuly/id1448690338",
 		whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
 	},
+	company: {
+		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1567082857/shared/logo_hcs7lo.png",
+		name: "SPACEJOY",
+		phone: {
+			support: "+1 (669) 241-9248",
+			connect: ""
+		},
+		email: {
+			support: "hello@spacejoy.com",
+			connect: ""
+		},
+		address: [
+			{
+				country: "",
+				location: "",
+				city: "",
+				state: "",
+				pin: "",
+				latLng: []
+			}
+		],
+		social: {
+			facebook: "https://www.facebook.com/spacejoyapp/",
+			linkedin: "",
+			twitter: "https://twitter.com/spacejoyapp/",
+			instagram: "https://www.instagram.com/spacejoyapp/",
+			pinterest: "https://in.pinterest.com/spacejoyapp/"
+		},
+		app: {
+			android: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
+			ios: "https://apps.apple.com/us/app/homefuly/id1448690338"
+		}
+	},
 	// ${secureDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg
 	cloudinary: {
 		cloudName: "spacejoy",

@@ -44,7 +44,11 @@ const renderHeaderBody = () => {
 		<div className="container">
 			<div className="grid">
 				<div className="col-xs-3 align-left align-middle">
-					<Logo md />
+					<Link href="/" as="/">
+						<a href="/">
+							<Logo md />
+						</a>
+					</Link>
 				</div>
 				<div className="col-xs-6 align-center align-middle">
 					<nav>
@@ -60,8 +64,8 @@ const renderHeaderBody = () => {
 								</Link>
 							</li>
 							<li>
-								<Link href="/pricing?slug=something" as="/pricing/something">
-									<a href="/pricing/something">Pricing</a>
+								<Link href="/pricing" as="/pricing">
+									<a href="/pricing">Pricing</a>
 								</Link>
 							</li>
 						</HorizontalListStyled>

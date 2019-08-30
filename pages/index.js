@@ -35,14 +35,14 @@ const HeroText = styled.h1`
 	margin-bottom: 0;
 `;
 
-const HeroSubText = styled.h2`
+const HeroSubText = styled.h1`
 	font-family: system;
 	font-weight: normal;
 	width: 75%;
 	font-size: 1.25rem;
 `;
 
-const CenterTextStyled = styled.h2`
+const CenterTextStyled = styled.h1`
 	text-align: center;
 `;
 const CenterSubTextStyled = styled.p`
@@ -68,8 +68,10 @@ function index() {
 								</HeroText>
 								<HeroSubText>
 									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
-									<p>Plans starting at 19$</p>
 								</HeroSubText>
+								<p>
+									<strong>Plans starting at 19$</strong>
+								</p>
 								<div>
 									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
@@ -88,7 +90,7 @@ function index() {
 					<div className="grid justify-space-between">
 						<div className="col-xs-5 align-center align-middle">
 							<div>
-								<h2>Get 3D Designs of Your Space</h2>
+								<h1>Get 3D Designs of Your Space</h1>
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
@@ -132,7 +134,7 @@ function index() {
 						</div>
 						<div className="col-xs-5 align-center align-middle">
 							<div>
-								<h2>Crafted By Our Design Experts</h2>
+								<h1>Crafted By Our Design Experts</h1>
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
@@ -151,7 +153,7 @@ function index() {
 					<div className="grid justify-space-between">
 						<div className="col-xs-5 align-center align-middle">
 							<div>
-								<h2>Shop Products From Your Designs</h2>
+								<h1>Shop Products From Your Designs</h1>
 								<p>Our designs feature products from your favorite brands</p>
 								<p>We will work within your budget to find those coveted pieces that spark joy</p>
 								<p>It&lsquo;s a hassle-free experience </p>
@@ -211,7 +213,7 @@ function index() {
 					<div className="grid">
 						<div className="col-xs-6 align-center align-middle">
 							<div>
-								<h2>Customer Delight</h2>
+								<h1>Customer Delight</h1>
 								<p>Design stories straight from our customers</p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>

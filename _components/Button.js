@@ -48,9 +48,9 @@ const ButtonStyled = styled.button`
 	}
 	&:hover,
 	&:focus {
-		color: #40a9ff;
-		background-color: #fff;
-		border-color: #40a9ff;
+		color: ${({ theme }) => theme.colors.primary};
+		background-color: ${({ theme }) => theme.colors.white};
+		border-color: ${({ theme }) => theme.colors.primary};
 	}
 `;
 

@@ -1,6 +1,6 @@
+import Image from "@components/Image";
 import Layout from "@components/Layout";
 import Head from "next/head";
-import Link from "next/link";
 import { withRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
@@ -12,33 +12,10 @@ function faq({ stars, isServer }) {
 				<title>FAQ {isServer}</title>
 			</Head>
 			<div className="container">
+				<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/FAQ/How%20it%20work%20Banner%20Desktop.jpg" />
 				<div className="grid">
 					<div className="col-xs-12">
-						<div>Next stars: {stars}</div>
-						<ul>
-							<li>
-								Lorem ipsum dolor sit amet consectetur, adipisicing elit. Alias voluptatum, obcaecati quasi corporis
-								reiciendis est cumque laboriosam autem maxime provident, doloribus, velit dignissimos. Nam porro, beatae
-								quae sint corporis enim.
-							</li>
-							<li>
-								<p>
-									Lorem ipsum dolor sit amet, consectetur adipisicing elit. Harum ducimus dignissimos ipsum similique
-									praesentium. Doloremque aperiam necessitatibus obcaecati voluptatibus mollitia nulla animi libero
-									dolorum veniam, culpa eos tempore facilis praesentium?
-								</p>
-							</li>
-							<li>
-								<Link href="/" as="/">
-									<a href="/">home</a>
-								</Link>
-							</li>
-							<li>
-								<Link href="/post?slug=something" as="/post/something">
-									<a href="/post/something">post Us</a>
-								</Link>
-							</li>
-						</ul>
+						<h1>Frequently Asked Questions {stars}</h1>
 					</div>
 				</div>
 			</div>

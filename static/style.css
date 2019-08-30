@@ -64,6 +64,18 @@ h6 {
 	align-items: center;
 }
 
+.text-center {
+	text-align: center;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-right {
+	text-align: right;
+}
+
 .no-pad {
 	padding: 0;
 }
