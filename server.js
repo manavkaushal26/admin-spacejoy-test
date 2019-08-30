@@ -67,10 +67,10 @@ app.prepare().then(() => {
 			});
 		}
 		cluster.on("online", function(worker) {
-			console.log(`Worker ${  worker.process.pid  } is listening`);
+			console.log(`Worker ${worker.process.pid} is listening`);
 		});
 		cluster.on("exit", function(worker, code, signal) {
-			console.log(`Worker ${  worker.process.pid  } died with code: ${  code  }, and signal: ${  signal}`);
+			console.log(`Worker ${worker.process.pid} died with code: ${code}, and signal: ${signal}`);
 			console.log("Starting a new worker");
 			workers.push(cluster.fork());
 			workers[workers.length - 1].on("message", function(message) {
@@ -81,20 +81,20 @@ app.prepare().then(() => {
 		server.use(helmet({}));
 		server.use(compression({ threshold: 0 }));
 		server.use(bodyParser.json());
-		server.get("/demo", (req, res) => {
-			app.render(req, res, "/demo", req.params);
+		server.get("/pricing", (req, res) => {
+			app.render(req, res, "/pricing", req.params);
 		});
-		server.get("/post/:slug", (req, res) => {
-			app.render(req, res, "/post", { slug: req.params.slug });
+		server.get("/faq/:slug", (req, res) => {
+			app.render(req, res, "/faq", { slug: req.params.slug });
 		});
-		server.get("/design-my-space", (req, res) => {
-			app.render(req, res, "/design", req.params);
+		server.get("/designProjects", (req, res) => {
+			app.render(req, res, "/designProjects", req.params);
 		});
-		server.get("/design-projects/:slug", (req, res) => {
+		server.get("/designMySpace/:slug", (req, res) => {
 			app.render(req, res, "/designMySpace", { slug: req.params.slug });
 		});
 		server.get(["/", "/index"], (req, res) => {
-			const {params} = req;
+			const { params } = req;
 			app.render(req, res, "/index", params);
 		});
 		server.get("/ping", (req, res) => {

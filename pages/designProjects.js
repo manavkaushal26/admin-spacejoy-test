@@ -4,12 +4,11 @@ import { withRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 
-function design({ isServer }) {
+function designProjects({ isServer }) {
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>My page title {isServer}</title>
-				<meta name="viewport" content="initial-scale=1.0, width=device-width" key="viewport" />
+				<title>Design Projects {isServer}</title>
 			</Head>
 			<div className="container">
 				<div className="grid">
@@ -22,15 +21,15 @@ function design({ isServer }) {
 	);
 }
 
-design.getInitialProps = async ({ req }) => {
+designProjects.getInitialProps = async ({ req }) => {
 	const isServer = !!req;
 	// const res = await fetch("https://api.github.com/repos/zeit/next.js");
 	// const json = await res.json();
 	return { isServer };
 };
 
-design.propTypes = {
+designProjects.propTypes = {
 	isServer: PropTypes.bool.isRequired
 };
 
-export default withRouter(design);
+export default withRouter(designProjects);

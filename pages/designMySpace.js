@@ -1,13 +1,17 @@
 import Layout from "@components/Layout";
+import Head from "next/head";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 
 class designMySpace extends PureComponent {
 	render() {
-		const { slug } = this.props;
+		const { slug, isServer } = this.props;
 		return (
 			<Layout header="transparent">
+				<Head>
+					<title>Design My Space {isServer}</title>
+				</Head>
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12">
@@ -36,11 +40,13 @@ class designMySpace extends PureComponent {
 	}
 }
 
-designMySpace.getInitialProps = async ({ query: { slug } }) => {
-	return { slug };
+designMySpace.getInitialProps = async ({ req, query: { slug } }) => {
+	const isServer = !!req;
+	return { isServer, slug };
 };
 
 designMySpace.propTypes = {
+	isServer: PropTypes.bool.isRequired,
 	slug: PropTypes.string.isRequired
 };
 export default designMySpace;

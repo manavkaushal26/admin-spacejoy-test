@@ -50,16 +50,20 @@ const renderHeaderBody = () => {
 					<nav>
 						<HorizontalListStyled>
 							<li>
-								<Link href="/design-projects" as="/design-projects">
-									<a href="/design-projects">Design Projects</a>
+								<Link href="/designProjects" as="/designProjects">
+									<a href="/designProjects">Design Projects</a>
 								</Link>
 							</li>
 							<li>
-								<Link href="/post?slug=something" as="/post/something">
-									<a href="/post/something">post Us</a>
+								<Link href="/faq?slug=something" as="/faq/something">
+									<a href="/faq/something">FAQ</a>
 								</Link>
 							</li>
-							<li>FAQs</li>
+							<li>
+								<Link href="/pricing?slug=something" as="/pricing/something">
+									<a href="/pricing/something">Pricing</a>
+								</Link>
+							</li>
 						</HorizontalListStyled>
 					</nav>
 				</div>
@@ -67,8 +71,8 @@ const renderHeaderBody = () => {
 					<nav>
 						<HorizontalListStyled>
 							<li>
-								<Link href="/design-my-space?slug=something" as="/design-my-space/something">
-									<a href="/design-my-space/something">Design My Space</a>
+								<Link href="/designMySpace?slug=something" as="/designMySpace/something">
+									<a href="/designMySpace/something">Design My Space</a>
 								</Link>
 							</li>
 							<li>
