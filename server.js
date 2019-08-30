@@ -84,7 +84,7 @@ app.prepare().then(() => {
 		server.get("/pricing", (req, res) => {
 			app.render(req, res, "/pricing", req.params);
 		});
-		server.get("/faq/:slug", (req, res) => {
+		server.get("/faq/:slug?", (req, res) => {
 			app.render(req, res, "/faq", { slug: req.params.slug });
 		});
 		server.get("/designProjects", (req, res) => {

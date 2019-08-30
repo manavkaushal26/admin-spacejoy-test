@@ -4,8 +4,32 @@ import Head from "next/head";
 import { withRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
 
-function faq({ stars, isServer }) {
+const TopicStyled = styled.div`
+	display: flex;
+	border: 1px solid ${({ theme }) => theme.colors.fc.dark3};
+	padding: 1rem;
+	border-radius: 2px;
+	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+	&:hover {
+		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+	}
+	img {
+		margin-right: 1rem;
+	}
+	span {
+		&:nth-child(2) {
+			flex: 2;
+		}
+		&:last-child {
+			flex: 1;
+			text-align: right;
+		}
+	}
+`;
+
+function faq({ isServer }) {
 	return (
 		<Layout header="solid">
 			<Head>
@@ -15,7 +39,53 @@ function faq({ stars, isServer }) {
 				<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/FAQ/How%20it%20work%20Banner%20Desktop.jpg" />
 				<div className="grid">
 					<div className="col-xs-12">
-						<h1>Frequently Asked Questions {stars}</h1>
+						<h1>Frequently Asked Questions</h1>
+						<h4>Topics</h4>
+
+						<div className="grid">
+							<div className="col-xs-12 col-md-3 ">
+								<TopicStyled>
+									<Image size="xs" src="https://image.flaticon.com/icons/svg/907/907830.svg" />
+									<span>Who are we?</span>
+									<span>92</span>
+								</TopicStyled>
+							</div>
+							<div className="col-xs-12 col-md-3 ">
+								<TopicStyled>
+									<Image size="xs" src="https://image.flaticon.com/icons/svg/907/907830.svg" />
+									<span>Features & Services</span>
+									<span>92</span>
+								</TopicStyled>
+							</div>
+							<div className="col-xs-12 col-md-3 ">
+								<TopicStyled>
+									<Image size="xs" src="https://image.flaticon.com/icons/svg/907/907830.svg" />
+									<span>Get Started</span>
+									<span>92</span>
+								</TopicStyled>
+							</div>
+							<div className="col-xs-12 col-md-3 ">
+								<TopicStyled>
+									<Image size="xs" src="https://image.flaticon.com/icons/svg/907/907830.svg" />
+									<span>Account & Payment</span>
+									<span>92</span>
+								</TopicStyled>
+							</div>
+							<div className="col-xs-12 col-md-3 ">
+								<TopicStyled>
+									<Image size="xs" src="https://image.flaticon.com/icons/svg/907/907830.svg" />
+									<span>Account & Payment</span>
+									<span>92</span>
+								</TopicStyled>
+							</div>
+							<div className="col-xs-12 col-md-3 ">
+								<TopicStyled>
+									<Image size="xs" src="https://image.flaticon.com/icons/svg/907/907830.svg" />
+									<span>Customer Support</span>
+									<span>92</span>
+								</TopicStyled>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -27,12 +97,11 @@ faq.getInitialProps = async ({ req }) => {
 	const isServer = !!req;
 	// const res = await fetch("https://api.github.com/repos/zeit/next.js");
 	// const json = await res.json();
-	return { stars: 500, isServer };
+	return { isServer };
 };
 
 faq.propTypes = {
-	isServer: PropTypes.bool.isRequired,
-	stars: PropTypes.number.isRequired
+	isServer: PropTypes.bool.isRequired
 };
 
 export default withRouter(faq);
