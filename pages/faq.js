@@ -1,5 +1,8 @@
+import Divider from "@components/Divider";
+import FAQCard from "@components/FAQCard";
 import Image from "@components/Image";
 import Layout from "@components/Layout";
+import FaqData from "@utils/faqMock";
 import Head from "next/head";
 import { withRouter } from "next/router";
 import PropTypes from "prop-types";
@@ -40,8 +43,7 @@ function faq({ isServer }) {
 				<div className="grid">
 					<div className="col-xs-12">
 						<h1>Frequently Asked Questions</h1>
-						<h4>Topics</h4>
-
+						<h3>Topics</h3>
 						<div className="grid">
 							<div className="col-xs-12 col-md-3 ">
 								<TopicStyled>
@@ -84,6 +86,18 @@ function faq({ isServer }) {
 									<span>Customer Support</span>
 									<span>92</span>
 								</TopicStyled>
+							</div>
+						</div>
+						<Divider />
+						<div className="grid justify-space-around">
+							<div className="col-xs-12 col-xs-6">
+								<h3>All FAQ&apos;s</h3>
+								{FaqData.map(item => (
+									<FAQCard>
+										<FAQCard.Question>{item.question}</FAQCard.Question>
+										<FAQCard.Answer>{item.answer}</FAQCard.Answer>
+									</FAQCard>
+								))}
 							</div>
 						</div>
 					</div>

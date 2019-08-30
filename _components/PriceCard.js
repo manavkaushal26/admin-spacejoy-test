@@ -79,15 +79,6 @@ class PriceCard extends PureComponent {
 		</PriceCardBodyStyled>
 	);
 
-	static Step = ({ children }) => {
-		return (
-			<div className="small-steps">
-				<div className="step-icon">{children[0]}</div>
-				<div className="step-text">{children[1]}</div>
-			</div>
-		);
-	};
-
 	render() {
 		const { variant, children } = this.props;
 		return (
