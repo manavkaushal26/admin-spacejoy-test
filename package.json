@@ -45,7 +45,7 @@
 		"start": "NODE_ENV=production node server.js",
 		"analyze": "cross-env ANALYZE=1 next build",
 		"precommit": "lint-staged",
-		"format": "prettier --write \"src/**/*.+(js|md|ts|css|sass|less|graphql|yml|yaml|scss|json|vue)\"",
+		"format": "prettier --write \"**/*.+(js|md|ts|css|sass|less|graphql|yml|yaml|scss|json|vue)\"",
 		"test": "bundlesize"
 	},
 	"husky": {
