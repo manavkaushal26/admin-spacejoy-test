@@ -13,7 +13,7 @@ module.exports = {
 		whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
 	},
 	company: {
-		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1567082857/shared/logo_hcs7lo.png",
+		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1567070387/shared/logo_2x_ywrzvq.png",
 		name: "SPACEJOY",
 		phone: {
 			support: "+1 (669) 241-9248",

@@ -34,7 +34,6 @@ const PriceCardHeaderStyled = styled.div`
 	h2 {
 		margin: 0;
 		small {
-			font-family: "system";
 			font-weight: normal;
 			font-size: 1rem;
 			color: ${({ theme }) => theme.colors.fc.dark2};
@@ -46,7 +45,6 @@ const PriceCardBodyStyled = styled.div`
 	width: 250px;
 	margin: auto;
 	sup {
-		font-family: "system";
 		font-weight: normal;
 		font-size: 1rem;
 		color: ${({ theme }) => theme.colors.fc.dark2};
