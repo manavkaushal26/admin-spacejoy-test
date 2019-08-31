@@ -44,6 +44,7 @@ class MyDocument extends Document {
 						href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
 						as="style"
 					/>
+
 					<link rel="preload" href="/static/style.css?v1" as="style" />
 					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
 					<link rel="manifest" href="/static/manifest.json" />
@@ -53,6 +54,16 @@ class MyDocument extends Document {
 						href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
 						rel="stylesheet"
 						media="screen"
+					/>
+					<link
+						rel="stylesheet"
+						media="screen"
+						href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+					/>
+					<link
+						media="screen"
+						rel="stylesheet"
+						href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
 					/>
 					<meta name="theme-color" content="#ffffff" />
 					<meta name="google-site-verification" content={page.googleSiteVerification} />
