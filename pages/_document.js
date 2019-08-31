@@ -49,6 +49,7 @@ class MyDocument extends Document {
 					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
 					<link rel="manifest" href="/static/manifest.json" />
 					<link rel="shortcut icon" href="/static/favicon.ico" />
+
 					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link
 						href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
@@ -65,7 +66,10 @@ class MyDocument extends Document {
 						rel="stylesheet"
 						href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
 					/>
+					<link rel="icon" sizes="192x192" href="/static/icon.png" />
+					<link rel="apple-touch-icon" href="/static/ios-icon.png" />
 					<meta name="theme-color" content="#ffffff" />
+					<meta name="msapplication-square310x310logo" content="ios.png" />
 					<meta name="google-site-verification" content={page.googleSiteVerification} />
 					<meta name="mobile-web-app-capable" content="yes" />
 					<meta name="apple-mobile-web-app-capable" content="yes" />
