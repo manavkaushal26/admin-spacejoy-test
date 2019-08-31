@@ -10,7 +10,6 @@
 		"helmet": "^3.20.0",
 		"isomorphic-unfetch": "^3.0.0",
 		"lru-cache": "^5.1.1",
-		"mo-js": "^0.288.2",
 		"next": "^9.0.3",
 		"next-images": "^1.1.2",
 		"next-offline": "^4.0.3",

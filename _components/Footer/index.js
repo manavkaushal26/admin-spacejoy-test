@@ -44,18 +44,18 @@ function index() {
 									<a href="https://www.blog.spacejoy.com/">Blog</a>
 								</li>
 								<li>
-									<Link href="/feedback" as="/feedback">
-										<a href="/feedback">Privacy Policy</a>
+									<Link href="/faq" as="/faq">
+										<a href="/faq">Privacy Policy</a>
 									</Link>
 								</li>
 								<li>
-									<Link href="/feedback" as="/feedback">
-										<a href="/feedback">Terms of Service</a>
+									<Link href="/faq" as="/faq">
+										<a href="/faq">Terms of Service</a>
 									</Link>
 								</li>
 								<li>
-									<Link href="/feedback" as="/feedback">
-										<a href="/feedback">Cookie Statement</a>
+									<Link href="/faq" as="/faq">
+										<a href="/faq">Cookie Statement</a>
 									</Link>
 								</li>
 							</FooterNavStyled>
@@ -111,7 +111,7 @@ function index() {
 									</a>
 								</li>
 								<li>
-									<Link href="/feedback" as="/feedback">
+									<Link href={company.app.android} as={company.app.android}>
 										<a href={company.app.android}>
 											<Image
 												size="md"

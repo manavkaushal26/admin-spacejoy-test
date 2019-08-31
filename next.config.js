@@ -1,7 +1,7 @@
 const withESLint = require("next-eslint");
 const withImages = require("next-images");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const withOffline = require("next-offline");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const { ANALYZE } = process.env;
 const prod = process.env.NODE_ENV === "production";
@@ -24,9 +24,10 @@ const nextConfig = {
 				options: {
 					// Use a custom cache name.
 					cacheName: "images",
-					// Only cache 50 images.
+					// Only cache 10 images.
 					expiration: {
-						maxEntries: 50
+						maxEntries: 10,
+						maxAgeSeconds: 5 * 24 * 60 * 60 // 5 Days
 					}
 				}
 			},
@@ -36,8 +37,15 @@ const nextConfig = {
 				options: {
 					cacheName: "offlineCache",
 					expiration: {
-						maxEntries: 50
+						maxEntries: 5
 					}
+				}
+			},
+			{
+				urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+				handler: "StaleWhileRevalidate",
+				options: {
+					cacheName: "google-fonts-stylesheets"
 				}
 			}
 		]
@@ -59,4 +67,4 @@ const nextConfig = {
 	}
 };
 
-module.exports = withESLint(withImages(withOffline(nextConfig)));
+module.exports = withOffline(withESLint(withImages(nextConfig)));
