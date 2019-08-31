@@ -68,7 +68,7 @@ class PriceCard extends PureComponent {
 
 	static Body = ({ price, description, thumbnail }) => (
 		<PriceCardBodyStyled>
-			<Image src={thumbnail} />
+			<Image size="190px" src={thumbnail} />
 			<h2>
 				{price}
 				<sup>$</sup>

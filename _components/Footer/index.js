@@ -104,7 +104,10 @@ function index() {
 							<FooterNavStyled direction="horizontal">
 								<li>
 									<a href={company.app.ios}>
-										<Image size="md" src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/home/APPSTORE.png" />
+										<Image
+											size="md"
+											src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/appstore_porgmf.png"
+										/>
 									</a>
 								</li>
 								<li>
@@ -112,7 +115,7 @@ function index() {
 										<a href={company.app.android}>
 											<Image
 												size="md"
-												src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/home/googleplay_icon.png"
+												src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png"
 											/>
 										</a>
 									</Link>

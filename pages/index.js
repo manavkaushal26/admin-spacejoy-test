@@ -8,8 +8,13 @@ import styled from "styled-components";
 
 const CarouselCardStyled = styled.div`
 	outline: none;
-	padding: 0.5rem;
 	box-sizing: border-box;
+	padding: 0.5rem;
+	div {
+		background: white;
+		padding: 0.5rem;
+		box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
+	}
 `;
 
 const HeroWrapperStyled = styled.section`
@@ -178,8 +183,11 @@ function index() {
 								</CenterSubTextStyled>
 								<Carousel>
 									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-										<CarouselCardStyled>
-											<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
+										<CarouselCardStyled key={Math.random()}>
+											<div>
+												<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
+												<h4>Susan&apos;s Living Room</h4>
+											</div>
 										</CarouselCardStyled>
 									))}
 								</Carousel>

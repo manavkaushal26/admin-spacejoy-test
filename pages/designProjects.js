@@ -31,7 +31,7 @@ function designProjects({ isServer }) {
 						<DesignTitleStyled>Home Office</DesignTitleStyled>
 						<div className="grid">
 							<div className="cols-xs-12 col-md-6">
-								<Image src="https://api.homefuly.com/projects/5d4bbde1db029b18032e6076/rooms/5d53a74fe1c6ca40dbb4e45d/versions/5d5a4130cf48ed36d481fab5/designimages/1_c.png" />
+								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567248422/web/room2_flrl1g.png" />
 							</div>
 							<div className="cols-xs-12 col-md-6 no-pad-vertical">
 								<p>
@@ -53,7 +53,7 @@ function designProjects({ isServer }) {
 						<DesignTitleStyled>Urban Boho</DesignTitleStyled>
 						<div className="grid">
 							<div className="cols-xs-12 col-md-6">
-								<Image src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d568a73e1c6ca40dbb5413d/versions/5d568a76e1c6ca40dbb5413e/designimages/1_c.png" />
+								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567248422/web/room1_vndwge.png" />
 							</div>
 							<div className="cols-xs-12 col-md-6">
 								<p>

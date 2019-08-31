@@ -6,7 +6,7 @@ import FaqData from "@utils/faqMock";
 import Head from "next/head";
 import { withRouter } from "next/router";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const TopicStyled = styled.div`
@@ -33,13 +33,15 @@ const TopicStyled = styled.div`
 `;
 
 function faq({ isServer }) {
+	const [openId, setOpenId] = useState(0);
+	const handleOpenId = id => setOpenId(id);
 	return (
 		<Layout header="solid">
 			<Head>
 				<title>FAQ {isServer}</title>
 			</Head>
 			<div className="container">
-				<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/FAQ/How%20it%20work%20Banner%20Desktop.jpg" />
+				<Image size="354px" src="https://res.cloudinary.com/spacejoy/image/upload/v1567248692/web/faq_dgczvi.jpg" />
 				<div className="grid">
 					<div className="col-xs-12">
 						<h1>Frequently Asked Questions</h1>
@@ -89,11 +91,11 @@ function faq({ isServer }) {
 							</div>
 						</div>
 						<Divider />
-						<div className="grid justify-space-around">
+						<div className="grid">
 							<div className="col-xs-12 col-xs-6">
 								<h3>All FAQ&apos;s</h3>
-								{FaqData.map(item => (
-									<FAQCard>
+								{FaqData.map((item, index) => (
+									<FAQCard open={index === openId} handleOpenId={handleOpenId} quesId={index}>
 										<FAQCard.Question>{item.question}</FAQCard.Question>
 										<FAQCard.Answer>{item.answer}</FAQCard.Answer>
 									</FAQCard>

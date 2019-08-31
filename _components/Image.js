@@ -15,7 +15,7 @@ const ImageStyled = styled.img`
 			case "full":
 				return "auto";
 			default:
-				return "auto";
+				return size;
 		}
 	}};
 `;

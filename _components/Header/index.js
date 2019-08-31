@@ -20,6 +20,9 @@ const HeaderStyled = styled.div`
 
 const TransparentHeaderStyled = styled(HeaderStyled)`
 	color: ${({ theme }) => theme.colors.primary};
+	a {
+		color: white;
+	}
 `;
 
 const SolidHeaderStyled = styled(HeaderStyled)`
@@ -59,8 +62,8 @@ const renderHeaderBody = () => {
 								</Link>
 							</li>
 							<li>
-								<Link href="/faq?slug=something" as="/faq/something">
-									<a href="/faq/something">FAQ</a>
+								<Link href="/faq" as="/faq">
+									<a href="/faq">FAQ</a>
 								</Link>
 							</li>
 							<li>

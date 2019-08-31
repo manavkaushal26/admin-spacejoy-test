@@ -13,8 +13,15 @@ const QuestionStyled = styled.div`
 
 const FAQWrapper = styled.div`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.bg.light2};
-	padding: 0.5rem 0;
+	padding: 1rem 0;
 	overflow: hidden;
+	border-radius: 2px;
+	&.open {
+		padding: 1rem;
+		margin-left: -1rem;
+		border-bottom: none;
+		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+	}
 	&.open ${QuestionStyled} {
 		font-weight: bold;
 		margin-bottom: 1rem;
@@ -29,20 +36,15 @@ class FAQCard extends PureComponent {
 
 	static Answer = ({ children }) => children;
 
-	state = {
-		expand: false
+	handleClick = () => {
+		const { handleOpenId, quesId } = this.props;
+		handleOpenId(quesId);
 	};
 
-	handleClick = () =>
-		this.setState(prevState => {
-			return { expand: !prevState.expand };
-		});
-
 	render() {
-		const { children } = this.props;
-		const { expand } = this.state;
+		const { children, open } = this.props;
 		return (
-			<FAQWrapper className={expand ? "open" : "close"}>
+			<FAQWrapper className={open ? "open" : "close"}>
 				<QuestionStyled role="button" tabIndex="0" onClick={this.handleClick} onKeyPress={this.handleClick}>
 					{children[0]}
 				</QuestionStyled>
@@ -52,7 +54,14 @@ class FAQCard extends PureComponent {
 	}
 }
 
+FAQCard.defaultProps = {
+	open: false
+};
+
 FAQCard.propTypes = {
+	open: PropTypes.bool,
+	quesId: PropTypes.number.isRequired,
+	handleOpenId: PropTypes.func.isRequired,
 	children: PropTypes.node.isRequired
 };
 

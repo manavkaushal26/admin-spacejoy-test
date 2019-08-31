@@ -39,7 +39,7 @@ function ItemCard() {
 		<>
 			<ItemCardStyled>
 				<ThumbnailStyled>
-					<Image src="https://api.homefuly.com/assets/5d5e78f3c8ac32675c61d75b/5d5e78f3c8ac32675c61d75b.jpg" />
+					<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_200/v1567248421/web/sofa_uvcr02.jpg" />
 				</ThumbnailStyled>
 				<ItemCardFooterStyled>
 					<div>
@@ -49,13 +49,16 @@ function ItemCard() {
 						</PriceStyled>
 					</div>
 					<div>
-						<Image size="xs" src="https://image.flaticon.com/icons/svg/126/126510.svg" />
+						<Image
+							size="xs"
+							src="https://res.cloudinary.com/spacejoy/image/upload/v1567248916/shared/cart_nynqqa.svg"
+						/>
 					</div>
 				</ItemCardFooterStyled>
 			</ItemCardStyled>
 			<ItemCardStyled>
 				<ThumbnailStyled>
-					<Image src="https://api.homefuly.com/assets/5d5e9d426815d405db09a1ff/5d5e9d426815d405db09a1ff.jpg" />
+					<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_200/v1567248422/web/table_xr6uk8.jpg" />
 				</ThumbnailStyled>
 				<ItemCardFooterStyled>
 					<div>
@@ -65,7 +68,10 @@ function ItemCard() {
 						</PriceStyled>
 					</div>
 					<div>
-						<Image size="xs" src="https://image.flaticon.com/icons/svg/126/126510.svg" />
+						<Image
+							size="xs"
+							src="https://res.cloudinary.com/spacejoy/image/upload/v1567248916/shared/cart_nynqqa.svg"
+						/>
 					</div>
 				</ItemCardFooterStyled>
 			</ItemCardStyled>
