@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
@@ -50,6 +51,7 @@ const PriceCardBodyStyled = styled.div`
 		color: ${({ theme }) => theme.colors.fc.dark2};
 	}
 `;
+
 const PriceCardFooterStyled = styled.div`
 	padding: 2rem 0;
 `;
@@ -78,12 +80,16 @@ class PriceCard extends PureComponent {
 	);
 
 	render() {
-		const { variant, children } = this.props;
+		const { variant, children, plan } = this.props;
 		return (
 			<PriceCardWrapperStyled variant={variant}>
 				{React.Children.map(children, child => React.cloneElement(child, { variant }))}
 				<PriceCardFooterStyled>
-					<Button>Select</Button>
+					<Link href={`/designMySpace?slug=${plan}`} as={`/designMySpace/${plan}`}>
+						<a href={`/designMySpace/${plan}`}>
+							<Button>Select {plan}</Button>
+						</a>
+					</Link>
 				</PriceCardFooterStyled>
 			</PriceCardWrapperStyled>
 		);
@@ -96,6 +102,7 @@ PriceCard.defaultProps = {
 
 PriceCard.propTypes = {
 	variant: PropTypes.string,
+	plan: PropTypes.string.isRequired,
 	children: PropTypes.node.isRequired
 };
 

@@ -3,7 +3,6 @@ import Image from "@components/Image";
 import ItemCard from "@components/ItemCard";
 import Layout from "@components/Layout";
 import Head from "next/head";
-import { withRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -82,4 +81,4 @@ designProjects.propTypes = {
 	isServer: PropTypes.bool.isRequired
 };
 
-export default withRouter(designProjects);
+export default designProjects;

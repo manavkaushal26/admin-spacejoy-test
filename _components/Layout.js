@@ -6,7 +6,7 @@ import Header from "./Header";
 
 const MainStyled = styled.div`
 	background: white;
-	margin-top: 55px;
+	margin-top: 65px;
 `;
 
 function Layout({ header, children }) {

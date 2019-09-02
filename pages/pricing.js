@@ -27,7 +27,7 @@ class pricing extends PureComponent {
 						</div>
 					</div>
 					<PriceCardHolderStyled>
-						<PriceCard>
+						<PriceCard plan="consultation">
 							<PriceCard.Header title="Consultation" subTitle="Advice & Inspiration" />
 							<PriceCard.Body
 								price="19"
@@ -35,7 +35,7 @@ class pricing extends PureComponent {
 								thumbnail="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_190/v1567248422/web/plan1_csjhsh.jpg"
 							/>
 						</PriceCard>
-						<PriceCard variant="recommend">
+						<PriceCard plan="classic" variant="recommend">
 							<PriceCard.Header title="Classic" subTitle="We Recommend This" />
 							<PriceCard.Body
 								price="49"
@@ -43,7 +43,7 @@ class pricing extends PureComponent {
 								thumbnail="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_190/v1567248422/web/plan2_hmhgym.jpg"
 							/>
 						</PriceCard>
-						<PriceCard>
+						<PriceCard plan="premium">
 							<PriceCard.Header title="Premium" subTitle="On a Time-Crunch" />
 							<PriceCard.Body
 								price="99"

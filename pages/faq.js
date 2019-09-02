@@ -11,7 +11,7 @@ import styled from "styled-components";
 
 const TopicStyled = styled.div`
 	display: flex;
-	border: 1px solid ${({ theme }) => theme.colors.fc.dark3};
+	border: 1px solid ${({ theme }) => theme.colors.bg.dark1};
 	padding: 1rem;
 	border-radius: 2px;
 	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
@@ -95,7 +95,7 @@ function faq({ isServer }) {
 							<div className="col-xs-12 col-xs-6">
 								<h3>All FAQ&apos;s</h3>
 								{FaqData.map((item, index) => (
-									<FAQCard open={index === openId} handleOpenId={handleOpenId} quesId={index}>
+									<FAQCard key={Math.random() * 10} open={index === openId} handleOpenId={handleOpenId} quesId={index}>
 										<FAQCard.Question>{item.question}</FAQCard.Question>
 										<FAQCard.Answer>{item.answer}</FAQCard.Answer>
 									</FAQCard>

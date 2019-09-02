@@ -3,6 +3,7 @@ import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import Layout from "@components/Layout";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
@@ -49,11 +50,11 @@ const CenterSubTextStyled = styled.p`
 	font-weight: normal;
 `;
 
-function index() {
+function index({ isServer }) {
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>My page title</title>
+				<title>Spacejoy {isServer}</title>
 			</Head>
 			<HeroWrapperStyled>
 				<div className="container">
@@ -223,5 +224,16 @@ function index() {
 		</Layout>
 	);
 }
+
+index.getInitialProps = async ({ req }) => {
+	const isServer = !!req;
+	// const res = await fetch("https://api.github.com/repos/zeit/next.js");
+	// const json = await res.json();
+	return { isServer };
+};
+
+index.propTypes = {
+	isServer: PropTypes.bool.isRequired
+};
 
 export default index;

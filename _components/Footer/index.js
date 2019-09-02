@@ -49,8 +49,8 @@ function index() {
 									</Link>
 								</li>
 								<li>
-									<Link href="/faq" as="/faq">
-										<a href="/faq">Terms of Service</a>
+									<Link href="/terms" as="/terms">
+										<a href="/terms">Terms of Service</a>
 									</Link>
 								</li>
 								<li>
@@ -111,14 +111,12 @@ function index() {
 									</a>
 								</li>
 								<li>
-									<Link href={company.app.android} as={company.app.android}>
-										<a href={company.app.android}>
-											<Image
-												size="md"
-												src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png"
-											/>
-										</a>
-									</Link>
+									<a href={company.app.android}>
+										<Image
+											size="md"
+											src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png"
+										/>
+									</a>
 								</li>
 							</FooterNavStyled>
 						</nav>

@@ -90,8 +90,11 @@ app.prepare().then(() => {
 		server.get("/designProjects", (req, res) => {
 			app.render(req, res, "/designProjects", req.params);
 		});
-		server.get("/designMySpace/:slug", (req, res) => {
-			app.render(req, res, "/designMySpace", { slug: req.params.slug });
+		server.get("/designMySpace/:plan?", (req, res) => {
+			app.render(req, res, "/designMySpace", { plan: req.params.plan });
+		});
+		server.get("/terms", (req, res) => {
+			renderAndCache(req, res, "/terms", req.params);
 		});
 		server.get(["/", "/index"], (req, res) => {
 			const { params } = req;

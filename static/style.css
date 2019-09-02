@@ -78,24 +78,3 @@ a:hover {
 		max-width: 1300px;
 	}
 }
-
-.box-nested {
-	background: #036;
-	border-color: #007fff;
-}
-
-.box,
-.box-first,
-.box-large,
-.box-nested,
-.box-row {
-	padding: 1rem;
-	position: relative;
-	box-sizing: border-box;
-	min-height: 1rem;
-	margin-bottom: 0;
-	background: #007fff;
-	overflow: hidden;
-	text-align: center;
-	color: #fff;
-}

@@ -1,40 +1,41 @@
 import React from "react";
 import styled from "styled-components";
 
-const InputField = styled.input`
-	width: 100%;
-	padding: 1rem;
-	margin: 5px 0 22px 0;
-	display: inline-block;
-	border: none;
-	background: white;
-	border: 1px solid ${({ theme }) => theme.colors.bg.dark1};
-	&:focus {
-		background-color: #ddd;
-		outline: none;
+const InputWrapperStyled = styled.div`
+	position: relative;
+	margin-bottom: 1rem;
+	& {
+		label,
+		span,
+		input:not([type="checkbox"]),
+		input:not([type="radio"]) {
+			display: block;
+			margin: 0.25rem 0;
+			width: 100%;
+		}
+		input:not([type="checkbox"]),
+		input:not([type="radio"]) {
+			background: white;
+			border: 1px solid ${({ theme }) => theme.colors.bg.dark1};
+			padding: 0.75rem 1rem;
+			outline: none;
+		}
 	}
 `;
 
 function DesignMySpaceForm() {
 	return (
 		<form action="">
-			<div className="input-wrapper">
-				<label htmlFor="roomtype">
-					<span>Which room are you designing?</span>
-					<select name="roomtype" id="roomtype">
-						<option value="">Hi</option>
-						<option value="">h1</option>
-						<option value="">h1</option>
-						<option value="">h1</option>
-						<option value="">h1</option>
-					</select>
-				</label>
-				<label htmlFor="wow">
-					<span>wow</span>
-					<input type="email" name="wow" id="wow" />
-					<InputField name="wow" id="wow" />
-				</label>
-			</div>
+			<legend>
+				<InputWrapperStyled>
+					<label htmlFor="name">
+						<span className="label-text">Name</span>
+						<input type="text" name="name" className="input-field" id="name" />
+						<span className="error">Enter a valid Name</span>
+						<span className="hint">It will be use as unique ID.</span>
+					</label>
+				</InputWrapperStyled>
+			</legend>
 		</form>
 	);
 }
