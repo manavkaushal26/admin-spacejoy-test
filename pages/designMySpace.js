@@ -1,4 +1,4 @@
-import DesignMySpaceForm from "@components/forms/DesignMySpaceForm";
+import DesignMySpaceForm from "@components/Forms/DesignMySpaceForm";
 import Layout from "@components/Layout";
 import Head from "next/head";
 import PropTypes from "prop-types";
@@ -14,7 +14,7 @@ class designMySpace extends PureComponent {
 				</Head>
 				<div className="container">
 					<div className="grid justify-space-around">
-						<div className="col-xs-12 col-sm-6 col-md-4">
+						<div className="col-xs-12 col-sm-6 col-md-5">
 							<h1>Submit A Design Request </h1>
 							{plan && (
 								<p>
