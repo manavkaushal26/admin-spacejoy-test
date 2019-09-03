@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import { Budget, CurrentRoomStatus, RoomType } from "@utils/optionsMock";
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import PlacesAutocomplete from "reactjs-places-autocomplete";
 import styled from "styled-components";
@@ -78,7 +79,8 @@ class DesignMySpaceForm extends PureComponent {
 			budget: "",
 			currentRoomStatus: "",
 			address: "",
-			submitting: false
+			submitting: false,
+			plan: props.plan
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -120,11 +122,26 @@ class DesignMySpaceForm extends PureComponent {
 	}
 
 	render() {
-		const { name, email, mobile, roomType, budget, currentRoomStatus, address, submitting } = this.state;
+		const { name, email, mobile, roomType, budget, currentRoomStatus, address, submitting, plan } = this.state;
 		return (
 			<FormWrapperStyled className={submitting ? "loading" : null}>
 				<form onSubmit={this.handleSubmit}>
 					<legend>
+						{plan && (
+							<InputWrapperStyled>
+								<label htmlFor="name">
+									<span className="label-text">Plan Type</span>
+									<input
+										type="text"
+										name="plan"
+										className="input-field"
+										id="plan"
+										value={plan}
+										onChange={this.handleInputChange}
+									/>
+								</label>
+							</InputWrapperStyled>
+						)}
 						<InputWrapperStyled>
 							<label htmlFor="name">
 								<span className="label-text">Name</span>
@@ -264,5 +281,13 @@ class DesignMySpaceForm extends PureComponent {
 		);
 	}
 }
+
+DesignMySpaceForm.propTypes = {
+	plan: PropTypes.string
+};
+
+DesignMySpaceForm.defaultProps = {
+	plan: ""
+};
 
 export default DesignMySpaceForm;

@@ -16,13 +16,7 @@ class designMySpace extends PureComponent {
 					<div className="grid">
 						<div className="col-xs-12 col-sm-6 col-md-5">
 							<h1>Submit A Design Request </h1>
-							{plan && (
-								<p>
-									<strong>Selected Plan Type: </strong>
-									{plan}
-								</p>
-							)}
-							<DesignMySpaceForm />
+							<DesignMySpaceForm plan={plan} />
 						</div>
 					</div>
 				</div>
