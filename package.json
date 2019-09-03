@@ -17,6 +17,7 @@
 		"react": "^16.9.0",
 		"react-dom": "^16.9.0",
 		"react-slick": "^0.25.2",
+		"reactjs-places-autocomplete": "^7.2.1",
 		"styled-components": "^4.3.2"
 	},
 	"devDependencies": {

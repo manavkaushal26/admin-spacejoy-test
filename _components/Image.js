@@ -20,8 +20,8 @@ const ImageStyled = styled.img`
 	}};
 `;
 
-function Image({ src, size }) {
-	return <ImageStyled src={src} size={size} />;
+function Image(props, { src, size }) {
+	return <ImageStyled src={src} size={size} {...props} />;
 }
 
 Image.defaultProps = {

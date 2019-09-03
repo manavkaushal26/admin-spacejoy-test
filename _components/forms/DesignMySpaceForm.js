@@ -1,14 +1,35 @@
 import Button from "@components/Button";
 import { Budget, CurrentRoomStatus, RoomType } from "@utils/optionsMock";
+import Router from "next/router";
 import React, { PureComponent } from "react";
+import PlacesAutocomplete from "reactjs-places-autocomplete";
 import styled from "styled-components";
+
+const AutoCompleteStyled = styled.div`
+	background: white;
+	&.loading {
+		background: ${({ theme }) => theme.colors.bg.dark2};
+	}
+`;
+
+const SuggestionStyled = styled.div`
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-left: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-right: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	/* background: ${({ active, theme }) => (active ? theme.colors.bg.dark2 : theme.colors.bg.light1)}; */
+	&:last-child {
+		border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	}
+`;
 
 const FormWrapperStyled = styled.div`
 	position: relative;
 	&:after {
 		content: "";
 		position: absolute;
-		background: rgba(255, 255, 255, 0.83);
+		background: rgba(255, 255, 255, 0.8);
 		top: 0;
 		left: 0;
 		right: 0;
@@ -57,39 +78,20 @@ class DesignMySpaceForm extends PureComponent {
 			budget: "",
 			currentRoomStatus: "",
 			address: "",
-			loading: false
+			submitting: false
 		};
 
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleSubmit(event) {
-		event.preventDefault();
-		const { name, email, mobile, roomType, budget, currentRoomStatus, address } = this.state;
-		this.setState({ loading: true });
-		fetch("https://jsonplaceholder.typicode.com/posts", {
-			method: "POST",
-			body: JSON.stringify({ name, email, mobile, roomType, budget, currentRoomStatus, address }),
-			headers: {
-				"Content-type": "application/json; charset=UTF-8"
-			}
-		})
-			.then(response => response.json())
-			.then(json => {
-				this.setState({
-					loading: false,
-					name: "",
-					email: "",
-					mobile: "",
-					roomType: "",
-					budget: "",
-					currentRoomStatus: "",
-					address: ""
-				});
-				console.log(json);
-			});
-	}
+	handleSelect = address => {
+		this.setState({ address });
+	};
+
+	handleAddressChange = address => {
+		this.setState({ address });
+	};
 
 	handleInputChange({ target }) {
 		const { value, name } = target;
@@ -98,10 +100,29 @@ class DesignMySpaceForm extends PureComponent {
 		});
 	}
 
+	handleSubmit(event) {
+		event.preventDefault();
+		const { name, email, mobile, roomType, budget, currentRoomStatus, address } = this.state;
+		const stringifiedData = JSON.stringify({ name, email, mobile, roomType, budget, currentRoomStatus, address });
+		this.setState({ submitting: true });
+		fetch("https://jsonplaceholder.typicode.com/posts", {
+			method: "POST",
+			body: stringifiedData,
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			}
+		})
+			.then(response => response.json())
+			.then(() => {
+				localStorage.setItem("designRequest", stringifiedData);
+				this.setState({ submitting: false }, () => Router.push("/checkout"));
+			});
+	}
+
 	render() {
-		const { name, email, mobile, roomType, budget, currentRoomStatus, address, loading } = this.state;
+		const { name, email, mobile, roomType, budget, currentRoomStatus, address, submitting } = this.state;
 		return (
-			<FormWrapperStyled className={loading ? "loading" : null}>
+			<FormWrapperStyled className={submitting ? "loading" : null}>
 				<form onSubmit={this.handleSubmit}>
 					<legend>
 						<InputWrapperStyled>
@@ -147,8 +168,8 @@ class DesignMySpaceForm extends PureComponent {
 							<strong className="label-text">Which room are you designing?</strong>
 						</InputWrapperStyled>
 						{RoomType.map(type => (
-							<InputWrapperStyled>
-								<label htmlFor={type.name} key={type.name}>
+							<InputWrapperStyled key={type.name}>
+								<label htmlFor={type.name}>
 									<input
 										type="radio"
 										name="roomType"
@@ -166,8 +187,8 @@ class DesignMySpaceForm extends PureComponent {
 							<strong className="label-text">Have a budget in mind?</strong>
 						</InputWrapperStyled>
 						{Budget.map(item => (
-							<InputWrapperStyled>
-								<label htmlFor={item.name} key={item.name}>
+							<InputWrapperStyled key={item.name}>
+								<label htmlFor={item.name}>
 									<input
 										type="radio"
 										name="budget"
@@ -185,8 +206,8 @@ class DesignMySpaceForm extends PureComponent {
 							<strong className="label-text">How does your room look today?</strong>
 						</InputWrapperStyled>
 						{CurrentRoomStatus.map(roomStatus => (
-							<InputWrapperStyled>
-								<label htmlFor={roomStatus.name} key={roomStatus.name}>
+							<InputWrapperStyled key={roomStatus.name}>
+								<label htmlFor={roomStatus.name}>
 									<input
 										type="radio"
 										name="currentRoomStatus"
@@ -200,22 +221,42 @@ class DesignMySpaceForm extends PureComponent {
 								</label>
 							</InputWrapperStyled>
 						))}
-
+						<PlacesAutocomplete
+							value={address}
+							name="address"
+							id="address"
+							onChange={this.handleAddressChange}
+							onSelect={this.handleSelect}
+						>
+							{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+								<>
+									<InputWrapperStyled>
+										<label htmlFor="address">
+											<span className="label-text">Address</span>
+											<input
+												{...getInputProps({
+													name: "address",
+													id: "address",
+													placeholder: "Search Places ...",
+													className: "input-field"
+												})}
+											/>
+										</label>
+										<AutoCompleteStyled className={loading ? "loading" : ""}>
+											{suggestions.map(suggestion => (
+												<SuggestionStyled {...getSuggestionItemProps(suggestion)} active={suggestion.active}>
+													{suggestion.description}
+												</SuggestionStyled>
+											))}
+										</AutoCompleteStyled>
+									</InputWrapperStyled>
+								</>
+							)}
+						</PlacesAutocomplete>
 						<InputWrapperStyled>
-							<label htmlFor="address">
-								<span className="label-text">Address</span>
-								<input
-									type="text"
-									name="address"
-									className="input-field"
-									id="address"
-									value={address}
-									onChange={this.handleInputChange}
-								/>
-							</label>
-						</InputWrapperStyled>
-						<InputWrapperStyled>
-							<Button lg>Submit</Button>
+							<Button size="lg" full type="primary">
+								Next
+							</Button>
 						</InputWrapperStyled>
 					</legend>
 				</form>

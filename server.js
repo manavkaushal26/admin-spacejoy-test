@@ -93,6 +93,9 @@ app.prepare().then(() => {
 		server.get("/designMySpace/:plan?", (req, res) => {
 			app.render(req, res, "/designMySpace", { plan: req.params.plan });
 		});
+		server.get("/checkout", (req, res) => {
+			app.render(req, res, "/checkout", req.params);
+		});
 		server.get("/terms", (req, res) => {
 			renderAndCache(req, res, "/terms", req.params);
 		});

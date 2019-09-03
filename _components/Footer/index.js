@@ -37,7 +37,7 @@ function index() {
 				<Divider />
 				<div className="grid">
 					<div className="col-xs-12 col-md-3">
-						<h3>Quick Links</h3>
+						<h3>QUICK LINKS</h3>
 						<nav>
 							<FooterNavStyled>
 								<li>
@@ -99,7 +99,7 @@ function index() {
 								</li>
 							</FooterNavStyled>
 						</nav>
-						<h3>Download App</h3>
+						<h3>DOWNLOAD APP</h3>
 						<nav>
 							<FooterNavStyled direction="horizontal">
 								<li>
@@ -126,7 +126,7 @@ function index() {
 							<div className="col-xs-3">
 								<Image
 									size="100px"
-									src="https://havenly.com/marketing-pages-assets/images/home/happiness-guarantee.svg"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1567500722/web/happiness-guarantee_h4yllh.svg"
 								/>
 							</div>
 							<div className="col-xs-9">
@@ -137,13 +137,24 @@ function index() {
 								</HappinessSealStyled>
 								<div className="grid">
 									<div className="col-xs-12">
-										<h3>Need Help?</h3>
+										<h3>NEED HELP?</h3>
 										<nav>
 											<FooterNavStyled>
 												<li>
+													<Image
+														size="xs"
+														src="https://res.cloudinary.com/spacejoy/image/upload/v1567500734/web/phone-call_smylef.svg"
+														style={{ marginRight: "1rem" }}
+													/>
 													<a href={`tel:${company.phone.support}?Subject=Need%20Help`}>{company.phone.support}</a>
 												</li>
 												<li>
+													<Image
+														size="xs"
+														src="https://res.cloudinary.com/spacejoy/image/upload/v1567525045/web/envelope_sem3ud.svg"
+														style={{ marginRight: "1rem" }}
+													/>
+
 													<a href={`mailto:${company.email.support}?Subject=Need%20Help`} target="_top">
 														{company.email.support}
 													</a>

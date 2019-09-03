@@ -8,35 +8,45 @@ const getHeight = function getHeight(size) {
 		case "md":
 			return "32px";
 		case "lg":
-			return "40px";
+			return "50px";
 		default:
 			return "32px";
 	}
 };
 
+const getColor = function getColor(type) {
+	switch (type) {
+		case "primary":
+			return ({ theme }) => theme.colors.primary;
+		case "secondary":
+			return ({ theme }) => theme.colors.secondary;
+		case "transparent":
+			return "transparent";
+		default:
+			return "white";
+	}
+};
+
 const ButtonStyled = styled.button`
+	width: ${({ full }) => (full ? "100%" : "")};
+	height: ${({ size }) => getHeight(size)};
 	line-height: 1.5;
 	position: relative;
 	display: inline-block;
-	font-weight: 400;
 	white-space: nowrap;
 	text-align: center;
-	background-image: none;
-	border: 1px solid transparent;
 	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
 	cursor: pointer;
-	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 	user-select: none;
 	touch-action: manipulation;
 	-webkit-appearance: none;
 	outline: none;
-	height: ${({ size }) => getHeight(size)};
 	padding: 0 15px;
+	background-color: ${({ type }) => getColor(type)};
+	border: 1px solid #d9d9d9;
 	border-radius: 2px;
-	color: rgba(0, 0, 0, 0.65);
-	background-color: #fff;
-	border-color: #d9d9d9;
 	margin: 0 0.5rem;
+	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 	&:first-child {
 		margin-left: 0;
 	}

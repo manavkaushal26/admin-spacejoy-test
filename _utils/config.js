@@ -2,6 +2,7 @@ module.exports = {
 	page: {
 		appName: "SpaceJoyWeb",
 		apiBaseUrl: "",
+		placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 		googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 		ga: "UA-126209373-1",
 		gtm: "GTM-T6M3M8X",
