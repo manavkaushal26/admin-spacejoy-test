@@ -16,7 +16,12 @@ class designMySpace extends PureComponent {
 					<div className="grid justify-space-around">
 						<div className="col-xs-12 col-sm-6 col-md-4">
 							<h1>Submit A Design Request </h1>
-							<p>#{plan}</p>
+							{plan && (
+								<p>
+									<strong>Selected Plan Type: </strong>
+									{plan}
+								</p>
+							)}
 							<DesignMySpaceForm />
 						</div>
 					</div>
