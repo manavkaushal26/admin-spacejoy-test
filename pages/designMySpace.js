@@ -6,7 +6,7 @@ import React, { PureComponent } from "react";
 
 class designMySpace extends PureComponent {
 	render() {
-		const { slug, isServer } = this.props;
+		const { plan, isServer } = this.props;
 		return (
 			<Layout header="solid">
 				<Head>
@@ -16,7 +16,7 @@ class designMySpace extends PureComponent {
 					<div className="grid justify-space-around">
 						<div className="col-xs-12 col-sm-6 col-md-4">
 							<h1>Submit A Design Request </h1>
-							<p>#{slug}</p>
+							<p>#{plan}</p>
 							<DesignMySpaceForm />
 						</div>
 					</div>
@@ -26,18 +26,18 @@ class designMySpace extends PureComponent {
 	}
 }
 
-designMySpace.getInitialProps = async ({ req, query: { slug } }) => {
+designMySpace.getInitialProps = async ({ req, query: { plan } }) => {
 	const isServer = !!req;
-	return { isServer, slug };
+	return { isServer, plan };
 };
 
 designMySpace.defaultProps = {
-	slug: ""
+	plan: ""
 };
 
 designMySpace.propTypes = {
 	isServer: PropTypes.bool.isRequired,
-	slug: PropTypes.string
+	plan: PropTypes.string
 };
 
 export default designMySpace;
