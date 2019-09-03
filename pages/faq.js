@@ -4,8 +4,6 @@ import Image from "@components/Image";
 import Layout from "@components/Layout";
 import FaqData from "@utils/faqMock";
 import Head from "next/head";
-import { withRouter } from "next/router";
-import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -32,13 +30,13 @@ const TopicStyled = styled.div`
 	}
 `;
 
-function faq({ isServer }) {
+function faq() {
 	const [openId, setOpenId] = useState(0);
 	const handleOpenId = id => setOpenId(id);
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>FAQ {isServer}</title>
+				<title>FAQ</title>
 			</Head>
 			<div className="container">
 				<Image size="354px" src="https://res.cloudinary.com/spacejoy/image/upload/v1567248692/web/faq_dgczvi.jpg" />
@@ -109,15 +107,4 @@ function faq({ isServer }) {
 	);
 }
 
-faq.getInitialProps = async ({ req }) => {
-	const isServer = !!req;
-	// const res = await fetch("https://api.github.com/repos/zeit/next.js");
-	// const json = await res.json();
-	return { isServer };
-};
-
-faq.propTypes = {
-	isServer: PropTypes.bool.isRequired
-};
-
-export default withRouter(faq);
+export default faq;
