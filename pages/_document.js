@@ -74,8 +74,12 @@ class MyDocument extends Document {
 					<meta name="mobile-web-app-capable" content="yes" />
 					<meta name="apple-mobile-web-app-capable" content="yes" />
 					<meta name="msapplication-starturl" content="/" />
-					<script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} />
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
+					<script
+						src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`}
+						async
+						defer
+					/>
 				</Head>
 				<body>
 					{prod && (

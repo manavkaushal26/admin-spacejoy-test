@@ -20,7 +20,14 @@ const CarouselCardStyled = styled.div`
 const HeroWrapperStyled = styled.section`
 	position: relative;
 	padding: 2rem 0;
-	background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_1700/v1567567891/web/banner-homepage_k9aupj.jpg");
+	background-size: cover;
+	background-position: center;
+	min-height: 600px;
+	max-height: 80vh;
+	height: auto;
+	display: flex;
+	align-items: center;
 `;
 
 const SectionWrapperStyled = styled.section`
@@ -57,8 +64,8 @@ function index() {
 			</Head>
 			<HeroWrapperStyled>
 				<div className="container">
-					<div className="grid">
-						<div className="col-xs-6 align-center align-middle">
+					<div className="grid align-content-center">
+						<div className="col-lg-4 col-md-6 col-xs-12">
 							<div>
 								<HeroText>
 									Home Decor
@@ -72,14 +79,11 @@ function index() {
 									<strong>Plans starting at 19$</strong>
 								</p>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
 							</div>
-						</div>
-						<div className="col-xs-6 align-center">
-							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567069731/web/couch_zwbuzf.png" />
 						</div>
 					</div>
 				</div>
@@ -94,7 +98,7 @@ function index() {
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -138,7 +142,7 @@ function index() {
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -157,7 +161,7 @@ function index() {
 								<p>We will work within your budget to find those coveted pieces that spark joy</p>
 								<p>It&lsquo;s a hassle-free experience </p>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -192,7 +196,7 @@ function index() {
 									))}
 								</Carousel>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -211,7 +215,7 @@ function index() {
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={() => {}}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
