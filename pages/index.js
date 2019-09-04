@@ -20,7 +20,7 @@ const CarouselCardStyled = styled.div`
 const HeroWrapperStyled = styled.section`
 	position: relative;
 	background: #a3c6c3
-		url("https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=100");
+		url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_auto:best,w_1600/v1567610998/web/home-banner_ykstrm.jpg");
 	background-size: cover;
 	background-position: center;
 	min-height: 80vh;
