@@ -1,4 +1,3 @@
-// import Image from "@components/Image";
 import Layout from "@components/Layout";
 import Head from "next/head";
 import React, { PureComponent } from "react";
@@ -35,9 +34,9 @@ class checkout extends PureComponent {
 			<Layout header="solid">
 				<Head>
 					<title>FAQ</title>
+					<meta name="robots" content="noindex, nofollow" />
 				</Head>
 				<div className="container">
-					{/* <Image size="354px" src="https://res.cloudinary.com/spacejoy/image/upload/v1567248692/web/faq_dgczvi.jpg" /> */}
 					<div className="grid justify-space-around">
 						<div className="col-xs-12 col-md-8">
 							<h3>Payment</h3>

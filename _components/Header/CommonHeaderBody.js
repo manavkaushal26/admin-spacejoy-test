@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
@@ -53,9 +54,11 @@ const CommonHeaderBody = () => {
 							</ActiveLink>
 						</li>
 						<li>
-							<Button type="danger" shape="round" onClick={() => {}}>
-								Signin
-							</Button>
+							<Link href="/auth?flow=login" as="/auth/login">
+								<a href="/auth/login">
+									<Button>Login </Button>
+								</a>
+							</Link>
 						</li>
 					</HorizontalListStyled>
 				</div>

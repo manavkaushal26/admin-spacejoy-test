@@ -99,6 +99,9 @@ app.prepare().then(() => {
 		server.get("/terms", (req, res) => {
 			renderAndCache(req, res, "/terms", req.params);
 		});
+		server.get("/auth/:flow(login|signup|forgot-password)", (req, res) => {
+			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
+		});
 		server.get(["/", "/index"], (req, res) => {
 			const { params } = req;
 			app.render(req, res, "/index", params);

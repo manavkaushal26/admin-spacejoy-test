@@ -6,6 +6,7 @@ import Header from "./Header";
 
 const MainStyled = styled.main`
 	margin-top: 60px;
+	min-height: 50vh;
 `;
 
 function Layout({ header, children }) {
