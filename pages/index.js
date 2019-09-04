@@ -19,13 +19,12 @@ const CarouselCardStyled = styled.div`
 
 const HeroWrapperStyled = styled.section`
 	position: relative;
-	padding: 2rem 0;
 	background: #a3c6c3
 		url("https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=100");
 	background-size: cover;
 	background-position: center;
-	min-height: 600px;
-	max-height: 80vh;
+	min-height: 80vh;
+	max-height: 90vh;
 	height: auto;
 	display: flex;
 	align-items: center;
@@ -53,7 +52,6 @@ const HeroText = styled.h1`
 
 const HeroSubText = styled.h1`
 	font-weight: normal;
-	width: 75%;
 	font-size: 1.15rem;
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
@@ -122,29 +120,29 @@ function index() {
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">
-						<div className="col-xs-6">
+						<div className="col-xs-5">
 							<div className="grid">
-								<div className="col-xs-6 col-md-3">
+								<div className="col-xs-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/designer4.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-3">
+								<div className="col-xs-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer5.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-3">
+								<div className="col-xs-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer1.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-3">
+								<div className="col-xs-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer3.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-3">
+								<div className="col-xs-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer2.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-3">
+								<div className="col-xs-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer0.jpg" />
 								</div>
 							</div>
 						</div>
-						<div className="col-xs-6">
+						<div className="col-xs-5">
 							<div>
 								<h1>Crafted By Our Design Experts</h1>
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
