@@ -32,7 +32,7 @@ function designProjects({ isServer }) {
 							<div className="cols-xs-12 col-md-6">
 								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567248422/web/room2_flrl1g.png" />
 							</div>
-							<div className="cols-xs-12 col-md-6 no-pad-vertical">
+							<div className="cols-xs-12 col-md-6 col-bleed-y">
 								<p>
 									This Mid-Century-Modern home office is designed to increase productivity. The clean and open design
 									uses warm and neutral accents to achive an uncluttered look. The juxtaposition of different elements
@@ -48,13 +48,13 @@ function designProjects({ isServer }) {
 					<span>OR</span>
 				</Divider>
 				<div className="grid">
-					<div className="col-xs-12 no-pad-vertical">
+					<div className="col-xs-12">
 						<DesignTitleStyled>Urban Boho</DesignTitleStyled>
 						<div className="grid">
 							<div className="cols-xs-12 col-md-6">
 								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567248422/web/room1_vndwge.png" />
 							</div>
-							<div className="cols-xs-12 col-md-6">
+							<div className="cols-xs-12 col-md-6 col-bleed-y">
 								<p>
 									This bedroom is designed using Urban Boho decor style. The 3 main elements of the design bringing this
 									room together are - The Dondra teak bed from CB2, side tables from Paynesgrey and the large piece of

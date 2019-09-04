@@ -20,8 +20,8 @@ const CarouselCardStyled = styled.div`
 const HeroWrapperStyled = styled.section`
 	position: relative;
 	padding: 2rem 0;
-	background-image: url("https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=100");
-	/* background-image: url("https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-1.2.1&auto=format&fit=crop&w=3306&q=80"); */
+	background: #a3c6c3
+		url("https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=100");
 	background-size: cover;
 	background-position: center;
 	min-height: 600px;
@@ -31,9 +31,11 @@ const HeroWrapperStyled = styled.section`
 	align-items: center;
 	background-attachment: fixed;
 `;
+
 const HeroCardStyled = styled.section`
+	position: relative;
 	padding: 2rem;
-	background-color: white;
+	background: white;
 	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
 	border-radius: 2px;
 `;
@@ -50,7 +52,6 @@ const HeroText = styled.h1`
 `;
 
 const HeroSubText = styled.h1`
-	font-family: system;
 	font-weight: normal;
 	width: 75%;
 	font-size: 1.15rem;
@@ -61,7 +62,6 @@ const CenterTextStyled = styled.h1`
 	text-align: center;
 `;
 const CenterSubTextStyled = styled.p`
-	font-family: system;
 	font-weight: normal;
 `;
 
@@ -99,8 +99,8 @@ function index() {
 			</HeroWrapperStyled>
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
 				<div className="container">
-					<div className="grid justify-space-between">
-						<div className="col-xs-5 align-center align-middle">
+					<div className="grid justify-space-between align-center">
+						<div className="col-xs-6">
 							<div>
 								<h1>Get 3D Designs of Your Space</h1>
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
@@ -113,7 +113,7 @@ function index() {
 								</div>
 							</div>
 						</div>
-						<div className="col-xs-6 align-center">
+						<div className="col-xs-6">
 							<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/home/design-top-view.gif" />
 						</div>
 					</div>
@@ -121,8 +121,8 @@ function index() {
 			</SectionWrapperStyled>
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" }}>
 				<div className="container">
-					<div className="grid justify-space-between">
-						<div className="col-xs-6 align-center">
+					<div className="grid justify-space-between align-center">
+						<div className="col-xs-6">
 							<div className="grid">
 								<div className="col-xs-6 col-md-3">
 									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/designer4.jpg" />
@@ -144,7 +144,7 @@ function index() {
 								</div>
 							</div>
 						</div>
-						<div className="col-xs-5 align-center align-middle">
+						<div className="col-xs-6">
 							<div>
 								<h1>Crafted By Our Design Experts</h1>
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
@@ -162,8 +162,8 @@ function index() {
 			</SectionWrapperStyled>
 			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
 				<div className="container">
-					<div className="grid justify-space-between">
-						<div className="col-xs-5 align-center align-middle">
+					<div className="grid justify-space-between align-center">
+						<div className="col-xs-6">
 							<div>
 								<h1>Shop Products From Your Designs</h1>
 								<p>Our designs feature products from your favorite brands</p>
@@ -176,7 +176,7 @@ function index() {
 								</div>
 							</div>
 						</div>
-						<div className="col-xs-6 align-center">
+						<div className="col-xs-6 ">
 							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1566975734/web/brand-items_nerkmq.jpg" />
 						</div>
 					</div>
@@ -186,7 +186,7 @@ function index() {
 				style={{ backgroundImage: "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)" }}
 			>
 				<div className="container">
-					<div className="grid">
+					<div className="grid justify-space-between align-center">
 						<div className="col-xs-12">
 							<div style={{ textAlign: "center" }}>
 								<CenterTextStyled>Doesn&lsquo;t Spark Joy?</CenterTextStyled>
@@ -216,8 +216,8 @@ function index() {
 			</SectionWrapperStyled>
 			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
 				<div className="container">
-					<div className="grid">
-						<div className="col-xs-6 align-center align-middle">
+					<div className="grid justify-space-between align-center">
+						<div className="col-xs-6">
 							<div>
 								<h1>Customer Delight</h1>
 								<p>Design stories straight from our customers</p>

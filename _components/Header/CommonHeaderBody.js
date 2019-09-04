@@ -5,30 +5,28 @@ import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
 
 const HorizontalListStyled = styled.ul`
+	text-align: ${({ align }) => align};
 	margin: 0;
 	padding: 0;
 	li {
 		display: inline-block;
 		list-style: none;
-		margin-right: 2.5rem;
-		&:last-child {
-			margin-right: 0rem;
-		}
+		margin: 0 1rem;
 	}
 `;
 
 const CommonHeaderBody = () => {
 	return (
 		<div className="container">
-			<div className="grid">
-				<div className="col-xs-3 align-left align-middle">
+			<div className="grid align-center justify-content-space-between">
+				<div className="col-sm-12 col-md-4">
 					<ActiveLink href="/" as="/">
 						<Logo md />
 					</ActiveLink>
 				</div>
-				<div className="col-xs-6 align-center align-middle">
+				<div className="col-sm-12 col-md-4 ">
 					<nav>
-						<HorizontalListStyled>
+						<HorizontalListStyled align="center">
 							<li>
 								<ActiveLink href="/designProjects" as="/designProjects">
 									Design Projects
@@ -47,21 +45,19 @@ const CommonHeaderBody = () => {
 						</HorizontalListStyled>
 					</nav>
 				</div>
-				<div className="col-xs-3 align-right align-middle">
-					<nav>
-						<HorizontalListStyled>
-							<li>
-								<ActiveLink href="/designMySpace" as="/designMySpace">
-									Design My Space
-								</ActiveLink>
-							</li>
-							<li>
-								<Button type="danger" shape="round" onClick={() => {}}>
-									Signin
-								</Button>
-							</li>
-						</HorizontalListStyled>
-					</nav>
+				<div className="col-sm-12 col-md-4 ">
+					<HorizontalListStyled align="right">
+						<li>
+							<ActiveLink href="/designMySpace" as="/designMySpace">
+								Design My Space
+							</ActiveLink>
+						</li>
+						<li>
+							<Button type="danger" shape="round" onClick={() => {}}>
+								Signin
+							</Button>
+						</li>
+					</HorizontalListStyled>
 				</div>
 			</div>
 		</div>

@@ -4,9 +4,8 @@ import styled from "styled-components";
 import Footer from "./Footer";
 import Header from "./Header";
 
-const MainStyled = styled.div`
-	background: white;
-	margin-top: 65px;
+const MainStyled = styled.main`
+	margin-top: 60px;
 `;
 
 function Layout({ header, children }) {
