@@ -19,9 +19,6 @@ const HeaderStyled = styled.div`
 
 const TransparentHeaderStyled = styled(HeaderStyled)`
 	color: ${({ theme }) => theme.colors.primary};
-	a {
-		color: white;
-	}
 `;
 
 const SolidHeaderStyled = styled(HeaderStyled)`

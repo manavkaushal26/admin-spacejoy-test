@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const LogoStyled = styled.img`
-	height: 35px;
+	height: 30px;
 `;
 
 function Logo(props) {

@@ -20,7 +20,8 @@ const CarouselCardStyled = styled.div`
 const HeroWrapperStyled = styled.section`
 	position: relative;
 	padding: 2rem 0;
-	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_1700/v1567567891/web/banner-homepage_k9aupj.jpg");
+	background-image: url("https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2689&q=100");
+	/* background-image: url("https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-1.2.1&auto=format&fit=crop&w=3306&q=80"); */
 	background-size: cover;
 	background-position: center;
 	min-height: 600px;
@@ -28,6 +29,13 @@ const HeroWrapperStyled = styled.section`
 	height: auto;
 	display: flex;
 	align-items: center;
+	background-attachment: fixed;
+`;
+const HeroCardStyled = styled.section`
+	padding: 2rem;
+	background-color: white;
+	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
+	border-radius: 2px;
 `;
 
 const SectionWrapperStyled = styled.section`
@@ -36,16 +44,17 @@ const SectionWrapperStyled = styled.section`
 
 const HeroText = styled.h1`
 	font-weight: bold;
-	font-size: 4rem;
-	line-height: 5rem;
-	margin-bottom: 0;
+	font-size: 3.5rem;
+	line-height: 3.5rem;
+	margin: 0;
 `;
 
 const HeroSubText = styled.h1`
 	font-family: system;
 	font-weight: normal;
 	width: 75%;
-	font-size: 1.25rem;
+	font-size: 1.15rem;
+	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
 const CenterTextStyled = styled.h1`
@@ -66,7 +75,7 @@ function index() {
 				<div className="container">
 					<div className="grid align-content-center">
 						<div className="col-lg-4 col-md-6 col-xs-12">
-							<div>
+							<HeroCardStyled>
 								<HeroText>
 									Home Decor
 									<br />
@@ -83,7 +92,7 @@ function index() {
 										DESIGN MY SPACE
 									</Button>
 								</div>
-							</div>
+							</HeroCardStyled>
 						</div>
 					</div>
 				</div>
