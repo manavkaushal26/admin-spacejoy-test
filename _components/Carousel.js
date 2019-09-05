@@ -56,25 +56,40 @@ const settings = {
 	dots: false,
 	infinite: true,
 	speed: 500,
-	slidesToShow: 4,
-	slidesToScroll: 4,
-	autoplay: true,
+	slidesToShow: 1,
+	slidesToScroll: 1,
+	autoplay: false,
 	autoplaySpeed: 5000,
 	pauseOnHover: true,
 	nextArrow: <NextArrow onClick={prev} />,
 	prevArrow: <PrevArrow onClick={next} />
 };
 
-function Carousel({ children }) {
+function Carousel({ children, slidesToShow, slidesToScroll, autoplay }) {
 	return (
-		<Slider ref={slider => slider} {...settings}>
+		<Slider
+			ref={slider => slider}
+			{...settings}
+			slidesToShow={slidesToShow}
+			slidesToScroll={slidesToScroll}
+			autoplay={autoplay}
+		>
 			{children}
 		</Slider>
 	);
 }
 
+Carousel.defaultProps = {
+	slidesToShow: 1,
+	slidesToScroll: 1,
+	autoplay: false
+};
+
 Carousel.propTypes = {
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
+	slidesToShow: PropTypes.number,
+	slidesToScroll: PropTypes.number,
+	autoplay: PropTypes.bool
 };
 
 export default Carousel;

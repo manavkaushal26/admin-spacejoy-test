@@ -10,11 +10,6 @@ const CarouselCardStyled = styled.div`
 	outline: none;
 	box-sizing: border-box;
 	padding: 1rem;
-	div {
-		background: white;
-		padding: 0.5rem;
-		box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
-	}
 `;
 
 const HeroWrapperStyled = styled.section`
@@ -190,13 +185,11 @@ function index() {
 							<CenterSubTextStyled>
 								We&lsquo;ll revise your design until it reflects your perfect space Spacejoy designers are here to help
 							</CenterSubTextStyled>
-							<Carousel>
+							<Carousel slidesToShow={4} slidesToScroll={4} autoplay>
 								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
 									<CarouselCardStyled key={Math.random()}>
-										<div>
-											<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
-											<h4>Susan&apos;s Living Room</h4>
-										</div>
+										<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
+										<h4>Susan&apos;s Living Room</h4>
 									</CarouselCardStyled>
 								))}
 							</Carousel>

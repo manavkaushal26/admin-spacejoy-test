@@ -1,3 +1,4 @@
+import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@components/ItemCard";
@@ -30,7 +31,11 @@ function designProjects({ isServer }) {
 						<DesignTitleStyled>Home Office</DesignTitleStyled>
 						<div className="grid">
 							<div className="cols-xs-12 col-md-6">
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567248422/web/room2_flrl1g.png" />
+								<Carousel slidesToShow={1} slidesToScroll={1}>
+									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
+										<Image key={Math.random()} src={`https://picsum.photos/id/${i + 1}/630/350`} />
+									))}
+								</Carousel>
 							</div>
 							<div className="cols-xs-12 col-md-6 col-bleed-y">
 								<p>
@@ -52,7 +57,11 @@ function designProjects({ isServer }) {
 						<DesignTitleStyled>Urban Boho</DesignTitleStyled>
 						<div className="grid">
 							<div className="cols-xs-12 col-md-6">
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1567248422/web/room1_vndwge.png" />
+								<Carousel slidesToShow={1} slidesToScroll={1}>
+									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
+										<Image key={Math.random()} src={`https://picsum.photos/id/${i + 1}/630/350`} />
+									))}
+								</Carousel>
 							</div>
 							<div className="cols-xs-12 col-md-6 col-bleed-y">
 								<p>
@@ -61,6 +70,7 @@ function designProjects({ isServer }) {
 									art from Living Spaces.
 								</p>
 								<h3>Shop for products featured in this design</h3>
+								<ItemCard />
 							</div>
 						</div>
 					</div>
