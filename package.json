@@ -48,7 +48,8 @@
 		"precommit": "lint-staged",
 		"format": "prettier --write \"**/*.+(js|md|ts|css|sass|less|graphql|yml|yaml|scss|json|vue)\"",
 		"test": "bundlesize",
-		"docker-image": "docker build -t saurabhdsachan/spacejoyweb-react -f Dockerfile ."
+		"docker-image": "docker build -t saurabhdsachan/spacejoyweb-react -f Dockerfile .",
+		"docker-run": "docker run -p 3000:3000  saurabhdsachan/spacejoyweb-react"
 	},
 	"husky": {
 		"hooks": {
