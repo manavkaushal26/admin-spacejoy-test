@@ -1,6 +1,5 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
-import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
@@ -54,11 +53,13 @@ const CommonHeaderBody = () => {
 							</ActiveLink>
 						</li>
 						<li>
-							<Link href="/auth?flow=login" as="/auth/login">
-								<a href="/auth/login">
-									<Button>Login </Button>
-								</a>
-							</Link>
+							<ActiveLink
+								href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "faq" } }}
+								as="/auth/login?redirectUrl=faq"
+								replace
+							>
+								<Button>Login </Button>
+							</ActiveLink>
 						</li>
 					</HorizontalListStyled>
 				</div>

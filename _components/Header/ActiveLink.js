@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { withRouter } from "next/router";
 import PropTypes from "prop-types";
 import React from "react";
@@ -18,29 +19,31 @@ const NormalStyled = styled.a`
 	}
 `;
 
-const ActiveLink = ({ children, router, href }) => {
-	const handleClick = e => {
-		e.preventDefault();
-		router.push(href);
-	};
-	return router.pathname === href ? (
-		<ActiveStyled href={href} onClick={handleClick}>
-			{children}
-		</ActiveStyled>
-	) : (
-		<NormalStyled href={href} onClick={handleClick}>
-			{children}
-		</NormalStyled>
+const ActiveLink = props => {
+	const {
+		children,
+		router: { pathname },
+		href
+	} = props;
+	const orgProps = { ...props };
+	delete orgProps.router;
+	return (
+		<Link {...orgProps}>
+			{pathname === href ? (
+				<ActiveStyled href={href}>{children}</ActiveStyled>
+			) : (
+				<NormalStyled href={href}>{children}</NormalStyled>
+			)}
+		</Link>
 	);
 };
 
 ActiveLink.propTypes = {
 	children: PropTypes.node.isRequired,
 	router: PropTypes.shape({
-		pathname: PropTypes.string,
-		push: PropTypes.func
+		pathname: PropTypes.string
 	}).isRequired,
-	href: PropTypes.string.isRequired
+	href: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired
 };
 
 ActiveLink.defaultProps = {};
