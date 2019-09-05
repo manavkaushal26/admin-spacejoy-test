@@ -47,7 +47,8 @@
 		"analyze": "cross-env ANALYZE=1 next build",
 		"precommit": "lint-staged",
 		"format": "prettier --write \"**/*.+(js|md|ts|css|sass|less|graphql|yml|yaml|scss|json|vue)\"",
-		"test": "bundlesize"
+		"test": "bundlesize",
+		"docker-image": "docker build -t saurabhdsachan/spacejoyweb-react -f Dockerfile ."
 	},
 	"husky": {
 		"hooks": {
