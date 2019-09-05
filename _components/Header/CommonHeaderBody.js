@@ -11,7 +11,13 @@ const HorizontalListStyled = styled.ul`
 	li {
 		display: inline-block;
 		list-style: none;
-		margin: 0 1rem;
+		margin: 0 1.5rem;
+		&:first-child {
+			margin-left: 0;
+		}
+		&:last-child {
+			margin-right: 0;
+		}
 	}
 `;
 

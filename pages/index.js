@@ -9,7 +9,7 @@ import styled from "styled-components";
 const CarouselCardStyled = styled.div`
 	outline: none;
 	box-sizing: border-box;
-	padding: 0.5rem;
+	padding: 1rem;
 	div {
 		background: white;
 		padding: 0.5rem;
@@ -184,29 +184,26 @@ function index() {
 				style={{ backgroundImage: "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)" }}
 			>
 				<div className="container">
-					<div className="grid justify-space-between align-center">
-						<div className="col-xs-12">
-							<div style={{ textAlign: "center" }}>
-								<CenterTextStyled>Doesn&lsquo;t Spark Joy?</CenterTextStyled>
-								<CenterSubTextStyled>
-									We&lsquo;ll revise your design until it reflects your perfect space Spacejoy designers are here to
-									help
-								</CenterSubTextStyled>
-								<Carousel>
-									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-										<CarouselCardStyled key={Math.random()}>
-											<div>
-												<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
-												<h4>Susan&apos;s Living Room</h4>
-											</div>
-										</CarouselCardStyled>
-									))}
-								</Carousel>
-								<div>
-									<Button shape="round" size="lg" onClick={() => {}}>
-										DESIGN MY SPACE
-									</Button>
-								</div>
+					<div className="grid">
+						<div className="col-xs-12 text-center">
+							<CenterTextStyled>Doesn&lsquo;t Spark Joy?</CenterTextStyled>
+							<CenterSubTextStyled>
+								We&lsquo;ll revise your design until it reflects your perfect space Spacejoy designers are here to help
+							</CenterSubTextStyled>
+							<Carousel>
+								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
+									<CarouselCardStyled key={Math.random()}>
+										<div>
+											<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
+											<h4>Susan&apos;s Living Room</h4>
+										</div>
+									</CarouselCardStyled>
+								))}
+							</Carousel>
+							<div>
+								<Button shape="round" size="lg" onClick={() => {}}>
+									DESIGN MY SPACE
+								</Button>
 							</div>
 						</div>
 					</div>

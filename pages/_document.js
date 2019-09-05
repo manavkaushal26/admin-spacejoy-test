@@ -61,11 +61,7 @@ class MyDocument extends Document {
 						media="screen"
 						href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
 					/>
-					<link
-						media="screen"
-						rel="stylesheet"
-						href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-					/>
+
 					<link rel="icon" sizes="192x192" href="/static/icon.png" />
 					<link rel="apple-touch-icon" href="/static/ios-icon.png" />
 					<meta name="theme-color" content="#ffffff" />
