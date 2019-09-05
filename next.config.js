@@ -7,7 +7,6 @@ const { ANALYZE } = process.env;
 const prod = process.env.NODE_ENV === "production";
 
 const nextConfig = {
-	target: "serverless",
 	poweredByHeader: false,
 	useFileSystemPublicRoutes: false,
 	assetPrefix: prod ? "" : "",
