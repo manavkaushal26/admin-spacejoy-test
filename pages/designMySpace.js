@@ -1,4 +1,4 @@
-import DesignMySpaceForm from "@components/Forms/DesignMySpaceForm";
+import DesignMySpaceForm from "@components/DesignMySpaceForm";
 import Layout from "@components/Layout";
 import Head from "next/head";
 import PropTypes from "prop-types";
