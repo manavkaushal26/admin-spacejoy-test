@@ -2,7 +2,17 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 
 class FormBox extends Component {
-	state = {};
+	constructor(props) {
+		super(props);
+		const stateObj = {};
+		React.Children.map(props.children, child => {
+			stateObj[child.props.name] = {
+				value: "",
+				error: ""
+			};
+		});
+		this.state = stateObj;
+	}
 
 	handleSubmit = event => {
 		event.preventDefault();
@@ -13,7 +23,7 @@ class FormBox extends Component {
 			target: { name, value }
 		} = event;
 
-		this.setState({ [name]: { value, error: "Error hai" } });
+		this.setState({ [name]: { value, error: "Error" } });
 	};
 
 	render() {
