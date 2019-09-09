@@ -1,4 +1,5 @@
-import Login from "@sections/Footer/LoginForm";
+import Login from "@sections/Forms/LoginForm";
+import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
 import Head from "next/head";
 import PropTypes from "prop-types";
@@ -26,6 +27,7 @@ class auth extends PureComponent {
 									Sign in to score great deals! {flow}, {redirectUrl}
 								</h3>
 								{flow === "login" && <Login />}
+								{flow === "signup" && <SignupForm />}
 							</AuthFormStyled>
 						</div>
 					</div>
