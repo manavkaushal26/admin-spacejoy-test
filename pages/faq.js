@@ -1,7 +1,7 @@
 import Divider from "@components/Divider";
-import FAQCard from "@components/FAQCard";
 import Image from "@components/Image";
-import Layout from "@components/Layout";
+import FAQCard from "@sections/Cards/faq";
+import Layout from "@sections/Layout";
 import FaqData from "@utils/faqMock";
 import Head from "next/head";
 import React, { useState } from "react";

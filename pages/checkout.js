@@ -1,4 +1,4 @@
-import Layout from "@components/Layout";
+import Layout from "@sections/Layout";
 import Head from "next/head";
 import React, { PureComponent } from "react";
 import styled from "styled-components";

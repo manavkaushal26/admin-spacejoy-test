@@ -10,7 +10,8 @@
 				"alias": {
 					"@components": "./_components",
 					"@utils": "./_utils",
-					"@theme": "./_theme"
+					"@theme": "./_theme",
+					"@sections": "./_sections"
 				}
 			}
 		]

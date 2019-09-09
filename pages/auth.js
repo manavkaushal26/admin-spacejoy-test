@@ -1,15 +1,15 @@
-import Layout from "@components/Layout";
+import Login from "@sections/Footer/LoginForm";
+import Layout from "@sections/Layout";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
+import styled from "styled-components";
 
-// import styled from "styled-components";
-
-// const SummaryWrapperStyled = styled.div``;
+const AuthFormStyled = styled.div`
+	text-align: center;
+`;
 
 class auth extends PureComponent {
-	state = {};
-
 	render() {
 		const { isServer, flow, redirectUrl } = this.props;
 		return (
@@ -20,12 +20,14 @@ class auth extends PureComponent {
 				</Head>
 				<div className="container">
 					<div className="grid justify-space-around">
-						<div className="col-xs-12 col-md-8">
-							<h3>
-								Auth {flow}, {redirectUrl}
-							</h3>
+						<div className="col-xs-4 col-md-4 ">
+							<AuthFormStyled>
+								<h3>
+									Sign in to score great deals! {flow}, {redirectUrl}
+								</h3>
+								{flow === "login" && <Login />}
+							</AuthFormStyled>
 						</div>
-						<div className="col-xs-12 col-md-4">Lo</div>
 					</div>
 				</div>
 			</Layout>

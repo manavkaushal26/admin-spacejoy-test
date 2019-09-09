@@ -1,4 +1,4 @@
-import Layout from "@components/Layout";
+import Layout from "@sections/Layout";
 import PropTypes from "prop-types";
 import React from "react";
 

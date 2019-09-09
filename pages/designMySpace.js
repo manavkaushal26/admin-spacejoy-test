@@ -1,5 +1,5 @@
-import DesignMySpaceForm from "@components/DesignMySpaceForm";
-import Layout from "@components/Layout";
+import DesignMySpaceForm from "@sections/Forms/DesignMySpaceForm";
+import Layout from "@sections/Layout";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";

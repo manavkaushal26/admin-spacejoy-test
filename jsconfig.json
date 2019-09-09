@@ -6,7 +6,8 @@
 		"paths": {
 			"@components/*": ["./_components/*"],
 			"@utils/*": ["./_utils/*"],
-			"@theme/*": ["./_theme/*"]
+			"@theme/*": ["./_theme/*"],
+			"@sections/*": ["./_sections/*"]
 		}
 	},
 	"exclude": [".next", "node_modules", "**/node_modules/*", "**/.storybook/*", "**/assets/*", "**/build/*"]

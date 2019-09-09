@@ -1,5 +1,5 @@
-import Layout from "@components/Layout";
-import PriceCard from "@components/PriceCard";
+import PriceCard from "@sections/Cards/price";
+import Layout from "@sections/Layout";
 import PlansData from "@utils/planMock";
 import Head from "next/head";
 import React from "react";

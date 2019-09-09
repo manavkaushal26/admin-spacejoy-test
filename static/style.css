@@ -1,8 +1,6 @@
 /* Docs http://reflexgrid.com/docs/ */
 @import "./reflex.min.css";
 
-@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap");
-
 /* Define the "system" font family */
 @font-face {
 	font-family: system;
@@ -14,7 +12,7 @@
 
 body,
 html {
-	font-family: "Open Sans", "system";
+	font-family: Quicksand, "system", arial, sans-serif;
 	font-size: 14px;
 	line-height: 1.58;
 	letter-spacing: 0.025em;
