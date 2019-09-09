@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 
-class FormBox extends PureComponent {
+class FormBox extends Component {
 	state = {};
 
 	handleSubmit = event => {
@@ -12,7 +12,8 @@ class FormBox extends PureComponent {
 		const {
 			target: { name, value }
 		} = event;
-		this.setState({ [name]: value });
+
+		this.setState({ [name]: { value, error: "Error hai" } });
 	};
 
 	render() {
@@ -22,7 +23,7 @@ class FormBox extends PureComponent {
 			<form aria-labelledby={description} onSubmit={this.handleSubmit}>
 				{React.Children.map(children, child => {
 					const { name } = child.props;
-					return React.cloneElement(child, { value: state[name], onchange: this.handleChange });
+					return React.cloneElement(child, { data: state[name], onchange: this.handleChange });
 				})}
 			</form>
 		);

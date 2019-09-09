@@ -1,54 +1,47 @@
+import Button from "@components/Button";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
 const FieldWrapperStyled = styled.div``;
 
-function Field({ value, onchange, name, type, label, placeholder, inline, required }) {
+function Field({ data, onchange, name, type, label, placeholder, inline, required }) {
 	return (
 		<FieldWrapperStyled>
-			<div className="grid">
-				<label htmlFor={name}>
-					{!inline && (
-						<div className="col-xs-12">
+			{(type === "email" || type === "text") && (
+				<div className="grid">
+					<label htmlFor={name}>
+						<div className={`col-xs-${inline ? 6 : 12}`}>
 							<span>{label}</span>
+						</div>
+						<div className={`col-xs-${inline ? 6 : 12}`}>
 							<input
 								type={type}
 								id={name}
 								name={name}
-								value={value}
+								value={data.value}
 								placeholder={placeholder}
 								required={required}
 								onChange={onchange}
 							/>
+							<p>{data.error}</p>
 						</div>
-					)}
-					{inline && (
-						<>
-							<div className="col-xs-6">
-								<span>{label}</span>
-							</div>
-							<div className="col-xs-6">
-								<input
-									type={type}
-									id={name}
-									name={name}
-									value={value}
-									placeholder={placeholder}
-									required={required}
-									onChange={onchange}
-								/>
-							</div>
-						</>
-					)}
-				</label>
-			</div>
+					</label>
+				</div>
+			)}
+			{type === "submit" && (
+				<div className="grid">
+					<div className="col-xs-12">
+						<Button>{label}</Button>
+					</div>
+				</div>
+			)}
 		</FieldWrapperStyled>
 	);
 }
 
 Field.defaultProps = {
-	value: "",
+	data: {},
 	onchange: () => {},
 	placeholder: "",
 	inline: false,
@@ -56,7 +49,10 @@ Field.defaultProps = {
 };
 
 Field.propTypes = {
-	value: PropTypes.string,
+	data: PropTypes.shape({
+		value: PropTypes.string,
+		error: PropTypes.string
+	}),
 	onchange: PropTypes.func,
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
