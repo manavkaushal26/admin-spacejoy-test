@@ -24,16 +24,35 @@ class FormBox extends Component {
 	handleSubmit = async event => {
 		event.preventDefault();
 		const { state } = this;
-		const { destination } = this.props;
+		const { destination, name } = this.props;
+		function reqBody() {
+			if (name === "signup") {
+				return {
+					email: state.userEmail.value,
+					password: state.userPassword.value,
+					firstName: state.userName.value,
+					lastName: "",
+					region: "",
+					role: "customer"
+				};
+			}
+			if (name === "login") {
+				return {
+					email: state.userEmail.value,
+					password: state.userPassword.value
+				};
+			}
+			return {};
+		}
 		try {
 			const response = await fetch(page.apiBaseUrl + destination, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({ email: state.userEmail.value, password: state.userPassword.value })
+				body: JSON.stringify(reqBody(name))
 			});
-			if (response.status === 200) {
+			if (response.status >= 200) {
 				const { token } = await response.json();
 				await login({ token });
 			} else {
@@ -89,6 +108,7 @@ FormBox.defaultProps = {
 FormBox.propTypes = {
 	children: PropTypes.node.isRequired,
 	destination: PropTypes.string.isRequired,
+	name: PropTypes.string.isRequired,
 	description: PropTypes.string
 };
 

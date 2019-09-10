@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
 import { logout } from "@utils/auth";
+import cookie from "js-cookie";
 import React from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
@@ -23,6 +24,7 @@ const HorizontalListStyled = styled.ul`
 `;
 
 const CommonHeaderBody = () => {
+	const token = cookie.get("token");
 	return (
 		<div className="container">
 			<div className="grid align-center justify-content-space-between">
@@ -60,22 +62,26 @@ const CommonHeaderBody = () => {
 							</ActiveLink>
 						</li>
 						<li>
-							<ActiveLink
-								href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "faq" } }}
-								as="/auth/login?redirectUrl=faq"
-								replace
-							>
-								Login /
-							</ActiveLink>
-							<ActiveLink
-								href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "faq" } }}
-								as="/auth/signup?redirectUrl=faq"
-								replace
-							>
-								{" "}
-								Signup
-							</ActiveLink>
-							<Button onClick={logout}>Logout</Button>
+							{!token && (
+								<>
+									<ActiveLink
+										href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "faq" } }}
+										as="/auth/login?redirectUrl=faq"
+										replace
+									>
+										Login /
+									</ActiveLink>
+									<ActiveLink
+										href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "faq" } }}
+										as="/auth/signup?redirectUrl=faq"
+										replace
+									>
+										{" "}
+										Signup
+									</ActiveLink>
+								</>
+							)}
+							{token && <Button onClick={logout}>Logout</Button>}
 						</li>
 					</HorizontalListStyled>
 				</div>

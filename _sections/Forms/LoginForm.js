@@ -4,7 +4,7 @@ import React from "react";
 
 function LoginForm() {
 	return (
-		<FormBox destination="/auth/login" description="Enter your details to signup">
+		<FormBox destination="/auth/login" description="Enter your details to Login" name="login">
 			<Field
 				name="userEmail"
 				type="email"

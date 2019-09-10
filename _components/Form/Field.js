@@ -10,6 +10,7 @@ const FieldWrapperStyled = styled.div`
 		margin-bottom: 1rem;
 		span {
 			display: block;
+			margin: 0.5rem 0;
 		}
 	}
 `;
@@ -46,7 +47,7 @@ function Field({ data, onchange, name, type, label, placeholder, error, hint, in
 								<sup>{required ? "*" : ""}</sup>
 							</span>
 						</div>
-						<div className={`col-xs-${inline ? 6 : 12}`}>
+						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							<InputStyled
 								type={type}
 								id={name}
@@ -59,7 +60,8 @@ function Field({ data, onchange, name, type, label, placeholder, error, hint, in
 								data-error={error}
 								data-hint={hint}
 							/>
-							{data.error ? <ErrorTextStyled>{data.error}</ErrorTextStyled> : <HintTextStyled>{hint}</HintTextStyled>}
+							{data.error && <ErrorTextStyled>{data.error}</ErrorTextStyled>}
+							{data.error && <HintTextStyled>{hint}</HintTextStyled>}
 						</div>
 					</div>
 				</label>
