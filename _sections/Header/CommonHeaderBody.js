@@ -1,4 +1,3 @@
-import Button from "@components/Button";
 import Logo from "@components/Logo";
 import React from "react";
 import styled from "styled-components";
@@ -64,7 +63,15 @@ const CommonHeaderBody = () => {
 								as="/auth/login?redirectUrl=faq"
 								replace
 							>
-								<Button>Login </Button>
+								Login /
+							</ActiveLink>
+							<ActiveLink
+								href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "faq" } }}
+								as="/auth/signup?redirectUrl=faq"
+								replace
+							>
+								{" "}
+								Signup
 							</ActiveLink>
 						</li>
 					</HorizontalListStyled>

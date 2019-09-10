@@ -29,7 +29,7 @@ const ActiveLink = props => {
 	delete orgProps.router;
 	return (
 		<Link {...orgProps}>
-			{pathname === href ? (
+			{pathname === href || pathname === href.pathname ? (
 				<ActiveStyled href={href}>{children}</ActiveStyled>
 			) : (
 				<NormalStyled href={href}>{children}</NormalStyled>

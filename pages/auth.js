@@ -7,7 +7,14 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 
 const AuthFormStyled = styled.div`
-	text-align: center;
+	min-height: 60vh;
+	width: 30%;
+	display: flex;
+	margin: auto;
+	align-items: center;
+	@media (max-width: 768px) {
+		width: 80%;
+	}
 `;
 
 class auth extends PureComponent {
@@ -20,16 +27,10 @@ class auth extends PureComponent {
 					<title>Auth {isServer}</title>
 					<meta name="robots" content="noindex, nofollow" />
 				</Head>
-				<div className="container">
-					<div className="grid justify-space-around">
-						<div className="col-xs-4 col-md-4">
-							<AuthFormStyled>
-								{flow === "login" && <Login />}
-								{flow === "signup" && <SignupForm />}
-							</AuthFormStyled>
-						</div>
-					</div>
-				</div>
+				<AuthFormStyled>
+					{flow === "login" && <Login />}
+					{flow === "signup" && <SignupForm />}
+				</AuthFormStyled>
 			</Layout>
 		);
 	}
