@@ -3,25 +3,25 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
 
+function redirectToLocation(url, res = {}) {
+	return typeof window !== "undefined" ? Router.push(url) : res.redirect(url);
+}
+
 function login({ token }) {
 	cookie.set("token", token, { expires: 1 });
-	Router.push("/profile");
+	redirectToLocation("/profile");
 }
 
 function logout() {
 	cookie.remove("token");
 	window.localStorage.setItem("logout", Date.now());
-	Router.push("/auth/login");
+	redirectToLocation("/auth/login");
 }
 
 function auth(ctx) {
 	const { token } = nextCookie(ctx);
-	if (ctx.req && !token) {
-		ctx.res.writeHead(302, { Location: "/auth/login" });
-		ctx.res.end();
-	}
 	if (!token) {
-		Router.push("/auth/login");
+		return ctx.req ? redirectToLocation("/auth/login", ctx.res) : redirectToLocation("/auth/login");
 	}
 	return token;
 }
@@ -49,7 +49,7 @@ function withAuthSync(WrappedComponent) {
 
 		syncLogout = event => {
 			if (event.key === "logout") {
-				Router.push("/login");
+				redirectToLocation("/auth/login");
 			}
 		};
 
@@ -59,4 +59,4 @@ function withAuthSync(WrappedComponent) {
 	};
 }
 
-export { login, logout, withAuthSync, auth };
+export { login, logout, withAuthSync, auth, redirectToLocation };

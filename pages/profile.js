@@ -1,64 +1,69 @@
 import Layout from "@sections/Layout";
-import { withAuthSync } from "@utils/auth";
+import { redirectToLocation, withAuthSync } from "@utils/auth";
+import { page } from "@utils/config";
 import fetch from "isomorphic-unfetch";
-import Router from "next/router";
+import nextCookie from "next-cookies";
+import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
 
-const profile = ({ id, avatarUrl, name, email, bio }) => {
+const profile = ({ isServer, _id, name, email, role }) => {
 	return (
-		<Layout>
-			<img src={avatarUrl} alt="Avatar" />
-			<h1>
-				{name}
-				{id}
-			</h1>
-			<p>{bio}</p>
-			<p>{email}</p>
+		<Layout header="solid">
+			<Head>
+				<title>Profile {isServer}</title>
+			</Head>
+			<div className="container">
+				<div className="grid">
+					<div className="col-xs-12 text-center">
+						<h3>ID: {_id}</h3>
+						<p>name: {name}</p>
+						<p>email: {email}</p>
+						<p>role: {role}</p>
+					</div>
+				</div>
+			</div>
 		</Layout>
 	);
 };
 
 profile.getInitialProps = async ctx => {
-	const token = "4476416";
-	const apiUrl = `https://api.github.com/user/${token}`;
+	const { token } = nextCookie(ctx);
+	const isServer = !!ctx.req;
+	const endPoint = "/auth/check";
 
-	const redirectOnError = () =>
-		typeof window !== "undefined"
-			? Router.push("/auth/login?redirectUrl=faq")
-			: ctx.res.writeHead(302, { Location: "/auth/login" }).end();
+	const redirectOnError = () => redirectToLocation("/auth/login", ctx.res);
 
 	try {
-		const response = await fetch(apiUrl, {
-			credentials: "include",
+		const response = await fetch(page.apiBaseUrl + endPoint, {
+			method: "GET",
 			headers: {
-				Authorization: JSON.stringify({ token })
+				Authorization: token
 			}
 		});
-
 		if (response.status >= 200) {
-			const js = await response.json();
-			const { id, name, email, bio } = js;
-			const avatarUrl = js.avatar_url;
-			return { id, avatarUrl, name, email, bio };
+			const data = await response.json();
+			return { ...data, isServer };
 		}
 		return await redirectOnError();
 	} catch (error) {
-		// Implementation or Network error
 		return redirectOnError();
 	}
 };
 
 profile.defaultProps = {
-	email: ""
+	_id: "",
+	name: "",
+	email: "",
+	role: ""
 };
 
 profile.propTypes = {
-	name: PropTypes.string.isRequired,
-	id: PropTypes.number.isRequired,
-	avatarUrl: PropTypes.string.isRequired,
-	bio: PropTypes.string.isRequired,
-	email: PropTypes.string
+	isServer: PropTypes.bool.isRequired,
+	_id: PropTypes.string,
+	name: PropTypes.string,
+	email: PropTypes.string,
+	role: PropTypes.string
 };
 
 export default withAuthSync(profile);

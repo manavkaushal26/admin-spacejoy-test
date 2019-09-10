@@ -19,7 +19,7 @@ const AuthFormStyled = styled.div`
 class auth extends PureComponent {
 	render() {
 		const { isServer, flow, redirectUrl } = this.props;
-		console.log("redirectUrl", redirectUrl);
+
 		return (
 			<Layout header="solid">
 				<Head>
@@ -29,7 +29,7 @@ class auth extends PureComponent {
 				<div className="grid">
 					<div className="col-xs-12 text-center">
 						<h1>{flow === "login" ? "Signin" : "Signup"}</h1>
-						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.{redirectUrl}</p>
 					</div>
 				</div>
 				<AuthFormStyled>

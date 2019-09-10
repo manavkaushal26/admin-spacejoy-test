@@ -1,3 +1,5 @@
+import { login } from "@utils/auth";
+import { page } from "@utils/config";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
@@ -19,8 +21,30 @@ class FormBox extends Component {
 		this.state = stateObj;
 	}
 
-	handleSubmit = event => {
+	handleSubmit = async event => {
 		event.preventDefault();
+		const { state } = this;
+		const { destination } = this.props;
+		try {
+			const response = await fetch(page.apiBaseUrl + destination, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify({ email: state.userEmail.value, password: state.userPassword.value })
+			});
+			if (response.status === 200) {
+				const { token } = await response.json();
+				await login({ token });
+			} else {
+				const error = new Error(response.statusText);
+				error.response = response;
+				throw error;
+			}
+		} catch (error) {
+			const { response } = error;
+			console.log("response", response);
+		}
 	};
 
 	handleChange = event => {
@@ -64,6 +88,7 @@ FormBox.defaultProps = {
 
 FormBox.propTypes = {
 	children: PropTypes.node.isRequired,
+	destination: PropTypes.string.isRequired,
 	description: PropTypes.string
 };
 

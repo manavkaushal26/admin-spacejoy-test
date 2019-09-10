@@ -103,7 +103,7 @@ app.prepare().then(() => {
 			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
 		});
 		server.get("/profile", (req, res) => {
-			renderAndCache(req, res, "/profile", req.params);
+			app.render(req, res, "/profile", req.params);
 		});
 		server.get(["/", "/index"], (req, res) => {
 			const { params } = req;

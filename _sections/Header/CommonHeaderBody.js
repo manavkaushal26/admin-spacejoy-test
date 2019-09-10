@@ -1,4 +1,6 @@
+import Button from "@components/Button";
 import Logo from "@components/Logo";
+import { logout } from "@utils/auth";
 import React from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
@@ -73,6 +75,7 @@ const CommonHeaderBody = () => {
 								{" "}
 								Signup
 							</ActiveLink>
+							<Button onClick={logout}>Logout</Button>
 						</li>
 					</HorizontalListStyled>
 				</div>
