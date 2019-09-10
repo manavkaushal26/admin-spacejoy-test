@@ -67,7 +67,9 @@ function Field({ data, onchange, name, type, label, placeholder, error, hint, in
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12 col-bleed-y">
-						<Button size="lg">{label}</Button>
+						<Button size="lg" full type="primary">
+							{label}
+						</Button>
 					</div>
 				</div>
 			)}

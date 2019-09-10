@@ -30,6 +30,7 @@ const getColor = function getColor(type) {
 };
 
 const ButtonStyled = styled.button`
+	color: ${({ theme, type }) => (type === "primary" ? "white" : theme.colors.fc.dark1)};
 	width: ${({ full }) => (full ? "100%" : "")};
 	height: ${({ size }) => getHeight(size)};
 	line-height: 1.5;
