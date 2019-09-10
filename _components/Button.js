@@ -9,6 +9,8 @@ const getHeight = function getHeight(size) {
 			return "32px";
 		case "lg":
 			return "50px";
+		case "xl":
+			return "70px";
 		default:
 			return "32px";
 	}

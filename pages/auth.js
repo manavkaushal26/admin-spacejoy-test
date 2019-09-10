@@ -13,6 +13,7 @@ const AuthFormStyled = styled.div`
 class auth extends PureComponent {
 	render() {
 		const { isServer, flow, redirectUrl } = this.props;
+		console.log("redirectUrl", redirectUrl);
 		return (
 			<Layout header="solid">
 				<Head>
@@ -21,11 +22,8 @@ class auth extends PureComponent {
 				</Head>
 				<div className="container">
 					<div className="grid justify-space-around">
-						<div className="col-xs-4 col-md-4 ">
+						<div className="col-xs-4 col-md-4">
 							<AuthFormStyled>
-								<h3>
-									Sign in to score great deals! {flow}, {redirectUrl}
-								</h3>
 								{flow === "login" && <Login />}
 								{flow === "signup" && <SignupForm />}
 							</AuthFormStyled>
