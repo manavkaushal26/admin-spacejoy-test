@@ -7,7 +7,6 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 
 const AuthFormStyled = styled.div`
-	min-height: 60vh;
 	width: 30%;
 	display: flex;
 	margin: auto;
@@ -27,6 +26,12 @@ class auth extends PureComponent {
 					<title>Auth {isServer}</title>
 					<meta name="robots" content="noindex, nofollow" />
 				</Head>
+				<div className="grid">
+					<div className="col-xs-12 text-center">
+						<h1>{flow === "login" ? "Signin" : "Signup"}</h1>
+						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+					</div>
+				</div>
 				<AuthFormStyled>
 					{flow === "login" && <Login />}
 					{flow === "signup" && <SignupForm />}

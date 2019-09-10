@@ -4,7 +4,7 @@ import React from "react";
 import styled from "styled-components";
 
 const FieldWrapperStyled = styled.div`
-	color: ${({ hasError, theme }) => (hasError ? theme.colors.primary : theme.colors.fc.dark2)};
+	color: ${({ hasError, theme }) => (hasError ? theme.colors.primary : theme.colors.fc.dark1)};
 	label {
 		display: block;
 		margin-bottom: 1rem;

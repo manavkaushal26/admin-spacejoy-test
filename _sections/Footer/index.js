@@ -6,7 +6,7 @@ import React from "react";
 import styled from "styled-components";
 
 const FooterStyled = styled.footer`
-	padding: 0;
+	padding: 0 0 10rem 0;
 	font-size: 0.9rem;
 `;
 

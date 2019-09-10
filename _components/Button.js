@@ -45,7 +45,7 @@ const ButtonStyled = styled.button`
 	outline: none;
 	padding: 0 15px;
 	background-color: ${({ type }) => getColor(type)};
-	border: 1px solid #d9d9d9;
+	border: 1px solid ${({ type }) => getColor(type)};
 	border-radius: 2px;
 	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.015);
 	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
