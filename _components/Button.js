@@ -6,7 +6,7 @@ const getHeight = function getHeight(size) {
 		case "sm":
 			return "24px";
 		case "md":
-			return "32px";
+			return "40px";
 		case "lg":
 			return "50px";
 		case "xl":

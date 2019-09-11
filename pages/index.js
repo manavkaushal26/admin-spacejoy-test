@@ -34,7 +34,7 @@ const HeroCardStyled = styled.section`
 	padding: 2rem;
 	background: white;
 	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
-	border-radius: 2px;
+	border-radius: 5px;
 `;
 
 const SectionWrapperStyled = styled.section`
@@ -89,7 +89,7 @@ function index() {
 									<strong>Plans starting at 19$</strong>
 								</p>
 								<div>
-									<Button type="primary" shape="round" size="lg" onClick={goToDesignMySpace}>
+									<Button type="primary" shape="round" size="md" onClick={goToDesignMySpace}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
