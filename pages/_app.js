@@ -1,3 +1,4 @@
+import { AuthProvider } from "@context/AuthStorage";
 import theme from "@theme/index";
 import App from "next/app";
 import React from "react";
@@ -8,7 +9,9 @@ export default class MyApp extends App {
 		const { Component, pageProps } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
-				<Component {...pageProps} />
+				<AuthProvider>
+					<Component {...pageProps} />
+				</AuthProvider>
 			</ThemeProvider>
 		);
 	}
