@@ -1,6 +1,7 @@
 import Login from "@sections/Forms/LoginForm";
 import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
+import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
@@ -23,8 +24,8 @@ class auth extends PureComponent {
 		return (
 			<Layout header="solid">
 				<Head>
+					{IndexPageMeta}
 					<title>Auth {isServer}</title>
-					<meta name="robots" content="noindex, nofollow" />
 				</Head>
 				<div className="grid">
 					<div className="col-xs-12 text-center">

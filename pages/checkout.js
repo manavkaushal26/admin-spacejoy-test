@@ -1,4 +1,5 @@
 import Layout from "@sections/Layout";
+import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
@@ -33,8 +34,8 @@ class checkout extends PureComponent {
 		return (
 			<Layout header="solid">
 				<Head>
+					{IndexPageMeta}
 					<title>FAQ</title>
-					<meta name="robots" content="noindex, nofollow" />
 				</Head>
 				<div className="container">
 					<div className="grid justify-space-around">
