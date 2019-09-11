@@ -1,5 +1,7 @@
 import PriceCard from "@sections/Cards/price";
 import Layout from "@sections/Layout";
+import { company } from "@utils/config";
+import IndexPageMeta from "@utils/meta";
 import PlansData from "@utils/planMock";
 import Head from "next/head";
 import React from "react";
@@ -16,7 +18,8 @@ function pricing() {
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>Pricing</title>
+				{IndexPageMeta}
+				<title>Pricing | {company.product}</title>
 			</Head>
 			<div className="container">
 				<div className="grid">

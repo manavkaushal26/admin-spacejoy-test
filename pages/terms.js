@@ -1,4 +1,6 @@
 import Layout from "@sections/Layout";
+import { company } from "@utils/config";
+import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import React from "react";
 
@@ -6,7 +8,8 @@ function terms() {
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>Design Projects</title>
+				{IndexPageMeta}
+				<title>Terms | {company.product}</title>
 			</Head>
 			<div className="container">
 				<div className="grid">

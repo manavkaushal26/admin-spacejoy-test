@@ -47,29 +47,20 @@ class MyDocument extends Document {
 
 					<link rel="preload" href="/static/style.css?v1" as="style" />
 					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+					<link rel="dns-prefetch" href="//res.cloudinary.com" />
 					<link rel="manifest" href="/static/manifest.json" />
 					<link rel="shortcut icon" href="/static/favicon.ico" />
-
 					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link
-						href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
+						href="//cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
 						rel="stylesheet"
 						media="screen"
 					/>
 					<link
 						rel="stylesheet"
 						media="screen"
-						href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+						href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
 					/>
-
-					<link rel="icon" sizes="192x192" href="/static/icon.png" />
-					<link rel="apple-touch-icon" href="/static/ios-icon.png" />
-					<meta name="theme-color" content="#ffffff" />
-					<meta name="msapplication-square310x310logo" content="ios.png" />
-					<meta name="google-site-verification" content={page.googleSiteVerification} />
-					<meta name="mobile-web-app-capable" content="yes" />
-					<meta name="apple-mobile-web-app-capable" content="yes" />
-					<meta name="msapplication-starturl" content="/" />
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
 					<script
 						src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`}

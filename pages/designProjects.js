@@ -3,6 +3,8 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
+import { company } from "@utils/config";
+import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
@@ -14,11 +16,11 @@ const DesignTitleStyled = styled.h2`
 
 function designProjects({ isServer }) {
 	return (
-		<Layout header="solid">
+		<Layout header="solid" isServer={isServer}>
 			<Head>
-				<title>Design Projects {isServer}</title>
+				{IndexPageMeta}
+				<title>Design Projects | {company.product}</title>
 			</Head>
-
 			<div className="container">
 				<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1566896729/web/design-page-banner.jpg" />
 				<div className="grid">

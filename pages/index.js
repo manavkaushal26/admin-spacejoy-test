@@ -2,6 +2,8 @@ import Button from "@components/Button";
 import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import Layout from "@sections/Layout";
+import { company } from "@utils/config";
+import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import Router from "next/router";
 import React from "react";
@@ -67,7 +69,8 @@ function index() {
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>Spacejoy</title>
+				{IndexPageMeta}
+				<title>Home | {company.product}</title>
 			</Head>
 			<HeroWrapperStyled>
 				<div className="container">

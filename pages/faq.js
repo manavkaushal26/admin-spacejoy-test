@@ -2,7 +2,9 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import FAQCard from "@sections/Cards/faq";
 import Layout from "@sections/Layout";
+import { company } from "@utils/config";
 import FaqData from "@utils/faqMock";
+import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -36,7 +38,8 @@ function faq() {
 	return (
 		<Layout header="solid">
 			<Head>
-				<title>FAQ</title>
+				{IndexPageMeta}
+				<title>Pricing | {company.product}</title>
 			</Head>
 			<div className="container">
 				<Image size="354px" src="https://res.cloudinary.com/spacejoy/image/upload/v1567248692/web/faq_dgczvi.jpg" />

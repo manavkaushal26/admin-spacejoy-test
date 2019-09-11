@@ -1,6 +1,7 @@
 import Layout from "@sections/Layout";
 import { redirectToLocation, withAuthSync } from "@utils/auth";
-import { page } from "@utils/config";
+import { company, page } from "@utils/config";
+import IndexPageMeta from "@utils/meta";
 import fetch from "isomorphic-unfetch";
 import nextCookie from "next-cookies";
 import Head from "next/head";
@@ -9,9 +10,10 @@ import React from "react";
 
 const profile = ({ isServer, _id, name, email, role }) => {
 	return (
-		<Layout header="solid">
+		<Layout header="solid" isServer={isServer}>
 			<Head>
-				<title>Profile {isServer}</title>
+				{IndexPageMeta}
+				<title>Profile | {company.product}</title>
 			</Head>
 			<div className="container">
 				<div className="grid">

@@ -51,7 +51,8 @@
 		"format": "prettier --write \"**/*.+(js|md|ts|css|sass|less|graphql|yml|yaml|scss|json|vue)\"",
 		"test": "bundlesize",
 		"docker-image": "docker build -t saurabhdsachan/spacejoyweb-react -f Dockerfile .",
-		"docker-run": "docker run -p 3000:3000  saurabhdsachan/spacejoyweb-react"
+		"docker-run-old": "docker run -p 3000:3000  saurabhdsachan/spacejoyweb-react",
+		"docker-run": "docker run -d  --rm --name web  -p  3000:3000 -e VIRTUAL_HOST=web.spacejoy.com -e 'LETSENCRYPT_EMAIL=hello@ndllabs.com' -e 'LETSENCRYPT_HOST=web.spacejoy.com' saurabhdsachan/spacejoyweb-react"
 	},
 	"husky": {
 		"hooks": {

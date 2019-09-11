@@ -15,7 +15,11 @@ module.exports = {
 	},
 	company: {
 		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1567070387/shared/logo_2x_ywrzvq.png",
-		name: "SPACEJOY",
+		name: "Neo Design Labs Inc",
+		product: "SpaceJoy",
+		url: "",
+		subject: "",
+		description: "",
 		phone: {
 			support: "+1 (669) 241-9248",
 			connect: ""
@@ -26,16 +30,20 @@ module.exports = {
 		},
 		address: [
 			{
-				country: "",
-				location: "",
-				city: "",
-				state: "",
-				pin: "",
-				latLng: []
+				location1: "1450 2nd Street",
+				location2: "155 Santa Monica",
+				city: "California",
+				state: "California",
+				country: "USA",
+				pin: "90401",
+				latitude: "",
+				longitude: "",
+				plusCode: "2G73+GH Santa Monica, California, USA"
 			}
 		],
 		social: {
 			facebook: "https://www.facebook.com/spacejoyapp/",
+			facebookId: "311308549765277",
 			linkedin: "",
 			twitter: "https://twitter.com/spacejoyapp/",
 			instagram: "https://www.instagram.com/spacejoyapp/",
