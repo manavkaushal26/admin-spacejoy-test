@@ -10,7 +10,6 @@ const AuthFormStyled = styled.div`
 	width: 30%;
 	display: flex;
 	margin: auto;
-	padding: 2rem 0;
 	align-items: center;
 	@media (max-width: 768px) {
 		width: 80%;

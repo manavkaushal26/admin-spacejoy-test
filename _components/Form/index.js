@@ -8,6 +8,15 @@ import { ValidateEmail } from "./Validation";
 const FormWrapperStyled = styled.form`
 	width: 100%;
 `;
+
+const FormStatusStyled = styled.div`
+	background: ${({ theme }) => theme.colors.primary};
+	color: white;
+	margin: 1rem;
+	padding: 0.5rem 1rem;
+	border-radius: 5px;
+`;
+
 class FormBox extends Component {
 	constructor(props) {
 		super(props);
@@ -18,7 +27,7 @@ class FormBox extends Component {
 				error: ""
 			};
 		});
-		this.state = stateObj;
+		this.state = { ...stateObj, formStatus: "" };
 	}
 
 	handleSubmit = async event => {
@@ -52,13 +61,12 @@ class FormBox extends Component {
 				},
 				body: JSON.stringify(reqBody(name))
 			});
-			if (response.status >= 200) {
+			if (response.status >= 200 && response.status <= 300) {
 				const { token } = await response.json();
+				this.setState({ formStatus: "" });
 				await login({ token });
 			} else {
-				const error = new Error(response.statusText);
-				error.response = response;
-				throw error;
+				this.setState({ formStatus: response.statusText });
 			}
 		} catch (error) {
 			const { response } = error;
@@ -92,6 +100,7 @@ class FormBox extends Component {
 		const { state } = this;
 		return (
 			<FormWrapperStyled aria-labelledby={description} onSubmit={this.handleSubmit}>
+				{state.formStatus && <FormStatusStyled>{state.formStatus}</FormStatusStyled>}
 				{React.Children.map(children, child => {
 					const { name } = child.props;
 					return React.cloneElement(child, { data: state[name], onchange: this.handleChange });

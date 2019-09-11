@@ -3,6 +3,7 @@ import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import Head from "next/head";
+import Router from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -58,6 +59,10 @@ const CenterSubTextStyled = styled.p`
 	font-weight: normal;
 `;
 
+function goToDesignMySpace() {
+	Router.push("/designMySpace");
+}
+
 function index() {
 	return (
 		<Layout header="solid">
@@ -81,7 +86,7 @@ function index() {
 									<strong>Plans starting at 19$</strong>
 								</p>
 								<div>
-									<Button shape="round" size="lg" onClick={() => {}}>
+									<Button type="primary" shape="round" size="lg" onClick={goToDesignMySpace}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -100,7 +105,7 @@ function index() {
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
 								<div>
-									<Button shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -144,7 +149,7 @@ function index() {
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
 								<div>
-									<Button shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -163,7 +168,7 @@ function index() {
 								<p>We will work within your budget to find those coveted pieces that spark joy</p>
 								<p>It&lsquo;s a hassle-free experience </p>
 								<div>
-									<Button shape="round" size="lg" onClick={() => {}}>
+									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -194,7 +199,7 @@ function index() {
 								))}
 							</Carousel>
 							<div>
-								<Button shape="round" size="lg" onClick={() => {}}>
+								<Button shape="round" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
 								</Button>
 							</div>

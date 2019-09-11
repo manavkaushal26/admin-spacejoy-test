@@ -6,8 +6,9 @@ import React from "react";
 import styled from "styled-components";
 
 const FooterStyled = styled.footer`
-	padding: 0 0 10rem 0;
+	padding: 1.5rem 0;
 	font-size: 0.9rem;
+	margin-bottom: 20vh;
 `;
 
 const FooterNavStyled = styled.ul`
@@ -36,7 +37,7 @@ function index() {
 			<div className="container">
 				<Divider />
 				<div className="grid">
-					<div className="col-xs-12 col-md-3">
+					<div className="col-xs-12 col-md-3 col-bleed-y">
 						<h3>QUICK LINKS</h3>
 						<nav>
 							<FooterNavStyled>
@@ -61,7 +62,7 @@ function index() {
 							</FooterNavStyled>
 						</nav>
 					</div>
-					<div className="col-xs-12 col-md-4 align-center">
+					<div className="col-xs-12 col-md-4 col-bleed-y align-center">
 						<h3>CONNECT WITH US</h3>
 						<nav>
 							<FooterNavStyled direction="horizontal">
@@ -121,7 +122,7 @@ function index() {
 							</FooterNavStyled>
 						</nav>
 					</div>
-					<div className="col-xs-12 col-md-5 align-right">
+					<div className="col-xs-12 col-md-5 col-bleed-y align-right">
 						<div className="grid">
 							<div className="col-xs-3">
 								<Image

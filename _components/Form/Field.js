@@ -28,6 +28,7 @@ const HintTextStyled = styled.small`
 
 const InputStyled = styled.input`
 	outline: none;
+	border-radius: 5px;
 	background: ${({ hasError }) => (hasError ? "rgba(240, 90, 70, 0.1)" : "white")};
 	padding: 1.25rem;
 	width: 100%;
@@ -68,7 +69,7 @@ function Field({ data, onchange, name, type, label, placeholder, error, hint, in
 			)}
 			{type === "submit" && (
 				<div className="grid">
-					<div className="col-xs-12 col-bleed-y">
+					<div className="col-xs-12">
 						<Button size="lg" full type="primary">
 							{label}
 						</Button>
