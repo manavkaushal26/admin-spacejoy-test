@@ -107,27 +107,22 @@ class FormBox extends Component {
 			}
 			return {};
 		}
-		try {
-			const response = await fetch(page.apiBaseUrl + destination, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
-				},
-				body: JSON.stringify(reqBody(name))
-			});
-			if (response.status >= 200 && response.status <= 300) {
-				const responseData = await response.json();
-				this.setState({ formStatus: responseData.status });
-				if (name === "login" || name === "signup") {
-					const { token } = responseData;
-					await login({ token });
-				}
-			} else {
-				this.setState({ formStatus: response.statusText });
+		const response = await fetch(page.apiBaseUrl + destination, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(reqBody(name))
+		});
+		if (response.status >= 200 && response.status <= 300) {
+			const responseData = await response.json();
+			this.setState({ formStatus: responseData.status });
+			if (name === "login" || name === "signup") {
+				const { token } = responseData;
+				await login({ token });
 			}
-		} catch (error) {
-			const { response } = error;
-			console.log("response", response);
+		} else {
+			this.setState({ formStatus: response.statusText });
 		}
 	};
 
