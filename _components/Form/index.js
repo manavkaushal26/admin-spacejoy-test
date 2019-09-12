@@ -31,7 +31,6 @@ class FormBox extends Component {
 	}
 
 	handleSubmit = async event => {
-		console.log("submittin");
 		event.preventDefault();
 		const { state } = this;
 		const { destination, name } = this.props;
@@ -53,6 +52,46 @@ class FormBox extends Component {
 				};
 			}
 			if (name === "designmyspace") {
+				if (destination === "/forms") {
+					return {
+						data: {
+							env: process.env.NODE_ENV,
+							source: name,
+							formdata: [
+								{
+									key: "firstName",
+									value: state.userName.value
+								},
+								{
+									key: "email",
+									value: state.userEmail.value
+								},
+								{
+									key: "mobile",
+									value: state.userMobile.value
+								},
+								{
+									key: "whichRoomAreYouDesigning",
+									value: state.whichRoomAreYouDesigning.value
+								},
+								{
+									key: "haveABudgetInMind",
+									value: state.haveABudgetInMind.value
+								},
+								{
+									key: "howDoesYourRoomLookToday",
+									value: state.howDoesYourRoomLookToday.value
+								}
+							],
+							user: {
+								user_id: "some id 1",
+								formName: "a b",
+								formEmail: "abc@gmail.com",
+								formPhone: 9999999
+							}
+						}
+					};
+				}
 				return {
 					firstName: state.userName.value,
 					email: state.userEmail.value,
@@ -73,9 +112,12 @@ class FormBox extends Component {
 				body: JSON.stringify(reqBody(name))
 			});
 			if (response.status >= 200 && response.status <= 300) {
-				const { token } = await response.json();
-				this.setState({ formStatus: "" });
-				await login({ token });
+				const responseData = await response.json();
+				this.setState({ formStatus: responseData.status });
+				if (name === "login" || name === "signup") {
+					const { token } = responseData;
+					await login({ token });
+				}
 			} else {
 				this.setState({ formStatus: response.statusText });
 			}
@@ -87,10 +129,7 @@ class FormBox extends Component {
 
 	handleChange = event => {
 		const { target } = event;
-		console.log("target", target);
-
 		const { name, value, type } = target;
-		console.log(name, value, type);
 		switch (type) {
 			case "email":
 				return value && ValidateEmail(value)
