@@ -1,8 +1,9 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
+import PropTypes from "prop-types";
 import React from "react";
 
-function DesignMySpaceForm() {
+function DesignMySpaceForm({ plan }) {
 	return (
 		<FormBox destination="/forms" description="Enter your details to signup" name="designmyspace">
 			<Field
@@ -29,6 +30,16 @@ function DesignMySpaceForm() {
 				placeholder="Mobile"
 				error="Please enter a valid Mobile"
 				hint="should contain valid Mobile"
+				required
+			/>
+			<Field
+				name="selectedPlan"
+				type="text"
+				label="Selected Plan"
+				placeholder="Selected Plan"
+				error="Please enter a Selected Plan"
+				hint="Selected Plan"
+				value={plan}
 				required
 			/>
 			<Field
@@ -87,5 +98,13 @@ function DesignMySpaceForm() {
 		</FormBox>
 	);
 }
+
+DesignMySpaceForm.defaultProps = {
+	plan: ""
+};
+
+DesignMySpaceForm.propTypes = {
+	plan: PropTypes.string
+};
 
 export default DesignMySpaceForm;

@@ -54,6 +54,8 @@ const PriceCardBodyStyled = styled.div`
 
 const PriceCardFooterStyled = styled.div`
 	padding: 2rem 0;
+	display: flex;
+	justify-content: center;
 `;
 
 class PriceCard extends PureComponent {

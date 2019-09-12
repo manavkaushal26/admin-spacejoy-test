@@ -23,7 +23,7 @@ class FormBox extends Component {
 		const stateObj = {};
 		React.Children.map(props.children, child => {
 			stateObj[child.props.name] = {
-				value: "",
+				value: child.props.value,
 				error: ""
 			};
 		});
