@@ -31,8 +31,8 @@ function designProjects({ isServer, data }) {
 				</div>
 				{data &&
 					data.list.map((item, index) => (
-						<div>
-							<div className="grid" key={item.designId}>
+						<div key={item.designId}>
+							<div className="grid">
 								<div className="col-xs-12">
 									<DesignTitleStyled>{item.designName}</DesignTitleStyled>
 									<div className="grid">

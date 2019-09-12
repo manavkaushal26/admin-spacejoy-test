@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Radio from "@components/Radio";
 import PropTypes from "prop-types";
 import React from "react";
 import PlacesAutocomplete from "reactjs-places-autocomplete";
@@ -6,6 +7,8 @@ import styled from "styled-components";
 
 const AutoCompleteStyled = styled.div`
 	background: white;
+	position: relative;
+	top: -2rem;
 	&.loading {
 		background: ${({ theme }) => theme.colors.bg.dark2};
 	}
@@ -28,9 +31,9 @@ const FieldWrapperStyled = styled.div`
 `;
 
 const LabelStyled = styled.label`
-	display: block;
 	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "2rem")};
-	span {
+	display: block;
+	span.styled {
 		display: inline-block;
 		margin: 0.5rem ${({ selectionType }) => (selectionType ? "1rem" : "0")};
 	}
@@ -62,10 +65,6 @@ const InputStyled = styled.input`
 	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.primary : theme.colors.bg.dark1)};
 `;
 
-const RadioStyled = styled.input`
-	margin-right: 1rem;
-`;
-
 function Field({
 	data,
 	onchange,
@@ -86,7 +85,7 @@ function Field({
 				<LabelStyled htmlFor={name}>
 					<div className="grid">
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
-							<span>
+							<span className="styled">
 								{label}
 								<sup>{required ? "*" : ""}</sup>
 							</span>
@@ -120,9 +119,10 @@ function Field({
 				>
 					{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 						<>
-							<LabelStyled htmlFor="address" selectionType>
-								<span className="label-text">Address {name}</span>
+							<LabelStyled htmlFor="address">
+								<span className="styled">Address {name}</span>
 								<InputStyled
+									autoComplete="false"
 									{...getInputProps({
 										name: "address",
 										id: "address",
@@ -153,18 +153,16 @@ function Field({
 						</div>
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							{options.map(radio => (
-								<LabelStyled htmlFor={radio.value} selectionType key={radio.value}>
-									<RadioStyled
-										type="radio"
-										id={radio.value}
-										name={name}
-										value={radio.value}
-										checked={data.value === radio.value}
-										required={required}
-										onChange={onchange}
-									/>
-									<span>{radio.value}</span>
-								</LabelStyled>
+								<Radio
+									id={radio.value}
+									name={name}
+									value={radio.value}
+									key={radio.value}
+									checked={data.value === radio.value}
+									required={required}
+									onChange={onchange}
+									selectionType
+								/>
 							))}
 							{data.error && <ErrorTextStyled>{data.error}</ErrorTextStyled>}
 							{data.error && <HintTextStyled>{hint}</HintTextStyled>}

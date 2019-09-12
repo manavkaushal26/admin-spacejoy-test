@@ -1,6 +1,7 @@
 import Login from "@sections/Forms/LoginForm";
 import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
+import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import PropTypes from "prop-types";
@@ -11,10 +12,12 @@ class auth extends PureComponent {
 		const { isServer, flow, redirectUrl } = this.props;
 
 		return (
-			<Layout header="solid">
+			<Layout header="solid" isServer={isServer}>
 				<Head>
 					{IndexPageMeta}
-					<title>Auth {isServer}</title>
+					<title>
+						{flow} | {company.product}
+					</title>
 				</Head>
 				<div className="container">
 					<div className="grid">

@@ -10,6 +10,12 @@
 		local("Ubuntu Regular"), local("Segoe UI Regular"), local("Roboto-Regular"), local("DroidSans"), local("Tahoma");
 }
 
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
 body,
 html {
 	font-family: "system", arial, sans-serif;
@@ -35,6 +41,10 @@ html {
 a {
 	text-decoration: none;
 	color: #282c3f;
+}
+
+.hidden {
+	display: none;
 }
 
 @media (min-width: 1600px) {
