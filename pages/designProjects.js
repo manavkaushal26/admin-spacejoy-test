@@ -5,6 +5,7 @@ import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
+import fetch from "isomorphic-unfetch";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
@@ -14,7 +15,7 @@ const DesignTitleStyled = styled.h2`
 	margin-top: 0;
 `;
 
-function designProjects({ isServer }) {
+function designProjects({ isServer, data }) {
 	return (
 		<Layout header="solid" isServer={isServer}>
 			<Head>
@@ -28,55 +29,35 @@ function designProjects({ isServer }) {
 						<h1>Real Designs, With Real Products</h1>
 					</div>
 				</div>
-				<div className="grid">
-					<div className="col-xs-12">
-						<DesignTitleStyled>Home Office</DesignTitleStyled>
-						<div className="grid">
-							<div className="cols-xs-12 col-md-6">
-								<Carousel slidesToShow={1} slidesToScroll={1}>
-									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-										<Image key={Math.random()} src={`https://picsum.photos/id/${i + 1}/630/350`} />
-									))}
-								</Carousel>
+				{data &&
+					data.list.map((item, index) => (
+						<div>
+							<div className="grid" key={item.designId}>
+								<div className="col-xs-12">
+									<DesignTitleStyled>{item.designName}</DesignTitleStyled>
+									<div className="grid">
+										<div className="cols-xs-12 col-md-6">
+											<Carousel slidesToShow={1} slidesToScroll={1}>
+												{item.designBanner.map(banner => (
+													<Image key={Math.random()} src={banner} />
+												))}
+											</Carousel>
+										</div>
+										<div className="cols-xs-12 col-md-6 col-bleed-y">
+											<p>{item.designDescription}</p>
+											<h3>Shop for products featured in this design</h3>
+											<ItemCard products={item.designProductList} />
+										</div>
+									</div>
+								</div>
 							</div>
-							<div className="cols-xs-12 col-md-6 col-bleed-y">
-								<p>
-									This Mid-Century-Modern home office is designed to increase productivity. The clean and open design
-									uses warm and neutral accents to achive an uncluttered look. The juxtaposition of different elements
-									brings the room perfectly together.
-								</p>
-								<h3>Shop for products featured in this design</h3>
-								<ItemCard />
-							</div>
+							{data.list.length !== index + 1 && (
+								<Divider>
+									<span>OR</span>
+								</Divider>
+							)}
 						</div>
-					</div>
-				</div>
-				<Divider>
-					<span>OR</span>
-				</Divider>
-				<div className="grid">
-					<div className="col-xs-12">
-						<DesignTitleStyled>Urban Boho</DesignTitleStyled>
-						<div className="grid">
-							<div className="cols-xs-12 col-md-6">
-								<Carousel slidesToShow={1} slidesToScroll={1}>
-									{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-										<Image key={Math.random()} src={`https://picsum.photos/id/${i + 1}/630/350`} />
-									))}
-								</Carousel>
-							</div>
-							<div className="cols-xs-12 col-md-6 col-bleed-y">
-								<p>
-									This bedroom is designed using Urban Boho decor style. The 3 main elements of the design bringing this
-									room together are - The Dondra teak bed from CB2, side tables from Paynesgrey and the large piece of
-									art from Living Spaces.
-								</p>
-								<h3>Shop for products featured in this design</h3>
-								<ItemCard />
-							</div>
-						</div>
-					</div>
-				</div>
+					))}
 			</div>
 		</Layout>
 	);
@@ -84,13 +65,21 @@ function designProjects({ isServer }) {
 
 designProjects.getInitialProps = async ({ req }) => {
 	const isServer = !!req;
-	// const res = await fetch("https://api.github.com/repos/zeit/next.js");
-	// const json = await res.json();
-	return { isServer };
+	const res = await fetch("https://demo8330824.mockable.io/designProject");
+	const resData = await res.json();
+	const { data } = resData;
+	return { isServer, data };
+};
+
+designProjects.defaultProps = {
+	data: {}
 };
 
 designProjects.propTypes = {
-	isServer: PropTypes.bool.isRequired
+	isServer: PropTypes.bool.isRequired,
+	data: PropTypes.shape({
+		list: PropTypes.array
+	})
 };
 
 export default designProjects;

@@ -1,4 +1,5 @@
 import Image from "@components/Image";
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
@@ -34,53 +35,42 @@ const ItemCardFooterStyled = styled.div`
 	justify-content: space-between;
 `;
 
-function ItemCard() {
+function ItemCard({ products }) {
 	return (
 		<>
-			<ItemCardStyled>
-				<ThumbnailStyled>
-					<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_200/v1567248421/web/sofa_uvcr02.jpg" />
-				</ThumbnailStyled>
-				<ItemCardFooterStyled>
-					<div>
-						<ItemNameStyled>Anthropologie</ItemNameStyled>
-						<PriceStyled>
-							<strong>Price</strong>: $ 7695
-						</PriceStyled>
-					</div>
-					<div>
-						<Image
-							size="xs"
-							src="https://res.cloudinary.com/spacejoy/image/upload/v1567248916/shared/cart_nynqqa.svg"
-						/>
-					</div>
-				</ItemCardFooterStyled>
-			</ItemCardStyled>
-			<ItemCardStyled>
-				<ThumbnailStyled>
-					<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_200/v1567248422/web/table_xr6uk8.jpg" />
-				</ThumbnailStyled>
-				<ItemCardFooterStyled>
-					<div>
-						<ItemNameStyled>Restoration Hardware</ItemNameStyled>
-						<PriceStyled>
-							<strong>Price</strong>: $ 7695
-						</PriceStyled>
-					</div>
-					<div>
-						<Image
-							size="xs"
-							src="https://res.cloudinary.com/spacejoy/image/upload/v1567248916/shared/cart_nynqqa.svg"
-						/>
-					</div>
-				</ItemCardFooterStyled>
-			</ItemCardStyled>
+			{products.map(product => (
+				<ItemCardStyled key={product.productId}>
+					<ThumbnailStyled>
+						<Image src={product.productImage} />
+					</ThumbnailStyled>
+					<ItemCardFooterStyled>
+						<div>
+							<ItemNameStyled>{product.productName}</ItemNameStyled>
+							<PriceStyled>
+								<strong>Price</strong>: $ {product.productCost}
+							</PriceStyled>
+						</div>
+						<div>
+							<a href={product.productExternalUrl} rel="noopener noreferrer" target="_blank">
+								<Image
+									size="xs"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1567248916/shared/cart_nynqqa.svg"
+								/>
+							</a>
+						</div>
+					</ItemCardFooterStyled>
+				</ItemCardStyled>
+			))}
 		</>
 	);
 }
 
-ItemCard.defaultProps = {};
+ItemCard.defaultProps = {
+	products: []
+};
 
-ItemCard.propTypes = {};
+ItemCard.propTypes = {
+	products: PropTypes.arrayOf(PropTypes.shape({}))
+};
 
 export default ItemCard;
