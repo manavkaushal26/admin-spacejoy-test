@@ -15,7 +15,6 @@ class designMySpace extends PureComponent {
 					{IndexPageMeta}
 					<title>Design My Space | {company.product}</title>
 				</Head>
-
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12 col-sm-6 col-md-5">

@@ -12,7 +12,7 @@ const FormWrapperStyled = styled.form`
 const FormStatusStyled = styled.div`
 	background: ${({ theme }) => theme.colors.primary};
 	color: white;
-	margin: 1rem;
+	margin-bottom: 1rem;
 	padding: 0.5rem 1rem;
 	border-radius: 5px;
 `;
@@ -31,6 +31,7 @@ class FormBox extends Component {
 	}
 
 	handleSubmit = async event => {
+		console.log("submittin");
 		event.preventDefault();
 		const { state } = this;
 		const { destination, name } = this.props;
@@ -49,6 +50,16 @@ class FormBox extends Component {
 				return {
 					email: state.userEmail.value,
 					password: state.userPassword.value
+				};
+			}
+			if (name === "designmyspace") {
+				return {
+					firstName: state.userName.value,
+					email: state.userEmail.value,
+					mobile: state.userMobile.value,
+					whichRoomAreYouDesigning: state.whichRoomAreYouDesigning.value,
+					haveABudgetInMind: state.haveABudgetInMind.value,
+					howDoesYourRoomLookToday: state.howDoesYourRoomLookToday.value
 				};
 			}
 			return {};
@@ -76,7 +87,10 @@ class FormBox extends Component {
 
 	handleChange = event => {
 		const { target } = event;
+		console.log("target", target);
+
 		const { name, value, type } = target;
+		console.log(name, value, type);
 		switch (type) {
 			case "email":
 				return value && ValidateEmail(value)
@@ -86,7 +100,15 @@ class FormBox extends Component {
 				return value
 					? this.setState({ [name]: { value } })
 					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
+			case "tel":
+				return value
+					? this.setState({ [name]: { value } })
+					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
 			case "password":
+				return value
+					? this.setState({ [name]: { value } })
+					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
+			case "radio":
 				return value
 					? this.setState({ [name]: { value } })
 					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });

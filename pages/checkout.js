@@ -1,4 +1,5 @@
 import Layout from "@sections/Layout";
+import { withAuthSync } from "@utils/auth";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import React, { PureComponent } from "react";
@@ -82,4 +83,4 @@ class checkout extends PureComponent {
 	}
 }
 
-export default checkout;
+export default withAuthSync(checkout);
