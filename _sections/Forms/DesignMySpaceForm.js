@@ -75,6 +75,14 @@ function DesignMySpaceForm() {
 				error="Please enter a valid username"
 				hint="should contain valid text"
 			/>
+			<Field
+				name="address"
+				type="addressAutoSuggest"
+				label="Tell us where you're located?"
+				placeholder="Address"
+				error="Please enter a valid Address"
+				hint="should contain valid text"
+			/>
 			<Field name="userSubmit" type="submit" label="Submit" />
 		</FormBox>
 	);

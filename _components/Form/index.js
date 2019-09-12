@@ -27,7 +27,7 @@ class FormBox extends Component {
 				error: ""
 			};
 		});
-		this.state = { ...stateObj, formStatus: "" };
+		this.state = { ...stateObj, formStatus: "", address: {} };
 	}
 
 	handleSubmit = async event => {
@@ -81,6 +81,10 @@ class FormBox extends Component {
 								{
 									key: "howDoesYourRoomLookToday",
 									value: state.howDoesYourRoomLookToday.value
+								},
+								{
+									key: "address",
+									value: state.address.value
 								}
 							],
 							user: {
@@ -156,6 +160,8 @@ class FormBox extends Component {
 		}
 	};
 
+	handleAddressChange = value => this.setState({ address: { value } });
+
 	render() {
 		const { children, description } = this.props;
 		const { state } = this;
@@ -164,7 +170,11 @@ class FormBox extends Component {
 				{state.formStatus && <FormStatusStyled>{state.formStatus}</FormStatusStyled>}
 				{React.Children.map(children, child => {
 					const { name } = child.props;
-					return React.cloneElement(child, { data: state[name], onchange: this.handleChange });
+					return React.cloneElement(child, {
+						data: state[name],
+						onchange: this.handleChange,
+						handleAddressChange: this.handleAddressChange
+					});
 				})}
 			</FormWrapperStyled>
 		);

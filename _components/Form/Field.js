@@ -1,7 +1,27 @@
 import Button from "@components/Button";
 import PropTypes from "prop-types";
 import React from "react";
+import PlacesAutocomplete from "reactjs-places-autocomplete";
 import styled from "styled-components";
+
+const AutoCompleteStyled = styled.div`
+	background: white;
+	&.loading {
+		background: ${({ theme }) => theme.colors.bg.dark2};
+	}
+`;
+
+const SuggestionStyled = styled.div`
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-left: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-right: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	/* background: ${({ active, theme }) => (active ? theme.colors.bg.dark2 : theme.colors.bg.light1)}; */
+	&:last-child {
+		border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	}
+`;
 
 const FieldWrapperStyled = styled.div`
 	color: ${({ hasError, theme }) => (hasError ? theme.colors.primary : theme.colors.fc.dark1)};
@@ -46,7 +66,20 @@ const RadioStyled = styled.input`
 	margin-right: 1rem;
 `;
 
-function Field({ data, onchange, name, type, label, options, placeholder, error, hint, inline, required }) {
+function Field({
+	data,
+	onchange,
+	handleAddressChange,
+	name,
+	type,
+	label,
+	options,
+	placeholder,
+	error,
+	hint,
+	inline,
+	required
+}) {
 	return (
 		<FieldWrapperStyled hasError={data.error}>
 			{(type === "email" || type === "text" || type === "password" || type === "tel") && (
@@ -76,6 +109,38 @@ function Field({ data, onchange, name, type, label, options, placeholder, error,
 						</div>
 					</div>
 				</LabelStyled>
+			)}
+			{type === "addressAutoSuggest" && (
+				<PlacesAutocomplete
+					value={data.value || ""}
+					name={name}
+					id={name}
+					onChange={handleAddressChange}
+					onSelect={handleAddressChange}
+				>
+					{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+						<>
+							<LabelStyled htmlFor="address" selectionType>
+								<span className="label-text">Address {name}</span>
+								<InputStyled
+									{...getInputProps({
+										name: "address",
+										id: "address",
+										placeholder: "Search Places ...",
+										className: "input-field"
+									})}
+								/>
+							</LabelStyled>
+							<AutoCompleteStyled className={loading ? "loading" : ""}>
+								{suggestions.map(suggestion => (
+									<SuggestionStyled {...getSuggestionItemProps(suggestion)} active={suggestion.active}>
+										{suggestion.description}
+									</SuggestionStyled>
+								))}
+							</AutoCompleteStyled>
+						</>
+					)}
+				</PlacesAutocomplete>
 			)}
 			{type === "radio" && (
 				<DummyLabelStyled>
@@ -121,9 +186,13 @@ function Field({ data, onchange, name, type, label, options, placeholder, error,
 }
 
 Field.defaultProps = {
-	data: {},
+	data: {
+		value: "",
+		error: ""
+	},
 	options: [],
 	onchange: () => {},
+	handleAddressChange: () => {},
 	placeholder: "",
 	error: "",
 	hint: "",
@@ -137,6 +206,7 @@ Field.propTypes = {
 		error: PropTypes.string
 	}),
 	onchange: PropTypes.func,
+	handleAddressChange: PropTypes.func,
 	name: PropTypes.string.isRequired,
 	type: PropTypes.string.isRequired,
 	label: PropTypes.string.isRequired,
