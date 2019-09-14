@@ -44,8 +44,8 @@ profile.getInitialProps = async ctx => {
 			}
 		});
 		if (response.status >= 200) {
-			const data = await response.json();
-			return { ...data, isServer };
+			const responseData = await response.json();
+			return { ...responseData, isServer };
 		}
 		return await redirectOnError();
 	} catch (error) {
