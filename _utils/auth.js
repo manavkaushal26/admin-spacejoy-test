@@ -7,9 +7,9 @@ function redirectToLocation(url, res = {}) {
 	return typeof window !== "undefined" ? Router.push(url) : res.redirect(url);
 }
 
-function login({ token }) {
+function login({ token, redirectUrl }) {
 	cookie.set("token", token, { expires: 1 });
-	redirectToLocation("/profile");
+	redirectToLocation(redirectUrl || "/profile");
 }
 
 function logout() {

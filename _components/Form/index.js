@@ -1,4 +1,4 @@
-import { login } from "@utils/auth";
+import { login, redirectToLocation } from "@utils/auth";
 import { page } from "@utils/config";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
@@ -21,9 +21,9 @@ class FormBox extends Component {
 	constructor(props) {
 		super(props);
 		const stateObj = {};
-		React.Children.map(props.children, child => {
-			stateObj[child.props.name] = {
-				value: child.props.value,
+		React.Children.map(props.children, ({ props: { name, value } }) => {
+			stateObj[name] = {
+				value: value || "",
 				error: ""
 			};
 		});
@@ -33,7 +33,7 @@ class FormBox extends Component {
 	handleSubmit = async event => {
 		event.preventDefault();
 		const { state } = this;
-		const { destination, name } = this.props;
+		const { destination, name, redirectUrl } = this.props;
 		function reqBody() {
 			if (name === "signup") {
 				return {
@@ -119,7 +119,10 @@ class FormBox extends Component {
 			this.setState({ formStatus: responseData.status });
 			if (name === "login" || name === "signup") {
 				const { token } = responseData;
-				await login({ token });
+				await login({ token, redirectUrl });
+			}
+			if (name === "designmyspace") {
+				redirectToLocation(redirectUrl, response);
 			}
 		} else {
 			this.setState({ formStatus: response.statusText });
@@ -177,14 +180,16 @@ class FormBox extends Component {
 }
 
 FormBox.defaultProps = {
-	description: ""
+	description: "",
+	redirectUrl: ""
 };
 
 FormBox.propTypes = {
 	children: PropTypes.node.isRequired,
 	destination: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
-	description: PropTypes.string
+	description: PropTypes.string,
+	redirectUrl: PropTypes.string
 };
 
 export default FormBox;

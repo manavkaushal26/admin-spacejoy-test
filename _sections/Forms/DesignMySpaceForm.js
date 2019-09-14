@@ -5,7 +5,7 @@ import React from "react";
 
 function DesignMySpaceForm({ plan }) {
 	return (
-		<FormBox destination="/forms" description="Enter your details to signup" name="designmyspace">
+		<FormBox redirectUrl="/checkout" destination="/forms" description="Submit your details" name="designmyspace">
 			<Field
 				name="userName"
 				type="text"
