@@ -1,59 +1,9 @@
 const data = [
 	{
-		tag: "Account & Payment",
-		question: "What payment types do you accept?",
-		answer: `We accept all standard forms of payment such as Visa, Mastercard & American Express. You can use any of this to pay for your package and for the products featured in your final design.`
-	},
-	{
-		tag: "Account & Payment",
-		question: "What happens if I forget my login and/or password?",
-		answer: `Click on the forgot username / password button and enter your registered email id. Our support team will generate your username/password right away.`
-	},
-	{
-		tag: "Account & Payment",
-		question: "What if I want to cancel my payment and initiate a refund?",
-		answer: `We want you to love your designs and your new space. If at any point you are dissatisfied, let us know at <a href="mailto:hello@spacejoy.com?subject=&body=">hello@spacejoy.com</a> and we will work with you to ensure a seamless experience .`
-	},
-	{
-		tag: "Customer Support",
-		question: "What is the best way to contact Spacejoy?",
-		answer: `Write to us at <a href="mailto:hello@spacejoy.com?subject=&body=">hello@spacejoy.com</a> or schedule a call.`
-	},
-	{
-		tag: "Get Started",
-		question: "How do I get started?",
-		answer: `Login to our platform and sign up for one of the <a href="https://spacejoy.com/pricing">packages</a>, depending on your needs. Our designers will get in touch with you before they process your request to get all the necessary details.`
-	},
-	{
-		tag: "Get Started",
-		question: "Is there a free trial period?",
-		answer: `No trial period is offered. However there are some features on the app that can be experienced for free. Such as, take up a design challenge, find out your home design style or design a standard room to get the hang of  what our interactive 3D app  can offer.`
-	},
-	{
-		tag: "Get Started",
-		question: "Where can I see some ideas from your designers for inspiration?",
-		answer: `Login to our platform and go through an array of samples that have been created by our designers. Some of these include completed projects that Spacejoy has successfully transformed. We are sure you’ll find inspiration that will  get your creative juices flowing.`
-	},
-	{
-		tag: "Get Started",
-		question: "Once I get started, can I meet the design team face to face?",
-		answer: `We have designers from around the country. If meeting the designer face to face is important to you then we will try to match you with someone around your location. While signing up, be sure to fill in your location and phone number so we can help.`
-	},
-	{
-		tag: "Get Started",
-		question: "What brands do you source the products from?",
-		answer: `The products featured in your designs are from various leading brands in the country. Currently, all the products are locally sourced and we don’t have any retailers outside America`
-	},
-	{
-		tag: "Get Started",
-		question: "What happens once I purchase products featured in my designs?",
-		answer: `Once you have finalised the design, our customer satisfaction specialist will give you a curated shopping list of products from various brands and the date of delivery for each product, as it is retailer specific. Once we receive the sign off from you, the order is placed and all you have to do is sit back and wait for it to be delivered to your doorstep. `
-	},
-	{
 		tag: "Who are we?",
 		question: "What is Spacejoy?",
-		answer:
-			"Spacejoy is an online interior design service that helps with designing your actual space in 3D. You can either design it yourself, ask for an expert to design it for you or even collaborate with the design team. The final design features products that can be bought right away from furniture and home decor stores, across America."
+		answer: `<img src="https://res.cloudinary.com/spacejoy/image/upload/v1567070387/shared/logo_2x_ywrzvq.png" height="25" width="130" alt="spacejoy logo"/> <p>Spacejoy is an online interior design service that helps with designing your actual space in 3D. You can either design it yourself, ask for an expert to design it for you or even collaborate with the design team. The final design features products that can be bought right away from furniture and home decor stores, across America.</p>"
+`
 	},
 	{
 		tag: "Who are we?",
@@ -111,6 +61,56 @@ const data = [
 		tag: "Who are we?",
 		question: "Where can I find the Spacejoy app?",
 		answer: "Spacejoy is available on both android and IOS stores.  <Link to the android store and the IOS store>"
+	},
+	{
+		tag: "Account & Payment",
+		question: "What payment types do you accept?",
+		answer: `We accept all standard forms of payment such as Visa, Mastercard & American Express. You can use any of this to pay for your package and for the products featured in your final design.`
+	},
+	{
+		tag: "Account & Payment",
+		question: "What happens if I forget my login and/or password?",
+		answer: `Click on the forgot username / password button and enter your registered email id. Our support team will generate your username/password right away.`
+	},
+	{
+		tag: "Account & Payment",
+		question: "What if I want to cancel my payment and initiate a refund?",
+		answer: `We want you to love your designs and your new space. If at any point you are dissatisfied, let us know at <a href="mailto:hello@spacejoy.com?subject=&body=">hello@spacejoy.com</a> and we will work with you to ensure a seamless experience .`
+	},
+	{
+		tag: "Customer Support",
+		question: "What is the best way to contact Spacejoy?",
+		answer: `Write to us at <a href="mailto:hello@spacejoy.com?subject=&body=">hello@spacejoy.com</a> or schedule a call.`
+	},
+	{
+		tag: "Get Started",
+		question: "How do I get started?",
+		answer: `Login to our platform and sign up for one of the <a href="https://spacejoy.com/pricing">packages</a>, depending on your needs. Our designers will get in touch with you before they process your request to get all the necessary details.`
+	},
+	{
+		tag: "Get Started",
+		question: "Is there a free trial period?",
+		answer: `No trial period is offered. However there are some features on the app that can be experienced for free. Such as, take up a design challenge, find out your home design style or design a standard room to get the hang of  what our interactive 3D app  can offer.`
+	},
+	{
+		tag: "Get Started",
+		question: "Where can I see some ideas from your designers for inspiration?",
+		answer: `Login to our platform and go through an array of samples that have been created by our designers. Some of these include completed projects that Spacejoy has successfully transformed. We are sure you’ll find inspiration that will  get your creative juices flowing.`
+	},
+	{
+		tag: "Get Started",
+		question: "Once I get started, can I meet the design team face to face?",
+		answer: `We have designers from around the country. If meeting the designer face to face is important to you then we will try to match you with someone around your location. While signing up, be sure to fill in your location and phone number so we can help.`
+	},
+	{
+		tag: "Get Started",
+		question: "What brands do you source the products from?",
+		answer: `The products featured in your designs are from various leading brands in the country. Currently, all the products are locally sourced and we don’t have any retailers outside America`
+	},
+	{
+		tag: "Get Started",
+		question: "What happens once I purchase products featured in my designs?",
+		answer: `Once you have finalised the design, our customer satisfaction specialist will give you a curated shopping list of products from various brands and the date of delivery for each product, as it is retailer specific. Once we receive the sign off from you, the order is placed and all you have to do is sit back and wait for it to be delivered to your doorstep. `
 	},
 	{
 		tag: "Features & Services",

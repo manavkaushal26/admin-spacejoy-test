@@ -1,3 +1,4 @@
+import parse from "html-react-parser";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
@@ -48,7 +49,7 @@ class FAQCard extends PureComponent {
 				<QuestionStyled role="button" tabIndex="0" onClick={this.handleClick} onKeyPress={this.handleClick}>
 					{children[0]}
 				</QuestionStyled>
-				<AnswerStyled>{children[1]}</AnswerStyled>
+				<AnswerStyled>{parse(`${children[1].props.children}`)}</AnswerStyled>
 			</FAQWrapper>
 		);
 	}
