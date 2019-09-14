@@ -20,8 +20,9 @@ function logout() {
 
 function auth(ctx) {
 	const { token } = nextCookie(ctx);
+	const redirectUrl = ctx.pathname ? `/auth/login?redirectUrl=${ctx.pathname}` : "/auth/login";
 	if (!token) {
-		return ctx.req ? redirectToLocation("/auth/login", ctx.res) : redirectToLocation("/auth/login");
+		return ctx.req ? redirectToLocation(redirectUrl, ctx.res) : redirectToLocation(redirectUrl);
 	}
 	return token;
 }
