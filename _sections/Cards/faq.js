@@ -16,12 +16,11 @@ const FAQWrapper = styled.div`
 	border-bottom: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	padding: 1rem 0;
 	overflow: hidden;
-	border-radius: 2px;
-	padding: 1rem 0;
-	transition: padding 300ms ease-in-out;
 	&.open {
-		padding: 5rem;
+		padding: 2rem;
 		border-bottom: none;
+		border-radius: 5px;
+		overflow: hidden;
 		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	}
 	&.open ${QuestionStyled} {
@@ -41,7 +40,7 @@ function FAQCard({ children, open, handleOpenId, quesId }) {
 	return (
 		<FAQWrapper className={open ? "open" : "close"}>
 			<QuestionStyled role="button" tabIndex="0" onClick={handleClick} onKeyPress={handleClick}>
-				{children[0]}
+				Q. {children[0]}
 			</QuestionStyled>
 			<AnswerStyled>{parse(`${children[1].props.children}`)}</AnswerStyled>
 		</FAQWrapper>
