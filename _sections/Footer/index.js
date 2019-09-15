@@ -40,7 +40,7 @@ function index() {
 			<div className="container">
 				<Divider />
 				<div className="grid">
-					<div className="col-xs-12 col-md-3 col-bleed-y">
+					<div className="col-xs-12 col-md-3">
 						<h3>QUICK LINKS</h3>
 						<nav>
 							<FooterNavStyled>
@@ -65,7 +65,7 @@ function index() {
 							</FooterNavStyled>
 						</nav>
 					</div>
-					<div className="col-xs-12 col-md-4 col-bleed-y align-center">
+					<div className="col-xs-12 col-md-4 align-center">
 						<h3>CONNECT WITH US</h3>
 						<nav>
 							<FooterNavStyled direction="horizontal">
@@ -125,7 +125,7 @@ function index() {
 							</FooterNavStyled>
 						</nav>
 					</div>
-					<div className="col-xs-12 col-md-5 col-bleed-y align-right">
+					<div className="col-xs-12 col-md-5 align-right">
 						<div className="grid">
 							<div className="col-xs-3">
 								<Image
