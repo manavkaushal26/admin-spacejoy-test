@@ -58,8 +58,8 @@ function index() {
 									</Link>
 								</li>
 								<li>
-									<Link href="/faq" as="/faq">
-										<a href="/faq">Cookie Statement</a>
+									<Link href="/cookies" as="/cookies">
+										<a href="/cookies">Cookie Statement</a>
 									</Link>
 								</li>
 							</FooterNavStyled>

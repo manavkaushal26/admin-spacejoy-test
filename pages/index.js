@@ -115,7 +115,7 @@ function index() {
 							</div>
 						</div>
 						<div className="col-xs-6">
-							<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/home/design-top-view.gif" />
+							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif" />
 						</div>
 					</div>
 				</div>
@@ -126,22 +126,22 @@ function index() {
 						<div className="col-xs-5">
 							<div className="grid">
 								<div className="col-xs-3">
-									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/designer4.jpg" />
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer5_irflbd.jpg" />
 								</div>
 								<div className="col-xs-3">
-									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer5.jpg" />
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer0_rmledc.jpg" />
 								</div>
 								<div className="col-xs-3">
-									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer1.jpg" />
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer1_gzjvpu.jpg" />
 								</div>
 								<div className="col-xs-3">
-									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer3.jpg" />
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer2_wt3yo2.jpg" />
 								</div>
 								<div className="col-xs-3">
-									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer2.jpg" />
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer3_fn8uxl.jpg" />
 								</div>
 								<div className="col-xs-3">
-									<Image src="https://storage.googleapis.com/isuite-artifacts/homeWeb2/spacejoy/Designer0.jpg" />
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564330/web/designer4_mas7gx.jpg" />
 								</div>
 							</div>
 						</div>

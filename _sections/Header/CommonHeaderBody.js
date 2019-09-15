@@ -25,6 +25,7 @@ const HorizontalListStyled = styled.ul`
 
 const CommonHeaderBody = () => {
 	const token = cookie.get("token");
+
 	return (
 		<div className="container">
 			<div className="grid align-center justify-content-space-between">

@@ -51,6 +51,8 @@ const ButtonStyled = styled.button`
 	display: inline-block;
 	white-space: nowrap;
 	text-align: center;
+	text-transform: uppercase;
+	font-size: 0.85em;
 	cursor: pointer;
 	user-select: none;
 	touch-action: manipulation;

@@ -96,9 +96,6 @@ app.prepare().then(() => {
 		server.get("/checkout", (req, res) => {
 			app.render(req, res, "/checkout", req.params);
 		});
-		server.get("/terms", (req, res) => {
-			renderAndCache(req, res, "/terms", req.params);
-		});
 		server.get("/auth/:flow(login|signup|forgot-password)", (req, res) => {
 			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
 		});
@@ -108,6 +105,12 @@ app.prepare().then(() => {
 		server.get(["/", "/index"], (req, res) => {
 			const { params } = req;
 			app.render(req, res, "/index", params);
+		});
+		server.get("/terms", (req, res) => {
+			renderAndCache(req, res, "/terms", req.params);
+		});
+		server.get("/cookies", (req, res) => {
+			renderAndCache(req, res, "/cookies", req.params);
 		});
 		server.get("/ping", (req, res) => {
 			res.send("pong");

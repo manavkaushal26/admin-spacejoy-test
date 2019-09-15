@@ -89,7 +89,7 @@ class PriceCard extends PureComponent {
 				<PriceCardFooterStyled>
 					<Link href={`/designMySpace?plan=${plan}`} as={`/designMySpace/${plan}`}>
 						<a href={`/designMySpace/${plan}`}>
-							<Button>Select {plan}</Button>
+							<Button type={variant === "recommend" ? "primary" : ""}>Select {plan}</Button>
 						</a>
 					</Link>
 				</PriceCardFooterStyled>

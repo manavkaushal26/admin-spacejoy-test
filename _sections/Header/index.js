@@ -1,7 +1,18 @@
+import Image from "@components/Image";
+import cookie from "js-cookie";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
+import ActiveLink from "./ActiveLink";
 import CommonHeaderBody from "./CommonHeaderBody";
+
+const CookieStyled = styled.div`
+	background: ${({ theme }) => theme.colors.fc.dark1};
+	color: white;
+	a {
+		color: ${({ theme }) => theme.colors.primary};
+	}
+`;
 
 const HeaderStyled = styled.div`
 	position: fixed;
@@ -9,9 +20,6 @@ const HeaderStyled = styled.div`
 	left: 0;
 	right: 0;
 	z-index: 10;
-	justify-content: center;
-	align-items: center;
-	display: flex;
 	&.raised {
 		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	}
@@ -27,11 +35,13 @@ const SolidHeaderStyled = styled(HeaderStyled)`
 
 class Header extends PureComponent {
 	state = {
-		isRaised: false
+		isRaised: false,
+		cookieStatus: true
 	};
 
 	componentDidMount = () => {
 		window.addEventListener("scroll", this.handleScroll);
+		this.setState({ cookieStatus: cookie.get("cookie-policy") });
 	};
 
 	componentWillUnmount = () => {
@@ -47,14 +57,44 @@ class Header extends PureComponent {
 		}
 	};
 
+	updateCookieStatus = () => {
+		cookie.set("cookie-policy", true, { expires: 30 });
+		this.setState({ cookieStatus: true });
+	};
+
 	render() {
 		const { variant } = this.props;
-		const { isRaised } = this.state;
+		const { isRaised, cookieStatus } = this.state;
 		switch (variant) {
 			case "transparent":
 				return <TransparentHeaderStyled>{CommonHeaderBody()}</TransparentHeaderStyled>;
 			case "solid":
-				return <SolidHeaderStyled className={isRaised ? "raised" : null}>{CommonHeaderBody()}</SolidHeaderStyled>;
+				return (
+					<SolidHeaderStyled className={isRaised ? "raised" : null}>
+						{!cookieStatus && (
+							<CookieStyled className="text-center">
+								<div className="container">
+									<div className="grid">
+										<div className="col-xs-10">
+											By using spacejoy.com, you agree with our use of cookies to improve performance.{" "}
+											<ActiveLink href="/cookies" as="/cookies">
+												Cookies Statement
+											</ActiveLink>
+										</div>
+										<div className="col-xs-2">
+											<Image
+												onClick={this.updateCookieStatus}
+												size="16px"
+												src="https://res.cloudinary.com/spacejoy/image/upload/v1568567510/web/cancel_dl7sw1.svg"
+											/>
+										</div>
+									</div>
+								</div>
+							</CookieStyled>
+						)}
+						{CommonHeaderBody()}
+					</SolidHeaderStyled>
+				);
 			default:
 				return <SolidHeaderStyled />;
 		}
