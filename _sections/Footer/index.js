@@ -24,6 +24,9 @@ const FooterNavStyled = styled.ul`
 		&:last-child {
 			padding-right: 0;
 		}
+		a {
+			color: ${({ theme }) => theme.colors.fc.dark1};
+		}
 	}
 `;
 

@@ -26,7 +26,7 @@ const data = [
 	{
 		tag: "Who are we?",
 		question: "What is the design fee?",
-		answer: `We have three packages - <a href="https://spacejoy.com/pricing">Consult</a>, <a href="https://spacejoy.com/pricing">Classic</a> and <a href="https://spacejoy.com/pricing">Premium</a>. You'll find details of the packages in our <a href="https://spacejoy.com/pricing">Pricing Section</a>. Pick the one that best suits your requirements.`
+		answer: `We have three packages - <a href="/pricing">Consult</a>, <a href="/pricing">Classic</a> and <a href="/pricing">Premium</a>. You'll find details of the packages in our <a href="/pricing">Pricing Section</a>. Pick the one that best suits your requirements.`
 	},
 	{
 		tag: "Who are we?",
@@ -43,7 +43,7 @@ const data = [
 	{
 		tag: "Who are we?",
 		question: "How long does it take for a design to be complete, from start to finish?",
-		answer: `If you choose the ‘<a href="https://spacejoy.com/pricing">Classic</a>’ or the ‘<a href="https://spacejoy.com/pricing">Consult</a>’ package, your initial 2 designs will be delivered within 7 days. If you choose the ‘<a href="https://spacejoy.com/pricing">Premium</a>’ package, your initial 2 designs will be delivered within 5 days. Once the initial designs are delivered, assuming there will be revisions, the final design post your feedback and revisions will be delivered along with the shopping list within 5 days from the date of the initial design delivery.`
+		answer: `If you choose the ‘<a href="/pricing">Classic</a>’ or the ‘<a href="/pricing">Consult</a>’ package, your initial 2 designs will be delivered within 7 days. If you choose the ‘<a href="/pricing">Premium</a>’ package, your initial 2 designs will be delivered within 5 days. Once the initial designs are delivered, assuming there will be revisions, the final design post your feedback and revisions will be delivered along with the shopping list within 5 days from the date of the initial design delivery.`
 	},
 	{
 		tag: "Who are we?",
@@ -85,7 +85,7 @@ const data = [
 	{
 		tag: "Get Started",
 		question: "How do I get started?",
-		answer: `Login to our platform and sign up for one of the <a href="https://spacejoy.com/pricing">packages</a>, depending on your needs. Our designers will get in touch with you before they process your request to get all the necessary details.`
+		answer: `Login to our platform and sign up for one of the <a href="/pricing">packages</a>, depending on your needs. Our designers will get in touch with you before they process your request to get all the necessary details.`
 	},
 	{
 		tag: "Get Started",
@@ -125,7 +125,7 @@ const data = [
 	{
 		tag: "Features & Services",
 		question: "How can I get in touch with Spacejoy’s expert design team?",
-		answer: `Sign up for either the <a href="https://spacejoy.com/pricing">Classic</a> or <a href="https://spacejoy.com/pricing">Premium</a> package which will give you access to our designers. They can help you with all your design related queries and guide you through the entire process.`
+		answer: `Sign up for either the <a href="/pricing">Classic</a> or <a href="/pricing">Premium</a> package which will give you access to our designers. They can help you with all your design related queries and guide you through the entire process.`
 	},
 	{
 		tag: "Features & Services",
@@ -150,7 +150,7 @@ const data = [
 	{
 		tag: "Features & Services",
 		question: "How long does it take for a design to be complete, from start to finish?",
-		answer: `If you choose the ‘<a href="https://spacejoy.com/pricing">Classic</a>’ or the ‘<a href="https://spacejoy.com/pricing">Consult</a>’ package, your 2 initial designs will be delivered within 7 days. If you choose the ‘<a href="https://spacejoy.com/pricing">Premium</a>’ package, your 2 initial designs will be delivered within 5 days. These designs will go through revisions based on your feedback. The final design, after incorporating your feedback, will be delivered to you within 5 days from the date of delivery of the initial design. This will include a shopping list of the products featured in your final design.`
+		answer: `If you choose the ‘<a href="/pricing">Classic</a>’ or the ‘<a href="/pricing">Consult</a>’ package, your 2 initial designs will be delivered within 7 days. If you choose the ‘<a href="/pricing">Premium</a>’ package, your 2 initial designs will be delivered within 5 days. These designs will go through revisions based on your feedback. The final design, after incorporating your feedback, will be delivered to you within 5 days from the date of delivery of the initial design. This will include a shopping list of the products featured in your final design.`
 	},
 	{
 		tag: "Features & Services",

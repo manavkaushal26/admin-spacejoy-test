@@ -1,6 +1,6 @@
 import parse from "html-react-parser";
 import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const AnswerStyled = styled.div`
@@ -17,8 +17,10 @@ const FAQWrapper = styled.div`
 	padding: 1rem 0;
 	overflow: hidden;
 	border-radius: 2px;
-	padding: 1rem;
+	padding: 1rem 0;
+	transition: padding 300ms ease-in-out;
 	&.open {
+		padding: 5rem;
 		border-bottom: none;
 		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	}
@@ -32,28 +34,23 @@ const FAQWrapper = styled.div`
 	}
 `;
 
-class FAQCard extends PureComponent {
-	static Question = ({ children }) => children;
-
-	static Answer = ({ children }) => children;
-
-	handleClick = () => {
-		const { handleOpenId, quesId } = this.props;
+function FAQCard({ children, open, handleOpenId, quesId }) {
+	const handleClick = () => {
 		handleOpenId(quesId);
 	};
-
-	render() {
-		const { children, open } = this.props;
-		return (
-			<FAQWrapper className={open ? "open" : "close"}>
-				<QuestionStyled role="button" tabIndex="0" onClick={this.handleClick} onKeyPress={this.handleClick}>
-					{children[0]}
-				</QuestionStyled>
-				<AnswerStyled>{parse(`${children[1].props.children}`)}</AnswerStyled>
-			</FAQWrapper>
-		);
-	}
+	return (
+		<FAQWrapper className={open ? "open" : "close"}>
+			<QuestionStyled role="button" tabIndex="0" onClick={handleClick} onKeyPress={handleClick}>
+				{children[0]}
+			</QuestionStyled>
+			<AnswerStyled>{parse(`${children[1].props.children}`)}</AnswerStyled>
+		</FAQWrapper>
+	);
 }
+
+FAQCard.Question = ({ children }) => children;
+
+FAQCard.Answer = ({ children }) => children;
 
 FAQCard.defaultProps = {
 	open: false
