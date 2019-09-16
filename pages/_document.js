@@ -1,5 +1,5 @@
 import { page } from "@utils/config";
-import Document, { Head, Html, Main, NextScript } from "next/document";
+import Document, { Head, Main, NextScript } from "next/document";
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
 
@@ -10,6 +10,12 @@ const gtm = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 								j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 						})(window,document,'script','dataLayer','${page.gtm}');`;
+
+const stopFlicker = `(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
+						h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
+						(a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
+						})(window,document.documentElement,'async-hide','dataLayer',4000,
+						{'${page.optimize}':true});`;
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx) {
@@ -37,7 +43,7 @@ class MyDocument extends Document {
 
 	render() {
 		return (
-			<Html>
+			<html lang="en">
 				<Head>
 					<link
 						rel="preload"
@@ -62,6 +68,7 @@ class MyDocument extends Document {
 						href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
 					/>
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
+					{prod && <script dangerouslySetInnerHTML={{ __html: stopFlicker }} />}
 					<script
 						src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`}
 						async
@@ -82,7 +89,7 @@ class MyDocument extends Document {
 					<Main />
 					<NextScript />
 				</body>
-			</Html>
+			</html>
 		);
 	}
 }
