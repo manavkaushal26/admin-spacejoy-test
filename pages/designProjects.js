@@ -3,7 +3,7 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
-import { company } from "@utils/config";
+import { company, page } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import fetch from "isomorphic-unfetch";
 import Head from "next/head";
@@ -46,7 +46,7 @@ function designProjects({ isServer, data }) {
 										<div className="cols-xs-12 col-md-6 col-bleed-y">
 											<p>{item.designDescription}</p>
 											<h3>Shop for products featured in this design</h3>
-											<ItemCard products={item.designProductList} />
+											<ItemCard products={item.assets} />
 										</div>
 									</div>
 								</div>
@@ -65,7 +65,8 @@ function designProjects({ isServer, data }) {
 
 designProjects.getInitialProps = async ({ req }) => {
 	const isServer = !!req;
-	const res = await fetch("https://demo8330824.mockable.io/designProject");
+	const endPoint = "/demodesigns";
+	const res = await fetch(page.apiBaseUrl + endPoint);
 	const resData = await res.json();
 	const { data } = resData;
 	return { isServer, data };

@@ -2,7 +2,7 @@ const data = [
 	{
 		tag: "Who are we?",
 		question: "What is Spacejoy?",
-		answer: `<img src="https://res.cloudinary.com/spacejoy/image/upload/v1567070387/shared/logo_2x_ywrzvq.png" height="25" width="130" alt="spacejoy logo"/> <p>Spacejoy is an online interior design service that helps with designing your actual space in 3D. You can either design it yourself, ask for an expert to design it for you or even collaborate with the design team. The final design features products that can be bought right away from furniture and home decor stores, across America.</p>"
+		answer: `<img src="https://res.cloudinary.com/spacejoy/image/upload/v1568650421/shared/spacejoy_hgqxoa.svg" height="25" width="130" alt="spacejoy logo"/> <p>Spacejoy is an online interior design service that helps with designing your actual space in 3D. You can either design it yourself, ask for an expert to design it for you or even collaborate with the design team. The final design features products that can be bought right away from furniture and home decor stores, across America.</p>"
 `
 	},
 	{

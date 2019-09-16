@@ -14,9 +14,9 @@ module.exports = {
 		whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
 	},
 	company: {
-		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1567070387/shared/logo_2x_ywrzvq.png",
+		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1568650421/shared/spacejoy_hgqxoa.svg",
 		name: "Neo Design Labs Inc",
-		product: "SpaceJoy",
+		product: "Spacejoy",
 		url: "",
 		subject: "",
 		description: "",
@@ -32,7 +32,7 @@ module.exports = {
 			{
 				location1: "1450 2nd Street",
 				location2: "155 Santa Monica",
-				city: "California",
+				city: "LA",
 				state: "California",
 				country: "USA",
 				pin: "90401",

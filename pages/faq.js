@@ -65,12 +65,14 @@ class faq extends PureComponent {
 									filteredTag.map(item => (
 										<div className="col-xs-12 col-md-3" key={Math.random() * 10}>
 											<TopicStyled active={item === activeTag} onClick={() => this.handleFilter(item)}>
-												{item === activeTag && (
-													<Image
-														size="xs"
-														src="https://res.cloudinary.com/spacejoy/image/upload/v1568542112/shared/tick-circle_fgeebs.svg"
-													/>
-												)}
+												<Image
+													size="xs"
+													src={
+														item === activeTag
+															? "https://res.cloudinary.com/spacejoy/image/upload/v1568651563/shared/tick-circle-pink_twan2x.svg"
+															: "https://res.cloudinary.com/spacejoy/image/upload/v1568651563/shared/tick-circle-black_tzrdza.svg"
+													}
+												/>
 												<span>{item}</span>
 											</TopicStyled>
 										</div>
