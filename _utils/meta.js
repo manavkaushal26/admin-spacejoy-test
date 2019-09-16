@@ -11,7 +11,12 @@ const BaseMeta = [
 	<meta key="themeColor" name="theme-color" content="#ffffff" />,
 	<meta key="googleSiteVerification" name="google-site-verification" content={page.googleSiteVerification} />,
 	<link key="icon" rel="icon" sizes="192x192" href="/static/icon.png" />,
-	<link key="canonical" rel="canonical" href="/" />
+	<link key="canonical" rel="canonical" href="/" />,
+	<link key="favicon" rel="shortcut icon" href="/static/favicon.ico" />,
+	<link key="favicon-android" rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192x192.png" />,
+	<link key="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />,
+	<link key="favicon-96" rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png" />,
+	<link key="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
 ];
 
 const OGMeta = [

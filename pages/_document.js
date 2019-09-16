@@ -52,7 +52,6 @@ class MyDocument extends Document {
 					<link rel="dns-prefetch" href="//res.cloudinary.com" />
 					<link rel="dns-prefetch" href="//www.google-analytics.com" />
 					<link rel="manifest" href="/static/manifest.json" />
-					<link rel="shortcut icon" href="/static/favicon.ico" />
 					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link
 						rel="preload"
