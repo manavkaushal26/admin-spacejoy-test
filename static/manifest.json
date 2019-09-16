@@ -9,12 +9,12 @@
 	"theme_color": "#ffffff",
 	"icons": [
 		{
-			"src": "https://res.cloudinary.com/swiggy/image/upload/portal/c/icon-192x192.png",
+			"src": "https://res.cloudinary.com/spacejoy/image/upload/v1568662625/shared/spacejoy-192_soddwz.png",
 			"type": "image/png",
 			"sizes": "192x192"
 		},
 		{
-			"src": "https://res.cloudinary.com/swiggy/image/upload/portal/c/icon-512x512.png",
+			"src": "https://res.cloudinary.com/spacejoy/image/upload/v1568662626/shared/spacejoy-512_t9jwrf.png",
 			"type": "image/png",
 			"sizes": "512x512"
 		}

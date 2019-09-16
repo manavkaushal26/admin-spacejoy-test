@@ -60,7 +60,7 @@ const data = [
 	{
 		tag: "Who are we?",
 		question: "Where can I find the Spacejoy app?",
-		answer: `Spacejoy is available on both android and iOS stores.<br/><br/><a href="https://apps.apple.com/us/app/homefuly/id1448690338" target="_blank"><img src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/appstore_porgmf.png" height="40" width="130" alt="spacejoy logo"/></a><br/><br/><a href="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png" target="_blank"><img src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png" height="40" width="115" alt="spacejoy logo"/></a>`
+		answer: `Spacejoy is available on both android and iOS stores.<br/><br/><a href="https://apps.apple.com/us/app/homefuly/id1448690338" target="_blank"><img src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/appstore_porgmf.png" height="40" width="130" alt="spacejoy logo"/></a><br/><br/><a href="https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail" target="_blank"><img src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png" height="40" width="115" alt="spacejoy logo"/></a>`
 	},
 	{
 		tag: "Account & Payment",
