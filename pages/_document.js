@@ -45,6 +45,15 @@ class MyDocument extends Document {
 		return (
 			<html lang="en">
 				<Head>
+					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
+					<link rel="preconnect" href="//res.cloudinary.com" />
+					<link rel="preconnect" href="//www.google-analytics.com" />
+					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
+					<link rel="dns-prefetch" href="//res.cloudinary.com" />
+					<link rel="dns-prefetch" href="//www.google-analytics.com" />
+					<link rel="manifest" href="/static/manifest.json" />
+					<link rel="shortcut icon" href="/static/favicon.ico" />
+					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link
 						rel="preload"
 						href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
@@ -52,11 +61,6 @@ class MyDocument extends Document {
 					/>
 
 					<link rel="preload" href="/static/style.css?v1" as="style" />
-					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
-					<link rel="dns-prefetch" href="//res.cloudinary.com" />
-					<link rel="manifest" href="/static/manifest.json" />
-					<link rel="shortcut icon" href="/static/favicon.ico" />
-					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link
 						href="//cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
 						rel="stylesheet"
