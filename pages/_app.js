@@ -1,16 +1,43 @@
 import { AuthProvider } from "@context/AuthStorage";
 import theme from "@theme/index";
+import { LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
 import App from "next/app";
+import Router from "next/router";
 import React from "react";
 import { ThemeProvider } from "styled-components";
 
 export default class MyApp extends App {
+	state = {
+		loading: false
+	};
+
+	getUtmParam = url => url.split("utm_")[1];
+
+	componentDidMount() {
+		LandingPage({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });
+		Router.router.events.on("routeChangeStart", url => {
+			if (url.split("/")[1] !== "playstore") {
+				this.setState({ loading: true });
+			}
+		});
+		Router.router.events.on("routeChangeComplete", () => {
+			this.setState({ loading: false });
+			RouteChange({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });
+		});
+		window.addEventListener("appinstalled", evt => {
+			PwaInstalled({ evt });
+		});
+	}
+
 	render() {
+		const { loading } = this.state;
 		const { Component, pageProps } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
 				<AuthProvider>
-					<Component {...pageProps} />
+					<div className={`${loading ? "loading" : ""}`}>
+						<Component {...pageProps} />
+					</div>
 				</AuthProvider>
 			</ThemeProvider>
 		);
