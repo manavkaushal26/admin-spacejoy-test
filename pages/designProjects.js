@@ -22,7 +22,7 @@ class designProjects extends PureComponent {
 	state = {
 		data: [],
 		pageCount: 0,
-		hasMore: true
+		hasMore: false
 	};
 
 	componentDidMount() {
@@ -31,7 +31,7 @@ class designProjects extends PureComponent {
 
 	fetchData = () => {
 		const { pageCount } = this.state;
-		fetch(`${page.apiBaseUrl}${endPoint}${pageCount === 0 ? "" : "?limit=10"}`)
+		fetch(`${page.apiBaseUrl}${endPoint}${pageCount === 0 ? "" : ""}`)
 			.then(response => response.json())
 			.then(resData => {
 				if (resData.status === "success") {
