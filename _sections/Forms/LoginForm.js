@@ -26,7 +26,7 @@ function LoginForm({ redirectUrl }) {
 				value="saurabh"
 				required
 			/>
-			<Field name="userSubmit" type="submit" label="Submit" />
+			<Field name="userSubmit" type="submit" label="Login" />
 		</FormBox>
 	);
 }

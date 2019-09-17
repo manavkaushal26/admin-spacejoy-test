@@ -48,7 +48,6 @@ const ButtonStyled = styled.button`
 	height: ${({ size }) => getHeight(size)};
 	line-height: 1.5;
 	position: relative;
-	display: inline-block;
 	white-space: nowrap;
 	text-align: center;
 	text-transform: uppercase;

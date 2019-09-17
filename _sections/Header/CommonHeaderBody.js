@@ -64,23 +64,13 @@ const CommonHeaderBody = () => {
 						</li>
 						<li>
 							{!token && (
-								<>
-									<ActiveLink
-										href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/faq" } }}
-										as="/auth/login?redirectUrl=/faq"
-										replace
-									>
-										Login /
-									</ActiveLink>
-									<ActiveLink
-										href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "/faq" } }}
-										as="/auth/signup?redirectUrl=/faq"
-										replace
-									>
-										{" "}
-										Signup
-									</ActiveLink>
-								</>
+								<ActiveLink
+									href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/faq" } }}
+									as="/auth/login?redirectUrl=/faq"
+									replace
+								>
+									Login
+								</ActiveLink>
 							)}
 							{token && <Button onClick={logout}>Logout</Button>}
 						</li>

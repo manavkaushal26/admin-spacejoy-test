@@ -20,10 +20,6 @@ module.exports = {
 		url: "",
 		subject: "",
 		description: "",
-		phone: {
-			support: "+1 (669) 241-9248",
-			connect: ""
-		},
 		email: {
 			support: "hello@spacejoy.com",
 			connect: ""

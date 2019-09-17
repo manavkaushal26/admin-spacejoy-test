@@ -27,8 +27,6 @@ const OGMeta = [
 	<meta key="og-site_name" name="og:site_name" content="Spacejoy" />,
 	<meta key="og-description" name="og:description" content="A group of U.S. Marines, under command of..." />,
 	<meta key="og-email" name="og:email" content={company.email.support} />,
-	<meta key="og-phone_number" name="og:phone_number" content={company.phone.support} />,
-	<meta key="og-fax_number" name="og:fax_number" content={company.phone.support} />,
 	<meta key="og-latitude" name="og:latitude" content={company.address[0].latitude} />,
 	<meta key="og-longitude" name="og:longitude" content={company.address[0].longitude} />,
 	<meta

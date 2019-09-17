@@ -3,6 +3,7 @@ import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
+import MockData from "@utils/designConceptsMock";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import Router from "next/router";
@@ -38,7 +39,13 @@ const HeroCardStyled = styled.section`
 `;
 
 const SectionWrapperStyled = styled.section`
-	padding: 4rem 0;
+	padding: 3rem 0;
+	h1 {
+		font-size: 2.5rem;
+	}
+	p {
+		font-size: 1.15rem;
+	}
 `;
 
 const HeroText = styled.h1`
@@ -104,8 +111,8 @@ function index() {
 						<div className="col-xs-6">
 							<div>
 								<h1>Get 3D Designs of Your Space</h1>
-								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
-								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+								<p>Set your budget, share pictures of your room and tell us about your style preferences . </p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions</p>
 								<p>Ready to transform your home scape?</p>
 								<div>
 									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
@@ -125,23 +132,23 @@ function index() {
 					<div className="grid justify-space-between align-center">
 						<div className="col-xs-5">
 							<div className="grid">
-								<div className="col-xs-3">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer5_irflbd.jpg" />
+								<div className="col-xs-4">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer5_irflbd.jpg" />
 								</div>
-								<div className="col-xs-3">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer0_rmledc.jpg" />
+								<div className="col-xs-4">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer0_rmledc.jpg" />
 								</div>
-								<div className="col-xs-3">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer1_gzjvpu.jpg" />
+								<div className="col-xs-4">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer1_gzjvpu.jpg" />
 								</div>
-								<div className="col-xs-3">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer2_wt3yo2.jpg" />
+								<div className="col-xs-4">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer2_wt3yo2.jpg" />
 								</div>
-								<div className="col-xs-3">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564329/web/Designer3_fn8uxl.jpg" />
+								<div className="col-xs-4">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer3_fn8uxl.jpg" />
 								</div>
-								<div className="col-xs-3">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_100/v1568564330/web/designer4_mas7gx.jpg" />
+								<div className="col-xs-4">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564330/web/designer4_mas7gx.jpg" />
 								</div>
 							</div>
 						</div>
@@ -191,16 +198,21 @@ function index() {
 						<div className="col-xs-12 text-center">
 							<CenterTextStyled>Doesn&lsquo;t Spark Joy?</CenterTextStyled>
 							<CenterSubTextStyled>
-								We&lsquo;ll revise your design until it reflects your perfect space Spacejoy designers are here to help
+								We&lsquo;ll revise your design until it reflects your perfect space. <br />
+								{company.product} designers are here to help
 							</CenterSubTextStyled>
-							<Carousel slidesToShow={4} slidesToScroll={4} autoplay>
-								{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((item, i) => (
-									<CarouselCardStyled key={Math.random()}>
-										<Image src={`https://picsum.photos/id/${i + 1}/400/250`} />
-										<h4>Susan&apos;s Living Room</h4>
+							<Carousel slidesToShow={4} slidesToScroll={4} autoplay key={MockData.customerId}>
+								{MockData.concept.map(concept => (
+									<CarouselCardStyled key={concept.no}>
+										<Image src={concept.imageUrl} />
+										<h4>
+											{MockData.customerName}&apos;s {MockData.roomType}
+										</h4>
+										<small>Design Concept {concept.no}</small>
 									</CarouselCardStyled>
 								))}
 							</Carousel>
+
 							<div>
 								<Button shape="round" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE

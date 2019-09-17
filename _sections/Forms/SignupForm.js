@@ -31,7 +31,7 @@ function SignupForm() {
 				hint="should contain valid Password"
 				required
 			/>
-			<Field name="userSubmit" type="submit" label="Submit" />
+			<Field name="userSubmit" type="submit" label="Signup" />
 		</FormBox>
 	);
 }

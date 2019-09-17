@@ -42,13 +42,17 @@ function designProjects({ isServer, data }) {
 													<Image key={Math.random()} src={banner} />
 												))}
 											</Carousel>
-											<div className="text-center">
-												<Image
-													size="10px"
-													src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-												/>
-											</div>
-											<p>{item.designDescription}</p>
+											{item.designDescription !== "None" && (
+												<>
+													<div className="text-center">
+														<Image
+															size="10px"
+															src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+														/>
+													</div>
+													<p>{item.designDescription}</p>
+												</>
+											)}
 										</div>
 										<div className="cols-xs-12 col-md-6">
 											<ItemCard products={item.assets} />

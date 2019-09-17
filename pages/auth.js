@@ -4,6 +4,7 @@ import Layout from "@sections/Layout";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 
@@ -25,8 +26,26 @@ function auth({ isServer, flow, redirectUrl }) {
 				</div>
 				<div className="grid justify-space-around">
 					<div className="col-xs-12 col-sm-8 col-md-4">
-						{flow === "login" && <Login redirectUrl={redirectUrl} />}
-						{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
+						<div className="col-xs-12">
+							{flow === "login" && <Login redirectUrl={redirectUrl} />}
+							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
+						</div>
+						<div className="col-xs-12">
+							<span>{flow === "signup" ? "Already have an account? " : "Create new Account "}</span>
+							{flow === "signup" ? (
+								<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login" replace>
+									<a>Login</a>
+								</Link>
+							) : (
+								<Link
+									href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }}
+									as="/auth/signup"
+									replace
+								>
+									<a>Signup</a>
+								</Link>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

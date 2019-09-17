@@ -23,10 +23,11 @@ const RecommendBannerStyled = styled.div`
 	background: ${({ theme }) => theme.colors.primary};
 	color: white;
 	position: absolute;
-	width: 120px;
-	top: 20px;
+	width: 140px;
+	top: 30px;
 	right: -30px;
 	font-size: 0.8rem;
+	text-transform: uppercase;
 	transform: rotate(45deg);
 `;
 
@@ -61,7 +62,7 @@ const PriceCardFooterStyled = styled.div`
 class PriceCard extends PureComponent {
 	static Header = ({ title, subTitle, variant }) => (
 		<PriceCardHeaderStyled>
-			{variant === "recommend" && <RecommendBannerStyled>Recommend</RecommendBannerStyled>}
+			{variant === "recommend" && <RecommendBannerStyled>Recommended</RecommendBannerStyled>}
 			<h2>
 				{title}
 				<br />

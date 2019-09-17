@@ -48,8 +48,8 @@ function index() {
 									<a href="https://www.blog.spacejoy.com/">Blog</a>
 								</li>
 								<li>
-									<Link href="/profile" as="/profile">
-										<a href="/profile">Privacy Policy</a>
+									<Link href="/terms" as="/terms">
+										<a href="/terms">Privacy Policy</a>
 									</Link>
 								</li>
 								<li>
@@ -70,7 +70,7 @@ function index() {
 						<nav>
 							<FooterNavStyled direction="horizontal">
 								<li>
-									<a href={company.social.facebook}>
+									<a href={company.social.facebook} target="_black">
 										<Image
 											size="xs"
 											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/facebook_fjpw0j.svg"
@@ -78,7 +78,7 @@ function index() {
 									</a>
 								</li>
 								<li>
-									<a href={company.social.twitter}>
+									<a href={company.social.twitter} target="_black">
 										<Image
 											size="xs"
 											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/twitter_el5nrt.svg"
@@ -86,7 +86,7 @@ function index() {
 									</a>
 								</li>
 								<li>
-									<a href={company.social.instagram}>
+									<a href={company.social.instagram} target="_black">
 										<Image
 											size="xs"
 											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/instagram_w0u21k.svg"
@@ -94,7 +94,7 @@ function index() {
 									</a>
 								</li>
 								<li>
-									<a href={company.social.pinterest}>
+									<a href={company.social.pinterest} target="_black">
 										<Image
 											size="xs"
 											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/pinterest_q2xvqr.svg"
@@ -144,14 +144,6 @@ function index() {
 										<h3>NEED HELP?</h3>
 										<nav>
 											<FooterNavStyled>
-												<li>
-													<Image
-														size="xs"
-														src="https://res.cloudinary.com/spacejoy/image/upload/v1567500734/web/phone-call_smylef.svg"
-														style={{ marginRight: "1rem" }}
-													/>
-													<a href={`tel:${company.phone.support}?Subject=Need%20Help`}>{company.phone.support}</a>
-												</li>
 												<li>
 													<Image
 														size="xs"
