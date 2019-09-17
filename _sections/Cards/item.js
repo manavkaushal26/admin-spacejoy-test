@@ -22,13 +22,27 @@ const ProductPriceStyled = styled.h3`
 	margin: 0;
 `;
 
+const ProductExternalLinkStyled = styled.button`
+	padding: 0.35rem 0.75rem;
+	border: 1px solid ${({ theme }) => theme.colors.bg.dark1};
+	float: right;
+	background: transparent;
+	font-size: 0.8rem;
+	outline: none;
+	color: ${({ theme }) => theme.colors.fc.dark1};
+	&:hover {
+		color: ${({ theme }) => theme.colors.primary};
+		border: 1px solid ${({ theme }) => theme.colors.primary};
+	}
+`;
+
 const ProductLoadMoreStyled = styled.div`
 	width: 100%;
 	height: 130px;
 	padding: 1rem;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	div {
-		border: 1px solid ${({ theme }) => theme.colors.bg.light2};
+		border: 1px dashed ${({ theme }) => theme.colors.bg.light2};
 		display: flex;
 		flex-direction: column;
 		height: calc(130px - 2rem);
@@ -49,12 +63,17 @@ function ItemCard({ products }) {
 			{products.map(product => (
 				<div className="col-xs-6" key={product.productId}>
 					<div className="grid">
-						<div className="col-xs-12">
+						<div className="col-xs-12 justify-space-between">
 							<ProductImageWrapperStyled url={product.productImage} />
 						</div>
-						<div className="col-xs-12 col-bleed-y">
+						<div className="col-xs-8 col-bleed-y">
 							<ProductNameStyled>{product.productName}</ProductNameStyled>
 							<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
+						</div>
+						<div className="col-xs-4 col-bleed-y">
+							<a href={product.productExternalUrl} target="_blank" rel="noopener noreferrer">
+								<ProductExternalLinkStyled>Buy Now</ProductExternalLinkStyled>
+							</a>
 						</div>
 					</div>
 				</div>

@@ -2,7 +2,6 @@ import Layout from "@sections/Layout";
 import { withAuthSync } from "@utils/auth";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
-import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 
@@ -33,7 +32,6 @@ class checkout extends PureComponent {
 
 	render() {
 		const { name, email, mobile, roomType, budget, currentRoomStatus, address } = this.state;
-		const { token } = this.props;
 		return (
 			<Layout header="solid">
 				<Head>
@@ -43,7 +41,7 @@ class checkout extends PureComponent {
 				<div className="container">
 					<div className="grid justify-space-around">
 						<div className="col-xs-12 col-md-8">
-							<h3>Payment {token}</h3>
+							<h3>Payment</h3>
 						</div>
 						<div className="col-xs-12 col-md-4">
 							<SummaryWrapperStyled>
@@ -85,8 +83,6 @@ class checkout extends PureComponent {
 	}
 }
 
-checkout.propTypes = {
-	token: PropTypes.string.isRequired
-};
+checkout.propTypes = {};
 
 export default withAuthSync(checkout);
