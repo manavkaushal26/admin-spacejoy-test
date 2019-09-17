@@ -3,65 +3,82 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-const ItemCardStyled = styled.div`
-	height: 215px;
-	width: 180px;
-	margin-right: 2rem;
-	display: inline-block;
+const ProductImageWrapperStyled = styled.div`
+	background: ${({ theme, url }) => `${theme.colors.bg.light2} url('${url}')`};
+	height: 130px;
+	background-repeat: no-repeat;
+	background-position: center;
 `;
 
-const ThumbnailStyled = styled.div`
-	height: 165px;
-	border-radius: 5px;
+const ProductNameStyled = styled.h5`
+	margin: 0;
+	font-weight: normal;
+	white-space: nowrap;
+	text-overflow: ellipsis;
 	overflow: hidden;
-	text-align: center;
-	img {
-		width: 100%;
+`;
+
+const ProductPriceStyled = styled.h3`
+	margin: 0;
+`;
+
+const ProductLoadMoreStyled = styled.div`
+	width: 100%;
+	height: 130px;
+	padding: 1rem;
+	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+	div {
+		border: 1px solid ${({ theme }) => theme.colors.bg.light2};
+		display: flex;
+		flex-direction: column;
+		height: calc(130px - 2rem);
+		justify-content: center;
+		align-items: center;
+		img {
+			margin: 0.5rem 0;
+			&:first-child {
+				transform: rotate(180deg);
+			}
+		}
 	}
-`;
-
-const ItemNameStyled = styled.strong`
-	margin: 0.5rem 0 0.25rem 0;
-	display: inline-block;
-`;
-
-const PriceStyled = styled.span`
-	display: block;
-`;
-
-const ItemCardFooterStyled = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
 `;
 
 function ItemCard({ products }) {
 	return (
-		<>
+		<div className="grid justify-space-between">
 			{products.map(product => (
-				<ItemCardStyled key={product.productId}>
-					<ThumbnailStyled>
-						<Image src={product.productImage} />
-					</ThumbnailStyled>
-					<ItemCardFooterStyled>
-						<div>
-							<ItemNameStyled>{product.productName}</ItemNameStyled>
-							<PriceStyled>
-								<strong>Price</strong>: $ {product.productCost}
-							</PriceStyled>
+				<div className="col-xs-6" key={product.productId}>
+					<div className="grid">
+						<div className="col-xs-12">
+							<ProductImageWrapperStyled url={product.productImage} />
 						</div>
-						<div>
-							<a href={product.productExternalUrl} rel="noopener noreferrer" target="_blank">
-								<Image
-									size="xs"
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1567248916/shared/cart_nynqqa.svg"
-								/>
-							</a>
+						<div className="col-xs-12 col-bleed-y">
+							<ProductNameStyled>{product.productName}</ProductNameStyled>
+							<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
 						</div>
-					</ItemCardFooterStyled>
-				</ItemCardStyled>
+					</div>
+				</div>
 			))}
-		</>
+			<div className="col-xs-6">
+				<div className="grid">
+					<div className="col-xs-12">
+						<ProductLoadMoreStyled>
+							<div>
+								<Image
+									size="10px"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+								/>
+								<span>Load More...</span>
+								<Image
+									size="10px"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+								/>
+							</div>
+						</ProductLoadMoreStyled>
+					</div>
+				</div>
+			</div>
+		</div>
 	);
 }
 
