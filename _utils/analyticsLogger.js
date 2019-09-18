@@ -63,4 +63,4 @@ const PwaInstalled = data => {
 	dataToPush(data, GAEventName.PWAInstalled);
 };
 
-module.exports = { PushEvent, LandingPage, RouteChange, PwaInstalled, initGA, logException };
+export { PushEvent, LandingPage, RouteChange, PwaInstalled, initGA, logException };
