@@ -15,6 +15,12 @@ import styled from "styled-components";
 const DesignTitleStyled = styled.h2`
 	margin-top: 0;
 `;
+const InfiniteLoaderStyled = styled.div`
+	text-align: center;
+	padding: 1rem;
+	margin: 1rem;
+	background: ${({ theme }) => theme.colors.bg.light2};
+`;
 
 const endPoint = "/demodesigns";
 
@@ -22,7 +28,7 @@ class designProjects extends PureComponent {
 	state = {
 		data: [],
 		pageCount: 0,
-		hasMore: false
+		hasMore: true
 	};
 
 	componentDidMount() {
@@ -31,7 +37,8 @@ class designProjects extends PureComponent {
 
 	fetchData = () => {
 		const { pageCount } = this.state;
-		fetch(`${page.apiBaseUrl}${endPoint}${pageCount === 0 ? "" : ""}`)
+		const dataFeed = `?skip=${pageCount * 10}`;
+		fetch(`${page.apiBaseUrl}${endPoint}${dataFeed}`)
 			.then(response => response.json())
 			.then(resData => {
 				if (resData.status === "success") {
@@ -68,9 +75,9 @@ class designProjects extends PureComponent {
 						loadMore={this.fetchData}
 						hasMore={hasMore}
 						loader={
-							<div className="loader" key={0}>
-								Loading ...
-							</div>
+							<InfiniteLoaderStyled className="loader" key={0}>
+								Loading...
+							</InfiniteLoaderStyled>
 						}
 					>
 						{data.map((item, index) => (
