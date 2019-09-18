@@ -59,10 +59,10 @@ const ProductLoadMoreStyled = styled.div`
 	}
 `;
 
-function ItemCard({ products, gridCount, designName, designId }) {
+function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
 	const designNameClean = removeSpaces(designName);
 	return (
-		<div className="grid justify-space-between">
+		<div className="grid">
 			{products.map(product => (
 				<div className={`col-xs-${gridCount}`} key={product.productId}>
 					<div className="grid">
@@ -81,44 +81,48 @@ function ItemCard({ products, gridCount, designName, designId }) {
 					</div>
 				</div>
 			))}
-			<div className={`col-xs-${gridCount}`}>
-				<div className="grid">
-					<div className="col-xs-12">
-						<Link
-							href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
-							as={`/designView/${designNameClean}/${designId}`}
-						>
-							<ProductLoadMoreStyled>
-								<div>
-									<Image
-										size="10px"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-									/>
-									<span>Load More...</span>
-									<Image
-										size="10px"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-									/>
-								</div>
-							</ProductLoadMoreStyled>
-						</Link>
+			{showLoadMore && (
+				<div className={`col-xs-${gridCount}`}>
+					<div className="grid">
+						<div className="col-xs-12">
+							<Link
+								href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
+								as={`/designView/${designNameClean}/${designId}`}
+							>
+								<ProductLoadMoreStyled>
+									<div>
+										<Image
+											size="10px"
+											src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+										/>
+										<span>Load More...</span>
+										<Image
+											size="10px"
+											src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+										/>
+									</div>
+								</ProductLoadMoreStyled>
+							</Link>
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }
 
 ItemCard.defaultProps = {
 	products: [],
-	gridCount: 6
+	gridCount: 6,
+	showLoadMore: false
 };
 
 ItemCard.propTypes = {
 	products: PropTypes.arrayOf(PropTypes.shape({})),
 	gridCount: PropTypes.number,
 	designName: PropTypes.string.isRequired,
-	designId: PropTypes.string.isRequired
+	designId: PropTypes.string.isRequired,
+	showLoadMore: PropTypes.bool
 };
 
 export default ItemCard;

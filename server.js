@@ -91,7 +91,7 @@ app.prepare().then(() => {
 			renderAndCache(req, res, "/designProjects", req.params);
 		});
 		server.get("/designView/:designName/:designId", (req, res) => {
-			app.render(req, res, "/designView", { designName: req.params.designName, designId: req.params.designName });
+			app.render(req, res, "/designView", { designName: req.params.designName, designId: req.params.designId });
 		});
 		server.get("/designMySpace/:plan?", (req, res) => {
 			app.render(req, res, "/designMySpace", { plan: req.params.plan });

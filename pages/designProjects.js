@@ -37,7 +37,7 @@ class designProjects extends PureComponent {
 
 	fetchData = () => {
 		const { pageCount } = this.state;
-		const dataFeed = `?skip=${pageCount * 10}`;
+		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
 		fetch(`${page.apiBaseUrl}${endPoint}${dataFeed}`)
 			.then(response => response.json())
 			.then(resData => {
@@ -110,6 +110,7 @@ class designProjects extends PureComponent {
 													gridCount={6}
 													designName={item.designName}
 													designId={item.designId}
+													showLoadMore
 												/>
 											</div>
 										</div>

@@ -14,30 +14,31 @@ const CarouselWrapper = styled.div`
 	margin-bottom: 1rem;
 `;
 
-function designView({ isServer, list, designName, designId }) {
+function designView({ isServer, data, designName, designId }) {
 	return (
 		<Layout header="solid" isServer={isServer}>
 			<Head>
 				{IndexPageMeta}
 				<title>
-					{list.designName} | {company.product}
+					{data.designName} | {company.product}
 				</title>
-				<meta key="description" name="description" content={list.designDescription} />,
-				<meta key="og-description" name="og:description" content={list.designDescription} />,
+				<meta key="description" name="description" content={data.designDescription} />,
+				<meta key="og-description" name="og:description" content={data.designDescription} />,
 			</Head>
 			<CarouselWrapper>
-				<Carousel slidesToShow={2} slidesToScroll={2} autoplay>
-					<Image src={list.designBanner[0]} />
-					{list.designBanner.map(concept => (
-						<Image src={concept} key={Math.random()} />
-					))}
-				</Carousel>
+				{data.designBanner && (
+					<Carousel slidesToShow={2} slidesToScroll={1} autoplay>
+						{data.designBanner.map(concept => (
+							<Image src={concept} key={Math.random()} />
+						))}
+					</Carousel>
+				)}
 			</CarouselWrapper>
 			<div className="container">
 				<div className="grid">
 					<div className="col-xs-12">
-						<h1>{list.designName}</h1>
-						<ItemCard products={list.assets} gridCount={3} designName={designName} designId={designId} />
+						<h1>{data.designName}</h1>
+						<ItemCard products={data.assets} gridCount={3} designName={designName} designId={designId} />
 					</div>
 				</div>
 			</div>
@@ -47,23 +48,33 @@ function designView({ isServer, list, designName, designId }) {
 
 designView.getInitialProps = async ({ req, query: { designName, designId } }) => {
 	const isServer = !!req;
-	const endPoint = `/demodesigns?${designName}=${designId}`;
+	const endPoint = `/demodesign/${designId}`;
 	const res = await fetch(page.apiBaseUrl + endPoint);
 	const resData = await res.json();
-	const { data } = resData;
-	const list = data.list[0];
-	return { isServer, designName, designId, list };
+	if (resData.status === "success") {
+		const { data } = resData;
+		return { isServer, designName, designId, data };
+	}
+	return {
+		isServer
+	};
 };
 
 designView.defaultProps = {
-	list: {
-		designName: ""
-	}
+	data: {},
+	designName: "",
+	designId: ""
 };
 
 designView.propTypes = {
 	isServer: PropTypes.bool.isRequired,
-	list: PropTypes.shape({
+	designName: PropTypes.string,
+	designId: PropTypes.string,
+	data: PropTypes.shape({
+		designName: PropTypes.string,
+		designId: PropTypes.string,
+		designDescription: PropTypes.string,
+		designBanner: PropTypes.arrayOf(PropTypes.string),
 		assets: PropTypes.arrayOf(
 			PropTypes.shape({
 				productId: PropTypes.string,
@@ -75,14 +86,8 @@ designView.propTypes = {
 				productInventory: PropTypes.string,
 				productName: PropTypes.string
 			})
-		),
-		designBanner: PropTypes.arrayOf(PropTypes.string),
-		designName: PropTypes.string,
-		designId: PropTypes.string,
-		designDescription: PropTypes.string
-	}),
-	designName: PropTypes.string.isRequired,
-	designId: PropTypes.string.isRequired
+		)
+	})
 };
 
 export default designView;
