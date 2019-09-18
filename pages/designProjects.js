@@ -98,7 +98,12 @@ class designProjects extends PureComponent {
 												)}
 											</div>
 											<div className="cols-xs-12 col-md-6">
-												<ItemCard products={item.assets} />
+												<ItemCard
+													products={item.assets}
+													gridCount={6}
+													designName={item.designName}
+													designId={item.designId}
+												/>
 											</div>
 										</div>
 									</div>

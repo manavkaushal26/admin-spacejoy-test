@@ -1,4 +1,6 @@
 import Image from "@components/Image";
+import { removeSpaces } from "@utils/helper";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -57,11 +59,12 @@ const ProductLoadMoreStyled = styled.div`
 	}
 `;
 
-function ItemCard({ products }) {
+function ItemCard({ products, gridCount, designName, designId }) {
+	const designNameClean = removeSpaces(designName);
 	return (
 		<div className="grid justify-space-between">
 			{products.map(product => (
-				<div className="col-xs-6" key={product.productId}>
+				<div className={`col-xs-${gridCount}`} key={product.productId}>
 					<div className="grid">
 						<div className="col-xs-12 justify-space-between">
 							<ProductImageWrapperStyled url={product.productImage} />
@@ -78,22 +81,27 @@ function ItemCard({ products }) {
 					</div>
 				</div>
 			))}
-			<div className="col-xs-6">
+			<div className={`col-xs-${gridCount}`}>
 				<div className="grid">
 					<div className="col-xs-12">
-						<ProductLoadMoreStyled>
-							<div>
-								<Image
-									size="10px"
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-								/>
-								<span>Load More...</span>
-								<Image
-									size="10px"
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-								/>
-							</div>
-						</ProductLoadMoreStyled>
+						<Link
+							href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
+							as={`/designView/${designNameClean}/${designId}`}
+						>
+							<ProductLoadMoreStyled>
+								<div>
+									<Image
+										size="10px"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+									/>
+									<span>Load More...</span>
+									<Image
+										size="10px"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+									/>
+								</div>
+							</ProductLoadMoreStyled>
+						</Link>
 					</div>
 				</div>
 			</div>
@@ -102,11 +110,15 @@ function ItemCard({ products }) {
 }
 
 ItemCard.defaultProps = {
-	products: []
+	products: [],
+	gridCount: 6
 };
 
 ItemCard.propTypes = {
-	products: PropTypes.arrayOf(PropTypes.shape({}))
+	products: PropTypes.arrayOf(PropTypes.shape({})),
+	gridCount: PropTypes.number,
+	designName: PropTypes.string.isRequired,
+	designId: PropTypes.string.isRequired
 };
 
 export default ItemCard;

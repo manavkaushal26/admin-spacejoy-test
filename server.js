@@ -82,13 +82,16 @@ app.prepare().then(() => {
 		server.use(compression({ threshold: 0 }));
 		server.use(bodyParser.json());
 		server.get("/pricing", (req, res) => {
-			app.render(req, res, "/pricing", req.params);
+			renderAndCache(req, res, "/pricing", req.params);
 		});
 		server.get("/faq/:slug?", (req, res) => {
 			app.render(req, res, "/faq", { slug: req.params.slug });
 		});
 		server.get("/designProjects", (req, res) => {
-			app.render(req, res, "/designProjects", req.params);
+			renderAndCache(req, res, "/designProjects", req.params);
+		});
+		server.get("/designView/:designName/:designId", (req, res) => {
+			app.render(req, res, "/designView", { designName: req.params.designName, designId: req.params.designName });
 		});
 		server.get("/designMySpace/:plan?", (req, res) => {
 			app.render(req, res, "/designMySpace", { plan: req.params.plan });

@@ -25,7 +25,6 @@ const OGMeta = [
 	<meta key="og-url" name="og:url" content="https://www.imdb.com/title/tt0117500/" />,
 	<meta key="og-image" name="og:image" content="https://ia.media-imdb.com/rock.jpg" />,
 	<meta key="og-site_name" name="og:site_name" content="Spacejoy" />,
-	<meta key="og-description" name="og:description" content="A group of U.S. Marines, under command of..." />,
 	<meta key="og-email" name="og:email" content={company.email.support} />,
 	<meta key="og-latitude" name="og:latitude" content={company.address[0].latitude} />,
 	<meta key="og-longitude" name="og:longitude" content={company.address[0].longitude} />,
@@ -63,7 +62,6 @@ const AppleLink = [
 
 const IndexPage = [
 	<meta key="keywords" name="keywords" content="your, tags" />,
-	<meta key="description" name="description" content="150 words" />,
 	<meta key="language" name="language" content="ES" />,
 	<meta key="robots" name="robots" content="index,follow" />,
 	<meta key="topic" name="topic" content="" />,

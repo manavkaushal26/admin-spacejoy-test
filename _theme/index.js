@@ -3,6 +3,10 @@ const theme = {
 		primary: "#FA6496",
 		secondary: "#FAC87D",
 		yellow: "#fdcb6e",
+		red: "#e74c3c",
+		green: "#2ecc71",
+		blue: "#3498db",
+		dark: "#34495e",
 		white: "#ffffff",
 		bg: {
 			light1: "#ffffff",
