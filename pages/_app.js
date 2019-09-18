@@ -1,6 +1,6 @@
 import { AuthProvider } from "@context/AuthStorage";
 import theme from "@theme/index";
-import { LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
+import { initGA, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
@@ -14,6 +14,10 @@ export default class MyApp extends App {
 	getUtmParam = url => url.split("utm_")[1];
 
 	componentDidMount() {
+		if (!window.GA_INITIALIZED) {
+			initGA();
+			window.GA_INITIALIZED = true;
+		}
 		LandingPage({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });
 		Router.router.events.on("routeChangeStart", url => {
 			if (url.split("/")[1] !== "playstore") {

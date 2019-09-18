@@ -45,6 +45,7 @@ class MyDocument extends Document {
 		return (
 			<html lang="en">
 				<Head>
+					{prod && <script dangerouslySetInnerHTML={{ __html: stopFlicker }} />}
 					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
 					<link rel="preconnect" href="//res.cloudinary.com" />
 					<link rel="preconnect" href="//www.google-analytics.com" />
@@ -71,7 +72,6 @@ class MyDocument extends Document {
 						href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
 					/>
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
-					{prod && <script dangerouslySetInnerHTML={{ __html: stopFlicker }} />}
 					<script
 						src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`}
 						async
