@@ -24,7 +24,7 @@ const FAQWrapper = styled.div`
 		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	}
 	&.open ${QuestionStyled} {
-		color: ${({ theme }) => theme.colors.primary};
+		color: ${({ theme }) => theme.colors.primary1};
 		font-weight: bold;
 		margin-bottom: 1rem;
 	}

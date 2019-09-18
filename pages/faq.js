@@ -10,8 +10,8 @@ import styled from "styled-components";
 
 const TopicStyled = styled.div`
 	display: flex;
-	border: 1px solid ${({ theme, active }) => (active ? theme.colors.primary : theme.colors.bg.dark1)};
-	color: ${({ theme, active }) => (active ? theme.colors.primary : theme.colors.fc.dark1)};
+	border: 1px solid ${({ theme, active }) => (active ? theme.colors.primary1 : theme.colors.bg.dark1)};
+	color: ${({ theme, active }) => (active ? theme.colors.primary1 : theme.colors.fc.dark1)};
 	padding: 1rem;
 	border-radius: 5px;
 	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);

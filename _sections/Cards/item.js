@@ -33,8 +33,8 @@ const ProductExternalLinkStyled = styled.button`
 	outline: none;
 	color: ${({ theme }) => theme.colors.fc.dark1};
 	&:hover {
-		color: ${({ theme }) => theme.colors.primary};
-		border: 1px solid ${({ theme }) => theme.colors.primary};
+		color: ${({ theme }) => theme.colors.primary1};
+		border: 1px solid ${({ theme }) => theme.colors.primary1};
 	}
 `;
 

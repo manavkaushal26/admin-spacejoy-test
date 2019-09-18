@@ -10,7 +10,7 @@ const CookieStyled = styled.div`
 	background: ${({ theme }) => theme.colors.fc.dark1};
 	color: white;
 	a {
-		color: ${({ theme }) => theme.colors.primary};
+		color: ${({ theme }) => theme.colors.primary1};
 	}
 `;
 
@@ -26,7 +26,7 @@ const HeaderStyled = styled.div`
 `;
 
 const TransparentHeaderStyled = styled(HeaderStyled)`
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.primary1};
 `;
 
 const SolidHeaderStyled = styled(HeaderStyled)`

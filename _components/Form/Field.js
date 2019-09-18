@@ -27,7 +27,7 @@ const SuggestionStyled = styled.div`
 `;
 
 const FieldWrapperStyled = styled.div`
-	color: ${({ hasError, theme }) => (hasError ? theme.colors.primary : theme.colors.fc.dark1)};
+	color: ${({ hasError, theme }) => (hasError ? theme.colors.primary1 : theme.colors.fc.dark1)};
 `;
 
 const LabelStyled = styled.label`
@@ -44,7 +44,7 @@ const DummyLabelStyled = styled.div`
 `;
 
 const ErrorTextStyled = styled.small`
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.primary1};
 	margin: 0.5rem 0rem;
 	display: inline-block;
 `;
@@ -62,7 +62,7 @@ const InputStyled = styled.input`
 	padding: 1.25rem;
 	width: 100%;
 	box-sizing: border-box;
-	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.primary : theme.colors.bg.dark1)};
+	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.primary1 : theme.colors.bg.dark1)};
 `;
 
 function Field({
@@ -173,7 +173,7 @@ function Field({
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12">
-						<Button shape="round" size="lg" full type="primary">
+						<Button type="submit" shape="rounded" size="lg" full variant="primary">
 							{label}
 						</Button>
 					</div>

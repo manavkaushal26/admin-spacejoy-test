@@ -6,16 +6,16 @@ import styled from "styled-components";
 
 const ActiveStyled = styled.a`
 	font-weight: bold;
-	color: ${({ theme }) => theme.colors.primary};
+	color: ${({ theme }) => theme.colors.primary11};
 	&:hover {
-		color: ${({ theme }) => theme.colors.primary};
+		color: ${({ theme }) => theme.colors.primary1};
 	}
 `;
 
 const NormalStyled = styled.a`
 	color: ${({ theme }) => theme.colors.fc.dark1};
 	&:hover {
-		color: ${({ theme }) => theme.colors.primary};
+		color: ${({ theme }) => theme.colors.primary1};
 	}
 `;
 

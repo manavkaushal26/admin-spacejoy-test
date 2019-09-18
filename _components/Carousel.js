@@ -2,15 +2,16 @@ import PropTypes from "prop-types";
 import React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
-import Button from "./Button";
+import ButtonBase from "./Button/ButtonBaseStyle";
 
 const Arrows = {
 	left: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_30/v1567694806/shared/left-dark_youtzq.svg",
 	right: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_30/v1567694807/shared/right-dark_sxnqtv.svg"
 };
 
-const BaseArrowsStyled = styled(Button)`
+const BaseArrowsStyled = styled(ButtonBase)`
 	position: absolute;
+	padding: 1rem;
 	top: 50%;
 	margin-top: -16px;
 	z-index: 1;

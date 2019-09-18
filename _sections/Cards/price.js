@@ -20,7 +20,7 @@ const PriceCardWrapperStyled = styled.div`
 
 const RecommendBannerStyled = styled.div`
 	padding: 0.25rem;
-	background: ${({ theme }) => theme.colors.primary};
+	background: ${({ theme }) => theme.colors.primary1};
 	color: white;
 	position: absolute;
 	width: 140px;
@@ -90,7 +90,13 @@ class PriceCard extends PureComponent {
 				<PriceCardFooterStyled>
 					<Link href={`/designMySpace?plan=${plan}`} as={`/designMySpace/${plan}`}>
 						<a href={`/designMySpace/${plan}`}>
-							<Button type={variant === "recommend" ? "primary" : ""}>Select {plan}</Button>
+							<Button
+								variant={variant === "recommend" ? "primary" : "secondary"}
+								size={variant === "recommend" ? "md" : "sm"}
+								shape="rounded"
+							>
+								Select {plan}
+							</Button>
 						</a>
 					</Link>
 				</PriceCardFooterStyled>

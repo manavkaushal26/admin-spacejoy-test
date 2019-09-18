@@ -10,7 +10,7 @@ const FormWrapperStyled = styled.form`
 `;
 
 const FormStatusStyled = styled.div`
-	background: ${({ theme }) => theme.colors.primary};
+	background: ${({ theme }) => theme.colors.primary1};
 	color: white;
 	margin-bottom: 1rem;
 	padding: 0.5rem 1rem;

@@ -95,7 +95,7 @@ function index() {
 									<strong>Plans starting at 19$</strong>
 								</p>
 								<div>
-									<Button type="primary" shape="round" size="md" onClick={goToDesignMySpace}>
+									<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 										DESIGN MY SPACE
 									</Button>
 								</div>
@@ -113,11 +113,9 @@ function index() {
 								<p>Set your budget, share pictures of your room and tell us about your style preferences . </p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions</p>
 								<p>Ready to transform your home scape?</p>
-								<div>
-									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
-										DESIGN MY SPACE
-									</Button>
-								</div>
+								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+									DESIGN MY SPACE
+								</Button>
 							</div>
 						</div>
 						<div className="col-xs-6">
@@ -157,11 +155,9 @@ function index() {
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
-								<div>
-									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
-										DESIGN MY SPACE
-									</Button>
-								</div>
+								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+									DESIGN MY SPACE
+								</Button>
 							</div>
 						</div>
 					</div>
@@ -176,11 +172,9 @@ function index() {
 								<p>Our designs feature products from your favorite brands</p>
 								<p>We will work within your budget to find those coveted pieces that spark joy</p>
 								<p>It&lsquo;s a hassle-free experience </p>
-								<div>
-									<Button shape="round" size="lg" onClick={goToDesignMySpace}>
-										DESIGN MY SPACE
-									</Button>
-								</div>
+								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+									DESIGN MY SPACE
+								</Button>
 							</div>
 						</div>
 						<div className="col-xs-6 ">
@@ -211,12 +205,9 @@ function index() {
 									</CarouselCardStyled>
 								))}
 							</Carousel>
-
-							<div>
-								<Button shape="round" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE
-								</Button>
-							</div>
+							<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+								DESIGN MY SPACE
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -230,11 +221,9 @@ function index() {
 								<p>Design stories straight from our customers</p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
-								<div>
-									<Button shape="round" size="lg" onClick={() => {}}>
-										DESIGN MY SPACE
-									</Button>
-								</div>
+								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+									DESIGN MY SPACE
+								</Button>
 							</div>
 						</div>
 					</div>
