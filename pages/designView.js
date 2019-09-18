@@ -14,7 +14,7 @@ const CarouselWrapper = styled.div`
 	margin-bottom: 1rem;
 `;
 
-function designView({ isServer, list }) {
+function designView({ isServer, list, designName, designId }) {
 	return (
 		<Layout header="solid" isServer={isServer}>
 			<Head>
@@ -36,7 +36,8 @@ function designView({ isServer, list }) {
 			<div className="container">
 				<div className="grid">
 					<div className="col-xs-12">
-						<ItemCard products={list.assets} gridCount={3} designName={list.designName} designId={list.designId} />
+						<h1>{list.designName}</h1>
+						<ItemCard products={list.assets} gridCount={3} designName={designName} designId={designId} />
 					</div>
 				</div>
 			</div>
@@ -51,7 +52,7 @@ designView.getInitialProps = async ({ req, query: { designName, designId } }) =>
 	const resData = await res.json();
 	const { data } = resData;
 	const list = data.list[0];
-	return { isServer, list };
+	return { isServer, designName, designId, list };
 };
 
 designView.defaultProps = {
@@ -76,10 +77,12 @@ designView.propTypes = {
 			})
 		),
 		designBanner: PropTypes.arrayOf(PropTypes.string),
-		designName: PropTypes.string.isRequired,
-		designId: PropTypes.string.isRequired,
+		designName: PropTypes.string,
+		designId: PropTypes.string,
 		designDescription: PropTypes.string
-	})
+	}),
+	designName: PropTypes.string.isRequired,
+	designId: PropTypes.string.isRequired
 };
 
 export default designView;
