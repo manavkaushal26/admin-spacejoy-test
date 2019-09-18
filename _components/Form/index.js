@@ -127,7 +127,6 @@ class FormBox extends Component {
 				await login({ token, redirectUrl });
 			}
 			if (name === "designmyspace" || name === "forgotPassword") {
-				console.log("redirectUrl", redirectUrl);
 				redirectToLocation(redirectUrl, response);
 			}
 		} else {
