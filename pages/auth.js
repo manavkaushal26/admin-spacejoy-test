@@ -1,3 +1,4 @@
+import ForgotPasswordForm from "@sections/Forms/ForgotPasswordForm";
 import Login from "@sections/Forms/LoginForm";
 import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
@@ -29,21 +30,27 @@ function auth({ isServer, flow, redirectUrl }) {
 						<div className="col-xs-12">
 							{flow === "login" && <Login redirectUrl={redirectUrl} />}
 							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
+							{flow === "forgot-password" && <ForgotPasswordForm redirectUrl={redirectUrl} />}
 						</div>
 						<div className="col-xs-12">
 							<span>{flow === "signup" ? "Already have an account? " : "Create new Account "}</span>
 							{flow === "signup" ? (
-								<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login" replace>
+								<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
 									<a>Login</a>
 								</Link>
 							) : (
-								<Link
-									href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }}
-									as="/auth/signup"
-									replace
-								>
-									<a>Signup</a>
-								</Link>
+								<>
+									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
+										<a>Signup</a>
+									</Link>
+									<br />
+									<Link
+										href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl: "/auth/login" } }}
+										as="/auth/forgot-password?redirectUrl=/auth/login"
+									>
+										<a>Forgot Password?</a>
+									</Link>
+								</>
 							)}
 						</div>
 					</div>

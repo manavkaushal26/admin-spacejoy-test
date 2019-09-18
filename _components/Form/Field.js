@@ -173,7 +173,7 @@ function Field({
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12">
-						<Button size="lg" full type="primary">
+						<Button shape="round" size="lg" full type="primary">
 							{label}
 						</Button>
 					</div>

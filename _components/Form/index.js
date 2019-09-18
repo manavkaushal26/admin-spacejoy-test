@@ -51,6 +51,11 @@ class FormBox extends Component {
 					password: state.userPassword.value
 				};
 			}
+			if (name === "forgotPassword") {
+				return {
+					email: state.userEmail.value
+				};
+			}
 			if (name === "designmyspace") {
 				if (destination === "/forms") {
 					return {
@@ -121,7 +126,8 @@ class FormBox extends Component {
 				const { token } = responseData;
 				await login({ token, redirectUrl });
 			}
-			if (name === "designmyspace") {
+			if (name === "designmyspace" || name === "forgotPassword") {
+				console.log("redirectUrl", redirectUrl);
 				redirectToLocation(redirectUrl, response);
 			}
 		} else {
