@@ -24,7 +24,7 @@ const ButtonStyled = styled(ButtonBase)`
 	font-size: ${({ size }) => {
 		switch (size) {
 			case "xs":
-				return "0.8rem";
+				return "0.75rem";
 			case "sm":
 				return "0.85rem";
 			case "md":
@@ -61,7 +61,7 @@ const ButtonStyled = styled(ButtonBase)`
 				return "0";
 		}
 	}};
-	border: ${({ fill, theme }) => (fill === "ghost" ? `1px solid ${theme.colors.bg.dark1}` : "none")};
+	border: ${({ fill, theme }) => (fill === "solid" ? "none" : `1px solid ${theme.colors.yellow}`)};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};
 `;
