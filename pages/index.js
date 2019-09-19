@@ -8,6 +8,7 @@ import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import Router from "next/router";
 import React from "react";
+import ReactCompareImage from "react-compare-image";
 import styled from "styled-components";
 
 const CarouselCardStyled = styled.div`
@@ -214,10 +215,16 @@ function index() {
 			</SectionWrapperStyled>
 			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
 				<div className="container">
-					<div className="grid justify-space-between align-center">
-						<div className="col-xs-6">
-							<div>
-								<h1>Customer Delight</h1>
+					<div className="grid">
+						<div className="col-xs-12">
+							<h1>Customer Delight</h1>
+							<ReactCompareImage
+								leftImageLabel="Before"
+								leftImage="https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2389&q=80"
+								rightImageLabel="After"
+								rightImage="https://images.unsplash.com/photo-1488901512066-cd403111aeb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2389&q=80"
+							/>
+							<div className="text-center">
 								<p>Design stories straight from our customers</p>
 								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
 								<p>Ready to transform your home scape?</p>
