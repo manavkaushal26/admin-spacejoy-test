@@ -63,7 +63,16 @@ const settings = {
 	autoplaySpeed: 5000,
 	pauseOnHover: true,
 	nextArrow: <NextArrow onClick={prev} />,
-	prevArrow: <PrevArrow onClick={next} />
+	prevArrow: <PrevArrow onClick={next} />,
+	responsive: [
+		{
+			breakpoint: 480,
+			settings: {
+				slidesToShow: 1,
+				slidesToScroll: 1
+			}
+		}
+	]
 };
 
 function Carousel({ children, slidesToShow, slidesToScroll, autoplay }) {

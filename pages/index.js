@@ -1,5 +1,6 @@
 import Button from "@components/Button";
 import Carousel from "@components/Carousel";
+import Divider from "@components/Divider";
 import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
@@ -128,29 +129,29 @@ function index() {
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">
-						<div className="col-xs-5">
+						<div className="col-xs-12 col-sm-5">
 							<div className="grid">
-								<div className="col-xs-4">
+								<div className="col-xs-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer5_irflbd.jpg" />
 								</div>
-								<div className="col-xs-4">
+								<div className="col-xs-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer0_rmledc.jpg" />
 								</div>
-								<div className="col-xs-4">
+								<div className="col-xs-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer1_gzjvpu.jpg" />
 								</div>
-								<div className="col-xs-4">
+								<div className="col-xs-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer2_wt3yo2.jpg" />
 								</div>
-								<div className="col-xs-4">
+								<div className="col-xs-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer3_fn8uxl.jpg" />
 								</div>
-								<div className="col-xs-4">
+								<div className="col-xs-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564330/web/designer4_mas7gx.jpg" />
 								</div>
 							</div>
 						</div>
-						<div className="col-xs-5">
+						<div className="col-xs-12 col-sm-5">
 							<div>
 								<h1>Crafted By Our Design Experts</h1>
 								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
@@ -216,22 +217,37 @@ function index() {
 			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
 				<div className="container">
 					<div className="grid">
-						<div className="col-xs-12">
+						<div className="col-xs-12 col-sm-6">
 							<h1>Customer Delight</h1>
+							<h4>Design stories straight from our customers</h4>
+							<div className="grid">
+								<div className="col-xs-6 col-sm-4 col-md-3">
+									<Image
+										size="100px"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
+									/>
+								</div>
+								<div className="col-xs-6 col-sm-8 col-md-9 col-bleed-x">
+									<p>
+										Living Room for <strong> Erika Lee </strong>
+									</p>
+									<p> Denver, Colorado </p>
+								</div>
+							</div>
+							<Divider />
+							<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+							<p>Ready to transform your home scape?</p>
+							<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+								DESIGN MY SPACE
+							</Button>
+						</div>
+						<div className="col-xs-12 col-sm-6">
 							<ReactCompareImage
 								leftImageLabel="Before"
-								leftImage="https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2389&q=80"
+								leftImage="https://res.cloudinary.com/spacejoy/image/upload/v1568876295/web/Design_2_before_igjbzg.jpg"
 								rightImageLabel="After"
-								rightImage="https://images.unsplash.com/photo-1488901512066-cd403111aeb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2389&q=80"
+								rightImage="https://res.cloudinary.com/spacejoy/image/upload/v1568876295/web/Design_2_after_m2grcx.jpg"
 							/>
-							<div className="text-center">
-								<p>Design stories straight from our customers</p>
-								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
-								<p>Ready to transform your home scape?</p>
-								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE
-								</Button>
-							</div>
 						</div>
 					</div>
 				</div>
