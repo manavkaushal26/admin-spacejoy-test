@@ -4,11 +4,10 @@ module.exports = {
 		apiBaseUrl: "//api.homefuly.com/api",
 		placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 		googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
-		ga: "UA-145341512-2",
+		ga: "UA-145327802-1",
 		gtm: "GTM-T6M3M8X",
 		optimize: "GTM-KKZ3VGJ",
-		country: "india",
-		uaHeader: "User-Agent",
+		country: "USA",
 		playStoreUrl: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
 		appStoreUrl: "https://apps.apple.com/us/app/homefuly/id1448690338",
 		whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
@@ -17,9 +16,9 @@ module.exports = {
 		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1568650421/shared/spacejoy_hgqxoa.svg",
 		name: "Neo Design Labs Inc",
 		product: "Spacejoy",
-		url: "",
-		subject: "",
-		description: "",
+		url: "//spacejoy.com",
+		subject: "Smart Online Interior Design & Decorating in 3D",
+		description: "Interior design - Get 3D home decor",
 		email: {
 			support: "hello@spacejoy.com",
 			connect: ""

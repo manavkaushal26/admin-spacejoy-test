@@ -20,23 +20,16 @@ const BaseMeta = [
 ];
 
 const OGMeta = [
-	<meta key="og-title" name="og:title" content="SpaceJoy" />,
+	<meta key="og-title" name="og:title" content={company.product} />,
 	<meta key="og-type" name="og:type" content="Interior" />,
-	<meta key="og-url" name="og:url" content="https://www.imdb.com/title/tt0117500/" />,
-	<meta key="og-image" name="og:image" content="https://ia.media-imdb.com/rock.jpg" />,
-	<meta key="og-site_name" name="og:site_name" content="Spacejoy" />,
-	<meta key="og-email" name="og:email" content={company.email.support} />,
-	<meta key="og-latitude" name="og:latitude" content={company.address[0].latitude} />,
-	<meta key="og-longitude" name="og:longitude" content={company.address[0].longitude} />,
+	<meta key="og-url" name="og:url" content="https://spacejoy.com/" />,
 	<meta
-		key="og-street"
-		name="og:street-address"
-		content={company.address[0].location1 + company.address[0].location2}
+		key="og-image"
+		name="og:image"
+		content="https://res.cloudinary.com/spacejoy/image/upload/v1568907005/web/spacejoy_wbyfqf.png"
 	/>,
-	<meta key="og-locality" name="og:locality" content={company.address[0].city} />,
-	<meta key="og-region" name="og:region" content={company.address[0].state} />,
-	<meta key="og-postal" name="og:postal-code" content={company.address[0].pin} />,
-	<meta key="og-country" name="og:country-name" content={company.address[0].country} />,
+	<meta key="og-site_name" name="og:site_name" content={company.product} />,
+	<meta key="og-email" name="og:email" content={company.email.support} />,
 	<meta key="fbId" name="fb:page_id" content={company.social.facebookId} />
 ];
 
@@ -49,23 +42,27 @@ const AppleMeta = [
 
 const IEMeta = [
 	<meta key="msapplicationStartUrl" name="msapplication-starturl" content="/" />,
-	<meta key="msapplicationLogo" name="msapplication-square310x310logo" content="ios.png" />
+	<meta key="msapplicationLogo" name="msapplication-square310x310logo" content="/static/spacejoy-310.png" />
 ];
 
 const AppleLink = [
 	<link key="apple-touch-icon1" rel="apple-touch-icon" href="/static/ios-icon.png" />,
-	<link key="apple-touch-icon2" rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad.png" />,
-	<link key="apple-touch-icon3" rel="apple-touch-icon" sizes="114x114" href="touch-icon-iphone4.png" />,
-	<link key="apple-touch-startup1" rel="apple-touch-startup-image" href="/startup.png" />,
-	<link key="apple-touch-icon4" rel="apple-touch-icon" type="image/png" href="/apple-touch-icon.png" />
+	<link key="apple-touch-icon2" rel="apple-touch-icon" sizes="72x72" href="/static/spacejoy-72.png" />,
+	<link key="apple-touch-icon3" rel="apple-touch-icon" sizes="114x114" href="/static/spacejoy-114.png" />,
+	<link key="apple-touch-startup1" rel="apple-touch-startup-image" href="/static/spacejoy-310.png" />,
+	<link key="apple-touch-icon4" rel="apple-touch-icon" type="image/png" href="/static/spacejoy-310.png" />
 ];
 
 const IndexPage = [
-	<meta key="keywords" name="keywords" content="your, tags" />,
+	<meta
+		key="keywords"
+		name="keywords"
+		content="spacejoy, home-decor, interior, design tips, who to improve your home"
+	/>,
 	<meta key="language" name="language" content="ES" />,
 	<meta key="robots" name="robots" content="index,follow" />,
-	<meta key="topic" name="topic" content="" />,
-	<meta key="summary" name="summary" content="" />
+	<meta key="topic" name="topic" content={company.subject} />,
+	<meta key="summary" name="summary" content={company.description} />
 ];
 
 const IndexPageMeta = [...BaseMeta, ...OGMeta, ...AppleMeta, ...IEMeta, ...AppleLink, ...IndexPage];

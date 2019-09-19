@@ -66,14 +66,14 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
 			{products.map(product => (
 				<div className={`col-xs-${gridCount}`} key={product.productId}>
 					<div className="grid">
-						<div className="col-xs-12 justify-space-between">
+						<div className="col-12 justify-space-between">
 							<ProductImageWrapperStyled url={product.productImage} />
 						</div>
-						<div className="col-xs-8 col-bleed-y">
+						<div className="col-8 col-bleed-y">
 							<ProductNameStyled>{product.productName}</ProductNameStyled>
 							<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
 						</div>
-						<div className="col-xs-4 col-bleed-y">
+						<div className="col-4 col-bleed-y">
 							<a href={product.productExternalUrl} target="_blank" rel="noopener noreferrer">
 								<ProductExternalLinkStyled>Buy Now</ProductExternalLinkStyled>
 							</a>

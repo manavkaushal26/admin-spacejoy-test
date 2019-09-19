@@ -18,22 +18,6 @@ const data = {
 		{
 			no: "4",
 			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v4.jpg"
-		},
-		{
-			no: "5",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/V1.jpg"
-		},
-		{
-			no: "6",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v2.jpg"
-		},
-		{
-			no: "7",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v3.jpg"
-		},
-		{
-			no: "8",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v4.jpg"
 		}
 	]
 };

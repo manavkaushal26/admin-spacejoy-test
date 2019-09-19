@@ -1,10 +1,9 @@
 import Image from "@components/Image";
 import cookie from "js-cookie";
-import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
-import CommonHeaderBody from "./CommonHeaderBody";
+import HeaderBody from "./HeaderBody";
 
 const CookieStyled = styled.div`
 	background: ${({ theme }) => theme.colors.fc.dark1};
@@ -15,6 +14,7 @@ const CookieStyled = styled.div`
 `;
 
 const HeaderStyled = styled.div`
+	background: ${({ theme }) => theme.colors.bg.light1};
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -25,23 +25,15 @@ const HeaderStyled = styled.div`
 	}
 `;
 
-const TransparentHeaderStyled = styled(HeaderStyled)`
-	color: ${({ theme }) => theme.colors.primary1};
-`;
-
-const SolidHeaderStyled = styled(HeaderStyled)`
-	background: ${({ theme }) => theme.colors.bg.light1};
-`;
-
 class Header extends PureComponent {
 	state = {
 		isRaised: false,
-		cookieStatus: true
+		cookiePolicyStatus: true
 	};
 
 	componentDidMount = () => {
 		window.addEventListener("scroll", this.handleScroll);
-		this.setState({ cookieStatus: cookie.get("cookie-policy") });
+		this.setState({ cookiePolicyStatus: cookie.get("cookie-policy") });
 	};
 
 	componentWillUnmount = () => {
@@ -57,57 +49,45 @@ class Header extends PureComponent {
 		}
 	};
 
-	updateCookieStatus = () => {
+	updateCookiePolicyStatus = () => {
 		cookie.set("cookie-policy", true, { expires: 30 });
-		this.setState({ cookieStatus: true });
+		this.setState({ cookiePolicyStatus: true });
 	};
 
 	render() {
-		const { variant } = this.props;
-		const { isRaised, cookieStatus } = this.state;
-		switch (variant) {
-			case "transparent":
-				return <TransparentHeaderStyled>{CommonHeaderBody()}</TransparentHeaderStyled>;
-			case "solid":
-				return (
-					<SolidHeaderStyled className={isRaised ? "raised" : null}>
-						{!cookieStatus && (
-							<CookieStyled className="text-center">
-								<div className="container">
-									<div className="grid">
-										<div className="col-xs-10">
-											By using spacejoy.com, you agree with our use of cookies to improve performance.{" "}
-											<ActiveLink href="/cookies" as="/cookies">
-												Cookies Statement
-											</ActiveLink>
-										</div>
-										<div className="col-xs-2">
-											<Image
-												onClick={this.updateCookieStatus}
-												size="16px"
-												src="https://res.cloudinary.com/spacejoy/image/upload/v1568567510/web/cancel_dl7sw1.svg"
-												style={{ cursor: "pointer" }}
-											/>
-										</div>
-									</div>
+		const { isRaised, cookiePolicyStatus } = this.state;
+		return (
+			<HeaderStyled className={isRaised ? "raised" : null}>
+				{!cookiePolicyStatus && (
+					<CookieStyled className="text-center">
+						<div className="container">
+							<div className="grid">
+								<div className="col-xs-10">
+									By using spacejoy.com, you agree with our use of cookies to improve performance.{" "}
+									<ActiveLink href="/cookies" as="/cookies">
+										Cookies Statement
+									</ActiveLink>
 								</div>
-							</CookieStyled>
-						)}
-						{CommonHeaderBody()}
-					</SolidHeaderStyled>
-				);
-			default:
-				return <SolidHeaderStyled />;
-		}
+								<div className="col-xs-2">
+									<Image
+										onClick={this.updateCookiePolicyStatus}
+										size="16px"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1568567510/web/cancel_dl7sw1.svg"
+										style={{ cursor: "pointer" }}
+									/>
+								</div>
+							</div>
+						</div>
+					</CookieStyled>
+				)}
+				<HeaderBody />
+			</HeaderStyled>
+		);
 	}
 }
 
-Header.propTypes = {
-	variant: PropTypes.string
-};
+Header.propTypes = {};
 
-Header.defaultProps = {
-	variant: "solid"
-};
+Header.defaultProps = {};
 
 export default Header;

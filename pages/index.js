@@ -20,12 +20,11 @@ const CarouselCardStyled = styled.div`
 
 const HeroWrapperStyled = styled.section`
 	position: relative;
-	background: #a3c6c3 url("https://res.cloudinary.com/spacejoy/image/upload/v1568742399/web/home-banner_ox5h3w.jpg");
+	background: ${({ theme }) => theme.colors.primary}
+		url("https://res.cloudinary.com/spacejoy/image/upload/v1568892568/web/home-banner_adnln0.jpg") no-repeat;
 	background-size: cover;
-	background-position: center 100%;
-	min-height: 80vh;
-	max-height: 90vh;
-	height: auto;
+	height: 80vh;
+	max-height: 700px;
 	display: flex;
 	align-items: center;
 	background-attachment: fixed;
@@ -131,22 +130,22 @@ function index() {
 					<div className="grid justify-space-between align-center">
 						<div className="col-xs-12 col-sm-5">
 							<div className="grid">
-								<div className="col-xs-6 col-md-4">
+								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer5_irflbd.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-4">
+								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer0_rmledc.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-4">
+								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer1_gzjvpu.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-4">
+								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer2_wt3yo2.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-4">
+								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer3_fn8uxl.jpg" />
 								</div>
-								<div className="col-xs-6 col-md-4">
+								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564330/web/designer4_mas7gx.jpg" />
 								</div>
 							</div>
@@ -221,13 +220,13 @@ function index() {
 							<h1>Customer Delight</h1>
 							<h4>Design stories straight from our customers</h4>
 							<div className="grid">
-								<div className="col-xs-6 col-sm-4 col-md-3">
+								<div className="col-4  col-md-3">
 									<Image
 										size="100px"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
 									/>
 								</div>
-								<div className="col-xs-6 col-sm-8 col-md-9 col-bleed-x">
+								<div className="col-8  col-md-9 col-bleed-y">
 									<p>
 										Living Room for <strong> Erika Lee </strong>
 									</p>
