@@ -86,6 +86,7 @@ class Header extends PureComponent {
 												onClick={this.updateCookieStatus}
 												size="16px"
 												src="https://res.cloudinary.com/spacejoy/image/upload/v1568567510/web/cancel_dl7sw1.svg"
+												style={{ cursor: "pointer" }}
 											/>
 										</div>
 									</div>

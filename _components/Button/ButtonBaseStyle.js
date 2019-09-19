@@ -12,7 +12,6 @@ const ButtonStyled = styled.button`
 	border: none;
 	text-transform: uppercase;
 	position: relative;
-	padding: 0.5rem;
 	font-size: 1rem;
 `;
 

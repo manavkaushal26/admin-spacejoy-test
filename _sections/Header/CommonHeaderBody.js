@@ -72,7 +72,11 @@ const CommonHeaderBody = () => {
 									Login
 								</ActiveLink>
 							)}
-							{token && <Button onClick={logout}>Logout</Button>}
+							{token && (
+								<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
+									Logout
+								</Button>
+							)}
 						</li>
 					</HorizontalListStyled>
 				</div>

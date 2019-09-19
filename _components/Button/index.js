@@ -61,6 +61,7 @@ const ButtonStyled = styled(ButtonBase)`
 				return "0";
 		}
 	}};
+	border: ${({ fill, theme }) => (fill === "ghost" ? `1px solid ${theme.colors.bg.dark1}` : "none")};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};
 `;

@@ -92,8 +92,9 @@ class PriceCard extends PureComponent {
 						<a href={`/designMySpace/${plan}`}>
 							<Button
 								variant={variant === "recommend" ? "primary" : "secondary"}
-								size={variant === "recommend" ? "md" : "sm"}
+								fill={variant === "recommend" ? "solid" : "ghost"}
 								shape="rounded"
+								size="sm"
 							>
 								Select {plan}
 							</Button>
