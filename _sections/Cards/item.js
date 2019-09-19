@@ -89,19 +89,21 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
 								href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
 								as={`/designView/${designNameClean}/${designId}`}
 							>
-								<ProductLoadMoreStyled>
-									<div>
-										<Image
-											size="10px"
-											src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-										/>
-										<span>Load More...</span>
-										<Image
-											size="10px"
-											src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-										/>
-									</div>
-								</ProductLoadMoreStyled>
+								<a href={`/designView/${designNameClean}/${designId}`}>
+									<ProductLoadMoreStyled>
+										<div>
+											<Image
+												size="10px"
+												src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+											/>
+											<span>Load More...</span>
+											<Image
+												size="10px"
+												src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
+											/>
+										</div>
+									</ProductLoadMoreStyled>
+								</a>
 							</Link>
 						</div>
 					</div>

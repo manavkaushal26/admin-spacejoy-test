@@ -22,7 +22,8 @@ const BaseMeta = [
 const OGMeta = [
 	<meta key="og-title" name="og:title" content={company.product} />,
 	<meta key="og-description" name="og:description" content={company.description} />,
-	<meta key="og-type" name="og:type" content="Interior" />,
+	<meta key="og-site-name" name="og_site_name" property="og:site_name" content="spacejoy.com" />,
+	<meta key="og-type" name="og:type" content="website" />,
 	<meta key="og-url" name="og:url" content="https://spacejoy.com/" />,
 	<meta
 		key="og-image"
