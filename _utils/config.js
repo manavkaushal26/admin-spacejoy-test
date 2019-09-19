@@ -39,7 +39,9 @@ module.exports = {
 		],
 		social: {
 			facebook: "https://www.facebook.com/spacejoyapp/",
-			facebookId: "311308549765277",
+			facebookId: "652491341906462",
+			googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
+			googleClientId: "628064588100-islor8kv96kol2rjrocarhqs4d604vec.apps.googleusercontent.com",
 			linkedin: "",
 			twitter: "https://twitter.com/spacejoyapp/",
 			instagram: "https://www.instagram.com/spacejoyapp/",
