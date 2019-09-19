@@ -21,8 +21,7 @@ function auth({ isServer, flow, redirectUrl }) {
 			<div className="container">
 				<div className="grid">
 					<div className="col-xs-12 text-center">
-						<h1>{flow}</h1>
-						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+						<h1>{flow.toUpperCase()}</h1>
 					</div>
 				</div>
 				<div className="grid justify-space-around">

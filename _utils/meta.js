@@ -21,6 +21,7 @@ const BaseMeta = [
 
 const OGMeta = [
 	<meta key="og-title" name="og:title" content={company.product} />,
+	<meta key="og-description" name="og:description" content={company.description} />,
 	<meta key="og-type" name="og:type" content="Interior" />,
 	<meta key="og-url" name="og:url" content="https://spacejoy.com/" />,
 	<meta
@@ -62,7 +63,8 @@ const IndexPage = [
 	<meta key="language" name="language" content="ES" />,
 	<meta key="robots" name="robots" content="index,follow" />,
 	<meta key="topic" name="topic" content={company.subject} />,
-	<meta key="summary" name="summary" content={company.description} />
+	<meta key="summary" name="summary" content={company.description} />,
+	<meta key="description" name="description" content={company.description} />
 ];
 
 const IndexPageMeta = [...BaseMeta, ...OGMeta, ...AppleMeta, ...IEMeta, ...AppleLink, ...IndexPage];

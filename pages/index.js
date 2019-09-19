@@ -27,7 +27,9 @@ const HeroWrapperStyled = styled.section`
 	max-height: 700px;
 	display: flex;
 	align-items: center;
-	background-attachment: fixed;
+	@media (min-width: 400px) {
+		background-attachment: fixed;
+	}
 `;
 
 const HeroCardStyled = styled.section`

@@ -18,7 +18,7 @@ module.exports = {
 		product: "Spacejoy",
 		url: "//spacejoy.com",
 		subject: "Smart Online Interior Design & Decorating in 3D",
-		description: "Interior design - Get 3D home decor",
+		description: "Experience the joy of designing your home in 3D using products from brands you can buy immediately",
 		email: {
 			support: "hello@spacejoy.com",
 			connect: ""
