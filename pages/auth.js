@@ -9,6 +9,19 @@ import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 
+function getHeadingText(flow) {
+	switch (flow) {
+		case "signup":
+			return "Signup to unlock your stunning room";
+		case "login":
+			return "Welcome Back Let's Login";
+		case "forgot-password":
+			return "Forgot Password? Fear not. We’ll email you instructions to reset your password.";
+		default:
+			return "";
+	}
+}
+
 function auth({ isServer, flow, redirectUrl }) {
 	return (
 		<Layout header="solid" isServer={isServer}>
@@ -19,13 +32,11 @@ function auth({ isServer, flow, redirectUrl }) {
 				</title>
 			</Head>
 			<div className="container">
-				<div className="grid">
-					<div className="col-xs-12 text-center">
-						<h1>{flow.toUpperCase()}</h1>
-					</div>
-				</div>
 				<div className="grid justify-space-around">
 					<div className="col-xs-12 col-sm-8 col-md-4">
+						<div className="col-12">
+							<h3>{getHeadingText(flow)}</h3>
+						</div>
 						<div className="col-xs-12">
 							{flow === "login" && <Login redirectUrl={redirectUrl} />}
 							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}

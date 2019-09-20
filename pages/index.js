@@ -7,6 +7,7 @@ import { company } from "@utils/config";
 import MockData from "@utils/designConceptsMock";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
+import Link from "next/link";
 import Router from "next/router";
 import React from "react";
 import ReactCompareImage from "react-compare-image";
@@ -95,13 +96,16 @@ function index() {
 									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
 								</HeroSubText>
 								<p>
-									<strong>Plans starting at 19$</strong>
+									<strong>Plans starting at $19</strong>
 								</p>
-								<div>
-									<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
-										DESIGN MY SPACE
-									</Button>
-								</div>
+								<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+									DESIGN MY SPACE
+								</Button>
+								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
+									<a href="/designProjects">
+										<p>Explore stunning design layouts.</p>
+									</a>
+								</Link>
 							</HeroCardStyled>
 						</div>
 					</div>
@@ -192,10 +196,14 @@ function index() {
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12 text-center">
-							<CenterTextStyled>Doesn&lsquo;t Spark Joy?</CenterTextStyled>
+							<CenterTextStyled>Swap It Till You Love It</CenterTextStyled>
 							<CenterSubTextStyled>
-								We&lsquo;ll revise your design until it reflects your perfect space. <br />
-								{company.product} designers are here to help
+								Revision is our mantra! We&apos;ll make sure what you see sparks total joy! <br />
+								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
+									<a href="/designProjects">Explore multiple layouts</a>
+								</Link>
+								, swap furniture from various brands that reflects your style and is in your budget until you&apos;re
+								all hearts about it.
 							</CenterSubTextStyled>
 							<Carousel slidesToShow={4} slidesToScroll={4} autoplay key={MockData.customerId}>
 								{MockData.concept.map(concept => (

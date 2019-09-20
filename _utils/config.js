@@ -5,7 +5,7 @@ module.exports = {
 		placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 		googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 		ga: "UA-145327802-1",
-		gtm: "GTM-T6M3M8X",
+		gtm: "GTM-WC4HSB6",
 		optimize: "GTM-KKZ3VGJ",
 		country: "USA",
 		playStoreUrl: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
