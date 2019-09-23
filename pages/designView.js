@@ -14,6 +14,11 @@ const CarouselWrapper = styled.div`
 	margin-bottom: 1rem;
 `;
 
+const DesignDescriptionStyled = styled.div`
+	margin-bottom: 4rem;
+	color: ${({ theme }) => theme.colors.fc.dark2};
+`;
+
 function designView({ isServer, data, designName, designId }) {
 	return (
 		<Layout header="solid" isServer={isServer}>
@@ -38,7 +43,10 @@ function designView({ isServer, data, designName, designId }) {
 				<div className="grid">
 					<div className="col-xs-12">
 						<h1>{data.designName}</h1>
-						<ItemCard products={data.assets} gridCount={3} designName={designName} designId={designId} />
+						{data.designDescription && data.designDescription !== "None" && (
+							<DesignDescriptionStyled>{data.designDescription}</DesignDescriptionStyled>
+						)}
+						<ItemCard products={data.assets} gridCount={3} designName={designName} designId={designId} size="200" />
 					</div>
 				</div>
 			</div>

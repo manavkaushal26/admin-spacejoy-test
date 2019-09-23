@@ -7,17 +7,21 @@ import styled from "styled-components";
 
 const ProductImageWrapperStyled = styled.div`
 	background: ${({ theme, url }) => `${theme.colors.bg.light2} url('${url}')`};
-	height: 130px;
+	height: ${({ size }) => `${size}px`};
 	background-repeat: no-repeat;
 	background-position: center;
+	background-size: ${({ size }) => (size === "130" ? `${size}px` : "cover")};
 `;
 
-const ProductNameStyled = styled.h5`
+const ProductBrandStyled = styled.h5`
 	margin: 0;
-	font-weight: normal;
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+`;
+
+const ProductNameStyled = styled(ProductBrandStyled)`
+	font-weight: normal;
 `;
 
 const ProductPriceStyled = styled.h3`
@@ -40,14 +44,14 @@ const ProductExternalLinkStyled = styled.button`
 
 const ProductLoadMoreStyled = styled.div`
 	width: 100%;
-	height: 130px;
+	height: ${({ size }) => `${size}px`};
 	padding: 1rem;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	div {
 		border: 1px dashed ${({ theme }) => theme.colors.bg.light2};
 		display: flex;
 		flex-direction: column;
-		height: calc(130px - 2rem);
+		height: ${({ size }) => `calc(${size}px - 2rem)`};
 		justify-content: center;
 		align-items: center;
 		img {
@@ -59,7 +63,7 @@ const ProductLoadMoreStyled = styled.div`
 	}
 `;
 
-function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
+function ItemCard({ products, gridCount, designName, designId, showLoadMore, size }) {
 	const designNameClean = removeSpaces(designName);
 	return (
 		<div className="grid">
@@ -67,13 +71,14 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
 				<div className={`col-xs-${gridCount}`} key={product.productId}>
 					<div className="grid">
 						<div className="col-12 justify-space-between">
-							<ProductImageWrapperStyled url={product.productImage} />
+							<ProductImageWrapperStyled url={product.productImage} size={size} />
 						</div>
-						<div className="col-8 col-bleed-y">
+						<div className="col-7">
 							<ProductNameStyled>{product.productName}</ProductNameStyled>
+							<ProductBrandStyled>{product.productRetailer}</ProductBrandStyled>
 							<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
 						</div>
-						<div className="col-4 col-bleed-y">
+						<div className="col-5">
 							<a href={product.productExternalUrl} target="_blank" rel="noopener noreferrer">
 								<ProductExternalLinkStyled>Buy Now</ProductExternalLinkStyled>
 							</a>
@@ -90,13 +95,13 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
 								as={`/designView/${designNameClean}/${designId}`}
 							>
 								<a href={`/designView/${designNameClean}/${designId}`}>
-									<ProductLoadMoreStyled>
+									<ProductLoadMoreStyled size={size}>
 										<div>
 											<Image
 												size="10px"
 												src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
 											/>
-											<span>Load More...</span>
+											<span>See All Products</span>
 											<Image
 												size="10px"
 												src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
@@ -116,7 +121,8 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore }) {
 ItemCard.defaultProps = {
 	products: [],
 	gridCount: 6,
-	showLoadMore: false
+	showLoadMore: false,
+	size: "130"
 };
 
 ItemCard.propTypes = {
@@ -124,7 +130,8 @@ ItemCard.propTypes = {
 	gridCount: PropTypes.number,
 	designName: PropTypes.string.isRequired,
 	designId: PropTypes.string.isRequired,
-	showLoadMore: PropTypes.bool
+	showLoadMore: PropTypes.bool,
+	size: PropTypes.string
 };
 
 export default ItemCard;

@@ -4,9 +4,11 @@ import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
 import { company, page } from "@utils/config";
+import { removeSpaces } from "@utils/helper";
 import IndexPageMeta from "@utils/meta";
 import fetch from "isomorphic-unfetch";
 import Head from "next/head";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -76,7 +78,7 @@ class designProjects extends PureComponent {
 						hasMore={hasMore}
 						loader={
 							<InfiniteLoaderStyled className="loader" key={0}>
-								Loading...
+								Loading Designs...
 							</InfiniteLoaderStyled>
 						}
 					>
@@ -87,11 +89,21 @@ class designProjects extends PureComponent {
 										<DesignTitleStyled>{item.designName}</DesignTitleStyled>
 										<div className="grid">
 											<div className="cols-xs-12 col-md-6">
-												<Carousel slidesToShow={1} slidesToScroll={1}>
-													{item.designBanner.map(banner => (
-														<Image key={Math.random()} src={banner} />
-													))}
-												</Carousel>
+												<Link
+													href={{
+														pathname: "/designView",
+														query: { designName: removeSpaces(item.designName), designId: item.designId }
+													}}
+													as={`/designView/${removeSpaces(item.designName)}/${item.designId}`}
+												>
+													<a href={`/designView/${removeSpaces(item.designName)}/${item.designId}`}>
+														<Carousel slidesToShow={1} slidesToScroll={1}>
+															{item.designBanner.map(banner => (
+																<Image key={Math.random()} src={banner} />
+															))}
+														</Carousel>
+													</a>
+												</Link>
 												{item.designDescription !== "None" && (
 													<>
 														<div className="text-center">

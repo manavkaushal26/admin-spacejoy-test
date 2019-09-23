@@ -12,9 +12,9 @@ import React from "react";
 function getHeadingText(flow) {
 	switch (flow) {
 		case "signup":
-			return "Signup to unlock your stunning room";
+			return "Signup To Unlock Your Stunning Room";
 		case "login":
-			return "Welcome Back Let's Login";
+			return "Welcome Back";
 		case "forgot-password":
 			return "Forgot Password? Fear not. We’ll email you instructions to reset your password.";
 		default:

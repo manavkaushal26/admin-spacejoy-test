@@ -55,7 +55,6 @@ class faq extends PureComponent {
 					<title>Pricing | {company.product}</title>
 				</Head>
 				<div className="container">
-					<Image size="354px" src="https://res.cloudinary.com/spacejoy/image/upload/v1567248692/web/faq_dgczvi.jpg" />
 					<div className="grid">
 						<div className="col-xs-12">
 							<h1>Frequently Asked Questions</h1>
@@ -63,7 +62,7 @@ class faq extends PureComponent {
 							<div className="grid">
 								{filteredTag &&
 									filteredTag.map(item => (
-										<div className="col-xs-12 col-md-3" key={Math.random() * 10}>
+										<div className="col-12 col-md-3" key={Math.random() * 10}>
 											<TopicStyled active={item === activeTag} onClick={() => this.handleFilter(item)}>
 												<Image
 													size="xs"

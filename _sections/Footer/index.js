@@ -130,7 +130,7 @@ function index() {
 							<div className="col-xs-3">
 								<Image
 									size="100px"
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1567500722/web/happiness-guarantee_h4yllh.svg"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1569231120/web/Badge_dpkz2m.svg"
 								/>
 							</div>
 							<div className="col-xs-9">

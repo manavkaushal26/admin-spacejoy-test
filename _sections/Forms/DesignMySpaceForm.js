@@ -26,7 +26,7 @@ function DesignMySpaceForm({ plan }) {
 			<Field
 				name="userMobile"
 				type="tel"
-				label="mobile"
+				label="Mobile"
 				placeholder="Mobile"
 				error="Please enter a valid Mobile"
 				hint="should contain valid Mobile"
