@@ -88,7 +88,7 @@ function index() {
 						<div className="col-lg-4 col-md-6 col-xs-12">
 							<HeroCardStyled>
 								<HeroText>
-									Home Decor
+									Home Designs
 									<br />
 									Made Easy
 								</HeroText>
@@ -117,8 +117,8 @@ function index() {
 						<div className="col-xs-6">
 							<div>
 								<h1>Get 3D Designs of Your Space</h1>
-								<p>Set your budget, share pictures of your room and tell us about your style preferences . </p>
-								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions</p>
+								<p>Set your budget, share pictures of your room and tell us about your style preferences.</p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions</p>
 								<p>Ready to transform your home scape?</p>
 								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
@@ -159,8 +159,8 @@ function index() {
 						<div className="col-xs-12 col-sm-5">
 							<div>
 								<h1>Crafted By Our Design Experts</h1>
-								<p>Set your budget, share pictures of your room and tell us about your style preferences</p>
-								<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+								<p>Set your budget, share pictures of your room and tell us about your style preferences.</p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions.</p>
 								<p>Ready to transform your home scape?</p>
 								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
@@ -176,8 +176,8 @@ function index() {
 						<div className="col-xs-6">
 							<div>
 								<h1>Shop Products From Your Designs</h1>
-								<p>Our designs feature products from your favorite brands</p>
-								<p>We will work within your budget to find those coveted pieces that spark joy</p>
+								<p>Our designs feature products from your favorite brands.</p>
+								<p>We will work within your budget to find those coveted pieces that spark joy.</p>
 								<p>It&lsquo;s a hassle-free experience </p>
 								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
@@ -198,7 +198,8 @@ function index() {
 						<div className="col-xs-12 text-center">
 							<CenterTextStyled>Swap It Till You Love It</CenterTextStyled>
 							<CenterSubTextStyled>
-								Revision is our mantra! We&apos;ll make sure what you see sparks total joy! <br />
+								Revision is our mantra! We&apos;ll make sure what you see sparks total joy!
+								<br />
 								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
 									<a href="/designProjects">Explore multiple layouts</a>
 								</Link>
@@ -244,7 +245,10 @@ function index() {
 								</div>
 							</div>
 							<Divider />
-							<p>We&lsquo;ll deliver your customized 3D designs in under 5 days, with unlimited revisions </p>
+							<p>
+								Our designer from Spacejoy immediately caught on to our vision and delivered. The execution was
+								flawless. We couldn’t be happier with how amazing our home looks right now.
+							</p>
 							<p>Ready to transform your home scape?</p>
 							<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 								DESIGN MY SPACE

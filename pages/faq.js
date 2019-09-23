@@ -12,9 +12,8 @@ const TopicStyled = styled.div`
 	display: flex;
 	border: 1px solid ${({ theme, active }) => (active ? theme.colors.primary1 : theme.colors.bg.dark1)};
 	color: ${({ theme, active }) => (active ? theme.colors.primary1 : theme.colors.fc.dark1)};
-	padding: 1rem;
+	padding: 0.5rem;
 	border-radius: 5px;
-	transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
 	&:hover {
 		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	}
@@ -62,7 +61,7 @@ class faq extends PureComponent {
 							<div className="grid">
 								{filteredTag &&
 									filteredTag.map(item => (
-										<div className="col-12 col-md-3" key={Math.random() * 10}>
+										<div className="col-auto" key={Math.random() * 10}>
 											<TopicStyled active={item === activeTag} onClick={() => this.handleFilter(item)}>
 												<Image
 													size="xs"
