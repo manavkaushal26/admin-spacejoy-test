@@ -1,3 +1,4 @@
+import { AuthContext } from "@context/AuthStorage";
 import Layout from "@sections/Layout";
 import { redirectToLocation, withAuthSync } from "@utils/auth";
 import { company, page } from "@utils/config";
@@ -18,6 +19,13 @@ const profile = ({ isServer, _id, name, email, role }) => {
 			<div className="container">
 				<div className="grid">
 					<div className="col-xs-12 text-center">
+						<AuthContext.Consumer>
+							{value => (
+								<button type="button" onClick={value.updateState}>
+									{JSON.stringify(value.state.isAuthorized)}
+								</button>
+							)}
+						</AuthContext.Consumer>
 						<h3>ID: {_id}</h3>
 						<p>name: {name}</p>
 						<p>email: {email}</p>

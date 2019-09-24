@@ -48,8 +48,8 @@ function index() {
 									<a href="https://www.blog.spacejoy.com/">Blog</a>
 								</li>
 								<li>
-									<Link href="/terms" as="/terms">
-										<a href="/terms">Privacy Policy</a>
+									<Link href="/profile" as="/profile">
+										<a href="/profile">Privacy Policy</a>
 									</Link>
 								</li>
 								<li>

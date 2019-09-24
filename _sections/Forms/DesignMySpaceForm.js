@@ -1,37 +1,46 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
+import { AuthContext } from "@context/AuthStorage";
 import PropTypes from "prop-types";
 import React from "react";
 
 function DesignMySpaceForm({ plan }) {
 	return (
 		<FormBox redirectUrl="/checkout" destination="/forms" description="Submit your details" name="designmyspace">
-			<Field
-				name="userName"
-				type="text"
-				label="Username"
-				placeholder="Username"
-				error="Please enter a valid username"
-				hint="should contain valid text"
-			/>
-			<Field
-				name="userEmail"
-				type="email"
-				label="Email"
-				placeholder="Email"
-				error="Please enter a valid email"
-				hint="should contain valid email"
-				required
-			/>
-			<Field
-				name="userMobile"
-				type="tel"
-				label="Mobile"
-				placeholder="Mobile"
-				error="Please enter a valid Mobile"
-				hint="should contain valid Mobile"
-				required
-			/>
+			<AuthContext.Consumer>
+				{value =>
+					value.state.isAuthorized && (
+						<>
+							<Field
+								name="userName"
+								type="text"
+								label="Username"
+								placeholder="Username"
+								error="Please enter a valid username"
+								hint="should contain valid text"
+							/>
+							<Field
+								name="userEmail"
+								type="email"
+								label="Email"
+								placeholder="Email"
+								error="Please enter a valid email"
+								hint="should contain valid email"
+								required
+							/>
+							<Field
+								name="userMobile"
+								type="tel"
+								label="Mobile"
+								placeholder="Mobile"
+								error="Please enter a valid Mobile"
+								hint="should contain valid Mobile"
+								required
+							/>
+						</>
+					)
+				}
+			</AuthContext.Consumer>
 			<Field
 				name="selectedPlan"
 				type="text"

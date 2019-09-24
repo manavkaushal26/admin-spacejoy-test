@@ -14,7 +14,10 @@ class AuthProvider extends Component {
 			<AuthContext.Provider
 				value={{
 					state: this.state,
-					updateState: () => this.setState(prevState => !prevState.isAuthorized)
+					updateState: () =>
+						this.setState(prevState => ({
+							isAuthorized: !prevState.isAuthorized
+						}))
 				}}
 			>
 				{children}
