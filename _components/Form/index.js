@@ -127,7 +127,8 @@ class FormBox extends Component {
 				await login({ token, redirectUrl });
 			}
 			if (name === "designmyspace" || name === "forgotPassword") {
-				if (redirectUrl && redirectUrl !== "") redirectToLocation(redirectUrl, response);
+				if (redirectUrl && redirectUrl !== "")
+					redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
 			}
 		} else {
 			this.setState({ formStatus: response.statusText });
