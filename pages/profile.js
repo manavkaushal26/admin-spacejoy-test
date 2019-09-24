@@ -4,10 +4,9 @@ import { withAuthSync } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
-import PropTypes from "prop-types";
 import React from "react";
 
-const profile = ({ token }) => {
+const profile = () => {
 	return (
 		<Layout>
 			<Head>
@@ -24,7 +23,6 @@ const profile = ({ token }) => {
 								</button>
 							)}
 						</AuthContext.Consumer>
-						{token}
 					</div>
 				</div>
 			</div>
@@ -32,12 +30,8 @@ const profile = ({ token }) => {
 	);
 };
 
-profile.defaultProps = {
-	token: ""
-};
+profile.defaultProps = {};
 
-profile.propTypes = {
-	token: PropTypes.string
-};
+profile.propTypes = {};
 
 export default withAuthSync(profile);

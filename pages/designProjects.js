@@ -38,7 +38,7 @@ class designProjects extends PureComponent {
 	fetchData = async () => {
 		const { pageCount } = this.state;
 		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
-		const res = await fetcher({ endPoint: `/demodesigns${dataFeed}` });
+		const res = await fetcher({ endPoint: `/demodesigns${dataFeed}`, method: "GET" });
 		const resData = await res.json();
 		if (resData.status === "success") {
 			if (resData.data.list.length >= 1) {

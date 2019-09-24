@@ -54,10 +54,13 @@ function designView({ isServer, data, designName, designId }) {
 	);
 }
 
-designView.getInitialProps = async ({ req, query: { designName, designId } }) => {
-	const isServer = !!req;
+designView.getInitialProps = async ctx => {
+	const {
+		query: { designName, designId }
+	} = ctx;
+	const isServer = !!ctx.req;
 	const endPoint = `/demodesign/${designId}`;
-	const res = await fetcher({ endPoint });
+	const res = await fetcher({ ctx, endPoint, method: "GET" });
 	const resData = await res.json();
 	if (resData.status === "success") {
 		const { data } = resData;
