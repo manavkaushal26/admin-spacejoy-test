@@ -3,9 +3,6 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
 
-// TODO
-// Fix below logic
-
 function redirectToLocation({ pathname, query, url, res }) {
 	if (typeof window !== "undefined") {
 		return pathname === "/auth"
