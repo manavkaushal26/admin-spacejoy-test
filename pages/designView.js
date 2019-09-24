@@ -21,7 +21,7 @@ const DesignDescriptionStyled = styled.div`
 
 function designView({ isServer, data, designName, designId }) {
 	return (
-		<Layout header="solid" isServer={isServer}>
+		<Layout isServer={isServer}>
 			<Head>
 				{IndexPageMeta}
 				<title>

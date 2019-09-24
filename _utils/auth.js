@@ -3,26 +3,34 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
 
-function redirectToLocation(url, res = {}) {
-	return typeof window !== "undefined" ? Router.push(url) : res.redirect(url);
+// TODO
+// Fix below logic
+
+function redirectToLocation({ pathname, query, url, res }) {
+	if (typeof window !== "undefined") {
+		return pathname === "/auth"
+			? Router.push({ pathname, query }, `${pathname}/${query.flow}?redirectUrl=${query.redirectUrl}`)
+			: Router.push({ pathname }, `${pathname}`);
+	}
+	return res.redirect(url);
 }
 
-function login({ token, redirectUrl }) {
+function login({ token, redirectUrl = "/profile" }) {
 	cookie.set("token", token, { expires: 1 });
-	redirectToLocation(redirectUrl || "/profile");
+	redirectToLocation({ pathname: redirectUrl, query: {}, url: redirectUrl });
 }
 
 function logout() {
 	cookie.remove("token");
 	window.localStorage.setItem("logout", Date.now());
-	redirectToLocation("/auth/login");
+	redirectToLocation({ pathname: "/auth", query: { flow: "login", redirectUrl: "/" }, url: "/auth/login" });
 }
 
 function auth(ctx) {
 	const { token } = nextCookie(ctx);
-	const redirectUrl = ctx.pathname ? `/auth/login?redirectUrl=${ctx.pathname}` : "/auth/login";
+	const redirect = { pathname: "/auth", query: { flow: "login", redirectUrl: ctx.pathname }, url: "/auth/login" };
 	if (!token) {
-		return ctx.req ? redirectToLocation(redirectUrl, ctx.res) : redirectToLocation(redirectUrl);
+		return ctx.req ? redirectToLocation({ ...redirect }, { res: ctx.res }) : redirectToLocation(redirect);
 	}
 	return token;
 }
@@ -50,7 +58,7 @@ function withAuthSync(WrappedComponent) {
 
 		syncLogout = event => {
 			if (event.key === "logout") {
-				redirectToLocation("/auth/login");
+				redirectToLocation({ pathname: "/auth", query: { flow: "login" }, url: "/auth/login" });
 			}
 		};
 

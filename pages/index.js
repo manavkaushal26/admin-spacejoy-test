@@ -77,7 +77,7 @@ function goToDesignMySpace() {
 
 function index() {
 	return (
-		<Layout header="solid">
+		<Layout>
 			<Head>
 				{IndexPageMeta}
 				<title>Home | {company.product}</title>

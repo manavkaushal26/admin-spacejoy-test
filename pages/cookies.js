@@ -8,7 +8,7 @@ import React from "react";
 
 function cookies() {
 	return (
-		<Layout header="solid">
+		<Layout>
 			<Head>
 				{IndexPageMeta}
 				<title>Cookies | {company.product}</title>

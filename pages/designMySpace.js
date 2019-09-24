@@ -10,7 +10,7 @@ class designMySpace extends PureComponent {
 	render() {
 		const { plan, isServer } = this.props;
 		return (
-			<Layout header="solid" isServer={isServer}>
+			<Layout isServer={isServer}>
 				<Head>
 					{IndexPageMeta}
 					<title>Design My Space | {company.product}</title>

@@ -13,6 +13,7 @@ function LoginForm({ redirectUrl }) {
 				placeholder="Email"
 				error="Please enter a valid email"
 				hint="should contain valid email"
+				value="saurabh123@gmail.com"
 				required
 			/>
 			<Field
@@ -22,6 +23,7 @@ function LoginForm({ redirectUrl }) {
 				placeholder="Password"
 				error="Please enter a valid Password"
 				hint="should contain valid Password"
+				value="saurabh"
 				required
 			/>
 			<Field name="userSubmit" type="submit" label="Login" />

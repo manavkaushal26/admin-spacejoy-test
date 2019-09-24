@@ -5,7 +5,7 @@ import React from "react";
 
 function checkout() {
 	return (
-		<Layout header="solid">
+		<Layout>
 			<Head>
 				{IndexPageMeta}
 				<title>FAQ</title>

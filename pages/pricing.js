@@ -16,7 +16,7 @@ const PriceCardHolderStyled = styled.div`
 
 function pricing() {
 	return (
-		<Layout header="solid">
+		<Layout>
 			<Head>
 				{IndexPageMeta}
 				<title>Pricing | {company.product}</title>

@@ -6,7 +6,7 @@ import React from "react";
 
 function terms() {
 	return (
-		<Layout header="solid">
+		<Layout>
 			<Head>
 				{IndexPageMeta}
 				<title>Terms | {company.product}</title>

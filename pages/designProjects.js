@@ -60,7 +60,7 @@ class designProjects extends PureComponent {
 		const { isServer } = this.props;
 		const { pageCount, hasMore, data } = this.state;
 		return (
-			<Layout header="solid" isServer={isServer}>
+			<Layout isServer={isServer}>
 				<Head>
 					{IndexPageMeta}
 					<title>Design Projects | {company.product}</title>

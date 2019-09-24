@@ -18,7 +18,7 @@ class Error extends React.Component {
 	render() {
 		const { status } = this.props;
 		return (
-			<Layout header="solid">
+			<Layout>
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12">

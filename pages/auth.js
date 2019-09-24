@@ -24,7 +24,7 @@ function getHeadingText(flow) {
 
 function auth({ isServer, flow, redirectUrl }) {
 	return (
-		<Layout header="solid" isServer={isServer}>
+		<Layout isServer={isServer}>
 			<Head>
 				{IndexPageMeta}
 				<title>

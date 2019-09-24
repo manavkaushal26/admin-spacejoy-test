@@ -48,7 +48,7 @@ class faq extends PureComponent {
 	render() {
 		const { openId, filteredData, filteredTag, activeTag } = this.state;
 		return (
-			<Layout header="solid">
+			<Layout>
 				<Head>
 					{IndexPageMeta}
 					<title>Pricing | {company.product}</title>
