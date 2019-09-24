@@ -2,9 +2,9 @@ import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
-import { company, page } from "@utils/config";
+import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import fetch from "isomorphic-unfetch";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
@@ -57,7 +57,7 @@ function designView({ isServer, data, designName, designId }) {
 designView.getInitialProps = async ({ req, query: { designName, designId } }) => {
 	const isServer = !!req;
 	const endPoint = `/demodesign/${designId}`;
-	const res = await fetch(page.apiBaseUrl + endPoint);
+	const res = await fetcher({ endPoint });
 	const resData = await res.json();
 	if (resData.status === "success") {
 		const { data } = resData;

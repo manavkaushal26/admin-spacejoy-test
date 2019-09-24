@@ -3,13 +3,13 @@ import nextCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
 
-function redirectToLocation({ pathname, query, url, res }) {
+function redirectToLocation({ pathname, query, url, res = {} }) {
 	if (typeof window !== "undefined") {
 		return pathname === "/auth"
 			? Router.push({ pathname, query }, `${pathname}/${query.flow}?redirectUrl=${query.redirectUrl}`)
 			: Router.push({ pathname }, `${pathname}`);
 	}
-	return res.redirect(url);
+	return res.redirect(302, url);
 }
 
 function login({ token, redirectUrl = "/profile" }) {
@@ -27,7 +27,7 @@ function auth(ctx) {
 	const { token } = nextCookie(ctx);
 	const redirect = { pathname: "/auth", query: { flow: "login", redirectUrl: ctx.pathname }, url: "/auth/login" };
 	if (!token) {
-		return ctx.req ? redirectToLocation({ ...redirect }, { res: ctx.res }) : redirectToLocation(redirect);
+		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
 	}
 	return token;
 }

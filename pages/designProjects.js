@@ -3,10 +3,10 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
-import { company, page } from "@utils/config";
+import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import { removeSpaces } from "@utils/helper";
 import IndexPageMeta from "@utils/meta";
-import fetch from "isomorphic-unfetch";
 import Head from "next/head";
 import Link from "next/link";
 import PropTypes from "prop-types";
@@ -24,8 +24,6 @@ const InfiniteLoaderStyled = styled.div`
 	background: ${({ theme }) => theme.colors.bg.light2};
 `;
 
-const endPoint = "/demodesigns";
-
 class designProjects extends PureComponent {
 	state = {
 		data: [],
@@ -37,23 +35,21 @@ class designProjects extends PureComponent {
 		this.fetchData();
 	}
 
-	fetchData = () => {
+	fetchData = async () => {
 		const { pageCount } = this.state;
 		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
-		fetch(`${page.apiBaseUrl}${endPoint}${dataFeed}`)
-			.then(response => response.json())
-			.then(resData => {
-				if (resData.status === "success") {
-					if (resData.data.list.length >= 1) {
-						this.setState(prevState => ({
-							data: [...prevState.data, ...resData.data.list],
-							pageCount: prevState.pageCount + 1
-						}));
-					} else {
-						this.setState({ hasMore: false });
-					}
-				}
-			});
+		const res = await fetcher({ endPoint: `/demodesigns${dataFeed}` });
+		const resData = await res.json();
+		if (resData.status === "success") {
+			if (resData.data.list.length >= 1) {
+				this.setState(prevState => ({
+					data: [...prevState.data, ...resData.data.list],
+					pageCount: prevState.pageCount + 1
+				}));
+			} else {
+				this.setState({ hasMore: false });
+			}
+		}
 	};
 
 	render() {

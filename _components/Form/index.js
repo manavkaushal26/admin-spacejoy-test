@@ -1,5 +1,6 @@
+import { AuthContext } from "@context/AuthStorage";
 import { login, redirectToLocation } from "@utils/auth";
-import { page } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
@@ -18,6 +19,8 @@ const FormStatusStyled = styled.div`
 `;
 
 class FormBox extends Component {
+	static contextType = AuthContext;
+
 	constructor(props) {
 		super(props);
 		const stateObj = {};
@@ -32,7 +35,7 @@ class FormBox extends Component {
 
 	handleSubmit = async event => {
 		event.preventDefault();
-		const { state } = this;
+		const { state, context } = this;
 		const { destination, name, redirectUrl } = this.props;
 		function reqBody() {
 			if (name === "signup") {
@@ -112,18 +115,13 @@ class FormBox extends Component {
 			}
 			return {};
 		}
-		const response = await fetch(page.apiBaseUrl + destination, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(reqBody(name))
-		});
+		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
 		if (response.status >= 200 && response.status <= 300) {
 			const responseData = await response.json();
 			this.setState({ formStatus: responseData.status });
 			if (name === "login" || name === "signup") {
 				const { token } = responseData;
+				context.updateState();
 				await login({ token, redirectUrl });
 			}
 			if (name === "designmyspace" || name === "forgotPassword") {
