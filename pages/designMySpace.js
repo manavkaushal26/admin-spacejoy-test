@@ -1,6 +1,6 @@
 import DesignMySpaceForm from "@sections/Forms/DesignMySpaceForm";
 import Layout from "@sections/Layout";
-import { company, page } from "@utils/config";
+import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import PropTypes from "prop-types";
@@ -14,7 +14,6 @@ class designMySpace extends PureComponent {
 				<Head>
 					{IndexPageMeta}
 					<title>Design My Space | {company.product}</title>
-					<script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} />
 				</Head>
 				<div className="container">
 					<div className="grid">
