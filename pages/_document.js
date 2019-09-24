@@ -65,8 +65,8 @@ class MyDocument extends Document {
 						rel="stylesheet"
 						media="screen"
 					/>
-					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link href="/static/reflex.min.css?v1" rel="stylesheet" media="screen" />
+					<link href="/static/style.css?v1" rel="stylesheet" media="screen" />
 					<link
 						rel="stylesheet"
 						media="screen"
