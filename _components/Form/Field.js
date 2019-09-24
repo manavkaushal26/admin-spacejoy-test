@@ -35,7 +35,7 @@ const LabelStyled = styled.label`
 	display: block;
 	span.styled {
 		display: inline-block;
-		margin: 0.5rem ${({ selectionType }) => (selectionType ? "1rem" : "0")};
+		margin: 0.25rem ${({ selectionType }) => (selectionType ? "0.75rem" : "0")};
 	}
 `;
 
@@ -57,9 +57,9 @@ const HintTextStyled = styled.small`
 
 const InputStyled = styled.input`
 	outline: none;
-	border-radius: 5px;
+	border-radius: 2px;
 	background: ${({ hasError }) => (hasError ? "rgba(240, 90, 70, 0.1)" : "white")};
-	padding: 1.25rem;
+	padding: 0.75rem;
 	width: 100%;
 	box-sizing: border-box;
 	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.primary1 : theme.colors.bg.dark1)};
@@ -173,7 +173,7 @@ function Field({
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12">
-						<Button type="submit" shape="rounded" size="lg" full variant="primary">
+						<Button type="submit" shape="rounded" size="md" full variant="primary">
 							{label}
 						</Button>
 					</div>

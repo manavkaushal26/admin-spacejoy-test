@@ -22,7 +22,6 @@ html {
 	font-size: 14px;
 	line-height: 1.58;
 	letter-spacing: 0.025em;
-	color: #282c3f;
 	-webkit-font-smoothing: antialiased;
 }
 
@@ -36,11 +35,6 @@ html {
 
 .text-right {
 	text-align: right;
-}
-
-a {
-	text-decoration: none;
-	color: #fa6496;
 }
 
 .hidden {

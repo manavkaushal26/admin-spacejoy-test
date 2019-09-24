@@ -32,8 +32,8 @@ function auth({ isServer, flow, redirectUrl }) {
 				</title>
 			</Head>
 			<div className="container">
-				<div className="grid justify-space-around">
-					<div className="col-xs-12 col-sm-8 col-md-4">
+				<div className="grid justify-center">
+					<div className="col-12 col-sm-8 col-md-4">
 						<div className="col-12">
 							<h3>{getHeadingText(flow)}</h3>
 						</div>

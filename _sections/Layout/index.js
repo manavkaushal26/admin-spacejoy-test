@@ -1,3 +1,4 @@
+import GlobalStyle from "@theme/globalStyle";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -28,6 +29,7 @@ const MainStyled = styled.main`
 function Layout({ isServer, header, children }) {
 	return (
 		<>
+			<GlobalStyle />
 			<Header variant={header} />
 			<MainStyled isServer={isServer} className={dev ? "client-server-identifier" : ""}>
 				{children}
