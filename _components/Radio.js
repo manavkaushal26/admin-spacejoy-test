@@ -5,7 +5,7 @@ import styled from "styled-components";
 const LabelStyled = styled.label`
 	position: relative;
 	cursor: pointer;
-	line-height: 1.25rem;
+	line-height: 1.45rem;
 	margin: 0.75rem 0;
 	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "2rem")};
 	display: block;
