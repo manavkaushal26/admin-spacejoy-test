@@ -12,9 +12,10 @@ function redirectToLocation({ pathname, query, url, res = {} }) {
 	return res.redirect(302, url);
 }
 
-function login({ token, redirectUrl = "/profile" }) {
+function login({ token, redirectUrl }) {
+	const url = redirectUrl || "/profile";
 	cookie.set("token", token, { expires: 1 });
-	redirectToLocation({ pathname: redirectUrl, query: {}, url: redirectUrl });
+	redirectToLocation({ pathname: url, query: {}, url });
 }
 
 function logout() {
