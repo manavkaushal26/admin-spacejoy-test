@@ -73,6 +73,7 @@ class MyDocument extends Document {
 						href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
 					/>
 					<script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} />
+					<script src="https://js.stripe.com/v3/" />
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
 				</Head>
 				<body>

@@ -1,7 +1,10 @@
 import Layout from "@sections/Layout";
 import IndexPageMeta from "@utils/meta";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import React from "react";
+
+const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
 
 function checkout() {
 	return (
@@ -14,6 +17,7 @@ function checkout() {
 				<div className="grid text-center">
 					<div className="col-12">
 						<h3>Thank you</h3>
+						<Checkout />
 					</div>
 				</div>
 			</div>
