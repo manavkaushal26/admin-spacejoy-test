@@ -11,12 +11,12 @@ function checkout() {
 		<Layout>
 			<Head>
 				{IndexPageMeta}
-				<title>FAQ</title>
+				<title>Checkout</title>
 			</Head>
 			<div className="container">
 				<div className="grid text-center">
 					<div className="col-12">
-						<h3>Thank you</h3>
+						<h3>Payment</h3>
 						<Checkout />
 					</div>
 				</div>
