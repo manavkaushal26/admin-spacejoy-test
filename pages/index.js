@@ -53,15 +53,14 @@ const SectionWrapperStyled = styled.section`
 
 const HeroText = styled.h1`
 	font-weight: bold;
-	font-size: 2.5rem;
-	line-height: 3rem;
+	font-size: 3.5rem;
+	line-height: 4rem;
 	margin: 0;
 `;
 
-const HeroSubText = styled.h1`
+const HeroSubText = styled.h3`
 	font-weight: normal;
-	font-size: 1.15rem;
-	color: ${({ theme }) => theme.colors.fc.dark2};
+	font-family: "Airbnb Cereal App Book";
 `;
 
 const CenterTextStyled = styled.h1`
@@ -85,7 +84,7 @@ function index() {
 			<HeroWrapperStyled>
 				<div className="container">
 					<div className="grid align-content-center">
-						<div className="col-lg-4 col-md-6 col-xs-12">
+						<div className="col-lg-5 col-md-6 col-xs-12">
 							<HeroCardStyled>
 								<HeroText>
 									Home Designs
@@ -95,9 +94,7 @@ function index() {
 								<HeroSubText>
 									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
 								</HeroSubText>
-								<p>
-									<strong>Plans starting at $19</strong>
-								</p>
+								<h4>Plans starting at $19</h4>
 								<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
 								</Button>

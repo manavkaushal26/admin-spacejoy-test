@@ -10,13 +10,19 @@ const BaseMeta = [
 	<meta key="mobileWebCapable" name="mobile-web-app-capable" content="yes" />,
 	<meta key="themeColor" name="theme-color" content="#ffffff" />,
 	<meta key="googleSiteVerification" name="google-site-verification" content={page.googleSiteVerification} />,
-	<link key="icon" rel="icon" sizes="192x192" href="/static/icon.png" />,
+	<link key="icon" rel="icon" sizes="192x192" href="/static/logo-icon/icon.png" />,
 	<link key="canonical" rel="canonical" href="/" />,
-	<link key="favicon" rel="shortcut icon" href="/static/favicon.ico" />,
-	<link key="favicon-android" rel="icon" type="image/png" sizes="192x192" href="/static/android-icon-192x192.png" />,
-	<link key="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png" />,
-	<link key="favicon-96" rel="icon" type="image/png" sizes="96x96" href="/static/favicon-96x96.png" />,
-	<link key="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png" />
+	<link key="favicon" rel="shortcut icon" href="/static/logo-icon/favicon.ico" />,
+	<link
+		key="favicon-android"
+		rel="icon"
+		type="image/png"
+		sizes="192x192"
+		href="/static/logo-icon/android-icon-192x192.png"
+	/>,
+	<link key="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/static/logo-icon/favicon-32x32.png" />,
+	<link key="favicon-96" rel="icon" type="image/png" sizes="96x96" href="/static/logo-icon/favicon-96x96.png" />,
+	<link key="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/static/logo-icon/favicon-16x16.png" />
 ];
 
 const OGMeta = [
@@ -48,11 +54,11 @@ const IEMeta = [
 ];
 
 const AppleLink = [
-	<link key="apple-touch-icon1" rel="apple-touch-icon" href="/static/ios-icon.png" />,
-	<link key="apple-touch-icon2" rel="apple-touch-icon" sizes="72x72" href="/static/spacejoy-72.png" />,
-	<link key="apple-touch-icon3" rel="apple-touch-icon" sizes="114x114" href="/static/spacejoy-114.png" />,
-	<link key="apple-touch-startup1" rel="apple-touch-startup-image" href="/static/spacejoy-310.png" />,
-	<link key="apple-touch-icon4" rel="apple-touch-icon" type="image/png" href="/static/spacejoy-310.png" />
+	<link key="apple-touch-icon1" rel="apple-touch-icon" href="/static/logo-icon/ios-icon.png" />,
+	<link key="apple-touch-icon2" rel="apple-touch-icon" sizes="72x72" href="/static/logo-icon/spacejoy-72.png" />,
+	<link key="apple-touch-icon3" rel="apple-touch-icon" sizes="114x114" href="/static/logo-icon/spacejoy-114.png" />,
+	<link key="apple-touch-startup1" rel="apple-touch-startup-image" href="/static/logo-icon/spacejoy-310.png" />,
+	<link key="apple-touch-icon4" rel="apple-touch-icon" type="image/png" href="/static/logo-icon/spacejoy-310.png" />
 ];
 
 const IndexPage = [

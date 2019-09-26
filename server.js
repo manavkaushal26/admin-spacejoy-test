@@ -105,10 +105,6 @@ app.prepare().then(() => {
 		server.get("/profile", (req, res) => {
 			app.render(req, res, "/profile", req.params);
 		});
-		server.get(["/", "/index"], (req, res) => {
-			const { params } = req;
-			app.render(req, res, "/index", params);
-		});
 		server.get("/terms", (req, res) => {
 			renderAndCache(req, res, "/terms", req.params);
 		});
@@ -117,6 +113,10 @@ app.prepare().then(() => {
 		});
 		server.get("/ping", (req, res) => {
 			res.send("pong");
+		});
+		server.get(["/", "/index"], (req, res) => {
+			const { params } = req;
+			app.render(req, res, "/index", params);
 		});
 		server.use("/service-worker.js", serve(path.join(__dirname, ".next", "/service-worker.js"), true));
 		server.use("/manifest.json", serve(path.join(__dirname, "/static/manifest.json"), true));
