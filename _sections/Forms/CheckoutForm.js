@@ -1,7 +1,10 @@
 /* eslint-disable */
 
+import fetcher from "@utils/fetcher";
 import React, { Component } from "react";
 import { CardElement, injectStripe } from "react-stripe-elements";
+
+const endPoint = "/charge";
 
 class CheckoutForm extends Component {
 	constructor(props) {
@@ -10,16 +13,14 @@ class CheckoutForm extends Component {
 		this.submit = this.submit.bind(this);
 	}
 
-	async submit() {
-		let { token } = await this.props.stripe.createToken({ name: "Name" });
-		let response = await fetch("/charge", {
-			method: "POST",
-			headers: { "Content-Type": "text/plain" },
-			body: token.id
+	submit = async () => {
+		await this.props.stripe.createToken({ name: "Name" }).then(async res => {
+			if (res) {
+				const response = await fetcher({ endPoint, method: "POST", body: res.token.id });
+				if (response.ok) this.setState({ complete: true });
+			}
 		});
-
-		if (response.ok) this.setState({ complete: true });
-	}
+	};
 
 	render() {
 		if (this.state.complete) return <h1>Purchase Complete</h1>;
