@@ -95,12 +95,8 @@ class FormBox extends Component {
 									value: state.address.value
 								}
 							],
-							user: {
-								user_id: "some id 1",
-								formName: "a b",
-								formEmail: "abc@gmail.com",
-								formPhone: 9999999
-							}
+							userId: "",
+							userEmail: state.userEmail.value
 						}
 					};
 				}

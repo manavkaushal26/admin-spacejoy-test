@@ -21,13 +21,6 @@
 	src: local("Airbnb Cereal App Medium"), url("/static/fonts/AirbnbCerealMedium.woff") format("woff");
 }
 
-@font-face {
-	font-family: "Airbnb Cereal App Bold";
-	font-style: normal;
-	font-weight: normal;
-	src: local("Airbnb Cereal App Bold"), url("/static/fonts/AirbnbCerealBold.woff") format("woff");
-}
-
 *,
 *:before,
 *:after {
@@ -41,6 +34,7 @@ html {
 	line-height: 1.58;
 	letter-spacing: 0.025em;
 	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 h1,

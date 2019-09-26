@@ -52,7 +52,6 @@ const SectionWrapperStyled = styled.section`
 `;
 
 const HeroText = styled.h1`
-	font-weight: bold;
 	font-size: 3.5rem;
 	line-height: 4rem;
 	margin: 0;

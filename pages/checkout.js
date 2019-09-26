@@ -2,13 +2,14 @@ import Layout from "@sections/Layout";
 import IndexPageMeta from "@utils/meta";
 import dynamic from "next/dynamic";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import React from "react";
 
 const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
 
-function checkout() {
+function checkout({ isServer }) {
 	return (
-		<Layout>
+		<Layout isServer={isServer}>
 			<Head>
 				{IndexPageMeta}
 				<title>Checkout</title>
@@ -24,6 +25,18 @@ function checkout() {
 		</Layout>
 	);
 }
+
+checkout.getInitialProps = async ({ req, query: { flow, redirectUrl } }) => {
+	const isServer = !!req;
+	// const res = await fetcher({ endPoint: "" });
+	return { isServer, flow, redirectUrl };
+};
+
+checkout.defaultProps = {};
+
+checkout.propTypes = {
+	isServer: PropTypes.bool.isRequired
+};
 
 checkout.propTypes = {};
 
