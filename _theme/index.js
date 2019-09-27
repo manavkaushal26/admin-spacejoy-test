@@ -17,7 +17,8 @@ const theme = {
 		},
 		fc: {
 			dark1: "#3d4245",
-			dark2: "#aeaeae",
+			dark2: "#797979",
+			dark3: "#aeaeae",
 			light1: "#f9fdff",
 			light2: "#c6c7cb"
 		}

@@ -29,7 +29,7 @@ const PartnerBrandStyled = styled.div`
 	border-top: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	border-right: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	&:hover {
-		background: ${({ theme }) => theme.colors.primary1};
+		background: ${({ theme }) => theme.colors.primary2};
 		svg {
 			* {
 				fill: white;
@@ -45,13 +45,12 @@ const PartnerBrandStyled = styled.div`
 `;
 
 const HowStyledBanner = styled.div`
-	background: pink
-		url("https://images.unsplash.com/photo-1523575708161-ad0fc2a9b951?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000")
-		100%;
+	background: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_1900/v1569620131/web/pink-sofa_hp7wvg.jpg");
 	padding: 5rem 0;
 	background-size: cover;
 	height: 500px;
 	margin-bottom: 150px;
+	background-attachment: fixed;
 	h1 {
 		font-family: "Airbnb Cereal App Medium";
 		color: ${({ theme }) => theme.colors.fc.light1};
@@ -71,13 +70,10 @@ const HowStyled = styled.div`
 	width: calc(100% - 30px);
 	padding: 2rem;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
-	${HowStepStyled} {
-	}
 `;
 
 const HeroWrapperStyled = styled.section`
 	position: relative;
-	padding-bottom: 2rem;
 	display: flex;
 	align-items: center;
 `;
@@ -92,7 +88,7 @@ const SectionWrapperStyled = styled.section`
 		font-family: "Airbnb Cereal App Medium";
 	}
 	p {
-		font-size: 1.15rem;
+		color: ${({ theme }) => theme.colors.fc.dark2};
 	}
 `;
 
@@ -154,26 +150,21 @@ function index() {
 								</Link>
 							</HeroCardStyled>
 						</div>
-						<div className="col-8">
+						<div className="col-8 col-bleed">
 							<div className="grid">
-								<div className="col-6">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,h_565,q_100,w_400/v1569581710/web/pink-scene_hmyxdk.jpg" />
+								<div className="col-6 text-right">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,h_534,q_100,w_400/v1569581710/web/pink-scene_hmyxdk.jpg" />
 								</div>
 								<div className="col-6">
-									<div className="grid">
-										<div className="col-12">
-											<Image
-												full
-												src="https://images.unsplash.com/photo-1534659477036-c05235c62402?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&h=400"
-											/>
-										</div>
-										<div className="col-12">
-											<Image
-												full
-												src="https://res.cloudinary.com/spacejoy/image/upload/v1569581314/web/chairs_dqrdn9.jpg"
-											/>
-										</div>
-									</div>
+									<Image
+										full
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_400/v1569619350/web/bulb_nxqhxo.jpg"
+									/>
+									<Image
+										style={{ marginTop: "30px" }}
+										full
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_400/v1569581314/web/chairs_dqrdn9.jpg"
+									/>
 								</div>
 							</div>
 						</div>
@@ -305,23 +296,18 @@ function index() {
 				</div>
 			</SectionWrapperStyled>
 
-			<SectionWrapperStyled style={{ background: "#f2f2f2" }}>
+			<SectionWrapperStyled style={{ background: "rgb(250, 250, 250)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">
 						<div className="col-xs-12">
-							<div>
-								<h1>Crafted By Our Design Experts</h1>
-								<p>
-									Our designers will transform your space into a stunningly beautiful home
-									<br />
-									Want to change something? Speak to them & finalize your perfect space that brings joy
-									<br />
-									We can&apos;t wait to get started!
-								</p>
-								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE
-								</Button>
-							</div>
+							<h1>Crafted By Our Design Experts</h1>
+							<p>
+								Our designers will transform your space into a stunningly beautiful home
+								<br />
+								Want to change something? Speak to them & finalize your perfect space that brings joy
+								<br />
+								We can&apos;t wait to get started!
+							</p>
 						</div>
 						<div className="col-xs-12">
 							<div className="grid">
