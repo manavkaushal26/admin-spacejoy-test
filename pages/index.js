@@ -2,6 +2,7 @@ import Button from "@components/Button";
 import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
 import MockData from "@utils/designConceptsMock";
@@ -19,32 +20,76 @@ const CarouselCardStyled = styled.div`
 	padding: 1rem;
 `;
 
+const PartnerBrandStyled = styled.div`
+	height: 125px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all linear 100ms;
+	border-top: 1px solid ${({ theme }) => theme.colors.bg.light2};
+	border-right: 1px solid ${({ theme }) => theme.colors.bg.light2};
+	&:hover {
+		background: ${({ theme }) => theme.colors.primary1};
+		svg {
+			* {
+				fill: white;
+			}
+		}
+	}
+	svg {
+		* {
+			transition: all linear 100ms;
+			fill: ${({ theme }) => theme.colors.fc.light2};
+		}
+	}
+`;
+
+const HowStyledBanner = styled.div`
+	background: pink
+		url("https://images.unsplash.com/photo-1523575708161-ad0fc2a9b951?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000")
+		100%;
+	padding: 5rem 0;
+	background-size: cover;
+	height: 500px;
+	margin-bottom: 150px;
+	h1 {
+		font-family: "Airbnb Cereal App Medium";
+		color: ${({ theme }) => theme.colors.fc.light1};
+	}
+	h4 {
+		color: ${({ theme }) => theme.colors.fc.light1};
+	}
+`;
+
+const HowStepStyled = styled.div`
+	padding: 2rem;
+`;
+
+const HowStyled = styled.div`
+	position: absolute;
+	background-color: white;
+	width: calc(100% - 30px);
+	padding: 2rem;
+	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+	${HowStepStyled} {
+	}
+`;
+
 const HeroWrapperStyled = styled.section`
 	position: relative;
-	background: ${({ theme }) => theme.colors.primary}
-		url("https://res.cloudinary.com/spacejoy/image/upload/v1568892568/web/home-banner_adnln0.jpg") no-repeat;
-	background-size: cover;
-	height: 80vh;
-	max-height: 700px;
+	padding-bottom: 2rem;
 	display: flex;
 	align-items: center;
-	@media (min-width: 400px) {
-		background-attachment: fixed;
-	}
 `;
 
 const HeroCardStyled = styled.section`
 	position: relative;
-	padding: 2rem;
-	background: white;
-	box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.1);
-	border-radius: 5px;
 `;
 
 const SectionWrapperStyled = styled.section`
 	padding: 3rem 0;
 	h1 {
-		font-size: 2.5rem;
+		font-family: "Airbnb Cereal App Medium";
 	}
 	p {
 		font-size: 1.15rem;
@@ -52,9 +97,14 @@ const SectionWrapperStyled = styled.section`
 `;
 
 const HeroText = styled.h1`
+	font-family: "Airbnb Cereal App Medium";
 	font-size: 3.5rem;
 	line-height: 4rem;
 	margin: 0;
+	@media (max-width: 400px) {
+		font-size: 2.5rem;
+		line-height: 3rem;
+	}
 `;
 
 const HeroSubText = styled.h3`
@@ -82,8 +132,8 @@ function index() {
 			</Head>
 			<HeroWrapperStyled>
 				<div className="container">
-					<div className="grid align-content-center">
-						<div className="col-lg-5 col-md-6 col-xs-12">
+					<div className="grid align-center">
+						<div className="col-lg-4 col-md-6 col-xs-12">
 							<HeroCardStyled>
 								<HeroText>
 									Home Designs
@@ -94,7 +144,7 @@ function index() {
 									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
 								</HeroSubText>
 								<h4>Plans starting at $19</h4>
-								<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+								<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
 								</Button>
 								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
@@ -104,33 +154,176 @@ function index() {
 								</Link>
 							</HeroCardStyled>
 						</div>
+						<div className="col-8">
+							<div className="grid">
+								<div className="col-6">
+									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,h_565,q_100,w_400/v1569581710/web/pink-scene_hmyxdk.jpg" />
+								</div>
+								<div className="col-6">
+									<div className="grid">
+										<div className="col-12">
+											<Image
+												full
+												src="https://images.unsplash.com/photo-1534659477036-c05235c62402?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&h=400"
+											/>
+										</div>
+										<div className="col-12">
+											<Image
+												full
+												src="https://res.cloudinary.com/spacejoy/image/upload/v1569581314/web/chairs_dqrdn9.jpg"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</HeroWrapperStyled>
-			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
+
+			<div>
+				<div className="grid grid-bleed">
+					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+						<PartnerBrandStyled>
+							<SVGIcon name="crateandbarrel" width={689.92 / 3} height={50 / 3} />
+						</PartnerBrandStyled>
+					</div>
+					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+						<PartnerBrandStyled>
+							<SVGIcon name="anthropologie" width={203} height={12.5} />
+						</PartnerBrandStyled>
+					</div>
+					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+						<PartnerBrandStyled>
+							<SVGIcon name="cb2" width={274.32 / 4} height={100 / 4} />
+						</PartnerBrandStyled>
+					</div>
+					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+						<PartnerBrandStyled>
+							<SVGIcon name="potterybarn" width={206.56} height={14.28} />
+						</PartnerBrandStyled>
+					</div>
+					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+						<PartnerBrandStyled>
+							<SVGIcon name="westelm" width={557.15 / 4} height={100 / 4} />
+						</PartnerBrandStyled>
+					</div>
+					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+						<PartnerBrandStyled>
+							<SVGIcon name="wayfair" height={50} width={126.5} />
+						</PartnerBrandStyled>
+					</div>
+				</div>
+			</div>
+
+			<HowStyledBanner>
 				<div className="container">
-					<div className="grid justify-space-between align-center">
-						<div className="col-xs-6">
+					<div className="grid">
+						<div className="col-6">
+							<h1>Custom Interior Design</h1>
+							<h4>
+								Set your budget, share pictures of your room and tell us about your style preferences. We‘ll deliver
+								your customized 3D designs in under 7 days, with unlimited revisions.
+							</h4>
+						</div>
+						<div className="col-12">
+							<HowStyled>
+								<div className="grid text-center">
+									<div className="col-12 col-xs-4">
+										<HowStepStyled>
+											<SVGIcon name="wifi" width={140} />
+											<h3>Select Design</h3>
+											<p>
+												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
+												dolores molestias inventore assumenda debitis id dolorum fugiat sapiente quae ab. Facilis facere
+												dolorum corrupti! Quasi, ipsam ab.
+											</p>
+										</HowStepStyled>
+									</div>
+									<div className="col-12 col-xs-4">
+										<HowStepStyled>
+											<SVGIcon name="wifi" width={140} />
+											<h3>Select Design</h3>
+											<p>
+												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
+												dolores molestias inventore assumenda debitis id dolorum fugiat sapiente quae ab. Facilis facere
+												dolorum corrupti! Quasi, ipsam ab.
+											</p>
+										</HowStepStyled>
+									</div>
+									<div className="col-12 col-xs-4">
+										<HowStepStyled>
+											<SVGIcon name="wifi" width={140} />
+											<h3>Select Design</h3>
+											<p>
+												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
+												dolores molestias inventore assumenda debitis id dolorum fugiat sapiente quae ab. Facilis facere
+												dolorum corrupti! Quasi, ipsam ab.
+											</p>
+										</HowStepStyled>
+									</div>
+									<div className="col-12 col-bleed">
+										<p>Ready to transform your home scape?</p>
+										<div style={{ position: "relative", marginBottom: "-40px" }}>
+											<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+												DESIGN MY SPACE
+											</Button>
+										</div>
+									</div>
+								</div>
+							</HowStyled>
+						</div>
+					</div>
+				</div>
+			</HowStyledBanner>
+
+			<SectionWrapperStyled>
+				<div className="container">
+					<div className="grid text-center">
+						<div className="col-xs-12">
+							<Image
+								size="500px"
+								src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif"
+							/>
+						</div>
+						<div className="col-xs-12">
 							<div>
 								<h1>Get 3D Designs of Your Space</h1>
-								<p>Set your budget, share pictures of your room and tell us about your style preferences.</p>
-								<p>We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions</p>
-								<p>Ready to transform your home scape?</p>
+								<HeroSubText>
+									Set your budget, share pictures of your room and tell us about your style preferences.
+								</HeroSubText>
+								<HeroSubText>
+									We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions
+								</HeroSubText>
+								<HeroSubText>Ready to transform your home scape?</HeroSubText>
+								<Button variant="secondary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+									DESIGN MY SPACE
+								</Button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</SectionWrapperStyled>
+
+			<SectionWrapperStyled style={{ background: "#f2f2f2" }}>
+				<div className="container">
+					<div className="grid justify-space-between align-center">
+						<div className="col-xs-12">
+							<div>
+								<h1>Crafted By Our Design Experts</h1>
+								<p>
+									Our designers will transform your space into a stunningly beautiful home
+									<br />
+									Want to change something? Speak to them & finalize your perfect space that brings joy
+									<br />
+									We can&apos;t wait to get started!
+								</p>
 								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
 								</Button>
 							</div>
 						</div>
-						<div className="col-xs-6">
-							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif" />
-						</div>
-					</div>
-				</div>
-			</SectionWrapperStyled>
-			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%)" }}>
-				<div className="container">
-					<div className="grid justify-space-between align-center">
-						<div className="col-xs-12 col-sm-5">
+						<div className="col-xs-12">
 							<div className="grid">
 								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer5_irflbd.jpg" />
@@ -150,17 +343,6 @@ function index() {
 								<div className="col-6 col-md-4">
 									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564330/web/designer4_mas7gx.jpg" />
 								</div>
-							</div>
-						</div>
-						<div className="col-xs-12 col-sm-5">
-							<div>
-								<h1>Crafted By Our Design Experts</h1>
-								<p>Set your budget, share pictures of your room and tell us about your style preferences.</p>
-								<p>We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions.</p>
-								<p>Ready to transform your home scape?</p>
-								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE
-								</Button>
 							</div>
 						</div>
 					</div>

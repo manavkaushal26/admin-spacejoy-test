@@ -8,7 +8,8 @@
 			"@context/*": ["./_context/*"],
 			"@utils/*": ["./_utils/*"],
 			"@theme/*": ["./_theme/*"],
-			"@sections/*": ["./_sections/*"]
+			"@sections/*": ["./_sections/*"],
+			"@static/*": ["./static/*"]
 		}
 	},
 	"exclude": [".next", "node_modules", "**/node_modules/*", "**/.storybook/*", "**/assets/*", "**/build/*"]

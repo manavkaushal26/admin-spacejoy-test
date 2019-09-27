@@ -1,4 +1,4 @@
-import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import { removeSpaces } from "@utils/helper";
 import Link from "next/link";
 import PropTypes from "prop-types";
@@ -97,15 +97,9 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 								<a href={`/designView/${designNameClean}/${designId}`}>
 									<ProductLoadMoreStyled size={size}>
 										<div>
-											<Image
-												size="10px"
-												src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-											/>
+											<SVGIcon name="divider" width={20} />
 											<span>See All Products</span>
-											<Image
-												size="10px"
-												src="https://res.cloudinary.com/spacejoy/image/upload/v1568717082/web/design-devider_kqs0bb.png"
-											/>
+											<SVGIcon name="divider" width={20} />
 										</div>
 									</ProductLoadMoreStyled>
 								</a>

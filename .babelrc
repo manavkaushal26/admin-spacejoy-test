@@ -12,7 +12,8 @@
 					"@context": "./_context",
 					"@utils": "./_utils",
 					"@theme": "./_theme",
-					"@sections": "./_sections"
+					"@sections": "./_sections",
+					"@static": "./static"
 				}
 			}
 		]

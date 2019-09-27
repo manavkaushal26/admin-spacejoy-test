@@ -1,4 +1,5 @@
 import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import FAQCard from "@sections/Cards/faq";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
@@ -57,6 +58,11 @@ class faq extends PureComponent {
 					<div className="grid">
 						<div className="col-xs-12">
 							<h1>Frequently Asked Questions</h1>
+							<SVGIcon name="divider-3" width={50} />
+							<SVGIcon name="divider-2" width={50} />
+							<SVGIcon name="divider" width={50} />
+							<SVGIcon name="logo" width={50} />
+							<SVGIcon name="divider-3" width={50} />
 							<h3>Topics</h3>
 							<div className="grid">
 								{filteredTag &&

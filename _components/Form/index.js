@@ -65,7 +65,7 @@ class FormBox extends Component {
 						data: {
 							env: process.env.NODE_ENV,
 							source: name,
-							formdata: [
+							formData: [
 								{
 									key: "firstName",
 									value: state.userName.value

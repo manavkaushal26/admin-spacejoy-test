@@ -9,7 +9,7 @@ import React, { Fragment } from "react";
 
 const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
 
-const endPoint = "/formuser?source=designmyspace";
+const endPoint = "/forms-user?source=designmyspace";
 
 function checkout({ isServer, data }) {
 	return (
@@ -26,7 +26,7 @@ function checkout({ isServer, data }) {
 						<div className="grid">
 							{data &&
 								data.form &&
-								data.form.formdata.map(item => (
+								data.form.formData.map(item => (
 									<Fragment key={item.key}>
 										<div className="col-6">{item.key}</div>
 										<div className="col-6">{item.value}</div>
@@ -65,7 +65,7 @@ checkout.propTypes = {
 	data: PropTypes.shape({
 		form: PropTypes.shape({
 			userEmail: PropTypes.string,
-			formdata: PropTypes.arrayOf(
+			formData: PropTypes.arrayOf(
 				PropTypes.shape({
 					key: PropTypes.string,
 					value: PropTypes.string
