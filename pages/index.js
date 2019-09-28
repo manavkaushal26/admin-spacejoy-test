@@ -4,7 +4,9 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import ProfileCard from "@sections/Cards/profile";
+import WildCardStyled from "@sections/Cards/wild";
 import Layout from "@sections/Layout";
+import sparkJoyImg from "@static/images/spark-a-joy.svg";
 import { company } from "@utils/config";
 import MockData from "@utils/designConceptsMock";
 import IndexPageMeta from "@utils/meta";
@@ -87,7 +89,7 @@ const HeroCardStyled = styled.section`
 `;
 
 const SectionWrapperStyled = styled.section`
-	padding: 3rem 0;
+	padding: 150px 0;
 	h1 {
 		font-family: "Airbnb Cereal App Medium";
 	}
@@ -217,7 +219,7 @@ function index() {
 			<HowStyledBanner>
 				<div className="container">
 					<div className="grid">
-						<div className="col-6">
+						<div className="col-12 col-xs-6">
 							<h1>Custom Interior Design</h1>
 							<h4>
 								Set your budget, share pictures of your room and tell us about your style preferences. We‘ll deliver
@@ -302,7 +304,7 @@ function index() {
 				</div>
 			</SectionWrapperStyled>
 
-			<SectionWrapperStyled style={{ background: "rgb(250, 250, 250)" }}>
+			<SectionWrapperStyled>
 				<div className="container">
 					<div className="grid justify-space-between align-center">
 						<div className="col-xs-12">
@@ -315,7 +317,7 @@ function index() {
 						</div>
 						<div className="col-xs-12">
 							<div className="grid">
-								<div className="col-6 col-md-3">
+								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
@@ -323,7 +325,7 @@ function index() {
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
-								<div className="col-6 col-md-3">
+								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
@@ -331,7 +333,7 @@ function index() {
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
-								<div className="col-6 col-md-3">
+								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
@@ -339,13 +341,25 @@ function index() {
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
-								<div className="col-6 col-md-3">
+								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1535230464639-a413d00b9934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
+								</div>
+								<div className="col-12 col-md-4">
+									<WildCardStyled>
+										<Image size="50px" src={sparkJoyImg} />
+										<p>
+											Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
+											dolores molestias.
+										</p>
+										<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+											DESIGN MY SPACE
+										</Button>
+									</WildCardStyled>
 								</div>
 							</div>
 						</div>
@@ -372,9 +386,7 @@ function index() {
 					</div>
 				</div>
 			</SectionWrapperStyled>
-			<SectionWrapperStyled
-				style={{ backgroundImage: "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)" }}
-			>
+			<SectionWrapperStyled>
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12 text-center">
@@ -406,7 +418,7 @@ function index() {
 					</div>
 				</div>
 			</SectionWrapperStyled>
-			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
+			<SectionWrapperStyled>
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12 col-sm-6">

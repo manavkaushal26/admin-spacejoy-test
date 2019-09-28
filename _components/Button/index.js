@@ -19,7 +19,7 @@ const ButtonStyled = styled(ButtonBase)`
 		}
 	}};
 	color: ${({ theme, variant }) => {
-		return variant === "primary" ? theme.colors.white : theme.colors.fc.dark1;
+		return variant === "primary" || variant === "secondary" ? theme.colors.white : theme.colors.fc.dark1;
 	}};
 	font-size: ${({ size }) => {
 		switch (size) {

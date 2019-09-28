@@ -9,14 +9,13 @@ const ProfileInfoStyled = styled.div`
 	left: 0;
 	right: 0;
 	bottom: -50px;
-	color: white;
-	background-color: rgba(0, 0, 0, 0.2);
+	background-image: linear-gradient(0deg, black, transparent);
 	transition: bottom linear 0.25s;
+	white-space: nowrap;
 `;
 
 const ProfileCardStyled = styled.div`
 	position: relative;
-	height: 400px;
 	overflow: hidden;
 	&:hover {
 		${ProfileInfoStyled} {
@@ -26,7 +25,7 @@ const ProfileCardStyled = styled.div`
 `;
 
 const SocialStyled = styled.div`
-	background: rgba(255, 255, 255, 0.85);
+	background: white;
 	padding: 1rem;
 	display: flex;
 	justify-content: flex-end;
@@ -58,11 +57,13 @@ const SocialStyled = styled.div`
 const DesignationStyled = styled.div`
 	margin-top: 1rem;
 	padding: 0 1rem;
+	color: ${({ theme }) => theme.colors.fc.light2};
 `;
 
 const UserNameStyled = styled.h2`
 	padding: 0 1rem;
 	margin: 0 0 1rem;
+	color: ${({ theme }) => theme.colors.fc.light1};
 `;
 
 const ProfileImageStyled = styled(Image)``;
