@@ -3,6 +3,7 @@ import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
+import ProfileCard from "@sections/Cards/profile";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
 import MockData from "@utils/designConceptsMock";
@@ -62,13 +63,16 @@ const HowStyledBanner = styled.div`
 
 const HowStepStyled = styled.div`
 	padding: 2rem;
+	p {
+		color: ${({ theme }) => theme.colors.fc.dark2};
+	}
 `;
 
 const HowStyled = styled.div`
 	position: absolute;
 	background-color: white;
 	width: calc(100% - 30px);
-	padding: 2rem;
+	padding: 3rem;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 `;
 
@@ -153,17 +157,20 @@ function index() {
 						<div className="col-8 col-bleed">
 							<div className="grid">
 								<div className="col-6 text-right">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,h_534,q_100,w_400/v1569581710/web/pink-scene_hmyxdk.jpg" />
+									<Image
+										full
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,h_534,q_100,w_392/v1569581710/web/pink-scene_hmyxdk.jpg"
+									/>
 								</div>
 								<div className="col-6">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_400/v1569619350/web/bulb_nxqhxo.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_392/v1569619350/web/bulb_nxqhxo.jpg"
 									/>
 									<Image
 										style={{ marginTop: "30px" }}
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_400/v1569581314/web/chairs_dqrdn9.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_392/v1569581314/web/chairs_dqrdn9.jpg"
 									/>
 								</div>
 							</div>
@@ -176,7 +183,7 @@ function index() {
 				<div className="grid grid-bleed">
 					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
 						<PartnerBrandStyled>
-							<SVGIcon name="crateandbarrel" width={689.92 / 3} height={50 / 3} />
+							<SVGIcon name="crateandbarrel" width={230} height={16.6} />
 						</PartnerBrandStyled>
 					</div>
 					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
@@ -186,7 +193,7 @@ function index() {
 					</div>
 					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
 						<PartnerBrandStyled>
-							<SVGIcon name="cb2" width={274.32 / 4} height={100 / 4} />
+							<SVGIcon name="cb2" width={68.58} height={25} />
 						</PartnerBrandStyled>
 					</div>
 					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
@@ -196,7 +203,7 @@ function index() {
 					</div>
 					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
 						<PartnerBrandStyled>
-							<SVGIcon name="westelm" width={557.15 / 4} height={100 / 4} />
+							<SVGIcon name="westelm" width={139.3} height={25} />
 						</PartnerBrandStyled>
 					</div>
 					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
@@ -254,8 +261,7 @@ function index() {
 										</HowStepStyled>
 									</div>
 									<div className="col-12 col-bleed">
-										<p>Ready to transform your home scape?</p>
-										<div style={{ position: "relative", marginBottom: "-40px" }}>
+										<div style={{ position: "relative", marginBottom: "-50px" }}>
 											<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
 												DESIGN MY SPACE
 											</Button>
@@ -272,6 +278,7 @@ function index() {
 				<div className="container">
 					<div className="grid text-center">
 						<div className="col-xs-12">
+							<h1>Get 3D Designs of Your Space</h1>
 							<Image
 								size="500px"
 								src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif"
@@ -279,7 +286,6 @@ function index() {
 						</div>
 						<div className="col-xs-12">
 							<div>
-								<h1>Get 3D Designs of Your Space</h1>
 								<HeroSubText>
 									Set your budget, share pictures of your room and tell us about your style preferences.
 								</HeroSubText>
@@ -304,30 +310,42 @@ function index() {
 							<p>
 								Our designers will transform your space into a stunningly beautiful home
 								<br />
-								Want to change something? Speak to them & finalize your perfect space that brings joy
-								<br />
-								We can&apos;t wait to get started!
+								Want to change something? Speak to them & finalize your perfect space that brings perfect joy.
 							</p>
 						</div>
 						<div className="col-xs-12">
 							<div className="grid">
-								<div className="col-6 col-md-4">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer5_irflbd.jpg" />
+								<div className="col-6 col-md-3">
+									<ProfileCard>
+										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
+										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1520001304590-52ba97432c52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Social fb="" tw="" li="" pi="" />
+									</ProfileCard>
 								</div>
-								<div className="col-6 col-md-4">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer0_rmledc.jpg" />
+								<div className="col-6 col-md-3">
+									<ProfileCard>
+										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
+										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Social fb="" tw="" li="" pi="" />
+									</ProfileCard>
 								</div>
-								<div className="col-6 col-md-4">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer1_gzjvpu.jpg" />
+								<div className="col-6 col-md-3">
+									<ProfileCard>
+										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
+										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Social fb="" tw="" li="" pi="" />
+									</ProfileCard>
 								</div>
-								<div className="col-6 col-md-4">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer2_wt3yo2.jpg" />
-								</div>
-								<div className="col-6 col-md-4">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564329/web/Designer3_fn8uxl.jpg" />
-								</div>
-								<div className="col-6 col-md-4">
-									<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1568564330/web/designer4_mas7gx.jpg" />
+								<div className="col-6 col-md-3">
+									<ProfileCard>
+										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
+										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1535230464639-a413d00b9934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Social fb="" tw="" li="" pi="" />
+									</ProfileCard>
 								</div>
 							</div>
 						</div>

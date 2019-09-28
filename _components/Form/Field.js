@@ -120,7 +120,7 @@ function Field({
 					{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 						<>
 							<LabelStyled htmlFor="address">
-								<span className="styled">Address {name}</span>
+								<span className="styled">{label}</span>
 								<InputStyled
 									autoComplete="false"
 									{...getInputProps({
