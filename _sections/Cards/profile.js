@@ -57,7 +57,7 @@ const SocialStyled = styled.div`
 const DesignationStyled = styled.div`
 	margin-top: 1rem;
 	padding: 0 1rem;
-	color: ${({ theme }) => theme.colors.fc.light2};
+	color: ${({ theme }) => theme.colors.primary2};
 `;
 
 const UserNameStyled = styled.h2`
@@ -77,16 +77,16 @@ class ProfileCard extends PureComponent {
 
 	static Social = ({ fb, tw, li, pi }) => (
 		<SocialStyled>
-			<a href={fb} height={20} target="_blank" rel="noopener noreferrer">
+			<a href={fb} height={50} target="_blank" rel="noopener noreferrer">
 				<SVGIcon name="fb" className="fb" />
 			</a>
-			<a href={tw} height={20} target="_blank" rel="noopener noreferrer">
+			<a href={tw} height={50} target="_blank" rel="noopener noreferrer">
 				<SVGIcon name="tw" className="tw" />
 			</a>
-			<a href={li} height={20} target="_blank" rel="noopener noreferrer">
+			<a href={li} height={50} target="_blank" rel="noopener noreferrer">
 				<SVGIcon name="li" className="li" />
 			</a>
-			<a href={pi} height={20} target="_blank" rel="noopener noreferrer">
+			<a href={pi} height={50} target="_blank" rel="noopener noreferrer">
 				<SVGIcon name="pi" className="pi" />
 			</a>
 		</SocialStyled>

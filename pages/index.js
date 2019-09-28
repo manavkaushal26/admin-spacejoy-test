@@ -53,6 +53,7 @@ const HowStyledBanner = styled.div`
 	background-size: cover;
 	height: 500px;
 	margin-bottom: 150px;
+	background-position: 100%;
 	background-attachment: fixed;
 	h1 {
 		font-family: "Airbnb Cereal App Medium";
@@ -82,6 +83,7 @@ const HeroWrapperStyled = styled.section`
 	position: relative;
 	display: flex;
 	align-items: center;
+	height: calc(100vh - 250px);
 `;
 
 const HeroCardStyled = styled.section`
@@ -89,7 +91,7 @@ const HeroCardStyled = styled.section`
 `;
 
 const SectionWrapperStyled = styled.section`
-	padding: 150px 0;
+	padding: 100px 0;
 	h1 {
 		font-family: "Airbnb Cereal App Medium";
 	}
@@ -304,7 +306,7 @@ function index() {
 				</div>
 			</SectionWrapperStyled>
 
-			<SectionWrapperStyled>
+			<SectionWrapperStyled style={{ background: "rgba(241, 241, 241, 0.38)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">
 						<div className="col-xs-12">
