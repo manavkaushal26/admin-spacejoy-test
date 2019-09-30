@@ -149,7 +149,7 @@ function index() {
 								</HeroSubText>
 								<h4>Plans starting at $19</h4>
 								<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE <SVGIcon name="right" width={20} fill="white" />
+									DESIGN MY SPACE NOW <SVGIcon name="right" width={20} fill="white" />
 								</Button>
 								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
 									<a href="/designProjects">
@@ -322,7 +322,7 @@ function index() {
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1520001304590-52ba97432c52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
@@ -330,7 +330,7 @@ function index() {
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
@@ -338,7 +338,7 @@ function index() {
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
@@ -346,7 +346,7 @@ function index() {
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
+										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1535230464639-a413d00b9934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
