@@ -13,6 +13,7 @@ const ButtonStyled = styled.button`
 	text-transform: uppercase;
 	position: relative;
 	text-align: center;
+	letter-spacing: 1px;
 `;
 
 export default ButtonStyled;

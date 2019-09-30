@@ -1,13 +1,10 @@
+import leftArrow from "@static/images/left.svg";
+import rightArrow from "@static/images/right.svg";
 import PropTypes from "prop-types";
 import React from "react";
 import Slider from "react-slick";
 import styled from "styled-components";
 import ButtonBase from "./Button/ButtonBaseStyle";
-
-const Arrows = {
-	left: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_30/v1567694806/shared/left-dark_youtzq.svg",
-	right: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_30/v1567694807/shared/right-dark_sxnqtv.svg"
-};
 
 const BaseArrowsStyled = styled(ButtonBase)`
 	position: absolute;
@@ -18,13 +15,13 @@ const BaseArrowsStyled = styled(ButtonBase)`
 `;
 
 const NextStyled = styled(BaseArrowsStyled)`
-	background: white url(${Arrows.right}) center no-repeat;
+	background: white url(${rightArrow}) center no-repeat;
 	background-size: 20px;
 	right: 0;
 `;
 
 const PrevStyled = styled(BaseArrowsStyled)`
-	background: white url(${Arrows.left}) center no-repeat;
+	background: white url(${leftArrow}) center no-repeat;
 	background-size: 20px;
 	left: 0;
 `;

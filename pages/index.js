@@ -149,7 +149,7 @@ function index() {
 								</HeroSubText>
 								<h4>Plans starting at $19</h4>
 								<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE
+									DESIGN MY SPACE <SVGIcon name="right" width={20} fill="white" />
 								</Button>
 								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
 									<a href="/designProjects">
