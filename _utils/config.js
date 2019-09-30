@@ -4,6 +4,8 @@ module.exports = {
 		apiBaseUrl: "//api.homefuly.com/api",
 		placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 		googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
+		googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
+		googleClientId: "628064588100-islor8kv96kol2rjrocarhqs4d604vec.apps.googleusercontent.com",
 		ga: "UA-145327802-1",
 		gtm: "GTM-WC4HSB6",
 		optimize: "GTM-KKZ3VGJ",
@@ -39,9 +41,7 @@ module.exports = {
 		social: {
 			facebook: "https://www.facebook.com/spacejoyapp/",
 			facebookId: "652491341906462",
-			googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
-			googleClientId: "628064588100-islor8kv96kol2rjrocarhqs4d604vec.apps.googleusercontent.com",
-			linkedin: "",
+			linkedin: "https://www.linkedin.com/company/spacejoy/",
 			twitter: "https://twitter.com/spacejoyapp/",
 			instagram: "https://www.instagram.com/spacejoyapp/",
 			pinterest: "https://in.pinterest.com/spacejoyapp/"

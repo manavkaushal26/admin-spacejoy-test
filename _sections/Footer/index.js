@@ -1,5 +1,6 @@
 import Divider from "@components/Divider";
 import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import { company } from "@utils/config";
 import Link from "next/link";
 import React from "react";
@@ -71,34 +72,27 @@ function index() {
 							<FooterNavStyled direction="horizontal">
 								<li>
 									<a href={company.social.facebook} target="_black">
-										<Image
-											size="xs"
-											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/facebook_fjpw0j.svg"
-										/>
+										<SVGIcon name="fb" height={18} width={18} />
 									</a>
 								</li>
 								<li>
 									<a href={company.social.twitter} target="_black">
-										<Image
-											size="xs"
-											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/twitter_el5nrt.svg"
-										/>
+										<SVGIcon name="tw" height={18} width={18} />
+									</a>
+								</li>
+								<li>
+									<a href={company.social.linkedin} target="_black">
+										<SVGIcon name="li" height={18} width={18} />
 									</a>
 								</li>
 								<li>
 									<a href={company.social.instagram} target="_black">
-										<Image
-											size="xs"
-											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/instagram_w0u21k.svg"
-										/>
+										<SVGIcon name="insta" height={18} width={18} />
 									</a>
 								</li>
 								<li>
 									<a href={company.social.pinterest} target="_black">
-										<Image
-											size="xs"
-											src="https://res.cloudinary.com/spacejoy/image/upload/v1567093473/shared/pinterest_q2xvqr.svg"
-										/>
+										<SVGIcon name="pi" height={18} width={18} />
 									</a>
 								</li>
 							</FooterNavStyled>

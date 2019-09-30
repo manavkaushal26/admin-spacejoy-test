@@ -54,7 +54,7 @@ const SocialStyled = styled.div`
 	}
 `;
 
-const DesignationStyled = styled.div`
+const DesignationStyled = styled.small`
 	margin-top: 1rem;
 	padding: 0 1rem;
 	color: ${({ theme }) => theme.colors.primary2};

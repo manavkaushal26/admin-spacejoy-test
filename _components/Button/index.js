@@ -18,8 +18,10 @@ const ButtonStyled = styled(ButtonBase)`
 				return theme.colors.white;
 		}
 	}};
-	color: ${({ theme, variant }) => {
-		return variant === "primary" || variant === "secondary" ? theme.colors.white : theme.colors.fc.dark1;
+	color: ${({ theme, variant, fill }) => {
+		return fill !== "ghost" && (variant === "primary" || variant === "secondary")
+			? theme.colors.white
+			: theme.colors.fc.dark1;
 	}};
 	font-size: ${({ size }) => {
 		switch (size) {

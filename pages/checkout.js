@@ -19,10 +19,9 @@ function checkout({ isServer, data }) {
 				<title>Checkout</title>
 			</Head>
 			<div className="container">
-				<div className="grid text-center">
-					<div className="col-6">
+				<div className="grid">
+					<div className="col-12">
 						<h3>Your Preferences</h3>
-						{data && data.package}-{data && data.packageAmount}
 						<div className="grid">
 							{data &&
 								data.form &&
@@ -34,7 +33,7 @@ function checkout({ isServer, data }) {
 								))}
 						</div>
 					</div>
-					<div className="col-6">
+					<div className="col-12">
 						<Checkout />
 					</div>
 				</div>

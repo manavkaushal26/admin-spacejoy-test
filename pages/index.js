@@ -48,7 +48,7 @@ const PartnerBrandStyled = styled.div`
 `;
 
 const HowStyledBanner = styled.div`
-	background: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_1900/v1569620131/web/pink-sofa_hp7wvg.jpg");
+	background: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_80,w_1800/v1569620131/web/pink-sofa_hp7wvg.jpg");
 	padding: 5rem 0;
 	background-size: cover;
 	height: 500px;
@@ -233,7 +233,7 @@ function index() {
 								<div className="grid text-center">
 									<div className="col-12 col-xs-4">
 										<HowStepStyled>
-											<SVGIcon name="wifi" width={140} />
+											<SVGIcon name="divider" width={70} height={70} />
 											<h3>Select Design</h3>
 											<p>
 												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
@@ -244,7 +244,7 @@ function index() {
 									</div>
 									<div className="col-12 col-xs-4">
 										<HowStepStyled>
-											<SVGIcon name="wifi" width={140} />
+											<SVGIcon name="divider-2" width={70} height={70} />
 											<h3>Select Design</h3>
 											<p>
 												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
@@ -255,7 +255,7 @@ function index() {
 									</div>
 									<div className="col-12 col-xs-4">
 										<HowStepStyled>
-											<SVGIcon name="wifi" width={140} />
+											<SVGIcon name="divider-3" width={70} height={70} />
 											<h3>Select Design</h3>
 											<p>
 												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
@@ -323,7 +323,7 @@ function index() {
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1520001304590-52ba97432c52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1520001304590-52ba97432c52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
@@ -331,7 +331,7 @@ function index() {
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
@@ -339,7 +339,7 @@ function index() {
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
@@ -347,7 +347,7 @@ function index() {
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
 										<ProfileCard.UserName>Saurabh Sachan</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1535230464639-a413d00b9934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80" />
+										<ProfileCard.Image source="https://images.unsplash.com/photo-1535230464639-a413d00b9934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
