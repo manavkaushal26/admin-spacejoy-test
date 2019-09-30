@@ -83,7 +83,7 @@ const HeroWrapperStyled = styled.section`
 	position: relative;
 	display: flex;
 	align-items: center;
-	height: calc(100vh - 250px);
+	min-height: calc(100vh - 250px);
 `;
 
 const HeroCardStyled = styled.section`

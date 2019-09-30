@@ -79,6 +79,10 @@ class FormBox extends Component {
 									value: state.userMobile.value
 								},
 								{
+									key: "package",
+									value: state.selectedPlan.value
+								},
+								{
 									key: "whichRoomAreYouDesigning",
 									value: state.whichRoomAreYouDesigning.value
 								},

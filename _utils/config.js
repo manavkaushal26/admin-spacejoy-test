@@ -9,6 +9,7 @@ module.exports = {
 		ga: "UA-145327802-1",
 		gtm: "GTM-WC4HSB6",
 		optimize: "GTM-KKZ3VGJ",
+		stripe: "pk_live_74NmugK4189bLTq0H74tvVz300grMkWE5n",
 		country: "USA",
 		playStoreUrl: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
 		appStoreUrl: "https://apps.apple.com/us/app/homefuly/id1448690338",
