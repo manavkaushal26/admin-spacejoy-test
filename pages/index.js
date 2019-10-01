@@ -5,12 +5,14 @@ import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import ProfileCard from "@sections/Cards/profile";
 import Layout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import MockData from "@utils/designConceptsMock";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import Link from "next/link";
 import Router from "next/router";
+import PropTypes from "prop-types";
 import React from "react";
 import ReactCompareImage from "react-compare-image";
 import styled from "styled-components";
@@ -92,9 +94,9 @@ function goToDesignMySpace() {
 	Router.push("/designMySpace");
 }
 
-function index() {
+function index({ isServer, authVerification }) {
 	return (
-		<Layout>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>Home | {company.product}</title>
@@ -375,4 +377,19 @@ function index() {
 	);
 }
 
-export default index;
+index.defaultProps = {
+	authVerification: {
+		name: "",
+		email: ""
+	}
+};
+
+index.propTypes = {
+	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({
+		name: PropTypes.string,
+		email: PropTypes.string
+	})
+};
+
+export default withAuthVerification(index);

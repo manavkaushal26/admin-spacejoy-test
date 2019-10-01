@@ -1,24 +1,24 @@
 import { page } from "@utils/config";
 import fetch from "isomorphic-unfetch";
-import cookie from "js-cookie";
-import nextCookie from "next-cookies";
+import getToken from "./getToken";
 
 function fetcher({ ctx, endPoint, method, body }) {
-	const token = ctx && ctx.req ? nextCookie(ctx).token : cookie.get("token");
+	const token = getToken(ctx);
 	const headers = token
 		? { "Content-Type": "application/json", Authorization: token }
 		: { "Content-Type": "application/json" };
-	if (method === "GET") {
-		return fetch(page.apiBaseUrl + endPoint, {
-			method,
-			headers
-		});
-	}
-	return fetch(page.apiBaseUrl + endPoint, {
-		method,
-		headers,
-		body: JSON.stringify(body)
-	});
+	const options =
+		method === "GET"
+			? {
+					method,
+					headers
+			  }
+			: {
+					method,
+					headers,
+					body: JSON.stringify(body)
+			  };
+	return fetch(page.apiBaseUrl + endPoint, options);
 }
 
 export default fetcher;

@@ -1,5 +1,5 @@
 import ForgotPasswordForm from "@sections/Forms/ForgotPasswordForm";
-import Login from "@sections/Forms/LoginForm";
+import LoginForm from "@sections/Forms/LoginForm";
 import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
@@ -16,7 +16,12 @@ function getHeadingText(flow) {
 		case "login":
 			return "Welcome Back";
 		case "forgot-password":
-			return "Forgot Password? Fear not. We’ll email you instructions to reset your password.";
+			return (
+				<span>
+					Forgot Password? No Worries. <br />
+					We’ll email you instructions to reset your password.
+				</span>
+			);
 		default:
 			return "";
 	}
@@ -32,24 +37,28 @@ function auth({ isServer, flow, redirectUrl }) {
 				</title>
 			</Head>
 			<div className="container">
-				<div className="grid justify-center">
+				<div className="grid justify-space-around">
 					<div className="col-12 col-sm-8 col-md-4">
 						<div className="col-12">
 							<h3>{getHeadingText(flow)}</h3>
 						</div>
 						<div className="col-xs-12">
-							{flow === "login" && <Login redirectUrl={redirectUrl} />}
+							{flow === "login" && <LoginForm redirectUrl={redirectUrl} />}
 							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
 							{flow === "forgot-password" && <ForgotPasswordForm redirectUrl={redirectUrl} />}
 						</div>
 						<div className="col-xs-12">
-							<span>{flow === "signup" ? "Already have an account? " : "Create new Account "}</span>
-							{flow === "signup" ? (
-								<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
-									<a>Login</a>
-								</Link>
-							) : (
+							{flow === "signup" && (
 								<>
+									<span>Already have an account? </span>
+									<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
+										<a>Login</a>
+									</Link>
+								</>
+							)}
+							{flow === "login" && (
+								<>
+									<span>Create new Account </span>
 									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
 										<a>Signup</a>
 									</Link>
@@ -59,6 +68,19 @@ function auth({ isServer, flow, redirectUrl }) {
 										as="/auth/forgot-password?redirectUrl=/auth/login"
 									>
 										<a>Forgot Password?</a>
+									</Link>
+								</>
+							)}
+							{flow === "forgot-password" && (
+								<>
+									<span>Create new Account </span>
+									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
+										<a>Signup</a>
+									</Link>
+									<br />
+									<span>Already have an account? </span>
+									<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
+										<a>Login</a>
 									</Link>
 								</>
 							)}

@@ -40,7 +40,8 @@ function FAQCard({ children, open, handleOpenId, quesId }) {
 	return (
 		<FAQWrapper className={open ? "open" : "close"}>
 			<QuestionStyled role="button" tabIndex="0" onClick={handleClick} onKeyPress={handleClick}>
-				Q. {children[0]}
+				<strong>Q. </strong>
+				{children[0]}
 			</QuestionStyled>
 			<AnswerStyled>{parse(`${children[1].props.children}`)}</AnswerStyled>
 		</FAQWrapper>

@@ -62,13 +62,13 @@ class Header extends PureComponent {
 					<CookieStyled className="text-center">
 						<div className="container">
 							<div className="grid">
-								<div className="col-xs-10">
+								<div className="col-10">
 									By using spacejoy.com, you agree with our use of cookies to improve performance.{" "}
 									<ActiveLink href="/cookies" as="/cookies">
 										Cookies Statement
 									</ActiveLink>
 								</div>
-								<div className="col-xs-2">
+								<div className="col-2">
 									<Image
 										onClick={this.updateCookiePolicyStatus}
 										size="16px"
@@ -85,9 +85,5 @@ class Header extends PureComponent {
 		);
 	}
 }
-
-Header.propTypes = {};
-
-Header.defaultProps = {};
 
 export default Header;

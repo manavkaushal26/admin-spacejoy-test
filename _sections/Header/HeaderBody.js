@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
 import { logout } from "@utils/auth";
-import cookie from "js-cookie";
+import getToken from "@utils/getToken";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -64,7 +64,7 @@ const HeaderBody = ({ authVerification }) => {
 	// use only `authVerification`
 	// to get `authVerification` every where use withAuthVerification HOC in all pages
 
-	const token = cookie.get("token");
+	const token = getToken();
 
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
 
@@ -101,8 +101,8 @@ const HeaderBody = ({ authVerification }) => {
 				<li>
 					{!authVerification.name && !token && (
 						<ActiveLink
-							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/faq" } }}
-							as="/auth/login?redirectUrl=/faq"
+							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/" } }}
+							as="/auth/login?redirectUrl=/"
 							replace
 						>
 							Login

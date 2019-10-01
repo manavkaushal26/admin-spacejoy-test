@@ -16,12 +16,12 @@ const MainStyled = styled.main`
 			content: "";
 			position: fixed;
 			z-index: 100;
-			top: 50vh;
-			left: 0;
-			margin-top: -2.5rem;
-			height: 5rem;
-			width: 5px;
-			background: ${({ isServer }) => (isServer ? "red" : "green")};
+			top: 0.5rem;
+			left: 0.5rem;
+			height: 0.5rem;
+			width: 0.5rem;
+			border-radius: 0.5rem;
+			background: ${({ isServer, theme }) => (isServer ? theme.colors.red : theme.colors.green)};
 		}
 	}
 `;

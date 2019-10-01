@@ -20,17 +20,19 @@ const ImageStyled = styled.img`
 	}};
 `;
 
-function Image(props, { src, size }) {
-	return <ImageStyled src={src} size={size} {...props} />;
+function Image({ src, size, alt, ...props }) {
+	return <ImageStyled src={src} size={size} alt={alt} {...props} />;
 }
 
 Image.defaultProps = {
-	size: "full"
+	size: "full",
+	alt: "spacejoy"
 };
 
 Image.propTypes = {
 	src: PropTypes.string.isRequired,
-	size: PropTypes.string
+	size: PropTypes.string,
+	alt: PropTypes.string
 };
 
 export default Image;

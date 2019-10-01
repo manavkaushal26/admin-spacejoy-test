@@ -1,8 +1,8 @@
 import cookie from "js-cookie";
-import nextCookie from "next-cookies";
 import Router from "next/router";
 import React, { Component } from "react";
 import fetcher from "./fetcher";
+import getToken from "./getToken";
 
 const endPointAuthCheck = "/auth/check";
 
@@ -29,7 +29,7 @@ function logout() {
 }
 
 function auth(ctx) {
-	const { token } = nextCookie(ctx);
+	const token = getToken(ctx);
 	const redirect = { pathname: "/auth", query: { flow: "login", redirectUrl: ctx.pathname }, url: "/auth/login" };
 	if (!token) {
 		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
@@ -76,7 +76,7 @@ function withAuthVerification(WrappedComponent) {
 
 		static async getInitialProps(ctx) {
 			const isServer = !!ctx.req;
-			const token = isServer ? nextCookie(ctx).token : cookie.get("token");
+			const token = getToken(ctx);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
 			if (token) {
 				if (!isServer && localStorage.getItem("authVerification")) {
@@ -84,9 +84,11 @@ function withAuthVerification(WrappedComponent) {
 					return { ...componentProps, authVerification, isServer };
 				}
 				const res = await fetcher({ ctx, endPoint: endPointAuthCheck, method: "GET" });
-				const authVerification = await res.json();
-				if (!isServer && window) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
-				return { ...componentProps, authVerification, isServer };
+				if (res.status <= 300) {
+					const authVerification = await res.json();
+					if (!isServer && window) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
+					return { ...componentProps, authVerification, isServer };
+				}
 			}
 			return { ...componentProps, isServer };
 		}

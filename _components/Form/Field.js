@@ -20,14 +20,13 @@ const SuggestionStyled = styled.div`
 	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	border-left: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	border-right: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	/* background: ${({ active, theme }) => (active ? theme.colors.bg.dark2 : theme.colors.bg.light1)}; */
 	&:last-child {
 		border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	}
 `;
 
 const FieldWrapperStyled = styled.div`
-	color: ${({ hasError, theme }) => (hasError ? theme.colors.primary1 : theme.colors.fc.dark1)};
+	color: ${({ hasError, theme }) => (hasError ? theme.colors.red : theme.colors.fc.dark1)};
 `;
 
 const LabelStyled = styled.label`
@@ -39,12 +38,12 @@ const LabelStyled = styled.label`
 	}
 `;
 
-const DummyLabelStyled = styled.div`
+const RadioWrapperStyled = styled.div`
 	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "2rem")};
 `;
 
 const ErrorTextStyled = styled.small`
-	color: ${({ theme }) => theme.colors.primary1};
+	color: ${({ theme }) => theme.colors.red};
 	margin: 0.5rem 0rem;
 	display: inline-block;
 `;
@@ -62,7 +61,7 @@ const InputStyled = styled.input`
 	padding: 0.75rem;
 	width: 100%;
 	box-sizing: border-box;
-	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.primary1 : theme.colors.bg.dark1)};
+	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.red : theme.colors.bg.dark1)};
 `;
 
 function Field({
@@ -106,7 +105,7 @@ function Field({
 								data-hint={hint}
 							/>
 							{data.error && <ErrorTextStyled>{data.error}</ErrorTextStyled>}
-							{data.error && <HintTextStyled>{hint}</HintTextStyled>}
+							{hint && !data.error && <HintTextStyled>{hint}</HintTextStyled>}
 						</div>
 					</div>
 				</LabelStyled>
@@ -146,7 +145,7 @@ function Field({
 				</PlacesAutocomplete>
 			)}
 			{type === "radio" && (
-				<DummyLabelStyled>
+				<RadioWrapperStyled>
 					<div className="grid">
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							<span>
@@ -170,10 +169,9 @@ function Field({
 								/>
 							))}
 							{data.error && <ErrorTextStyled>{data.error}</ErrorTextStyled>}
-							{data.error && <HintTextStyled>{hint}</HintTextStyled>}
 						</div>
 					</div>
-				</DummyLabelStyled>
+				</RadioWrapperStyled>
 			)}
 			{type === "submit" && (
 				<div className="grid">

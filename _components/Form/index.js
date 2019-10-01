@@ -11,9 +11,9 @@ const FormWrapperStyled = styled.form`
 `;
 
 const FormStatusStyled = styled.div`
-	background: ${({ theme }) => theme.colors.primary1};
+	background: ${({ theme }) => theme.colors.red};
 	color: white;
-	margin-bottom: 1rem;
+	margin-bottom: 2rem;
 	padding: 0.5rem 1rem;
 	border-radius: 5px;
 `;

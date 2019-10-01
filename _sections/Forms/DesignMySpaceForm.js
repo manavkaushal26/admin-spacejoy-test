@@ -1,13 +1,11 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
-import { AuthContext } from "@context/AuthStorage";
 import PropTypes from "prop-types";
 import React from "react";
 
 function DesignMySpaceForm({ plan, name, email }) {
 	return (
 		<FormBox redirectUrl="/checkout" destination="/forms" description="Submit your details" name="designmyspace">
-			<AuthContext.Consumer>{value => value.state.isAuthorized}</AuthContext.Consumer>
 			<Field
 				name="userName"
 				type="text"

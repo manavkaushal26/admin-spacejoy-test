@@ -43,16 +43,15 @@ function checkout({ isServer, data, authVerification }) {
 }
 
 checkout.getInitialProps = async ctx => {
-	const isServer = !!ctx.req;
 	const res = await fetcher({ ctx, endPoint, method: "GET" });
 	if (res.status <= 300) {
 		const resData = await res.json();
 		if (resData.status === "success") {
 			const { data } = resData;
-			return { isServer, data };
+			return { data };
 		}
 	}
-	return { isServer };
+	return {};
 };
 
 checkout.defaultProps = {
@@ -83,7 +82,5 @@ checkout.propTypes = {
 		packageAmount: PropTypes.number
 	})
 };
-
-checkout.propTypes = {};
 
 export default withAuthVerification(withAuthSync(checkout));

@@ -1,37 +1,40 @@
-import { AuthContext } from "@context/AuthStorage";
 import Layout from "@sections/Layout";
-import { withAuthSync } from "@utils/auth";
+import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import React from "react";
 
-const profile = () => {
+const profile = ({ isServer, authVerification }) => {
 	return (
-		<Layout>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>Profile | {company.product}</title>
 			</Head>
 			<div className="container">
 				<div className="grid">
-					<div className="col-xs-12 text-center">
-						<AuthContext.Consumer>
-							{value => (
-								<button type="button" onClick={value.updateState}>
-									{JSON.stringify(value.state.isAuthorized)}
-								</button>
-							)}
-						</AuthContext.Consumer>
-					</div>
+					<div className="col-xs-12 text-center">Welcome {authVerification.name}</div>
 				</div>
 			</div>
 		</Layout>
 	);
 };
 
-profile.defaultProps = {};
+profile.defaultProps = {
+	authVerification: {
+		name: "",
+		email: ""
+	}
+};
 
-profile.propTypes = {};
+profile.propTypes = {
+	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({
+		name: PropTypes.string,
+		email: PropTypes.string
+	})
+};
 
-export default withAuthSync(profile);
+export default withAuthVerification(withAuthSync(profile));

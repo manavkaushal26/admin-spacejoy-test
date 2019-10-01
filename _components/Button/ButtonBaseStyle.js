@@ -8,7 +8,6 @@ const ButtonStyled = styled.button`
 	-webkit-appearance: none;
 	outline: none;
 	white-space: nowrap;
-	line-height: 1.5;
 	border: none;
 	text-transform: uppercase;
 	position: relative;

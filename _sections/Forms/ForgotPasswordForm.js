@@ -18,7 +18,6 @@ function ForgotPasswordForm({ redirectUrl }) {
 				placeholder="Email"
 				error="Please enter a valid email"
 				hint="should contain valid email"
-				value=""
 				required
 			/>
 			<Field name="userSubmit" type="submit" label="Submit" />

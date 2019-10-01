@@ -26,30 +26,6 @@ const PrevStyled = styled(BaseArrowsStyled)`
 	left: 0;
 `;
 
-function prev() {
-	this.slider.slickPrev();
-}
-
-function next() {
-	this.slider.slickNext();
-}
-
-function NextArrow({ onClick }) {
-	return <NextStyled primary onClick={onClick} />;
-}
-
-NextArrow.propTypes = {
-	onClick: PropTypes.func.isRequired
-};
-
-function PrevArrow({ onClick }) {
-	return <PrevStyled primary onClick={onClick} />;
-}
-
-PrevArrow.propTypes = {
-	onClick: PropTypes.func.isRequired
-};
-
 const settings = {
 	dots: false,
 	infinite: true,
@@ -59,8 +35,8 @@ const settings = {
 	autoplay: false,
 	autoplaySpeed: 5000,
 	pauseOnHover: true,
-	nextArrow: <NextArrow onClick={prev} />,
-	prevArrow: <PrevArrow onClick={next} />,
+	nextArrow: <NextStyled onClick={() => this.slider.slickNext()} />,
+	prevArrow: <PrevStyled onClick={() => this.slider.slickPrev()} />,
 	responsive: [
 		{
 			breakpoint: 480,
@@ -75,8 +51,8 @@ const settings = {
 function Carousel({ children, slidesToShow, slidesToScroll, autoplay }) {
 	return (
 		<Slider
-			ref={slider => slider}
 			{...settings}
+			ref={slider => slider}
 			slidesToShow={slidesToShow}
 			slidesToScroll={slidesToScroll}
 			autoplay={autoplay}
