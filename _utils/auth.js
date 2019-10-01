@@ -85,7 +85,7 @@ function withAuthVerification(WrappedComponent) {
 				}
 				const res = await fetcher({ ctx, endPoint: endPointAuthCheck, method: "GET" });
 				const authVerification = await res.json();
-				if (!isServer) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
+				if (!isServer && window) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
 				return { ...componentProps, authVerification, isServer };
 			}
 			return { isServer };

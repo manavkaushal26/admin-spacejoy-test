@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
 import { logout } from "@utils/auth";
+import cookie from "js-cookie";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -59,6 +60,12 @@ const MobileNavVisibleStyled = styled.div`
 `;
 
 const HeaderBody = ({ authVerification }) => {
+	// TODO : remove cookie check here
+	// use only `authVerification`
+	// to get `authVerification` every where use withAuthVerification HOC in all pages
+
+	const token = cookie.get("token");
+
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
 
 	const navCenter = (
@@ -92,7 +99,7 @@ const HeaderBody = ({ authVerification }) => {
 					</ActiveLink>
 				</li>
 				<li>
-					{!authVerification.name && (
+					{!authVerification.name && !token && (
 						<ActiveLink
 							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/faq" } }}
 							as="/auth/login?redirectUrl=/faq"
@@ -101,7 +108,7 @@ const HeaderBody = ({ authVerification }) => {
 							Login
 						</ActiveLink>
 					)}
-					{authVerification.name && (
+					{(authVerification.name || token) && (
 						<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
 							Logout
 						</Button>
