@@ -203,18 +203,13 @@ function index() {
 			<SectionWrapperStyled style={{ background: "rgba(241, 241, 241, 0.38)" }}>
 				<div className="container">
 					<div className="grid align-center">
-						<div className="col-12 col-md-8">
+						<div className="col-12">
 							<h1>Crafted By Our Design Experts</h1>
 							<p>
 								Our designers will transform your space into a stunningly beautiful home
 								<br />
 								Want to change something? Speak to them & finalize your perfect space that brings perfect joy.
 							</p>
-						</div>
-						<div className="col-12 col-md-4 text-right">
-							<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
-								DESIGN MY SPACE
-							</Button>
 						</div>
 						<div className="col-xs-12">
 							<div className="grid">
@@ -267,6 +262,11 @@ function index() {
 									</ProfileCard>
 								</div>
 							</div>
+						</div>
+						<div className="col-12">
+							<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+								DESIGN MY SPACE
+							</Button>
 						</div>
 					</div>
 				</div>
