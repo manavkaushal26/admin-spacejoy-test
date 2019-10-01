@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
 import { logout } from "@utils/auth";
-import cookie from "js-cookie";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
@@ -58,9 +58,7 @@ const MobileNavVisibleStyled = styled.div`
 	}
 `;
 
-const HeaderBody = () => {
-	const token = cookie.get("token");
-
+const HeaderBody = ({ authVerification }) => {
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
 
 	const navCenter = (
@@ -94,7 +92,7 @@ const HeaderBody = () => {
 					</ActiveLink>
 				</li>
 				<li>
-					{!token && (
+					{!authVerification.name && (
 						<ActiveLink
 							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/faq" } }}
 							as="/auth/login?redirectUrl=/faq"
@@ -103,7 +101,7 @@ const HeaderBody = () => {
 							Login
 						</ActiveLink>
 					)}
-					{token && (
+					{authVerification.name && (
 						<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
 							Logout
 						</Button>
@@ -144,6 +142,18 @@ const HeaderBody = () => {
 			</div>
 		</div>
 	);
+};
+
+HeaderBody.defaultProps = {
+	authVerification: {
+		name: ""
+	}
+};
+
+HeaderBody.propTypes = {
+	authVerification: PropTypes.shape({
+		name: PropTypes.string
+	})
 };
 
 export default HeaderBody;

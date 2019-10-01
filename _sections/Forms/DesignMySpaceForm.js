@@ -4,7 +4,7 @@ import { AuthContext } from "@context/AuthStorage";
 import PropTypes from "prop-types";
 import React from "react";
 
-function DesignMySpaceForm({ plan }) {
+function DesignMySpaceForm({ plan, name, email }) {
 	return (
 		<FormBox redirectUrl="/checkout" destination="/forms" description="Submit your details" name="designmyspace">
 			<AuthContext.Consumer>{value => value.state.isAuthorized}</AuthContext.Consumer>
@@ -12,6 +12,8 @@ function DesignMySpaceForm({ plan }) {
 				name="userName"
 				type="text"
 				label="Username"
+				value={name}
+				readonly={!!name}
 				placeholder="Username"
 				error="Please enter a valid username"
 				hint="should contain valid text"
@@ -20,6 +22,8 @@ function DesignMySpaceForm({ plan }) {
 				name="userEmail"
 				type="email"
 				label="Email"
+				value={email}
+				readonly={!!email}
 				placeholder="Email"
 				error="Please enter a valid email"
 				hint="should contain valid email"
@@ -36,11 +40,12 @@ function DesignMySpaceForm({ plan }) {
 			/>
 			<Field
 				name="selectedPlan"
-				type="text"
+				type="radio"
 				label="Selected Plan"
 				placeholder="Selected Plan"
 				error="Please enter a Selected Plan"
 				hint="Selected Plan"
+				options={[{ value: "consultation" }, { value: "classic" }, { value: "premium" }]}
 				value={plan}
 				required
 			/>
@@ -102,11 +107,15 @@ function DesignMySpaceForm({ plan }) {
 }
 
 DesignMySpaceForm.defaultProps = {
-	plan: ""
+	plan: "",
+	name: "",
+	email: ""
 };
 
 DesignMySpaceForm.propTypes = {
-	plan: PropTypes.string
+	plan: PropTypes.string,
+	name: PropTypes.string,
+	email: PropTypes.string
 };
 
 export default DesignMySpaceForm;

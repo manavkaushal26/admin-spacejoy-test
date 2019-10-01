@@ -4,9 +4,11 @@ import styled from "styled-components";
 
 const WildCardStyled = styled.div`
 	position: relative;
-	background-color: ${({ theme }) => theme.colors.bg.light2};
+	border-color: ${({ theme }) => theme.colors.bg.light2};
+	border-width: 1px;
+	border-style: solid;
 	height: 100%;
-	padding: 2rem;
+	padding-top: 5rem;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;

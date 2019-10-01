@@ -80,7 +80,7 @@ class Header extends PureComponent {
 						</div>
 					</CookieStyled>
 				)}
-				<HeaderBody />
+				<HeaderBody {...this.props} />
 			</HeaderStyled>
 		);
 	}

@@ -67,6 +67,7 @@ const InputStyled = styled.input`
 
 function Field({
 	data,
+	readonly,
 	onchange,
 	handleAddressChange,
 	name,
@@ -92,6 +93,7 @@ function Field({
 						</div>
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							<InputStyled
+								readonly={readonly}
 								type={type}
 								id={name}
 								name={name}
@@ -111,6 +113,7 @@ function Field({
 			)}
 			{type === "addressAutoSuggest" && (
 				<PlacesAutocomplete
+					readonly={readonly}
 					value={data.value || ""}
 					name={name}
 					id={name}
@@ -154,6 +157,7 @@ function Field({
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							{options.map(radio => (
 								<Radio
+									readonly={readonly}
 									id={radio.value}
 									name={name}
 									value={radio.value}
@@ -195,7 +199,8 @@ Field.defaultProps = {
 	error: "",
 	hint: "",
 	inline: false,
-	required: false
+	required: false,
+	readonly: false
 };
 
 Field.propTypes = {
@@ -213,7 +218,8 @@ Field.propTypes = {
 	error: PropTypes.string,
 	hint: PropTypes.string,
 	inline: PropTypes.bool,
-	required: PropTypes.bool
+	required: PropTypes.bool,
+	readonly: PropTypes.bool
 };
 
 export default Field;

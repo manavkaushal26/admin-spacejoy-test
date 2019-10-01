@@ -4,7 +4,7 @@ import fetcher from "@utils/fetcher";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { ValidateEmail } from "./Validation";
+import { ValidateEmail, ValidateMobile } from "./Validation";
 
 const FormWrapperStyled = styled.form`
 	width: 100%;
@@ -146,7 +146,7 @@ class FormBox extends Component {
 					? this.setState({ [name]: { value } })
 					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
 			case "tel":
-				return value
+				return value && ValidateMobile(value)
 					? this.setState({ [name]: { value } })
 					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
 			case "password":

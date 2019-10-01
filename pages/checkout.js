@@ -1,5 +1,5 @@
 import Layout from "@sections/Layout";
-import { withAuthSync } from "@utils/auth";
+import { withAuthSync, withAuthVerification } from "@utils/auth";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import dynamic from "next/dynamic";
@@ -11,9 +11,9 @@ const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
 
 const endPoint = "/forms-user?source=designmyspace";
 
-function checkout({ isServer, data }) {
+function checkout({ isServer, data, authVerification }) {
 	return (
-		<Layout isServer={isServer}>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>Checkout</title>
@@ -56,11 +56,19 @@ checkout.getInitialProps = async ctx => {
 };
 
 checkout.defaultProps = {
-	data: {}
+	data: {},
+	authVerification: {
+		name: "",
+		email: ""
+	}
 };
 
 checkout.propTypes = {
 	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({
+		name: PropTypes.string,
+		email: PropTypes.string
+	}),
 	data: PropTypes.shape({
 		form: PropTypes.shape({
 			userEmail: PropTypes.string,
@@ -78,4 +86,4 @@ checkout.propTypes = {
 
 checkout.propTypes = {};
 
-export default withAuthSync(checkout);
+export default withAuthVerification(withAuthSync(checkout));

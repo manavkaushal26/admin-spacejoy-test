@@ -26,11 +26,11 @@ const MainStyled = styled.main`
 	}
 `;
 
-function Layout({ isServer, header, children }) {
+function Layout({ isServer, authVerification, children }) {
 	return (
 		<>
 			<GlobalStyle />
-			<Header variant={header} />
+			<Header authVerification={authVerification} />
 			<MainStyled isServer={isServer} className={dev ? "client-server-identifier" : ""}>
 				{children}
 			</MainStyled>
@@ -39,15 +39,15 @@ function Layout({ isServer, header, children }) {
 	);
 }
 
-Layout.propTypes = {
-	children: PropTypes.node.isRequired,
-	header: PropTypes.string,
-	isServer: PropTypes.bool
+Layout.defaultProps = {
+	isServer: undefined,
+	authVerification: {}
 };
 
-Layout.defaultProps = {
-	header: "solid",
-	isServer: undefined
+Layout.propTypes = {
+	children: PropTypes.node.isRequired,
+	isServer: PropTypes.bool,
+	authVerification: PropTypes.shape({})
 };
 
 export default Layout;
