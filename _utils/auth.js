@@ -88,7 +88,7 @@ function withAuthVerification(WrappedComponent) {
 				if (!isServer && window) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
 				return { ...componentProps, authVerification, isServer };
 			}
-			return { isServer };
+			return { ...componentProps, isServer };
 		}
 
 		render() {

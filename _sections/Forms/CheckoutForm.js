@@ -54,12 +54,12 @@ class CheckoutForm extends Component {
 		if (this.state.complete) return <h1>Purchase Complete</h1>;
 		return (
 			<div className="checkout">
-				<p>Would you like to complete the purchase?</p>
+				<p>Please enter your card Details</p>
 				<CardElement style={cardStyle} />
 				<br />
 				<br />
-				<Button variant="primary" size="sm" shape="rounded" onClick={this.submit}>
-					Purchase
+				<Button variant="primary" size="md" shape="flat" onClick={this.submit}>
+					Proceed to Pay
 				</Button>
 			</div>
 		);

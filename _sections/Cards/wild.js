@@ -8,7 +8,7 @@ const WildCardStyled = styled.div`
 	border-width: 1px;
 	border-style: solid;
 	height: 100%;
-	padding-top: 5rem;
+	padding: 2rem;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;

@@ -47,40 +47,27 @@ const PartnerBrandStyled = styled.div`
 	}
 `;
 
-const HowStyledBanner = styled.div`
+const Get3DStyled = styled.div`
 	background: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_80,w_1800/v1569620131/web/pink-sofa_hp7wvg.jpg");
 	padding: 5rem 0;
 	background-size: cover;
-	height: 500px;
-	margin-bottom: 150px;
 	background-position: 100%;
 	background-attachment: fixed;
+	margin-bottom: 110px;
+	text-align: center;
 	h1 {
 		font-family: "Airbnb Cereal App Medium";
-		color: ${({ theme }) => theme.colors.fc.light1};
-	}
-	h4 {
-		color: ${({ theme }) => theme.colors.fc.light1};
 	}
 `;
 
-const HowStepStyled = styled.div`
-	padding: 2rem;
-	p {
-		color: ${({ theme }) => theme.colors.fc.dark2};
-	}
-`;
-
-const HowStyled = styled.div`
-	position: absolute;
+const Get3DContentStyled = styled.div`
 	background-color: white;
-	width: calc(100% - 30px);
 	padding: 3rem;
+	margin-bottom: -200px;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const HeroWrapperStyled = styled.section`
-	position: relative;
 	display: flex;
 	align-items: center;
 	min-height: calc(100vh - 250px);
@@ -183,113 +170,49 @@ function index() {
 				</div>
 			</HeroWrapperStyled>
 
-			<div>
-				<div className="grid grid-bleed">
-					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-						<PartnerBrandStyled>
-							<SVGIcon name="crateandbarrel" width={230} height={16.6} />
-						</PartnerBrandStyled>
-					</div>
-					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-						<PartnerBrandStyled>
-							<SVGIcon name="anthropologie" width={203} height={12.5} />
-						</PartnerBrandStyled>
-					</div>
-					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-						<PartnerBrandStyled>
-							<SVGIcon name="cb2" width={68.58} height={25} />
-						</PartnerBrandStyled>
-					</div>
-					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-						<PartnerBrandStyled>
-							<SVGIcon name="potterybarn" width={206.56} height={14.28} />
-						</PartnerBrandStyled>
-					</div>
-					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-						<PartnerBrandStyled>
-							<SVGIcon name="westelm" width={139.3} height={25} />
-						</PartnerBrandStyled>
-					</div>
-					<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-						<PartnerBrandStyled>
-							<SVGIcon name="wayfair" height={50} width={126.5} />
-						</PartnerBrandStyled>
-					</div>
+			<div className="grid grid-bleed">
+				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+					<PartnerBrandStyled>
+						<SVGIcon name="crateandbarrel" width={230} height={16.6} />
+					</PartnerBrandStyled>
+				</div>
+				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+					<PartnerBrandStyled>
+						<SVGIcon name="anthropologie" width={203} height={12.5} />
+					</PartnerBrandStyled>
+				</div>
+				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+					<PartnerBrandStyled>
+						<SVGIcon name="cb2" width={68.58} height={25} />
+					</PartnerBrandStyled>
+				</div>
+				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+					<PartnerBrandStyled>
+						<SVGIcon name="potterybarn" width={206.56} height={14.28} />
+					</PartnerBrandStyled>
+				</div>
+				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+					<PartnerBrandStyled>
+						<SVGIcon name="westelm" width={139.3} height={25} />
+					</PartnerBrandStyled>
+				</div>
+				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
+					<PartnerBrandStyled>
+						<SVGIcon name="wayfair" height={50} width={126.5} />
+					</PartnerBrandStyled>
 				</div>
 			</div>
 
-			<HowStyledBanner>
+			<Get3DStyled>
 				<div className="container">
 					<div className="grid">
-						<div className="col-12 col-xs-6">
-							<h1>Custom Interior Design</h1>
-							<h4>
-								Set your budget, share pictures of your room and tell us about your style preferences. We‘ll deliver
-								your customized 3D designs in under 7 days, with unlimited revisions.
-							</h4>
-						</div>
 						<div className="col-12">
-							<HowStyled>
-								<div className="grid text-center">
-									<div className="col-12 col-xs-4">
-										<HowStepStyled>
-											<SVGIcon name="divider" width={70} height={70} />
-											<h3>Select Design</h3>
-											<p>
-												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
-												dolores molestias inventore assumenda debitis id dolorum fugiat sapiente quae ab. Facilis facere
-												dolorum corrupti! Quasi, ipsam ab.
-											</p>
-										</HowStepStyled>
-									</div>
-									<div className="col-12 col-xs-4">
-										<HowStepStyled>
-											<SVGIcon name="divider-2" width={70} height={70} />
-											<h3>Select Design</h3>
-											<p>
-												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
-												dolores molestias inventore assumenda debitis id dolorum fugiat sapiente quae ab. Facilis facere
-												dolorum corrupti! Quasi, ipsam ab.
-											</p>
-										</HowStepStyled>
-									</div>
-									<div className="col-12 col-xs-4">
-										<HowStepStyled>
-											<SVGIcon name="divider-3" width={70} height={70} />
-											<h3>Select Design</h3>
-											<p>
-												Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
-												dolores molestias inventore assumenda debitis id dolorum fugiat sapiente quae ab. Facilis facere
-												dolorum corrupti! Quasi, ipsam ab.
-											</p>
-										</HowStepStyled>
-									</div>
-									<div className="col-12 col-bleed">
-										<div style={{ position: "relative", marginBottom: "-50px" }}>
-											<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
-												DESIGN MY SPACE
-											</Button>
-										</div>
-									</div>
-								</div>
-							</HowStyled>
-						</div>
-					</div>
-				</div>
-			</HowStyledBanner>
-
-			<SectionWrapperStyled>
-				<div className="container">
-					<div className="grid text-center">
-						<div className="col-xs-12">
-							<h1>Get 3D Designs of Your Space</h1>
-							<Image
-								size="500px"
-								src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif"
-							/>
-						</div>
-						<div className="col-xs-12">
-							<div>
+							<Get3DContentStyled>
+								<h1>Get 3D Designs of Your Space</h1>
+								<Image
+									size="500px"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif"
+								/>
 								<HeroSubText>
 									Set your budget, share pictures of your room and tell us about your style preferences.
 								</HeroSubText>
@@ -297,14 +220,14 @@ function index() {
 									We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions
 								</HeroSubText>
 								<HeroSubText>Ready to transform your home scape?</HeroSubText>
-								<Button variant="secondary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+								<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
 								</Button>
-							</div>
+							</Get3DContentStyled>
 						</div>
 					</div>
 				</div>
-			</SectionWrapperStyled>
+			</Get3DStyled>
 
 			<SectionWrapperStyled style={{ background: "rgba(241, 241, 241, 0.38)" }}>
 				<div className="container">
@@ -322,15 +245,15 @@ function index() {
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1520001304590-52ba97432c52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
+										<ProfileCard.UserName>Wilson</ProfileCard.UserName>
+										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_face,h_300,q_100,w_200/v1569914893/web/designer-2_kdi9o4.jpg" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
+										<ProfileCard.UserName>Sarah</ProfileCard.UserName>
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
@@ -338,16 +261,16 @@ function index() {
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
+										<ProfileCard.UserName>James</ProfileCard.UserName>
+										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_200/v1569914892/web/designer-3_f6xfm0.jpg" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
 								<div className="col-6 col-md-2">
 									<ProfileCard>
 										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Saurabh</ProfileCard.UserName>
-										<ProfileCard.Image source="https://images.unsplash.com/photo-1535230464639-a413d00b9934?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
+										<ProfileCard.UserName>Jeffrey V Burt</ProfileCard.UserName>
+										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_200/v1569914123/web/designer_r3cro3.jpg" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>

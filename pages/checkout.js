@@ -33,7 +33,7 @@ function checkout({ isServer, data, authVerification }) {
 								))}
 						</div>
 					</div>
-					<div className="col-12">
+					<div className="col-6">
 						<Checkout />
 					</div>
 				</div>
