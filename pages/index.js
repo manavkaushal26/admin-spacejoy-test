@@ -123,23 +123,28 @@ function index() {
 								</Link>
 							</HeroCardStyled>
 						</div>
-						<div className="col-8 col-bleed">
+						<div className="col-8">
 							<div className="grid">
-								<div className="col-6 text-right">
+								<div className="col-6">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_534,q_100/v1569933576/web/3_e0j2cu.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569218590/web/CoverImage_fqguzu.jpg"
+									/>
+									<Image
+										style={{ marginTop: "30px" }}
+										full
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569933578/web/4_x2ej2h.jpg"
 									/>
 								</div>
 								<div className="col-6">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,q_100,w_392/v1569933578/web/4_x2ej2h.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/1_supkab.jpg"
 									/>
 									<Image
 										style={{ marginTop: "30px" }}
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569936837/web/5_z05ncb.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939669/web/bedroom_t7wi0h.jpg"
 									/>
 								</div>
 							</div>
