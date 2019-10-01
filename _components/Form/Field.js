@@ -160,6 +160,7 @@ function Field({
 									readonly={readonly}
 									id={radio.value}
 									name={name}
+									label={radio.label}
 									value={radio.value}
 									key={radio.value}
 									checked={data.value === radio.value}

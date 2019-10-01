@@ -75,33 +75,44 @@ class ProfileCard extends PureComponent {
 
 	static Image = ({ source }) => <ProfileImageStyled src={source} />;
 
-	static Social = ({ fb, tw, li, pi }) => (
-		<SocialStyled>
-			<a href={fb} height={50} target="_blank" rel="noopener noreferrer">
-				<SVGIcon name="fb" className="fb" />
-			</a>
-			<a href={tw} height={50} target="_blank" rel="noopener noreferrer">
-				<SVGIcon name="tw" className="tw" />
-			</a>
-			<a href={li} height={50} target="_blank" rel="noopener noreferrer">
-				<SVGIcon name="li" className="li" />
-			</a>
-			<a href={pi} height={50} target="_blank" rel="noopener noreferrer">
-				<SVGIcon name="pi" className="pi" />
-			</a>
-		</SocialStyled>
-	);
+	static Social = ({ fb, tw, li, pi }) =>
+		fb || tw || li || pi ? (
+			<SocialStyled>
+				{fb && (
+					<a href={fb} height={50} target="_blank" rel="noopener noreferrer">
+						<SVGIcon name="fb" className="fb" />
+					</a>
+				)}
+				{tw && (
+					<a href={tw} height={50} target="_blank" rel="noopener noreferrer">
+						<SVGIcon name="tw" className="tw" />
+					</a>
+				)}
+				{li && (
+					<a href={li} height={50} target="_blank" rel="noopener noreferrer">
+						<SVGIcon name="li" className="li" />
+					</a>
+				)}
+				{pi && (
+					<a href={pi} height={50} target="_blank" rel="noopener noreferrer">
+						<SVGIcon name="pi" className="pi" />
+					</a>
+				)}
+			</SocialStyled>
+		) : null;
 
 	render() {
 		const { children } = this.props;
 		return (
 			<ProfileCardStyled>
 				<div className="image">{children[2]}</div>
-				<ProfileInfoStyled>
-					<div className="designation">{children[0]}</div>
-					<div className="name">{children[1]}</div>
-					<div className="social">{children[3]}</div>
-				</ProfileInfoStyled>
+				{(children[0] || children[0] || children[0]) && (
+					<ProfileInfoStyled>
+						{children[0] && <div className="designation">{children[0]}</div>}
+						{children[1] && <div className="name">{children[1]}</div>}
+						{children[3] && <div className="social">{children[3]}</div>}
+					</ProfileInfoStyled>
+				)}
 			</ProfileCardStyled>
 		);
 	}

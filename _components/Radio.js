@@ -55,7 +55,7 @@ const RadioStyled = styled.input`
 	}
 `;
 
-function Radio({ id, name, value, checked, required, onChange, selectionType }) {
+function Radio({ id, name, value, label, checked, required, onChange, selectionType }) {
 	return (
 		<LabelStyled htmlFor={value} selectionType={selectionType} key={value} className="radio">
 			<RadioStyled
@@ -69,7 +69,7 @@ function Radio({ id, name, value, checked, required, onChange, selectionType }) 
 				onChange={onChange}
 			/>
 			<span className="label" />
-			{value}
+			{label}
 		</LabelStyled>
 	);
 }
@@ -78,6 +78,7 @@ Radio.propTypes = {
 	id: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	value: PropTypes.string.isRequired,
+	label: PropTypes.string.isRequired,
 	checked: PropTypes.bool.isRequired,
 	required: PropTypes.bool.isRequired,
 	onChange: PropTypes.func.isRequired,

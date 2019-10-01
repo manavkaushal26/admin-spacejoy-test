@@ -104,7 +104,7 @@ class designProjects extends PureComponent {
 												{item.designDescription !== "None" && (
 													<>
 														<div className="text-center">
-															<SVGIcon name="divider-3" width={50} />
+															<SVGIcon name="divider-3" width={50} height={50} />
 														</div>
 														<p>{item.designDescription}</p>
 													</>

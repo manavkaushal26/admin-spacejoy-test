@@ -45,7 +45,11 @@ function DesignMySpaceForm({ plan, name, email }) {
 				placeholder="Selected Plan"
 				error="Please enter a Selected Plan"
 				hint="Selected Plan"
-				options={[{ value: "consultation" }, { value: "classic" }, { value: "premium" }]}
+				options={[
+					{ value: "consultation", label: "Consultation - $19" },
+					{ value: "classic", label: "Classic - $49" },
+					{ value: "premium", label: "Premium - $99" }
+				]}
 				value={plan}
 				required
 			/>
@@ -54,12 +58,12 @@ function DesignMySpaceForm({ plan, name, email }) {
 				type="radio"
 				label="Which room are you designing?"
 				options={[
-					{ value: "Living Room" },
-					{ value: "Bedroom" },
-					{ value: "Entryway" },
-					{ value: "Kid's Bedroom" },
-					{ value: "Studio" },
-					{ value: "Nursery" }
+					{ value: "Living Room", label: "Living Room" },
+					{ value: "Bedroom", label: "Bedroom" },
+					{ value: "Entryway", label: "Entryway" },
+					{ value: "Kid's Bedroom", label: "Kid's Bedroom" },
+					{ value: "Studio", label: "Studio" },
+					{ value: "Nursery", label: "Nursery" }
 				]}
 				placeholder="Username"
 				error="Please enter a valid username"
@@ -70,13 +74,13 @@ function DesignMySpaceForm({ plan, name, email }) {
 				type="radio"
 				label="Have a budget in mind?"
 				options={[
-					{ value: "$2000 or less" },
-					{ value: "$2000 - $5000" },
-					{ value: "$5000 - $7000" },
-					{ value: "$10,000 or More" }
+					{ value: "$2000 or less", label: "$2000 or less" },
+					{ value: "$2000 - $5000", label: "$2000 - $5000" },
+					{ value: "$5000 - $7000", label: "$5000 - $7000" },
+					{ value: "$10,000 or More", label: "$10,000 or More" }
 				]}
-				placeholder="Username"
-				error="Please enter a valid username"
+				placeholder="Have a budget in mind"
+				error="Please enter a valid budget"
 				hint="should contain valid text"
 			/>
 			<Field
@@ -84,10 +88,13 @@ function DesignMySpaceForm({ plan, name, email }) {
 				type="radio"
 				label="How does your room look today?"
 				options={[
-					{ value: "Looking to design from scratch" },
-					{ value: "I am looking for key items only" },
-					{ value: "Its almost furnished but need help finishing it" },
-					{ value: "Need help with a new layout" }
+					{ value: "Looking to design from scratch", label: "Looking to design from scratch" },
+					{ value: "I am looking for key items only", label: "I am looking for key items only" },
+					{
+						value: "Its almost furnished but need help finishing it",
+						label: "Its almost furnished but need help finishing it"
+					},
+					{ value: "Need help with a new layout", label: "Need help with a new layout" }
 				]}
 				placeholder="Username"
 				error="Please enter a valid username"

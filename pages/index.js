@@ -4,9 +4,7 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import ProfileCard from "@sections/Cards/profile";
-import WildCardStyled from "@sections/Cards/wild";
 import Layout from "@sections/Layout";
-import sparkJoyImg from "@static/images/spark-a-joy.svg";
 import { company } from "@utils/config";
 import MockData from "@utils/designConceptsMock";
 import IndexPageMeta from "@utils/meta";
@@ -45,26 +43,6 @@ const PartnerBrandStyled = styled.div`
 			fill: ${({ theme }) => theme.colors.fc.light2};
 		}
 	}
-`;
-
-const Get3DStyled = styled.div`
-	background: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_80,w_1800/v1569620131/web/pink-sofa_hp7wvg.jpg");
-	padding: 5rem 0;
-	background-size: cover;
-	background-position: 100%;
-	background-attachment: fixed;
-	margin-bottom: 110px;
-	text-align: center;
-	h1 {
-		font-family: "Airbnb Cereal App Medium";
-	}
-`;
-
-const Get3DContentStyled = styled.div`
-	background-color: white;
-	padding: 3rem;
-	margin-bottom: -200px;
-	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const HeroWrapperStyled = styled.section`
@@ -150,18 +128,18 @@ function index() {
 								<div className="col-6 text-right">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,h_534,q_100,w_392/v1569581710/web/pink-scene_hmyxdk.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_534,q_100/v1569933576/web/3_e0j2cu.jpg"
 									/>
 								</div>
 								<div className="col-6">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_392/v1569619350/web/bulb_nxqhxo.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,q_100,w_392/v1569933578/web/4_x2ej2h.jpg"
 									/>
 									<Image
 										style={{ marginTop: "30px" }}
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_252,w_392/v1569581314/web/chairs_dqrdn9.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569936837/web/5_z05ncb.jpg"
 									/>
 								</div>
 							</div>
@@ -202,37 +180,30 @@ function index() {
 					</PartnerBrandStyled>
 				</div>
 			</div>
-
-			<Get3DStyled>
+			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
 				<div className="container">
-					<div className="grid">
-						<div className="col-12">
-							<Get3DContentStyled>
+					<div className="grid justify-space-between align-center">
+						<div className="col-xs-6">
+							<div>
 								<h1>Get 3D Designs of Your Space</h1>
-								<Image
-									size="500px"
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif"
-								/>
-								<HeroSubText>
-									Set your budget, share pictures of your room and tell us about your style preferences.
-								</HeroSubText>
-								<HeroSubText>
-									We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions
-								</HeroSubText>
-								<HeroSubText>Ready to transform your home scape?</HeroSubText>
-								<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+								<p>Set your budget, share pictures of your room and tell us about your style preferences.</p>
+								<p>We&lsquo;ll deliver your customized 3D designs in under 7 days, with unlimited revisions</p>
+								<p>Ready to transform your home scape?</p>
+								<Button variant="secondary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE
 								</Button>
-							</Get3DContentStyled>
+							</div>
+						</div>
+						<div className="col-xs-6">
+							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1568564547/web/design-top-view_xjikmu.gif" />
 						</div>
 					</div>
 				</div>
-			</Get3DStyled>
-
+			</SectionWrapperStyled>
 			<SectionWrapperStyled style={{ background: "rgba(241, 241, 241, 0.38)" }}>
 				<div className="container">
-					<div className="grid justify-space-between align-center">
-						<div className="col-xs-12">
+					<div className="grid align-center">
+						<div className="col-12 col-md-8">
 							<h1>Crafted By Our Design Experts</h1>
 							<p>
 								Our designers will transform your space into a stunningly beautiful home
@@ -240,51 +211,60 @@ function index() {
 								Want to change something? Speak to them & finalize your perfect space that brings perfect joy.
 							</p>
 						</div>
+						<div className="col-12 col-md-4 text-right">
+							<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+								DESIGN MY SPACE
+							</Button>
+						</div>
 						<div className="col-xs-12">
 							<div className="grid">
 								<div className="col-6 col-md-2">
 									<ProfileCard>
-										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Wilson</ProfileCard.UserName>
+										<ProfileCard.Designation />
+										<ProfileCard.UserName />
 										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_face,h_300,q_100,w_200/v1569914893/web/designer-2_kdi9o4.jpg" />
-										<ProfileCard.Social fb="" tw="" li="" pi="" />
+										<ProfileCard.Social />
 									</ProfileCard>
 								</div>
 								<div className="col-6 col-md-2">
 									<ProfileCard>
-										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Sarah</ProfileCard.UserName>
+										<ProfileCard.Designation />
+										<ProfileCard.UserName />
 										<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
 								<div className="col-6 col-md-2">
 									<ProfileCard>
-										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>James</ProfileCard.UserName>
+										<ProfileCard.Designation />
+										<ProfileCard.UserName />
 										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_200/v1569914892/web/designer-3_f6xfm0.jpg" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
 								<div className="col-6 col-md-2">
 									<ProfileCard>
-										<ProfileCard.Designation>Creative Designer</ProfileCard.Designation>
-										<ProfileCard.UserName>Jeffrey V Burt</ProfileCard.UserName>
-										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_200/v1569914123/web/designer_r3cro3.jpg" />
+										<ProfileCard.Designation />
+										<ProfileCard.UserName />
+										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933569/web/designer-5_rf3y3j.jpg" />
 										<ProfileCard.Social fb="" tw="" li="" pi="" />
 									</ProfileCard>
 								</div>
-								<div className="col-12 col-md-4">
-									<WildCardStyled>
-										<Image size="50px" src={sparkJoyImg} />
-										<p>
-											Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde, voluptatem architecto! Dolore
-											dolores molestias.
-										</p>
-										<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
-											DESIGN MY SPACE
-										</Button>
-									</WildCardStyled>
+								<div className="col-6 col-md-2">
+									<ProfileCard>
+										<ProfileCard.Designation />
+										<ProfileCard.UserName />
+										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933571/web/designer-4_tz7i2j.jpg" />
+										<ProfileCard.Social fb="" tw="" li="" pi="" />
+									</ProfileCard>
+								</div>
+								<div className="col-6 col-md-2">
+									<ProfileCard>
+										<ProfileCard.Designation />
+										<ProfileCard.UserName />
+										<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933570/web/designer-1_pw7lsf.jpg" />
+										<ProfileCard.Social fb="" tw="" li="" pi="" />
+									</ProfileCard>
 								</div>
 							</div>
 						</div>
@@ -311,7 +291,9 @@ function index() {
 					</div>
 				</div>
 			</SectionWrapperStyled>
-			<SectionWrapperStyled>
+			<SectionWrapperStyled
+				style={{ backgroundImage: "linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%)" }}
+			>
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12 text-center">
@@ -343,7 +325,7 @@ function index() {
 					</div>
 				</div>
 			</SectionWrapperStyled>
-			<SectionWrapperStyled>
+			<SectionWrapperStyled style={{ backgroundImage: "white" }}>
 				<div className="container">
 					<div className="grid">
 						<div className="col-xs-12 col-sm-6">
