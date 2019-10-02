@@ -1,4 +1,5 @@
-import Image from "@components/Image";
+import Button from "@components/Button";
+import SVGIcon from "@components/SVGIcon";
 import cookie from "js-cookie";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
@@ -69,12 +70,14 @@ class Header extends PureComponent {
 									</ActiveLink>
 								</div>
 								<div className="col-2">
-									<Image
+									<Button
+										size="xs"
+										fill="ghost"
 										onClick={this.updateCookiePolicyStatus}
-										size="16px"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1568567510/web/cancel_dl7sw1.svg"
-										style={{ cursor: "pointer" }}
-									/>
+										style={{ border: 0, padding: "2px 15px" }}
+									>
+										<SVGIcon name="tick" size="15px" fill="white" />
+									</Button>
 								</div>
 							</div>
 						</div>

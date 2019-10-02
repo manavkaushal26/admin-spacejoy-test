@@ -105,6 +105,9 @@ app.prepare().then(() => {
 		server.get("/profile", (req, res) => {
 			app.render(req, res, "/profile", req.params);
 		});
+		server.get("/dashboard", (req, res) => {
+			app.render(req, res, "/dashboard", req.params);
+		});
 		server.get("/terms", (req, res) => {
 			renderAndCache(req, res, "/terms", req.params);
 		});

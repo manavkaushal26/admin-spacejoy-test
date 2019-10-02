@@ -1,6 +1,6 @@
 import Button from "@components/Button";
 import Logo from "@components/Logo";
-import { logout } from "@utils/auth";
+import SVGIcon from "@components/SVGIcon";
 import getToken from "@utils/getToken";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -109,9 +109,14 @@ const HeaderBody = ({ authVerification }) => {
 						</ActiveLink>
 					)}
 					{(authVerification.name || token) && (
-						<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
-							Logout
-						</Button>
+						<>
+							<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard" replace>
+								<SVGIcon name="avatar" /> {authVerification.name}
+							</ActiveLink>
+							{/* <Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
+								Logout
+							</Button> */}
+						</>
 					)}
 				</li>
 			</HorizontalListStyled>

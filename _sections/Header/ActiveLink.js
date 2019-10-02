@@ -5,14 +5,19 @@ import React from "react";
 import styled from "styled-components";
 
 const ActiveStyled = styled.a`
-	font-weight: bold;
 	color: ${({ theme }) => theme.colors.primary1};
+	svg path {
+		fill: ${({ theme }) => theme.colors.primary1};
+	}
 `;
 
 const NormalStyled = styled.a`
-	color: ${({ theme }) => theme.colors.fc.dark1};
+	color: ${({ theme }) => theme.colors.fc.dark2};
 	&:hover {
 		color: ${({ theme }) => theme.colors.primary1};
+		svg path {
+			fill: ${({ theme }) => theme.colors.primary1};
+		}
 	}
 `;
 
