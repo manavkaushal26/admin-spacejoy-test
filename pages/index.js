@@ -1,3 +1,4 @@
+import Brands from "@components/Brands";
 import Button from "@components/Button";
 import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
@@ -21,30 +22,6 @@ const CarouselCardStyled = styled.div`
 	outline: none;
 	box-sizing: border-box;
 	padding: 1rem;
-`;
-
-const PartnerBrandStyled = styled.div`
-	height: 125px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	transition: all linear 100ms;
-	border-top: 1px solid ${({ theme }) => theme.colors.bg.light2};
-	border-right: 1px solid ${({ theme }) => theme.colors.bg.light2};
-	&:hover {
-		background: ${({ theme }) => theme.colors.primary2};
-		svg {
-			* {
-				fill: white;
-			}
-		}
-	}
-	svg {
-		* {
-			transition: all linear 100ms;
-			fill: ${({ theme }) => theme.colors.fc.light2};
-		}
-	}
 `;
 
 const HeroWrapperStyled = styled.section`
@@ -155,38 +132,8 @@ function index({ isServer, authVerification }) {
 				</div>
 			</HeroWrapperStyled>
 
-			<div className="grid grid-bleed">
-				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-					<PartnerBrandStyled>
-						<SVGIcon name="crateandbarrel" width={230} height={16.6} />
-					</PartnerBrandStyled>
-				</div>
-				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-					<PartnerBrandStyled>
-						<SVGIcon name="anthropologie" width={203} height={12.5} />
-					</PartnerBrandStyled>
-				</div>
-				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-					<PartnerBrandStyled>
-						<SVGIcon name="cb2" width={68.58} height={25} />
-					</PartnerBrandStyled>
-				</div>
-				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-					<PartnerBrandStyled>
-						<SVGIcon name="potterybarn" width={206.56} height={14.28} />
-					</PartnerBrandStyled>
-				</div>
-				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-					<PartnerBrandStyled>
-						<SVGIcon name="westelm" width={139.3} height={25} />
-					</PartnerBrandStyled>
-				</div>
-				<div className="col-6 col-xs-6 col-sm-4 col-md-2">
-					<PartnerBrandStyled>
-						<SVGIcon name="wayfair" height={50} width={126.5} />
-					</PartnerBrandStyled>
-				</div>
-			</div>
+			<Brands />
+
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">

@@ -1,4 +1,4 @@
-import SVGIcon from "@components/SVGIcon";
+import Divider from "@components/Divider";
 import { removeSpaces } from "@utils/helper";
 import Link from "next/link";
 import PropTypes from "prop-types";
@@ -97,9 +97,9 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 								<a href={`/designView/${designNameClean}/${designId}`}>
 									<ProductLoadMoreStyled size={size}>
 										<div>
-											<SVGIcon name="divider" width={20} />
+											<Divider fancy size="5px" />
 											<span>See All Products</span>
-											<SVGIcon name="divider" width={20} />
+											<Divider fancy size="5px" />
 										</div>
 									</ProductLoadMoreStyled>
 								</a>

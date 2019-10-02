@@ -1,7 +1,6 @@
 import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
-import SVGIcon from "@components/SVGIcon";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
@@ -104,7 +103,7 @@ class designProjects extends PureComponent {
 												{item.designDescription !== "None" && (
 													<>
 														<div className="text-center">
-															<SVGIcon name="divider-3" width={50} height={50} />
+															<Divider fancy size="10px" />
 														</div>
 														<p>{item.designDescription}</p>
 													</>
