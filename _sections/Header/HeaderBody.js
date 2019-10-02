@@ -1,6 +1,8 @@
 import Button from "@components/Button";
+import DropMenu from "@components/DropMenu";
 import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
+import { logout } from "@utils/auth";
 import getToken from "@utils/getToken";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -110,12 +112,21 @@ const HeaderBody = ({ authVerification }) => {
 					)}
 					{(authVerification.name || token) && (
 						<>
-							<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard" replace>
-								<SVGIcon name="avatar" /> {authVerification.name}
-							</ActiveLink>
-							{/* <Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
-								Logout
-							</Button> */}
+							<DropMenu>
+								<DropMenu.Header>
+									<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard" replace>
+										<SVGIcon name="avatar" /> {authVerification.name}
+									</ActiveLink>
+								</DropMenu.Header>
+								<DropMenu.Body>
+									<ActiveLink href={{ pathname: "/profile", query: {} }} as="/profile" replace>
+										Profile
+									</ActiveLink>
+									<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
+										Logout
+									</Button>
+								</DropMenu.Body>
+							</DropMenu>
 						</>
 					)}
 				</li>
