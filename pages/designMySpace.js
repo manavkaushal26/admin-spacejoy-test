@@ -1,4 +1,5 @@
 import DesignMySpaceForm from "@sections/Forms/DesignMySpaceForm";
+import Q1 from "@sections/Forms/quiz/q1";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -9,32 +10,40 @@ import React, { PureComponent } from "react";
 
 class designMySpace extends PureComponent {
 	render() {
-		const { plan, isServer, authVerification } = this.props;
+		const { plan, quiz, isServer, authVerification } = this.props;
 		return (
 			<Layout isServer={isServer} authVerification={authVerification}>
 				<Head>
 					{IndexPageMeta}
 					<title>Design My Space | {company.product}</title>
 				</Head>
-				<div className="container">
-					<div className="grid">
-						<div className="col-xs-12 col-sm-6 col-md-5">
-							<h3>Submit A Design Request</h3>
-							<DesignMySpaceForm plan={plan} name={authVerification.name} email={authVerification.email} />
+
+				{!quiz && (
+					<div className="container">
+						<div className="grid">
+							<div className="col-xs-12 col-sm-6 col-md-5">
+								<h3>Submit A Design Request</h3>
+								<DesignMySpaceForm plan={plan} name={authVerification.name} email={authVerification.email} />
+							</div>
 						</div>
 					</div>
-				</div>
+				)}
+				{quiz === "start" && <Q1 />}
+				{quiz === "1" && <p>Quiz 1</p>}
+				{quiz === "2" && <p>Quiz 2</p>}
+				{quiz === "3" && <p>Quiz 3</p>}
 			</Layout>
 		);
 	}
 }
 
-designMySpace.getInitialProps = async ({ query: { plan } }) => {
-	return { plan };
+designMySpace.getInitialProps = async ({ query: { plan, quiz } }) => {
+	return { plan, quiz };
 };
 
 designMySpace.defaultProps = {
 	plan: "",
+	quiz: "",
 	authVerification: {
 		name: "",
 		email: ""
@@ -47,7 +56,8 @@ designMySpace.propTypes = {
 		name: PropTypes.string,
 		email: PropTypes.string
 	}),
-	plan: PropTypes.string
+	plan: PropTypes.string,
+	quiz: PropTypes.string
 };
 
 export default withAuthVerification(designMySpace);

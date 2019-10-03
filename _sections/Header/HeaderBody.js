@@ -116,8 +116,8 @@ const HeaderBody = ({ authVerification }) => {
 				<li>
 					{!authVerification.name && !token && (
 						<ActiveLink
-							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/" } }}
-							as="/auth/login?redirectUrl=/"
+							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/dashboard" } }}
+							as="/auth/login?redirectUrl=/dashboard"
 							replace
 						>
 							Login
@@ -127,12 +127,12 @@ const HeaderBody = ({ authVerification }) => {
 						<>
 							<DropMenu>
 								<DropMenu.Header>
-									<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard" replace>
+									<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
 										<SVGIcon name="avatar" /> {authVerification.name}
 									</ActiveLink>
 								</DropMenu.Header>
 								<DropMenu.Body>
-									<ActiveLink href={{ pathname: "/profile", query: {} }} as="/profile" replace>
+									<ActiveLink href={{ pathname: "/profile", query: {} }} as="/profile">
 										Profile
 									</ActiveLink>
 									<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>

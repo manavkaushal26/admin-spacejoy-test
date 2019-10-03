@@ -68,7 +68,7 @@ const CenterSubTextStyled = styled.p`
 `;
 
 function goToDesignMySpace() {
-	Router.push("/designMySpace");
+	Router.push({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
 }
 
 function index({ isServer, authVerification }) {
@@ -113,12 +113,12 @@ function index({ isServer, authVerification }) {
 								<div className="col-6">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/1_supkab.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"
 									/>
 									<Image
 										style={{ marginTop: "30px" }}
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939669/web/bedroom_t7wi0h.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939669/web/bedroom_s99hp2.jpg"
 									/>
 								</div>
 							</div>

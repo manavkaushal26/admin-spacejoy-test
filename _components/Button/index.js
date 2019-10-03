@@ -65,21 +65,29 @@ const ButtonStyled = styled(ButtonBase)`
 	}};
 	font-weight: ${({ variant }) => (variant === "primary" ? "bold" : "normal")};
 	text-shadow: ${({ variant }) => (variant === "primary" ? "1px 1px 1px rgba(0, 0, 0, 0.05);" : "none")};
-	border: ${({ fill, theme }) => (fill === "solid" ? "none" : `1px solid ${theme.colors.yellow}`)};
+	border: ${({ fill, theme }) => (fill === "solid" ? "none" : `1px solid ${theme.colors.bg.dark2}`)};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};
 `;
 
 function index(props) {
-	const { children, onClick, type } = props;
-	const onClickWithGA = () => {
-		onClick();
+	const { children, onClick, type, raw } = props;
+	const onClickWithGA = e => {
+		onClick(e);
 		PushEvent("category", "action", "label", 10, { data: type });
 	};
 	return (
-		<ButtonStyled {...props} onClick={onClickWithGA}>
-			{children}
-		</ButtonStyled>
+		<>
+			{raw ? (
+				<ButtonBase {...props} onClick={e => onClickWithGA(e)}>
+					{children}
+				</ButtonBase>
+			) : (
+				<ButtonStyled {...props} onClick={e => onClickWithGA(e)}>
+					{children}
+				</ButtonStyled>
+			)}
+		</>
 	);
 }
 
@@ -91,7 +99,8 @@ index.defaultProps = {
 	size: "md",
 	type: "button",
 	fill: "solid",
-	full: false
+	full: false,
+	raw: false
 };
 
 index.propTypes = {
@@ -102,7 +111,8 @@ index.propTypes = {
 	size: PropTypes.string,
 	type: PropTypes.string,
 	fill: PropTypes.string,
-	full: PropTypes.bool
+	full: PropTypes.bool,
+	raw: PropTypes.bool
 };
 
 export default index;
