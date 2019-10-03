@@ -9,22 +9,25 @@ const QuizHeaderStyled = styled.div`
 		margin: 0;
 	}
 `;
+
 const RadioCard = styled(Button)`
-	height: 190px;
+	height: 185px;
 	border-radius: 2px;
-	background: ${({ theme, image }) => `${theme.colors.bg.light2} url(${image}) no-repeat`};
+	background: ${({ theme, image = "" }) => `${theme.colors.bg.light2} url(${image}) no-repeat`};
 	background-size: cover;
 	background-position: bottom;
 	border: 1px solid ${({ theme, isActive }) => (isActive ? theme.colors.primary1 : "transparent")};
 	width: 100%;
+	padding: 0;
 	color: ${({ theme }) => theme.colors.fc.dark2};
+	transition: all linear 100ms;
 	&:hover {
+		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 		border: 1px solid ${({ theme }) => theme.colors.fc.dark3};
 		color: ${({ theme }) => theme.colors.fc.dark1};
 	}
 	&.active {
 		font-weight: bold;
-		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.15);
 		border: 1px solid ${({ theme }) => theme.colors.primary1};
 		color: ${({ theme }) => theme.colors.primary1};
 		svg {
@@ -39,7 +42,7 @@ const RadioCard = styled(Button)`
 		left: 2rem;
 		svg {
 			path {
-				fill: ${({ theme }) => theme.colors.fc.dark3};
+				fill: ${({ theme }) => theme.colors.bg.dark1};
 			}
 		}
 	}
@@ -56,7 +59,7 @@ function q1() {
 	return (
 		<div className="container">
 			<div className="grid justify-center">
-				<div className="col-10 ">
+				<div className="col-10">
 					<div className="text-center">
 						<QuizHeaderStyled>
 							<h2>Which room are you designing?</h2>
@@ -69,7 +72,7 @@ function q1() {
 									value="Living Room"
 									raw
 									onClick={handleClick}
-									className={roomType === "Living Room" ? "active" : ""}
+									className={roomType === "Living Room" ? "active" : "inactive"}
 									image="https://res.cloudinary.com/spacejoy/image/upload/v1570108165/web/living-room-tile_jzgyzi.png"
 								>
 									<span>
@@ -83,7 +86,7 @@ function q1() {
 									value="Bedroom"
 									raw
 									onClick={handleClick}
-									className={roomType === "Bedroom" ? "active" : ""}
+									className={roomType === "Bedroom" ? "active" : "inactive"}
 									image="https://res.cloudinary.com/spacejoy/image/upload/v1570108165/web/bedroom-tile_serfct.png"
 								>
 									<span>
@@ -97,7 +100,7 @@ function q1() {
 									value="Entryway"
 									raw
 									onClick={handleClick}
-									className={roomType === "Entryway" ? "active" : ""}
+									className={roomType === "Entryway" ? "active" : "inactive"}
 								>
 									<span>
 										<SVGIcon name="tick" height={13} width={20} /> Entryway
@@ -110,7 +113,7 @@ function q1() {
 									value="Kid's Bedroom"
 									raw
 									onClick={handleClick}
-									className={roomType === "Kid's Bedroom" ? "active" : ""}
+									className={roomType === "Kid's Bedroom" ? "active" : "inactive"}
 								>
 									<span>
 										<SVGIcon name="tick" height={13} width={20} /> Kid&apos;s Bedroom
@@ -123,7 +126,7 @@ function q1() {
 									value="Studio"
 									raw
 									onClick={handleClick}
-									className={roomType === "Studio" ? "active" : ""}
+									className={roomType === "Studio" ? "active" : "inactive"}
 								>
 									<span>
 										<SVGIcon name="tick" height={13} width={20} /> Studio
@@ -136,7 +139,7 @@ function q1() {
 									value="Nursery"
 									raw
 									onClick={handleClick}
-									className={roomType === "Nursery" ? "active" : ""}
+									className={roomType === "Nursery" ? "active" : "inactive"}
 								>
 									<span>
 										<SVGIcon name="tick" height={13} width={20} /> Nursery
