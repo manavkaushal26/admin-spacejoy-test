@@ -12,7 +12,7 @@ const ActiveStyled = styled.a`
 `;
 
 const NormalStyled = styled.a`
-	color: ${({ theme }) => theme.colors.fc.dark2};
+	color: ${({ theme }) => theme.colors.fc.dark1};
 	&:hover {
 		color: ${({ theme }) => theme.colors.primary1};
 		svg path {

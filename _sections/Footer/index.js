@@ -1,7 +1,7 @@
 import Divider from "@components/Divider";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
-import { company } from "@utils/config";
+import { cloudinary, company } from "@utils/config";
 import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
@@ -104,7 +104,7 @@ function index() {
 									<a href={company.app.ios}>
 										<Image
 											size="md"
-											src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/appstore_porgmf.png"
+											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1567249447/shared/appstore_porgmf.png`}
 										/>
 									</a>
 								</li>
@@ -112,7 +112,7 @@ function index() {
 									<a href={company.app.android}>
 										<Image
 											size="md"
-											src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png"
+											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png`}
 										/>
 									</a>
 								</li>
@@ -124,7 +124,7 @@ function index() {
 							<div className="col-xs-3">
 								<Image
 									size="100px"
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1569231120/web/Badge_dpkz2m.svg"
+									src={`${cloudinary.baseDeliveryURL}/image/upload/v1569231120/web/Badge_dpkz2m.svg`}
 								/>
 							</div>
 							<div className="col-xs-9">
@@ -141,10 +141,9 @@ function index() {
 												<li>
 													<Image
 														size="xs"
-														src="https://res.cloudinary.com/spacejoy/image/upload/v1567525045/web/envelope_sem3ud.svg"
+														src={`${cloudinary.baseDeliveryURL}/image/upload/v1567525045/web/envelope_sem3ud.svg`}
 														style={{ marginRight: "1rem" }}
 													/>
-
 													<a href={`mailto:${company.email.support}?Subject=Need%20Help`} target="_top">
 														{company.email.support}
 													</a>

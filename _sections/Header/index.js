@@ -42,10 +42,10 @@ class Header extends PureComponent {
 	};
 
 	handleScroll = () => {
-		if (window.scrollY > 65) {
+		if (window.scrollY > 75) {
 			this.setState({ isRaised: true });
 		}
-		if (window.scrollY <= 65) {
+		if (window.scrollY <= 75) {
 			this.setState({ isRaised: false });
 		}
 	};

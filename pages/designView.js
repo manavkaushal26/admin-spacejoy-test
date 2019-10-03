@@ -28,7 +28,7 @@ function designView({ isServer, data, designName, designId }) {
 					{data.designName} | {company.product}
 				</title>
 				<meta key="description" name="description" content={data.designDescription} />,
-				<meta key="og-description" name="og:description" content={data.designDescription} />,
+				<meta key="og-description" name="og:description" property="og:description" content={data.designDescription} />,
 			</Head>
 			<CarouselWrapper>
 				{data.designBanner && (

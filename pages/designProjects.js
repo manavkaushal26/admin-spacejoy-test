@@ -3,7 +3,7 @@ import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
-import { company } from "@utils/config";
+import { cloudinary, company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { removeSpaces } from "@utils/helper";
 import IndexPageMeta from "@utils/meta";
@@ -62,7 +62,7 @@ class designProjects extends PureComponent {
 					<title>Design Projects | {company.product}</title>
 				</Head>
 				<div className="container">
-					<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1566896729/web/design-page-banner.jpg" />
+					<Image src={`${cloudinary.baseDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg`} />
 					<div className="grid">
 						<div className="col-xs-12">
 							<h1>Real Designs, With Real Products</h1>

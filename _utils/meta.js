@@ -26,19 +26,19 @@ const BaseMeta = [
 ];
 
 const OGMeta = [
-	<meta key="og-title" name="og:title" content={company.product} />,
-	<meta key="og-description" name="og:description" content={company.description} />,
-	<meta key="og-site-name" name="og_site_name" property="og:site_name" content="spacejoy.com" />,
-	<meta key="og-type" name="og:type" content="website" />,
-	<meta key="og-url" name="og:url" content="https://spacejoy.com/" />,
+	<meta key="og-title" name="og:title" property="og:title" content={company.product} />,
+	<meta key="og-description" name="og:description" property="og:description" content={company.description} />,
+	<meta key="og-type" name="og:type" property="og:type" content="website" />,
+	<meta key="og-url" name="og:url" property="og:url" content="https://spacejoy.com/" />,
 	<meta
 		key="og-image"
 		name="og:image"
+		property="og:image"
 		content="https://res.cloudinary.com/spacejoy/image/upload/v1568907005/web/spacejoy_wbyfqf.png"
 	/>,
-	<meta key="og-site_name" name="og:site_name" content={company.product} />,
-	<meta key="og-email" name="og:email" content={company.email.support} />,
-	<meta key="fbId" name="fb:page_id" content={company.social.facebookId} />
+	<meta key="og-site_name" name="og:site_name" property="og:site_name" content={company.product} />,
+	<meta key="og-email" name="og:email" property="og:email" content={company.email.support} />,
+	<meta key="fbId" name="fb:page_id" property="og:page_id" content={company.social.facebookId} />
 ];
 
 const AppleMeta = [

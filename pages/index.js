@@ -57,7 +57,7 @@ const HeroText = styled.h1`
 
 const HeroSubText = styled.h3`
 	font-weight: normal;
-	font-family: "Airbnb Cereal App Book";
+	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
 const CenterTextStyled = styled.h1`
@@ -107,12 +107,7 @@ function index({ isServer, authVerification }) {
 								<div className="col-6">
 									<Image
 										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569218590/web/CoverImage_fqguzu.jpg"
-									/>
-									<Image
-										style={{ marginTop: "30px" }}
-										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569933578/web/4_x2ej2h.jpg"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
 									/>
 								</div>
 								<div className="col-6">

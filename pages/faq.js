@@ -1,4 +1,3 @@
-import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import FAQCard from "@sections/Cards/faq";
 import Layout from "@sections/Layout";
@@ -14,14 +13,13 @@ const TopicStyled = styled.div`
 	border: 1px solid ${({ theme, active }) => (active ? theme.colors.primary1 : theme.colors.bg.dark1)};
 	color: ${({ theme, active }) => (active ? theme.colors.primary1 : theme.colors.fc.dark1)};
 	padding: 0.5rem;
-	border-radius: 5px;
+	border-radius: 2px;
+	align-items: center;
 	&:hover {
 		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 	}
-	img {
-		margin-right: 1rem;
-	}
 	span {
+		margin-left: 0.5rem;
 		&:nth-child(2) {
 			flex: 2;
 		}
@@ -58,21 +56,13 @@ class faq extends PureComponent {
 					<div className="grid">
 						<div className="col-xs-12">
 							<h1>Frequently Asked Questions</h1>
-							<SVGIcon name="divider" width={20} />
 							<h3>Topics</h3>
 							<div className="grid">
 								{filteredTag &&
 									filteredTag.map(item => (
 										<div className="col-auto" key={Math.random() * 10}>
 											<TopicStyled active={item === activeTag} onClick={() => this.handleFilter(item)}>
-												<Image
-													size="xs"
-													src={
-														item === activeTag
-															? "https://res.cloudinary.com/spacejoy/image/upload/v1568651563/shared/tick-circle-pink_twan2x.svg"
-															: "https://res.cloudinary.com/spacejoy/image/upload/v1568651563/shared/tick-circle-black_tzrdza.svg"
-													}
-												/>
+												<SVGIcon name="tick" height={15} width={20} fill={item === activeTag ? "#e84393" : "#aeaeae"} />
 												<span>{item}</span>
 											</TopicStyled>
 										</div>

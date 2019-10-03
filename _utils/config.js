@@ -58,8 +58,7 @@ module.exports = {
 		apiKey: "432541925957862",
 		apiSecret: "dhn4tENhmmFqoefnjWXtcjlkfUw",
 		environmentVariable: "CLOUDINARY_URL=cloudinary://432541925957862:dhn4tENhmmFqoefnjWXtcjlkfUw@spacejoy",
-		baseDeliveryURL: "http://res.cloudinary.com/spacejoy",
-		secureDeliveryURL: "https://res.cloudinary.com/spacejoy",
-		apiBaseURL: "https://api.cloudinary.com/v1_1/spacejoy"
+		baseDeliveryURL: "//res.cloudinary.com/spacejoy",
+		apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy"
 	}
 };

@@ -14,6 +14,7 @@ const HorizontalListStyled = styled.ul`
 	margin: 0;
 	padding: 0;
 	li {
+		text-align: left;
 		display: inline-block;
 		list-style: none;
 		margin: 0 1.5rem;
@@ -22,6 +23,15 @@ const HorizontalListStyled = styled.ul`
 		}
 		&:last-child {
 			margin-right: 0;
+		}
+		span {
+			display: block;
+			font-weight: bold;
+			& + {
+				small {
+					color: ${({ theme }) => theme.colors.fc.dark2};
+				}
+			}
 		}
 		@media (max-width: 991px) {
 			display: block;
@@ -47,7 +57,7 @@ const MobileNavVisibleStyled = styled.div`
 	position: fixed;
 	background-color: white;
 	width: 100%;
-	top: 60px;
+	top: 75px;
 	left: 0;
 	right: 0;
 	a {
@@ -72,20 +82,23 @@ const HeaderBody = ({ authVerification }) => {
 
 	const navCenter = (
 		<nav>
-			<HorizontalListStyled align="center">
+			<HorizontalListStyled align="left">
 				<li>
 					<ActiveLink href="/designProjects" as="/designProjects">
-						Design Projects
-					</ActiveLink>
-				</li>
-				<li>
-					<ActiveLink href="/faq" as="/faq">
-						FAQ
+						<span>Design Projects</span>
+						<small>Explore Creative designs</small>
 					</ActiveLink>
 				</li>
 				<li>
 					<ActiveLink href="/pricing" as="/pricing">
-						Pricing
+						<span>Plans</span>
+						<small>Starting From $19</small>
+					</ActiveLink>
+				</li>
+				<li>
+					<ActiveLink href="/designMySpace" as="/designMySpace">
+						<span>Design My Space</span>
+						<small>Express Start</small>
 					</ActiveLink>
 				</li>
 			</HorizontalListStyled>
@@ -96,8 +109,8 @@ const HeaderBody = ({ authVerification }) => {
 		<nav>
 			<HorizontalListStyled align="right">
 				<li>
-					<ActiveLink href="/designMySpace" as="/designMySpace">
-						Design My Space
+					<ActiveLink href="/faq" as="/faq">
+						FAQ
 					</ActiveLink>
 				</li>
 				<li>
@@ -139,12 +152,12 @@ const HeaderBody = ({ authVerification }) => {
 	return (
 		<div className="container">
 			<div className="grid align-center justify-content-space-between">
-				<MobileHiddenStyled className="col-4">
+				<MobileHiddenStyled className="col-2">
 					<ActiveLink href="/" as="/">
 						<Logo md />
 					</ActiveLink>
 				</MobileHiddenStyled>
-				<MobileHiddenStyled className="col-4">{navCenter}</MobileHiddenStyled>
+				<MobileHiddenStyled className="col-6">{navCenter}</MobileHiddenStyled>
 				<MobileHiddenStyled className="col-4">{navRight}</MobileHiddenStyled>
 				<MobileVisibleStyled className="col-8">
 					<ActiveLink href="/" as="/">
