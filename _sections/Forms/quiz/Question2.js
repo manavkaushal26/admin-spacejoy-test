@@ -73,10 +73,7 @@ const RadioStyled = styled(Button)`
 function Question2() {
 	const [budget, setBudget] = useState("");
 
-	const handleClick = e => {
-		console.log("e", e.target);
-		setBudget(e.target.value);
-	};
+	const handleClick = e => setBudget(e.target.value);
 
 	const handlePrev = () => {
 		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" } }, "/designMySpace?quiz=1");
