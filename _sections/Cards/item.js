@@ -6,11 +6,12 @@ import React from "react";
 import styled from "styled-components";
 
 const ProductImageWrapperStyled = styled.div`
-	background: ${({ theme, url }) => `${theme.colors.bg.light2} url('${url}')`};
+	background: ${({ url, theme }) => `${theme.colors.bg.light2} url('${url}')`};
+	border: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	height: ${({ size }) => `${size}px`};
 	background-repeat: no-repeat;
 	background-position: center;
-	background-size: ${({ size }) => (size === "130" ? `${size}px` : "cover")};
+	background-size: contain;
 `;
 
 const ProductBrandStyled = styled.h5`
@@ -70,7 +71,7 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 			{products.map(product => (
 				<div className={`col-xs-${gridCount}`} key={product.productId}>
 					<div className="grid">
-						<div className="col-12 justify-space-between">
+						<div className="col-12 justify-space-between col-bleed-y">
 							<ProductImageWrapperStyled url={product.productImage} size={size} />
 						</div>
 						<div className="col-7">
@@ -89,7 +90,7 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 			{showLoadMore && (
 				<div className={`col-xs-${gridCount}`}>
 					<div className="grid">
-						<div className="col-xs-12">
+						<div className="col-xs-12 col-bleed-y">
 							<Link
 								href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
 								as={`/designView/${designNameClean}/${designId}`}

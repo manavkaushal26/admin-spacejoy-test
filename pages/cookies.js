@@ -1,10 +1,18 @@
 import Divider from "@components/Divider";
-import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import React from "react";
+import styled from "styled-components";
+
+const PrlxHeaderImageStyled = styled.div`
+	background: url("https://res.cloudinary.com/spacejoy/image/upload/v1569620131/web/pink-sofa_hp7wvg.jpg") no-repeat
+		center;
+	background-size: cover;
+	background-attachment: fixed;
+	height: 400px;
+`;
 
 function cookies() {
 	return (
@@ -13,10 +21,10 @@ function cookies() {
 				{IndexPageMeta}
 				<title>Cookies | {company.product}</title>
 			</Head>
+			<PrlxHeaderImageStyled />
 			<div className="container">
-				<div className="grid text-center">
-					<div className="col-xs-12 col-sm-8">
-						<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_auto:best,w_1600/v1567610998/web/home-banner_ykstrm.jpg" />
+				<div className="grid justify-center">
+					<div className="col-12 col-sm-8">
 						<h1>Cookie Statement</h1>
 						<p>
 							{company.product} uses cookies to enhance performance and improve your user experience, to provide certain

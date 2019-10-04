@@ -3,6 +3,15 @@ import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import React from "react";
+import styled from "styled-components";
+
+const PrlxHeaderImageStyled = styled.div`
+	background: url("https://res.cloudinary.com/spacejoy/image/upload/v1569620131/web/pink-sofa_hp7wvg.jpg") no-repeat
+		center;
+	background-size: cover;
+	background-attachment: fixed;
+	height: 400px;
+`;
 
 function terms() {
 	return (
@@ -11,12 +20,13 @@ function terms() {
 				{IndexPageMeta}
 				<title>Terms | {company.product}</title>
 			</Head>
+			<PrlxHeaderImageStyled />
 			<div className="container">
-				<div className="grid">
-					<div className="col-xs-12">
+				<div className="grid justify-center">
+					<div className="col-10">
 						<h3>{company.product} EULA and Terms of Service</h3>
-						<h5>Last Updated: Jan 01st, 2019</h5>
 						<h1>Welcome to {company.product}</h1>
+						<h5>Last Updated: Jan 01st, 2019</h5>
 						<p>
 							This End User License Agreement and Terms of Service (the &ldquo;EULA&rdquo;) apply to the beta version of
 							the {company.product} software and services provided by {company.product} Design Solutions Pvt Ltd

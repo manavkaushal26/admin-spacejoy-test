@@ -6,7 +6,8 @@ import styled from "styled-components";
 
 const DividerStyled = styled.div`
 	height: 1px;
-	background: ${({ theme }) => theme.colors.bg.dark1};
+	margin: 2rem 0;
+	background: ${({ theme }) => theme.colors.bg.light2};
 `;
 
 function Divider({ fancy, size }) {

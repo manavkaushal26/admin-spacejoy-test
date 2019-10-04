@@ -17,6 +17,7 @@ import styled from "styled-components";
 const DesignTitleStyled = styled.h2`
 	margin-top: 0;
 `;
+
 const InfiniteLoaderStyled = styled.div`
 	text-align: center;
 	padding: 1rem;
@@ -24,10 +25,10 @@ const InfiniteLoaderStyled = styled.div`
 	background: ${({ theme }) => theme.colors.bg.light2};
 `;
 
+let pageCount = 0;
 class designProjects extends PureComponent {
 	state = {
 		data: [],
-		pageCount: 0,
 		hasMore: true
 	};
 
@@ -36,15 +37,14 @@ class designProjects extends PureComponent {
 	}
 
 	fetchData = async () => {
-		const { pageCount } = this.state;
 		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
+		pageCount += 1;
 		const res = await fetcher({ endPoint: `/demodesigns${dataFeed}`, method: "GET" });
 		const resData = await res.json();
 		if (resData.status === "success") {
-			if (resData.data.list.length >= 1) {
+			if (resData.data.count >= 1) {
 				this.setState(prevState => ({
-					data: [...prevState.data, ...resData.data.list],
-					pageCount: prevState.pageCount + 1
+					data: [...prevState.data, ...resData.data.list]
 				}));
 			} else {
 				this.setState({ hasMore: false });
@@ -54,7 +54,7 @@ class designProjects extends PureComponent {
 
 	render() {
 		const { isServer } = this.props;
-		const { pageCount, hasMore, data } = this.state;
+		const { hasMore, data } = this.state;
 		return (
 			<Layout isServer={isServer}>
 				<Head>
