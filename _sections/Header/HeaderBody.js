@@ -157,8 +157,8 @@ const HeaderBody = ({ authVerification }) => {
 						<Logo md />
 					</ActiveLink>
 				</MobileHiddenStyled>
-				<MobileHiddenStyled className="col-6">{navCenter}</MobileHiddenStyled>
-				<MobileHiddenStyled className="col-4">{navRight}</MobileHiddenStyled>
+				<MobileHiddenStyled className="col-7">{navCenter}</MobileHiddenStyled>
+				<MobileHiddenStyled className="col-3">{navRight}</MobileHiddenStyled>
 				<MobileVisibleStyled className="col-8">
 					<ActiveLink href="/" as="/">
 						<Logo md />
