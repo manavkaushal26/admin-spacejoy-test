@@ -68,7 +68,8 @@ const CenterSubTextStyled = styled.p`
 `;
 
 function goToDesignMySpace() {
-	Router.push({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
+	// Router.push({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
+	Router.push("/designMySpace");
 }
 
 function index({ isServer, authVerification }) {
