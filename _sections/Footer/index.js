@@ -1,4 +1,3 @@
-import Divider from "@components/Divider";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import { cloudinary, company } from "@utils/config";
@@ -7,9 +6,10 @@ import React from "react";
 import styled from "styled-components";
 
 const FooterStyled = styled.footer`
-	padding: 1.5rem 0;
+	padding: 2rem 0;
+	margin-top: 2rem;
 	font-size: 0.9rem;
-	margin-bottom: 20vh;
+	background-color: rgba(234, 234, 234, 0.3);
 `;
 
 const FooterNavStyled = styled.ul`
@@ -39,7 +39,6 @@ function index() {
 	return (
 		<FooterStyled>
 			<div className="container">
-				<Divider />
 				<div className="grid">
 					<div className="col-xs-12 col-md-3">
 						<h3>QUICK LINKS</h3>

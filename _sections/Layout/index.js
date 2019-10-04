@@ -9,7 +9,7 @@ const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled.main`
 	margin-top: 75px;
-	min-height: 50vh;
+	min-height: 70vh;
 	position: relative;
 	&.client-server-identifier {
 		&:after {
