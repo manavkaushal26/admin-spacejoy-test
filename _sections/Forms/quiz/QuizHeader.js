@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 
 const QuizHeaderStyled = styled.div`
-	margin: 6rem 0;
+	margin: 4rem 0;
 	h2 {
 		margin: 0;
 	}
