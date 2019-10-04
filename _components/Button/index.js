@@ -21,7 +21,7 @@ const ButtonStyled = styled(ButtonBase)`
 	color: ${({ theme, variant, fill }) => {
 		return fill !== "ghost" && (variant === "primary" || variant === "secondary")
 			? theme.colors.white
-			: theme.colors.fc.dark1;
+			: theme.colors.fc.dark2;
 	}};
 	font-size: ${({ size }) => {
 		switch (size) {

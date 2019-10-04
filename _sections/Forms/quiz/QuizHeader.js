@@ -6,6 +6,9 @@ const QuizHeaderStyled = styled.div`
 	margin: 4rem 0;
 	h2 {
 		margin: 0;
+		& + span {
+			color: ${({ theme }) => theme.colors.fc.dark2};
+		}
 	}
 `;
 

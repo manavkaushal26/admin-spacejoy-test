@@ -7,10 +7,11 @@ import styled from "styled-components";
 const RadioCardStyled = styled(Button)`
 	height: 185px;
 	border-radius: 2px;
-	background: ${({ theme, image }) => `${theme.colors.bg.light2} url(${image}) no-repeat`};
+	background: ${({ isActive, bg, theme, image }) =>
+		` ${isActive ? bg : theme.colors.bg.light2} url(${image}) no-repeat`};
 	background-size: cover;
 	background-position: bottom;
-	border: 1px solid ${({ theme, isActive }) => (isActive ? theme.colors.primary1 : "transparent")};
+	border: 1px solid transparent;
 	width: 100%;
 	padding: 0;
 	color: ${({ theme }) => theme.colors.fc.dark2};
@@ -25,49 +26,61 @@ const RadioCardStyled = styled(Button)`
 		border: 1px solid ${({ theme }) => theme.colors.primary1};
 		color: ${({ theme }) => theme.colors.primary1};
 		svg {
+			background-color: ${({ theme }) => theme.colors.primary1};
 			path {
-				fill: ${({ theme }) => theme.colors.primary1};
+				fill: white;
 			}
 		}
 	}
 	span {
+		pointer-events: none;
 		position: absolute;
-		top: 2rem;
-		left: 2rem;
+		top: 1.25rem;
+		left: 1.25rem;
 		svg {
+			border: 1px solid ${({ theme }) => theme.colors.primary1};
+			height: 20px;
+			width: 20px;
+			border-radius: 10px;
+			padding: 2px;
+			margin-right: 0.5rem;
 			path {
-				fill: ${({ theme }) => theme.colors.fc.light2};
+				fill: transparent;
 			}
 		}
 	}
 `;
 
-function RadioCard({ image, value, onClick, checked }) {
+function RadioCard({ image, value, onClick, checked, bg }) {
 	return (
 		<RadioCardStyled
 			type="button"
 			value={value}
 			raw
 			onClick={onClick}
+			isActive={checked}
 			className={checked ? "active" : "inactive"}
 			image={image}
+			bg={bg}
 		>
 			<span>
-				<SVGIcon name="tick" height={13} width={20} /> {value}
+				<SVGIcon name="tick" /> {value}
 			</span>
 		</RadioCardStyled>
 	);
 }
 
 RadioCard.defaultProps = {
-	image: ""
+	image: "",
+	bg: ""
 };
 
 RadioCard.propTypes = {
 	image: PropTypes.string,
 	value: PropTypes.string.isRequired,
 	onClick: PropTypes.func.isRequired,
-	checked: PropTypes.bool.isRequired
+	checked: PropTypes.bool.isRequired,
+	bg: PropTypes.string
 };
 
 export default RadioCard;
