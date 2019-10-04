@@ -12,7 +12,7 @@ function QuizStart() {
 
 	return (
 		<div className="container">
-			<div className="grid justify-center">
+			<div className="grid text-center">
 				<div className="col-12 col-md-6">
 					<Image
 						size="200px"

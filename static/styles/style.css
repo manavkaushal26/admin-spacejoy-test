@@ -39,6 +39,7 @@ html {
 
 .text-center {
 	text-align: center;
+	justify-content: center;
 }
 
 .text-left {

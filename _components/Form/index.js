@@ -8,6 +8,7 @@ import { ValidateEmail, ValidateMobile } from "./Validation";
 
 const FormWrapperStyled = styled.form`
 	width: 100%;
+	text-align: left;
 `;
 
 const FormStatusStyled = styled.div`

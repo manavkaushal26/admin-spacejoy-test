@@ -64,7 +64,7 @@ const RadioStyled = styled(Button)`
 	}
 `;
 
-function Q2() {
+function Question2() {
 	const [budget, setBudget] = useState("");
 
 	const handleClick = e => {
@@ -82,7 +82,7 @@ function Q2() {
 
 	return (
 		<div className="container">
-			<div className="grid justify-center">
+			<div className="grid text-center">
 				<div className="col-10">
 					<QuizHeader
 						title="Have a budget in mind??"
@@ -206,4 +206,4 @@ function Q2() {
 	);
 }
 
-export default Q2;
+export default Question2;

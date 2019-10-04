@@ -14,7 +14,7 @@ function cookies() {
 				<title>Cookies | {company.product}</title>
 			</Head>
 			<div className="container">
-				<div className="grid justify-space-around">
+				<div className="grid text-center">
 					<div className="col-xs-12 col-sm-8">
 						<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_auto:best,w_1600/v1567610998/web/home-banner_ykstrm.jpg" />
 						<h1>Cookie Statement</h1>

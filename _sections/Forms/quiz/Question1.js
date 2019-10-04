@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import QuizHeader from "./QuizHeader";
 import goToQuiz from "./QuizHelper";
 
-function Q1() {
+function Question1() {
 	const [roomType, setRoomType] = useState("");
 
 	const handleClick = e => setRoomType(e.target.value);
@@ -20,7 +20,7 @@ function Q1() {
 
 	return (
 		<div className="container">
-			<div className="grid justify-center">
+			<div className="grid text-center">
 				<div className="col-10">
 					<QuizHeader
 						title="Which room are you designing?"
@@ -88,4 +88,4 @@ function Q1() {
 	);
 }
 
-export default Q1;
+export default Question1;
