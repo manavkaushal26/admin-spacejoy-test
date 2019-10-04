@@ -138,11 +138,7 @@ function index() {
 										<nav>
 											<FooterNavStyled>
 												<li>
-													<Image
-														size="xs"
-														src={`${cloudinary.baseDeliveryURL}/image/upload/v1567525045/web/envelope_sem3ud.svg`}
-														style={{ marginRight: "1rem" }}
-													/>
+													<SVGIcon name="envelope" height={14} width={20} style={{ marginRight: "0.5rem" }} />
 													<a href={`mailto:${company.email.support}?Subject=Need%20Help`} target="_top">
 														{company.email.support}
 													</a>
