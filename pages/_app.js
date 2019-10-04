@@ -1,4 +1,3 @@
-import { AuthProvider } from "@context/AuthStorage";
 import theme from "@theme/index";
 import { initGA, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
 import App from "next/app";
@@ -38,11 +37,9 @@ export default class MyApp extends App {
 		const { Component, pageProps } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
-				<AuthProvider>
-					<div className={`${loading ? "loading" : ""}`}>
-						<Component {...pageProps} />
-					</div>
-				</AuthProvider>
+				<div className={`${loading ? "loading" : ""}`}>
+					<Component {...pageProps} />
+				</div>
 			</ThemeProvider>
 		);
 	}

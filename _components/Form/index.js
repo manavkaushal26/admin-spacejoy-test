@@ -1,4 +1,3 @@
-import { AuthContext } from "@context/AuthStorage";
 import { login, redirectToLocation } from "@utils/auth";
 import fetcher from "@utils/fetcher";
 import PropTypes from "prop-types";
@@ -20,8 +19,6 @@ const FormStatusStyled = styled.div`
 `;
 
 class FormBox extends Component {
-	static contextType = AuthContext;
-
 	constructor(props) {
 		super(props);
 		const stateObj = {};
@@ -36,7 +33,7 @@ class FormBox extends Component {
 
 	handleSubmit = async event => {
 		event.preventDefault();
-		const { state, context } = this;
+		const { state } = this;
 		const { destination, name, redirectUrl } = this.props;
 		function reqBody() {
 			if (name === "signup") {
@@ -122,7 +119,6 @@ class FormBox extends Component {
 			this.setState({ formStatus: responseData.status });
 			if (name === "login" || name === "signup") {
 				const { token } = responseData;
-				context.updateState();
 				await login({ token, redirectUrl });
 			}
 			if (name === "designmyspace" || name === "forgotPassword") {
