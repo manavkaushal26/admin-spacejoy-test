@@ -14,8 +14,8 @@ import React, { PureComponent } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 
-const DesignTitleStyled = styled.h2`
-	margin-top: 0;
+const DesignTitleStyled = styled.h3`
+	padding-bottom: 1rem;
 `;
 
 const InfiniteLoaderStyled = styled.div`
@@ -25,11 +25,31 @@ const InfiniteLoaderStyled = styled.div`
 	background: ${({ theme }) => theme.colors.bg.light2};
 `;
 
-let pageCount = 0;
+const DimmerDemoDesignStyled = styled.div`
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 2rem;
+	div {
+		height: 400px;
+		width: 100%;
+		background-color: ${({ theme }) => theme.colors.bg.light2};
+		margin-right: 2rem;
+		justify-content: space-between;
+		flex: 1;
+		&:first-child {
+			flex: 2;
+		}
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+`;
+
 class designProjects extends PureComponent {
 	state = {
 		data: [],
-		hasMore: true
+		pageCount: 0,
+		hasMore: false
 	};
 
 	componentDidMount() {
@@ -37,14 +57,16 @@ class designProjects extends PureComponent {
 	}
 
 	fetchData = async () => {
+		const { pageCount } = this.state;
 		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
-		pageCount += 1;
 		const res = await fetcher({ endPoint: `/demodesigns${dataFeed}`, method: "GET" });
 		const resData = await res.json();
 		if (resData.status === "success") {
 			if (resData.data.count >= 1) {
 				this.setState(prevState => ({
-					data: [...prevState.data, ...resData.data.list]
+					data: [...prevState.data, ...resData.data.list],
+					pageCount: prevState.pageCount + 1,
+					hasMore: true
 				}));
 			} else {
 				this.setState({ hasMore: false });
@@ -68,8 +90,22 @@ class designProjects extends PureComponent {
 							<h1>Real Designs, With Real Products</h1>
 						</div>
 					</div>
+					{data.length === 0 && (
+						<>
+							<DimmerDemoDesignStyled>
+								<div />
+								<div />
+								<div />
+							</DimmerDemoDesignStyled>
+							<DimmerDemoDesignStyled>
+								<div />
+								<div />
+								<div />
+							</DimmerDemoDesignStyled>
+						</>
+					)}
 					<InfiniteScroll
-						pageStart={pageCount}
+						pageStart={1}
 						loadMore={this.fetchData}
 						hasMore={hasMore}
 						loader={
@@ -84,7 +120,7 @@ class designProjects extends PureComponent {
 									<div className="col-xs-12">
 										<DesignTitleStyled>{item.designName}</DesignTitleStyled>
 										<div className="grid">
-											<div className="cols-xs-12 col-md-6">
+											<div className="cols-xs-12 col-md-6 col-bleed-y">
 												<Link
 													href={{
 														pathname: "/designView",
