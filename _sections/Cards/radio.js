@@ -25,6 +25,8 @@ const RadioCardStyled = styled(Button)`
 		border: 1px solid ${({ theme }) => theme.colors.primary1};
 		color: ${({ theme }) => theme.colors.primary1};
 		svg {
+			transform: scale(1);
+			opacity: 1;
 			path {
 				fill: ${({ theme }) => theme.colors.primary1};
 			}
@@ -35,9 +37,10 @@ const RadioCardStyled = styled(Button)`
 		top: 2rem;
 		left: 2rem;
 		svg {
-			path {
-				fill: ${({ theme }) => theme.colors.bg.dark1};
-			}
+			pointer-events: none;
+			transition: all cubic-bezier(0.68, -0.55, 0.27, 1.55) 400ms;
+			transform: scale(0);
+			opacity: 0;
 		}
 	}
 `;

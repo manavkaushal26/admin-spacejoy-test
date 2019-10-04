@@ -86,7 +86,7 @@ const HeaderBody = ({ authVerification }) => {
 				<li>
 					<ActiveLink href="/designProjects" as="/designProjects">
 						<span>Design Projects</span>
-						<small>Explore Creative designs</small>
+						<small>Explore stunning design layouts</small>
 					</ActiveLink>
 				</li>
 				<li>

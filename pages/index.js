@@ -97,7 +97,7 @@ function index({ isServer, authVerification }) {
 								</Button>
 								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
 									<a href="/designProjects">
-										<p>Explore stunning design layouts.</p>
+										<p>Explore stunning design layouts</p>
 									</a>
 								</Link>
 							</HeroCardStyled>
