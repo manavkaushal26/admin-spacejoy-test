@@ -16,9 +16,7 @@ const handle = app.getRequestHandler();
 const workers = [];
 
 const getMaxAge = function() {
-	const futureDate = new Date();
-	futureDate.setFullYear(futureDate.getFullYear() + 1);
-	return futureDate - new Date();
+	return 31536000;
 };
 
 const serve = (path, cache) =>
