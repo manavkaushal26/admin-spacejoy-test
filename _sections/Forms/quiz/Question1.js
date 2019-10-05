@@ -74,13 +74,13 @@ function Question1() {
 							/>
 						</div>
 						<div className="col-4 col-sm-2">
-							<Button variant="secondary" shape="flat" size="sm" fill="ghost" full onClick={handlePrev}>
+							<Button variant="secondary" shape="rounded" size="sm" fill="ghost" full onClick={handlePrev}>
 								Prev
 							</Button>
 						</div>
 						<div className="col-4 col-sm-8" />
 						<div className="col-4 col-sm-2">
-							<Button variant="primary" shape="flat" size="sm" full onClick={handleNext}>
+							<Button variant="primary" shape="rounded" size="sm" full onClick={handleNext}>
 								Next
 							</Button>
 						</div>

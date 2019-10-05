@@ -1,6 +1,8 @@
 import DesignMySpaceForm from "@sections/Forms/DesignMySpaceForm";
 import Question1 from "@sections/Forms/quiz/Question1";
 import Question2 from "@sections/Forms/quiz/Question2";
+import Question3 from "@sections/Forms/quiz/Question3";
+import Question4 from "@sections/Forms/quiz/Question4";
 import QuizStart from "@sections/Forms/quiz/QuizStart";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
@@ -33,7 +35,8 @@ class designMySpace extends PureComponent {
 				{quiz === "start" && <QuizStart />}
 				{quiz === "1" && <Question1 />}
 				{quiz === "2" && <Question2 />}
-				{quiz === "3" && <p>Quiz 3</p>}
+				{quiz === "3" && <Question3 />}
+				{quiz === "4" && <Question4 />}
 			</Layout>
 		);
 	}

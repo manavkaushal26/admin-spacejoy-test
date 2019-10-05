@@ -23,7 +23,7 @@ function QuizStart() {
 						title="We're Excited"
 						description="Hello there! Let us understand your requirements so that we can kick start designing your dream home"
 					/>
-					<Button variant="primary" size="sm" shape="flat" onClick={handleClick}>
+					<Button variant="primary" size="sm" shape="rounded" onClick={handleClick}>
 						Let&apos;s Begin
 					</Button>
 				</div>
