@@ -8,7 +8,7 @@ import Header from "../Header";
 const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled.main`
-	margin-top: 75px;
+	margin-top: 70px;
 	min-height: 70vh;
 	position: relative;
 	&.client-server-identifier {

@@ -236,7 +236,7 @@ function index({ isServer, authVerification }) {
 							</div>
 						</div>
 						<div className="col-xs-6 ">
-							<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1566975734/web/brand-items_nerkmq.jpg" />
+							<Image src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_605/v1566975734/web/brand-items_nerkmq.jpg" />
 						</div>
 					</div>
 				</div>
@@ -308,9 +308,9 @@ function index({ isServer, authVerification }) {
 						<div className="col-xs-12 col-sm-6">
 							<ReactCompareImage
 								leftImageLabel="Before"
-								leftImage="https://res.cloudinary.com/spacejoy/image/upload/v1568876295/web/Design_2_before_igjbzg.jpg"
+								leftImage="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_605/v1568876295/web/Design_2_before_igjbzg.jpg"
 								rightImageLabel="After"
-								rightImage="https://res.cloudinary.com/spacejoy/image/upload/v1568876295/web/Design_2_after_m2grcx.jpg"
+								rightImage="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_605/v1568876295/web/Design_2_after_m2grcx.jpg"
 							/>
 						</div>
 					</div>

@@ -5,19 +5,19 @@ const data = {
 	concept: [
 		{
 			no: "1",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/V1.jpg"
+			imageUrl: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_290/v1570246484/web/design-4_owkbkb.jpg"
 		},
 		{
 			no: "2",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v2.jpg"
+			imageUrl: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_290/v1570246484/web/design-1_nyknfl.jpg"
 		},
 		{
 			no: "3",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v3.jpg"
+			imageUrl: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_290/v1570246484/web/design-2_sddfvf.jpg"
 		},
 		{
 			no: "4",
-			imageUrl: "https://storage.googleapis.com/isuite-artifacts/homeWeb2/unlimitedRevisions/v4.jpg"
+			imageUrl: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_290/v1570246484/web/design-3_tzlvg5.jpg"
 		}
 	]
 };

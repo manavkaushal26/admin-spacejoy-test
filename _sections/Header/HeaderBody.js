@@ -14,6 +14,7 @@ const HorizontalListStyled = styled.ul`
 	margin: 0;
 	padding: 0;
 	li {
+		line-height: normal;
 		text-align: left;
 		display: inline-block;
 		list-style: none;
@@ -27,6 +28,7 @@ const HorizontalListStyled = styled.ul`
 		span {
 			display: block;
 			font-weight: bold;
+			padding-bottom: 2px;
 			& + {
 				small {
 					color: ${({ theme }) => theme.colors.fc.dark2};
@@ -57,7 +59,7 @@ const MobileNavVisibleStyled = styled.div`
 	position: fixed;
 	background-color: white;
 	width: 100%;
-	top: 75px;
+	top: 70px;
 	left: 0;
 	right: 0;
 	a {
