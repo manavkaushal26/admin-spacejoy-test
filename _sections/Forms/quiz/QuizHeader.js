@@ -7,9 +7,6 @@ const QuizHeaderStyled = styled.div`
 	h2 {
 		font-family: "Airbnb Cereal App Medium";
 		margin: 0;
-		& + span {
-			color: ${({ theme }) => theme.colors.fc.dark1};
-		}
 	}
 `;
 
