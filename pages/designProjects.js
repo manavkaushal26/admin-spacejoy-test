@@ -30,9 +30,9 @@ const DimmerDemoDesignStyled = styled.div`
 	flex-direction: row;
 	margin-bottom: 2rem;
 	div {
-		height: 400px;
+		height: 200px;
 		width: 100%;
-		background-color: ${({ theme }) => theme.colors.bg.light2};
+		background-color: ${({ theme }) => theme.colors.bg.light1};
 		margin-right: 2rem;
 		justify-content: space-between;
 		flex: 1;

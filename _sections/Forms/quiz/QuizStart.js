@@ -20,10 +20,10 @@ function QuizStart() {
 						style={{ marginTop: "100px" }}
 					/>
 					<QuizHeader
-						title="We're Excited"
-						description="Hello there! Let us understand your requirements so that we can kick start designing your dream home"
+						title="We're so Excited"
+						description="Hello there! Let us understand your requirements so that we can kick start designing your dream home."
 					/>
-					<Button variant="primary" size="sm" shape="rounded" onClick={handleClick}>
+					<Button variant="primary" size="lg" shape="rounded" onClick={handleClick}>
 						Let&apos;s Begin
 					</Button>
 				</div>

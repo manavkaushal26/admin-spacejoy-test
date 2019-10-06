@@ -32,7 +32,7 @@ const LabelStyled = styled.label`
 			width: 10px;
 			height: 10px;
 			border-radius: 100%;
-			background: ${({ theme }) => theme.colors.primary1};
+			background: ${({ theme }) => theme.colors.accent};
 			transform: scale(0);
 			transition: all 0.2s ease;
 			opacity: 0.08;
@@ -45,7 +45,7 @@ const RadioStyled = styled.input`
 	margin-right: 1rem;
 	&:checked {
 		& + span.label {
-			border-color: ${({ theme }) => theme.colors.primary1};
+			border-color: ${({ theme }) => theme.colors.accent};
 			&:after {
 				transform: scale(1);
 				transition: all 0.2s cubic-bezier(0.35, 0.9, 0.4, 0.9);

@@ -10,6 +10,7 @@ const BudgetSelectionStyled = styled.div`
 	border: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	padding: 1rem 2rem;
 	border-radius: 5px;
+	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 `;
 
 const RadioStyled = styled(Button)`
@@ -30,7 +31,7 @@ const RadioStyled = styled(Button)`
 	&.active {
 		div:first-child {
 			svg {
-				background-color: ${({ theme }) => theme.colors.primary1};
+				background-color: ${({ theme }) => theme.colors.accent};
 				path {
 					fill: white;
 				}
@@ -42,7 +43,7 @@ const RadioStyled = styled(Button)`
 		&:first-child {
 			flex: 1;
 			svg {
-				border: 1px solid ${({ theme }) => theme.colors.primary1};
+				border: 1px solid ${({ theme }) => theme.colors.accent};
 				height: 20px;
 				width: 20px;
 				border-radius: 10px;

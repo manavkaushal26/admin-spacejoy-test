@@ -9,7 +9,7 @@ const FooterStyled = styled.footer`
 	padding: 2rem 0;
 	margin-top: 2rem;
 	font-size: 0.9rem;
-	background-color: rgba(234, 234, 234, 0.3);
+	background-color: ${({ theme }) => theme.colors.bg.light1};
 `;
 
 const FooterNavStyled = styled.ul`

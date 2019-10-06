@@ -18,8 +18,8 @@ function getHeadingText(flow) {
 		case "forgot-password":
 			return (
 				<span>
-					Forgot Password? No Worries. <br />
-					We’ll email you instructions to reset your password.
+					Forgot Password? <br />
+					No Worries. We’ll email you instructions to reset your password.
 				</span>
 			);
 		default:

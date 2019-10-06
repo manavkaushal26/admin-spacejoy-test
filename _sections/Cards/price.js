@@ -20,7 +20,7 @@ const PriceCardWrapperStyled = styled.div`
 
 const RecommendBannerStyled = styled.div`
 	padding: 0.25rem;
-	background: ${({ theme }) => theme.colors.primary1};
+	background: ${({ theme }) => theme.colors.accent};
 	color: white;
 	position: absolute;
 	width: 140px;

@@ -23,10 +23,10 @@ const RadioCardStyled = styled(Button)`
 	}
 	&.active {
 		font-weight: bold;
-		border: 1px solid ${({ theme }) => theme.colors.primary1};
-		color: ${({ theme }) => theme.colors.primary1};
+		border: 1px solid ${({ theme }) => theme.colors.accent};
+		color: ${({ theme }) => theme.colors.accent};
 		svg {
-			background-color: ${({ theme }) => theme.colors.primary1};
+			background-color: ${({ theme }) => theme.colors.accent};
 			path {
 				fill: white;
 			}
@@ -38,7 +38,7 @@ const RadioCardStyled = styled(Button)`
 		top: 1.25rem;
 		left: 1.25rem;
 		svg {
-			border: 1px solid ${({ theme }) => theme.colors.primary1};
+			border: 1px solid ${({ theme }) => theme.colors.accent};
 			height: 20px;
 			width: 20px;
 			border-radius: 10px;

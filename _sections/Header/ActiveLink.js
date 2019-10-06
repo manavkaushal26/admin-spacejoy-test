@@ -5,7 +5,6 @@ import React from "react";
 import styled from "styled-components";
 
 const ActiveStyled = styled.a`
-	color: ${({ theme }) => theme.colors.primary1};
 	svg path {
 		fill: ${({ theme }) => theme.colors.primary1};
 	}

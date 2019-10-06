@@ -20,7 +20,10 @@ function Question3() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-10">
-					<QuizHeader title="Question 3?" description="Ready Stage" />
+					<QuizHeader
+						title="How does your room look today?"
+						description="Let's start by helping your designers understand which rooms you prefer."
+					/>
 					<div className="grid align-center">
 						<div className="col-12">
 							<p>

@@ -9,13 +9,10 @@ import HeaderBody from "./HeaderBody";
 const CookieStyled = styled.div`
 	background: ${({ theme }) => theme.colors.fc.dark1};
 	color: white;
-	a {
-		color: ${({ theme }) => theme.colors.primary1};
-	}
 `;
 
 const HeaderStyled = styled.div`
-	background: ${({ theme }) => theme.colors.bg.light1};
+	background: ${({ theme }) => theme.colors.white};
 	position: fixed;
 	top: 0;
 	left: 0;
