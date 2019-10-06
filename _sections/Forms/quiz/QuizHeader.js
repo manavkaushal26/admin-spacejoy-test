@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 const QuizHeaderStyled = styled.div`
 	margin: 4rem 0;
+	text-align: left;
 	h2 {
 		font-family: "Airbnb Cereal App Medium";
 		margin: 0;

@@ -1,3 +1,4 @@
+import BreadCrumb from "@components/BreadCrumb";
 import DesignMySpaceForm from "@sections/Forms/DesignMySpaceForm";
 import Question1 from "@sections/Forms/quiz/Question1";
 import Question2 from "@sections/Forms/quiz/Question2";
@@ -21,7 +22,7 @@ class designMySpace extends PureComponent {
 					{IndexPageMeta}
 					<title>Design My Space | {company.product}</title>
 				</Head>
-
+				<BreadCrumb />
 				{!quiz && (
 					<div className="container">
 						<div className="grid">
