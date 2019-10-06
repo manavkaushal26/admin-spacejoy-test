@@ -1,47 +1,84 @@
-import Button from "@components/Button";
-import React, { useState } from "react";
+import FormBox from "@components/Form";
+import Field from "@components/Form/Field";
+import React from "react";
+import styled from "styled-components";
 import QuizHeader from "./QuizHeader";
-import goToQuiz from "./QuizHelper";
+
+const FormBoxWrapperStyled = styled.div`
+	position: relative;
+	padding: 2rem;
+	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-radius: 2px;
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		height: 200px;
+		width: 150px;
+	}
+	&:before {
+		top: 10%;
+		left: -120px;
+		background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570339630/web/plant_mkgn6l.png") no-repeat
+			center;
+		background-size: contain;
+	}
+	&:after {
+		top: 30%;
+		right: -120px;
+		background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570339631/web/chair_nf2h0q.png") no-repeat
+			center;
+		background-size: contain;
+	}
+`;
 
 function Question4() {
-	const [budget, setBudget] = useState("");
-
-	const handleClick = e => setBudget(e.target.value);
-
-	const handlePrev = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "3", plan: "free" } }, "/designMySpace?quiz=1");
-	};
-
-	const handleNext = () => {
-		goToQuiz({ pathname: "/", query: {} }, "/");
-	};
-
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-md-10">
-					<QuizHeader title="Question 4?" description="Final Details?" />
+				<div className="col-12 col-md-4">
+					<QuizHeader
+						title="Please enter your contact details"
+						description="Let's start by helping your designers understand which rooms you prefer."
+					/>
 					<div className="grid align-center">
 						<div className="col-12">
-							<p>
-								Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, atque? Deleniti, dolore consectetur sint
-								reprehenderit corrupti ipsa natus blanditiis assumenda quod nostrum perferendis, eos asperiores totam
-								dignissimos ad, non atque.
-							</p>
-							<Button fill="ghost" size="sm" onClick={handleClick} value="success">
-								Test Q3{budget}
-							</Button>
-						</div>
-						<div className="col-4 col-sm-2">
-							<Button variant="secondary" shape="rounded" size="sm" fill="ghost" full onClick={handlePrev}>
-								Prev
-							</Button>
-						</div>
-						<div className="col-4 col-sm-8" />
-						<div className="col-4 col-sm-2">
-							<Button variant="primary" shape="rounded" size="sm" full onClick={handleNext}>
-								Next
-							</Button>
+							<FormBoxWrapperStyled>
+								<FormBox
+									redirectUrl="/"
+									destination="/forms"
+									description="Submit your details"
+									name="designmyspacequiz"
+								>
+									<Field
+										name="userName"
+										type="text"
+										label="Username"
+										placeholder="Username"
+										error="Please enter a valid username"
+										hint="should contain valid text"
+									/>
+									<Field
+										name="userEmail"
+										type="email"
+										label="Email"
+										placeholder="Email"
+										error="Please enter a valid email"
+										hint="should contain valid email"
+										required
+									/>
+									<Field
+										name="userMobile"
+										type="tel"
+										label="Mobile"
+										placeholder="Mobile"
+										error="Please enter a valid Mobile"
+										hint="should contain valid Mobile"
+										required
+									/>
+									<Field name="userSubmit" type="submit" label="Submit" />
+								</FormBox>
+							</FormBoxWrapperStyled>
 						</div>
 					</div>
 				</div>

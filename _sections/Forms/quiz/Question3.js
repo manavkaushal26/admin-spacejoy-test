@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Image from "@components/Image";
 import React, { useState } from "react";
 import QuizHeader from "./QuizHeader";
 import goToQuiz from "./QuizHelper";
@@ -26,11 +27,12 @@ function Question3() {
 					/>
 					<div className="grid align-center">
 						<div className="col-12">
-							<p>
-								Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quo, atque? Deleniti, dolore consectetur sint
-								reprehenderit corrupti ipsa natus blanditiis assumenda quod nostrum perferendis, eos asperiores totam
-								dignissimos ad, non atque.
-							</p>
+							<div>
+								<Image
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1570340739/web/single-sofa_z4il1o.png"
+									size="150px"
+								/>
+							</div>
 							<Button fill="ghost" size="sm" onClick={handleClick} value="success">
 								Test Q3{budget}
 							</Button>
