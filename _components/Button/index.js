@@ -68,6 +68,10 @@ const ButtonStyled = styled(ButtonBase)`
 	border: ${({ fill, theme }) => (fill === "solid" ? "none" : `1px solid ${theme.colors.bg.dark2}`)};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};
+	transition: all ease-in 0.15s;
+	&:hover {
+		box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.15);
+	}
 `;
 
 function index(props) {

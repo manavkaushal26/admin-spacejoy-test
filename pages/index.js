@@ -93,7 +93,7 @@ function index({ isServer, authVerification }) {
 									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
 								</HeroSubText>
 								<h4>Plans starting at $19</h4>
-								<Button variant="primary" shape="flat" size="lg" onClick={goToDesignMySpace}>
+								<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
 									DESIGN MY SPACE NOW <SVGIcon name="right" width={20} fill="white" />
 								</Button>
 								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
