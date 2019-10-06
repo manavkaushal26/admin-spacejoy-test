@@ -7,7 +7,6 @@ import QuizHeader from "./QuizHeader";
 const FormBoxWrapperStyled = styled.div`
 	position: relative;
 	padding: 2rem;
-	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	border-radius: 2px;
 	&:before,
 	&:after {
