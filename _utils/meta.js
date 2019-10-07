@@ -26,19 +26,28 @@ const BaseMeta = [
 ];
 
 const OGMeta = [
-	<meta key="og-title" name="og:title" property="og:title" content={company.product} />,
-	<meta key="og-description" name="og:description" property="og:description" content={company.description} />,
-	<meta key="og-type" name="og:type" property="og:type" content="website" />,
-	<meta key="og-url" name="og:url" property="og:url" content="https://spacejoy.com/" />,
+	<meta key="og-title" property="og:title" content={`${company.product} - ${company.tagLine}`} />,
+	<meta key="og-description" property="og:description" content={company.description} />,
+	<meta key="og-url" property="og:url" content="https://spacejoy.com/" />,
+	<meta key="og-type" property="og:type" content="website" />,
 	<meta
 		key="og-image"
-		name="og:image"
 		property="og:image"
 		content="https://res.cloudinary.com/spacejoy/image/upload/v1568907005/web/spacejoy_wbyfqf.png"
 	/>,
-	<meta key="og-site_name" name="og:site_name" property="og:site_name" content={company.product} />,
-	<meta key="og-email" name="og:email" property="og:email" content={company.email.support} />,
-	<meta key="fbId" name="fb:page_id" property="og:page_id" content={company.social.facebookId} />
+	<meta key="og-site_name" property="og:site_name" content={company.product} />,
+	<meta key="og-email" property="og:email" content={company.email.support} />,
+	<meta key="fbPageId" property="fb:page_id" content={company.social.facebookPageId} />,
+	<meta key="fbAppId" property="fb:app_id" content={company.social.facebookAppId} />,
+	<meta key="tw-card" name="twitter:card" content="app" />,
+	<meta key="tw-description" name="twitter:description" content={company.description} />,
+	<meta key="tw--name-iphone" name="twitter:app:name:iphone" content={company.product} />,
+	<meta key="tw-id-iphone" name="twitter:app:id:iphone" content={page.appStoreId} />,
+	<meta key="tw-name-ipad" name="twitter:app:name:ipad" content={company.product} />,
+	<meta key="tw-id-ipad" name="twitter:app:id:ipad" content={page.appStoreId} />,
+	<meta key="tw-playstore" name="twitter:app:id:googleplay" content={page.playStoreId} />,
+	<meta key="tw-appstore" name="twitter:app:name:googleplay" content={company.product} />,
+	<meta key="tw-country" name="twitter:app:country" content="us" />
 ];
 
 const AppleMeta = [

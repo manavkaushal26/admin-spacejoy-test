@@ -8,6 +8,7 @@ import goToQuiz from "./QuizHelper";
 
 const BudgetSelectionStyled = styled.div`
 	padding: 1rem 2rem;
+	margin: 4rem 0;
 	border-radius: 5px;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 `;
@@ -169,11 +170,17 @@ function Question2() {
 							</BudgetSelectionStyled>
 						</div>
 						<div className="col-12 col-sm-7 col-md-8">
-							{(budget === "$2000 - $5000" || budget === "") && (
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570180654/web/budget-1_gfb6kj.png" />
+							{budget === "$10,000 or more" && (
+								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/10000_x0hnng.png" />
 							)}
 							{budget === "$5000 - $7000" && (
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570183550/web/budget-2_cgrmuu.png" />
+								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png" />
+							)}
+							{budget === "$2000 - $5000" && (
+								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png" />
+							)}
+							{(budget === "$2000 or less" || budget === "") && (
+								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png" />
 							)}
 						</div>
 						<div className="col-4 col-sm-2">

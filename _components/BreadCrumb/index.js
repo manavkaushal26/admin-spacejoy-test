@@ -62,7 +62,7 @@ const ACTIVE = query => (
 	</li>
 );
 
-const PRICING = () => <li key="pricing">Plans</li>;
+const PRICING = () => <li key="pricing">Pricing</li>;
 
 function index({ router }) {
 	const getCrumbs = () => {

@@ -43,8 +43,8 @@ function cookies() {
 							</div>
 						</div>
 						<Divider />
-						<div className="grid">
-							<div className="col-xs-7 col-bleed ">
+						<div className="grid justify-space-between">
+							<div className="col-xs-6 col-bleed ">
 								<div className="col-xs-12">
 									<h3>Functionality cookies</h3>
 									<p>

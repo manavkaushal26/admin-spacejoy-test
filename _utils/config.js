@@ -12,13 +12,16 @@ module.exports = {
 		stripe: "pk_live_74NmugK4189bLTq0H74tvVz300grMkWE5n",
 		country: "USA",
 		playStoreUrl: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
+		playStoreId: "com.homefuly.idsuite.retail",
 		appStoreUrl: "https://apps.apple.com/us/app/homefuly/id1448690338",
+		appStoreId: "1448690338",
 		whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
 	},
 	company: {
 		logo: "https://res.cloudinary.com/spacejoy/image/upload/v1568650421/shared/spacejoy_hgqxoa.svg",
 		name: "Neo Design Labs Inc",
 		product: "Spacejoy",
+		tagLine: "Designing your imagination",
 		url: "//spacejoy.com",
 		subject: "Smart Online Interior Design & Decorating in 3D",
 		description: "Experience the joy of designing your home in 3D using products from brands you can buy immediately",
@@ -41,7 +44,8 @@ module.exports = {
 		],
 		social: {
 			facebook: "https://www.facebook.com/spacejoyapp/",
-			facebookId: "652491341906462",
+			facebookPageId: "652491341906462",
+			facebookAppId: "652491341906462",
 			linkedin: "https://www.linkedin.com/company/spacejoy/",
 			twitter: "https://twitter.com/spacejoyapp/",
 			instagram: "https://www.instagram.com/spacejoyapp/",

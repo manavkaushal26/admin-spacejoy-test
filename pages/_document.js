@@ -43,7 +43,7 @@ class MyDocument extends Document {
 
 	render() {
 		return (
-			<html lang="en">
+			<html lang="en-US">
 				<Head>
 					{prod && <script dangerouslySetInnerHTML={{ __html: stopFlicker }} />}
 					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
