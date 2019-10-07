@@ -67,7 +67,7 @@ function Question1() {
 								value="Studio"
 								onClick={handleClick}
 								checked={roomType === "Studio"}
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1570182983/web/studio_jpakds.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1570451259/web/Studio_Apartment_nu1av3.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
