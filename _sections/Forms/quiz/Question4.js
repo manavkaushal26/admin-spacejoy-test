@@ -1,5 +1,6 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import QuizHeader from "./QuizHeader";
@@ -38,7 +39,7 @@ const FormBoxWrapperStyled = styled.div`
 	}
 `;
 
-function Question4() {
+function Question4({ name, email }) {
 	return (
 		<div className="container">
 			<div className="grid text-center">
@@ -59,18 +60,22 @@ function Question4() {
 									<Field
 										name="userName"
 										type="text"
-										label="Name"
-										placeholder="Name"
-										error="Please enter your username"
-										hint="Should contain valid text"
+										label="Username"
+										value={name}
+										readonly={!!name}
+										placeholder="Username"
+										error="Please enter a valid username"
+										hint="should contain valid text"
 									/>
 									<Field
 										name="userEmail"
 										type="email"
 										label="Email"
+										value={email}
+										readonly={!!email}
 										placeholder="Email"
-										error="Please enter your email"
-										hint="Should contain valid email"
+										error="Please enter a valid email"
+										hint="should contain valid email"
 										required
 									/>
 									<Field
@@ -79,7 +84,7 @@ function Question4() {
 										label="Mobile"
 										placeholder="Mobile"
 										error="Please enter a valid Mobile"
-										hint="Should contain valid Mobile"
+										hint="should contain valid Mobile"
 										required
 									/>
 									<Field name="userSubmit" type="submit" label="Submit" />
@@ -92,5 +97,15 @@ function Question4() {
 		</div>
 	);
 }
+
+Question4.defaultProps = {
+	name: "",
+	email: ""
+};
+
+Question4.propTypes = {
+	name: PropTypes.string,
+	email: PropTypes.string
+};
 
 export default Question4;

@@ -37,7 +37,7 @@ class designMySpace extends PureComponent {
 				{quiz === "1" && <Question1 />}
 				{quiz === "2" && <Question2 />}
 				{quiz === "3" && <Question3 />}
-				{quiz === "4" && <Question4 />}
+				{quiz === "4" && <Question4 name={authVerification.name} email={authVerification.email} />}
 			</Layout>
 		);
 	}
