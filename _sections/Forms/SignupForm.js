@@ -8,18 +8,18 @@ function SignupForm() {
 			<Field
 				name="userName"
 				type="text"
-				label="Username"
-				placeholder="Username"
-				error="Please enter a valid username"
-				hint="should contain valid text"
+				label="Name"
+				placeholder="Name"
+				error="Please enter your name"
+				hint="Should contain valid text"
 			/>
 			<Field
 				name="userEmail"
 				type="email"
 				label="Email"
 				placeholder="Email"
-				error="Please enter a valid email"
-				hint="should contain valid email"
+				error="Please enter your email"
+				hint="Should contain valid email"
 				required
 			/>
 			<Field
@@ -27,8 +27,8 @@ function SignupForm() {
 				type="password"
 				label="Password"
 				placeholder="Password"
-				error="Please enter a valid Password"
-				hint="should contain valid Password"
+				error="Please enter a strong Password"
+				hint="Should contain valid password"
 				required
 			/>
 			<Field name="userSubmit" type="submit" label="Signup" />

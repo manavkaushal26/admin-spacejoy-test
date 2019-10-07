@@ -30,7 +30,6 @@ const ImageWrapperStyled = styled.div`
 
 const BudgetSelectionStyled = styled.div`
 	padding: 1rem 2rem;
-	margin: 4rem 0;
 	border-radius: 5px;
 	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
 `;

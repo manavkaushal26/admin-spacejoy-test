@@ -1,3 +1,4 @@
+import BreadCrumb from "@components/BreadCrumb";
 import Layout from "@sections/Layout";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -13,6 +14,7 @@ const dashboard = ({ isServer, authVerification }) => {
 				{IndexPageMeta}
 				<title>Dashboard | {company.product}</title>
 			</Head>
+			<BreadCrumb />
 			<div className="container">
 				<div className="grid">
 					<div className="col-xs-12 text-center">Welcome {authVerification.name}</div>

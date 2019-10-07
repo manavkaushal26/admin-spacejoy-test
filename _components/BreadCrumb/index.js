@@ -63,6 +63,8 @@ const ACTIVE = query => (
 );
 
 const PRICING = () => <li key="pricing">Pricing</li>;
+const PROFILE = () => <li key="profile">Profile</li>;
+const DASHBOARD = () => <li key="dashboard">Dashboard</li>;
 
 function index({ router }) {
 	const getCrumbs = () => {
@@ -78,6 +80,12 @@ function index({ router }) {
 				return crumbs;
 			case "/pricing":
 				crumbs.push(PRICING());
+				return crumbs;
+			case "/profile":
+				crumbs.push(PROFILE());
+				return crumbs;
+			case "/dashboard":
+				crumbs.push(DASHBOARD());
 				return crumbs;
 			default:
 				return crumbs;

@@ -111,6 +111,32 @@ class FormBox extends Component {
 					howDoesYourRoomLookToday: state.howDoesYourRoomLookToday.value
 				};
 			}
+			if (name === "designmyspacequiz") {
+				if (destination === "/forms") {
+					return {
+						data: {
+							env: process.env.NODE_ENV,
+							source: name,
+							formData: [
+								{
+									key: "firstName",
+									value: state.userName.value
+								},
+								{
+									key: "email",
+									value: state.userEmail.value
+								},
+								{
+									key: "mobile",
+									value: state.userMobile.value
+								}
+							],
+							userId: "",
+							userEmail: state.userEmail.value
+						}
+					};
+				}
+			}
 			return {};
 		}
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
@@ -121,9 +147,8 @@ class FormBox extends Component {
 				const { token } = responseData;
 				await login({ token, redirectUrl });
 			}
-			if (name === "designmyspace" || name === "forgotPassword") {
-				if (redirectUrl && redirectUrl !== "")
-					redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
+			if (redirectUrl && redirectUrl !== "") {
+				redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
 			}
 		} else {
 			this.setState({ formStatus: response.statusText });

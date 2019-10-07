@@ -42,7 +42,7 @@ function Question4() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-sm-6 col-md-4">
+				<div className="col-12 col-md-6 col-lg-4">
 					<QuizHeader
 						title="Please enter your contact details"
 						description="Let's start by helping your designers understand which rooms you prefer."
@@ -59,18 +59,18 @@ function Question4() {
 									<Field
 										name="userName"
 										type="text"
-										label="Username"
-										placeholder="Username"
-										error="Please enter a valid username"
-										hint="should contain valid text"
+										label="Name"
+										placeholder="Name"
+										error="Please enter your username"
+										hint="Should contain valid text"
 									/>
 									<Field
 										name="userEmail"
 										type="email"
 										label="Email"
 										placeholder="Email"
-										error="Please enter a valid email"
-										hint="should contain valid email"
+										error="Please enter your email"
+										hint="Should contain valid email"
 										required
 									/>
 									<Field
@@ -79,7 +79,7 @@ function Question4() {
 										label="Mobile"
 										placeholder="Mobile"
 										error="Please enter a valid Mobile"
-										hint="should contain valid Mobile"
+										hint="Should contain valid Mobile"
 										required
 									/>
 									<Field name="userSubmit" type="submit" label="Submit" />
