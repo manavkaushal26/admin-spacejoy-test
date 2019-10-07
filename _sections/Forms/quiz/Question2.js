@@ -6,6 +6,28 @@ import styled from "styled-components";
 import QuizHeader from "./QuizHeader";
 import goToQuiz from "./QuizHelper";
 
+const SampleImageStyled = styled.div`
+	position: relative;
+	min-height: 100%;
+`;
+
+const ImageWrapperStyled = styled.div`
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-top: -30%;
+	width: 100%;
+	transition: opacity 0.25s ease-in-out, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+	&.active {
+		opacity: 1;
+		transform: scale(1);
+	}
+	&.inactive {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+`;
+
 const BudgetSelectionStyled = styled.div`
 	padding: 1rem 2rem;
 	margin: 4rem 0;
@@ -170,18 +192,32 @@ function Question2() {
 							</BudgetSelectionStyled>
 						</div>
 						<div className="col-12 col-sm-7 col-md-8">
-							{budget === "$10,000 or more" && (
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/10000_x0hnng.png" />
-							)}
-							{budget === "$5000 - $7000" && (
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png" />
-							)}
-							{budget === "$2000 - $5000" && (
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png" />
-							)}
-							{(budget === "$2000 or less" || budget === "") && (
-								<Image src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png" />
-							)}
+							<SampleImageStyled>
+								<ImageWrapperStyled className={budget === "$10,000 or more" ? "active" : "inactive"}>
+									<Image
+										size="full"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1570444188/web/10000_gydis3.png"
+									/>
+								</ImageWrapperStyled>
+								<ImageWrapperStyled className={budget === "$5000 - $7000" ? "active" : "inactive"}>
+									<Image
+										size="full"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png"
+									/>
+								</ImageWrapperStyled>
+								<ImageWrapperStyled className={budget === "$2000 - $5000" ? "active" : "inactive"}>
+									<Image
+										size="full"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png"
+									/>
+								</ImageWrapperStyled>
+								<ImageWrapperStyled className={budget === "$2000 or less" ? "active" : "inactive"}>
+									<Image
+										size="full"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png"
+									/>
+								</ImageWrapperStyled>
+							</SampleImageStyled>
 						</div>
 						<div className="col-4 col-sm-2">
 							<Button variant="secondary" shape="rounded" fill="ghost" full onClick={handlePrev}>

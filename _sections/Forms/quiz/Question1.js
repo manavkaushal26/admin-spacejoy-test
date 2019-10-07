@@ -50,7 +50,7 @@ function Question1() {
 								onClick={handleClick}
 								checked={roomType === "Entryway"}
 								bg="rgba(121, 85, 72, 0.15)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570441480/web/entryway_gxd0hx.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1570441480/web/entryway_gxd0hx.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -58,8 +58,8 @@ function Question1() {
 								value="Kid's Bedroom"
 								onClick={handleClick}
 								checked={roomType === "Kid's Bedroom"}
-								bg="rgba(147, 178, 209, 0.1)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570441479/web/kids_kja8t5.png"
+								bg="rgb(255, 252, 222)"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1570448686/web/kids_bedroom_fknoyk.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -67,7 +67,7 @@ function Question1() {
 								value="Studio"
 								onClick={handleClick}
 								checked={roomType === "Studio"}
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570182983/web/studio_jpakds.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1570182983/web/studio_jpakds.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -76,7 +76,7 @@ function Question1() {
 								onClick={handleClick}
 								checked={roomType === "Nursery"}
 								bg="rgba(255, 193, 7, 0.01)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570181061/web/nursery_suenxy.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1570181061/web/nursery_suenxy.png"
 							/>
 						</div>
 						<div className="col-4 col-sm-2">
