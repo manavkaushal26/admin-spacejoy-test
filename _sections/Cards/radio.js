@@ -9,8 +9,8 @@ const RadioCardStyled = styled(Button)`
 	border-radius: 2px;
 	background: ${({ isActive, bg, theme, image }) =>
 		` ${isActive ? bg : theme.colors.bg.light2} url(${image}) no-repeat`};
-	background-size: cover;
-	background-position: bottom;
+	background-size: contain;
+	background-position: 100%;
 	border: 1px solid transparent;
 	width: 100%;
 	padding: 0;

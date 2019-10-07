@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { withRouter } from "next/router";
+import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 import SVGIcon from "../SVGIcon";
@@ -33,7 +35,55 @@ const BreadCrumbStyled = styled.div`
 	}
 `;
 
-export default function index() {
+const DMS = () => (
+	<li key="dms">
+		<Link href={{ pathname: "/designMySpace", query: {} }} as="/designMySpace">
+			<a>Design My Space</a>
+		</Link>
+	</li>
+);
+
+const QZ = () => (
+	<li key="qz">
+		<Link href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }} as="/designMySpace?quiz=start">
+			<a>Quiz</a>
+		</Link>
+	</li>
+);
+
+const ACTIVE = query => (
+	<li key="active">
+		{query.quiz === "start" && "Intro"}
+		{query.quiz === "1" && "Which room are you designing"}
+		{query.quiz === "2" && "Have a budget in mind"}
+		{query.quiz === "3" && "How does your room look today"}
+		{query.quiz === "4" && "Please enter your contact details"}
+		{query.quiz === "success" && "Done"}
+	</li>
+);
+
+const PRICING = () => <li key="pricing">Plans</li>;
+
+function index({ router }) {
+	const getCrumbs = () => {
+		const crumbs = [];
+		const { pathname, query } = router;
+		switch (pathname) {
+			case "/designMySpace":
+				if (query.quiz) {
+					crumbs.push(DMS(), QZ(), ACTIVE(query));
+				} else {
+					crumbs.push(DMS());
+				}
+				return crumbs;
+			case "/pricing":
+				crumbs.push(PRICING());
+				return crumbs;
+			default:
+				return crumbs;
+		}
+	};
+
 	return (
 		<div className="container">
 			<div className="grid">
@@ -47,20 +97,7 @@ export default function index() {
 									</a>
 								</Link>
 							</li>
-							<li>
-								<Link href={{ pathname: "/designMySpace", query: {} }} as="/designMySpace">
-									<a>Design My Space</a>
-								</Link>
-							</li>
-							<li>
-								<Link
-									href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }}
-									as="/designMySpace?quiz=start"
-								>
-									<a>Quiz</a>
-								</Link>
-							</li>
-							<li>Which room are you designing</li>
+							{getCrumbs()}
 						</ul>
 					</BreadCrumbStyled>
 				</div>
@@ -68,3 +105,14 @@ export default function index() {
 		</div>
 	);
 }
+
+index.propTypes = {
+	router: PropTypes.shape({
+		pathname: PropTypes.string,
+		query: PropTypes.shape({
+			quiz: PropTypes.string
+		})
+	}).isRequired
+};
+
+export default withRouter(index);

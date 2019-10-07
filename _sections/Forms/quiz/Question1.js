@@ -26,7 +26,7 @@ function Question1() {
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>
 					<div className="grid">
-						<div className="col-6 col-md-4">
+						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard
 								value="Living Room"
 								onClick={handleClick}
@@ -35,7 +35,7 @@ function Question1() {
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570170156/web/living-room-tile_xtghwr.png"
 							/>
 						</div>
-						<div className="col-6 col-md-4">
+						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard
 								value="Bedroom"
 								onClick={handleClick}
@@ -44,10 +44,10 @@ function Question1() {
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570170156/web/bedroom-tile_kisjld.png"
 							/>
 						</div>
-						<div className="col-6 col-md-4">
+						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard value="Entryway" onClick={handleClick} checked={roomType === "Entryway"} />
 						</div>
-						<div className="col-6 col-md-4">
+						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard
 								value="Kid's Bedroom"
 								onClick={handleClick}
@@ -56,7 +56,7 @@ function Question1() {
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570182657/web/kids_hamqxr.png"
 							/>
 						</div>
-						<div className="col-6 col-md-4">
+						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard
 								value="Studio"
 								onClick={handleClick}
@@ -64,7 +64,7 @@ function Question1() {
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570182983/web/studio_jpakds.png"
 							/>
 						</div>
-						<div className="col-6 col-md-4">
+						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard
 								value="Nursery"
 								onClick={handleClick}

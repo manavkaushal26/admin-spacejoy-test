@@ -29,13 +29,20 @@ const FormBoxWrapperStyled = styled.div`
 			center;
 		background-size: contain;
 	}
+	@media (max-width: 740px) {
+		padding: 0;
+		&:before,
+		&:after {
+			display: none;
+		}
+	}
 `;
 
 function Question4() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-md-4">
+				<div className="col-12 col-sm-6">
 					<QuizHeader
 						title="Please enter your contact details"
 						description="Let's start by helping your designers understand which rooms you prefer."

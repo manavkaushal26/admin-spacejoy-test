@@ -1,3 +1,4 @@
+import BreadCrumb from "@components/BreadCrumb";
 import PriceCard from "@sections/Cards/price";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
@@ -21,6 +22,7 @@ function pricing() {
 				{IndexPageMeta}
 				<title>Pricing | {company.product}</title>
 			</Head>
+			<BreadCrumb />
 			<div className="container">
 				<div className="grid">
 					<div className="col-xs-12 text-center">
