@@ -42,7 +42,7 @@ function Question4() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-sm-6">
+				<div className="col-12 col-sm-6 col-md-4">
 					<QuizHeader
 						title="Please enter your contact details"
 						description="Let's start by helping your designers understand which rooms you prefer."

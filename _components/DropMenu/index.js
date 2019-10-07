@@ -29,10 +29,10 @@ const ExpandStyled = styled.div`
 	&:after {
 		content: "";
 		position: absolute;
-		top: -1.5rem;
+		top: -1.75rem;
 		right: 0rem;
 		left: 0;
-		height: 1.5rem;
+		height: 1.75rem;
 	}
 	ul {
 		margin: 0;
