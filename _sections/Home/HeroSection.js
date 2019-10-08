@@ -1,8 +1,8 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
+import { redirectToLocation } from "@utils/auth";
 import Link from "next/link";
-import Router from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -31,9 +31,19 @@ const HeroSubText = styled.h3`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-function goToDesignMySpace() {
-	Router.push({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" }, url: "/designMySpace?quiz=start" });
-	// Router.push("/designMySpace");
+function handleClick() {
+	if (process.env.NODE_ENV === "production") {
+		return redirectToLocation({
+			pathname: "/designMySpace",
+			query: {},
+			url: "/designMySpace"
+		});
+	}
+	return redirectToLocation({
+		pathname: "/designMySpace",
+		query: { quiz: "start", plan: "free" },
+		url: "/designMySpace?quiz=start"
+	});
 }
 
 export default function HeroSection() {
@@ -52,7 +62,7 @@ export default function HeroSection() {
 								Experience the joy of designing your home in 3D using products from brands you can buy immediately!
 							</HeroSubText>
 							<h4>Plans starting at $19</h4>
-							<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
+							<Button variant="primary" shape="rounded" size="lg" onClick={handleClick}>
 								DESIGN MY SPACE NOW <SVGIcon name="right" width={20} fill="white" />
 							</Button>
 							<Link href={{ pathname: "/designProjects" }} as="/designProjects">

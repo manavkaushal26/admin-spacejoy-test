@@ -39,8 +39,7 @@ const CenterSubTextStyled = styled.p`
 `;
 
 function goToDesignMySpace() {
-	Router.push({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
-	// Router.push("/designMySpace");
+	Router.push("/designMySpace");
 }
 
 function index({ isServer, authVerification }) {
@@ -52,7 +51,6 @@ function index({ isServer, authVerification }) {
 			</Head>
 			<HeroSection />
 			<Brands />
-
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">

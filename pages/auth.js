@@ -52,7 +52,7 @@ function auth({ isServer, flow, redirectUrl }) {
 								<>
 									<span>Already have an account? </span>
 									<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
-										<a>Login</a>
+										<a href="/auth/login">Login</a>
 									</Link>
 								</>
 							)}
@@ -60,14 +60,14 @@ function auth({ isServer, flow, redirectUrl }) {
 								<>
 									<span>Create new Account </span>
 									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
-										<a>Signup</a>
+										<a href="/auth/signup">Signup</a>
 									</Link>
 									<br />
 									<Link
 										href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl: "/auth/login" } }}
 										as="/auth/forgot-password?redirectUrl=/auth/login"
 									>
-										<a>Forgot Password?</a>
+										<a href="/auth/forgot-password?redirectUrl=/auth/login">Forgot Password?</a>
 									</Link>
 								</>
 							)}
@@ -75,12 +75,12 @@ function auth({ isServer, flow, redirectUrl }) {
 								<>
 									<span>Create new Account </span>
 									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
-										<a>Signup</a>
+										<a href="/auth/signup">Signup</a>
 									</Link>
 									<br />
 									<span>Already have an account? </span>
 									<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
-										<a>Login</a>
+										<a href="/auth/login">Login</a>
 									</Link>
 								</>
 							)}

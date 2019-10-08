@@ -38,7 +38,7 @@ const BreadCrumbStyled = styled.div`
 const DMS = () => (
 	<li key="dms">
 		<Link href={{ pathname: "/designMySpace", query: {} }} as="/designMySpace">
-			<a>Design My Space</a>
+			<a href="/designMySpace">Design My Space</a>
 		</Link>
 	</li>
 );
@@ -46,7 +46,7 @@ const DMS = () => (
 const QZ = () => (
 	<li key="qz">
 		<Link href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }} as="/designMySpace?quiz=start">
-			<a>Quiz</a>
+			<a href="/designMySpace?quiz=start">Quiz</a>
 		</Link>
 	</li>
 );
@@ -100,7 +100,7 @@ function index({ router }) {
 						<ul>
 							<li>
 								<Link href={{ pathname: "/", query: {} }} as="/">
-									<a>
+									<a href="/">
 										<SVGIcon name="logo" height={15} width={14} />
 									</a>
 								</Link>
