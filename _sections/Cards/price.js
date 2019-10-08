@@ -8,35 +8,25 @@ import styled from "styled-components";
 const PriceCardWrapperStyled = styled.div`
 	position: relative;
 	overflow: hidden;
-	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
-	text-align: center;
-	background: white;
-	width: ${({ variant }) => (variant === "recommend" ? "340px" : "300px")};
-	z-index: ${({ variant }) => (variant === "recommend" ? 1 : 0)};
-	margin: ${({ variant }) => (variant === "recommend" ? "-20px 0" : 0)};
-	padding: ${({ variant }) => (variant === "recommend" ? "20px 0" : 0)};
 	border-radius: 2px;
+	padding: 2rem;
+	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 `;
 
-const RecommendBannerStyled = styled.div`
-	padding: 0.25rem;
-	background: ${({ theme }) => theme.colors.accent};
-	color: white;
+const RecommendBannerStyled = styled.small`
+	color: ${({ theme }) => theme.colors.primary1};
 	position: absolute;
-	width: 140px;
-	top: 30px;
-	right: -30px;
-	font-size: 0.8rem;
+	right: -1rem;
 	text-transform: uppercase;
-	transform: rotate(45deg);
+	transform: rotate(90deg);
+	transform-origin: bottom;
 `;
 
 const PriceCardHeaderStyled = styled.div`
 	padding: 2rem 0;
 	h2 {
 		margin: 0;
-		small {
-			font-weight: normal;
+		& + small {
 			font-size: 1rem;
 			color: ${({ theme }) => theme.colors.fc.dark2};
 		}
@@ -44,36 +34,33 @@ const PriceCardHeaderStyled = styled.div`
 `;
 
 const PriceCardBodyStyled = styled.div`
-	width: 250px;
-	margin: auto;
 	sup {
 		font-weight: normal;
 		font-size: 1rem;
 		color: ${({ theme }) => theme.colors.fc.dark2};
 	}
+	p {
+		text-align: left;
+		height: 80px;
+	}
 `;
 
 const PriceCardFooterStyled = styled.div`
 	padding: 2rem 0;
-	display: flex;
-	justify-content: center;
 `;
 
 class PriceCard extends PureComponent {
 	static Header = ({ title, subTitle, variant }) => (
 		<PriceCardHeaderStyled>
 			{variant === "recommend" && <RecommendBannerStyled>Recommended</RecommendBannerStyled>}
-			<h2>
-				{title}
-				<br />
-				<small>{subTitle}</small>
-			</h2>
+			<h2>{title}</h2>
+			<small>{subTitle}</small>
 		</PriceCardHeaderStyled>
 	);
 
 	static Body = ({ price, description, thumbnail }) => (
 		<PriceCardBodyStyled>
-			<Image size="190px" src={thumbnail} />
+			<Image src={thumbnail} />
 			<h2>
 				{price}
 				<sup>$</sup>
@@ -85,7 +72,7 @@ class PriceCard extends PureComponent {
 	render() {
 		const { variant, children, plan } = this.props;
 		return (
-			<PriceCardWrapperStyled variant={variant}>
+			<PriceCardWrapperStyled>
 				{React.Children.map(children, child => React.cloneElement(child, { variant }))}
 				<PriceCardFooterStyled>
 					<Link href={`/designMySpace?plan=${plan}`} as={`/designMySpace/${plan}`}>

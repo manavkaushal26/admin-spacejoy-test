@@ -78,6 +78,7 @@ const RadioStyled = styled(Button)`
 			flex: 6;
 		}
 		h4 {
+			font-family: inherit;
 			margin: 0;
 			display: block;
 		}

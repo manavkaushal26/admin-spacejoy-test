@@ -1,10 +1,10 @@
-import Brands from "@components/Brands";
 import Button from "@components/Button";
 import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
-import SVGIcon from "@components/SVGIcon";
+import Brands from "@sections/Brands";
 import ProfileCard from "@sections/Cards/profile";
+import HeroSection from "@sections/Home/HeroSection";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -24,40 +24,11 @@ const CarouselCardStyled = styled.div`
 	padding: 1rem;
 `;
 
-const HeroWrapperStyled = styled.section`
-	display: flex;
-	align-items: center;
-	min-height: calc(100vh - 250px);
-`;
-
-const HeroCardStyled = styled.section`
-	position: relative;
-`;
-
 const SectionWrapperStyled = styled.section`
 	padding: 100px 0;
-	h1 {
-		font-family: "Airbnb Cereal App Medium";
-	}
 	p {
 		color: ${({ theme }) => theme.colors.fc.dark2};
 	}
-`;
-
-const HeroText = styled.h1`
-	font-family: "Airbnb Cereal App Medium";
-	font-size: 3.5rem;
-	line-height: 4rem;
-	margin: 0;
-	@media (max-width: 400px) {
-		font-size: 2.5rem;
-		line-height: 3rem;
-	}
-`;
-
-const HeroSubText = styled.h3`
-	font-weight: normal;
-	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
 const CenterTextStyled = styled.h1`
@@ -79,55 +50,7 @@ function index({ isServer, authVerification }) {
 				{IndexPageMeta}
 				<title>Home | {company.product}</title>
 			</Head>
-			<HeroWrapperStyled>
-				<div className="container">
-					<div className="grid align-center">
-						<div className="col-lg-4 col-md-6 col-xs-12">
-							<HeroCardStyled>
-								<HeroText>
-									Home Designs
-									<br />
-									Made Easy
-								</HeroText>
-								<HeroSubText>
-									Experience the joy of designing your home in 3D using products from brands you can buy immediately!
-								</HeroSubText>
-								<h4>Plans starting at $19</h4>
-								<Button variant="primary" shape="rounded" size="lg" onClick={goToDesignMySpace}>
-									DESIGN MY SPACE NOW <SVGIcon name="right" width={20} fill="white" />
-								</Button>
-								<Link href={{ pathname: "/designProjects" }} as="/designProjects">
-									<a href="/designProjects">
-										<p>Explore stunning design layouts</p>
-									</a>
-								</Link>
-							</HeroCardStyled>
-						</div>
-						<div className="col-12 col-md-8">
-							<div className="grid">
-								<div className="col-6">
-									<Image
-										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
-									/>
-								</div>
-								<div className="col-6">
-									<Image
-										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"
-									/>
-									<Image
-										style={{ marginTop: "30px" }}
-										full
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939669/web/bedroom_s99hp2.jpg"
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</HeroWrapperStyled>
-
+			<HeroSection />
 			<Brands />
 
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>

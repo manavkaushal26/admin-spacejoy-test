@@ -19,14 +19,14 @@ const FormBoxWrapperStyled = styled.div`
 	&:before {
 		top: 10%;
 		left: -120px;
-		background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570339630/web/plant_mkgn6l.png") no-repeat
+		background: url("https://res.cloudinary.com/spacejoy/image/upload/w_220/v1570339630/web/plant_mkgn6l.png") no-repeat
 			center;
 		background-size: contain;
 	}
 	&:after {
 		top: 30%;
 		right: -120px;
-		background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570339631/web/chair_nf2h0q.png") no-repeat
+		background: url("https://res.cloudinary.com/spacejoy/image/upload/w_220/v1570339631/web/chair_nf2h0q.png") no-repeat
 			center;
 		background-size: contain;
 	}

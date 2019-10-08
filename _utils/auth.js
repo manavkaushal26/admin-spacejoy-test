@@ -8,15 +8,20 @@ const endPointAuthCheck = "/auth/check";
 
 function redirectToLocation({ pathname, query, url, res = {} }) {
 	if (typeof window !== "undefined") {
-		return pathname === "/auth"
-			? Router.push({ pathname, query }, `${pathname}/${query.flow}?redirectUrl=${query.redirectUrl}`)
-			: Router.push({ pathname }, `${pathname}`);
+		switch (pathname) {
+			case "/auth":
+				return Router.push({ pathname, query }, url);
+			case "/designMySpace":
+				return Router.push({ pathname, query }, url);
+			default:
+				return Router.push({ pathname }, `${pathname}`);
+		}
 	}
 	return res.redirect(302, url);
 }
 
 function login({ token, redirectUrl }) {
-	const url = redirectUrl || "/profile";
+	const url = redirectUrl || "/dashboard";
 	cookie.set("token", token, { expires: 1 });
 	redirectToLocation({ pathname: url, query: {}, url });
 }
@@ -25,12 +30,20 @@ function logout() {
 	cookie.remove("token");
 	window.localStorage.setItem("logout", Date.now());
 	window.localStorage.removeItem("authVerification");
-	redirectToLocation({ pathname: "/auth", query: { flow: "login", redirectUrl: "/" }, url: "/auth/login" });
+	redirectToLocation({
+		pathname: "/auth",
+		query: { flow: "login", redirectUrl: "/" },
+		url: "/auth/login?redirectUrl=/"
+	});
 }
 
 function auth(ctx) {
 	const token = getToken(ctx);
-	const redirect = { pathname: "/auth", query: { flow: "login", redirectUrl: ctx.pathname }, url: "/auth/login" };
+	const redirect = {
+		pathname: "/auth",
+		query: { flow: "login", redirectUrl: ctx.pathname },
+		url: `/auth/login?redirectUrl=${ctx.pathname}`
+	};
 	if (!token) {
 		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
 	}
