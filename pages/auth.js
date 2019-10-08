@@ -42,12 +42,12 @@ function auth({ isServer, flow, redirectUrl }) {
 						<div className="col-12">
 							<h3>{getHeadingText(flow)}</h3>
 						</div>
-						<div className="col-xs-12">
+						<div className="col-12">
 							{flow === "login" && <LoginForm redirectUrl={redirectUrl} />}
 							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
 							{flow === "forgot-password" && <ForgotPasswordForm redirectUrl={redirectUrl} />}
 						</div>
-						<div className="col-xs-12">
+						<div className="col-12">
 							{flow === "signup" && (
 								<>
 									<span>Already have an account? </span>

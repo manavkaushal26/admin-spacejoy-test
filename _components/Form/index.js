@@ -8,7 +8,7 @@ import { ValidateEmail, ValidateMobile } from "./Validation";
 const FormWrapperStyled = styled.form`
 	width: 100%;
 	text-align: left;
-	padding: 1rem;
+	padding: ${({ status }) => (status === "error" ? "1rem" : "0rem")};
 	border-radius: 2px;
 	background-color: ${({ status, theme }) => (status === "error" ? theme.colors.mild.red : theme.colors.white)};
 `;
@@ -28,14 +28,14 @@ class FormBox extends Component {
 				error: ""
 			};
 		});
-		this.state = { ...stateObj, formStatus: "", loading: false, address: {} };
+		this.state = { ...stateObj, formStatus: "", submitInProgress: false, address: {} };
 	}
 
 	handleSubmit = async event => {
 		event.preventDefault();
 		const { state } = this;
 		const { destination, name, redirectUrl } = this.props;
-		this.setState({ loading: true });
+		this.setState({ submitInProgress: true });
 		function reqBody() {
 			if (name === "signup") {
 				return {
@@ -143,7 +143,7 @@ class FormBox extends Component {
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
 		if (response.status >= 200 && response.status <= 300) {
 			const responseData = await response.json();
-			this.setState({ formStatus: responseData.status, loading: false });
+			this.setState({ formStatus: responseData.status, submitInProgress: false });
 			if (name === "login" || name === "signup") {
 				const { token } = responseData;
 				await login({ token, redirectUrl });
@@ -152,7 +152,7 @@ class FormBox extends Component {
 				redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
 			}
 		} else {
-			this.setState({ formStatus: response.statusText, loading: false });
+			this.setState({ formStatus: response.statusText, submitInProgress: false });
 		}
 	};
 
@@ -207,7 +207,7 @@ class FormBox extends Component {
 						  })
 						: React.cloneElement(child, {
 								data: state[name],
-								submitInProgress: state.loading
+								submitInProgress: state.submitInProgress
 						  });
 				})}
 			</FormWrapperStyled>

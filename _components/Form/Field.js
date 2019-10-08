@@ -177,7 +177,7 @@ function Field({
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12">
-						<Button type="submit" shape="rounded" size="md" full variant="primary" loading={submitInProgress}>
+						<Button type="submit" shape="rounded" size="md" full variant="primary" submitInProgress={submitInProgress}>
 							{label}
 						</Button>
 					</div>

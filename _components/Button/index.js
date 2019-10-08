@@ -81,7 +81,7 @@ const ButtonStyled = styled(ButtonBase)`
 `;
 
 function Button(props) {
-	const { children, onClick, type, raw, loading } = props;
+	const { children, onClick, type, raw, submitInProgress } = props;
 	const onClickWithGA = e => {
 		onClick(e);
 		PushEvent("category", "action", "label", 10, { data: type });
@@ -93,8 +93,8 @@ function Button(props) {
 					{children}
 				</ButtonBase>
 			) : (
-				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={loading}>
-					{loading ? <SVGIcon name="spinner" className="loading-spinner" height={15} width={15} /> : children}
+				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={submitInProgress}>
+					{submitInProgress ? <SVGIcon name="spinner" className="loading-spinner" height={15} width={15} /> : children}
 				</ButtonStyled>
 			)}
 		</>
@@ -110,7 +110,8 @@ Button.defaultProps = {
 	type: "button",
 	fill: "solid",
 	full: false,
-	raw: false
+	raw: false,
+	submitInProgress: false
 };
 
 Button.propTypes = {
@@ -123,7 +124,7 @@ Button.propTypes = {
 	fill: PropTypes.string,
 	full: PropTypes.bool,
 	raw: PropTypes.bool,
-	loading: PropTypes.bool.isRequired
+	submitInProgress: PropTypes.bool
 };
 
 export default Button;
