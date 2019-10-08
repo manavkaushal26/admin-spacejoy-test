@@ -77,7 +77,8 @@ function Field({
 	error,
 	hint,
 	inline,
-	required
+	required,
+	submitInProgress
 }) {
 	return (
 		<FieldWrapperStyled hasError={data.error}>
@@ -105,7 +106,7 @@ function Field({
 								data-hint={hint}
 							/>
 							{data.error && <ErrorTextStyled>{data.error}</ErrorTextStyled>}
-							{hint && !data.error && <HintTextStyled>{hint}</HintTextStyled>}
+							{hint && data.value === "" && !data.error && <HintTextStyled>{hint}</HintTextStyled>}
 						</div>
 					</div>
 				</LabelStyled>
@@ -176,7 +177,7 @@ function Field({
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12">
-						<Button type="submit" shape="rounded" size="md" full variant="primary">
+						<Button type="submit" shape="rounded" size="md" full variant="primary" loading={submitInProgress}>
 							{label}
 						</Button>
 					</div>
@@ -199,7 +200,8 @@ Field.defaultProps = {
 	hint: "",
 	inline: false,
 	required: false,
-	readonly: false
+	readonly: false,
+	submitInProgress: false
 };
 
 Field.propTypes = {
@@ -218,7 +220,8 @@ Field.propTypes = {
 	hint: PropTypes.string,
 	inline: PropTypes.bool,
 	required: PropTypes.bool,
-	readonly: PropTypes.bool
+	readonly: PropTypes.bool,
+	submitInProgress: PropTypes.bool
 };
 
 export default Field;

@@ -1,3 +1,4 @@
+import SVGIcon from "@components/SVGIcon";
 import { PushEvent } from "@utils/analyticsLogger";
 import PropTypes from "prop-types";
 import React from "react";
@@ -72,10 +73,15 @@ const ButtonStyled = styled(ButtonBase)`
 	&:hover {
 		box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.15);
 	}
+	&:disabled {
+		background: ${({ theme }) => theme.colors.bg.light2};
+		cursor: not-allowed;
+		box-shadow: none;
+	}
 `;
 
-function index(props) {
-	const { children, onClick, type, raw } = props;
+function Button(props) {
+	const { children, onClick, type, raw, loading } = props;
 	const onClickWithGA = e => {
 		onClick(e);
 		PushEvent("category", "action", "label", 10, { data: type });
@@ -87,15 +93,15 @@ function index(props) {
 					{children}
 				</ButtonBase>
 			) : (
-				<ButtonStyled {...props} onClick={e => onClickWithGA(e)}>
-					{children}
+				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={loading}>
+					{loading ? <SVGIcon name="spinner" className="loading-spinner" height={15} width={15} /> : children}
 				</ButtonStyled>
 			)}
 		</>
 	);
 }
 
-index.defaultProps = {
+Button.defaultProps = {
 	children: null,
 	onClick: () => {},
 	shape: "flat",
@@ -107,7 +113,7 @@ index.defaultProps = {
 	raw: false
 };
 
-index.propTypes = {
+Button.propTypes = {
 	children: PropTypes.node,
 	onClick: PropTypes.func,
 	shape: PropTypes.string,
@@ -116,7 +122,8 @@ index.propTypes = {
 	type: PropTypes.string,
 	fill: PropTypes.string,
 	full: PropTypes.bool,
-	raw: PropTypes.bool
+	raw: PropTypes.bool,
+	loading: PropTypes.bool.isRequired
 };
 
-export default index;
+export default Button;

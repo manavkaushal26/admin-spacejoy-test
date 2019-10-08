@@ -54,6 +54,19 @@ html {
 	display: none;
 }
 
+.loading-spinner {
+	animation: loading-spinner 1s linear infinite;
+}
+
+@keyframes loading-spinner {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 @media (min-width: 1600px) {
 	.container {
 		max-width: 1300px;

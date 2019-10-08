@@ -8,14 +8,14 @@ import { ValidateEmail, ValidateMobile } from "./Validation";
 const FormWrapperStyled = styled.form`
 	width: 100%;
 	text-align: left;
+	padding: 1rem;
+	border-radius: 2px;
+	background-color: ${({ status, theme }) => (status === "error" ? theme.colors.mild.red : theme.colors.white)};
 `;
 
 const FormStatusStyled = styled.div`
-	background: ${({ theme }) => theme.colors.red};
-	color: white;
-	margin-bottom: 2rem;
-	padding: 0.5rem 1rem;
-	border-radius: 5px;
+	color: ${({ theme }) => theme.colors.red};
+	margin: 1rem 0 2rem 0;
 `;
 
 class FormBox extends Component {
@@ -28,13 +28,14 @@ class FormBox extends Component {
 				error: ""
 			};
 		});
-		this.state = { ...stateObj, formStatus: "", address: {} };
+		this.state = { ...stateObj, formStatus: "", loading: false, address: {} };
 	}
 
 	handleSubmit = async event => {
 		event.preventDefault();
 		const { state } = this;
 		const { destination, name, redirectUrl } = this.props;
+		this.setState({ loading: true });
 		function reqBody() {
 			if (name === "signup") {
 				return {
@@ -142,7 +143,7 @@ class FormBox extends Component {
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
 		if (response.status >= 200 && response.status <= 300) {
 			const responseData = await response.json();
-			this.setState({ formStatus: responseData.status });
+			this.setState({ formStatus: responseData.status, loading: false });
 			if (name === "login" || name === "signup") {
 				const { token } = responseData;
 				await login({ token, redirectUrl });
@@ -151,7 +152,7 @@ class FormBox extends Component {
 				redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
 			}
 		} else {
-			this.setState({ formStatus: response.statusText });
+			this.setState({ formStatus: response.statusText, loading: false });
 		}
 	};
 
@@ -190,15 +191,24 @@ class FormBox extends Component {
 		const { children, description } = this.props;
 		const { state } = this;
 		return (
-			<FormWrapperStyled aria-labelledby={description} onSubmit={this.handleSubmit}>
+			<FormWrapperStyled
+				aria-labelledby={description}
+				onSubmit={this.handleSubmit}
+				status={state.formStatus === "Unauthorized" ? "error" : "success"}
+			>
 				{state.formStatus && <FormStatusStyled>{state.formStatus}</FormStatusStyled>}
 				{React.Children.map(children, child => {
-					const { name } = child.props;
-					return React.cloneElement(child, {
-						data: state[name],
-						onchange: this.handleChange,
-						handleAddressChange: this.handleAddressChange
-					});
+					const { name, type } = child.props;
+					return type !== "button" && type !== "submit"
+						? React.cloneElement(child, {
+								data: state[name],
+								onchange: this.handleChange,
+								handleAddressChange: this.handleAddressChange
+						  })
+						: React.cloneElement(child, {
+								data: state[name],
+								submitInProgress: state.loading
+						  });
 				})}
 			</FormWrapperStyled>
 		);

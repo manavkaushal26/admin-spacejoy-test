@@ -10,6 +10,12 @@ const theme = {
 		blue: "#3498db",
 		dark: "#3d4245",
 		white: "#ffffff",
+		mild: {
+			yellow: "rgba(253, 203, 110, 0.1)",
+			red: "rgba(231, 76, 60, 0.1)",
+			green: "rgba(46, 204, 113, 0.1)",
+			blue: "rgba(52, 152, 219, 0.1)"
+		},
 		bg: {
 			light1: "#fafafa",
 			light2: "#f2f2f2",
