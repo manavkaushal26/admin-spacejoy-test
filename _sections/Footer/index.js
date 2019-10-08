@@ -6,7 +6,7 @@ import React from "react";
 import styled from "styled-components";
 
 const FooterStyled = styled.footer`
-	padding: 2rem 0;
+	padding: 4rem 0;
 	margin-top: 2rem;
 	font-size: 0.9rem;
 	background-color: ${({ theme }) => theme.colors.bg.light1};

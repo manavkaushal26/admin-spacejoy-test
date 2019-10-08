@@ -17,7 +17,7 @@ const RadioCardStyled = styled(Button)`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 	transition: all linear 100ms;
 	&:hover {
-		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 		border: 1px solid ${({ theme }) => theme.colors.fc.dark3};
 		color: ${({ theme }) => theme.colors.fc.dark1};
 	}

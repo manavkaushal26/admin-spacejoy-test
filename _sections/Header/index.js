@@ -22,7 +22,7 @@ const HeaderStyled = styled.div`
 	right: 0;
 	z-index: 10;
 	&.raised {
-		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 	}
 `;
 

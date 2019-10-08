@@ -16,7 +16,7 @@ const TopicStyled = styled.div`
 	border-radius: 2px;
 	align-items: center;
 	&:hover {
-		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 	}
 	span {
 		margin-left: 0.5rem;

@@ -14,7 +14,8 @@ const theme = {
 			yellow: "rgba(253, 203, 110, 0.1)",
 			red: "rgba(231, 76, 60, 0.1)",
 			green: "rgba(46, 204, 113, 0.1)",
-			blue: "rgba(52, 152, 219, 0.1)"
+			blue: "rgba(52, 152, 219, 0.1)",
+			black: "rgba(0, 0, 0, 0.1)"
 		},
 		bg: {
 			light1: "#fafafa",

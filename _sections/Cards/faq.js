@@ -21,7 +21,7 @@ const FAQWrapper = styled.div`
 		border-bottom: none;
 		border-radius: 5px;
 		overflow: hidden;
-		box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 	}
 	&.open ${QuestionStyled} {
 		color: ${({ theme }) => theme.colors.primary1};

@@ -13,7 +13,7 @@ const ExpandStyled = styled.div`
 	border-radius: 5px;
 	width: 150px;
 	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	box-shadow: 0 0px 10px 0px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0px 10px 0px ${({ theme }) => theme.colors.mild.black};
 	&:before {
 		content: "";
 		position: absolute;

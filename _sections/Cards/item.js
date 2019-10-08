@@ -47,7 +47,7 @@ const ProductLoadMoreStyled = styled.div`
 	width: 100%;
 	height: ${({ size }) => `${size}px`};
 	padding: 1rem;
-	box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 	div {
 		border: 1px dashed ${({ theme }) => theme.colors.bg.light2};
 		display: flex;

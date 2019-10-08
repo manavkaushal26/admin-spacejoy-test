@@ -9,7 +9,7 @@ import styled from "styled-components";
 const HeroWrapperStyled = styled.section`
 	display: flex;
 	align-items: center;
-	min-height: calc(100vh - 250px);
+	min-height: calc(100vh - 238px);
 `;
 
 const HeroCardStyled = styled.section`
