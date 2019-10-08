@@ -1,44 +1,56 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://spacejoy.com/designMySpace</loc>
-		<lastmod>2019-09-19</lastmod>
+		<loc>https://spacejoy.com</loc>
+		<lastmod>2019-10-08</lastmod>
 		<changefreq>daily</changefreq>
-		<priority>0.7</priority>
+		<priority>1.0</priority>
+	</url>
+	<url>
+		<loc>https://spacejoy.com/designMySpace</loc>
+		<lastmod>2019-10-08</lastmod>
+		<changefreq>daily</changefreq>
+		<priority>0.9</priority>
 	</url>
 	<url>
 		<loc>https://spacejoy.com/designProjects</loc>
-		<lastmod>2019-09-19</lastmod>
+		<lastmod>2019-10-08</lastmod>
 		<changefreq>daily</changefreq>
-		<priority>0.7</priority>
+		<priority>0.9</priority>
 	</url>
 	<url>
 		<loc>https://spacejoy.com/faq</loc>
-		<lastmod>2019-09-19</lastmod>
+		<lastmod>2019-10-08</lastmod>
 		<changefreq>daily</changefreq>
 		<priority>0.7</priority>
 	</url>
 	<url>
 		<loc>https://spacejoy.com/pricing</loc>
-		<lastmod>2019-09-19</lastmod>
-		<changefreq>daily</changefreq>
-		<priority>0.7</priority>
+		<lastmod>2019-10-08</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.9</priority>
 	</url>
 	<url>
 		<loc>https://spacejoy.com/terms</loc>
-		<lastmod>2019-09-19</lastmod>
-		<changefreq>daily</changefreq>
+		<lastmod>2019-10-08</lastmod>
+		<changefreq>weekly</changefreq>
 		<priority>0.7</priority>
 	</url>
 	<url>
 		<loc>https://spacejoy.com/cookies</loc>
-		<lastmod>2019-09-19</lastmod>
-		<changefreq>daily</changefreq>
+		<lastmod>2019-10-08</lastmod>
+		<changefreq>weekly</changefreq>
 		<priority>0.7</priority>
 	</url>
 	<url>
 		<loc>https://spacejoy.com/auth/login</loc>
-		<lastmod>2019-09-19</lastmod>
-		<changefreq>daily</changefreq>
+		<lastmod>2019-10-08</lastmod>
+		<changefreq>weekly</changefreq>
+		<priority>0.7</priority>
+	</url>
+	<url>
+		<loc>https://spacejoy.com/auth/signup</loc>
+		<lastmod>2019-10-08</lastmod>
+		<changefreq>weekly</changefreq>
 		<priority>0.7</priority>
 	</url>
 </urlset>

@@ -5,7 +5,6 @@ import Image from "@components/Image";
 import Brands from "@sections/Brands";
 import ProfileCard from "@sections/Cards/profile";
 import HeroSection from "@sections/Home/HeroSection";
-import HowSteps from "@sections/Home/HowSteps";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -52,7 +51,6 @@ function index({ isServer, authVerification }) {
 			</Head>
 			<HeroSection />
 			<Brands />
-			<HowSteps />
 			<SectionWrapperStyled style={{ backgroundImage: "linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%)" }}>
 				<div className="container">
 					<div className="grid justify-space-between align-center">

@@ -122,6 +122,7 @@ app.prepare().then(() => {
 		server.use("/service-worker.js", serve(path.join(__dirname, ".next", "/service-worker.js"), true));
 		server.use("/manifest.json", serve(path.join(__dirname, "/static/manifest.json"), true));
 		server.use("/robots.txt", serve(path.join(__dirname, "/static/robots.txt"), true));
+		server.use("/sitemap.xml", serve(path.join(__dirname, "/static/sitemap.xml"), true));
 		server.use("/favicon.ico", serve(path.join(__dirname, "/static/favicon.ico"), true));
 		server.get("*", (req, res) => {
 			const parsedUrl = getParsedUrl(req);
