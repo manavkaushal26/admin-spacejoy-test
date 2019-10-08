@@ -10,7 +10,8 @@ const PriceCardWrapperStyled = styled.div`
 	overflow: hidden;
 	border-radius: 2px;
 	padding: 2rem;
-	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	background-color: ${({ variant, theme }) =>
+		variant === "recommend" ? theme.colors.mild.red : theme.colors.bg.light2};
 `;
 
 const RecommendBannerStyled = styled.small`
@@ -34,11 +35,6 @@ const PriceCardHeaderStyled = styled.div`
 `;
 
 const PriceCardBodyStyled = styled.div`
-	sup {
-		font-weight: normal;
-		font-size: 1rem;
-		color: ${({ theme }) => theme.colors.fc.dark2};
-	}
 	p {
 		text-align: left;
 		height: 80px;
@@ -72,7 +68,7 @@ class PriceCard extends PureComponent {
 	render() {
 		const { variant, children, plan } = this.props;
 		return (
-			<PriceCardWrapperStyled>
+			<PriceCardWrapperStyled variant={variant}>
 				{React.Children.map(children, child => React.cloneElement(child, { variant }))}
 				<PriceCardFooterStyled>
 					<Link href={`/designMySpace?plan=${plan}`} as={`/designMySpace/${plan}`}>
