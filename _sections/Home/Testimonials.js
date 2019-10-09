@@ -2,13 +2,10 @@
 import Divider from "@components/Divider";
 import Image from "@components/Image";
 import React from "react";
-// import SVGIcon from "@components/SVGIcon";
-// import { redirectToLocation } from "@utils/auth";
-// import { company } from "@utils/config";
 import styled from "styled-components";
 
 const SectionWrapperStyled = styled.div`
-	padding: 100px 0;
+	padding: 150px 0;
 	h2 {
 		font-family: inherit;
 		color: ${({ theme }) => theme.colors.fc.dark2};

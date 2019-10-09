@@ -1,6 +1,5 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
-import SVGIcon from "@components/SVGIcon";
 import { redirectToLocation } from "@utils/auth";
 import { company } from "@utils/config";
 import React from "react";
@@ -34,8 +33,7 @@ const StepWrapperStyled = styled.div`
 	position: relative;
 	z-index: 1;
 	background-color: ${({ theme }) => theme.colors.bg.light1};
-	height: 480px;
-	padding: 5rem 0;
+	padding: 5rem 0 0 0;
 	border-radius: 2px;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
@@ -47,6 +45,9 @@ const StepWrapperStyled = styled.div`
 const StepStyled = styled.div`
 	width: 70%;
 	margin: auto;
+	@media (max-width: 900px) {
+		width: 100%;
+	}
 	h3 {
 		margin-top: 2rem;
 		font-family: inherit;
@@ -119,8 +120,14 @@ function HowSteps() {
 											</StepStyled>
 										</div>
 										<div className="col-12">
-											<Button variant="primary" shape="rounded" size="lg" onClick={handleClick}>
-												START YOUR FREE TRIAL <SVGIcon name="right" width={20} fill="white" />
+											<Button
+												variant="primary"
+												shape="rounded"
+												size="lg"
+												onClick={handleClick}
+												style={{ position: "relative", bottom: "-2rem" }}
+											>
+												START YOUR FREE TRIAL
 											</Button>
 										</div>
 									</div>
