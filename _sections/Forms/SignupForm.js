@@ -1,5 +1,6 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
+import { company } from "@utils/config";
 import React from "react";
 
 function SignupForm() {
@@ -29,6 +30,14 @@ function SignupForm() {
 				placeholder="Password"
 				error="Please enter a strong Password"
 				hint="Should contain valid password"
+				required
+			/>
+			<Field
+				name="userCommutePermissionGranted"
+				type="checkbox"
+				label={`By signing up to a free trial of ${company.product}, you agree to our
+										Terms and privacy policy`}
+				error="Please select checkbox"
 				required
 			/>
 			<Field name="userSubmit" type="submit" label="Signup" />

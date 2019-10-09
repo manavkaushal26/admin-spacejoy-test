@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Checkbox from "@components/Checkbox";
 import Radio from "@components/Radio";
 import PropTypes from "prop-types";
 import React from "react";
@@ -39,6 +40,10 @@ const LabelStyled = styled.label`
 `;
 
 const RadioWrapperStyled = styled.div`
+	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "2rem")};
+`;
+
+const CheckboxWrapperStyled = styled.div`
 	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "2rem")};
 `;
 
@@ -174,6 +179,26 @@ function Field({
 					</div>
 				</RadioWrapperStyled>
 			)}
+			{type === "checkbox" && (
+				<CheckboxWrapperStyled>
+					<div className="grid">
+						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
+							<Checkbox
+								readonly={readonly}
+								id={name}
+								name={name}
+								label={label}
+								checked={data.value}
+								required={required}
+								onChange={onchange}
+								hasError={data.error}
+								data-error={error}
+							/>
+							{data.error && <ErrorTextStyled>{data.error}</ErrorTextStyled>}
+						</div>
+					</div>
+				</CheckboxWrapperStyled>
+			)}
 			{type === "submit" && (
 				<div className="grid">
 					<div className="col-xs-12">
@@ -206,7 +231,7 @@ Field.defaultProps = {
 
 Field.propTypes = {
 	data: PropTypes.shape({
-		value: PropTypes.string,
+		value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
 		error: PropTypes.string
 	}),
 	onchange: PropTypes.func,

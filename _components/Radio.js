@@ -18,7 +18,7 @@ const LabelStyled = styled.label`
 		position: relative;
 		display: block;
 		float: left;
-		margin-right: 10px;
+		margin-right: 0.75rem;
 		width: 20px;
 		height: 20px;
 		border: 2px solid ${({ theme }) => theme.colors.bg.dark1};
@@ -41,8 +41,7 @@ const LabelStyled = styled.label`
 	}
 `;
 
-const RadioStyled = styled.input`
-	margin-right: 1rem;
+const RadioStyled = styled.input.attrs({ type: "radio" })`
 	&:checked {
 		& + span.label {
 			border-color: ${({ theme }) => theme.colors.accent};

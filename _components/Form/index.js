@@ -22,9 +22,9 @@ class FormBox extends Component {
 	constructor(props) {
 		super(props);
 		const stateObj = {};
-		React.Children.map(props.children, ({ props: { name, value } }) => {
+		React.Children.map(props.children, ({ props: { name, value, type } }) => {
 			stateObj[name] = {
-				value: value || "",
+				value: value || type === "checkbox" ? false : "",
 				error: ""
 			};
 		});
@@ -130,6 +130,10 @@ class FormBox extends Component {
 								{
 									key: "mobile",
 									value: state.userMobile.value
+								},
+								{
+									key: "userCommutePermissionGranted",
+									value: state.userCommutePermissionGranted.value
 								}
 							],
 							userId: "",
@@ -158,7 +162,7 @@ class FormBox extends Component {
 
 	handleChange = event => {
 		const { target } = event;
-		const { name, value, type } = target;
+		const { name, value, type, checked } = target;
 		switch (type) {
 			case "email":
 				return value && ValidateEmail(value)
@@ -180,6 +184,10 @@ class FormBox extends Component {
 				return value
 					? this.setState({ [name]: { value } })
 					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
+			case "checkbox":
+				return checked
+					? this.setState({ [name]: { value: checked } })
+					: this.setState({ [name]: { value: checked, error: target.getAttribute("data-error") } });
 			default:
 				return this.setState({ [name]: { value, error: "Error" } });
 		}

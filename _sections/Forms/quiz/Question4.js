@@ -1,5 +1,6 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
+import { company } from "@utils/config";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -52,15 +53,15 @@ function Question4({ name, email }) {
 						<div className="col-12">
 							<FormBoxWrapperStyled>
 								<FormBox
-									redirectUrl="/"
+									redirectUrl="/checkout"
 									destination="/forms"
-									description="Submit your details"
+									description="Submit your requirements"
 									name="designmyspacequiz"
 								>
 									<Field
 										name="userName"
 										type="text"
-										label="Username"
+										label="Name"
 										value={name}
 										readonly={!!name}
 										placeholder="Username"
@@ -85,6 +86,14 @@ function Question4({ name, email }) {
 										placeholder="Mobile"
 										error="Please enter a valid Mobile"
 										hint="should contain valid Mobile"
+										required
+									/>
+									<Field
+										name="userCommutePermissionGranted"
+										type="checkbox"
+										label={`By signing up to a free trial of ${company.product}, you agree to our
+										Terms and privacy policy`}
+										error="Please select checkbox"
 										required
 									/>
 									<Field name="userSubmit" type="submit" label="Submit" />
