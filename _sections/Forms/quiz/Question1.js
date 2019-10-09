@@ -50,7 +50,7 @@ function Question1() {
 								onClick={handleClick}
 								checked={roomType === "Entryway"}
 								bg="rgba(121, 85, 72, 0.15)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1570441480/web/entryway_gxd0hx.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570602461/web/entryway.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
