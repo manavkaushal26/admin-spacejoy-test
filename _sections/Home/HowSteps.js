@@ -4,6 +4,7 @@ import { redirectToLocation } from "@utils/auth";
 import { company } from "@utils/config";
 import React from "react";
 import styled from "styled-components";
+import SectionHeader from "./SectionHeader";
 
 const FillerStyled = styled.div`
 	height: 200px;
@@ -37,9 +38,6 @@ const StepWrapperStyled = styled.div`
 	border-radius: 2px;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
-	h2 {
-		margin-bottom: 2rem;
-	}
 `;
 
 const StepStyled = styled.div`
@@ -82,10 +80,8 @@ function HowSteps() {
 						<div className="col-12">
 							<StepWrapperStyled>
 								<div className="container">
+									<SectionHeader title={`What is ${company.product}`} />
 									<div className="grid">
-										<div className="col-12">
-											<h2>What is {company.product}</h2>
-										</div>
 										<div className="col-12 col-md-4">
 											<StepStyled>
 												<Image
