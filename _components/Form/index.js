@@ -24,7 +24,7 @@ class FormBox extends Component {
 		const stateObj = {};
 		React.Children.map(props.children, ({ props: { name, value, type } }) => {
 			stateObj[name] = {
-				value: value || type === "checkbox" ? false : "",
+				value: type === "checkbox" ? false : value || "",
 				error: ""
 			};
 		});
