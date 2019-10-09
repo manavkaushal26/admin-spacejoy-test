@@ -27,10 +27,6 @@ const getViewBox = name => {
 			return "0 0 129 129";
 		case "right":
 			return "0 0 129 129";
-		case "divider-2":
-			return "0 0 30 25";
-		case "divider-3":
-			return "0 0 95 15";
 		case "logo":
 			return "0 0 100 101.7";
 		case "avatar":

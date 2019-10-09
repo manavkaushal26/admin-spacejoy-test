@@ -49,7 +49,7 @@ function Question1() {
 								value="Entryway"
 								onClick={handleClick}
 								checked={roomType === "Entryway"}
-								bg="rgba(121, 85, 72, 0.15)"
+								bg="rgba(103, 58, 183, 0.06)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570602461/web/entryway.png"
 							/>
 						</div>
@@ -58,7 +58,7 @@ function Question1() {
 								value="Kid's Bedroom"
 								onClick={handleClick}
 								checked={roomType === "Kid's Bedroom"}
-								bg="rgb(255, 252, 222)"
+								bg="rgba(255, 252, 222, 0.2)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570448686/web/kids_bedroom_fknoyk.png"
 							/>
 						</div>
@@ -67,6 +67,7 @@ function Question1() {
 								value="Studio"
 								onClick={handleClick}
 								checked={roomType === "Studio"}
+								bg="rgba(158, 158, 158, 0.15)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570451259/web/Studio_Apartment_nu1av3.png"
 							/>
 						</div>

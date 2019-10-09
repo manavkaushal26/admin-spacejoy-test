@@ -49,7 +49,8 @@ module.exports = {
 			linkedin: "https://www.linkedin.com/company/spacejoy/",
 			twitter: "https://twitter.com/spacejoyapp/",
 			instagram: "https://www.instagram.com/spacejoyapp/",
-			pinterest: "https://in.pinterest.com/spacejoyapp/"
+			pinterest: "https://in.pinterest.com/spacejoyapp/",
+			pinterestAppId: "78963155e9328e543f3c8741e7afb48c"
 		},
 		app: {
 			android: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",

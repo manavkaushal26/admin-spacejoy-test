@@ -18,12 +18,13 @@ const RadioCardStyled = styled(Button)`
 	transition: all linear 100ms;
 	&:hover {
 		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
-		border: 1px solid ${({ theme }) => theme.colors.fc.dark3};
+		border: 1px solid ${({ theme }) => theme.colors.mild.black};
 		color: ${({ theme }) => theme.colors.fc.dark1};
 	}
 	&.active {
 		font-weight: bold;
-		border: 1px solid ${({ theme }) => theme.colors.accent};
+		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
+		border: 1px solid ${({ theme }) => theme.colors.mild.black};
 		color: ${({ theme }) => theme.colors.accent};
 		svg {
 			background-color: ${({ theme }) => theme.colors.accent};

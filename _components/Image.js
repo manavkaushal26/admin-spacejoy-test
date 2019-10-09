@@ -18,21 +18,24 @@ const ImageStyled = styled.img`
 				return size;
 		}
 	}};
+	border-radius: ${({ circle }) => (circle ? "50%" : "0")};
 `;
 
-function Image({ src, size, alt, ...props }) {
-	return <ImageStyled src={src} size={size} alt={alt} {...props} />;
+function Image({ src, size, alt, circle, ...props }) {
+	return <ImageStyled circle={circle} src={src} size={size} alt={alt} {...props} />;
 }
 
 Image.defaultProps = {
 	size: "full",
-	alt: "spacejoy"
+	alt: "spacejoy",
+	circle: false
 };
 
 Image.propTypes = {
 	src: PropTypes.string.isRequired,
 	size: PropTypes.string,
-	alt: PropTypes.string
+	alt: PropTypes.string,
+	circle: PropTypes.bool
 };
 
 export default Image;

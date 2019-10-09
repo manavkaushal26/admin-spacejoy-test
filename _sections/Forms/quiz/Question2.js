@@ -193,6 +193,12 @@ function Question2() {
 						</div>
 						<div className="col-12 col-sm-7 col-md-8">
 							<SampleImageStyled>
+								<ImageWrapperStyled className={budget === "" ? "active" : "inactive"}>
+									<Image
+										size="full"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_550/v1570618479/web/empty_ekqe1s.png"
+									/>
+								</ImageWrapperStyled>
 								<ImageWrapperStyled className={budget === "$10,000 or more" ? "active" : "inactive"}>
 									<Image
 										size="full"

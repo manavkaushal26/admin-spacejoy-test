@@ -47,7 +47,8 @@ const OGMeta = [
 	<meta key="tw-id-ipad" name="twitter:app:id:ipad" content={page.appStoreId} />,
 	<meta key="tw-playstore" name="twitter:app:id:googleplay" content={page.playStoreId} />,
 	<meta key="tw-appstore" name="twitter:app:name:googleplay" content={company.product} />,
-	<meta key="tw-country" name="twitter:app:country" content="us" />
+	<meta key="tw-country" name="twitter:app:country" content="us" />,
+	<meta key="pintrest-varification" name="p:domain_verify" content={company.social.pinterestAppId} />
 ];
 
 const AppleMeta = [
