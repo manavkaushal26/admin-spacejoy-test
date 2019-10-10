@@ -64,8 +64,8 @@ function Question4({ name, email }) {
 										label="Name"
 										value={name}
 										readonly={!!name}
-										placeholder="Username"
-										error="Please enter a valid username"
+										placeholder="Name"
+										error="Please enter a valid Name"
 										hint="should contain valid text"
 									/>
 									<Field

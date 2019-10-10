@@ -1,7 +1,7 @@
 module.exports = {
 	page: {
 		appName: "SpaceJoyWeb",
-		apiBaseUrl: "//api.homefuly.com/api",
+		apiBaseUrl: "https://api.spacejoy.com/api",
 		placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 		googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 		googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",

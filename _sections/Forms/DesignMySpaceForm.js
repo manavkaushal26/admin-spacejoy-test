@@ -9,11 +9,11 @@ function DesignMySpaceForm({ plan, name, email }) {
 			<Field
 				name="userName"
 				type="text"
-				label="Username"
+				label="Name"
 				value={name}
 				readonly={!!name}
-				placeholder="Username"
-				error="Please enter a valid username"
+				placeholder="Name"
+				error="Please enter a valid Name"
 				hint="should contain valid text"
 			/>
 			<Field

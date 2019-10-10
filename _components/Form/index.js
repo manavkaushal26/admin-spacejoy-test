@@ -43,8 +43,8 @@ class FormBox extends Component {
 					password: state.userPassword.value,
 					firstName: state.userName.value,
 					lastName: "",
-					region: "",
-					role: "customer"
+					tnC: state.userCommutePermissionGranted.value,
+					privacyPolicy: state.userCommutePermissionGranted.value
 				};
 			}
 			if (name === "login") {
@@ -145,11 +145,11 @@ class FormBox extends Component {
 			return {};
 		}
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
-		if (response.status >= 200 && response.status <= 300) {
-			const responseData = await response.json();
-			this.setState({ formStatus: responseData.status, submitInProgress: false });
+		console.log("response", response);
+		if (response.status === 200) {
+			this.setState({ formStatus: response.status, submitInProgress: false });
 			if (name === "login" || name === "signup") {
-				const { token } = responseData;
+				const { token } = response;
 				await login({ token, redirectUrl });
 			}
 			if (redirectUrl && redirectUrl !== "") {
