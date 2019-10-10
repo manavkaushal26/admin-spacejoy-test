@@ -45,7 +45,7 @@ const ButtonStyled = styled(ButtonBase)`
 			case "sm":
 				return "0.5rem 0.75rem";
 			case "md":
-				return "0.75rem 5rem";
+				return "0.75rem 2rem";
 			case "lg":
 				return "1rem 2.5rem";
 			default:
@@ -66,7 +66,6 @@ const ButtonStyled = styled(ButtonBase)`
 	}};
 	font-family: ${({ variant }) => (variant === "primary" ? "Airbnb Cereal App Medium" : "inherit")};
 	font-weight: ${({ variant }) => (variant === "primary" ? "bold" : "normal")};
-	text-shadow: ${({ variant }) => (variant === "primary" ? "1px 1px 1px rgba(0, 0, 0, 0.05);" : "none")};
 	border: ${({ fill, theme }) => (fill === "solid" ? "none" : `1px solid ${theme.colors.fc.dark2}`)};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};

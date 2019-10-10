@@ -118,7 +118,6 @@ function HowSteps() {
 										<div className="col-12">
 											<Button
 												variant="primary"
-												shape="rounded"
 												size="lg"
 												onClick={handleClick}
 												style={{ position: "relative", bottom: "-2rem" }}

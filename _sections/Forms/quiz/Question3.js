@@ -37,14 +37,14 @@ function Question3() {
 								Test Q3{budget}
 							</Button>
 						</div>
-						<div className="col-4 col-sm-3">
-							<Button variant="secondary" shape="rounded" fill="ghost" full onClick={handlePrev}>
+						<div className="col-4 col-sm-2">
+							<Button variant="secondary" fill="ghost" size="sm" full onClick={handlePrev}>
 								Prev
 							</Button>
 						</div>
-						<div className="col-4 col-sm-6" />
-						<div className="col-4 col-sm-3">
-							<Button variant="primary" shape="rounded" full onClick={handleNext}>
+						<div className="col-4 col-sm-8" />
+						<div className="col-4 col-sm-2">
+							<Button variant="primary" full size="sm" onClick={handleNext}>
 								Next
 							</Button>
 						</div>

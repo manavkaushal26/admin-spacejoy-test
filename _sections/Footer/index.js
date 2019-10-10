@@ -8,7 +8,7 @@ import styled from "styled-components";
 const FooterStyled = styled.footer`
 	padding: 4rem 0;
 	font-size: 0.9rem;
-	background-color: ${({ theme }) => theme.colors.bg.light1};
+	background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const FooterNavStyled = styled.ul`
