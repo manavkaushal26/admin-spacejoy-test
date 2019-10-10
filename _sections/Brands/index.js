@@ -12,12 +12,12 @@ const PartnerBrandStyled = styled.div`
 	border-right: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	&:hover {
 		img {
-			opacity: 0.9;
+			opacity: 1;
 		}
 	}
 	img {
-		transition: all linear 100ms;
-		opacity: 0.5;
+		transition: opacity linear 100ms;
+		opacity: 0.8;
 	}
 `;
 

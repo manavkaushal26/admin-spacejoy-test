@@ -18,11 +18,20 @@ const HeroCardStyled = styled.section`
 
 const HeroText = styled.h1`
 	font-size: 3rem;
-	line-height: 3.5rem;
+	line-height: 3.75rem;
 	margin: 0;
 	font-family: inherit;
 	span {
 		display: block;
+		&:last-child {
+			font-family: "Airbnb Cereal App Medium";
+			background: url("https://images.unsplash.com/photo-1490049350474-498de43bc885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2026&q=80")
+				50% 50%;
+			background-size: 200px;
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-attachment: fixed;
+		}
 	}
 	@media (max-width: 400px) {
 		font-size: 2.5rem;

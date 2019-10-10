@@ -8,11 +8,13 @@ import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`
 	position: relative;
-	background: url("https://lh3.google.com/u/1/d/1wD8YWVOqxyrndyYBeHGOMKCueCKfsKVm=w3360-h1020-iv1") no-repeat center;
+	background: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_1900/v1570708989/web/bg_ubxash.jpg")
+		no-repeat center;
 	background-size: cover;
 	background-attachment: fixed;
 	padding: 100px 0;
 	max-height: 400px;
+	box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.5) inset;
 	&:after {
 		content: "";
 		position: absolute;
@@ -20,14 +22,14 @@ const SectionWrapper = styled.section`
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.15);
+		background-color: ${({ theme }) => theme.colors.mild.black};
 	}
 `;
 
 const StepWrapperStyled = styled.div`
 	position: relative;
 	z-index: 1;
-	background-color: ${({ theme }) => theme.colors.bg.light1};
+	background-color: ${({ theme }) => theme.colors.white};
 	padding: 5rem 0 0 0;
 	border-radius: 2px;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
@@ -72,7 +74,6 @@ function handleClick() {
 function HowSteps() {
 	return (
 		<>
-			{" "}
 			<SectionWrapper>
 				<div className="container">
 					<div className="grid text-center">

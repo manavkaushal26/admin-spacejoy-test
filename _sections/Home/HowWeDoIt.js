@@ -15,8 +15,9 @@ const StepperWrapper = styled.div`
 	display: flex;
 `;
 
-const StepTitle = styled.h4`
+const StepTitle = styled.span`
 	margin: 0.5rem 0;
+	display: inline-block;
 	font-family: inherit;
 `;
 
@@ -65,7 +66,6 @@ const StepCount = styled.div`
 const StepBlock = styled.div`
 	overflow: hidden;
 	flex: 1;
-	color: ${({ theme }) => theme.colors.fc.dark2};
 	&:first-child {
 		${StepCount} {
 			&:after {
