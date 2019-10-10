@@ -71,7 +71,7 @@ function DesignTeam() {
 							</div>
 						</div>
 					</div>
-					<div className="col-12">
+					<div className="col-12 text-center">
 						<Button fill="ghost" shape="rounded" size="md">
 							DESIGN MY SPACE
 						</Button>

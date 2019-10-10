@@ -5,7 +5,7 @@ import SectionHeader from "./SectionHeader";
 
 const ButtonStyled = styled(Button)`
 	border: 1px solid white;
-	color: white;
+	background-color: white;
 `;
 const SectionWrapper = styled.section`
 	position: relative;
@@ -23,7 +23,9 @@ export default function GetReadyBanner() {
 					description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore"
 				/>
 				<div className="grid align-center text-center">
-					<ButtonStyled fill="ghost">Start your free trial</ButtonStyled>
+					<ButtonStyled shape="rounded" fill="ghost">
+						Start your free trial
+					</ButtonStyled>
 				</div>
 			</div>
 		</SectionWrapper>

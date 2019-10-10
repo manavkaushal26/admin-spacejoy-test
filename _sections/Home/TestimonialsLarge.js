@@ -20,13 +20,9 @@ const SectionWrapper = styled.section`
 `;
 
 const ImageStyled = styled(Image)`
-	border-radius: 50% 2px 50% 50%;
 	box-shadow: 0 0 10px ${({ theme }) => theme.colors.mild.black};
-	transition: all ease 0.25s;
-	&:hover {
-		filter: grayscale(1);
-		border-radius: 2px;
-	}
+	filter: grayscale(1);
+	border-radius: 2px;
 `;
 
 export default function TestimonialsLarge() {
@@ -38,7 +34,7 @@ export default function TestimonialsLarge() {
 					description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore"
 				/>
 				<div className="grid text-center align-center">
-					<div className="col-3 text-right">
+					<div className="col-3 text-left">
 						<ImageStyled
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
 							size="120px"

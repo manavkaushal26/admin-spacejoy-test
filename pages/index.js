@@ -1,5 +1,6 @@
 import Brands from "@sections/Brands";
 import DesignTeam from "@sections/Home/DesignTeam";
+import ExploreDesigns from "@sections/Home/ExploreDesigns";
 import GetReadyBanner from "@sections/Home/GetReadyBanner";
 import HeroSection from "@sections/Home/HeroSection";
 import HowSteps from "@sections/Home/HowSteps";
@@ -27,6 +28,7 @@ function index({ isServer, authVerification }) {
 			<TestimonialsShort />
 			<HowWeDoIt />
 			<DesignTeam />
+			<ExploreDesigns />
 			<TestimonialsLarge />
 			<GetReadyBanner />
 		</Layout>
