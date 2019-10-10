@@ -8,12 +8,10 @@ import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`
 	position: relative;
-	background: url("https://res.cloudinary.com/spacejoy/image/upload/v1569620131/web/pink-sofa_hp7wvg.jpg") no-repeat
-		center;
+	background: url("https://lh3.google.com/u/1/d/1wD8YWVOqxyrndyYBeHGOMKCueCKfsKVm=w3360-h1020-iv1") no-repeat center;
 	background-size: cover;
 	background-attachment: fixed;
-	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black} inset;
-	padding: 40px 0;
+	padding: 100px 0;
 	max-height: 400px;
 	&:after {
 		content: "";
@@ -22,7 +20,7 @@ const SectionWrapper = styled.section`
 		left: 0;
 		right: 0;
 		bottom: 0;
-		background-color: rgba(0, 0, 0, 0.05);
+		background-color: rgba(0, 0, 0, 0.15);
 	}
 `;
 
@@ -52,7 +50,7 @@ const StepStyled = styled.div`
 `;
 
 const FillerStyled = styled.div`
-	height: 200px;
+	height: 250px;
 	background: ${({ theme }) => theme.colors.mild.yellow};
 `;
 
@@ -86,7 +84,7 @@ function HowSteps() {
 										<div className="col-12 col-md-4">
 											<StepStyled>
 												<Image
-													src="https://res.cloudinary.com/spacejoy/image/upload/v1570621975/web/scale_xwrm9r.svg"
+													src="https://res.cloudinary.com/spacejoy/image/upload/v1570714758/web/blueprint_zawtzn.svg"
 													size="70px"
 												/>
 												<h3>Our designers weave magic in your room</h3>

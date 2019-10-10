@@ -23,10 +23,6 @@ const HeroText = styled.h1`
 	font-family: inherit;
 	span {
 		display: block;
-		&:nth-child(3) {
-			color: ${({ theme }) => theme.colors.accent};
-			font-family: "Airbnb Cereal App Medium";
-		}
 	}
 	@media (max-width: 400px) {
 		font-size: 2.5rem;
@@ -64,8 +60,7 @@ export default function HeroSection() {
 					<div className="col-lg-4 col-md-6 col-xs-12">
 						<HeroCardStyled>
 							<HeroText>
-								<span>Designing</span>
-								<span>your</span>
+								<span>Designing Your</span>
 								<span>Imagination</span>
 							</HeroText>
 							<HeroSubText>

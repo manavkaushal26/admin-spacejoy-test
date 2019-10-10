@@ -11,17 +11,23 @@ const SectionWrapper = styled.section`
 `;
 
 const StepperWrapper = styled.div`
-	margin: 2rem 0;
+	margin: 1rem 0;
 	display: flex;
 `;
 
+const StepTitle = styled.h4`
+	margin: 0.5rem 0;
+	font-family: inherit;
+`;
+
 const StepCount = styled.div`
+	cursor: pointer;
 	position: relative;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	background: white;
 	border-radius: 15px;
 	height: 30px;
-	width: 30px;
+	width: 70px;
 	line-height: 29px;
 	margin: auto;
 	z-index: 1;
@@ -31,7 +37,12 @@ const StepCount = styled.div`
 		color: ${({ theme }) => theme.colors.white};
 		&:after,
 		&:before {
-			border-color: ${({ theme }) => theme.colors.accent};
+			background: ${({ theme }) => theme.colors.accent};
+		}
+		& + {
+			${StepTitle} {
+				color: ${({ theme }) => theme.colors.accent};
+			}
 		}
 	}
 	&:after,
@@ -40,7 +51,8 @@ const StepCount = styled.div`
 		position: absolute;
 		top: 13px;
 		width: 100px;
-		border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+		height: 1px;
+		background: ${({ theme }) => theme.colors.bg.dark2};
 	}
 	&:before {
 		right: -100px;
@@ -51,27 +63,23 @@ const StepCount = styled.div`
 `;
 
 const StepBlock = styled.div`
+	overflow: hidden;
 	flex: 1;
-	color: ${({ theme }) => theme.colors.fc.dark3};
+	color: ${({ theme }) => theme.colors.fc.dark2};
 	&:first-child {
 		${StepCount} {
 			&:after {
-				border: none;
+				display: none;
 			}
 		}
 	}
 	&:last-child {
 		${StepCount} {
 			&:before {
-				border: none;
+				display: none;
 			}
 		}
 	}
-`;
-
-const StepTitle = styled.h5`
-	margin: 0.5rem 0;
-	font-family: inherit;
 `;
 
 const StepSlideStyled = styled.div`
@@ -146,9 +154,8 @@ function HowWeDoIt() {
 							<span>02</span>
 							<h2>Get designs & revise</h2>
 							<p>
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maxime eum mollitia architecto error cumque
-								ea. Cum sint consectetur voluptatem velit aut commodi voluptates dolorem, hic soluta sunt at,
-								consequatur assumenda!
+								Our designers will then present two designs which you can explore in 3D. Work with our designers and
+								edit with ease on our interactive app to finalise your design
 							</p>
 						</div>
 						<div className="col-5">
@@ -165,9 +172,8 @@ function HowWeDoIt() {
 							<span>03</span>
 							<h2>Shop from your designs</h2>
 							<p>
-								Lorem ipsum dolor, sit amet consectetur adipisicing elit. Maxime eum mollitia architecto error cumque
-								ea. Cum sint consectetur voluptatem velit aut commodi voluptates dolorem, hic soluta sunt at,
-								consequatur assumenda!
+								Shop for what you love, directly from your designs. We will find you the best deals for furniture and
+								decor products from your favorite brands.
 							</p>
 						</div>
 						<div className="col-5">
