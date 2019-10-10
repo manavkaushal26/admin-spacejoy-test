@@ -17,17 +17,27 @@ const HeroCardStyled = styled.section`
 `;
 
 const HeroText = styled.h1`
-	font-size: 3.5rem;
-	line-height: 4rem;
+	font-size: 3rem;
+	line-height: 3.5rem;
 	margin: 0;
+	font-family: inherit;
+	span {
+		display: block;
+		&:nth-child(3) {
+			color: ${({ theme }) => theme.colors.accent};
+			font-family: "Airbnb Cereal App Medium";
+		}
+	}
 	@media (max-width: 400px) {
 		font-size: 2.5rem;
 		line-height: 3rem;
 	}
 `;
 
-const HeroSubText = styled.h3`
+const HeroSubText = styled.h4`
 	font-weight: normal;
+	font-family: inherit;
+	width: 80%;
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
@@ -54,14 +64,14 @@ export default function HeroSection() {
 					<div className="col-lg-4 col-md-6 col-xs-12">
 						<HeroCardStyled>
 							<HeroText>
-								Home Designs
-								<br />
-								Made Easy
+								<span>Designing</span>
+								<span>your</span>
+								<span>Imagination</span>
 							</HeroText>
 							<HeroSubText>
-								Experience the joy of designing your home in 3D using products from brands you can buy immediately!
+								Show us your room and let us design it for you in our 3D App. Within your budget, with your style and
+								with products you can buy
 							</HeroSubText>
-							<h4>Plans starting at $19</h4>
 							<Button variant="primary" shape="rounded" size="lg" onClick={handleClick}>
 								DESIGN MY SPACE NOW <SVGIcon name="right" width={20} fill="white" />
 							</Button>

@@ -1,11 +1,11 @@
 // import Button from "@components/Button";
-import Divider from "@components/Divider";
 import Image from "@components/Image";
 import React from "react";
 import styled from "styled-components";
 
-const SectionWrapperStyled = styled.div`
-	padding: 150px 0;
+const SectionWrapper = styled.section`
+	padding: 50px 0;
+	background: ${({ theme }) => theme.colors.mild.yellow};
 	h2 {
 		font-family: inherit;
 		color: ${({ theme }) => theme.colors.fc.dark2};
@@ -21,12 +21,13 @@ const SectionWrapperStyled = styled.div`
 
 export default function Testimonials() {
 	return (
-		<SectionWrapperStyled>
+		<SectionWrapper>
 			<div className="container">
 				<div className="grid text-center">
 					<div className="col-8">
 						<h2>
-							“ Incredibly happy with our designer who took our brief and transformed our bedroom to match the vision ”
+							&quot;Incredibly happy with our designer who took our brief and transformed our living room to match the
+							vision&quot;
 						</h2>
 						<Image
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
@@ -34,13 +35,12 @@ export default function Testimonials() {
 							circle
 						/>
 						<div>
-							<Divider fancy size="7px" />
 							<h3>Erika Lee</h3>
 							<small>Denver, Colarado</small>
 						</div>
 					</div>
 				</div>
 			</div>
-		</SectionWrapperStyled>
+		</SectionWrapper>
 	);
 }

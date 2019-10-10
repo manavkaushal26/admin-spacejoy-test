@@ -6,18 +6,14 @@ import React from "react";
 import styled from "styled-components";
 import SectionHeader from "./SectionHeader";
 
-const FillerStyled = styled.div`
-	height: 200px;
-`;
-
-const SectionWrapper = styled.div`
+const SectionWrapper = styled.section`
 	position: relative;
 	background: url("https://res.cloudinary.com/spacejoy/image/upload/v1569620131/web/pink-sofa_hp7wvg.jpg") no-repeat
 		center;
 	background-size: cover;
 	background-attachment: fixed;
 	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black} inset;
-	padding: 100px 0;
+	padding: 40px 0;
 	max-height: 400px;
 	&:after {
 		content: "";
@@ -53,6 +49,11 @@ const StepStyled = styled.div`
 	p {
 		color: ${({ theme }) => theme.colors.fc.dark2};
 	}
+`;
+
+const FillerStyled = styled.div`
+	height: 200px;
+	background: ${({ theme }) => theme.colors.mild.yellow};
 `;
 
 function handleClick() {

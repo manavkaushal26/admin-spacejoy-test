@@ -225,13 +225,13 @@ function Question2() {
 								</ImageWrapperStyled>
 							</SampleImageStyled>
 						</div>
-						<div className="col-4 col-sm-2">
+						<div className="col-4 col-sm-3">
 							<Button variant="secondary" shape="rounded" fill="ghost" full onClick={handlePrev}>
 								Prev
 							</Button>
 						</div>
-						<div className="col-4 col-sm-8" />
-						<div className="col-4 col-sm-2">
+						<div className="col-4 col-sm-6" />
+						<div className="col-4 col-sm-3">
 							<Button variant="primary" shape="rounded" full onClick={handleNext}>
 								Next
 							</Button>

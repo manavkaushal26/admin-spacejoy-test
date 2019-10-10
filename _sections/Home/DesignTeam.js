@@ -4,10 +4,10 @@ import React from "react";
 import styled from "styled-components";
 import SectionHeader from "./SectionHeader";
 
-const SectionWrapper = styled.div`
+const SectionWrapper = styled.section`
 	position: relative;
 	background: ${({ theme }) => theme.colors.bg.white};
-	padding: 100px 0;
+	padding: 40px 0;
 `;
 
 function DesignTeam() {
