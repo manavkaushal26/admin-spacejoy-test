@@ -29,8 +29,7 @@ const HeroText = styled.h1`
 		display: block;
 		&:last-child {
 			font-family: "Airbnb Cereal App Medium";
-			background: url("https://images.unsplash.com/photo-1490049350474-498de43bc885?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2026&q=80")
-				50% 50%;
+			background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570798848/web/colors_amte5j.jpg") 50% 50%;
 			background-size: 200px;
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
@@ -65,7 +64,7 @@ function handleClick() {
 	});
 }
 
-export default function HeroSection() {
+function HeroSection() {
 	return (
 		<HeroWrapperStyled>
 			<div className="container">
@@ -74,7 +73,7 @@ export default function HeroSection() {
 						<HeroCardStyled>
 							<HeroText>
 								<span>Designing Your</span>
-								<TextLoop>
+								<TextLoop mask>
 									<span>Imagination</span>
 									<span>Living Room</span>
 									<span>Studio Room</span>
@@ -124,3 +123,5 @@ export default function HeroSection() {
 		</HeroWrapperStyled>
 	);
 }
+
+export default HeroSection;

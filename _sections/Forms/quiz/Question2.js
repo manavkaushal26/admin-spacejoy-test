@@ -109,7 +109,7 @@ function Question2() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-10">
+				<div className="col-xs-10">
 					<QuizHeader
 						title="Have a budget in mind?"
 						description="Let's start by helping your designers understand which rooms you prefer."

@@ -41,22 +41,6 @@ function DesignTeam() {
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
-							<div className="col-6 col-md-2">
-								<ProfileCard>
-									<ProfileCard.Designation />
-									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_face,h_300,q_100,w_200/v1569914893/web/designer-2_kdi9o4.jpg" />
-									<ProfileCard.Social />
-								</ProfileCard>
-							</div>
-							<div className="col-6 col-md-2">
-								<ProfileCard>
-									<ProfileCard.Designation />
-									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933569/web/designer-5_rf3y3j.jpg" />
-									<ProfileCard.Social fb="" tw="" li="" pi="" />
-								</ProfileCard>
-							</div>
 							<div className="col-12 col-md-4 text-center align-self-center">
 								<ExtraCardStyled>
 									<Image
@@ -79,6 +63,22 @@ function DesignTeam() {
 										DESIGN MY SPACE
 									</Button>
 								</ExtraCardStyled>
+							</div>
+							<div className="col-6 col-md-2">
+								<ProfileCard>
+									<ProfileCard.Designation />
+									<ProfileCard.UserName />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_face,h_300,q_100,w_200/v1569914893/web/designer-2_kdi9o4.jpg" />
+									<ProfileCard.Social />
+								</ProfileCard>
+							</div>
+							<div className="col-6 col-md-2">
+								<ProfileCard>
+									<ProfileCard.Designation />
+									<ProfileCard.UserName />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933569/web/designer-5_rf3y3j.jpg" />
+									<ProfileCard.Social fb="" tw="" li="" pi="" />
+								</ProfileCard>
 							</div>
 						</div>
 					</div>

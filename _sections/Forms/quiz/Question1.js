@@ -20,7 +20,7 @@ function Question1() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-10">
+				<div className="col-xs-10">
 					<QuizHeader
 						title="Which room are you designing?"
 						description="Let's start by helping your designers understand which rooms you prefer."
