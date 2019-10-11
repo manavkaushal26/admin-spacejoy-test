@@ -60,7 +60,7 @@ class faq extends PureComponent {
 							<div className="grid">
 								{filteredTag &&
 									filteredTag.map(item => (
-										<div className="col-auto" key={Math.random() * 10}>
+										<div className="col-12 col-xs-6" key={Math.random() * 10}>
 											<TopicStyled active={item === activeTag} onClick={() => this.handleFilter(item)}>
 												<SVGIcon name="tick" height={15} width={20} fill={item === activeTag ? "#e84393" : "#aeaeae"} />
 												<span>{item}</span>
