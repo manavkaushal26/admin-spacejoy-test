@@ -169,7 +169,7 @@ const HeaderBody = ({ authVerification }) => {
 				</MobileVisibleStyled>
 				<MobileVisibleStyled className="col-4 text-right">
 					<Button variant="clean" size="xs" fill="clean" onClick={handleClick}>
-						<SVGIcon name="menu" width={20} height={20} />
+						<SVGIcon name="menu" width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
 					</Button>
 				</MobileVisibleStyled>
 				{mobileNavStatus && (

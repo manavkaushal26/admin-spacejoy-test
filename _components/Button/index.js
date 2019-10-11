@@ -16,7 +16,7 @@ const ButtonStyled = styled(ButtonBase)`
 			case "secondary":
 				return theme.colors.primary2;
 			default:
-				return theme.colors.white;
+				return "transparent";
 		}
 	}};
 	color: ${({ theme, variant, fill }) => {

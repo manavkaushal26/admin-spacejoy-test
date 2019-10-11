@@ -62,7 +62,7 @@ class Header extends PureComponent {
 				{!cookiePolicyStatus && (
 					<CookieStyled className="text-center">
 						<div className="container">
-							<div className="grid">
+							<div className="grid text-left align-center">
 								<div className="col-10">
 									By using spacejoy.com, you agree with our use of cookies to improve performance.{" "}
 									<ActiveLink href="/cookies" as="/cookies">
@@ -70,12 +70,7 @@ class Header extends PureComponent {
 									</ActiveLink>
 								</div>
 								<div className="col-2">
-									<Button
-										size="xs"
-										fill="ghost"
-										onClick={this.updateCookiePolicyStatus}
-										style={{ border: 0, padding: "2px 15px" }}
-									>
+									<Button size="xs" variant="clean" fill="clean" onClick={this.updateCookiePolicyStatus}>
 										<SVGIcon name="tick" size="15px" fill="white" />
 									</Button>
 								</div>
