@@ -24,6 +24,10 @@ const SectionWrapper = styled.section`
 		bottom: 0;
 		background-color: ${({ theme }) => theme.colors.mild.black};
 	}
+	@media (max-width: 400px) {
+		max-height: 100%;
+		padding: 2rem 0;
+	}
 `;
 
 const StepWrapperStyled = styled.div`
@@ -54,6 +58,10 @@ const StepStyled = styled.div`
 const FillerStyled = styled.div`
 	height: 250px;
 	background: ${({ theme }) => theme.colors.mild.yellow};
+	@media (max-width: 400px) {
+		height: 0px;
+		display: none;
+	}
 `;
 
 function handleClick() {

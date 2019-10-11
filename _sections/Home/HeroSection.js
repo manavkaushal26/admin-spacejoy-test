@@ -4,6 +4,7 @@ import SVGIcon from "@components/SVGIcon";
 import { redirectToLocation } from "@utils/auth";
 import Link from "next/link";
 import React from "react";
+import TextLoop from "react-text-loop";
 import styled from "styled-components";
 
 const HeroWrapperStyled = styled.section`
@@ -14,6 +15,9 @@ const HeroWrapperStyled = styled.section`
 
 const HeroCardStyled = styled.section`
 	position: relative;
+	@media (max-width: 400px) {
+		margin: 3rem 0;
+	}
 `;
 
 const HeroText = styled.h1`
@@ -34,8 +38,8 @@ const HeroText = styled.h1`
 		}
 	}
 	@media (max-width: 400px) {
-		font-size: 2.5rem;
-		line-height: 3rem;
+		font-size: 3.5rem;
+		line-height: 4rem;
 	}
 `;
 
@@ -70,7 +74,15 @@ export default function HeroSection() {
 						<HeroCardStyled>
 							<HeroText>
 								<span>Designing Your</span>
-								<span>Imagination</span>
+								<TextLoop>
+									<span>Imagination</span>
+									<span>Living Room</span>
+									<span>Studio</span>
+									<span>Bedroom</span>
+									<span>Kid&apos;s Room</span>
+									<span>Entryway</span>
+									<span>Nursery</span>
+								</TextLoop>
 							</HeroText>
 							<HeroSubText>
 								Show us your room and let us design it for you in our 3D App. Within your budget, with your style and
@@ -88,13 +100,13 @@ export default function HeroSection() {
 					</div>
 					<div className="col-12 col-md-8">
 						<div className="grid">
-							<div className="col-6">
+							<div className="col-12 col-xs-6">
 								<Image
 									full
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
 								/>
 							</div>
-							<div className="col-6">
+							<div className="col-12 col-xs-6">
 								<Image
 									full
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"

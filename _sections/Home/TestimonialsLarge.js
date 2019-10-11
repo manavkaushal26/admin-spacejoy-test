@@ -34,7 +34,7 @@ export default function TestimonialsLarge() {
 					description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore"
 				/>
 				<div className="grid text-center align-center">
-					<div className="col-3 text-left">
+					<div className="col-12 col-xs-3 text-left">
 						<ImageStyled
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
 							size="120px"
@@ -46,7 +46,7 @@ export default function TestimonialsLarge() {
 							We couldn’t be happier with how amazing our home looks right now.
 						</p>
 					</div>
-					<div className="col-7">
+					<div className="col-12 col-xs-7">
 						<ReactCompareImage
 							sliderPositionPercentage={0.2}
 							leftImageLabel="Before"

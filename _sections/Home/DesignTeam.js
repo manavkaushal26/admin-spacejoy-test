@@ -21,7 +21,7 @@ function DesignTeam() {
 				<div className="grid align-center">
 					<div className="col-xs-12">
 						<div className="grid">
-							<div className="col-6 col-md-2">
+							<div className="col-4 col-md-2">
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
@@ -29,7 +29,7 @@ function DesignTeam() {
 									<ProfileCard.Social />
 								</ProfileCard>
 							</div>
-							<div className="col-6 col-md-2">
+							<div className="col-4 col-md-2">
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
@@ -37,7 +37,7 @@ function DesignTeam() {
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
-							<div className="col-6 col-md-2">
+							<div className="col-4 col-md-2">
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
@@ -45,7 +45,7 @@ function DesignTeam() {
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
-							<div className="col-6 col-md-2">
+							<div className="col-4 col-md-2">
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
@@ -53,7 +53,7 @@ function DesignTeam() {
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
-							<div className="col-6 col-md-2">
+							<div className="col-4 col-md-2">
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
@@ -61,7 +61,7 @@ function DesignTeam() {
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
-							<div className="col-6 col-md-2">
+							<div className="col-4 col-md-2">
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />

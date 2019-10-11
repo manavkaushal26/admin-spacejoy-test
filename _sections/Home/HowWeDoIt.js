@@ -104,7 +104,7 @@ function HowWeDoIt() {
 					description="Get your room designed in 3D by designers. Get a glimpse of what it can look like. Upgrade to get access to the design and the shopping list in our App, Make/Request Changes, finalize a design and shop"
 				/>
 				<div className="grid align-center text-center">
-					<div className="col-6">
+					<div className="col-12 col-xs-6">
 						<StepperWrapper>
 							<StepBlock>
 								<StepCount className="active" onClick={() => handleClick(1)}>
@@ -132,7 +132,7 @@ function HowWeDoIt() {
 				</div>
 				<StepSlideStyled active={slideActive === 1}>
 					<div className="grid align-center justify-space-around">
-						<div className="col-4">
+						<div className="col-12 col-xs-4">
 							<span>01</span>
 							<h2>Set your budget & style</h2>
 							<p>
@@ -140,7 +140,7 @@ function HowWeDoIt() {
 								most of all, your unique style and taste
 							</p>
 						</div>
-						<div className="col-5">
+						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/w_650/v1570619193/web/step-1_s3ljeg.png"
 								full
@@ -150,7 +150,7 @@ function HowWeDoIt() {
 				</StepSlideStyled>
 				<StepSlideStyled active={slideActive === 2}>
 					<div className="grid align-center justify-space-around">
-						<div className="col-4">
+						<div className="col-12 col-xs-4">
 							<span>02</span>
 							<h2>Get designs & revise</h2>
 							<p>
@@ -158,7 +158,7 @@ function HowWeDoIt() {
 								edit with ease on our interactive app to finalise your design
 							</p>
 						</div>
-						<div className="col-5">
+						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/w_650/v1570619193/web/step-1_s3ljeg.png"
 								full
@@ -168,7 +168,7 @@ function HowWeDoIt() {
 				</StepSlideStyled>
 				<StepSlideStyled active={slideActive === 3}>
 					<div className="grid align-center justify-space-around">
-						<div className="col-4">
+						<div className="col-12 col-xs-4">
 							<span>03</span>
 							<h2>Shop from your designs</h2>
 							<p>
@@ -176,7 +176,7 @@ function HowWeDoIt() {
 								decor products from your favorite brands.
 							</p>
 						</div>
-						<div className="col-5">
+						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/w_650/v1570619193/web/step-1_s3ljeg.png"
 								full

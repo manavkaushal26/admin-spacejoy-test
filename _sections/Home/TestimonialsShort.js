@@ -24,7 +24,7 @@ export default function Testimonials() {
 		<SectionWrapper>
 			<div className="container">
 				<div className="grid text-center">
-					<div className="col-8">
+					<div className="col-12 col-xs-8">
 						<h2>
 							&quot;Incredibly happy with our designer who took our brief and transformed our living room to match the
 							vision&quot;
