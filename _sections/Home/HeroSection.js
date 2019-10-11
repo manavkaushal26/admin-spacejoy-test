@@ -15,8 +15,8 @@ const HeroWrapperStyled = styled.section`
 
 const HeroCardStyled = styled.section`
 	position: relative;
-	@media (max-width: 400px) {
-		margin: 3rem 0;
+	@media (max-width: 576px) {
+		margin: 10rem 0;
 	}
 `;
 
@@ -37,9 +37,9 @@ const HeroText = styled.h1`
 			background-attachment: fixed;
 		}
 	}
-	@media (max-width: 400px) {
-		font-size: 3.5rem;
-		line-height: 4rem;
+	@media (max-width: 576px) {
+		font-size: 4rem;
+		line-height: 5rem;
 	}
 `;
 

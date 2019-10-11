@@ -10,7 +10,7 @@ const TitleStyled = styled.h2`
 		margin: 0 auto 2rem auto;
 		width: 50%;
 		color: ${({ theme, light }) => (light ? theme.colors.white : theme.colors.fc.dark2)};
-		@media (max-width: 400px) {
+		@media (max-width: 576px) {
 			width: 100%;
 		}
 	}
