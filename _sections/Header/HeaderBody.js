@@ -59,9 +59,10 @@ const MobileNavVisibleStyled = styled.div`
 	position: fixed;
 	background-color: white;
 	width: 100%;
-	top: 70px;
+	top: 60px;
 	left: 0;
 	right: 0;
+	box-shadow: 0px 10px 10px 0px ${({ theme }) => theme.colors.mild.black};
 	a {
 		display: block;
 	}
@@ -167,8 +168,8 @@ const HeaderBody = ({ authVerification }) => {
 					</ActiveLink>
 				</MobileVisibleStyled>
 				<MobileVisibleStyled className="col-4 text-right">
-					<Button size="xs" fill="ghost" onClick={handleClick}>
-						MENU
+					<Button variant="clean" size="xs" fill="clean" onClick={handleClick}>
+						<SVGIcon name="menu" width={20} height={20} />
 					</Button>
 				</MobileVisibleStyled>
 				{mobileNavStatus && (

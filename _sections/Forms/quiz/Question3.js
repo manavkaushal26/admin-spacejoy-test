@@ -29,8 +29,8 @@ function Question3() {
 						<div className="col-12">
 							<div>
 								<Image
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1570340739/web/single-sofa_z4il1o.png"
-									size="150px"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1570781611/web/temp_ogqsaw.jpg"
+									size="450px"
 								/>
 							</div>
 							<Button fill="ghost" size="sm" onClick={handleClick} value="success">

@@ -35,6 +35,8 @@ const getViewBox = name => {
 			return "0 0 511.999 511.999";
 		case "spinner":
 			return "0 0 48 48";
+		case "menu":
+			return "0 0 30 20";
 		default:
 			return "0 0 48 48";
 	}
@@ -145,6 +147,14 @@ const getPath = (name, props) => {
 						fill="#2d2d32"
 						d="M24,0 C37.254834,0 48,10.745166 48,24 L44,24 C44,12.954305 35.045695,4 24,4 L24,0 Z"
 					/>
+				</g>
+			);
+		case "menu":
+			return (
+				<g {...props}>
+					<path d="M29 11H1a1 1 0 010-2h28a1 1 0 010 2z" />
+					<path d="M29 2H1a.945.945 0 01-1-1 .945.945 0 011-1h28a.945.945 0 011 1 .945.945 0 01-1 1z" />
+					<path d="M15 20H1a1 1 0 010-2h14a1 1 0 010 2z" />
 				</g>
 			);
 		default:

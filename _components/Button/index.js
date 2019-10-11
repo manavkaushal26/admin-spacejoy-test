@@ -66,12 +66,13 @@ const ButtonStyled = styled(ButtonBase)`
 	}};
 	font-family: ${({ variant }) => (variant === "primary" ? "Airbnb Cereal App Medium" : "inherit")};
 	font-weight: ${({ variant }) => (variant === "primary" ? "bold" : "normal")};
-	border: ${({ fill, theme }) => (fill === "solid" ? "none" : `1px solid ${theme.colors.fc.dark2}`)};
+	border: ${({ fill, theme }) =>
+		fill === "solid" || fill === "clean" ? "none" : `1px solid ${theme.colors.fc.dark2}`};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};
 	transition: all ease-in 0.15s;
 	&:hover {
-		box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.15);
+		box-shadow: ${({ fill }) => (fill === "clean" ? "none" : "0 2px 5px 0px rgba(0, 0, 0, 0.15)")};
 	}
 	&:disabled {
 		background: ${({ theme }) => theme.colors.bg.light2};
