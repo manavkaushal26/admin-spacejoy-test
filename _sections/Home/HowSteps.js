@@ -113,7 +113,7 @@ function HowSteps() {
 										<div className="col-12 col-md-4">
 											<StepStyled>
 												<Image
-													src="https://res.cloudinary.com/spacejoy/image/upload/v1570621975/web/cart_cdixtm.svg"
+													src="https://res.cloudinary.com/spacejoy/image/upload/v1570784859/web/cart-favorite_ozht5n.svg"
 													size="70px"
 												/>
 												<h3>Shopping for what you love is easy</h3>

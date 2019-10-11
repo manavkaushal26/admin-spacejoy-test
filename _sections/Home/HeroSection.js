@@ -77,7 +77,7 @@ export default function HeroSection() {
 								<TextLoop>
 									<span>Imagination</span>
 									<span>Living Room</span>
-									<span>Studio</span>
+									<span>Studio Room</span>
 									<span>Bedroom</span>
 									<span>Kid&apos;s Room</span>
 									<span>Entryway</span>
