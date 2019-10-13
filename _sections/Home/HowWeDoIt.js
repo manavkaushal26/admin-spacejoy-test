@@ -19,26 +19,23 @@ const StepTitle = styled.span`
 	margin: 0.5rem 0;
 	display: inline-block;
 	font-family: inherit;
+	font-size: 0.8em;
 `;
 
 const StepCount = styled.div`
 	cursor: pointer;
 	position: relative;
-	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	background: white;
-	border-radius: 15px;
-	height: 30px;
+	height: 20px;
 	width: 70px;
 	line-height: 29px;
 	margin: auto;
 	z-index: 1;
 	&.active {
-		border: 1px solid ${({ theme }) => theme.colors.accent};
-		background: ${({ theme }) => theme.colors.accent};
-		color: ${({ theme }) => theme.colors.white};
+		color: ${({ theme }) => theme.colors.accent};
+		font-weight: bold;
 		&:after,
 		&:before {
-			background: ${({ theme }) => theme.colors.accent};
+			border-top: 1px solid ${({ theme }) => theme.colors.accent};
 		}
 		& + {
 			${StepTitle} {
@@ -50,10 +47,9 @@ const StepCount = styled.div`
 	&:before {
 		content: "";
 		position: absolute;
-		top: 13px;
+		top: 14px;
 		width: 100px;
-		height: 1px;
-		background: ${({ theme }) => theme.colors.bg.dark2};
+		border-top: 1px dashed ${({ theme }) => theme.colors.bg.dark1};
 	}
 	&:before {
 		right: -100px;
@@ -85,7 +81,33 @@ const StepBlock = styled.div`
 const StepSlideStyled = styled.div`
 	display: ${({ active }) => (active ? "block" : "none")};
 	margin-bottom: 2rem;
-	span,
+`;
+
+const StepDescriptionStyled = styled.div`
+	position: relative;
+	padding-left: 2rem;
+	span {
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: rotate(270deg) translate3d(5px, -40px, 0px);
+		transform-origin: right;
+		color: ${({ theme }) => theme.colors.fc.dark3};
+		&:after {
+			content: "";
+			background: ${({ theme }) => theme.colors.mild.red};
+			position: absolute;
+			height: 20px;
+			width: 20px;
+			border-radius: 10px;
+			top: 0;
+			left: 10px;
+			transform: scale(10);
+			@media (max-width: 576px) {
+				transform: scale(5);
+			}
+		}
+	}
 	p {
 		color: ${({ theme }) => theme.colors.fc.dark2};
 	}
@@ -94,7 +116,7 @@ const StepSlideStyled = styled.div`
 function HowWeDoIt() {
 	const [slideActive, setSlideActive] = useState(1);
 
-	const handleClick = step => setSlideActive(step);
+	const handleStepClick = step => setSlideActive(step);
 
 	return (
 		<SectionWrapper>
@@ -107,23 +129,23 @@ function HowWeDoIt() {
 					<div className="col-12 col-xs-6">
 						<StepperWrapper>
 							<StepBlock>
-								<StepCount className="active" onClick={() => handleClick(1)}>
-									1
+								<StepCount className="active" onClick={() => handleStepClick(1)}>
+									ONE
 								</StepCount>
 								<StepTitle>Set your budget & style</StepTitle>
 							</StepBlock>
 							<StepBlock>
 								<StepCount
 									className={slideActive > 1 && slideActive <= 3 ? "active" : ""}
-									onClick={() => handleClick(2)}
+									onClick={() => handleStepClick(2)}
 								>
-									2
+									TWO
 								</StepCount>
 								<StepTitle>Get designs & revise</StepTitle>
 							</StepBlock>
 							<StepBlock>
-								<StepCount className={slideActive === 3 ? "active" : ""} onClick={() => handleClick(3)}>
-									3
+								<StepCount className={slideActive === 3 ? "active" : ""} onClick={() => handleStepClick(3)}>
+									THREE
 								</StepCount>
 								<StepTitle>Shop from your designs</StepTitle>
 							</StepBlock>
@@ -133,12 +155,17 @@ function HowWeDoIt() {
 				<StepSlideStyled active={slideActive === 1}>
 					<div className="grid align-center justify-space-around">
 						<div className="col-12 col-xs-4">
-							<span>01</span>
-							<h2>Set your budget & style</h2>
-							<p>
-								Start your free trial by uploading images of your room and tell us your budget, your requirements and
-								most of all, your unique style and taste
-							</p>
+							<StepDescriptionStyled>
+								<span>STEP 1</span>
+								<h2>Set your budget & style</h2>
+								<p>
+									Start your free trial by uploading images of your room and tell us your budget, your requirements and
+									most of all, your unique style and taste
+								</p>
+								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(2)}>
+									STEP 2
+								</Button>
+							</StepDescriptionStyled>
 						</div>
 						<div className="col-12 col-xs-5">
 							<Image
@@ -151,12 +178,17 @@ function HowWeDoIt() {
 				<StepSlideStyled active={slideActive === 2}>
 					<div className="grid align-center justify-space-around">
 						<div className="col-12 col-xs-4">
-							<span>02</span>
-							<h2>Get designs & revise</h2>
-							<p>
-								Our designers will then present two designs which you can explore in 3D. Work with our designers and
-								edit with ease on our interactive app to finalise your design
-							</p>
+							<StepDescriptionStyled>
+								<span>STEP 2</span>
+								<h2>Get designs & revise</h2>
+								<p>
+									Our designers will then present two designs which you can explore in 3D. Work with our designers and
+									edit with ease on our interactive app to finalise your design
+								</p>
+								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(3)}>
+									STEP 3
+								</Button>
+							</StepDescriptionStyled>
 						</div>
 						<div className="col-12 col-xs-5">
 							<Image
@@ -169,12 +201,17 @@ function HowWeDoIt() {
 				<StepSlideStyled active={slideActive === 3}>
 					<div className="grid align-center justify-space-around">
 						<div className="col-12 col-xs-4">
-							<span>03</span>
-							<h2>Shop from your designs</h2>
-							<p>
-								Shop for what you love, directly from your designs. We will find you the best deals for furniture and
-								decor products from your favorite brands.
-							</p>
+							<StepDescriptionStyled>
+								<span>STEP 3</span>
+								<h2>Shop from your designs</h2>
+								<p>
+									Shop for what you love, directly from your designs. We will find you the best deals for furniture and
+									decor products from your favorite brands.
+								</p>
+								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(1)}>
+									Repeat
+								</Button>
+							</StepDescriptionStyled>
 						</div>
 						<div className="col-12 col-xs-5">
 							<Image
