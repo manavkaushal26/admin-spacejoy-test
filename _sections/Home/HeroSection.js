@@ -87,8 +87,18 @@ function HeroSection() {
 								Show us your room and let us design it for you in our 3D App. Within your budget, with your style and
 								with products you can buy
 							</HeroSubText>
-							<Button variant="primary" shape="rounded" size="lg" onClick={handleClick}>
-								DESIGN MY SPACE NOW <SVGIcon name="right" width={20} fill="white" />
+							<Button
+								variant="primary"
+								shape="rounded"
+								size="lg"
+								onClick={handleClick}
+								category="Web/HomePage"
+								action="StartFreeTrial"
+								label="FirstHomeScreen"
+								event="FreeTrial Clicked"
+								data={{ sectionName: "HeroSection" }}
+							>
+								Start Your Free Trial <SVGIcon name="right" width={20} fill="white" />
 							</Button>
 							<Link href={{ pathname: "/designProjects" }} as="/designProjects">
 								<a href="/designProjects">

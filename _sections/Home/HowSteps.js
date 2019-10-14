@@ -129,6 +129,11 @@ function HowSteps() {
 												size="lg"
 												onClick={handleClick}
 												style={{ position: "relative", bottom: "-2rem" }}
+												category="Web/HomePage"
+												action="StartFreeTrial"
+												label="WhatIsSpacejoy"
+												event="FreeTrial Clicked"
+												data={{ sectionName: "WhatIsSpacejoy" }}
 											>
 												START YOUR FREE TRIAL
 											</Button>

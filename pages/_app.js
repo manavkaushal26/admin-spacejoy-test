@@ -1,5 +1,5 @@
 import theme from "@theme/index";
-import { initGA, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
+import { initAnalytics, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
@@ -14,7 +14,7 @@ export default class MyApp extends App {
 
 	componentDidMount() {
 		if (!window.GA_INITIALIZED) {
-			initGA();
+			initAnalytics();
 			window.GA_INITIALIZED = true;
 		}
 		LandingPage({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });

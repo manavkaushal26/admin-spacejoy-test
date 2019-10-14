@@ -1,3 +1,4 @@
+import ClevertapReact from "clevertap-react";
 import ReactGA from "react-ga";
 import { page } from "./config";
 
@@ -19,9 +20,10 @@ const dataToPush = (data, type) => {
 	}
 };
 
-const initGA = () => {
+const initAnalytics = () => {
 	if (prod) {
 		ReactGA.initialize(page.ga);
+		ClevertapReact.initialize(page.CLEVERTAP_ACCOUNT_ID);
 	}
 };
 
@@ -29,6 +31,20 @@ const logPageView = () => {
 	if (prod) {
 		ReactGA.set({ page: window.location.pathname });
 		ReactGA.pageview(window.location.pathname);
+	}
+};
+
+const cleverTapPush = (category, action, value, label, event, data) => {
+	if (prod) {
+		ClevertapReact.event(event, {
+			...data,
+			PageName: window.location.pathname,
+			Category: category,
+			Action: action,
+			Value: value,
+			Label: label,
+			Date: new Date()
+		});
 	}
 };
 
@@ -44,9 +60,10 @@ const logException = (description = "", fatal = false) => {
 	}
 };
 
-const PushEvent = (category, action, label, value, data) => {
+const PushEvent = (category, action, label, value, event, data) => {
 	dataToPush(data, GAEventName.click);
 	logEvent(category, action, label, value);
+	cleverTapPush(category, action, label, value, event, data);
 };
 
 const LandingPage = data => {
@@ -63,4 +80,4 @@ const PwaInstalled = data => {
 	dataToPush(data, GAEventName.PWAInstalled);
 };
 
-export { PushEvent, LandingPage, RouteChange, PwaInstalled, initGA, logException };
+export { PushEvent, LandingPage, RouteChange, PwaInstalled, initAnalytics, logException };
