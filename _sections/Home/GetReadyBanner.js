@@ -20,7 +20,7 @@ export default function GetReadyBanner() {
 				<SectionHeader
 					light
 					title="Ready to get started?"
-					description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore"
+					description="When your budget and style meet our designers, you get 3D designs of your space that you can edit, finalize and shop on our app"
 				/>
 				<div className="grid align-center text-center">
 					<ButtonStyled shape="rounded" fill="ghost">

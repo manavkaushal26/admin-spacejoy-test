@@ -129,9 +129,10 @@ function index() {
 							</div>
 							<div className="col-xs-9">
 								<HappinessSealStyled>
-									There is really just one thing we want - to instil happiness in the form of a stylish home. Once
-									you&apos;ve made the payment, if at any point you feel otherwise, we&apos;ll be happy to rectify. In
-									case you still are not convinced we promise to give you, your money back!
+									Once you&apos;ve made the payment, if at any point you feel you&apos;re not happy with our services,
+									we&apos;ll rectify till you love what you see. In case you still are not convinced we promise to give
+									you your money back! There is just one thing we want - to instill happiness in the form of a stylish
+									home.
 								</HappinessSealStyled>
 								<div className="grid">
 									<div className="col-xs-12">

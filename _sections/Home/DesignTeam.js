@@ -43,8 +43,8 @@ function DesignTeam() {
 							<div className="col-12 col-md-4 text-center align-self-center">
 								<ExtraCardStyled>
 									<Image
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1570782032/web/temp_gy2xzj.jpg"
-										size="150px"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1571054987/web/quote_fqabdm.png"
+										size="170px"
 									/>
 									<p>Let&apos;s get started</p>
 									<Button
