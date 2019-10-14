@@ -4,7 +4,7 @@ import { page } from "./config";
 
 const prod = process.env.NODE_ENV === "production";
 
-const GAEventName = {
+const EventName = {
 	click: "Click",
 	landingPage: "LandingPage",
 	routeChange: "RouteChange",
@@ -61,23 +61,25 @@ const logException = (description = "", fatal = false) => {
 };
 
 const PushEvent = (category, action, label, value, event, data) => {
-	dataToPush(data, GAEventName.click);
+	dataToPush(data, EventName.click);
 	logEvent(category, action, label, value);
 	cleverTapPush(category, action, label, value, event, data);
 };
 
 const LandingPage = data => {
-	dataToPush(data, GAEventName.landingPage);
+	dataToPush(data, EventName.landingPage);
 	logPageView();
+	cleverTapPush(null, null, null, null, EventName.landingPage, data);
 };
 
 const RouteChange = data => {
-	dataToPush(data, GAEventName.routeChange);
+	dataToPush(data, EventName.routeChange);
 	logPageView();
+	cleverTapPush(null, null, null, null, EventName.routeChange, data);
 };
 
 const PwaInstalled = data => {
-	dataToPush(data, GAEventName.PWAInstalled);
+	dataToPush(data, EventName.PWAInstalled);
 };
 
 export { PushEvent, LandingPage, RouteChange, PwaInstalled, initAnalytics, logException };
