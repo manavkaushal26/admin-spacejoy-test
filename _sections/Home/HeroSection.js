@@ -84,8 +84,8 @@ function HeroSection() {
 								</TextLoop>
 							</HeroText>
 							<HeroSubText>
-								Show us your room and let us design it for you in our 3D App. Within your budget, with your style and
-								with products you can buy
+								Show us your room and let us design it for you in our 3D App. Within your budget, in your style and with
+								products you can buy
 							</HeroSubText>
 							<Button
 								variant="primary"
