@@ -92,7 +92,6 @@ function HeroSection() {
 								shape="rounded"
 								size="lg"
 								onClick={handleClick}
-								category="Web/HomePage"
 								action="StartFreeTrial"
 								label="FirstHomeScreen"
 								event="FreeTrial Clicked"

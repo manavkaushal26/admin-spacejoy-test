@@ -82,10 +82,10 @@ const ButtonStyled = styled(ButtonBase)`
 `;
 
 function Button(props) {
-	const { children, onClick, event, data, raw, submitInProgress, category, action, label, value } = props;
+	const { children, onClick, raw, submitInProgress, action, label, value, event, data } = props;
 	const onClickWithGA = e => {
 		onClick(e);
-		PushEvent(category, action, label, value, event, data);
+		PushEvent(action, label, value, event, data);
 	};
 	return (
 		<>
@@ -113,7 +113,6 @@ Button.defaultProps = {
 	full: false,
 	raw: false,
 	submitInProgress: false,
-	category: "",
 	action: "",
 	value: "",
 	label: "",
@@ -132,7 +131,6 @@ Button.propTypes = {
 	full: PropTypes.bool,
 	raw: PropTypes.bool,
 	submitInProgress: PropTypes.bool,
-	category: PropTypes.string,
 	action: PropTypes.string,
 	label: PropTypes.string,
 	event: PropTypes.string,
