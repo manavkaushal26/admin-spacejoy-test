@@ -44,10 +44,9 @@ function checkout({ isServer, data, authVerification }) {
 
 checkout.getInitialProps = async ctx => {
 	const res = await fetcher({ ctx, endPoint, method: "GET" });
-	if (res.status <= 300) {
-		const resData = await res.json();
-		if (resData.status === "success") {
-			const { data } = resData;
+	if (res.statusCode <= 300) {
+		if (res.status === "success") {
+			const { data } = res;
 			return { data };
 		}
 	}

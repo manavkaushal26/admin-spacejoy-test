@@ -118,8 +118,8 @@ function withAuthVerification(WrappedComponent) {
 					return { ...componentProps, authVerification, isServer };
 				}
 				const res = await fetcher({ ctx, endPoint: endPointAuthCheck, method: "GET" });
-				if (res.status <= 300) {
-					const authVerification = await res.json();
+				if (res.statusCode <= 300) {
+					const authVerification = res.data;
 					if (!isServer && window) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
 					return { ...componentProps, authVerification, isServer };
 				}
