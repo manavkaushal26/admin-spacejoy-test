@@ -1,5 +1,6 @@
 import theme from "@theme/index";
 import { initAnalytics, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
+import { guestLogin } from "@utils/auth";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
@@ -13,6 +14,7 @@ export default class MyApp extends App {
 	getUtmParam = url => url.split("utm_")[1];
 
 	componentDidMount() {
+		guestLogin();
 		if (!window.GA_INITIALIZED) {
 			initAnalytics();
 			window.GA_INITIALIZED = true;

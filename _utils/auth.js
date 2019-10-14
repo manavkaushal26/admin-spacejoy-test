@@ -5,6 +5,7 @@ import fetcher from "./fetcher";
 import getToken from "./getToken";
 
 const endPointAuthCheck = "/auth/check";
+const endPointGuestSignup = "/auth/register/guest";
 
 function redirectToLocation({ pathname, query, url, res = {} }) {
 	if (typeof window !== "undefined") {
@@ -21,9 +22,29 @@ function redirectToLocation({ pathname, query, url, res = {} }) {
 }
 
 function login({ token, redirectUrl }) {
-	const url = redirectUrl || "/dashboard";
 	cookie.set("token", token, { expires: 1 });
-	redirectToLocation({ pathname: url, query: {}, url });
+	if (redirectUrl !== null) {
+		const url = redirectUrl || "/dashboard";
+		redirectToLocation({ pathname: url, query: {}, url });
+	}
+}
+
+async function guestLogin() {
+	if (getToken()) return;
+	const body = {
+		email: "guest5@gmail.com",
+		password: "guest",
+		firstName: "guest",
+		lastName: "",
+		region: "",
+		role: "customer"
+	};
+
+	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
+	if (response.statusCode <= 300) {
+		const { sessionKey } = response.data;
+		await login({ token: sessionKey, redirectUrl: null });
+	}
 }
 
 function logout() {
@@ -92,9 +113,8 @@ function withAuthVerification(WrappedComponent) {
 			const token = getToken(ctx);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
 			if (token) {
-				const authVerificationFromLS = window.localStorage.getItem("authVerification");
-				if (!isServer && authVerificationFromLS) {
-					const authVerification = JSON.parse(authVerificationFromLS);
+				if (!isServer && window.localStorage.getItem("authVerification")) {
+					const authVerification = JSON.parse(window.localStorage.getItem("authVerification"));
 					return { ...componentProps, authVerification, isServer };
 				}
 				const res = await fetcher({ ctx, endPoint: endPointAuthCheck, method: "GET" });
@@ -113,4 +133,4 @@ function withAuthVerification(WrappedComponent) {
 	};
 }
 
-export { login, logout, withAuthSync, withAuthVerification, auth, redirectToLocation };
+export { login, guestLogin, logout, withAuthSync, withAuthVerification, auth, redirectToLocation };

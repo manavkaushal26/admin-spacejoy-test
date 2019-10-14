@@ -3,8 +3,9 @@ import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
 import { company } from "@utils/config";
-import fetcher from "@utils/fetcher";
+// import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
+import fetch from "isomorphic-unfetch";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
@@ -59,8 +60,9 @@ designView.getInitialProps = async ctx => {
 		query: { designName, designId }
 	} = ctx;
 	const isServer = !!ctx.req;
-	const endPoint = `/demodesign/${designId}`;
-	const res = await fetcher({ ctx, endPoint, method: "GET" });
+	const endPoint = `//api.homefuly.com/api/demodesign/${designId}`;
+	// const res = await fetcher({ ctx, endPoint, method: "GET" });
+	const res = await fetch(endPoint);
 	const resData = await res.json();
 	if (resData.status === "success") {
 		const { data } = resData;

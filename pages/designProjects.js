@@ -4,9 +4,9 @@ import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
 import { cloudinary, company } from "@utils/config";
-import fetcher from "@utils/fetcher";
 import { removeSpaces } from "@utils/helper";
 import IndexPageMeta from "@utils/meta";
+import fetch from "isomorphic-unfetch";
 import Head from "next/head";
 import Link from "next/link";
 import PropTypes from "prop-types";
@@ -59,7 +59,7 @@ class designProjects extends PureComponent {
 	fetchData = async () => {
 		const { pageCount } = this.state;
 		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
-		const res = await fetcher({ endPoint: `/demodesigns${dataFeed}`, method: "GET" });
+		const res = await fetch(`//api.homefuly.com/api/demodesigns${dataFeed}`);
 		const resData = await res.json();
 		if (resData.status === "success") {
 			if (resData.data.count >= 1) {
