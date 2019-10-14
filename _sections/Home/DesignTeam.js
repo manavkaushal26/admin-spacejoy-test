@@ -18,8 +18,8 @@ function DesignTeam() {
 		<SectionWrapper>
 			<div className="container">
 				<SectionHeader
-					title="Meet Our Design Experts"
-					description="Our designers will transform your space into a stunningly beautiful room"
+					title="Our deck of designers"
+					description="Our team of incredible designers can’t wait to get started. They’ll design your space and take it to the next level while working with you, for you"
 				/>
 				<div className="grid align-center">
 					<div className="col-xs-12">
@@ -46,20 +46,20 @@ function DesignTeam() {
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570782032/web/temp_gy2xzj.jpg"
 										size="150px"
 									/>
-									<p>Lorem ipsum dolor sit amet consectetur</p>
+									<p>Let&apos;s get started</p>
 									<Button
 										fill="ghost"
 										shape="flat"
 										size="md"
 										onClick={() =>
 											redirectToLocation({
-												pathname: "/designProjects",
+												pathname: "/designMySpace",
 												query: {},
-												url: "/designProjects"
+												url: "/designMySpace"
 											})
 										}
 									>
-										DESIGN MY SPACE
+										Start Your Free Trial
 									</Button>
 								</ExtraCardStyled>
 							</div>

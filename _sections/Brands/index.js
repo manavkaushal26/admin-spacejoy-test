@@ -19,6 +19,9 @@ const PartnerBrandStyled = styled.div`
 		transition: opacity linear 100ms;
 		opacity: 0.8;
 	}
+	@media (max-width: 576px) {
+		height: 75px;
+	}
 `;
 
 export default function index() {

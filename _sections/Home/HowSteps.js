@@ -93,34 +93,31 @@ function HowSteps() {
 										<div className="col-12 col-md-4">
 											<StepStyled>
 												<Image
-													src="https://res.cloudinary.com/spacejoy/image/upload/v1570714758/web/blueprint_zawtzn.svg"
+													src="https://res.cloudinary.com/spacejoy/image/upload/v1571047876/web/Tool_e7tcsv.svg"
 													size="70px"
 												/>
-												<h3>Our designers weave magic in your room</h3>
+												<h3>Our designers weave magic</h3>
 												<p>Our designers will present two designs in 3D based on your needs, budget and style.</p>
 											</StepStyled>
 										</div>
 										<div className="col-12 col-md-4">
 											<StepStyled>
 												<Image
-													src="https://res.cloudinary.com/spacejoy/image/upload/v1570621975/web/design_iqvcxi.svg"
+													src="https://res.cloudinary.com/spacejoy/image/upload/v1571047877/web/Computer_wsgn1u.svg"
 													size="70px"
 												/>
-												<h3>There’s room for your imagination</h3>
-												<p>With our interactive 3D mobile app, move, swap, rotate décor- anytime and anywhere.</p>
+												<h3>Imagine more with our App</h3>
+												<p>With our interactive 3D mobile App, move, swap, rotate products - anytime and anywhere</p>
 											</StepStyled>
 										</div>
 										<div className="col-12 col-md-4">
 											<StepStyled>
 												<Image
-													src="https://res.cloudinary.com/spacejoy/image/upload/v1570784859/web/cart-favorite_ozht5n.svg"
+													src="https://res.cloudinary.com/spacejoy/image/upload/v1571047817/web/Cart_r0lccy.svg"
 													size="70px"
 												/>
-												<h3>Shopping for what you love is easy</h3>
-												<p>
-													Shop immediately for the furniture and décor that we use for your designs- all within your
-													budget and style.
-												</p>
+												<h3>Shop from your designs</h3>
+												<p>Use the App to shop for furniture & décor that we include in your designs.</p>
 											</StepStyled>
 										</div>
 										<div className="col-12">
@@ -134,7 +131,7 @@ function HowSteps() {
 												event="FreeTrial Clicked"
 												data={{ sectionName: "WhatIsSpacejoy" }}
 											>
-												START YOUR FREE TRIAL
+												Start your free trial
 											</Button>
 										</div>
 									</div>

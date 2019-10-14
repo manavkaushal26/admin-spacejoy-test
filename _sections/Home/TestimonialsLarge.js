@@ -31,7 +31,7 @@ export default function TestimonialsLarge() {
 			<div className="container">
 				<SectionHeader
 					title="What Our Customers Say"
-					description="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore"
+					description="They’ll tell you why they love us. Hear it straight from our beloved customers"
 				/>
 				<div className="grid text-center align-center">
 					<div className="col-12 col-xs-3 text-left">
@@ -39,7 +39,7 @@ export default function TestimonialsLarge() {
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
 							size="120px"
 						/>
-						<h3>Living room for Erika Lee</h3>
+						<h3>Joyous homes, Happy customers</h3>
 						<small>Denver, Colarado</small>
 						<p>
 							Our designer from Spacejoy immediately caught on to our vision and delivered. The execution was flawless.

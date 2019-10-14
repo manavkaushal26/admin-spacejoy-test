@@ -20,8 +20,8 @@ function ExploreDesigns() {
 		<SectionWrapper>
 			<div className="container">
 				<SectionHeader
-					title="Explore Our Designs"
-					description="Take a look for yourself at spaces that brought joy to others. Shop for furniture and décor directly from the designs"
+					title="Look! We designed this"
+					description="Explore spaces that spark ultimate joy! That’s not it, love something that you see? You can shop for products directly from each design"
 				/>
 				<div className="grid">
 					<div className="col-12 col-xs-3">

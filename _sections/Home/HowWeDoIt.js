@@ -122,15 +122,15 @@ function HowWeDoIt() {
 		<SectionWrapper>
 			<div className="container">
 				<SectionHeader
-					title="How we do it"
-					description="Get your room designed in 3D by designers. Get a glimpse of what it can look like. Upgrade to get access to the design and the shopping list in our App, Make/Request Changes, finalize a design and shop"
+					title="How does Spacejoy work?"
+					description="Start your free trial. Get a glimpse of the magic we’ll weave with your space. Upgrade when you love what you see"
 				/>
 				<div className="grid align-center text-center">
 					<div className="col-12 col-xs-6">
 						<StepperWrapper>
 							<StepBlock>
 								<StepCount className="active" onClick={() => handleStepClick(1)}>
-									ONE
+									1
 								</StepCount>
 								<StepTitle>Set your budget & style</StepTitle>
 							</StepBlock>
@@ -139,13 +139,13 @@ function HowWeDoIt() {
 									className={slideActive > 1 && slideActive <= 3 ? "active" : ""}
 									onClick={() => handleStepClick(2)}
 								>
-									TWO
+									2
 								</StepCount>
 								<StepTitle>Get designs & revise</StepTitle>
 							</StepBlock>
 							<StepBlock>
 								<StepCount className={slideActive === 3 ? "active" : ""} onClick={() => handleStepClick(3)}>
-									THREE
+									3
 								</StepCount>
 								<StepTitle>Shop from your designs</StepTitle>
 							</StepBlock>
@@ -159,8 +159,8 @@ function HowWeDoIt() {
 								<span>STEP 1</span>
 								<h2>Set your budget & style</h2>
 								<p>
-									Start your free trial by uploading images of your room and tell us your budget, your requirements and
-									most of all, your unique style and taste
+									Start your free trial by uploading images of your room. Set your budget, tell us about your
+									requirements and most of all, your unique style and taste
 								</p>
 								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(2)}>
 									STEP 2
@@ -182,8 +182,8 @@ function HowWeDoIt() {
 								<span>STEP 2</span>
 								<h2>Get designs & revise</h2>
 								<p>
-									Our designers will then present two designs which you can explore in 3D. Work with our designers and
-									edit with ease on our interactive app to finalise your design
+									For starters, our designers will present 2 designs which you can explore in 3D. Love what you see?
+									Edit with ease on our interactive app and finalize your design
 								</p>
 								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(3)}>
 									STEP 3
@@ -205,8 +205,8 @@ function HowWeDoIt() {
 								<span>STEP 3</span>
 								<h2>Shop from your designs</h2>
 								<p>
-									Shop for what you love, directly from your designs. We will find you the best deals for furniture and
-									decor products from your favorite brands.
+									Shop for what you love, directly from your designs. We will find you the best deals on furniture and
+									decor from all your favorite brands
 								</p>
 								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(1)}>
 									Repeat

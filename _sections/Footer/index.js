@@ -102,7 +102,8 @@ function index() {
 									<a href={company.app.ios}>
 										<Image
 											size="md"
-											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1567249447/shared/appstore_porgmf.png`}
+											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1571050296/shared/app-store_dvz21i.png`}
+											alt="app store"
 										/>
 									</a>
 								</li>
@@ -110,7 +111,8 @@ function index() {
 									<a href={company.app.android}>
 										<Image
 											size="md"
-											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1567249447/shared/playstore_rkjmgk.png`}
+											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1571050296/shared/play-store_ncfocx.png`}
+											alt="play store"
 										/>
 									</a>
 								</li>
