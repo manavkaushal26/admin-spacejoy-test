@@ -19,14 +19,13 @@ async function fetcher({ ctx, endPoint, method, body }) {
 					body: JSON.stringify(body)
 			  };
 	const response = await fetch(page.apiBaseUrl + endPoint, options);
-	console.log("fetcher", response);
-	const { status, statusCode, data, context, message, group } = response;
-	const tmpMapper = { status, statusCode, data, context, message, group };
-	if (response.status === 200) {
+	if (response.status) {
 		const resData = await response.json();
+		console.log("response", response);
+		console.log("resData", resData);
 		return resData;
 	}
-	return tmpMapper;
+	return response;
 }
 
 export default fetcher;

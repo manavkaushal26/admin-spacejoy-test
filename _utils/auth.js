@@ -92,8 +92,9 @@ function withAuthVerification(WrappedComponent) {
 			const token = getToken(ctx);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
 			if (token) {
-				if (!isServer && localStorage.getItem("authVerification")) {
-					const authVerification = JSON.parse(window.localStorage.getItem("authVerification"));
+				const authVerificationFromLS = window.localStorage.getItem("authVerification");
+				if (!isServer && authVerificationFromLS) {
+					const authVerification = JSON.parse(authVerificationFromLS);
 					return { ...componentProps, authVerification, isServer };
 				}
 				const res = await fetcher({ ctx, endPoint: endPointAuthCheck, method: "GET" });

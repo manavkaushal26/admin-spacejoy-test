@@ -5,17 +5,26 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { ValidateEmail, ValidateMobile } from "./Validation";
 
+const ErrorText = "error";
+const SuccessText = "success";
+
+const FormStatusStyled = styled.div`
+	margin: 1rem 0 2rem 0;
+`;
+
 const FormWrapperStyled = styled.form`
 	width: 100%;
 	text-align: left;
-	padding: ${({ status }) => (status === "error" ? "1rem" : "0rem")};
+	padding: ${({ status }) => (status !== "" ? "1rem" : "0rem")};
 	border-radius: 2px;
-	background-color: ${({ status, theme }) => (status === "error" ? theme.colors.mild.red : theme.colors.white)};
-`;
-
-const FormStatusStyled = styled.div`
-	color: ${({ theme }) => theme.colors.red};
-	margin: 1rem 0 2rem 0;
+	&.error {
+		background-color: ${({ theme }) => theme.colors.mild.red};
+		color: ${({ theme }) => theme.colors.red};
+	}
+	&.success {
+		background-color: ${({ theme }) => theme.colors.mild.green};
+		color: ${({ theme }) => theme.colors.green};
+	}
 `;
 
 class FormBox extends Component {
@@ -28,23 +37,25 @@ class FormBox extends Component {
 				error: ""
 			};
 		});
-		this.state = { ...stateObj, formStatus: "", submitInProgress: false, address: {} };
+		this.state = { ...stateObj, formStatus: "", formMessage: "", submitInProgress: false, address: {} };
 	}
 
 	handleSubmit = async event => {
 		event.preventDefault();
 		const { state } = this;
 		const { destination, name, redirectUrl } = this.props;
-		this.setState({ submitInProgress: true });
+		this.setState({ formStatus: "", formMessage: "", submitInProgress: true });
 		function reqBody() {
 			if (name === "signup") {
 				return {
-					email: state.userEmail.value,
-					password: state.userPassword.value,
-					firstName: state.userName.value,
-					lastName: "",
-					tnC: state.userCommutePermissionGranted.value,
-					privacyPolicy: state.userCommutePermissionGranted.value
+					data: {
+						email: state.userEmail.value,
+						password: state.userPassword.value,
+						firstName: state.userName.value,
+						lastName: "",
+						tnC: state.userCommutePermissionGranted.value,
+						privacyPolicy: state.userCommutePermissionGranted.value
+					}
 				};
 			}
 			if (name === "login") {
@@ -145,19 +156,20 @@ class FormBox extends Component {
 			return {};
 		}
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
-		console.log("response", response);
-		if (response.status === 200) {
-			this.setState({ formStatus: response.status, submitInProgress: false });
+		if (response.statusCode <= 300) {
 			if (name === "login" || name === "signup") {
-				const { token } = response;
+				const { token } = response.data;
 				await login({ token, redirectUrl });
 			}
 			if (redirectUrl && redirectUrl !== "") {
 				redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
 			}
-		} else {
-			this.setState({ formStatus: response.statusText, submitInProgress: false });
 		}
+		this.setState({
+			formStatus: response.statusCode <= 300 ? SuccessText : ErrorText,
+			formMessage: response.message,
+			submitInProgress: false
+		});
 	};
 
 	handleChange = event => {
@@ -189,7 +201,7 @@ class FormBox extends Component {
 					? this.setState({ [name]: { value: checked } })
 					: this.setState({ [name]: { value: checked, error: target.getAttribute("data-error") } });
 			default:
-				return this.setState({ [name]: { value, error: "Error" } });
+				return this.setState({ [name]: { value, error: ErrorText } });
 		}
 	};
 
@@ -199,12 +211,12 @@ class FormBox extends Component {
 		const { children, description } = this.props;
 		const { state } = this;
 		return (
-			<FormWrapperStyled
-				aria-labelledby={description}
-				onSubmit={this.handleSubmit}
-				status={state.formStatus === "Unauthorized" ? "error" : "success"}
-			>
-				{state.formStatus && <FormStatusStyled>{state.formStatus}</FormStatusStyled>}
+			<FormWrapperStyled aria-labelledby={description} onSubmit={this.handleSubmit} className={state.formStatus}>
+				{state.formStatus && (
+					<FormStatusStyled>
+						{state.formStatus} - {state.formMessage}
+					</FormStatusStyled>
+				)}
 				{React.Children.map(children, child => {
 					const { name, type } = child.props;
 					return type !== "button" && type !== "submit"
