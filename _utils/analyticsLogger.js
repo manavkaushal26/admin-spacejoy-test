@@ -62,7 +62,6 @@ const logException = (description = "", fatal = false) => {
 
 const PushEvent = (action, label, value, event, data) => {
 	const categoryLabel = `web${window.location.pathname}`;
-	console.log(action, label, value, event, data, categoryLabel);
 	dataToPush(data, EventName.click);
 	logEvent(categoryLabel, action, label, value);
 	cleverTapPush(categoryLabel, action, label, value, event, data);
@@ -71,14 +70,12 @@ const PushEvent = (action, label, value, event, data) => {
 const LandingPage = data => {
 	dataToPush(data, EventName.landingPage);
 	logPageView();
-	console.log(EventName.landingPage, data);
 	cleverTapPush(null, null, null, null, EventName.landingPage, data);
 };
 
 const RouteChange = data => {
 	dataToPush(data, EventName.routeChange);
 	logPageView();
-	console.log(EventName.routeChange, data);
 	cleverTapPush(null, null, null, null, EventName.routeChange, data);
 };
 

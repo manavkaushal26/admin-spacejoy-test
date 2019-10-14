@@ -23,7 +23,14 @@ export default function GetReadyBanner() {
 					description="When your budget and style meet our designers, you get 3D designs of your space that you can edit, finalize and shop on our app"
 				/>
 				<div className="grid align-center text-center">
-					<ButtonStyled shape="rounded" fill="ghost">
+					<ButtonStyled
+						shape="rounded"
+						fill="ghost"
+						action="ReadyToStart"
+						label="ReadyToStart"
+						event="StartFreeTrial"
+						data={{ sectionName: "Ready to get started" }}
+					>
 						Start your free trial
 					</ButtonStyled>
 				</div>

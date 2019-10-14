@@ -61,6 +61,10 @@ function ExploreDesigns() {
 								url: "/designProjects"
 							})
 						}
+						action="ExploreDesigns"
+						label="ExploreDesigns"
+						event="ExploreMore"
+						data={{ sectionName: "ExploreDesigns" }}
 					>
 						Explore More
 					</Button>

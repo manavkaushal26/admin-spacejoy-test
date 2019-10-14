@@ -162,7 +162,16 @@ function HowWeDoIt() {
 									Start your free trial by uploading images of your room. Set your budget, tell us about your
 									requirements and most of all, your unique style and taste
 								</p>
-								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(2)}>
+								<Button
+									variant="ghost"
+									fill="ghost"
+									size="xs"
+									onClick={() => handleStepClick(2)}
+									action="Step2Button"
+									label="HowWeDoIt"
+									event="Step 2 Button"
+									data={{ sectionName: "HowWeDoIt" }}
+								>
 									STEP 2
 								</Button>
 							</StepDescriptionStyled>
@@ -185,7 +194,16 @@ function HowWeDoIt() {
 									For starters, our designers will present 2 designs which you can explore in 3D. Love what you see?
 									Edit with ease on our interactive app and finalize your design
 								</p>
-								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(3)}>
+								<Button
+									variant="ghost"
+									fill="ghost"
+									size="xs"
+									onClick={() => handleStepClick(3)}
+									action="Step3Button"
+									label="HowWeDoIt"
+									event="Step 3 Button"
+									data={{ sectionName: "HowWeDoIt" }}
+								>
 									STEP 3
 								</Button>
 							</StepDescriptionStyled>
@@ -208,7 +226,16 @@ function HowWeDoIt() {
 									Shop for what you love, directly from your designs. We will find you the best deals on furniture and
 									decor from all your favorite brands
 								</p>
-								<Button variant="ghost" fill="ghost" size="xs" onClick={() => handleStepClick(1)}>
+								<Button
+									variant="ghost"
+									fill="ghost"
+									size="xs"
+									onClick={() => handleStepClick(1)}
+									action="Repeat"
+									label="HowWeDoIt"
+									event="Repeat"
+									data={{ sectionName: "HowWeDoIt" }}
+								>
 									Repeat
 								</Button>
 							</StepDescriptionStyled>
@@ -222,7 +249,15 @@ function HowWeDoIt() {
 					</div>
 				</StepSlideStyled>
 				<div className="grid align-center text-center">
-					<Button fill="ghost">How it works</Button>
+					<Button
+						fill="ghost"
+						action="HowItWorks"
+						label="HowWeDoIt"
+						event="How it works"
+						data={{ sectionName: "HowWeDoIt" }}
+					>
+						How it works
+					</Button>
 				</div>
 			</div>
 		</SectionWrapper>
