@@ -2,9 +2,10 @@ import Button from "@components/Button";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import SectionHeader from "@sections/SectionHeader";
-import React, { useState } from "react";
+import fetcher from "@utils/fetcher";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { goToQuiz } from "./QuizHelper";
+import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 const SampleImageStyled = styled.div`
 	position: relative;
@@ -94,7 +95,24 @@ const RadioStyled = styled(Button)`
 `;
 
 function Question2() {
-	const [budget, setBudget] = useState("");
+	const quizId = 2;
+
+	const formId = localStorage.getItem("quizFormId");
+
+	const [budget, setBudget] = useState("skipped");
+
+	const [submitInProgress, setSubmitInProgress] = useState(false);
+
+	useEffect(() => {
+		fetcher({
+			endPoint: `/form/${formId}/${quizId}`,
+			method: "GET"
+		}).then(response => {
+			if (response.statusCode <= 300) {
+				setBudget(response.data);
+			}
+		});
+	}, []);
 
 	const handleClick = e => setBudget(e.target.value);
 
@@ -102,8 +120,21 @@ function Question2() {
 		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" }, as: "/designMySpace?quiz=1&plan=free" });
 	};
 
-	const handleNext = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "3", plan: "free" }, as: "/designMySpace?quiz=3&plan=free" });
+	const handleNext = async () => {
+		setSubmitInProgress(true);
+		const response = await fetcher({
+			endPoint: `/form/${formId}/${quizId}`,
+			method: "PUT",
+			body: quizReqBody(quizId, "Have a budget in mind?", budget)
+		});
+		if (response.statusCode <= 300) {
+			setSubmitInProgress(false);
+			goToQuiz({
+				pathname: "/designMySpace",
+				query: { quiz: "3", plan: "free" },
+				as: "/designMySpace?quiz=3&plan=free"
+			});
+		}
 	};
 
 	return (
@@ -232,7 +263,7 @@ function Question2() {
 						</div>
 						<div className="col-4 col-sm-8" />
 						<div className="col-4 col-sm-2">
-							<Button variant="primary" full size="sm" onClick={handleNext}>
+							<Button variant="primary" full size="sm" onClick={handleNext} submitInProgress={submitInProgress}>
 								Next
 							</Button>
 						</div>

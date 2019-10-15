@@ -6,15 +6,18 @@ import React, { useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 function QuizStart() {
+	const quizId = 0;
+
+	const formId = localStorage.getItem("quizFormId");
+
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	const handleClick = async () => {
 		setSubmitInProgress(true);
-		const body = quizReqBody(0, "begin quiz", "generate form id");
-		console.log("body", body);
+		const body = quizReqBody(quizId, "begin quiz", "generate form id");
 		const response = await fetcher({
-			endPoint: "/form",
-			method: "POST",
+			endPoint: formId ? `/form/${formId}/${quizId}` : "/form",
+			method: formId ? "PUT" : "POST",
 			body
 		});
 		if (response.statusCode <= 300) {

@@ -12,6 +12,8 @@ function Question1() {
 
 	const [roomType, setRoomType] = useState("skipped");
 
+	const [submitInProgress, setSubmitInProgress] = useState(false);
+
 	useEffect(() => {
 		fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
@@ -21,7 +23,7 @@ function Question1() {
 				setRoomType(response.data);
 			}
 		});
-	});
+	}, []);
 
 	const handleClick = e => setRoomType(e.target.value);
 
@@ -30,12 +32,14 @@ function Question1() {
 	};
 
 	const handleNext = async () => {
+		setSubmitInProgress(true);
 		const response = await fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "PUT",
-			body: quizReqBody(1, "Which room are you designing", roomType)
+			body: quizReqBody(quizId, "Which room are you designing", roomType)
 		});
 		if (response.statusCode <= 300) {
+			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
 				query: { quiz: "2", plan: "free" },
@@ -114,7 +118,7 @@ function Question1() {
 						</div>
 						<div className="col-4 col-sm-8" />
 						<div className="col-4 col-sm-2">
-							<Button variant="primary" full size="sm" onClick={handleNext}>
+							<Button variant="primary" full size="sm" onClick={handleNext} submitInProgress={submitInProgress}>
 								Next
 							</Button>
 						</div>
