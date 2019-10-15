@@ -9,7 +9,7 @@ import React, { Fragment } from "react";
 
 const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
 
-const endPoint = "/forms-user?source=designmyspace";
+const endPoint = "/form/user";
 
 function checkout({ isServer, data, authVerification }) {
 	return (

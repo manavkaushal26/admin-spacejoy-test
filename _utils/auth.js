@@ -22,6 +22,9 @@ function redirectToLocation({ pathname, query, url, res = {} }) {
 }
 
 function login({ token, redirectUrl }) {
+	cookie.remove("token");
+	cookie.remove("role");
+	window.localStorage.removeItem("authVerification");
 	cookie.set("token", token, { expires: 1 });
 	if (redirectUrl !== null) {
 		const url = redirectUrl || "/dashboard";
@@ -34,12 +37,18 @@ async function guestLogin() {
 	const body = {};
 	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
 	if (response.statusCode <= 300) {
-		const { token } = response.data;
-		await login({ token, redirectUrl: null });
+		console.log("response", response);
+		const {
+			token,
+			user: { role }
+		} = response.data;
+		login({ token, redirectUrl: null });
+		cookie.set("role", role, { expires: 1 });
 	}
 }
 
 function logout() {
+	cookie.remove("role");
 	cookie.remove("token");
 	window.localStorage.setItem("logout", Date.now());
 	window.localStorage.removeItem("authVerification");
@@ -52,12 +61,13 @@ function logout() {
 
 function auth(ctx) {
 	const token = getToken(ctx);
-	const redirect = {
-		pathname: "/auth",
-		query: { flow: "login", redirectUrl: ctx.pathname },
-		url: `/auth/login?redirectUrl=${ctx.pathname}`
-	};
-	if (!token) {
+	const role = cookie.get("role");
+	if (!token || role === "guest") {
+		const redirect = {
+			pathname: "/auth",
+			query: { flow: "login", redirectUrl: ctx.pathname },
+			url: `/auth/login?redirectUrl=${ctx.pathname}`
+		};
 		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
 	}
 	return token;

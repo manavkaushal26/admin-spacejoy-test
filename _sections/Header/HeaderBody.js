@@ -110,7 +110,7 @@ const HeaderBody = ({ authVerification }) => {
 					</ActiveLink>
 				</li>
 				<li>
-					{authVerification.role === "guest" && (
+					{(authVerification === {} || authVerification.role === "guest") && (
 						<ActiveLink
 							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/dashboard" } }}
 							as="/auth/login?redirectUrl=/dashboard"
@@ -119,25 +119,22 @@ const HeaderBody = ({ authVerification }) => {
 							Login
 						</ActiveLink>
 					)}
-					{authVerification.role !== "guest" && (
-						<>
-							<DropMenu>
-								<DropMenu.Header>
-									<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
-										<SVGIcon name="avatar" /> {authVerification.name}
-										{authVerification.role}
-									</ActiveLink>
-								</DropMenu.Header>
-								<DropMenu.Body>
-									<ActiveLink href={{ pathname: "/profile", query: {} }} as="/profile">
-										Profile
-									</ActiveLink>
-									<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
-										Logout
-									</Button>
-								</DropMenu.Body>
-							</DropMenu>
-						</>
+					{authVerification.role === "customer" && (
+						<DropMenu>
+							<DropMenu.Header>
+								<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
+									<SVGIcon name="avatar" /> {authVerification.name}
+								</ActiveLink>
+							</DropMenu.Header>
+							<DropMenu.Body>
+								<ActiveLink href={{ pathname: "/profile", query: {} }} as="/profile">
+									Profile
+								</ActiveLink>
+								<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
+									Logout
+								</Button>
+							</DropMenu.Body>
+						</DropMenu>
 					)}
 				</li>
 			</HorizontalListStyled>
