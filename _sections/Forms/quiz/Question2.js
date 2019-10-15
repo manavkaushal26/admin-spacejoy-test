@@ -4,7 +4,7 @@ import SVGIcon from "@components/SVGIcon";
 import React, { useState } from "react";
 import styled from "styled-components";
 import QuizHeader from "./QuizHeader";
-import goToQuiz from "./QuizHelper";
+import { goToQuiz } from "./QuizHelper";
 
 const SampleImageStyled = styled.div`
 	position: relative;
@@ -99,11 +99,11 @@ function Question2() {
 	const handleClick = e => setBudget(e.target.value);
 
 	const handlePrev = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" } }, "/designMySpace?quiz=1");
+		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" }, as: "/designMySpace?quiz=1&plan=free" });
 	};
 
 	const handleNext = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "3", plan: "free" } }, "/designMySpace?quiz=3");
+		goToQuiz({ pathname: "/designMySpace", query: { quiz: "3", plan: "free" }, as: "/designMySpace?quiz=3&plan=free" });
 	};
 
 	return (

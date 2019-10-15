@@ -2,7 +2,7 @@ import Button from "@components/Button";
 import Image from "@components/Image";
 import React, { useState } from "react";
 import QuizHeader from "./QuizHeader";
-import goToQuiz from "./QuizHelper";
+import { goToQuiz } from "./QuizHelper";
 
 function Question3() {
 	const [budget, setBudget] = useState("");

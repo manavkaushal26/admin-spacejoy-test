@@ -1,11 +1,12 @@
 import Button from "@components/Button";
 import RadioCard from "@sections/Cards/radio";
+import fetcher from "@utils/fetcher";
 import React, { useState } from "react";
 import QuizHeader from "./QuizHeader";
-import goToQuiz from "./QuizHelper";
+import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 function Question1() {
-	const [roomType, setRoomType] = useState("");
+	const [roomType, setRoomType] = useState("skipped");
 
 	const handleClick = e => setRoomType(e.target.value);
 
@@ -13,8 +14,19 @@ function Question1() {
 		goToQuiz({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
 	};
 
-	const handleNext = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "2", plan: "free" } }, "/designMySpace?quiz=2");
+	const handleNext = async () => {
+		const response = await fetcher({
+			endPoint: "/forms",
+			method: "POST",
+			body: quizReqBody(1, "Which room are you designing", roomType)
+		});
+		if (response.statusCode === 200) {
+			goToQuiz({
+				pathname: "/designMySpace",
+				query: { quiz: "2", plan: "free" },
+				as: "/designMySpace?quiz=2&plan=free"
+			});
+		}
 	};
 
 	return (

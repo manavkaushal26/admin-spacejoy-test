@@ -1,12 +1,26 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
+import fetcher from "@utils/fetcher";
 import React from "react";
 import QuizHeader from "./QuizHeader";
-import goToQuiz from "./QuizHelper";
+import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 function QuizStart() {
-	const handleClick = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" } }, "/designMySpace?quiz=1");
+	const handleClick = async () => {
+		const body = quizReqBody(0, "begin quiz", "generate form id");
+		console.log("body", body);
+		const response = await fetcher({
+			endPoint: "/forms",
+			method: "POST",
+			body
+		});
+		if (response.statusCode === 200) {
+			goToQuiz({
+				pathname: "/designMySpace",
+				query: { quiz: "1", plan: "free" },
+				as: "/designMySpace?quiz=1&plan=free"
+			});
+		}
 	};
 
 	return (

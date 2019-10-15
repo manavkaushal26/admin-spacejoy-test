@@ -1,7 +1,25 @@
 import Router from "next/router";
 
-const goToDesignMySpace = ({ pathname, query, as }) => {
+const goToQuiz = ({ pathname, query, as }) => {
 	Router.push({ pathname, query }, as);
 };
 
-export default goToDesignMySpace;
+const quizReqBody = (entry = "0", question = "begin", answer = "new") => {
+	return {
+		data: {
+			name: "onboardingQuiz",
+			environment: process.env.NODE_ENV,
+			formData: [
+				{
+					entry,
+					question,
+					answer
+				}
+			],
+			userId: "",
+			userEmail: ""
+		}
+	};
+};
+
+export { goToQuiz, quizReqBody };

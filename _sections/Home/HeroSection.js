@@ -60,7 +60,7 @@ function handleClick() {
 	return redirectToLocation({
 		pathname: "/designMySpace",
 		query: { quiz: "start", plan: "free" },
-		url: "/designMySpace?quiz=start"
+		url: "/designMySpace?quiz=start&plan=free"
 	});
 }
 
