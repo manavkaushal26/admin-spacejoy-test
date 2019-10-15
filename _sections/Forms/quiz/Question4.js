@@ -1,10 +1,7 @@
-import FormBox from "@components/Form";
-import Field from "@components/Form/Field";
 import SectionHeader from "@sections/SectionHeader";
-import { company } from "@utils/config";
-import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import SignupForm from "../SignupForm";
 
 const FormBoxWrapperStyled = styled.div`
 	position: relative;
@@ -40,7 +37,7 @@ const FormBoxWrapperStyled = styled.div`
 	}
 `;
 
-function Question4({ name, email }) {
+function Question4() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
@@ -52,52 +49,7 @@ function Question4({ name, email }) {
 					<div className="grid align-center">
 						<div className="col-12">
 							<FormBoxWrapperStyled>
-								<FormBox
-									redirectUrl="/checkout"
-									destination="/form"
-									description="Submit your requirements"
-									name="designmyspacequiz"
-								>
-									<Field
-										name="userName"
-										type="text"
-										label="Name"
-										value={name}
-										readonly={!!name}
-										placeholder="Name"
-										error="Please enter a valid Name"
-										hint="should contain valid text"
-									/>
-									<Field
-										name="userEmail"
-										type="email"
-										label="Email"
-										value={email}
-										readonly={!!email}
-										placeholder="Email"
-										error="Please enter a valid email"
-										hint="should contain valid email"
-										required
-									/>
-									<Field
-										name="userMobile"
-										type="tel"
-										label="Mobile"
-										placeholder="Mobile"
-										error="Please enter a valid Mobile"
-										hint="should contain valid Mobile"
-										required
-									/>
-									<Field
-										name="userCommutePermissionGranted"
-										type="checkbox"
-										label={`By signing up to a free trial of ${company.product}, you agree to our
-										Terms and privacy policy`}
-										error="Please select checkbox"
-										required
-									/>
-									<Field name="userSubmit" type="submit" label="Submit" />
-								</FormBox>
+								<SignupForm />
 							</FormBoxWrapperStyled>
 						</div>
 					</div>
@@ -106,15 +58,5 @@ function Question4({ name, email }) {
 		</div>
 	);
 }
-
-Question4.defaultProps = {
-	name: "",
-	email: ""
-};
-
-Question4.propTypes = {
-	name: PropTypes.string,
-	email: PropTypes.string
-};
 
 export default Question4;
