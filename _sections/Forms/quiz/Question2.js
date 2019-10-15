@@ -97,24 +97,23 @@ const RadioStyled = styled(Button)`
 function Question2() {
 	const quizId = 2;
 
-	const formId = localStorage.getItem("quizFormId");
-
 	const [budget, setBudget] = useState("skipped");
 
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	useEffect(() => {
+		const formId = localStorage.getItem("quizFormId");
 		fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "GET"
 		}).then(response => {
 			if (response.statusCode <= 300) {
-				setBudget(response.data);
+				setBudget(response.data.formData[0].answer);
 			}
 		});
 	}, []);
 
-	const handleClick = e => setBudget(e.target.value);
+	const handleClick = e => setBudget(e.currentTarget.value);
 
 	const handlePrev = () => {
 		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" }, as: "/designMySpace?quiz=1&plan=free" });
@@ -122,6 +121,7 @@ function Question2() {
 
 	const handleNext = async () => {
 		setSubmitInProgress(true);
+		const formId = localStorage.getItem("quizFormId");
 		const response = await fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "PUT",

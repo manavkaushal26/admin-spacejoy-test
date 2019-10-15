@@ -8,24 +8,22 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question1() {
 	const quizId = 1;
 
-	const formId = localStorage.getItem("quizFormId");
-
 	const [roomType, setRoomType] = useState("skipped");
 
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	useEffect(() => {
 		fetcher({
-			endPoint: `/form/${formId}/${quizId}`,
+			endPoint: `/form/${localStorage.getItem("quizFormId")}/${quizId}`,
 			method: "GET"
 		}).then(response => {
 			if (response.statusCode <= 300) {
-				setRoomType(response.data);
+				setRoomType(response.data.formData[0].answer);
 			}
 		});
 	}, []);
 
-	const handleClick = e => setRoomType(e.target.value);
+	const handleClick = e => setRoomType(e.currentTarget.value);
 
 	const handlePrev = () => {
 		goToQuiz({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
@@ -33,6 +31,7 @@ function Question1() {
 
 	const handleNext = async () => {
 		setSubmitInProgress(true);
+		const formId = await localStorage.getItem("quizFormId");
 		const response = await fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "PUT",

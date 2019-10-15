@@ -8,21 +8,23 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function QuizStart() {
 	const quizId = 0;
 
-	const formId = localStorage.getItem("quizFormId");
-
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	const handleClick = async () => {
 		setSubmitInProgress(true);
+		const formId = localStorage.getItem("quizFormId");
+		console.log("formId", formId);
 		const body = quizReqBody(quizId, "begin quiz", "generate form id");
 		const response = await fetcher({
-			endPoint: formId ? `/form/${formId}/${quizId}` : "/form",
-			method: formId ? "PUT" : "POST",
+			endPoint: formId ? "/form" : `/form/${formId}/${quizId}`,
+			method: formId ? "POST" : "PUT",
 			body
 		});
 		if (response.statusCode <= 300) {
 			setSubmitInProgress(false);
-			localStorage.setItem("quizFormId", response.data.id);
+			if (!formId) {
+				localStorage.setItem("quizFormId", response.data.id);
+			}
 			goToQuiz({
 				pathname: "/designMySpace",
 				query: { quiz: "1", plan: "free" },

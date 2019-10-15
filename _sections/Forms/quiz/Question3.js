@@ -1,13 +1,14 @@
 import Button from "@components/Button";
-import Image from "@components/Image";
+import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
+import roomLookOptions from "@utils/roomLookQuizMock";
 import React, { useState } from "react";
 import { goToQuiz } from "./QuizHelper";
 
 function Question3() {
-	const [budget, setBudget] = useState("");
+	const [roomLook, setRoomLook] = useState("");
 
-	const handleClick = e => setBudget(e.target.value);
+	const handleClick = e => setRoomLook(e.currentTarget.value);
 
 	const handlePrev = () => {
 		goToQuiz({ pathname: "/designMySpace", query: { quiz: "2", plan: "free" } }, "/designMySpace?quiz=1");
@@ -27,15 +28,20 @@ function Question3() {
 					/>
 					<div className="grid align-center">
 						<div className="col-12">
-							<div>
-								<Image
-									src="https://res.cloudinary.com/spacejoy/image/upload/v1570781611/web/temp_ogqsaw.jpg"
-									size="450px"
-								/>
+							<div className="grid">
+								{roomLookOptions.map(room => (
+									<div className="col-12 col-sm-6 col-md-3">
+										<RadioCard
+											version={2}
+											value={room.title}
+											onClick={handleClick}
+											checked={roomLook === room.title}
+											bg={room.bg}
+											image={`https://res.cloudinary.com/spacejoy/image/upload/v1571132514/web/designPurpose/${room.icon}`}
+										/>
+									</div>
+								))}
 							</div>
-							<Button fill="ghost" size="sm" onClick={handleClick} value="success">
-								Test Q3{budget}
-							</Button>
 						</div>
 						<div className="col-4 col-sm-2">
 							<Button variant="secondary" fill="ghost" size="sm" full onClick={handlePrev}>
