@@ -31,19 +31,11 @@ function login({ token, redirectUrl }) {
 
 async function guestLogin() {
 	if (getToken()) return;
-	const body = {
-		email: "guest5@gmail.com",
-		password: "guest",
-		firstName: "guest",
-		lastName: "",
-		region: "",
-		role: "customer"
-	};
-
+	const body = {};
 	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
 	if (response.statusCode <= 300) {
-		const { sessionKey } = response.data;
-		await login({ token: sessionKey, redirectUrl: null });
+		const { jwtToken } = response.data;
+		await login({ token: jwtToken, redirectUrl: null });
 	}
 }
 

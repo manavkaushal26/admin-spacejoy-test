@@ -7,17 +7,9 @@ const goToQuiz = ({ pathname, query, as }) => {
 const quizReqBody = (entry = "0", question = "begin", answer = "new") => {
 	return {
 		data: {
-			name: "onboardingQuiz",
+			name: "designMySpace",
 			environment: process.env.NODE_ENV,
-			formData: [
-				{
-					entry,
-					question,
-					answer
-				}
-			],
-			userId: "",
-			userEmail: ""
+			formData: [{ entry, question, answer }]
 		}
 	};
 };
