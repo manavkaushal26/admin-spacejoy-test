@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
+import SectionHeader from "@sections/SectionHeader";
 import React, { useState } from "react";
-import QuizHeader from "./QuizHeader";
 import { goToQuiz } from "./QuizHelper";
 
 function Question3() {
@@ -21,7 +21,7 @@ function Question3() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-10">
-					<QuizHeader
+					<SectionHeader
 						title="How does your room look today?"
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>

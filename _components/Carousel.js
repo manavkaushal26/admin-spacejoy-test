@@ -27,6 +27,7 @@ const PrevStyled = styled(BaseArrowsStyled)`
 `;
 
 const settings = {
+	lazyLoad: "ondemand",
 	dots: false,
 	infinite: true,
 	speed: 500,
@@ -48,7 +49,7 @@ const settings = {
 	]
 };
 
-function Carousel({ children, slidesToShow, slidesToScroll, autoplay }) {
+function Carousel({ children, slidesToShow, slidesToScroll, autoplay, draggable }) {
 	return (
 		<Slider
 			{...settings}
@@ -56,6 +57,7 @@ function Carousel({ children, slidesToShow, slidesToScroll, autoplay }) {
 			slidesToShow={slidesToShow}
 			slidesToScroll={slidesToScroll}
 			autoplay={autoplay}
+			draggable={draggable}
 		>
 			{children}
 		</Slider>
@@ -65,14 +67,16 @@ function Carousel({ children, slidesToShow, slidesToScroll, autoplay }) {
 Carousel.defaultProps = {
 	slidesToShow: 1,
 	slidesToScroll: 1,
-	autoplay: false
+	autoplay: false,
+	draggable: true
 };
 
 Carousel.propTypes = {
 	children: PropTypes.node.isRequired,
 	slidesToShow: PropTypes.number,
 	slidesToScroll: PropTypes.number,
-	autoplay: PropTypes.bool
+	autoplay: PropTypes.bool,
+	draggable: PropTypes.bool
 };
 
 export default Carousel;

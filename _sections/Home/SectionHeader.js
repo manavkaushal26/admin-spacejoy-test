@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const TitleStyled = styled.h2`
 	color: ${({ theme, light }) => (light ? theme.colors.white : theme.colors.fc.dark1)};
-	margin-bottom: 2rem;
+	margin: 0 0 2rem 0;
 	font-size: 2rem;
 	& + p {
 		margin: 0 auto 2rem auto;
@@ -19,7 +19,7 @@ const TitleStyled = styled.h2`
 function SectionHeader({ title, description, light }) {
 	return (
 		<div className="grid text-center">
-			<div className="col-12">
+			<div className="col-12 col-bleed-y">
 				<TitleStyled light={light}>{title}</TitleStyled>
 				{description && <p>{description}</p>}
 			</div>

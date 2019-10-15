@@ -1,12 +1,27 @@
 import Button from "@components/Button";
 import RadioCard from "@sections/Cards/radio";
+import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
-import React, { useState } from "react";
-import QuizHeader from "./QuizHeader";
+import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 function Question1() {
+	const quizId = 1;
+
+	const formId = localStorage.getItem("quizFormId");
+
 	const [roomType, setRoomType] = useState("skipped");
+
+	useEffect(() => {
+		fetcher({
+			endPoint: `/form/${formId}/${quizId}`,
+			method: "GET"
+		}).then(response => {
+			if (response.statusCode <= 300) {
+				setRoomType(response.data);
+			}
+		});
+	});
 
 	const handleClick = e => setRoomType(e.target.value);
 
@@ -16,11 +31,11 @@ function Question1() {
 
 	const handleNext = async () => {
 		const response = await fetcher({
-			endPoint: "/forms",
-			method: "POST",
+			endPoint: `/form/${formId}/${quizId}`,
+			method: "PUT",
 			body: quizReqBody(1, "Which room are you designing", roomType)
 		});
-		if (response.statusCode === 200) {
+		if (response.statusCode <= 300) {
 			goToQuiz({
 				pathname: "/designMySpace",
 				query: { quiz: "2", plan: "free" },
@@ -33,7 +48,7 @@ function Question1() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-xs-10">
-					<QuizHeader
+					<SectionHeader
 						title="Which room are you designing?"
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>

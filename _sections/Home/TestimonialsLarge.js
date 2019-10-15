@@ -1,4 +1,6 @@
+import Carousel from "@components/Carousel";
 import Image from "@components/Image";
+import testimonialsMock from "@utils/testimonialsMock";
 import React from "react";
 import ReactCompareImage from "react-compare-image";
 import styled from "styled-components";
@@ -6,7 +8,7 @@ import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`
 	position: relative;
-	padding: 40px 0;
+	padding: 60px 0;
 	h3 {
 		margin-bottom: 0rem;
 		& + small {
@@ -23,6 +25,9 @@ const ImageStyled = styled(Image)`
 	box-shadow: 0 0 10px ${({ theme }) => theme.colors.mild.black};
 	filter: grayscale(1);
 	border-radius: 2px;
+	&:hover {
+		filter: grayscale(0);
+	}
 `;
 
 export default function TestimonialsLarge() {
@@ -33,29 +38,29 @@ export default function TestimonialsLarge() {
 					title="Joyous homes, Happy customers"
 					description="They’ll tell you why they love us. Hear it straight from our beloved customers"
 				/>
-				<div className="grid text-center align-center">
-					<div className="col-12 col-xs-3 text-left">
-						<ImageStyled
-							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
-							size="120px"
-						/>
-						<h3>Living room for Erika Lee</h3>
-						<small>Denver, Colarado</small>
-						<p>
-							Our designer from Spacejoy immediately caught on to our vision and delivered. The execution was flawless.
-							We couldn’t be happier with how amazing our home looks right now.
-						</p>
-					</div>
-					<div className="col-12 col-xs-7">
-						<ReactCompareImage
-							sliderPositionPercentage={0.2}
-							leftImageLabel="Before"
-							leftImage="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_420,w_840/v1568876295/web/Design_2_before_igjbzg.jpg"
-							rightImageLabel="After"
-							rightImage="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_420,w_840/v1568876295/web/Design_2_after_m2grcx.jpg"
-						/>
-					</div>
-				</div>
+				<Carousel slidesToShow={1} slidesToScroll={1} draggable={false}>
+					{testimonialsMock.map(item => (
+						<div className="grid justify-center align-center" key={item.name}>
+							<div className="col-12 col-md-4 text-left">
+								<ImageStyled src={item.dp} size="120px" />
+								<h3>
+									{item.roomType} for {item.name}
+								</h3>
+								<small>{item.address}</small>
+								<p>{item.description}</p>
+							</div>
+							<div className="col-12 col-md-7">
+								<ReactCompareImage
+									sliderPositionPercentage={0.2}
+									leftImageLabel="Before"
+									leftImage={item.before}
+									rightImageLabel="After"
+									rightImage={item.after}
+								/>
+							</div>
+						</div>
+					))}
+				</Carousel>
 			</div>
 		</SectionWrapper>
 	);

@@ -35,7 +35,6 @@ function Layout({ isServer, authVerification, children }) {
 			<GlobalStyle />
 			<Header authVerification={authVerification} />
 			<MainStyled isServer={isServer} className={dev ? "client-server-identifier" : ""}>
-				{JSON.stringify(authVerification)}
 				{children}
 			</MainStyled>
 			<Footer />

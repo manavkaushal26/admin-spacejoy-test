@@ -1,20 +1,25 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
+import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
-import React from "react";
-import QuizHeader from "./QuizHeader";
+import React, { useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 function QuizStart() {
+	const [submitInProgress, setSubmitInProgress] = useState(false);
+
 	const handleClick = async () => {
+		setSubmitInProgress(true);
 		const body = quizReqBody(0, "begin quiz", "generate form id");
 		console.log("body", body);
 		const response = await fetcher({
-			endPoint: "/forms",
+			endPoint: "/form",
 			method: "POST",
 			body
 		});
-		if (response.statusCode === 200) {
+		if (response.statusCode <= 300) {
+			setSubmitInProgress(false);
+			localStorage.setItem("quizFormId", response.data.id);
 			goToQuiz({
 				pathname: "/designMySpace",
 				query: { quiz: "1", plan: "free" },
@@ -33,11 +38,11 @@ function QuizStart() {
 						alt="quiz begin"
 						style={{ marginTop: "100px" }}
 					/>
-					<QuizHeader
+					<SectionHeader
 						title="We're so Excited"
 						description="Hello there! Let us understand your requirements so that we can kick start designing your dream home."
 					/>
-					<Button variant="primary" size="lg" onClick={handleClick}>
+					<Button variant="primary" size="lg" onClick={handleClick} submitInProgress={submitInProgress}>
 						Let&apos;s Begin
 					</Button>
 				</div>

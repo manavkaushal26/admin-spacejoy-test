@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-const QuizHeaderStyled = styled.div`
+const SectionHeaderStyled = styled.div`
 	margin: 3rem 0;
 	text-align: left;
 	h2 {
@@ -10,22 +10,22 @@ const QuizHeaderStyled = styled.div`
 	}
 `;
 
-function QuizHeader({ title, description }) {
+function SectionHeader({ title, description }) {
 	return (
-		<QuizHeaderStyled>
+		<SectionHeaderStyled>
 			<h2>{title}</h2>
 			<span>{description}</span>
-		</QuizHeaderStyled>
+		</SectionHeaderStyled>
 	);
 }
 
-QuizHeader.defaultProps = {
+SectionHeader.defaultProps = {
 	description: ""
 };
 
-QuizHeader.propTypes = {
+SectionHeader.propTypes = {
 	title: PropTypes.string.isRequired,
 	description: PropTypes.string
 };
 
-export default QuizHeader;
+export default SectionHeader;

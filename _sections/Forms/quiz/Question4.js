@@ -1,10 +1,10 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
+import SectionHeader from "@sections/SectionHeader";
 import { company } from "@utils/config";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import QuizHeader from "./QuizHeader";
 
 const FormBoxWrapperStyled = styled.div`
 	position: relative;
@@ -45,7 +45,7 @@ function Question4({ name, email }) {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-6 col-lg-4">
-					<QuizHeader
+					<SectionHeader
 						title="Please enter your contact details"
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>
@@ -54,7 +54,7 @@ function Question4({ name, email }) {
 							<FormBoxWrapperStyled>
 								<FormBox
 									redirectUrl="/checkout"
-									destination="/forms"
+									destination="/form"
 									description="Submit your requirements"
 									name="designmyspacequiz"
 								>

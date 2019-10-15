@@ -7,7 +7,7 @@ import SectionHeader from "./SectionHeader";
 const SectionWrapper = styled.section`
 	position: relative;
 	background-image: ${({ theme }) => `linear-gradient(180deg, white, ${theme.colors.bg.light1})`};
-	padding: 40px 0;
+	padding: 60px 0;
 `;
 
 const StepperWrapper = styled.div`

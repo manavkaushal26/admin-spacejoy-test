@@ -34,8 +34,8 @@ async function guestLogin() {
 	const body = {};
 	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
 	if (response.statusCode <= 300) {
-		const { jwtToken } = response.data;
-		await login({ token: jwtToken, redirectUrl: null });
+		const { token } = response.data;
+		await login({ token, redirectUrl: null });
 	}
 }
 

@@ -70,11 +70,11 @@ class FormBox extends Component {
 				};
 			}
 			if (name === "designmyspace") {
-				if (destination === "/forms") {
+				if (destination === "/form") {
 					return {
 						data: {
-							env: process.env.NODE_ENV,
-							source: name,
+							name,
+							environment: process.env.NODE_ENV,
 							formData: [
 								{
 									key: "firstName",
@@ -127,8 +127,8 @@ class FormBox extends Component {
 				if (destination === "/forms") {
 					return {
 						data: {
-							env: process.env.NODE_ENV,
-							source: name,
+							name,
+							environment: process.env.NODE_ENV,
 							formData: [
 								{
 									key: "firstName",
@@ -146,9 +146,7 @@ class FormBox extends Component {
 									key: "userCommutePermissionGranted",
 									value: state.userCommutePermissionGranted.value
 								}
-							],
-							userId: "",
-							userEmail: state.userEmail.value
+							]
 						}
 					};
 				}

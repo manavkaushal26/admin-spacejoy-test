@@ -1,9 +1,9 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
+import SectionHeader from "@sections/SectionHeader";
 import React, { useState } from "react";
 import styled from "styled-components";
-import QuizHeader from "./QuizHeader";
 import { goToQuiz } from "./QuizHelper";
 
 const SampleImageStyled = styled.div`
@@ -110,7 +110,7 @@ function Question2() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-xs-10">
-					<QuizHeader
+					<SectionHeader
 						title="Have a budget in mind?"
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>
