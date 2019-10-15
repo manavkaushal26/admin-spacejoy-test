@@ -8,7 +8,7 @@ import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`
 	position: relative;
-	padding: 60px 0;
+	padding: 100px 0;
 	h3 {
 		margin-bottom: 0rem;
 		& + small {
@@ -22,11 +22,12 @@ const SectionWrapper = styled.section`
 `;
 
 const ImageStyled = styled(Image)`
+	display: inline;
 	box-shadow: 0 0 10px ${({ theme }) => theme.colors.mild.black};
-	filter: grayscale(1);
+	filter: grayscale(0);
 	border-radius: 2px;
 	&:hover {
-		filter: grayscale(0);
+		filter: grayscale(1);
 	}
 `;
 
@@ -41,15 +42,15 @@ export default function TestimonialsLarge() {
 				<Carousel slidesToShow={1} slidesToScroll={1} draggable={false}>
 					{testimonialsMock.map(item => (
 						<div className="grid justify-center align-center" key={item.name}>
-							<div className="col-12 col-md-4 text-left">
-								<ImageStyled src={item.dp} size="120px" />
+							<div className="col-3">
+								<ImageStyled src={item.dp} size="150px" />
 								<h3>
 									{item.roomType} for {item.name}
 								</h3>
 								<small>{item.address}</small>
 								<p>{item.description}</p>
 							</div>
-							<div className="col-12 col-md-7">
+							<div className="col-8">
 								<ReactCompareImage
 									sliderPositionPercentage={0.2}
 									leftImageLabel="Before"

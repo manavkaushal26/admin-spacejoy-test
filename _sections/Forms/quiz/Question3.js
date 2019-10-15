@@ -1,41 +1,74 @@
 import Button from "@components/Button";
 import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
+import fetcher from "@utils/fetcher";
 import roomLookOptions from "@utils/roomLookQuizMock";
-import React, { useState } from "react";
-import { goToQuiz } from "./QuizHelper";
+import React, { useEffect, useState } from "react";
+import { goToQuiz, quizReqBody } from "./QuizHelper";
 
 function Question3() {
-	const [roomLook, setRoomLook] = useState("");
+	const quizId = 3;
 
-	const handleClick = e => setRoomLook(e.currentTarget.value);
+	const quizTitle = "Why do you want to design your room?";
+
+	const [quizState, setQuizState] = useState("");
+
+	const [submitInProgress, setSubmitInProgress] = useState(false);
+
+	useEffect(() => {
+		const formId = "user";
+		fetcher({
+			endPoint: `/form/${formId}/${quizId}`,
+			method: "GET"
+		}).then(response => {
+			if (response.statusCode <= 300) {
+				setQuizState(response.data.formData[0].answer);
+			}
+		});
+	}, []);
+
+	const handleClick = e => setQuizState(e.currentTarget.value);
 
 	const handlePrev = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "2", plan: "free" } }, "/designMySpace?quiz=1");
+		goToQuiz(
+			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan: "free" } },
+			`/designMySpace?quiz=${quizId - 1}`
+		);
 	};
 
-	const handleNext = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "4", plan: "free" } }, "/designMySpace?quiz=3");
+	const handleNext = async () => {
+		setSubmitInProgress(true);
+		const formId = "user";
+		const response = await fetcher({
+			endPoint: `/form/${formId}/${quizId}`,
+			method: "PUT",
+			body: quizReqBody(quizId, quizTitle, quizState)
+		});
+		if (response.statusCode <= 300) {
+			setSubmitInProgress(false);
+			goToQuiz({
+				pathname: "/designMySpace",
+				query: { quiz: quizId + 1, plan: "free" },
+				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
+			});
+		}
 	};
 
 	return (
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-10">
-					<SectionHeader
-						title="How does your room look today?"
-						description="Let's start by helping your designers understand which rooms you prefer."
-					/>
+					<SectionHeader title={quizTitle} description="Your purpose, our vision!" />
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">
 								{roomLookOptions.map(room => (
-									<div className="col-12 col-sm-6 col-md-3">
+									<div className="col-12 col-sm-6 col-md-3" key={room.title}>
 										<RadioCard
 											version={2}
 											value={room.title}
 											onClick={handleClick}
-											checked={roomLook === room.title}
+											checked={quizState === room.title}
 											bg={room.bg}
 											image={`https://res.cloudinary.com/spacejoy/image/upload/v1571132514/web/designPurpose/${room.icon}`}
 										/>
@@ -50,7 +83,7 @@ function Question3() {
 						</div>
 						<div className="col-4 col-sm-8" />
 						<div className="col-4 col-sm-2">
-							<Button variant="primary" full size="sm" onClick={handleNext}>
+							<Button variant="primary" full size="sm" onClick={handleNext} submitInProgress={submitInProgress}>
 								Next
 							</Button>
 						</div>

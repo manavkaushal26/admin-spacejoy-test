@@ -8,41 +8,44 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question1() {
 	const quizId = 1;
 
-	const [roomType, setRoomType] = useState("skipped");
+	const quizTitle = "Which room are you designing?";
+
+	const [quizState, setQuizState] = useState("");
 
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	useEffect(() => {
+		const formId = "user";
 		fetcher({
-			endPoint: `/form/${localStorage.getItem("quizFormId")}/${quizId}`,
+			endPoint: `/form/${formId}/${quizId}`,
 			method: "GET"
 		}).then(response => {
 			if (response.statusCode <= 300) {
-				setRoomType(response.data.formData[0].answer);
+				setQuizState(response.data.formData[0].answer);
 			}
 		});
 	}, []);
 
-	const handleClick = e => setRoomType(e.currentTarget.value);
+	const handleClick = e => setQuizState(e.currentTarget.value);
 
 	const handlePrev = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, "/designMySpace?quiz=start");
+		goToQuiz({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, `/designMySpace?quiz=start`);
 	};
 
 	const handleNext = async () => {
 		setSubmitInProgress(true);
-		const formId = await localStorage.getItem("quizFormId");
+		const formId = "user";
 		const response = await fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "PUT",
-			body: quizReqBody(quizId, "Which room are you designing", roomType)
+			body: quizReqBody(quizId, quizTitle, quizState)
 		});
 		if (response.statusCode <= 300) {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: "2", plan: "free" },
-				as: "/designMySpace?quiz=2&plan=free"
+				query: { quiz: quizId + 1, plan: "free" },
+				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
 			});
 		}
 	};
@@ -52,7 +55,7 @@ function Question1() {
 			<div className="grid text-center">
 				<div className="col-xs-10">
 					<SectionHeader
-						title="Which room are you designing?"
+						title={quizTitle}
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>
 					<div className="grid">
@@ -60,7 +63,7 @@ function Question1() {
 							<RadioCard
 								value="Living Room"
 								onClick={handleClick}
-								checked={roomType === "Living Room"}
+								checked={quizState === "Living Room"}
 								bg="rgba(0, 188, 212, 0.05)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570170156/web/living-room-tile_xtghwr.png"
 							/>
@@ -69,7 +72,7 @@ function Question1() {
 							<RadioCard
 								value="Bedroom"
 								onClick={handleClick}
-								checked={roomType === "Bedroom"}
+								checked={quizState === "Bedroom"}
 								bg="rgba(121, 85, 72, 0.15)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570170156/web/bedroom-tile_kisjld.png"
 							/>
@@ -78,7 +81,7 @@ function Question1() {
 							<RadioCard
 								value="Entryway"
 								onClick={handleClick}
-								checked={roomType === "Entryway"}
+								checked={quizState === "Entryway"}
 								bg="rgba(103, 58, 183, 0.06)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570602461/web/entryway.png"
 							/>
@@ -87,7 +90,7 @@ function Question1() {
 							<RadioCard
 								value="Kid's Bedroom"
 								onClick={handleClick}
-								checked={roomType === "Kid's Bedroom"}
+								checked={quizState === "Kid's Bedroom"}
 								bg="rgba(255, 252, 222, 0.2)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570448686/web/kids_bedroom_fknoyk.png"
 							/>
@@ -96,7 +99,7 @@ function Question1() {
 							<RadioCard
 								value="Studio"
 								onClick={handleClick}
-								checked={roomType === "Studio"}
+								checked={quizState === "Studio"}
 								bg="rgba(158, 158, 158, 0.15)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570451259/web/Studio_Apartment_nu1av3.png"
 							/>
@@ -105,7 +108,7 @@ function Question1() {
 							<RadioCard
 								value="Nursery"
 								onClick={handleClick}
-								checked={roomType === "Nursery"}
+								checked={quizState === "Nursery"}
 								bg="rgba(255, 193, 7, 0.01)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570181061/web/nursery_suenxy.png"
 							/>

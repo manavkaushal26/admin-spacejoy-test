@@ -10,7 +10,7 @@ const ExtraCardStyled = styled.div``;
 
 const SectionWrapper = styled.section`
 	position: relative;
-	padding: 60px 0;
+	padding: 100px 0;
 `;
 
 function DesignTeam() {

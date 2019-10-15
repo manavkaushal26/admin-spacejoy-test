@@ -2,14 +2,14 @@ import Button from "@components/Button";
 import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
-import roomReadyMock from "@utils/roomReadyMock";
+import lastTimeDesignMock from "@utils/lastTimeDesignMock";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
-function Question4() {
-	const quizId = 4;
+function Question5() {
+	const quizId = 5;
 
-	const quizTitle = "When Do You Want Your Room To Be Ready?";
+	const quizTitle = "How Have You Decorated Your Room In The Past?";
 
 	const [quizState, setQuizState] = useState("");
 
@@ -57,20 +57,20 @@ function Question4() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-md-10">
+				<div className="col-12 col-md-6">
 					<SectionHeader title={quizTitle} description="Your purpose, our vision!" />
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">
-								{roomReadyMock.map(room => (
-									<div className="col-12 col-sm-6 col-md-3" key={room.title}>
+								{lastTimeDesignMock.map(room => (
+									<div className="col-12 col-sm-6" key={room.title}>
 										<RadioCard
 											version={2}
 											value={room.title}
 											onClick={handleClick}
 											checked={quizState === room.title}
 											bg={room.bg}
-											image={`https://res.cloudinary.com/spacejoy/image/upload/v1571132514/web/designPurpose/${room.icon}`}
+											image={`https://res.cloudinary.com/spacejoy/image/upload/v1571132514/web/designIteration/${room.icon}`}
 										/>
 									</div>
 								))}
@@ -94,4 +94,4 @@ function Question4() {
 	);
 }
 
-export default Question4;
+export default Question5;

@@ -8,7 +8,7 @@ import SectionHeader from "./SectionHeader";
 const SectionWrapper = styled.section`
 	background: ${({ theme }) => theme.colors.mild.red};
 	position: relative;
-	padding: 40px 0;
+	padding: 100px 0;
 `;
 
 const ImageStyled = styled(Image)`

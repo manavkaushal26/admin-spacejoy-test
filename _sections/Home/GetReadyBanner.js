@@ -9,7 +9,7 @@ const ButtonStyled = styled(Button)`
 `;
 const SectionWrapper = styled.section`
 	position: relative;
-	padding: 60px 0;
+	padding: 100px 0;
 	background-image: ${({ theme }) => `linear-gradient(135deg,${theme.colors.accent} 0%,#F9C17A 100%)`};
 `;
 

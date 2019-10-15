@@ -4,7 +4,7 @@ import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`
 	position: relative;
-	padding: 60px 0;
+	padding: 100px 0;
 `;
 
 export default function GetReadyBanner() {

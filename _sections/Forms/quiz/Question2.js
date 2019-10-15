@@ -97,42 +97,47 @@ const RadioStyled = styled(Button)`
 function Question2() {
 	const quizId = 2;
 
-	const [budget, setBudget] = useState("skipped");
+	const quizTitle = "Have a budget in mind?";
+
+	const [quizState, setQuizState] = useState("");
 
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	useEffect(() => {
-		const formId = localStorage.getItem("quizFormId");
+		const formId = "user";
 		fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "GET"
 		}).then(response => {
 			if (response.statusCode <= 300) {
-				setBudget(response.data.formData[0].answer);
+				setQuizState(response.data.formData[0].answer);
 			}
 		});
 	}, []);
 
-	const handleClick = e => setBudget(e.currentTarget.value);
+	const handleClick = e => setQuizState(e.currentTarget.value);
 
 	const handlePrev = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "1", plan: "free" }, as: "/designMySpace?quiz=1&plan=free" });
+		goToQuiz(
+			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan: "free" } },
+			`/designMySpace?quiz=${quizId - 1}`
+		);
 	};
 
 	const handleNext = async () => {
 		setSubmitInProgress(true);
-		const formId = localStorage.getItem("quizFormId");
+		const formId = "user";
 		const response = await fetcher({
 			endPoint: `/form/${formId}/${quizId}`,
 			method: "PUT",
-			body: quizReqBody(quizId, "Have a budget in mind?", budget)
+			body: quizReqBody(quizId, quizTitle, quizState)
 		});
 		if (response.statusCode <= 300) {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: "3", plan: "free" },
-				as: "/designMySpace?quiz=3&plan=free"
+				query: { quiz: quizId + 1, plan: "free" },
+				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
 			});
 		}
 	};
@@ -142,7 +147,7 @@ function Question2() {
 			<div className="grid text-center">
 				<div className="col-xs-10">
 					<SectionHeader
-						title="Have a budget in mind?"
+						title={quizTitle}
 						description="Let's start by helping your designers understand which rooms you prefer."
 					/>
 					<div className="grid align-center">
@@ -153,7 +158,7 @@ function Question2() {
 									raw
 									onClick={handleClick}
 									value="$10,000 or more"
-									className={budget === "$10,000 or more" ? "active" : ""}
+									className={quizState === "$10,000 or more" ? "active" : ""}
 								>
 									<div>
 										<SVGIcon name="tick" height={13} width={20} />
@@ -161,7 +166,7 @@ function Question2() {
 									<div>
 										<h4>$10,000 or more</h4>
 										<span>A budget friendly option</span>
-										{budget === "$10,000 or more" && (
+										{quizState === "$10,000 or more" && (
 											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
 										)}
 									</div>
@@ -171,7 +176,7 @@ function Question2() {
 									raw
 									onClick={handleClick}
 									value="$5000 - $7000"
-									className={budget === "$5000 - $7000" ? "active" : ""}
+									className={quizState === "$5000 - $7000" ? "active" : ""}
 								>
 									<div>
 										<SVGIcon name="tick" height={13} width={20} />
@@ -179,7 +184,7 @@ function Question2() {
 									<div>
 										<h4>$5000 - $7000</h4>
 										<span>A budget friendly option</span>
-										{budget === "$5000 - $7000" && (
+										{quizState === "$5000 - $7000" && (
 											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
 										)}
 									</div>
@@ -189,7 +194,7 @@ function Question2() {
 									raw
 									onClick={handleClick}
 									value="$2000 - $5000"
-									className={budget === "$2000 - $5000" ? "active" : ""}
+									className={quizState === "$2000 - $5000" ? "active" : ""}
 								>
 									<div>
 										<SVGIcon name="tick" height={13} width={20} />
@@ -197,7 +202,7 @@ function Question2() {
 									<div>
 										<h4>$2000 - $5000</h4>
 										<span>A budget friendly option</span>
-										{budget === "$2000 - $5000" && (
+										{quizState === "$2000 - $5000" && (
 											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
 										)}
 									</div>
@@ -207,7 +212,7 @@ function Question2() {
 									raw
 									onClick={handleClick}
 									value="$2000 or less"
-									className={budget === "$2000 or less" ? "active" : ""}
+									className={quizState === "$2000 or less" ? "active" : ""}
 								>
 									<div>
 										<SVGIcon name="tick" />
@@ -215,7 +220,7 @@ function Question2() {
 									<div>
 										<h4>$2000 or less</h4>
 										<span>A budget friendly option</span>
-										{budget === "$2000 or less" && (
+										{quizState === "$2000 or less" && (
 											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
 										)}
 									</div>
@@ -224,31 +229,31 @@ function Question2() {
 						</div>
 						<div className="col-12 col-sm-7 col-md-8">
 							<SampleImageStyled>
-								<ImageWrapperStyled className={budget === "" ? "active" : "inactive"}>
+								<ImageWrapperStyled className={quizState === "" ? "active" : "inactive"}>
 									<Image
 										size="full"
 										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_550/v1570618479/web/empty_ekqe1s.png"
 									/>
 								</ImageWrapperStyled>
-								<ImageWrapperStyled className={budget === "$10,000 or more" ? "active" : "inactive"}>
+								<ImageWrapperStyled className={quizState === "$10,000 or more" ? "active" : "inactive"}>
 									<Image
 										size="full"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570444188/web/10000_gydis3.png"
 									/>
 								</ImageWrapperStyled>
-								<ImageWrapperStyled className={budget === "$5000 - $7000" ? "active" : "inactive"}>
+								<ImageWrapperStyled className={quizState === "$5000 - $7000" ? "active" : "inactive"}>
 									<Image
 										size="full"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png"
 									/>
 								</ImageWrapperStyled>
-								<ImageWrapperStyled className={budget === "$2000 - $5000" ? "active" : "inactive"}>
+								<ImageWrapperStyled className={quizState === "$2000 - $5000" ? "active" : "inactive"}>
 									<Image
 										size="full"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png"
 									/>
 								</ImageWrapperStyled>
-								<ImageWrapperStyled className={budget === "$2000 or less" ? "active" : "inactive"}>
+								<ImageWrapperStyled className={quizState === "$2000 or less" ? "active" : "inactive"}>
 									<Image
 										size="full"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png"
