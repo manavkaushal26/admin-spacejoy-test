@@ -101,7 +101,7 @@ function index() {
 								<li>
 									<a href={company.app.ios}>
 										<Image
-											size="md"
+											width="100px"
 											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1571050296/shared/app-store_dvz21i.png`}
 											alt="app store"
 										/>
@@ -110,7 +110,7 @@ function index() {
 								<li>
 									<a href={company.app.android}>
 										<Image
-											size="md"
+											width="100px"
 											src={`${cloudinary.baseDeliveryURL}/image/upload/c_scale,h_60/v1571050296/shared/play-store_ncfocx.png`}
 											alt="play store"
 										/>
@@ -123,7 +123,7 @@ function index() {
 						<div className="grid">
 							<div className="col-xs-3">
 								<Image
-									size="100px"
+									width="100px"
 									src={`${cloudinary.baseDeliveryURL}/image/upload/v1569231120/web/Badge_dpkz2m.svg`}
 								/>
 							</div>

@@ -9,7 +9,7 @@ const LogoStyled = styled(Image)`
 
 function Logo(props) {
 	if ("md" in props) {
-		return <LogoStyled src={company.logo} alt="Spacejoy Logo" />;
+		return <LogoStyled src={company.logo} alt="Spacejoy Logo" width="133px" height="30px" />;
 	}
 }
 

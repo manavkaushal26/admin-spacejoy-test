@@ -31,7 +31,7 @@ export default function Testimonials() {
 						</h2>
 						<Image
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
-							size="120px"
+							width="120px"
 							circle
 						/>
 						<div>

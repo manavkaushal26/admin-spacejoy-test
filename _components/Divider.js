@@ -11,7 +11,7 @@ const DividerStyled = styled.div`
 `;
 
 function Divider({ fancy, size }) {
-	return fancy ? <Image size={size} src={dividerImg} alt="divider" /> : <DividerStyled />;
+	return fancy ? <Image width={size} src={dividerImg} alt="divider" /> : <DividerStyled />;
 }
 
 Divider.propTypes = {

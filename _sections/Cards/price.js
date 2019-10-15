@@ -35,6 +35,9 @@ const PriceCardHeaderStyled = styled.div`
 `;
 
 const PriceCardBodyStyled = styled.div`
+	img {
+		height: 150px;
+	}
 	p {
 		text-align: left;
 		height: 80px;
@@ -56,7 +59,7 @@ class PriceCard extends PureComponent {
 
 	static Body = ({ price, description, thumbnail }) => (
 		<PriceCardBodyStyled>
-			<Image src={thumbnail} size="150px" />
+			<Image src={thumbnail} height="150px" />
 			<h2>
 				{price}
 				<sup>$</sup>

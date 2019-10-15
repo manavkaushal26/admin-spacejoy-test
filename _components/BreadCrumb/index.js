@@ -54,10 +54,12 @@ const QZ = () => (
 const ACTIVE = query => (
 	<li key="active">
 		{query.quiz === "start" && "Intro"}
-		{query.quiz === "1" && "Which room are you designing"}
-		{query.quiz === "2" && "Have a budget in mind"}
-		{query.quiz === "3" && "How does your room look today"}
-		{query.quiz === "4" && "Please enter your contact details"}
+		{query.quiz === "1" && "Select Room"}
+		{query.quiz === "2" && "Set Budget"}
+		{query.quiz === "3" && "How does your room look todayWhy do you want to design your room"}
+		{query.quiz === "4" && "When Do You Want Your Room To Be Ready"}
+		{query.quiz === "5" && "How Have You Decorated Your Room In The Past"}
+		{query.quiz === "6" && "Signup"}
 		{query.quiz === "success" && "Done"}
 	</li>
 );

@@ -37,7 +37,7 @@ function QuizStart() {
 			<div className="grid text-center">
 				<div className="col-12 col-md-6">
 					<Image
-						size="300px"
+						width="300px"
 						src="https://res.cloudinary.com/spacejoy/image/upload/v1568649903/shared/Illustration_ajvkhk.svg"
 						alt="quiz begin"
 						style={{ marginTop: "100px" }}

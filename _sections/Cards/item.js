@@ -98,9 +98,9 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 								<a href={`/designView/${designNameClean}/${designId}`}>
 									<ProductLoadMoreStyled size={size}>
 										<div>
-											<Divider fancy size="5px" />
+											<Divider fancy size="20px" />
 											<span>See All Products</span>
-											<Divider fancy size="5px" />
+											<Divider fancy size="20px" />
 										</div>
 									</ProductLoadMoreStyled>
 								</a>

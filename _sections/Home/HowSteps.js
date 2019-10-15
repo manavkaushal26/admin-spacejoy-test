@@ -94,7 +94,8 @@ function HowSteps() {
 											<StepStyled>
 												<Image
 													src="https://res.cloudinary.com/spacejoy/image/upload/v1571047876/web/Tool_e7tcsv.svg"
-													size="70px"
+													height="70px"
+													width="70px"
 												/>
 												<h3>Our designers weave magic</h3>
 												<p>Our designers will present two designs in 3D based on your needs, budget and style.</p>
@@ -104,7 +105,8 @@ function HowSteps() {
 											<StepStyled>
 												<Image
 													src="https://res.cloudinary.com/spacejoy/image/upload/v1571047877/web/Computer_wsgn1u.svg"
-													size="70px"
+													height="70px"
+													width="70px"
 												/>
 												<h3>Imagine more with our App</h3>
 												<p>With our interactive 3D mobile App, move, swap, rotate products - anytime and anywhere</p>
@@ -114,7 +116,8 @@ function HowSteps() {
 											<StepStyled>
 												<Image
 													src="https://res.cloudinary.com/spacejoy/image/upload/v1571054616/web/Forklift_icon_l3zi2w.svg"
-													size="70px"
+													height="70px"
+													width="70px"
 												/>
 												<h3>Shop from your designs</h3>
 												<p>Use the App to shop for furniture & décor that we include in your designs.</p>

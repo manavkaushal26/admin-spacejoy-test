@@ -139,7 +139,7 @@ class designProjects extends PureComponent {
 												{item.designDescription !== "None" && (
 													<>
 														<div className="text-center">
-															<Divider fancy size="10px" />
+															<Divider fancy size="20px" />
 														</div>
 														<p>{item.designDescription}</p>
 													</>

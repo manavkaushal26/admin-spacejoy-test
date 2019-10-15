@@ -64,6 +64,10 @@ h6 {
 	display: none;
 }
 
+.circle {
+	border-radius: 50%;
+}
+
 .loading-spinner {
 	animation: loading-spinner 1s linear infinite;
 }

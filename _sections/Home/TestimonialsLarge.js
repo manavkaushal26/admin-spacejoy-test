@@ -43,7 +43,7 @@ export default function TestimonialsLarge() {
 					{testimonialsMock.map(item => (
 						<div className="grid justify-center align-center" key={item.name}>
 							<div className="col-3">
-								<ImageStyled src={item.dp} size="150px" />
+								<ImageStyled src={item.dp} width="80px" />
 								<h3>
 									{item.roomType} for {item.name}
 								</h3>

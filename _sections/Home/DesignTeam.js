@@ -28,7 +28,7 @@ function DesignTeam() {
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=100" />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/v1571156013/web/designer1_t65axo.jpg" />
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
@@ -43,8 +43,8 @@ function DesignTeam() {
 							<div className="col-12 col-md-4 text-center align-self-center">
 								<ExtraCardStyled>
 									<Image
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1571054987/web/quote_fqabdm.png"
-										size="170px"
+										src="https://res.cloudinary.com/spacejoy/image/upload/w_400/v1571054987/web/quote_fqabdm.png"
+										width="150px"
 									/>
 									<p>Let&apos;s get started</p>
 									<Button

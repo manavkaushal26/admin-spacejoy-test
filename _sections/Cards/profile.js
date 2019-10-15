@@ -66,14 +66,12 @@ const UserNameStyled = styled.h2`
 	color: ${({ theme }) => theme.colors.fc.light1};
 `;
 
-const ProfileImageStyled = styled(Image)``;
-
 class ProfileCard extends PureComponent {
 	static Designation = ({ children }) => <DesignationStyled>{children}</DesignationStyled>;
 
 	static UserName = ({ children }) => <UserNameStyled>{children}</UserNameStyled>;
 
-	static Image = ({ source }) => <ProfileImageStyled src={source} />;
+	static Image = ({ source }) => <Image width="100%" src={source} />;
 
 	static Social = ({ fb, tw, li, pi }) =>
 		fb || tw || li || pi ? (
