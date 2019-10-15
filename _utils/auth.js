@@ -37,7 +37,6 @@ async function guestLogin() {
 	const body = {};
 	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
 	if (response.statusCode <= 300) {
-		console.log("response", response);
 		const {
 			token,
 			user: { role }
