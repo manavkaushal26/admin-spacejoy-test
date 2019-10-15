@@ -36,18 +36,12 @@ function index({ isServer, authVerification }) {
 }
 
 index.defaultProps = {
-	authVerification: {
-		name: "",
-		email: ""
-	}
+	authVerification: {}
 };
 
 index.propTypes = {
 	isServer: PropTypes.bool.isRequired,
-	authVerification: PropTypes.shape({
-		name: PropTypes.string,
-		email: PropTypes.string
-	})
+	authVerification: PropTypes.shape({})
 };
 
 export default withAuthVerification(index);

@@ -3,7 +3,6 @@ import DropMenu from "@components/DropMenu";
 import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
 import { logout } from "@utils/auth";
-import getToken from "@utils/getToken";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -75,12 +74,6 @@ const MobileNavVisibleStyled = styled.div`
 `;
 
 const HeaderBody = ({ authVerification }) => {
-	// TODO : remove cookie check here
-	// use only `authVerification`
-	// to get `authVerification` every where use withAuthVerification HOC in all pages
-
-	const token = getToken();
-
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
 
 	const navCenter = (
@@ -117,7 +110,7 @@ const HeaderBody = ({ authVerification }) => {
 					</ActiveLink>
 				</li>
 				<li>
-					{!authVerification.name && !token && (
+					{authVerification.role === "guest" && (
 						<ActiveLink
 							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/dashboard" } }}
 							as="/auth/login?redirectUrl=/dashboard"
@@ -126,12 +119,13 @@ const HeaderBody = ({ authVerification }) => {
 							Login
 						</ActiveLink>
 					)}
-					{(authVerification.name || token) && (
+					{authVerification.role !== "guest" && (
 						<>
 							<DropMenu>
 								<DropMenu.Header>
 									<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
 										<SVGIcon name="avatar" /> {authVerification.name}
+										{authVerification.role}
 									</ActiveLink>
 								</DropMenu.Header>
 								<DropMenu.Body>
@@ -185,12 +179,14 @@ const HeaderBody = ({ authVerification }) => {
 
 HeaderBody.defaultProps = {
 	authVerification: {
-		name: ""
+		name: "",
+		role: "guest"
 	}
 };
 
 HeaderBody.propTypes = {
 	authVerification: PropTypes.shape({
+		role: PropTypes.string,
 		name: PropTypes.string
 	})
 };

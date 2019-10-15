@@ -2,6 +2,7 @@ import ForgotPasswordForm from "@sections/Forms/ForgotPasswordForm";
 import LoginForm from "@sections/Forms/LoginForm";
 import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
@@ -27,9 +28,9 @@ function getHeadingText(flow) {
 	}
 }
 
-function auth({ isServer, flow, redirectUrl }) {
+function auth({ isServer, authVerification, flow, redirectUrl }) {
 	return (
-		<Layout isServer={isServer}>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>
@@ -99,13 +100,15 @@ auth.getInitialProps = async ({ req, query: { flow, redirectUrl } }) => {
 
 auth.defaultProps = {
 	flow: "",
-	redirectUrl: ""
+	redirectUrl: "",
+	authVerification: {}
 };
 
 auth.propTypes = {
 	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({}),
 	flow: PropTypes.string,
 	redirectUrl: PropTypes.string
 };
 
-export default auth;
+export default withAuthVerification(auth);
