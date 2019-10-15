@@ -13,7 +13,6 @@ function QuizStart() {
 	const handleClick = async () => {
 		setSubmitInProgress(true);
 		const formId = localStorage.getItem("quizFormId");
-		console.log("formId", formId);
 		const body = quizReqBody(quizId, "begin quiz", "generate form id");
 		const response = await fetcher({
 			endPoint: formId ? "/form" : `/form/${formId}/${quizId}`,

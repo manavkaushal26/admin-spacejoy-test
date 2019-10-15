@@ -21,8 +21,6 @@ async function fetcher({ ctx, endPoint, method, body }) {
 	const response = await fetch(page.apiBaseUrl + endPoint, options);
 	if (response.status) {
 		const resData = await response.json();
-		console.log("response", response);
-		console.log("resData", resData);
 		return resData;
 	}
 	return response;
