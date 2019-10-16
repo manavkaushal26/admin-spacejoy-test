@@ -57,13 +57,13 @@ function Question4() {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-md-10">
+				<div className="col-12 col-md-6">
 					<SectionHeader title={quizTitle} description="Your purpose, our vision!" />
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">
 								{roomReadyMock.map(room => (
-									<div className="col-12 col-sm-6 col-md-3" key={room.title}>
+									<div className="col-12 col-sm-6" key={room.title}>
 										<RadioCard
 											version={2}
 											value={room.title}

@@ -56,10 +56,9 @@ const ACTIVE = query => (
 		{query.quiz === "start" && "Intro"}
 		{query.quiz === "1" && "Select Room"}
 		{query.quiz === "2" && "Set Budget"}
-		{query.quiz === "3" && "How does your room look todayWhy do you want to design your room"}
-		{query.quiz === "4" && "When Do You Want Your Room To Be Ready"}
-		{query.quiz === "5" && "How Have You Decorated Your Room In The Past"}
-		{query.quiz === "6" && "Signup"}
+		{query.quiz === "3" && "Design Purpose"}
+		{query.quiz === "4" && "Timeline"}
+		{query.quiz === "5" && "Decoration Iteration"}
 		{query.quiz === "success" && "Done"}
 	</li>
 );

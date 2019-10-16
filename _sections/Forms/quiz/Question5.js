@@ -47,9 +47,9 @@ function Question5() {
 		if (response.statusCode <= 300) {
 			setSubmitInProgress(false);
 			goToQuiz({
-				pathname: "/designMySpace",
-				query: { quiz: quizId + 1, plan: "free" },
-				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
+				pathname: "/checkout",
+				query: {},
+				as: `/checkout`
 			});
 		}
 	};

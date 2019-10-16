@@ -5,7 +5,6 @@ import Question2 from "@sections/Forms/quiz/Question2";
 import Question3 from "@sections/Forms/quiz/Question3";
 import Question4 from "@sections/Forms/quiz/Question4";
 import Question5 from "@sections/Forms/quiz/Question5";
-import Question6 from "@sections/Forms/quiz/Question6";
 import QuizStart from "@sections/Forms/quiz/QuizStart";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
@@ -41,7 +40,6 @@ class designMySpace extends PureComponent {
 				{quiz === "3" && <Question3 />}
 				{quiz === "4" && <Question4 />}
 				{quiz === "5" && <Question5 />}
-				{quiz === "6" && <Question6 name={authVerification.name} email={authVerification.email} />}
 			</Layout>
 		);
 	}
