@@ -42,7 +42,7 @@ export default function TestimonialsLarge() {
 				<Carousel slidesToShow={1} slidesToScroll={1} draggable={false}>
 					{testimonialsMock.map(item => (
 						<div key={item.name}>
-							<div className="grid justify-center align-center">
+							<div className="grid justify-center">
 								<div className="col-md-4">
 									<ImageStyled src={item.dp} width="80px" />
 									<h3>
