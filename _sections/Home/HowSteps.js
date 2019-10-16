@@ -1,9 +1,8 @@
-import Button from "@components/Button";
 import Image from "@components/Image";
-import { redirectToLocation } from "@utils/auth";
 import { company } from "@utils/config";
 import React from "react";
 import styled from "styled-components";
+import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`
@@ -64,21 +63,6 @@ const FillerStyled = styled.div`
 	}
 `;
 
-function handleClick() {
-	if (process.env.NODE_ENV === "production") {
-		return redirectToLocation({
-			pathname: "/designMySpace",
-			query: {},
-			url: "/designMySpace"
-		});
-	}
-	return redirectToLocation({
-		pathname: "/designMySpace",
-		query: { quiz: "start", plan: "free" },
-		url: "/designMySpace?quiz=start"
-	});
-}
-
 function HowSteps() {
 	return (
 		<>
@@ -124,18 +108,15 @@ function HowSteps() {
 											</StepStyled>
 										</div>
 										<div className="col-12">
-											<Button
+											<CTA
 												variant="primary"
 												size="lg"
-												onClick={handleClick}
-												style={{ position: "relative", bottom: "-2rem" }}
 												action="StartFreeTrial"
 												label="WhatIsSpacejoy"
 												event="StartFreeTrial"
+												style={{ position: "relative", bottom: "-2rem" }}
 												data={{ sectionName: "WhatIsSpacejoy" }}
-											>
-												Start your free trial
-											</Button>
+											/>
 										</div>
 									</div>
 								</div>

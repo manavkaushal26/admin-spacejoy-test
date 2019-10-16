@@ -69,8 +69,8 @@ function auth(ctx) {
 	if (!token || role === "guest") {
 		const redirect = {
 			pathname: "/auth",
-			query: { flow: "login", redirectUrl: ctx.pathname },
-			url: `/auth/login?redirectUrl=${ctx.pathname}`
+			query: { flow: "signup", redirectUrl: ctx.pathname },
+			url: `/auth/signup?redirectUrl=${ctx.pathname}`
 		};
 		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
 	}

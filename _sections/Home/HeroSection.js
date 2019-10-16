@@ -1,11 +1,9 @@
-import Button from "@components/Button";
 import Image from "@components/Image";
-import SVGIcon from "@components/SVGIcon";
-import { redirectToLocation } from "@utils/auth";
 import Link from "next/link";
 import React from "react";
 import TextLoop from "react-text-loop";
 import styled from "styled-components";
+import CTA from "./homeUtil";
 
 const HeroWrapperStyled = styled.section`
 	display: flex;
@@ -52,21 +50,6 @@ const HeroSubText = styled.h4`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-function handleClick() {
-	if (process.env.NODE_ENV === "production") {
-		return redirectToLocation({
-			pathname: "/designMySpace",
-			query: {},
-			url: "/designMySpace"
-		});
-	}
-	return redirectToLocation({
-		pathname: "/designMySpace",
-		query: { quiz: "start", plan: "free" },
-		url: "/designMySpace?quiz=start&plan=free"
-	});
-}
-
 function HeroSection() {
 	return (
 		<HeroWrapperStyled>
@@ -80,7 +63,7 @@ function HeroSection() {
 								<TextLoop mask>
 									<span>Imagination</span>
 									<span>Living Room</span>
-									<span>Studio Room</span>
+									<span>Studio</span>
 									<span>Bedroom</span>
 									<span>Kid&apos;s Room</span>
 									<span>Entryway</span>
@@ -91,18 +74,15 @@ function HeroSection() {
 								Show us your room and let us design it for you in our 3D App. Within your budget, in your style and with
 								products you can buy
 							</HeroSubText>
-							<Button
+							<CTA
 								variant="primary"
 								shape="rounded"
 								size="lg"
-								onClick={handleClick}
 								action="StartFreeTrial"
 								label="FirstHomeScreen"
 								event="StartFreeTrial"
 								data={{ sectionName: "FirstHomeScreen" }}
-							>
-								Start Your Free Trial <SVGIcon name="right" width={20} fill="white" />
-							</Button>
+							/>
 							<Link href={{ pathname: "/designProjects" }} as="/designProjects">
 								<a href="/designProjects">
 									<p>Explore stunning design layouts</p>

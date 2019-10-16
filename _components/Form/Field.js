@@ -60,6 +60,7 @@ const HintTextStyled = styled.small`
 `;
 
 const InputStyled = styled.input`
+	-webkit-appearance: none;
 	outline: none;
 	border-radius: 2px;
 	background: ${({ hasError }) => (hasError ? "rgba(240, 90, 70, 0.1)" : "white")};

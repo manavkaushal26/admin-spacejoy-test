@@ -1,9 +1,8 @@
-import Button from "@components/Button";
 import Image from "@components/Image";
 import ProfileCard from "@sections/Cards/profile";
-import { redirectToLocation } from "@utils/auth";
 import React from "react";
 import styled from "styled-components";
+import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
 const ExtraCardStyled = styled.div``;
@@ -47,24 +46,15 @@ function DesignTeam() {
 										width="150px"
 									/>
 									<p>Let&apos;s get started</p>
-									<Button
+									<CTA
 										fill="ghost"
 										shape="flat"
 										size="md"
-										onClick={() =>
-											redirectToLocation({
-												pathname: "/designMySpace",
-												query: {},
-												url: "/designMySpace"
-											})
-										}
 										action="StartFreeTrial"
 										label="MeetDesigners"
 										event="StartFreeTrial"
 										data={{ sectionName: "MeetDesigners" }}
-									>
-										Start Your Free Trial
-									</Button>
+									/>
 								</ExtraCardStyled>
 							</div>
 							<div className="col-6 col-md-2">

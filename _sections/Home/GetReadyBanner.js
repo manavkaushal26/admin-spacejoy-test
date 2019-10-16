@@ -1,12 +1,13 @@
-import Button from "@components/Button";
 import React from "react";
 import styled from "styled-components";
+import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
-const ButtonStyled = styled(Button)`
+const CTAStyled = styled(CTA)`
 	border: 1px solid white;
 	background-color: white;
 `;
+
 const SectionWrapper = styled.section`
 	position: relative;
 	padding: 100px 0;
@@ -23,16 +24,14 @@ export default function GetReadyBanner() {
 					description="When your budget and style meet our designers, you get 3D designs of your space that you can edit, finalize and shop on our app"
 				/>
 				<div className="grid align-center text-center">
-					<ButtonStyled
+					<CTAStyled
 						shape="rounded"
 						fill="ghost"
 						action="StartFreeTrial"
 						label="ReadyToStart"
 						event="StartFreeTrial"
 						data={{ sectionName: "ReadyToStart" }}
-					>
-						Start your free trial
-					</ButtonStyled>
+					/>
 				</div>
 			</div>
 		</SectionWrapper>

@@ -20,20 +20,19 @@ function checkout({ isServer, data, authVerification }) {
 			</Head>
 			<div className="container">
 				<div className="grid">
-					<div className="col-12">
+					<div className="col-xs-12">
 						<h3>Your Preferences</h3>
 						<div className="grid">
 							{data &&
-								data.form &&
-								data.form.formData.map(item => (
-									<Fragment key={item.key}>
-										<div className="col-6">{item.key}</div>
-										<div className="col-6">{item.value}</div>
+								data.formData.map(item => (
+									<Fragment key={item.entry}>
+										<div className="col-6">{item.question}</div>
+										<div className="col-6">{item.answer}</div>
 									</Fragment>
 								))}
 						</div>
 					</div>
-					<div className="col-6">
+					<div className="col-xs-6">
 						<Checkout />
 					</div>
 				</div>
@@ -68,15 +67,12 @@ checkout.propTypes = {
 		email: PropTypes.string
 	}),
 	data: PropTypes.shape({
-		form: PropTypes.shape({
-			userEmail: PropTypes.string,
-			formData: PropTypes.arrayOf(
-				PropTypes.shape({
-					key: PropTypes.string,
-					value: PropTypes.string
-				})
-			)
-		}),
+		formData: PropTypes.arrayOf(
+			PropTypes.shape({
+				key: PropTypes.string,
+				value: PropTypes.string
+			})
+		),
 		package: PropTypes.string,
 		packageAmount: PropTypes.number
 	})
