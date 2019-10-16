@@ -28,8 +28,8 @@ const PartnerBrandStyled = styled.div`
 export default function index() {
 	return (
 		<div className="grid grid-bleed">
-			{BrandsMock.map(brand => (
-				<div className="col-12 col-xs-6 col-sm-4 col-md-2" key={brand.name}>
+			{BrandsMock.map((brand, i) => (
+				<div className={`${i < 4 ? "col-6" : "col-12"} col-xs-6 col-sm-4 col-md-2`} key={brand.name}>
 					<PartnerBrandStyled height={brand.size}>
 						<Image height={brand.size} src={brand.url} alt={brand.name} />
 					</PartnerBrandStyled>

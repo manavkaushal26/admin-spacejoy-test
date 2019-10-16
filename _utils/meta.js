@@ -13,13 +13,7 @@ const BaseMeta = [
 	<link key="icon" rel="icon" sizes="192x192" href="/static/logo-icons/icon.png" />,
 	<link key="canonical" rel="canonical" href="/" />,
 	<link key="favicon" rel="shortcut icon" href="/static/logo-icons/favicon.ico" />,
-	<link
-		key="favicon-android"
-		rel="icon"
-		type="image/png"
-		sizes="192x192"
-		href="/static/logo-icons/android-icon-192x192.png"
-	/>,
+	<link key="favicon-android" rel="icon" type="image/png" sizes="192x192" href="/static/logo-icons/icon.png" />,
 	<link key="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/static/logo-icons/favicon-32x32.png" />,
 	<link key="favicon-96" rel="icon" type="image/png" sizes="96x96" href="/static/logo-icons/favicon-96x96.png" />,
 	<link key="favicon-16" rel="icon" type="image/png" sizes="16x16" href="/static/logo-icons/favicon-16x16.png" />
