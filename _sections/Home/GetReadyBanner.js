@@ -26,10 +26,10 @@ export default function GetReadyBanner() {
 					<ButtonStyled
 						shape="rounded"
 						fill="ghost"
-						action="ReadyToStart"
+						action="StartFreeTrial"
 						label="ReadyToStart"
 						event="StartFreeTrial"
-						data={{ sectionName: "Ready to get started" }}
+						data={{ sectionName: "ReadyToStart" }}
 					>
 						Start your free trial
 					</ButtonStyled>

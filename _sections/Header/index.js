@@ -70,7 +70,16 @@ class Header extends PureComponent {
 									</ActiveLink>
 								</div>
 								<div className="col-2">
-									<Button size="xs" variant="clean" fill="clean" onClick={this.updateCookiePolicyStatus}>
+									<Button
+										size="xs"
+										variant="clean"
+										fill="clean"
+										onClick={this.updateCookiePolicyStatus}
+										action="CookieClose"
+										label="CookieClose"
+										event="CookieClose"
+										data={{ sectionName: "Cookie Bar" }}
+									>
 										<SVGIcon name="tick" size="15px" fill="white" />
 									</Button>
 								</div>

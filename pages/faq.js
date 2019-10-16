@@ -37,7 +37,9 @@ class faq extends PureComponent {
 		};
 	}
 
-	handleOpenId = openId => this.setState({ openId });
+	handleOpenId = openId => {
+		this.setState({ openId });
+	};
 
 	handleFilter = filter => {
 		const filteredData = FaqData.filter(item => item.tag === filter);

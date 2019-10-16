@@ -167,9 +167,9 @@ function HowWeDoIt() {
 									fill="ghost"
 									size="xs"
 									onClick={() => handleStepClick(2)}
-									action="Step2Button"
+									action="HowWeDoItStep2"
 									label="HowWeDoIt"
-									event="Step 2 Button"
+									event="HowWeDoItStep2"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
 									STEP 2
@@ -199,9 +199,9 @@ function HowWeDoIt() {
 									fill="ghost"
 									size="xs"
 									onClick={() => handleStepClick(3)}
-									action="Step3Button"
+									action="HowWeDoItStep3"
 									label="HowWeDoIt"
-									event="Step 3 Button"
+									event="HowWeDoItStep3"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
 									STEP 3
@@ -231,9 +231,9 @@ function HowWeDoIt() {
 									fill="ghost"
 									size="xs"
 									onClick={() => handleStepClick(1)}
-									action="Repeat"
+									action="HowWeDoItRepeat"
 									label="HowWeDoIt"
-									event="Repeat"
+									event="HowWeDoItRepeat"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
 									Repeat
@@ -253,7 +253,7 @@ function HowWeDoIt() {
 						fill="ghost"
 						action="HowItWorks"
 						label="HowWeDoIt"
-						event="How it works"
+						event="HowItWorks"
 						data={{ sectionName: "HowWeDoIt" }}
 					>
 						How it works

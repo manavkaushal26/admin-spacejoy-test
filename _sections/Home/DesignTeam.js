@@ -58,9 +58,9 @@ function DesignTeam() {
 												url: "/designMySpace"
 											})
 										}
-										action="designMySpace"
+										action="StartFreeTrial"
 										label="MeetDesigners"
-										event="Design My Space"
+										event="StartFreeTrial"
 										data={{ sectionName: "MeetDesigners" }}
 									>
 										Start Your Free Trial
