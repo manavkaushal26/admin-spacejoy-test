@@ -63,7 +63,7 @@ function Question4() {
 						<div className="col-12">
 							<div className="grid">
 								{roomReadyMock.map(room => (
-									<div className="col-12 col-sm-6 col-md-3" key={room.title}>
+									<div className="col-12 col-sm-6" key={room.title}>
 										<RadioCard
 											version={2}
 											value={room.title}
