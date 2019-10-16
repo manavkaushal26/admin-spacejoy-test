@@ -5,7 +5,12 @@ import React from "react";
 
 function SignupForm() {
 	return (
-		<FormBox destination="/auth/register/customer" description="Enter your details to signup" name="signup">
+		<FormBox
+			destination="/auth/register/customer"
+			redirectUrl="/dashboard"
+			description="Enter your details to signup"
+			name="signup"
+		>
 			<Field
 				name="userName"
 				type="text"

@@ -10,6 +10,9 @@ const SuccessText = "success";
 
 const FormStatusStyled = styled.div`
 	margin: 1rem 0 2rem 0;
+	strong {
+		text-transform: uppercase;
+	}
 `;
 
 const FormWrapperStyled = styled.form`
@@ -53,7 +56,7 @@ class FormBox extends Component {
 						password: state.userPassword.value,
 						firstName: state.userName.value,
 						lastName: "",
-						tnC: state.userCommutePermissionGranted.value,
+						tnc: state.userCommutePermissionGranted.value,
 						privacyPolicy: state.userCommutePermissionGranted.value
 					}
 				};
@@ -123,34 +126,6 @@ class FormBox extends Component {
 					howDoesYourRoomLookToday: state.howDoesYourRoomLookToday.value
 				};
 			}
-			if (name === "designmyspacequiz") {
-				if (destination === "/forms") {
-					return {
-						data: {
-							name,
-							environment: process.env.NODE_ENV,
-							formData: [
-								{
-									key: "firstName",
-									value: state.userName.value
-								},
-								{
-									key: "email",
-									value: state.userEmail.value
-								},
-								{
-									key: "mobile",
-									value: state.userMobile.value
-								},
-								{
-									key: "userCommutePermissionGranted",
-									value: state.userCommutePermissionGranted.value
-								}
-							]
-						}
-					};
-				}
-			}
 			return {};
 		}
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
@@ -160,7 +135,7 @@ class FormBox extends Component {
 				await login({ token, redirectUrl });
 			}
 			if (redirectUrl && redirectUrl !== "") {
-				redirectToLocation({ pathname: redirectUrl, url: redirectUrl, res: response });
+				redirectToLocation({ pathname: redirectUrl, query: {}, url: redirectUrl, res: response });
 			}
 		}
 		this.setState({
@@ -212,7 +187,7 @@ class FormBox extends Component {
 			<FormWrapperStyled aria-labelledby={description} onSubmit={this.handleSubmit} className={state.formStatus}>
 				{state.formStatus && (
 					<FormStatusStyled>
-						{state.formStatus} - {state.formMessage}
+						<strong>{state.formStatus}</strong> {state.formMessage && `- ${state.formMessage}`}
 					</FormStatusStyled>
 				)}
 				{React.Children.map(children, child => {
