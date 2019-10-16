@@ -10,6 +10,9 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 const SampleImageStyled = styled.div`
 	position: relative;
 	min-height: 100%;
+	@media (max-width: 576px) {
+		height: 250px;
+	}
 `;
 
 const ImageWrapperStyled = styled.div`
@@ -27,12 +30,18 @@ const ImageWrapperStyled = styled.div`
 		opacity: 0;
 		transform: scale(0.95);
 	}
+	@media (max-width: 576px) {
+		margin-top: 0;
+	}
 `;
 
 const BudgetSelectionStyled = styled.div`
 	padding: 1rem 2rem;
 	border-radius: 5px;
 	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
+	@media (max-width: 576px) {
+		box-shadow: none;
+	}
 `;
 
 const RadioStyled = styled(Button)`

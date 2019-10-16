@@ -23,7 +23,7 @@ function terms() {
 			<PrlxHeaderImageStyled />
 			<div className="container">
 				<div className="grid justify-center">
-					<div className="col-10">
+					<div className="col-xs-10">
 						<h3>{company.product} EULA and Terms of Service</h3>
 						<h1>Welcome to {company.product}</h1>
 						<h5>Last Updated: Jan 01st, 2019</h5>

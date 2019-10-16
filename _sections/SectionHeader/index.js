@@ -8,6 +8,9 @@ const SectionHeaderStyled = styled.div`
 	h2 {
 		margin: 0;
 	}
+	@media (max-width: 576px) {
+		margin: 1rem 0;
+	}
 `;
 
 function SectionHeader({ title, description }) {
