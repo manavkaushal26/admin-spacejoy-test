@@ -1,13 +1,14 @@
 import FormBox from "@components/Form";
 import Field from "@components/Form/Field";
 import { company } from "@utils/config";
+import PropTypes from "prop-types";
 import React from "react";
 
-function SignupForm() {
+function SignupForm({ redirectUrl }) {
 	return (
 		<FormBox
 			destination="/auth/register/customer"
-			redirectUrl="/dashboard"
+			redirectUrl={redirectUrl}
 			description="Enter your details to signup"
 			name="signup"
 		>
@@ -49,5 +50,13 @@ function SignupForm() {
 		</FormBox>
 	);
 }
+
+SignupForm.defaultProps = {
+	redirectUrl: ""
+};
+
+SignupForm.propTypes = {
+	redirectUrl: PropTypes.string
+};
 
 export default SignupForm;

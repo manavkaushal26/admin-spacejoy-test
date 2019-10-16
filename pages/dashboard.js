@@ -33,9 +33,9 @@ const dashboard = ({ isServer, authVerification, data }) => {
 							<h4>Thanks so much for signing up with {company.product}!</h4>
 							<p>
 								We are dedicated to helping you build out the perfect space{" "}
-								{data && data.formData[1].answer ? ` for your${data.formData[1].answer}` : "."}
+								{data && data.formData[1].answer ? ` for your ${data.formData[1].answer}.` : "."}
 							</p>
-							<p>We&apos;d love to set up a time for a phone call to meet and discuss the project. </p>
+							<p>We&apos;d love to set up a time for a phone call to meet and discuss the project.</p>
 							<p>
 								In the meantime, we&apos;ve compiled a handful of{" "}
 								<a href="https://spacejoy.typeform.com/to/LewAOP" target="_blank" rel="noopener noreferrer">
