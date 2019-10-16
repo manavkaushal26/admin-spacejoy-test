@@ -81,6 +81,10 @@ class PriceCard extends PureComponent {
 								fill={variant === "recommend" ? "solid" : "ghost"}
 								shape="rounded"
 								size="sm"
+								action="pricing"
+								label={plan}
+								event="pricing"
+								data={{ packageName: plan }}
 							>
 								Select {plan}
 							</Button>

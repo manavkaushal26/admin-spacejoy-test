@@ -63,7 +63,7 @@ function ExploreDesigns() {
 						}
 						action="ExploreDesigns"
 						label="ExploreDesigns"
-						event="ExploreMore"
+						event="ExploreDesigns"
 						data={{ sectionName: "ExploreDesigns" }}
 					>
 						Explore More

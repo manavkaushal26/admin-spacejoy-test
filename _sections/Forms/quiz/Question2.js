@@ -271,13 +271,33 @@ function Question2() {
 							</SampleImageStyled>
 						</div>
 						<div className="col-4 col-sm-2">
-							<Button variant="secondary" fill="ghost" size="sm" full onClick={handlePrev}>
+							<Button
+								variant="secondary"
+								fill="ghost"
+								size="sm"
+								full
+								onClick={handlePrev}
+								action="Quiz"
+								label={quizState}
+								event="Quiz"
+								data={{ Question: `${quizTitle}`, Answer: `${quizState}`, Action: "Previous" }}
+							>
 								Prev
 							</Button>
 						</div>
 						<div className="col-4 col-sm-8" />
 						<div className="col-4 col-sm-2">
-							<Button variant="primary" full size="sm" onClick={handleNext} submitInProgress={submitInProgress}>
+							<Button
+								variant="primary"
+								full
+								size="sm"
+								onClick={handleNext}
+								action="Quiz"
+								label={quizState}
+								event="Quiz"
+								data={{ Question: `${quizTitle}`, Answer: `${quizState}`, Action: "Next" }}
+								submitInProgress={submitInProgress}
+							>
 								Next
 							</Button>
 						</div>

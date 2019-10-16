@@ -131,7 +131,7 @@ function HowSteps() {
 												style={{ position: "relative", bottom: "-2rem" }}
 												action="StartFreeTrial"
 												label="WhatIsSpacejoy"
-												event="FreeTrial Clicked"
+												event="StartFreeTrial"
 												data={{ sectionName: "WhatIsSpacejoy" }}
 											>
 												Start your free trial

@@ -98,8 +98,8 @@ function HeroSection() {
 								onClick={handleClick}
 								action="StartFreeTrial"
 								label="FirstHomeScreen"
-								event="FreeTrial Clicked"
-								data={{ sectionName: "HeroSection" }}
+								event="StartFreeTrial"
+								data={{ sectionName: "FirstHomeScreen" }}
 							>
 								Start Your Free Trial <SVGIcon name="right" width={20} fill="white" />
 							</Button>

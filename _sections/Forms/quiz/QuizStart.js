@@ -46,7 +46,16 @@ function QuizStart() {
 						title="We're so Excited"
 						description="Hello there! Let us understand your requirements so that we can kick start designing your dream home."
 					/>
-					<Button variant="primary" size="lg" onClick={handleClick} submitInProgress={submitInProgress}>
+					<Button
+						variant="primary"
+						size="lg"
+						onClick={handleClick}
+						submitInProgress={submitInProgress}
+						action="Quiz"
+						label="FreeTrialLanding"
+						event="Quiz"
+						data={{ PageName: "FreeTrialLanding", ButtonName: "Let's Begin" }}
+					>
 						Let&apos;s Begin
 					</Button>
 				</div>

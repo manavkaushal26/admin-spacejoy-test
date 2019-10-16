@@ -3,6 +3,7 @@ const cluster = require("cluster");
 const helmet = require("helmet");
 const next = require("next");
 const path = require("path");
+const os = require("os");
 const compression = require("compression");
 const LRUCache = require("lru-cache");
 const bodyParser = require("body-parser");
@@ -19,8 +20,8 @@ const getMaxAge = function() {
 	return 31536000;
 };
 
-const serve = (path, cache) =>
-	express.static(path, {
+const serve = (pathName, cache) =>
+	express.static(pathName, {
 		maxAge: cache && !dev ? getMaxAge() : 0
 	});
 
@@ -57,7 +58,7 @@ async function renderAndCache(req, res, pagePath, queryParams) {
 app.prepare().then(() => {
 	const server = express();
 	if (cluster.isMaster && !dev) {
-		const cpuCount = require("os").cpus().length;
+		const cpuCount = os.cpus().length;
 		for (let i = 0; i < cpuCount; i += 1) {
 			workers.push(cluster.fork());
 			workers[i].on("message", function(message) {
