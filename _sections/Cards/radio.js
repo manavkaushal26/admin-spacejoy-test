@@ -54,6 +54,9 @@ const RadioCardStyledV1 = styled(RadioCardBase)`
 	background-position: 100% 100%;
 	border: 1px solid transparent;
 	color: ${({ theme }) => theme.colors.fc.dark2};
+	@media (max-width: 576px) {
+		height: 100px;
+	}
 `;
 
 const RadioCardStyledV2 = styled(RadioCardBase)`

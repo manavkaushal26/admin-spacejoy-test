@@ -1,8 +1,9 @@
+import { page } from "@utils/config";
 import cookie from "js-cookie";
 import Router from "next/router";
 import React, { Component } from "react";
 import fetcher from "./fetcher";
-import getToken from "./getToken";
+import getCookie from "./getCookie";
 
 const endPointAuthCheck = "/auth/check";
 const endPointGuestSignup = "/auth/register/guest";
@@ -17,8 +18,12 @@ function redirectToLocation({ pathname, query, url, res = {} }) {
 			default:
 				return Router.push({ pathname }, `${pathname}`);
 		}
+	} else {
+		res.writeHead(302, {
+			Location: url
+		});
+		return res.end();
 	}
-	return res.redirect(302, url);
 }
 
 function login({ token, redirectUrl }) {
@@ -33,7 +38,7 @@ function login({ token, redirectUrl }) {
 }
 
 async function guestLogin() {
-	if (getToken()) return;
+	if (getCookie(null, page.token)) return;
 	const body = {};
 	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
 	if (response.statusCode <= 300) {
@@ -59,8 +64,8 @@ function logout() {
 }
 
 function auth(ctx) {
-	const token = getToken(ctx);
-	const role = cookie.get("role");
+	const token = getCookie(ctx, page.token);
+	const role = getCookie(ctx, page.role);
 	if (!token || role === "guest") {
 		const redirect = {
 			pathname: "/auth",
@@ -111,7 +116,7 @@ function withAuthVerification(WrappedComponent) {
 
 		static async getInitialProps(ctx) {
 			const isServer = !!ctx.req;
-			const token = getToken(ctx);
+			const token = getCookie(ctx, page.token);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
 			if (token) {
 				if (!isServer && window.localStorage.getItem("authVerification")) {

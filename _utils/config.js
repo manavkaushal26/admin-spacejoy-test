@@ -11,6 +11,8 @@ module.exports = {
 		optimize: "GTM-KKZ3VGJ",
 		stripe: "pk_live_74NmugK4189bLTq0H74tvVz300grMkWE5n",
 		CLEVERTAP_ACCOUNT_ID: "69R-KW5-465Z",
+		token: "token",
+		role: "role",
 		country: "USA",
 		playStoreUrl: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
 		playStoreId: "com.homefuly.idsuite.retail",
