@@ -58,8 +58,8 @@ class MyDocument extends Document {
 						href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
 						as="style"
 					/>
-					<link rel="preload" href="/static/styles/reflex.min.css?v1" as="style" />
-					<link rel="preload" href="/static/styles/style.css?v1" as="style" />
+					<link rel="preload" href="/static/styles/reflex.min.css?v1.0.0" as="style" />
+					<link rel="preload" href="/static/styles/style.css?v1.0.1" as="style" />
 					<link
 						href="//cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css"
 						rel="stylesheet"
