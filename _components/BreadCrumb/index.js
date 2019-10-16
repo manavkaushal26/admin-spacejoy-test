@@ -59,7 +59,6 @@ const ACTIVE = query => (
 		{query.quiz === "3" && "Design Purpose"}
 		{query.quiz === "4" && "Timeline"}
 		{query.quiz === "5" && "Decoration Iteration"}
-		{query.quiz === "success" && "Done"}
 	</li>
 );
 

@@ -76,13 +76,15 @@ const ButtonStyled = styled(ButtonBase)`
 	}
 	&:disabled {
 		background: ${({ theme }) => theme.colors.bg.light2};
+		color: ${({ theme }) => theme.colors.fc.light2};
+		border-color: ${({ theme }) => theme.colors.bg.light2};
 		cursor: not-allowed;
 		box-shadow: none;
 	}
 `;
 
 function Button(props) {
-	const { children, onClick, raw, submitInProgress, action, label, value, event, data } = props;
+	const { children, onClick, raw, disabled, submitInProgress, action, label, value, event, data } = props;
 	const onClickWithGA = e => {
 		onClick(e);
 		PushEvent(action, label, value, event, data);
@@ -94,7 +96,7 @@ function Button(props) {
 					{children}
 				</ButtonBase>
 			) : (
-				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={submitInProgress}>
+				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={submitInProgress || disabled}>
 					{submitInProgress ? <SVGIcon name="spinner" className="loading-spinner" height={15} width={15} /> : children}
 				</ButtonStyled>
 			)}
@@ -112,6 +114,7 @@ Button.defaultProps = {
 	fill: "solid",
 	full: false,
 	raw: false,
+	disabled: false,
 	submitInProgress: false,
 	action: "",
 	value: "",
@@ -130,6 +133,7 @@ Button.propTypes = {
 	fill: PropTypes.string,
 	full: PropTypes.bool,
 	raw: PropTypes.bool,
+	disabled: PropTypes.bool,
 	submitInProgress: PropTypes.bool,
 	action: PropTypes.string,
 	label: PropTypes.string,
