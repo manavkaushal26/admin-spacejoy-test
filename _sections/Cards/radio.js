@@ -63,6 +63,7 @@ const RadioCardStyledV2 = styled(RadioCardBase)`
 	height: 120px;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	color: ${({ theme }) => theme.colors.fc.dark2};
+	background: ${({ theme }) => theme.colors.white};
 	.continent {
 		padding: 0 1rem;
 		text-transform: none;
