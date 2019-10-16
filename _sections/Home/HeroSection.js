@@ -110,18 +110,18 @@ function HeroSection() {
 						<div className="grid">
 							<div className="col-12 col-xs-6">
 								<Image
-									full
+									width="100%"
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
 								/>
 							</div>
 							<div className="col-12 col-xs-6">
 								<Image
-									full
+									width="100%"
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"
 								/>
 								<Image
 									style={{ marginTop: "30px" }}
-									full
+									width="100%"
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939669/web/bedroom_s99hp2.jpg"
 								/>
 							</div>

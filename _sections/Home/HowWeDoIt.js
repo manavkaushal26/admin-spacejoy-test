@@ -179,7 +179,7 @@ function HowWeDoIt() {
 						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/w_650/v1570619193/web/step-1_s3ljeg.png"
-								full
+								width="100%"
 							/>
 						</div>
 					</div>
@@ -211,7 +211,7 @@ function HowWeDoIt() {
 						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/v1571136682/web/Get_designs_revivse_2x_tfkfi3.png"
-								full
+								width="100%"
 							/>
 						</div>
 					</div>
@@ -243,7 +243,7 @@ function HowWeDoIt() {
 						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/v1571136682/web/Shop_with_your_designs_2x_jidkom.png"
-								full
+								width="100%"
 							/>
 						</div>
 					</div>
