@@ -23,10 +23,10 @@ const HeroCardStyled = styled.section`
 const HeroText = styled.h1`
 	font-size: 3rem;
 	line-height: 3.75rem;
-	margin: 0;
 	font-family: inherit;
 	span {
-		display: block;
+		display: inline-block;
+		margin-right: 1rem;
 		&:last-child {
 			font-family: "Airbnb Cereal App Medium";
 			background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570798848/web/colors_amte5j.jpg") 50% 50%;
@@ -39,6 +39,9 @@ const HeroText = styled.h1`
 	@media (max-width: 576px) {
 		font-size: 3.5rem;
 		line-height: 4rem;
+		span {
+			display: block;
+		}
 	}
 `;
 
@@ -72,7 +75,8 @@ function HeroSection() {
 					<div className="col-lg-4 col-md-6 col-xs-12">
 						<HeroCardStyled>
 							<HeroText>
-								<span>Designing Your</span>
+								<span>Designing</span>
+								<span>Your</span>
 								<TextLoop mask>
 									<span>Imagination</span>
 									<span>Living Room</span>
