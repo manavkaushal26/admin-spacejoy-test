@@ -67,11 +67,14 @@ const RadioCardStyledV2 = styled(RadioCardBase)`
 	.continent {
 		padding: 0 1rem;
 		text-transform: none;
-		height: 70%;
+		height: 80%;
 		display: flex;
 		justify-content: space-between;
 		flex-direction: column;
 		white-space: normal;
+		img {
+			margin: auto;
+		}
 	}
 `;
 
@@ -109,7 +112,7 @@ function RadioCard({ version, image, value, onClick, checked, bg }) {
 						<SVGIcon name="tick" />
 					</span>
 					<div className="continent">
-						<Image src={image} />
+						<Image src={image} height="50px" width="auto" />
 						<small>{value}</small>
 					</div>
 				</RadioCardStyledV2>

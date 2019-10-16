@@ -63,14 +63,14 @@ function Question4() {
 						<div className="col-12">
 							<div className="grid">
 								{roomReadyMock.map(room => (
-									<div className="col-12 col-sm-6" key={room.title}>
+									<div className="col-12 col-sm-6 col-md-3" key={room.title}>
 										<RadioCard
 											version={2}
 											value={room.title}
 											onClick={handleClick}
 											checked={quizState === room.title}
 											bg={room.bg}
-											image={`https://res.cloudinary.com/spacejoy/image/upload/v1571132514/web/designPurpose/${room.icon}`}
+											image={`https://res.cloudinary.com/spacejoy/image/upload/v1571132514/web/designTime/${room.icon}`}
 										/>
 									</div>
 								))}
