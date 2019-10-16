@@ -37,8 +37,8 @@ const HeroText = styled.h1`
 		}
 	}
 	@media (max-width: 576px) {
-		font-size: 4rem;
-		line-height: 5rem;
+		font-size: 3.5rem;
+		line-height: 4rem;
 	}
 `;
 

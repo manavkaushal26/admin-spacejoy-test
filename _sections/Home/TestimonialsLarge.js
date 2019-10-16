@@ -41,23 +41,25 @@ export default function TestimonialsLarge() {
 				/>
 				<Carousel slidesToShow={1} slidesToScroll={1} draggable={false}>
 					{testimonialsMock.map(item => (
-						<div className="grid justify-center align-center" key={item.name}>
-							<div className="col-3">
-								<ImageStyled src={item.dp} width="80px" />
-								<h3>
-									{item.roomType} for {item.name}
-								</h3>
-								<small>{item.address}</small>
-								<p>{item.description}</p>
-							</div>
-							<div className="col-8">
-								<ReactCompareImage
-									sliderPositionPercentage={0.2}
-									leftImageLabel="Before"
-									leftImage={item.before}
-									rightImageLabel="After"
-									rightImage={item.after}
-								/>
+						<div key={item.name}>
+							<div className="grid justify-center align-center">
+								<div className="col-md-4">
+									<ImageStyled src={item.dp} width="80px" />
+									<h3>
+										{item.roomType} for {item.name}
+									</h3>
+									<small>{item.address}</small>
+									<p>{item.description}</p>
+								</div>
+								<div className="col-md-8">
+									<ReactCompareImage
+										sliderPositionPercentage={0.2}
+										leftImageLabel="Before"
+										leftImage={item.before}
+										rightImageLabel="After"
+										rightImage={item.after}
+									/>
+								</div>
 							</div>
 						</div>
 					))}
