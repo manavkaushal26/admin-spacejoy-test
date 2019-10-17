@@ -15,7 +15,7 @@ const data = [
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "Our baby is growing. I want to create more space for playtime",
+		title: "I want more space for my growing baby",
 		icon: "7_gj8s0b.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
@@ -56,7 +56,7 @@ const data = [
 	},
 	{
 		title: "Other",
-		icon: "4_srap5o.svg",
+		icon: "other_upep8d.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	}
 ];

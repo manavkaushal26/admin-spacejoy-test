@@ -88,9 +88,9 @@ function Question1() {
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard
-								value="Kid's Bedroom"
+								value="Kid's Room"
 								onClick={handleClick}
-								checked={quizState === "Kid's Bedroom"}
+								checked={quizState === "Kid's Room"}
 								bg="rgba(255, 252, 222, 0.2)"
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570448686/web/kids_bedroom_fknoyk.png"
 							/>

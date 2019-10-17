@@ -10,10 +10,10 @@ const RadioCardBase = styled(Button)`
 	width: 100%;
 	padding: 0;
 	transition: all linear 100ms;
+	color: ${({ theme }) => theme.colors.fc.dark1};
 	&:hover {
 		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 		border: 1px solid ${({ theme }) => theme.colors.mild.black};
-		color: ${({ theme }) => theme.colors.fc.dark1};
 	}
 	&.active {
 		font-weight: bold;
@@ -72,6 +72,9 @@ const RadioCardStyledV2 = styled(RadioCardBase)`
 		justify-content: space-between;
 		flex-direction: column;
 		white-space: normal;
+		span {
+			font-size: 0.95rem;
+		}
 		img {
 			margin: auto;
 		}
@@ -113,7 +116,7 @@ function RadioCard({ version, image, value, onClick, checked, bg }) {
 					</span>
 					<div className="continent">
 						<Image src={image} height="50px" width="auto" />
-						<small>{value}</small>
+						<span>{value}</span>
 					</div>
 				</RadioCardStyledV2>
 			)}

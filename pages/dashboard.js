@@ -26,7 +26,7 @@ const dashboard = ({ isServer, authVerification, data }) => {
 			</Head>
 			<BreadCrumb />
 			<div className="container">
-				<div className="grid">
+				<div className="grid text-center">
 					<div className="col-xs-6 text-center">
 						<SectionHeader title={`Welcome ${authVerification.name}`} description="" />
 						<div className="text-left">
@@ -50,7 +50,7 @@ const dashboard = ({ isServer, authVerification, data }) => {
 							</strong>
 							<TypeFormLinkStyled>
 								<a href="https://spacejoy.typeform.com/to/LewAOP" target="_blank" rel="noopener noreferrer">
-									<Button fill="ghost" size="sm">
+									<Button variant="primary" size="sm">
 										Start Questionnaire
 									</Button>
 								</a>

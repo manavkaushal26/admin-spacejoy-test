@@ -3,7 +3,7 @@ const TestimonialsMock = [
 		name: "Alyssa",
 		dp: "https://res.cloudinary.com/spacejoy/image/upload/v1571124660/web/ALYSSA_j7gavb.jpg",
 		address: "Montclair, NJ, USA",
-		roomType: "Living room",
+		roomType: "Kid's Room",
 		description:
 			"I was very impressed and happily surprised by our designer's ability to capture the aesthetic I was looking for while also incorporating the specific types of furniture we were looking for our daughter's playroom. The process was quick and easy and we can't wait to get started putting the newly redesigned room together.",
 		before:

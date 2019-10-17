@@ -43,15 +43,15 @@ export default function TestimonialsLarge() {
 					{testimonialsMock.map(item => (
 						<div key={item.name}>
 							<div className="grid justify-center">
-								<div className="col-md-4">
+								<div className="col-md-3">
 									<ImageStyled src={item.dp} width="80px" />
 									<h3>
-										{item.roomType} for {item.name}
+										{`${item.name}'s`} {item.roomType}
 									</h3>
 									<small>{item.address}</small>
 									<p>{item.description}</p>
 								</div>
-								<div className="col-md-8">
+								<div className="col-md-7">
 									<ReactCompareImage
 										sliderPositionPercentage={0.2}
 										leftImageLabel="Before"

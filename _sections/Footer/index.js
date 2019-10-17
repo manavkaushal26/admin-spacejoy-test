@@ -124,7 +124,7 @@ function index() {
 							<div className="col-xs-3">
 								<Image
 									width="100px"
-									src={`${cloudinary.baseDeliveryURL}/image/upload/v1571215753/web/Badge_y2iubx.svg`}
+									src={`${cloudinary.baseDeliveryURL}/image/upload/v1571295673/web/Your_vision_badge_njvfdz.svg`}
 								/>
 							</div>
 							<div className="col-xs-9">

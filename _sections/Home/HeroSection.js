@@ -14,7 +14,7 @@ const HeroWrapperStyled = styled.section`
 const HeroCardStyled = styled.section`
 	position: relative;
 	@media (max-width: 576px) {
-		margin: 10rem 0;
+		margin: 3rem 0;
 	}
 `;
 
@@ -92,14 +92,14 @@ function HeroSection() {
 					</div>
 					<div className="col-12 col-md-8">
 						<div className="grid">
-							<div className="col-12 col-xs-6">
+							<div className="col-6">
 								<Image
 									width="100%"
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
 									nolazy
 								/>
 							</div>
-							<div className="col-12 col-xs-6">
+							<div className="col-6">
 								<Image
 									width="100%"
 									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"
