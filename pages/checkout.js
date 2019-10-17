@@ -9,7 +9,7 @@ import dynamic from "next/dynamic";
 import Head from "next/head";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
@@ -56,6 +56,31 @@ const AnswerStyled = styled.div`
 `;
 
 function checkout({ isServer, data, authVerification }) {
+	const [complete, setComplete] = useState(false);
+	const [submitInProgress, setSubmitInProgress] = useState(false);
+
+	const handleClick = async () => {
+		setSubmitInProgress(true);
+		const endPointPayment = "/order/payment";
+		const response = await fetcher({
+			endPoint: endPointPayment,
+			method: "POST",
+			body: {
+				data: {
+					token: null,
+					dev: process.env.NODE_ENV !== "production"
+				}
+			}
+		});
+		if (response.statusCode <= 300) {
+			setComplete(true);
+			setSubmitInProgress(false);
+		} else {
+			setComplete(false);
+			setSubmitInProgress(false);
+		}
+	};
+
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -82,9 +107,20 @@ function checkout({ isServer, data, authVerification }) {
 										</p>
 										<Link href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
 											<a href="/dashboard">
-												<Button variant="primary" shape="rounded">
-													Start Your Project Now
-												</Button>
+												{complete ? (
+													<Button fill="ghost" size="sm">
+														Go To Dashboard
+													</Button>
+												) : (
+													<Button
+														variant="primary"
+														shape="rounded"
+														onClick={handleClick}
+														submitInProgress={submitInProgress}
+													>
+														Start Your Project Now
+													</Button>
+												)}
 											</a>
 										</Link>
 									</OfferStyled>
@@ -126,6 +162,7 @@ function checkout({ isServer, data, authVerification }) {
 								<div className="col-md-5">
 									<h3>Summary Of Your Design Preferences</h3>
 									{data &&
+										data.formData &&
 										data.formData.map(item => (
 											<QAWrapperStyled bg="white" key={item.entry}>
 												<QuestionStyled>{item.question}</QuestionStyled>

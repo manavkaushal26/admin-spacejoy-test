@@ -3,6 +3,7 @@
 import Button from "@components/Button";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import theme from "@theme/index";
 import fetcher from "@utils/fetcher";
 import React, { Component } from "react";
@@ -34,7 +35,23 @@ const PoweredByStyled = styled.div`
 	}
 `;
 
-const endPoint = "/payment";
+const PaymentSuccessStyled = styled.div`
+	text-align: center;
+	background: ${({ theme }) => theme.colors.mild.green};
+	height: 200px;
+	color: ${({ theme }) => theme.colors.green};
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	svg {
+		path {
+			fill: ${({ theme }) => theme.colors.green};
+		}
+	}
+`;
+
+const endPoint = "/order/payment";
 
 const createOptions = () => {
 	return {
@@ -81,7 +98,6 @@ class CheckoutForm extends Component {
 		this.setState({ submitInProgress: true });
 		if (this.props.stripe) {
 			this.props.stripe.createToken({ name: "Name" }).then(async payload => {
-				console.log("payload", payload);
 				if (payload.error) {
 					this.setState({ cardError: payload.error.message });
 					return;
@@ -91,7 +107,8 @@ class CheckoutForm extends Component {
 					method: "POST",
 					body: {
 						data: {
-							paymentToken: payload.token.id
+							token: payload.token.id,
+							dev: process.env.NODE_ENV !== "production"
 						}
 					}
 				});
@@ -131,7 +148,13 @@ class CheckoutForm extends Component {
 
 	render() {
 		const { cardError, cardNumber, cardCvc, cardExpiry, complete, submitInProgress } = this.state;
-		if (complete) return <h1>Purchase Complete</h1>;
+		if (complete)
+			return (
+				<PaymentSuccessStyled>
+					<SVGIcon name="tick" height="45px" width="45px" />
+					<h3>Order placed successfully</h3>
+				</PaymentSuccessStyled>
+			);
 		return (
 			<CheckoutFormStyled hasError={!!cardError}>
 				<form onSubmit={this.handleSubmit}>
