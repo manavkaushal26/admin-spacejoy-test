@@ -19,28 +19,15 @@ const Checkout = dynamic(() => import("@sections/Checkout"), { ssr: false });
 const endPoint = "/form/user";
 
 const CheckoutPageStyled = styled.div`
-	background: ${({ theme }) => theme.colors.bg.light1};
+	background: ${({ theme }) => theme.colors.bg.light2};
+	padding-bottom: 100px;
 `;
 
-const StripePaymentStyled = styled.div`
+const BaseCardStyled = styled.div`
 	background: ${({ bg }) => bg};
 	padding: 1rem;
 	border-radius: 2px;
-	border: 1px solid ${({ theme, bg }) => (bg ? theme.colors.bg.light2 : "transparent")};
-`;
-
-const QAWrapperStyled = styled(StripePaymentStyled)`
-	transition: all liner 0.2s;
-	margin-bottom: 1rem;
-	&:hover {
-		border: 1px solid transparent;
-		box-shadow: 0 0 20px 0px ${({ theme }) => theme.colors.mild.black};
-	}
-`;
-
-const OfferStyled = styled(StripePaymentStyled)`
-	transition: all liner 0.2s;
-	margin-bottom: 1rem;
+	min-height: 120px;
 `;
 
 const PaymentSupportStyled = styled.small`
@@ -57,7 +44,7 @@ const AnswerStyled = styled.div`
 	color: ${({ theme }) => theme.colors.fc.dark3};
 `;
 
-const CartStyled = styled(StripePaymentStyled)`
+const CartStyled = styled(BaseCardStyled)`
 	h4 {
 		margin: 0.5rem 0;
 		&.accent {
@@ -67,22 +54,23 @@ const CartStyled = styled(StripePaymentStyled)`
 `;
 
 const ToggleWrapperStyled = styled.div`
+	background: white;
 	position: relative;
 	display: flex;
 	margin-bottom: 1rem;
 	&:after {
 		content: "";
 		position: absolute;
-		top: 5px;
-		left: 5px;
-		bottom: 5px;
-		width: calc(50% - 10px);
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 50%;
 		background: ${({ theme }) => theme.colors.mild.red};
 		transition: all ease-in 0.1s;
 	}
 	&.freeTrial {
 		&:after {
-			left: 5px;
+			left: 0;
 		}
 		button:first-child {
 			font-weight: bold;
@@ -92,7 +80,7 @@ const ToggleWrapperStyled = styled.div`
 	}
 	&.payNow {
 		&:after {
-			left: calc(50% + 5px);
+			left: 50%;
 		}
 		button:last-child {
 			font-weight: bold;
@@ -103,8 +91,12 @@ const ToggleWrapperStyled = styled.div`
 	button {
 		flex: 1;
 		z-index: 1;
-		border: 1px solid ${({ theme }) => theme.colors.bg.light2};
+		border: 1px solid ${({ theme }) => theme.colors.white};
 	}
+`;
+
+const DummyCardStyled = styled(BaseCardStyled)`
+	padding: 2rem;
 `;
 
 function checkout({ isServer, data, authVerification }) {
@@ -152,19 +144,41 @@ function checkout({ isServer, data, authVerification }) {
 							<div className="grid text-left">
 								<div className="col-8">
 									<h3>Account Information</h3>
-									<OfferStyled bg="white">j</OfferStyled>
-									<StripePaymentStyled bg="white">
-										<ToggleWrapperStyled className={payFlow}>
-											<Button fill="ghost" value="freeTrial" onClick={handleButtonToggle}>
-												Free Trial
-											</Button>
-											<Button fill="ghost" value="payNow" onClick={handleButtonToggle}>
-												Pay Now
-											</Button>
-										</ToggleWrapperStyled>
-										<Checkout />
-									</StripePaymentStyled>
-									<StripePaymentStyled>
+									<ToggleWrapperStyled className={payFlow}>
+										<Button fill="ghost" size="sm" value="freeTrial" onClick={handleButtonToggle}>
+											Free Trial
+										</Button>
+										<Button fill="ghost" size="sm" value="payNow" onClick={handleButtonToggle}>
+											Pay Now
+										</Button>
+									</ToggleWrapperStyled>
+									<div>
+										{payFlow === "payNow" && <Checkout />}
+										{(complete || payFlow === "freeTrial") && (
+											<DummyCardStyled bg="white">
+												{complete && (
+													<Link href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
+														<a href="/dashboard">
+															<Button fill="ghost" shape="rounded" size="md">
+																Go To Dashboard
+															</Button>
+														</a>
+													</Link>
+												)}
+												{payFlow === "freeTrial" && (
+													<Button
+														variant="primary"
+														shape="rounded"
+														onClick={handleClick}
+														submitInProgress={submitInProgress}
+													>
+														Place your order
+													</Button>
+												)}
+											</DummyCardStyled>
+										)}
+									</div>
+									<BaseCardStyled>
 										<div className="grid">
 											<div className="col-4">
 												<Image
@@ -194,7 +208,24 @@ function checkout({ isServer, data, authVerification }) {
 												<PaymentSupportStyled>Money Back Guarantee</PaymentSupportStyled>
 											</div>
 										</div>
-									</StripePaymentStyled>
+									</BaseCardStyled>
+									{data && data.formData && (
+										<div className="grid text-left">
+											<div className="col-xs-12">
+												<h3>Summary Of Your Design Preferences</h3>
+												<div className="grid">
+													{data.formData.map(item => (
+														<div className="col-6" key={item.entry}>
+															<BaseCardStyled bg="white">
+																<QuestionStyled>{item.question}</QuestionStyled>
+																<AnswerStyled>{item.answer || "Skipped"}</AnswerStyled>
+															</BaseCardStyled>
+														</div>
+													))}
+												</div>
+											</div>
+										</div>
+									)}
 								</div>
 								<div className="col-4">
 									<h3>Cart</h3>
@@ -241,44 +272,6 @@ function checkout({ isServer, data, authVerification }) {
 											</p>
 										</CartStyled>
 									)}
-									<Divider size="xs" />
-									<Link href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
-										<a href="/dashboard">
-											{complete ? (
-												<Button fill="ghost" size="md" full>
-													Go To Dashboard
-												</Button>
-											) : (
-												<Button
-													full
-													size="md"
-													variant="primary"
-													shape="rounded"
-													onClick={handleClick}
-													submitInProgress={submitInProgress}
-												>
-													Start Your Project Now
-												</Button>
-											)}
-										</a>
-									</Link>
-								</div>
-							</div>
-							<div className="grid text-left">
-								<div className="col-xs-12">
-									<h3>Summary Of Your Design Preferences</h3>
-									<div className="grid">
-										{data &&
-											data.formData &&
-											data.formData.map(item => (
-												<div className="col-4" key={item.entry}>
-													<QAWrapperStyled bg="white">
-														<QuestionStyled>{item.question}</QuestionStyled>
-														<AnswerStyled>{item.answer || "Skipped"}</AnswerStyled>
-													</QAWrapperStyled>
-												</div>
-											))}
-									</div>
 								</div>
 							</div>
 						</div>

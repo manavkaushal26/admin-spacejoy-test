@@ -43,15 +43,15 @@ function BenefitList({ children }) {
 
 BenefitList.Active = ({ children }) => (
 	<ListActiveStyled>
-		<SVGIcon name="tick" height="14" width="14" />
-		<small>{children}</small>
+		<SVGIcon name="tick" height={14} width={14} />
+		<span>{children}</span>
 	</ListActiveStyled>
 );
 
 BenefitList.InActive = ({ children }) => (
 	<ListInActiveStyled>
-		<SVGIcon name="cross" height="14" width="14" />
-		<small>{children}</small>
+		<SVGIcon name="cross" height={14} width={14} />
+		<span>{children}</span>
 	</ListInActiveStyled>
 );
 

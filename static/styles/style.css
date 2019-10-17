@@ -86,3 +86,22 @@ h6 {
 		max-width: 1300px;
 	}
 }
+
+/* Stripe CSS */
+.StripeElement {
+	padding: 10px 12px;
+	border: 1px solid #f2f2f2;
+	border-radius: 5px;
+}
+
+.StripeElement--focus {
+	border: 1px solid #ddd;
+}
+
+.StripeElement--invalid {
+	border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+	background-color: #fefde5 !important;
+}
