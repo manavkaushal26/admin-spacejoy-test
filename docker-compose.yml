@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+  spacejoyweb:
+    build: .
+    container_name: spacejoyweb
+    image: saurabhdsachan/spacejoyweb-react
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - LETSENCRYPT_EMAIL=hello@ndllabs.com
+      - LETSENCRYPT_HOST=spacejoy.com,www.spacejoy.com
+      - VIRTUAL_HOST=spacejoy.com,www.spacejoy.com
+  nginx:
+    image: nginx:1.15-alpine
+    container_name: nginx
+    links:
+      - spacejoyweb
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./devops/nginx:/etc/nginx/conf.d
+      - ./devops/ssl:/certs
