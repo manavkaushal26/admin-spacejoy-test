@@ -30,6 +30,14 @@ function SignupForm({ redirectUrl }) {
 				required
 			/>
 			<Field
+				name="userMobile"
+				type="tel"
+				label="Mobile"
+				placeholder="Mobile"
+				error="Please enter a mobile number"
+				hint="Should contain valid mobile number"
+			/>
+			<Field
 				name="userPassword"
 				type="password"
 				label="Password"

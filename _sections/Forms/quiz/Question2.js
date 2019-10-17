@@ -241,7 +241,7 @@ function Question2() {
 								<ImageWrapperStyled className={quizState === "" ? "active" : "inactive"}>
 									<Image
 										height="auto"
-										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_550/v1570618479/web/empty_ekqe1s.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1571313167/web/Spacejoy_quiz_blank_state_bm2xyu.svg"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$10,000 or more" ? "active" : "inactive"}>
