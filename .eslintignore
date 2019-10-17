@@ -3,10 +3,11 @@
 .next/**
 .vscode
 .github
+*.yml
 package.json
 package-lock.json
 manifest.json
 jsconfig.json
 *.css
 *.md
-devops
+_devops/**

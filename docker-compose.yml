@@ -20,5 +20,5 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./devops/nginx:/etc/nginx/conf.d
-      - ./devops/ssl:/certs
+      - ./_devops/nginx:/etc/nginx/conf.d
+      - ./_devops/ssl:/certs
