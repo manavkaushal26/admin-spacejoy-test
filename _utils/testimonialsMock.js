@@ -5,7 +5,7 @@ const TestimonialsMock = [
 		address: "Montclair, NJ, USA",
 		roomType: "Living room",
 		description:
-			"I was very impressed and happily surprised by our designer&apos;s ability to capture the aesthetic I was looking for while also incorporating the specific types of furniture we were looking for our daughter&apos;s playroom. The process was quick and easy and we can&apos;t wait to get started putting the newly redesigned room together.",
+			"I was very impressed and happily surprised by our designer's ability to capture the aesthetic I was looking for while also incorporating the specific types of furniture we were looking for our daughter's playroom. The process was quick and easy and we can't wait to get started putting the newly redesigned room together.",
 		before:
 			"https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_700/v1571124660/web/ALYSSA-LR-BEFORE_hbryif.jpg",
 		after: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_700/v1571124659/web/ALYSSA-LR-AFTER_dw8mym.jpg"

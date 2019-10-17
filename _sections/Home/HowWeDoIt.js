@@ -123,7 +123,7 @@ function HowWeDoIt() {
 			<div className="container">
 				<SectionHeader
 					title="How does Spacejoy work?"
-					description="Start your free trial. Get a glimpse of the magic we’ll weave with your space. Upgrade when you love what you see"
+					description="Start your free trial. Get a glimpse of the magic we’ll make with your space. Upgrade when you love what you see."
 				/>
 				<div className="grid align-center text-center">
 					<div className="col-12 col-xs-6">

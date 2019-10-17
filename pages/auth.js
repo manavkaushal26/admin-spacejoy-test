@@ -29,6 +29,24 @@ function getHeadingText(flow) {
 }
 
 function auth({ isServer, authVerification, flow, redirectUrl }) {
+	const renderLoginLink = (
+		<Link
+			href={{ pathname: "/auth", query: { flow: "login", redirectUrl } }}
+			as={redirectUrl ? `/auth/login?redirectUrl=${redirectUrl}` : "/auth/login"}
+		>
+			<a href={redirectUrl ? `/auth/login?redirectUrl=${redirectUrl}` : "/auth/login"}>Login</a>
+		</Link>
+	);
+
+	const renderSignupLink = (
+		<Link
+			href={{ pathname: "/auth", query: { flow: "signup", redirectUrl } }}
+			as={redirectUrl ? `/auth/signup?redirectUrl=${redirectUrl}` : "/auth/signup"}
+		>
+			<a href={redirectUrl ? `/auth/signup?redirectUrl=${redirectUrl}` : "/auth/signup"}>Signup</a>
+		</Link>
+	);
+
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -52,17 +70,13 @@ function auth({ isServer, authVerification, flow, redirectUrl }) {
 							{flow === "signup" && (
 								<>
 									<span>Already have an account? </span>
-									<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
-										<a href="/auth/login">Login</a>
-									</Link>
+									{renderLoginLink}
 								</>
 							)}
 							{flow === "login" && (
 								<>
 									<span>Create new Account </span>
-									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
-										<a href="/auth/signup">Signup</a>
-									</Link>
+									{renderSignupLink}
 									<br />
 									<Link
 										href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl: "/auth/login" } }}
@@ -75,14 +89,10 @@ function auth({ isServer, authVerification, flow, redirectUrl }) {
 							{flow === "forgot-password" && (
 								<>
 									<span>Create new Account </span>
-									<Link href={{ pathname: "/auth", query: { flow: "signup", redirectUrl: "" } }} as="/auth/signup">
-										<a href="/auth/signup">Signup</a>
-									</Link>
+									{renderSignupLink}
 									<br />
 									<span>Already have an account? </span>
-									<Link href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "" } }} as="/auth/login">
-										<a href="/auth/login">Login</a>
-									</Link>
+									{renderLoginLink}
 								</>
 							)}
 						</div>

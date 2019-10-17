@@ -81,7 +81,7 @@ function HowSteps() {
 													height="70px"
 													width="70px"
 												/>
-												<h3>Our designers weave magic</h3>
+												<h3>Our designers make magic</h3>
 												<p>Our designers will present two designs in 3D based on your needs, budget and style.</p>
 											</StepStyled>
 										</div>
