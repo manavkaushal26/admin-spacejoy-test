@@ -12,18 +12,14 @@ function QuizStart() {
 
 	const handleClick = async () => {
 		setSubmitInProgress(true);
-		const formId = "user";
 		const body = quizReqBody(quizId, "begin quiz", "generate form id");
 		const response = await fetcher({
-			endPoint: formId ? "/form" : `/form/${formId}/${quizId}`,
-			method: formId ? "POST" : "PUT",
+			endPoint: "/form",
+			method: "POST",
 			body
 		});
 		if (response.statusCode <= 300) {
 			setSubmitInProgress(false);
-			if (!formId) {
-				localStorage.setItem("quizFormId", response.data.id);
-			}
 			goToQuiz({
 				pathname: "/designMySpace",
 				query: { quiz: "1", plan: "free" },

@@ -37,6 +37,10 @@ const getViewBox = name => {
 			return "0 0 48 48";
 		case "menu":
 			return "0 0 30 20";
+		case "cross":
+			return "0 0 10.4 10.4";
+		case "arrow-right":
+			return "0 0 12 12";
 		default:
 			return "0 0 48 48";
 	}
@@ -156,6 +160,21 @@ const getPath = (name, props) => {
 					<path d="M29 2H1a.945.945 0 01-1-1 .945.945 0 011-1h28a.945.945 0 011 1 .945.945 0 01-1 1z" />
 					<path d="M15 20H1a1 1 0 010-2h14a1 1 0 010 2z" />
 				</g>
+			);
+		case "cross":
+			return (
+				<path
+					{...props}
+					d="M5.9 5.2L10 1.1c.2-.2.2-.5 0-.7s-.5-.2-.7 0L5.2 4.5 1.1.4C.9.2.6.2.4.4s-.2.5 0 .7l4.1 4.1L.4 9.4c-.2.2-.2.5 0 .7.1.1.2.1.4.1s.3 0 .4-.1L5.3 6l4.1 4.1c.1.1.2.1.4.1s.3 0 .4-.1c.2-.2.2-.5 0-.7L5.9 5.2z"
+				/>
+			);
+		case "arrow-right":
+			return (
+				<path
+					{...props}
+					d="M11.707 5.293L7 .586 5.586 2l3 3H0v2h8.586l-3 3L7 11.414l4.707-4.707a1 1 0 000-1.414z"
+					fill="#111"
+				/>
 			);
 		default:
 			return <path />;

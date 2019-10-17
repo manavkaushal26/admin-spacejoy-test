@@ -1,4 +1,6 @@
+import BenefitList from "@components/BenefitList";
 import Button from "@components/Button";
+import Divider from "@components/Divider";
 import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import SectionHeader from "@sections/SectionHeader";
@@ -55,8 +57,59 @@ const AnswerStyled = styled.div`
 	color: ${({ theme }) => theme.colors.fc.dark3};
 `;
 
+const CartStyled = styled(StripePaymentStyled)`
+	h4 {
+		margin: 0.5rem 0;
+		&.accent {
+			color: ${({ theme }) => theme.colors.accent};
+		}
+	}
+`;
+
+const ToggleWrapperStyled = styled.div`
+	position: relative;
+	display: flex;
+	margin-bottom: 1rem;
+	&:after {
+		content: "";
+		position: absolute;
+		top: 5px;
+		left: 5px;
+		bottom: 5px;
+		width: calc(50% - 10px);
+		background: ${({ theme }) => theme.colors.mild.red};
+		transition: all ease-in 0.1s;
+	}
+	&.freeTrial {
+		&:after {
+			left: 5px;
+		}
+		button:first-child {
+			font-weight: bold;
+			color: ${({ theme }) => theme.colors.accent};
+			border: 1px solid ${({ theme }) => theme.colors.accent};
+		}
+	}
+	&.payNow {
+		&:after {
+			left: calc(50% + 5px);
+		}
+		button:last-child {
+			font-weight: bold;
+			color: ${({ theme }) => theme.colors.accent};
+			border: 1px solid ${({ theme }) => theme.colors.accent};
+		}
+	}
+	button {
+		flex: 1;
+		z-index: 1;
+		border: 1px solid ${({ theme }) => theme.colors.bg.light2};
+	}
+`;
+
 function checkout({ isServer, data, authVerification }) {
 	const [complete, setComplete] = useState(false);
+	const [payFlow, setPayFlow] = useState("freeTrial");
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	const handleClick = async () => {
@@ -81,6 +134,10 @@ function checkout({ isServer, data, authVerification }) {
 		}
 	};
 
+	const handleButtonToggle = e => {
+		setPayFlow(e.currentTarget.value);
+	};
+
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -90,41 +147,21 @@ function checkout({ isServer, data, authVerification }) {
 			<CheckoutPageStyled>
 				<div className="container">
 					<div className="grid text-center">
-						<div className="col-12 col-lg-10">
-							<SectionHeader
-								title="Checkout / Order Confirmation"
-								description="You can modify selected preferences at anytime. "
-							/>
+						<div className="col-12 col-md-10">
+							<SectionHeader title="Checkout" description="You are in good company" />
 							<div className="grid text-left">
-								<div className="col-md-7">
-									<h3>Payment</h3>
-									<OfferStyled bg="white">
-										<h3>Introductory offer</h3>
-										<p>
-											Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut ratione a commodi repellendus ea
-											magnam voluptates placeat beatae cumque? Amet explicabo ipsa cum voluptatibus iste totam eum,
-											asperiores omnis aliquam?
-										</p>
-										<Link href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
-											<a href="/dashboard">
-												{complete ? (
-													<Button fill="ghost" size="sm">
-														Go To Dashboard
-													</Button>
-												) : (
-													<Button
-														variant="primary"
-														shape="rounded"
-														onClick={handleClick}
-														submitInProgress={submitInProgress}
-													>
-														Start Your Project Now
-													</Button>
-												)}
-											</a>
-										</Link>
-									</OfferStyled>
+								<div className="col-8">
+									<h3>Account Information</h3>
+									<OfferStyled bg="white">j</OfferStyled>
 									<StripePaymentStyled bg="white">
+										<ToggleWrapperStyled className={payFlow}>
+											<Button fill="ghost" value="freeTrial" onClick={handleButtonToggle}>
+												Free Trial
+											</Button>
+											<Button fill="ghost" value="payNow" onClick={handleButtonToggle}>
+												Pay Now
+											</Button>
+										</ToggleWrapperStyled>
 										<Checkout />
 									</StripePaymentStyled>
 									<StripePaymentStyled>
@@ -159,16 +196,89 @@ function checkout({ isServer, data, authVerification }) {
 										</div>
 									</StripePaymentStyled>
 								</div>
-								<div className="col-md-5">
+								<div className="col-4">
+									<h3>Cart</h3>
+									{payFlow === "payNow" && (
+										<CartStyled bg="white">
+											<h4>Your Savings</h4>
+											<Divider size="xs" />
+											<h4 className="accent">Classic</h4>
+											<h4>Total</h4>
+											<Divider size="xs" />
+											<BenefitList>
+												<BenefitList.Active>Get two concepts in your style & Budget</BenefitList.Active>
+												<BenefitList.Active>See your home in 3D App</BenefitList.Active>
+												<BenefitList.Active>Give feedback & get revisions</BenefitList.Active>
+												<BenefitList.Active>Track project progress</BenefitList.Active>
+												<BenefitList.Active>Access your designs anywhere, anytime</BenefitList.Active>
+												<BenefitList.Active>Shop products with ease</BenefitList.Active>
+											</BenefitList>
+											<Divider size="xs" />
+											<h4 className="accent">Do you know?</h4>
+											<p>
+												Your are saving close to <strong>$4000</strong> on standard interior designer fees by choosing
+												spacejoy.
+											</p>
+										</CartStyled>
+									)}
+									{payFlow === "freeTrial" && (
+										<CartStyled bg="white">
+											<h4>What Free Trial Includes</h4>
+											<Divider size="xs" />
+											<BenefitList>
+												<BenefitList.Active>Get two concepts in your style & Budget</BenefitList.Active>
+												<BenefitList.Active>Shop products with ease</BenefitList.Active>
+												<BenefitList.InActive>See your home in 3D App</BenefitList.InActive>
+												<BenefitList.InActive>Give feedback & get revisions</BenefitList.InActive>
+												<BenefitList.InActive>Track project progress</BenefitList.InActive>
+												<BenefitList.InActive>Access your designs anywhere, anytime</BenefitList.InActive>
+											</BenefitList>
+											<Divider size="xs" />
+											<h4 className="accent">Do you know?</h4>
+											<p>
+												Your are saving close to <strong>$4000</strong> on standard interior designer fees by choosing
+												spacejoy.
+											</p>
+										</CartStyled>
+									)}
+									<Divider size="xs" />
+									<Link href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
+										<a href="/dashboard">
+											{complete ? (
+												<Button fill="ghost" size="md" full>
+													Go To Dashboard
+												</Button>
+											) : (
+												<Button
+													full
+													size="md"
+													variant="primary"
+													shape="rounded"
+													onClick={handleClick}
+													submitInProgress={submitInProgress}
+												>
+													Start Your Project Now
+												</Button>
+											)}
+										</a>
+									</Link>
+								</div>
+							</div>
+							<div className="grid text-left">
+								<div className="col-xs-12">
 									<h3>Summary Of Your Design Preferences</h3>
-									{data &&
-										data.formData &&
-										data.formData.map(item => (
-											<QAWrapperStyled bg="white" key={item.entry}>
-												<QuestionStyled>{item.question}</QuestionStyled>
-												<AnswerStyled>{item.answer || "Skipped"}</AnswerStyled>
-											</QAWrapperStyled>
-										))}
+									<div className="grid">
+										{data &&
+											data.formData &&
+											data.formData.map(item => (
+												<div className="col-4" key={item.entry}>
+													<QAWrapperStyled bg="white">
+														<QuestionStyled>{item.question}</QuestionStyled>
+														<AnswerStyled>{item.answer || "Skipped"}</AnswerStyled>
+													</QAWrapperStyled>
+												</div>
+											))}
+									</div>
 								</div>
 							</div>
 						</div>

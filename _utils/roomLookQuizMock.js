@@ -56,7 +56,7 @@ const data = [
 	},
 	{
 		title: "Other",
-		icon: "other_upep8d.svg",
+		icon: "dots_uiwgog.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	}
 ];
