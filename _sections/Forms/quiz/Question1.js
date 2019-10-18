@@ -8,7 +8,7 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question1() {
 	const quizId = 1;
 
-	const quizTitle = "Which room are you designing?";
+	const quizTitle = "Tell us which room? Let's transform it!";
 
 	const [quizState, setQuizState] = useState("");
 
@@ -54,10 +54,7 @@ function Question1() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-xs-10">
-					<SectionHeader
-						title={quizTitle}
-						description="Let's start by helping your designers understand which rooms you prefer."
-					/>
+					<SectionHeader title={quizTitle} description="Give our designers an idea of your requirements" />
 					<div className="grid">
 						<div className="col-12 col-sm-6 col-md-4">
 							<RadioCard

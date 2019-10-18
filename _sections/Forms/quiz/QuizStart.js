@@ -1,9 +1,22 @@
 import Button from "@components/Button";
 import Image from "@components/Image";
+import BenefitList from "@components/BenefitList";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
 import React, { useState } from "react";
+import styled from "styled-components";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
+
+const List = styled.div`
+	margin-bottom: 30px;
+	text-align: left;
+	div {
+		margin: 10px 0px;
+	}
+	@media (max-width: 576px) {
+		margin: 1rem 0;
+	}
+`;
 
 function QuizStart() {
 	const quizId = 0;
@@ -39,9 +52,25 @@ function QuizStart() {
 						style={{ marginTop: "100px" }}
 					/>
 					<SectionHeader
-						title="We're so Excited"
-						description="Hello there! Let us understand your requirements so that we can kick start designing your dream home."
+						title="You’re on the verge of getting a new design for your space!"
+						description="Sign up for a free trial, answer few more questions and submit images of your room to get your 3D designs going."
 					/>
+					<List>
+						<div>As part of your trial you get </div>
+						<BenefitList>
+							<BenefitList.Active>1 Design and Realistic 3D Renders</BenefitList.Active>
+							<BenefitList.Active>Turnaround Time - 12 Days</BenefitList.Active>
+							<BenefitList.Active>Shopping List of your Designs</BenefitList.Active>
+						</BenefitList>
+						<div>If you like what we have designed for you, upgrade and unlock</div>
+						<BenefitList>
+							<BenefitList.Active> Get designer help to revise your designs on 3D App</BenefitList.Active>
+							<BenefitList.Active>Get designer assistance to shop your products</BenefitList.Active>
+							<BenefitList.Active>
+								Access to Deal Hunter - Best deals on your shopping list (Save at least 12% more on your shopping list)
+							</BenefitList.Active>
+						</BenefitList>
+					</List>
 					<Button
 						variant="primary"
 						size="lg"

@@ -9,7 +9,7 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question4() {
 	const quizId = 4;
 
-	const quizTitle = "When Do You Want Your Room To Be Ready?";
+	const quizTitle = "When should your room be ready?";
 
 	const [quizState, setQuizState] = useState("");
 
@@ -58,7 +58,7 @@ function Question4() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-6">
-					<SectionHeader title={quizTitle} description="Your purpose, our vision!" />
+					<SectionHeader title={quizTitle} description="A timeline will help us work towards your goal" />
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">

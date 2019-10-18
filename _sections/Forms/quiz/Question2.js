@@ -106,7 +106,7 @@ const RadioStyled = styled(Button)`
 function Question2() {
 	const quizId = 2;
 
-	const quizTitle = "Have a budget in mind?";
+	const quizTitle = "What does your budget look like?";
 
 	const [quizState, setQuizState] = useState("");
 
@@ -155,10 +155,7 @@ function Question2() {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-xs-10">
-					<SectionHeader
-						title={quizTitle}
-						description="Let's start by helping your designers understand which rooms you prefer."
-					/>
+					<SectionHeader title={quizTitle} description="Pick one from the budget ranges below" />
 					<div className="grid align-center">
 						<div className="col-12 col-sm-5 col-md-4">
 							<BudgetSelectionStyled>
