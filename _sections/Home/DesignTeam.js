@@ -5,11 +5,10 @@ import styled from "styled-components";
 import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
-const ExtraCardStyled = styled.div``;
-
 const SectionWrapper = styled.section`
 	position: relative;
 	padding: 100px 0;
+	background: ${({ theme }) => theme.colors.bg.light1};
 `;
 
 function DesignTeam() {
@@ -40,7 +39,7 @@ function DesignTeam() {
 								</ProfileCard>
 							</div>
 							<div className="col-12 col-md-4 text-center align-self-center">
-								<ExtraCardStyled>
+								<div>
 									<Image
 										src="https://res.cloudinary.com/spacejoy/image/upload/w_400/v1571054987/web/quote_fqabdm.png"
 										width="150px"
@@ -55,7 +54,7 @@ function DesignTeam() {
 										event="StartFreeTrial"
 										data={{ sectionName: "MeetDesigners" }}
 									/>
-								</ExtraCardStyled>
+								</div>
 							</div>
 							<div className="col-6 col-md-2">
 								<ProfileCard>

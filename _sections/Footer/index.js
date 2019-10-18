@@ -1,4 +1,5 @@
 import Image from "@components/Image";
+import List from "@components/List";
 import SVGIcon from "@components/SVGIcon";
 import { cloudinary, company } from "@utils/config";
 import Link from "next/link";
@@ -9,25 +10,6 @@ const FooterStyled = styled.footer`
 	padding: 4rem 0;
 	font-size: 0.9rem;
 	background-color: ${({ theme }) => theme.colors.white};
-`;
-
-const FooterNavStyled = styled.ul`
-	padding: 0;
-	margin: 0;
-	li {
-		list-style: none;
-		padding: ${({ direction }) => (direction === "horizontal" ? "0.5rem" : "0.25rem 0")};
-		display: ${({ direction }) => (direction === "horizontal" ? "inline-block" : "block")};
-		&:first-child {
-			padding-left: 0;
-		}
-		&:last-child {
-			padding-right: 0;
-		}
-		a {
-			color: ${({ theme }) => theme.colors.fc.dark1};
-		}
-	}
 `;
 
 const HappinessSealStyled = styled.div`
@@ -42,7 +24,7 @@ function index() {
 					<div className="col-xs-12 col-md-3">
 						<h3>QUICK LINKS</h3>
 						<nav>
-							<FooterNavStyled>
+							<List>
 								<li>
 									<a href="https://www.blog.spacejoy.com/">Blog</a>
 								</li>
@@ -61,13 +43,13 @@ function index() {
 										<a href="/cookies">Cookie Statement</a>
 									</Link>
 								</li>
-							</FooterNavStyled>
+							</List>
 						</nav>
 					</div>
 					<div className="col-xs-12 col-md-4 align-center">
 						<h3>CONNECT WITH US</h3>
 						<nav>
-							<FooterNavStyled direction="horizontal">
+							<List direction="horizontal">
 								<li>
 									<a href={company.social.facebook} target="_black">
 										<SVGIcon name="fb" height={18} width={18} />
@@ -93,11 +75,11 @@ function index() {
 										<SVGIcon name="pi" height={18} width={18} />
 									</a>
 								</li>
-							</FooterNavStyled>
+							</List>
 						</nav>
 						<h3>DOWNLOAD APP</h3>
 						<nav>
-							<FooterNavStyled direction="horizontal">
+							<List direction="horizontal">
 								<li>
 									<a href={company.app.ios}>
 										<Image
@@ -116,7 +98,7 @@ function index() {
 										/>
 									</a>
 								</li>
-							</FooterNavStyled>
+							</List>
 						</nav>
 					</div>
 					<div className="col-xs-12 col-md-5 align-right">
@@ -138,14 +120,14 @@ function index() {
 									<div className="col-xs-12">
 										<h3>NEED HELP?</h3>
 										<nav>
-											<FooterNavStyled>
+											<List>
 												<li>
 													<SVGIcon name="envelope" height={14} width={20} style={{ marginRight: "0.5rem" }} />
 													<a href={`mailto:${company.email.support}?Subject=Need%20Help`} target="_top">
 														{company.email.support}
 													</a>
 												</li>
-											</FooterNavStyled>
+											</List>
 										</nav>
 									</div>
 								</div>

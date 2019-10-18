@@ -7,6 +7,7 @@ import HowSteps from "@sections/Home/HowSteps";
 import HowWeDoIt from "@sections/Home/HowWeDoIt";
 import TestimonialsLarge from "@sections/Home/TestimonialsLarge";
 import TestimonialsShort from "@sections/Home/TestimonialsShort";
+import ThreeDView from "@sections/Home/ThreeDView";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -27,6 +28,7 @@ function index({ isServer, authVerification }) {
 			<HowSteps />
 			<TestimonialsShort />
 			<HowWeDoIt />
+			<ThreeDView />
 			<DesignTeam />
 			<ExploreDesigns />
 			<TestimonialsLarge />
