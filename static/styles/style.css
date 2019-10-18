@@ -90,7 +90,7 @@ h6 {
 /* Stripe CSS */
 .StripeElement {
 	padding: 10px 12px;
-	border: 1px solid #f2f2f2;
+	border: 1px solid #ddd;
 	border-radius: 5px;
 }
 

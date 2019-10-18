@@ -1,3 +1,4 @@
+import BenefitList from "@components/BenefitList";
 import BreadCrumb from "@components/BreadCrumb";
 import PriceCard from "@sections/Cards/price";
 import Layout from "@sections/Layout";
@@ -27,7 +28,15 @@ function pricing() {
 								<div className="col-12 col-sm-4" key={plan.name}>
 									<PriceCard plan={plan.name} variant={plan.variant}>
 										<PriceCard.Header title={plan.title} subTitle={plan.subTitle} />
-										<PriceCard.Body price={plan.price} description={plan.description} thumbnail={plan.thumbnail} />
+										<PriceCard.Body price={plan.price} description={plan.description} thumbnail={plan.thumbnail}>
+											<BenefitList>
+												{plan.benefits.map(({ icon, nature, label }) => (
+													<BenefitList.Item icon={icon} nature={nature}>
+														<small>{label}</small>
+													</BenefitList.Item>
+												))}
+											</BenefitList>
+										</PriceCard.Body>
 									</PriceCard>
 								</div>
 							))}

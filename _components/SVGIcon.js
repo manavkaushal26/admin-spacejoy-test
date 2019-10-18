@@ -3,8 +3,6 @@ import React from "react";
 
 const getViewBox = name => {
 	switch (name) {
-		case "cart":
-			return "0 0 162.39 175";
 		case "fb":
 			return "0 0 50 50";
 		case "li":
@@ -191,6 +189,7 @@ const SVGIcon = ({ name, style, fill, viewBox, width, className, height }) => (
 		viewBox={viewBox || getViewBox(name)}
 		xmlnsXlink="http://www.w3.org/1999/xlink"
 	>
+		<title>spacejoy {name}</title>
 		{getPath(name, { fill })}
 	</svg>
 );

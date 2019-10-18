@@ -6,7 +6,7 @@ const theme = {
 		secondary: "#FAC87D",
 		yellow: "#fdcb6e",
 		red: "#e74c3c",
-		green: "#2ecc71",
+		green: "#4CAF50",
 		blue: "#3498db",
 		dark: "#3d4245",
 		white: "#ffffff",

@@ -46,7 +46,7 @@ const DMS = () => (
 const QZ = () => (
 	<li key="qz">
 		<Link href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }} as="/designMySpace?quiz=start">
-			<a href="/designMySpace?quiz=start">Quiz</a>
+			<a href="/designMySpace?quiz=start">Design My Space - Quiz</a>
 		</Link>
 	</li>
 );
@@ -73,7 +73,7 @@ function index({ router }) {
 		switch (pathname) {
 			case "/designMySpace":
 				if (query.quiz) {
-					crumbs.push(DMS(), QZ(), ACTIVE(query));
+					crumbs.push(QZ(), ACTIVE(query));
 				} else {
 					crumbs.push(DMS());
 				}

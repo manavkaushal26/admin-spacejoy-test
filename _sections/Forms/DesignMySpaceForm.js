@@ -44,9 +44,9 @@ function DesignMySpaceForm({ plan, name, email }) {
 				error="Please enter a Selected Plan"
 				hint="Selected Plan"
 				options={[
-					{ value: "consultation", label: "Consultation - $19" },
-					{ value: "classic", label: "Classic - $49" },
-					{ value: "premium", label: "Premium - $99" }
+					{ value: "Delight", label: "Delight - Free Trial" },
+					{ value: "Bliss", label: "Bliss - $49" },
+					{ value: "Euphoria", label: "Euphoria - $99" }
 				]}
 				value={plan}
 				required

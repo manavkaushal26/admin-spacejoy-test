@@ -14,61 +14,66 @@ const ListStyled = styled.li`
 	margin: 0.25rem 0;
 	svg {
 		margin-right: 0.5rem;
-		padding: 2px;
 	}
 `;
 
 const ListActiveStyled = styled(ListStyled)`
-	svg {
-		background: ${({ theme }) => theme.colors.green};
-		border-radius: 7px;
-		path {
-			fill: white;
+	&.neutral {
+		svg {
+			path {
+				fill: ${({ theme }) => theme.colors.fc.dark3};
+			}
+		}
+	}
+	&.positive {
+		svg {
+			path {
+				fill: ${({ theme }) => theme.colors.green};
+			}
+		}
+	}
+	&.negative {
+		svg {
+			path {
+				fill: ${({ theme }) => theme.colors.red};
+			}
 		}
 	}
 `;
 
-const ListInActiveStyled = styled(ListStyled)`
-	color: ${({ theme }) => theme.colors.fc.dark3};
-	svg {
-		path {
-			fill: ${({ theme }) => theme.colors.fc.dark3};
-		}
-	}
+const DotStyled = styled.span`
+	display: inline-block;
+	height: ${({ height }) => height / 2}px;
+	width: ${({ width }) => width / 2}px;
+	background: ${({ theme }) => theme.colors.fc.light2};
+	margin-right: 1rem;
+	border-radius: 10px;
+	position: relative;
+	top: -1px;
 `;
 
 function BenefitList({ children }) {
 	return <ListWrapperStyled>{children}</ListWrapperStyled>;
 }
 
-BenefitList.Active = ({ children }) => (
-	<ListActiveStyled>
-		<SVGIcon name="tick" height={14} width={14} />
+BenefitList.Item = ({ children, icon, nature }) => (
+	<ListActiveStyled className={nature}>
+		{icon !== "dot" && <SVGIcon name={icon} height={12} width={12} />}
+		{icon === "dot" && <DotStyled name={icon} height={12} width={12} />}
 		<span>{children}</span>
 	</ListActiveStyled>
 );
 
-BenefitList.InActive = ({ children }) => (
-	<ListInActiveStyled>
-		<SVGIcon name="cross" height={14} width={14} />
-		<span>{children}</span>
-	</ListInActiveStyled>
-);
-
-BenefitList.Active.defaultProps = {
-	children: null
+BenefitList.Item.defaultProps = {
+	children: null,
+	icon: "dot",
+	nature: "neutral"
 };
 
-BenefitList.Active.propTypes = {
-	children: PropTypes.node
-};
-
-BenefitList.InActive.defaultProps = {
-	children: null
-};
-
-BenefitList.InActive.propTypes = {
-	children: PropTypes.node
+BenefitList.Item.propTypes = {
+	children: PropTypes.node,
+	icon: PropTypes.string,
+	nature: PropTypes.string
 };
 
 BenefitList.defaultProps = {

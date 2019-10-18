@@ -57,14 +57,12 @@ class PriceCard extends PureComponent {
 		</PriceCardHeaderStyled>
 	);
 
-	static Body = ({ price, description, thumbnail }) => (
+	static Body = ({ children, price, description, thumbnail }) => (
 		<PriceCardBodyStyled>
 			<Image src={thumbnail} height="150px" />
-			<h2>
-				{price}
-				<sup>$</sup>
-			</h2>
+			<h2>{price}</h2>
 			<p>{description}</p>
+			<div className="text-left">{children}</div>
 		</PriceCardBodyStyled>
 	);
 

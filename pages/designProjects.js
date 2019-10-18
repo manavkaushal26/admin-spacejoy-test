@@ -2,6 +2,7 @@ import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
+import CTA from "@sections/Home/homeUtil";
 import Layout from "@sections/Layout";
 import { cloudinary, company } from "@utils/config";
 import { removeSpaces } from "@utils/helper";
@@ -158,6 +159,19 @@ class designProjects extends PureComponent {
 									</div>
 								</div>
 								{data.length !== index + 1 && <Divider />}
+								{index !== 0 && index % 4 === 0 && (
+									<div className="text-center">
+										<CTA
+											variant="primary"
+											size="lg"
+											action="StartFreeTrial"
+											label="DesignProjects"
+											event="StartFreeTrial"
+											data={{ sectionName: `DesignProjects${index}` }}
+										/>
+										<Divider />
+									</div>
+								)}
 							</div>
 						))}
 					</InfiniteScroll>

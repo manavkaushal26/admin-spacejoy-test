@@ -2,6 +2,7 @@ import BenefitList from "@components/BenefitList";
 import Button from "@components/Button";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import Layout from "@sections/Layout";
 import SectionHeader from "@sections/SectionHeader";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
@@ -66,7 +67,7 @@ const ToggleWrapperStyled = styled.div`
 		bottom: 0;
 		width: 50%;
 		background: ${({ theme }) => theme.colors.mild.red};
-		transition: all ease-in 0.1s;
+		transition: all ease-in 0.25s;
 	}
 	&.freeTrial {
 		&:after {
@@ -145,10 +146,10 @@ function checkout({ isServer, data, authVerification }) {
 								<div className="col-8">
 									<h3>Account Information</h3>
 									<ToggleWrapperStyled className={payFlow}>
-										<Button fill="ghost" size="sm" value="freeTrial" onClick={handleButtonToggle}>
+										<Button fill="ghost" value="freeTrial" onClick={handleButtonToggle}>
 											Free Trial
 										</Button>
-										<Button fill="ghost" size="sm" value="payNow" onClick={handleButtonToggle}>
+										<Button fill="ghost" value="payNow" onClick={handleButtonToggle}>
 											Pay Now
 										</Button>
 									</ToggleWrapperStyled>
@@ -228,7 +229,9 @@ function checkout({ isServer, data, authVerification }) {
 									)}
 								</div>
 								<div className="col-4">
-									<h3>Cart</h3>
+									<h3>
+										<SVGIcon name="cart" height={10} />
+									</h3>
 									{payFlow === "payNow" && (
 										<CartStyled bg="white">
 											<h4>Your Savings</h4>
@@ -237,12 +240,24 @@ function checkout({ isServer, data, authVerification }) {
 											<h4>Total</h4>
 											<Divider size="xs" />
 											<BenefitList>
-												<BenefitList.Active>Get two concepts in your style & Budget</BenefitList.Active>
-												<BenefitList.Active>See your home in 3D App</BenefitList.Active>
-												<BenefitList.Active>Give feedback & get revisions</BenefitList.Active>
-												<BenefitList.Active>Track project progress</BenefitList.Active>
-												<BenefitList.Active>Access your designs anywhere, anytime</BenefitList.Active>
-												<BenefitList.Active>Shop products with ease</BenefitList.Active>
+												<BenefitList.Item icon="tick" nature="positive">
+													Get two concepts in your style & Budget
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													See your home in 3D App
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													Give feedback & get revisions
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													Track project progress
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													Access your designs anywhere, anytime
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													Shop products with ease
+												</BenefitList.Item>
 											</BenefitList>
 											<Divider size="xs" />
 											<h4 className="accent">Do you know?</h4>
@@ -257,12 +272,24 @@ function checkout({ isServer, data, authVerification }) {
 											<h4>What Free Trial Includes</h4>
 											<Divider size="xs" />
 											<BenefitList>
-												<BenefitList.Active>Get two concepts in your style & Budget</BenefitList.Active>
-												<BenefitList.Active>Shop products with ease</BenefitList.Active>
-												<BenefitList.InActive>See your home in 3D App</BenefitList.InActive>
-												<BenefitList.InActive>Give feedback & get revisions</BenefitList.InActive>
-												<BenefitList.InActive>Track project progress</BenefitList.InActive>
-												<BenefitList.InActive>Access your designs anywhere, anytime</BenefitList.InActive>
+												<BenefitList.Item icon="tick" nature="positive">
+													Get two concepts in your style & Budget
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													Shop products with ease
+												</BenefitList.Item>
+												<BenefitList.Item icon="cross" nature="neutral">
+													See your home in 3D App
+												</BenefitList.Item>
+												<BenefitList.Item icon="cross" nature="neutral">
+													Give feedback & get revisions
+												</BenefitList.Item>
+												<BenefitList.Item icon="cross" nature="neutral">
+													Track project progress
+												</BenefitList.Item>
+												<BenefitList.Item icon="cross" nature="neutral">
+													Access your designs anywhere, anytime
+												</BenefitList.Item>
 											</BenefitList>
 											<Divider size="xs" />
 											<h4 className="accent">Do you know?</h4>
