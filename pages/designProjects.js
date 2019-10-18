@@ -4,6 +4,7 @@ import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import CTA from "@sections/Home/homeUtil";
 import Layout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
 import { cloudinary, company } from "@utils/config";
 import { removeSpaces } from "@utils/helper";
 import IndexPageMeta from "@utils/meta";
@@ -76,10 +77,10 @@ class designProjects extends PureComponent {
 	};
 
 	render() {
-		const { isServer } = this.props;
+		const { isServer, authVerification } = this.props;
 		const { hasMore, data } = this.state;
 		return (
-			<Layout isServer={isServer}>
+			<Layout isServer={isServer} authVerification={authVerification}>
 				<Head>
 					{IndexPageMeta}
 					<title>Design Projects | {company.product}</title>
@@ -186,10 +187,13 @@ designProjects.getInitialProps = async ({ req }) => {
 	return { isServer };
 };
 
-designProjects.defaultProps = {};
-
-designProjects.propTypes = {
-	isServer: PropTypes.bool.isRequired
+designProjects.defaultProps = {
+	authVerification: {}
 };
 
-export default designProjects;
+designProjects.propTypes = {
+	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({})
+};
+
+export default withAuthVerification(designProjects);

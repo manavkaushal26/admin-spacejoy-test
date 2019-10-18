@@ -2,15 +2,17 @@ import BenefitList from "@components/BenefitList";
 import BreadCrumb from "@components/BreadCrumb";
 import PriceCard from "@sections/Cards/price";
 import Layout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import PlansData from "@utils/planMock";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import React from "react";
 
-function pricing() {
+function pricing({ isServer, authVerification }) {
 	return (
-		<Layout>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>Pricing | {company.product}</title>
@@ -48,4 +50,13 @@ function pricing() {
 	);
 }
 
-export default pricing;
+pricing.defaultProps = {
+	authVerification: {}
+};
+
+pricing.propTypes = {
+	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({})
+};
+
+export default withAuthVerification(pricing);

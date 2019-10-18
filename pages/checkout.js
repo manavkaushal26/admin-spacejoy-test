@@ -58,7 +58,7 @@ const ToggleWrapperStyled = styled.div`
 	background: white;
 	position: relative;
 	display: flex;
-	margin-bottom: 1rem;
+	margin-bottom: 2rem;
 	&:after {
 		content: "";
 		position: absolute;

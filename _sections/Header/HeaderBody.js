@@ -113,16 +113,7 @@ const HeaderBody = ({ authVerification }) => {
 					</ActiveLink>
 				</li>
 				<li>
-					{(authVerification === {} || authVerification.role === "guest") && (
-						<ActiveLink
-							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/dashboard" } }}
-							as="/auth/login?redirectUrl=/dashboard"
-							replace
-						>
-							Login
-						</ActiveLink>
-					)}
-					{authVerification.role === "customer" && (
+					{authVerification && authVerification.role === "customer" ? (
 						<DropMenu>
 							<DropMenu.Header>
 								<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
@@ -138,6 +129,14 @@ const HeaderBody = ({ authVerification }) => {
 								</Button>
 							</DropMenu.Body>
 						</DropMenu>
+					) : (
+						<ActiveLink
+							href={{ pathname: "/auth", query: { flow: "login", redirectUrl: "/dashboard" } }}
+							as="/auth/login?redirectUrl=/dashboard"
+							replace
+						>
+							Login
+						</ActiveLink>
 					)}
 				</li>
 			</HorizontalListStyled>

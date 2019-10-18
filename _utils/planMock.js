@@ -43,7 +43,7 @@ const PlansData = [
 	{
 		name: "bliss",
 		variant: "recommend",
-		title: "Classic",
+		title: "Bliss",
 		subTitle: "THE RIGHT ONE FOR MOST",
 		price: "$ 49",
 		description:
