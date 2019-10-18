@@ -7,7 +7,7 @@ function CTA(props) {
 	return (
 		<Link
 			href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "delight" } }}
-			as="/designMySpace?quiz=start"
+			as="/designMySpace/delight?quiz=start"
 		>
 			<a href="/designMySpace/delight?quiz=start">
 				<Button {...props}>
