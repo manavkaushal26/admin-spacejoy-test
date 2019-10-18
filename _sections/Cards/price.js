@@ -72,8 +72,11 @@ class PriceCard extends PureComponent {
 			<PriceCardWrapperStyled variant={variant}>
 				{React.Children.map(children, child => React.cloneElement(child, { variant }))}
 				<PriceCardFooterStyled>
-					<Link href={`/designMySpace?plan=${plan}`} as={`/designMySpace/${plan}`}>
-						<a href={`/designMySpace/${plan}`}>
+					<Link
+						href={{ pathname: "/designMySpace", query: { quiz: "start", plan } }}
+						as={`/designMySpace/${plan}?quiz=start`}
+					>
+						<a href={`/designMySpace/${plan}?quiz=start`}>
 							<Button
 								variant={variant === "recommend" ? "primary" : "secondary"}
 								fill={variant === "recommend" ? "solid" : "ghost"}

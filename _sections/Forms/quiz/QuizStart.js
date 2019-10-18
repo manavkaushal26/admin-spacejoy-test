@@ -3,28 +3,30 @@ import Button from "@components/Button";
 import Image from "@components/Image";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
-function QuizStart() {
+function QuizStart({ plan }) {
 	const quizId = 0;
+
+	const quizTitle = "Selected Plan";
 
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 
 	const handleClick = async () => {
 		setSubmitInProgress(true);
-		const body = quizReqBody(quizId, "begin quiz", "generate form id");
 		const response = await fetcher({
 			endPoint: "/form",
 			method: "POST",
-			body
+			body: quizReqBody(quizId, quizTitle, plan)
 		});
 		if (response.statusCode <= 300) {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: "1", plan: "free" },
-				as: "/designMySpace?quiz=1&plan=free"
+				query: { quiz: "1", plan },
+				as: `/designMySpace/${plan}?quiz=${quizId + 1}`
 			});
 		}
 	};
@@ -86,5 +88,13 @@ function QuizStart() {
 		</div>
 	);
 }
+
+QuizStart.defaultProps = {
+	plan: ""
+};
+
+QuizStart.propTypes = {
+	plan: PropTypes.string
+};
 
 export default QuizStart;

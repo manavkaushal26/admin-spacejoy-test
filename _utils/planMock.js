@@ -1,6 +1,6 @@
 const PlansData = [
 	{
-		name: "Delight",
+		name: "delight",
 		title: "Delight",
 		subTitle: "Free Trial",
 		price: "Free",
@@ -42,7 +42,7 @@ const PlansData = [
 		]
 	},
 	{
-		name: "Bliss",
+		name: "bliss",
 		variant: "recommend",
 		title: "Classic",
 		subTitle: "We Recommend This",
@@ -85,7 +85,7 @@ const PlansData = [
 		]
 	},
 	{
-		name: "Euphoria",
+		name: "euphoria",
 		title: "Euphoria",
 		subTitle: "On a Time-Crunch",
 		price: "$ 99",

@@ -3,10 +3,11 @@ import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
 import roomLookOptions from "@utils/roomLookQuizMock";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
-function Question3() {
+function Question3({ plan }) {
 	const quizId = 3;
 
 	const quizTitle = "what's the occasion?";
@@ -31,8 +32,8 @@ function Question3() {
 
 	const handlePrev = () => {
 		goToQuiz(
-			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan: "free" } },
-			`/designMySpace?quiz=${quizId - 1}`
+			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan } },
+			`/designMySpace/${plan}?quiz=${quizId - 1}`
 		);
 	};
 
@@ -48,8 +49,8 @@ function Question3() {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: quizId + 1, plan: "free" },
-				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
+				query: { quiz: quizId + 1, plan },
+				as: `/designMySpace/${plan}?quiz=${quizId + 1}`
 			});
 		}
 	};
@@ -113,5 +114,13 @@ function Question3() {
 		</div>
 	);
 }
+
+Question3.defaultProps = {
+	plan: ""
+};
+
+Question3.propTypes = {
+	plan: PropTypes.string
+};
 
 export default Question3;

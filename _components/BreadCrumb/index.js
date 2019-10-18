@@ -45,7 +45,10 @@ const DMS = () => (
 
 const QZ = () => (
 	<li key="qz">
-		<Link href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }} as="/designMySpace?quiz=start">
+		<Link
+			href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "delight" } }}
+			as="/designMySpace/delight?quiz=start"
+		>
 			<a href="/designMySpace?quiz=start">Design My Space - Quiz</a>
 		</Link>
 	</li>

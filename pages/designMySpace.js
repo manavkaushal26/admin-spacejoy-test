@@ -34,18 +34,19 @@ class designMySpace extends PureComponent {
 						</div>
 					</div>
 				)}
-				{quiz === "start" && <QuizStart />}
-				{quiz === "1" && <Question1 />}
-				{quiz === "2" && <Question2 />}
-				{quiz === "3" && <Question3 />}
-				{quiz === "4" && <Question4 />}
-				{quiz === "5" && <Question5 />}
+				{quiz === "start" && <QuizStart plan={plan} />}
+				{quiz === "1" && <Question1 plan={plan} />}
+				{quiz === "2" && <Question2 plan={plan} />}
+				{quiz === "3" && <Question3 plan={plan} />}
+				{quiz === "4" && <Question4 plan={plan} />}
+				{quiz === "5" && <Question5 plan={plan} />}
 			</Layout>
 		);
 	}
 }
 
 designMySpace.getInitialProps = async ({ query: { plan, quiz } }) => {
+	console.log(plan, quiz);
 	return { plan, quiz };
 };
 

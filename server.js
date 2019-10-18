@@ -92,7 +92,7 @@ app.prepare().then(() => {
 		server.get("/designView/:designName/:designId", (req, res) => {
 			app.render(req, res, "/designView", { designName: req.params.designName, designId: req.params.designId });
 		});
-		server.get("/designMySpace/:plan(consultation|classic|premium)?", (req, res) => {
+		server.get("/designMySpace/:plan(delight|bliss|euphoria)", (req, res) => {
 			app.render(req, res, "/designMySpace", Object.assign({ quiz: req.query.quiz }, { plan: req.params.plan }));
 		});
 		server.get("/checkout", (req, res) => {

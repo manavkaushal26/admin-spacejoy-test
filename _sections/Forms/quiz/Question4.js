@@ -3,10 +3,11 @@ import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
 import roomReadyMock from "@utils/roomReadyMock";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
-function Question4() {
+function Question4({ plan }) {
 	const quizId = 4;
 
 	const quizTitle = "When should your room be ready?";
@@ -31,8 +32,8 @@ function Question4() {
 
 	const handlePrev = () => {
 		goToQuiz(
-			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan: "free" } },
-			`/designMySpace?quiz=${quizId - 1}`
+			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan } },
+			`/designMySpace/${plan}?quiz=${quizId - 1}`
 		);
 	};
 
@@ -48,8 +49,8 @@ function Question4() {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: quizId + 1, plan: "free" },
-				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
+				query: { quiz: quizId + 1, plan },
+				as: `/designMySpace/${plan}?quiz=${quizId + 1}`
 			});
 		}
 	};
@@ -113,5 +114,13 @@ function Question4() {
 		</div>
 	);
 }
+
+Question4.defaultProps = {
+	plan: ""
+};
+
+Question4.propTypes = {
+	plan: PropTypes.string
+};
 
 export default Question4;

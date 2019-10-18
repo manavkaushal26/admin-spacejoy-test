@@ -3,6 +3,7 @@ import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
@@ -103,7 +104,7 @@ const RadioStyled = styled(Button)`
 	}
 `;
 
-function Question2() {
+function Question2({ plan }) {
 	const quizId = 2;
 
 	const quizTitle = "What does your budget look like?";
@@ -128,8 +129,8 @@ function Question2() {
 
 	const handlePrev = () => {
 		goToQuiz(
-			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan: "free" } },
-			`/designMySpace?quiz=${quizId - 1}`
+			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan } },
+			`/designMySpace/${plan}?quiz=${quizId - 1}`
 		);
 	};
 
@@ -145,8 +146,8 @@ function Question2() {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: quizId + 1, plan: "free" },
-				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
+				query: { quiz: quizId + 1, plan },
+				as: `/designMySpace/${plan}?quiz=${quizId + 1}`
 			});
 		}
 	};
@@ -304,5 +305,13 @@ function Question2() {
 		</div>
 	);
 }
+
+Question2.defaultProps = {
+	plan: ""
+};
+
+Question2.propTypes = {
+	plan: PropTypes.string
+};
 
 export default Question2;

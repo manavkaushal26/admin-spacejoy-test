@@ -3,10 +3,11 @@ import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
 import lastTimeDesignMock from "@utils/lastTimeDesignMock";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
-function Question5() {
+function Question5({ plan }) {
 	const quizId = 5;
 
 	const quizTitle = "How Have You Decorated Your Room In The Past?";
@@ -31,8 +32,8 @@ function Question5() {
 
 	const handlePrev = () => {
 		goToQuiz(
-			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan: "free" } },
-			`/designMySpace?quiz=${quizId - 1}`
+			{ pathname: "/designMySpace", query: { quiz: quizId - 1, plan } },
+			`/designMySpace/${plan}?quiz=${quizId - 1}`
 		);
 	};
 
@@ -113,5 +114,13 @@ function Question5() {
 		</div>
 	);
 }
+
+Question5.defaultProps = {
+	plan: ""
+};
+
+Question5.propTypes = {
+	plan: PropTypes.string
+};
 
 export default Question5;

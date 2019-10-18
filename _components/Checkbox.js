@@ -13,8 +13,9 @@ const CustomCheckboxStyled = styled.div`
 	position: relative;
 	width: 16px;
 	height: 16px;
+	left: -16px;
+	background: white;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark1};
-	margin-right: 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -34,7 +35,7 @@ const CustomCheckboxStyled = styled.div`
 `;
 
 const CheckboxStyled = styled.input.attrs({ type: "checkbox" })`
-	display: none;
+	/* display: none; */
 	&:checked + ${CustomCheckboxStyled} {
 		border-color: ${({ theme }) => theme.colors.fc.dark1};
 		&:after {

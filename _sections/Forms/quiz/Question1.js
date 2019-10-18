@@ -2,10 +2,11 @@ import Button from "@components/Button";
 import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
 
-function Question1() {
+function Question1({ plan }) {
 	const quizId = 1;
 
 	const quizTitle = "Tell us which room? Let's transform it!";
@@ -29,7 +30,7 @@ function Question1() {
 	const handleClick = e => setQuizState(e.currentTarget.value);
 
 	const handlePrev = () => {
-		goToQuiz({ pathname: "/designMySpace", query: { quiz: "start", plan: "free" } }, `/designMySpace?quiz=start`);
+		goToQuiz({ pathname: "/designMySpace", query: { quiz: "start", plan } }, `/designMySpace/${plan}?quiz=start`);
 	};
 
 	const handleNext = async () => {
@@ -44,8 +45,8 @@ function Question1() {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: quizId + 1, plan: "free" },
-				as: `/designMySpace?quiz=${quizId + 1}&plan=free`
+				query: { quiz: quizId + 1, plan: "delight" },
+				as: `/designMySpace/${plan}?quiz=${quizId + 1}`
 			});
 		}
 	};
@@ -147,5 +148,13 @@ function Question1() {
 		</div>
 	);
 }
+
+Question1.defaultProps = {
+	plan: ""
+};
+
+Question1.propTypes = {
+	plan: PropTypes.string
+};
 
 export default Question1;
