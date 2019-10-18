@@ -68,6 +68,10 @@ h6 {
 	border-radius: 50%;
 }
 
+.video-container video {
+	width: 100%;
+}
+
 .loading-spinner {
 	animation: loading-spinner 1s linear infinite;
 }

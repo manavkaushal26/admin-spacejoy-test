@@ -19,7 +19,6 @@ export default function GetReadyBanner() {
 				<div className="grid align-center justify-space-between">
 					<div className="col-md-5">
 						<div className="video-container">
-							<div className="filter" />
 							<video
 								autoPlay
 								loop
@@ -27,9 +26,6 @@ export default function GetReadyBanner() {
 								playsinline
 								src="https://res.cloudinary.com/spacejoy/video/upload/v1571392240/web/app-demo_nqubhu.mp4"
 							/>
-							<div className="poster hidden">
-								<img src="PATH_TO_JPEG" alt="" />
-							</div>
 						</div>
 					</div>
 					<div className="col-md-5 text-left">
