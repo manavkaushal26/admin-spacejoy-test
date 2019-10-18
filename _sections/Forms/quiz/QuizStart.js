@@ -21,7 +21,7 @@ const FreeStyled = styled(BaseStyled)`
 	background-color: ${({ theme }) => theme.colors.bg.light2};
 	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571406825/web/white-furniture_pyakvm.png");
 	background-position: 100% 100%;
-	background-size: 300px;
+	background-size: 250px;
 	background-repeat: no-repeat;
 `;
 const PaidStyled = styled(BaseStyled)`
@@ -61,35 +61,32 @@ function QuizStart({ plan }) {
 			<div className="grid text-center">
 				<div className="col-12 col-md-10">
 					<SectionHeader
-						title="Start your free trial"
-						description="Go through easy flow and upload few click of your room, to get your 3D designs."
+						title="Start Your Free Trial. Unlock Fabulous Designs!"
+						description="Answer few more questions and submit images of your room to get your 3D designs going"
 					/>
 					<div className="grid text-left">
 						<div className="col-12 col-md-6">
 							<FreeStyled>
 								<h3>Free trial Includes</h3>
 								<BenefitList>
-									<BenefitList.Item icon="dot">1 Design and Realistic 3D Renders</BenefitList.Item>
-									<BenefitList.Item icon="dot">Turnaround Time - 12 Days</BenefitList.Item>
-									<BenefitList.Item icon="dot">Shopping List of Your Designs</BenefitList.Item>
+									<BenefitList.Item icon="tick">Realistic 3D render of your design </BenefitList.Item>
+									<BenefitList.Item icon="tick">Turnaround time of 12 Days</BenefitList.Item>
+									<BenefitList.Item icon="tick">Shopping list of products in your design</BenefitList.Item>
 								</BenefitList>
 							</FreeStyled>
 						</div>
 						<div className="col-12 col-md-6">
 							<PaidStyled>
-								<h3>Upgrade and Unlock</h3>
-								<h4>If you like what we have designed for you,</h4>
+								<h3>Love what you see? Upgrade and unlock</h3>
 								<BenefitList>
-									<BenefitList.Item icon="tick" nature="positive">
-										Get designer help to revise your designs on 3D App
+									<BenefitList.Item icon="dot" nature="positive">
+										Revise your designs on our 3D App
 									</BenefitList.Item>
-									<BenefitList.Item icon="tick" nature="positive">
-										Get designer assistance to shop your products
+									<BenefitList.Item icon="dot" nature="positive">
+										Shopping and styling assistance
 									</BenefitList.Item>
-									<BenefitList.Item icon="tick" nature="positive">
-										Access to Deal Hunter - Best deals on your shopping list
-										<br />
-										(Save at least 12% more on your shopping list)
+									<BenefitList.Item icon="dot" nature="positive">
+										Access to our <strong>Deal-Hunter</strong>*
 									</BenefitList.Item>
 								</BenefitList>
 							</PaidStyled>
@@ -108,6 +105,13 @@ function QuizStart({ plan }) {
 							>
 								Let&apos;s Begin <SVGIcon name="arrow-right" fill="#fff" />
 							</Button>
+						</div>
+						<div className="col-12">
+							<h4>What is Deal Hunter?</h4>
+							<small>
+								<sup>*</sup>We&apos;ll find you the best deals on products featured in your design <br /> Get at least
+								12% off on your entire shopping list <br /> Always looking to save your precious dollars!
+							</small>
 						</div>
 					</div>
 				</div>

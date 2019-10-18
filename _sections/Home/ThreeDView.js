@@ -29,7 +29,7 @@ export default function GetReadyBanner() {
 						</div>
 					</div>
 					<div className="col-md-5 text-left">
-						<SectionHeader title="Download our 3D interactive App" />
+						<SectionHeader title="Everything you need for your home design, we've got you covered" />
 						<BenefitList>
 							<BenefitList.Item icon="tick" nature="positive">
 								Access your designs anytime, anywhere

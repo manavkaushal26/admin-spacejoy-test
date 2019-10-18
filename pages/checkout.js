@@ -273,10 +273,13 @@ function checkout({ isServer, data, authVerification }) {
 											<Divider size="xs" />
 											<BenefitList>
 												<BenefitList.Item icon="tick" nature="positive">
-													Get two concepts in your style & Budget
+													Realistic 3D renders of your design
 												</BenefitList.Item>
 												<BenefitList.Item icon="tick" nature="positive">
-													Shop products with ease
+													Turnaround time of 12 days
+												</BenefitList.Item>
+												<BenefitList.Item icon="tick" nature="positive">
+													Shopping list of products
 												</BenefitList.Item>
 												<BenefitList.Item icon="cross" nature="neutral">
 													See your home in 3D App
@@ -292,10 +295,10 @@ function checkout({ isServer, data, authVerification }) {
 												</BenefitList.Item>
 											</BenefitList>
 											<Divider size="xs" />
-											<h4 className="accent">Do you know?</h4>
+											<h4 className="accent">Did you know?</h4>
 											<p>
-												Your are saving close to <strong>$4000</strong> on standard interior designer fees by choosing
-												spacejoy.
+												Your are saving <strong>thousands of dollors</strong> on standard interior designer fees by
+												choosing spacejoy.
 											</p>
 										</CartStyled>
 									)}

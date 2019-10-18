@@ -14,7 +14,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Turnaround Time - 10 Days",
+				label: "Turnaround time of 12 Days",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -24,7 +24,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Revise your design in 3D",
+				label: "Revise your designs in 3D",
 				icon: "cross",
 				nature: "negative"
 			},
@@ -34,7 +34,7 @@ const PlansData = [
 				nature: "negative"
 			},
 			{
-				label: "Access to our best Deal-Hunter",
+				label: "Access to our Deal-Hunter",
 				icon: "cross",
 				nature: "negative"
 			}
@@ -44,19 +44,19 @@ const PlansData = [
 		name: "bliss",
 		variant: "recommend",
 		title: "Classic",
-		subTitle: "The right one for most",
+		subTitle: "THE RIGHT ONE FOR MOST",
 		price: "$ 49",
 		description:
 			"Need a designer to design your space in 3D with furniture customized to match your style, budget and layout",
 		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618560/web/Consultation_hs1yrs.png",
 		benefits: [
 			{
-				label: "Realistic 3D renders of your design",
+				label: "2 Designs and realistic 3D renders",
 				icon: "tick",
 				nature: "positive"
 			},
 			{
-				label: "Turnaround Time - 10 Days",
+				label: "Shorter turnaround time of 7 Days",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -66,7 +66,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Revise your design in 3D",
+				label: "Revise your designs in 3D",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -76,7 +76,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Access to our best Deal-Hunter",
+				label: "Access to our Deal-Hunter",
 				icon: "cross",
 				nature: "negative"
 			}
@@ -97,7 +97,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Turnaround Time - 10 Days",
+				label: "Turnaround time of 12 Days",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -107,7 +107,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Revise your design in 3D",
+				label: "Revise your designs in 3D",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -117,7 +117,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Access to our best Deal-Hunter",
+				label: "Access to our Deal-Hunter",
 				icon: "tick",
 				nature: "positive"
 			}

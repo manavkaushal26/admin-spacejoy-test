@@ -49,7 +49,7 @@ export default function TestimonialsLarge() {
 										{`${item.name}'s`} {item.roomType}
 									</h3>
 									<small>{item.address}</small>
-									<p>{item.description}</p>
+									<p>&quot;{item.description}&quot;</p>
 								</div>
 								<div className="col-md-7">
 									<ReactCompareImage

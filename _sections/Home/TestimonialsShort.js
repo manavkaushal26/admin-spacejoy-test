@@ -26,8 +26,8 @@ export default function Testimonials() {
 				<div className="grid text-center">
 					<div className="col-12 col-xs-8">
 						<h2>
-							&quot;Incredibly happy with our designer who took our brief and transformed our living room to match the
-							vision&quot;
+							&quot;We&apos;re incredibly happy with our designer who took our ideas and transformed our Living Room to
+							match the vision!&quot;
 						</h2>
 						<Image
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"

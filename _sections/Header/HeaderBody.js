@@ -87,8 +87,8 @@ const HeaderBody = ({ authVerification }) => {
 				</li>
 				<li>
 					<ActiveLink href="/pricing" as="/pricing">
-						<span>Pricing</span>
-						<small>Starting From $19</small>
+						<span>Upgarde & Unlock</span>
+						<small>Starting From $49</small>
 					</ActiveLink>
 				</li>
 				<li>
