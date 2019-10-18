@@ -172,9 +172,9 @@ function Question2({ plan }) {
 									</div>
 									<div>
 										<h4>$10,000 or more</h4>
-										<span>A budget friendly option</span>
+										<span>Give it a little more</span>
 										{quizState === "$10,000 or more" && (
-											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
+											<small>Add real value to your space with designs that stun</small>
 										)}
 									</div>
 								</RadioStyled>
@@ -190,9 +190,9 @@ function Question2({ plan }) {
 									</div>
 									<div>
 										<h4>$5000 - $7000</h4>
-										<span>A budget friendly option</span>
+										<span>Take it to the next dimension</span>
 										{quizState === "$5000 - $7000" && (
-											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
+											<small>Work with us and turn your room in to a joyous space</small>
 										)}
 									</div>
 								</RadioStyled>
@@ -208,9 +208,9 @@ function Question2({ plan }) {
 									</div>
 									<div>
 										<h4>$2000 - $5000</h4>
-										<span>A budget friendly option</span>
+										<span>Go for the best</span>
 										{quizState === "$2000 - $5000" && (
-											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
+											<small>Cover all your needs for convenience and style with ease</small>
 										)}
 									</div>
 								</RadioStyled>
@@ -226,9 +226,9 @@ function Question2({ plan }) {
 									</div>
 									<div>
 										<h4>$2000 or less</h4>
-										<span>A budget friendly option</span>
+										<span>Small on numbers, big on style</span>
 										{quizState === "$2000 or less" && (
-											<small>Lorem ipsum dolor sit amet, consectetuer adipiscing elit</small>
+											<small>Stay budget-friendly but stay stylish and comfortable</small>
 										)}
 									</div>
 								</RadioStyled>

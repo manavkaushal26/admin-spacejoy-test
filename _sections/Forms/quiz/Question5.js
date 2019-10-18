@@ -10,7 +10,7 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question5({ plan }) {
 	const quizId = 5;
 
-	const quizTitle = "How Have You Decorated Your Room In The Past?";
+	const quizTitle = "Where do you get your design inspiration from?";
 
 	const [quizState, setQuizState] = useState("");
 

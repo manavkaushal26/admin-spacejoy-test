@@ -10,7 +10,7 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question3({ plan }) {
 	const quizId = 3;
 
-	const quizTitle = "what's the occasion?";
+	const quizTitle = "What's the occasion?";
 
 	const [quizState, setQuizState] = useState("");
 

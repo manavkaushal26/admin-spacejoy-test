@@ -18,7 +18,7 @@ function SignupForm({ redirectUrl }) {
 				label="Name"
 				placeholder="Name"
 				error="Please enter your name"
-				hint="Should contain valid text"
+				hint="How do we address you?"
 			/>
 			<Field
 				name="userEmail"
@@ -26,7 +26,7 @@ function SignupForm({ redirectUrl }) {
 				label="Email"
 				placeholder="Email"
 				error="Please enter your email"
-				hint="Should contain valid email"
+				hint="Where should we write to you?"
 				required
 			/>
 			<Field
@@ -34,8 +34,8 @@ function SignupForm({ redirectUrl }) {
 				type="tel"
 				label="Mobile"
 				placeholder="Mobile"
-				error="Please enter a mobile number"
-				hint="Should contain valid mobile number"
+				error="Please enter your mobile number"
+				hint="Our designer will get in touch"
 			/>
 			<Field
 				name="userPassword"
@@ -43,7 +43,7 @@ function SignupForm({ redirectUrl }) {
 				label="Password"
 				placeholder="Password"
 				error="Please enter a strong Password"
-				hint="Should contain valid password"
+				hint="Enter your strongest bet"
 				required
 			/>
 			<Field

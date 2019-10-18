@@ -36,7 +36,7 @@ function QuizStart({ plan }) {
 			<div className="grid text-center">
 				<div className="col-12 col-md-8">
 					<SectionHeader
-						title="You’re on the verge of getting a new design for your space!"
+						title="Start your free trial and unlock your dream room. You're one step away!"
 						description="Sign up for a free trial, answer few more questions and submit images of your room to get your 3D designs going."
 					/>
 					<div className="grid align-center">
@@ -52,7 +52,7 @@ function QuizStart({ plan }) {
 							<BenefitList>
 								<BenefitList.Item icon="dot">1 Design and Realistic 3D Renders</BenefitList.Item>
 								<BenefitList.Item icon="dot">Turnaround Time - 12 Days</BenefitList.Item>
-								<BenefitList.Item icon="dot">Shopping List of your Designs</BenefitList.Item>
+								<BenefitList.Item icon="dot">Shopping List of Your Designs</BenefitList.Item>
 							</BenefitList>
 							<h3>If you like what we have designed for you, upgrade and unlock</h3>
 							<BenefitList>
@@ -63,8 +63,7 @@ function QuizStart({ plan }) {
 									Get designer assistance to shop your products
 								</BenefitList.Item>
 								<BenefitList.Item icon="tick" nature="positive">
-									Access to Deal Hunter - Best deals on your shopping list (Save at least 12% more on your shopping
-									list)
+									Access to Deal Hunter - Best deals on your shopping list(Save at least 12% more on your shopping list)
 								</BenefitList.Item>
 							</BenefitList>
 							<Button

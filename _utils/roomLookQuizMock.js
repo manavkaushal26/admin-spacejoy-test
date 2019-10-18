@@ -1,21 +1,21 @@
 const data = [
 	{
-		title: "I am getting married",
+		title: "I am hitched!",
 		icon: "4_srap5o.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "We just moved to a new house and want to do it up",
+		title: "We just moved to a new house",
 		icon: "5_tbgtrn.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "We have a new baby coming",
+		title: "Baby on the way!",
 		icon: "6_egrt26.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "I want more space for my growing baby",
+		title: "Kids are growing. Want more playarea",
 		icon: "7_gj8s0b.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
@@ -25,17 +25,17 @@ const data = [
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "We just added a new pet to our family",
+		title: "We are welcoming our new furry friend!",
 		icon: "8_yus1mt.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "I can finally afford nice furniture",
+		title: "My budget now allows for new furniture",
 		icon: "10_ykyivs.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "I want to impress my family",
+		title: "All grown up! Time to impress my family. ",
 		icon: "0_r5mqhn.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
@@ -45,7 +45,7 @@ const data = [
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
 	{
-		title: "I want to update my furniture from college",
+		title: "Not in my dorm anymore! Need new furniture",
 		icon: "1_ggxxew.svg",
 		bg: "rgba(0, 188, 212, 0.05)"
 	},
