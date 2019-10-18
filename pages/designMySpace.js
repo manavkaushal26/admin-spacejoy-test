@@ -46,7 +46,6 @@ class designMySpace extends PureComponent {
 }
 
 designMySpace.getInitialProps = async ({ query: { plan, quiz } }) => {
-	console.log(plan, quiz);
 	return { plan, quiz };
 };
 
