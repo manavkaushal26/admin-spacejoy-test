@@ -54,6 +54,22 @@ const CartStyled = styled(BaseCardStyled)`
 	}
 `;
 
+const CartHeaderStyled = styled.div`
+	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark1};
+	border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark1};
+	margin: 1rem 0;
+`;
+
+const CartHeaderRowStyled = styled.div`
+	display: flex;
+	div {
+		flex: 1;
+		&:last-child {
+			text-align: right;
+		}
+	}
+`;
+
 const ToggleWrapperStyled = styled.div`
 	background: white;
 	position: relative;
@@ -235,10 +251,25 @@ function checkout({ isServer, data, authVerification }) {
 									{payFlow === "payNow" && (
 										<CartStyled bg="white">
 											<h4>Your Savings</h4>
-											<Divider size="xs" />
-											<h4 className="accent">Classic</h4>
-											<h4>Total</h4>
-											<Divider size="xs" />
+											<CartHeaderStyled>
+												<CartHeaderRowStyled>
+													<div>
+														<h4 className="accent">Classic</h4>
+													</div>
+													<div>
+														<h4>$49.00</h4>
+													</div>
+												</CartHeaderRowStyled>
+												<CartHeaderRowStyled>
+													<div>
+														<h4>Total</h4>
+													</div>
+													<div>
+														<h4>$49.00</h4>
+													</div>
+												</CartHeaderRowStyled>
+											</CartHeaderStyled>
+
 											<BenefitList>
 												<BenefitList.Item icon="tick" nature="positive">
 													Get two concepts in your style & Budget
@@ -314,11 +345,9 @@ function checkout({ isServer, data, authVerification }) {
 
 checkout.getInitialProps = async ctx => {
 	const res = await fetcher({ ctx, endPoint, method: "GET" });
-	if (res.statusCode <= 300) {
-		if (res.status === "success") {
-			const { data } = res;
-			return { data };
-		}
+	if (res.statusCode <= 300 && res.status === "success") {
+		const { data } = res;
+		return { data };
 	}
 	return {};
 };

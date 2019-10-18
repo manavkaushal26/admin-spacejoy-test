@@ -87,6 +87,7 @@ function CheckoutForm({ stripe }) {
 				}
 			});
 		} else {
+			// eslint-disable-next-line no-console
 			console.log("Stripe.js hasn't loaded yet.");
 		}
 	};

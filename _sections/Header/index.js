@@ -80,7 +80,7 @@ class Header extends PureComponent {
 										event="CookieClose"
 										data={{ sectionName: "Cookie Bar" }}
 									>
-										<SVGIcon name="tick" height="15px" width="15px" fill="white" />
+										<SVGIcon name="tick" height={15} width={15} fill="white" />
 									</Button>
 								</div>
 							</div>
