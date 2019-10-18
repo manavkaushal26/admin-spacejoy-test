@@ -32,7 +32,7 @@ function pricing() {
 											<BenefitList>
 												{plan.benefits.map(({ icon, nature, label }) => (
 													<BenefitList.Item icon={icon} nature={nature} key={label}>
-														<small>{label}</small>
+														{label}
 													</BenefitList.Item>
 												))}
 											</BenefitList>

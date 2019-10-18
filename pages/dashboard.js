@@ -1,5 +1,6 @@
 import BreadCrumb from "@components/BreadCrumb";
 import Button from "@components/Button";
+import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import SectionHeader from "@sections/SectionHeader";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
@@ -28,12 +29,17 @@ const dashboard = ({ isServer, authVerification, data }) => {
 			<div className="container">
 				<div className="grid text-center">
 					<div className="col-xs-6 text-center">
+						<Image
+							src="https://res.cloudinary.com/spacejoy/image/upload/v1571403289/web/thankyou_augsq4.svg"
+							alt="thank you"
+							width="100%"
+						/>
 						<SectionHeader title={`Welcome ${authVerification.name}`} description="" />
 						<div className="text-left">
 							<h4>Thanks so much for signing up with {company.product}!</h4>
 							<p>
 								We are dedicated to helping you build out the perfect space{" "}
-								{data && data.formData ? ` for your ${data.formData[1].answer}.` : "."}
+								{data && data.formData && data.formData[1] ? ` for your ${data.formData[1].answer}.` : "."}
 							</p>
 							<p>We&apos;d love to set up a time for a phone call to meet and discuss the project.</p>
 							<p>

@@ -23,7 +23,7 @@ export default function GetReadyBanner() {
 								autoPlay
 								loop
 								muted
-								playsinline
+								playsInline
 								src="https://res.cloudinary.com/spacejoy/video/upload/v1571392240/web/app-demo_nqubhu.mp4"
 							/>
 						</div>

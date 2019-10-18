@@ -2,57 +2,14 @@ const PlansData = [
 	{
 		name: "delight",
 		title: "Delight",
-		subTitle: "Free Trial",
+		subTitle: "ADVICE & INSPIRATION",
 		price: "Free",
 		description:
 			"Need a new layout in 3D of your current space with the existing furniture & upgrade advice on key pieces",
 		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618559/web/Classic_nm9als.png",
 		benefits: [
 			{
-				label: "2 Designs and Realistic 3D Renders",
-				icon: "tick",
-				nature: "positive"
-			},
-			{
-				label: "Turnaround Time - 12 Days",
-				icon: "tick",
-				nature: "positive"
-			},
-			{
-				label: "Shopping List of your Designs",
-				icon: "tick",
-				nature: "positive"
-			},
-			{
-				label: "Get designer help to revise your designs on 3D App",
-				icon: "cross",
-				nature: "neutral"
-			},
-			{
-				label: "Get designer assistance to shop your products",
-				icon: "cross",
-				nature: "neutral"
-			},
-			{
-				label:
-					"Access to Deal Hunter - Best deals on your shopping list (Save at least 12% more on your shopping list)",
-				icon: "cross",
-				nature: "neutral"
-			}
-		]
-	},
-	{
-		name: "bliss",
-		variant: "recommend",
-		title: "Classic",
-		subTitle: "We Recommend This",
-		price: "$ 49",
-		description:
-			"Need a designer to design your space in 3D with furniture customized to match your style, budget and layout",
-		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618560/web/Consultation_hs1yrs.png",
-		benefits: [
-			{
-				label: "2 Designs and Realistic 3D Renders",
+				label: "Realistic 3D renders of your design",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -67,39 +24,39 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Get designer help to revise your designs on 3D App",
-				icon: "tick",
-				nature: "positive"
-			},
-			{
-				label: "Get designer assistance to shop your products",
-				icon: "tick",
-				nature: "positive"
-			},
-			{
-				label:
-					"Access to Deal Hunter - Best deals on your shopping list (Save at least 12% more on your shopping list)",
+				label: "Revise your design in 3D",
 				icon: "cross",
-				nature: "neutral"
+				nature: "negative"
+			},
+			{
+				label: "Get shopping assistance",
+				icon: "cross",
+				nature: "negative"
+			},
+			{
+				label: "Access to our best Deal-Hunter",
+				icon: "cross",
+				nature: "negative"
 			}
 		]
 	},
 	{
-		name: "euphoria",
-		title: "Euphoria",
-		subTitle: "On a Time-Crunch",
-		price: "$ 99",
+		name: "bliss",
+		variant: "recommend",
+		title: "Classic",
+		subTitle: "The right one for most",
+		price: "$ 49",
 		description:
-			"Need unlimited access to our designer to design your room in 3D in a shorter period of time and a stylist to manage orders",
-		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618561/web/Premium_szdi5t.png",
+			"Need a designer to design your space in 3D with furniture customized to match your style, budget and layout",
+		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618560/web/Consultation_hs1yrs.png",
 		benefits: [
 			{
-				label: "2 Designs and Realistic 3D Renders",
+				label: "Realistic 3D renders of your design",
 				icon: "tick",
 				nature: "positive"
 			},
 			{
-				label: "Shorter Turnaround Time - 7 Days",
+				label: "Turnaround Time - 10 Days",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -109,18 +66,58 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Get designer help to revise your designs on 3D App",
+				label: "Revise your design in 3D",
 				icon: "tick",
 				nature: "positive"
 			},
 			{
-				label: "Get designer assistance to shop your products",
+				label: "Get shopping assistance",
 				icon: "tick",
 				nature: "positive"
 			},
 			{
-				label:
-					"Access to Deal Hunter - Best deals on your shopping list (Save at least 12% more on your shopping list)",
+				label: "Access to our best Deal-Hunter",
+				icon: "cross",
+				nature: "negative"
+			}
+		]
+	},
+	{
+		name: "euphoria",
+		title: "Euphoria",
+		subTitle: "ON A TIME-CRUNCH",
+		price: "$ 99",
+		description:
+			"Need unlimited access to our designer to design your room in 3D in a shorter period of time and a stylist to manage orders",
+		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618561/web/Premium_szdi5t.png",
+		benefits: [
+			{
+				label: "Realistic 3D renders of your design",
+				icon: "tick",
+				nature: "positive"
+			},
+			{
+				label: "Turnaround Time - 10 Days",
+				icon: "tick",
+				nature: "positive"
+			},
+			{
+				label: "Shopping List of your Designs",
+				icon: "tick",
+				nature: "positive"
+			},
+			{
+				label: "Revise your design in 3D",
+				icon: "tick",
+				nature: "positive"
+			},
+			{
+				label: "Get shopping assistance",
+				icon: "tick",
+				nature: "positive"
+			},
+			{
+				label: "Access to our best Deal-Hunter",
 				icon: "tick",
 				nature: "positive"
 			}

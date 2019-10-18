@@ -1,5 +1,4 @@
 import Button from "@components/Button";
-import Image from "@components/Image";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
@@ -24,7 +23,7 @@ const RecommendBannerStyled = styled.small`
 `;
 
 const PriceCardHeaderStyled = styled.div`
-	padding: 2rem 0;
+	margin: 2rem 0;
 	h2 {
 		margin: 0;
 		& + small {
@@ -57,11 +56,9 @@ class PriceCard extends PureComponent {
 		</PriceCardHeaderStyled>
 	);
 
-	static Body = ({ children, price, description, thumbnail }) => (
+	static Body = ({ children, price }) => (
 		<PriceCardBodyStyled>
-			<Image src={thumbnail} height="150px" />
 			<h2>{price}</h2>
-			<p>{description}</p>
 			<div className="text-left">{children}</div>
 		</PriceCardBodyStyled>
 	);

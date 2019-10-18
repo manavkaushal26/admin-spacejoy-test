@@ -11,7 +11,7 @@ const ListWrapperStyled = styled.ul`
 const ListStyled = styled.li`
 	list-style: none;
 	position: relative;
-	margin: 0.25rem 0;
+	margin: 0.75rem 0;
 	svg {
 		margin-right: 0.5rem;
 	}
