@@ -31,7 +31,7 @@ function pricing() {
 										<PriceCard.Body price={plan.price} description={plan.description} thumbnail={plan.thumbnail}>
 											<BenefitList>
 												{plan.benefits.map(({ icon, nature, label }) => (
-													<BenefitList.Item icon={icon} nature={nature}>
+													<BenefitList.Item icon={icon} nature={nature} key={label}>
 														<small>{label}</small>
 													</BenefitList.Item>
 												))}

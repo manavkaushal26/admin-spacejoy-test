@@ -11,7 +11,7 @@ function CTA(props) {
 		>
 			<a href="/designMySpace/delight?quiz=start">
 				<Button {...props}>
-					Start Your Free Trial <SVGIcon name="right" width={20} fill="white" />
+					Start Your Free Trial <SVGIcon name="arrow-right" width={20} fill="white" />
 				</Button>
 			</a>
 		</Link>

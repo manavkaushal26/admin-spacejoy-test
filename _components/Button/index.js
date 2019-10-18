@@ -41,7 +41,7 @@ const ButtonStyled = styled(ButtonBase)`
 	padding: ${({ size }) => {
 		switch (size) {
 			case "xs":
-				return "0.25rem 0.5rem";
+				return "0.3rem 0.5rem";
 			case "sm":
 				return "0.5rem 0.75rem";
 			case "md":

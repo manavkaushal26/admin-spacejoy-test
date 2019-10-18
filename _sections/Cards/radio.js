@@ -115,7 +115,7 @@ function RadioCard({ version, image, value, onClick, checked, bg }) {
 						<SVGIcon name="tick" />
 					</span>
 					<div className="continent">
-						<Image src={image} height="50px" width="auto" />
+						<Image src={image} height="50px" width="40px" />
 						<span>{value}</span>
 					</div>
 				</RadioCardStyledV2>

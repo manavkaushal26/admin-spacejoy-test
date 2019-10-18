@@ -27,7 +27,7 @@ function DesignTeam() {
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/v1571156013/web/designer1_t65axo.jpg" />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/v1571384835/web/Spacejoy_Designers_Reeba_mlj7vc.jpg" />
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
@@ -69,7 +69,7 @@ function DesignTeam() {
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933569/web/designer-5_rf3y3j.jpg" />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/v1571384835/web/Spacejoy_Designers_Lauren_kgxftf.jpg" />
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>
