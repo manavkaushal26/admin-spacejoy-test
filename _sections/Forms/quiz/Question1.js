@@ -45,7 +45,7 @@ function Question1({ plan }) {
 			setSubmitInProgress(false);
 			goToQuiz({
 				pathname: "/designMySpace",
-				query: { quiz: quizId + 1, plan: "delight" },
+				query: { quiz: quizId + 1, plan },
 				as: `/designMySpace/${plan}?quiz=${quizId + 1}`
 			});
 		}
