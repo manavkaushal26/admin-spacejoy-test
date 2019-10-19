@@ -1,8 +1,8 @@
 import Image from "@components/Image";
+import CTA from "@sections/CTA";
 import { company } from "@utils/config";
 import React from "react";
 import styled from "styled-components";
-import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`

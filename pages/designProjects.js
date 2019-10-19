@@ -2,7 +2,7 @@ import Carousel from "@components/Carousel";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
-import CTA from "@sections/Home/homeUtil";
+import CTA from "@sections/CTA";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { cloudinary, company } from "@utils/config";

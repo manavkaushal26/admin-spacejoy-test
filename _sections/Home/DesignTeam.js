@@ -1,8 +1,8 @@
 import Image from "@components/Image";
 import ProfileCard from "@sections/Cards/profile";
+import CTA from "@sections/CTA";
 import React from "react";
 import styled from "styled-components";
-import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
 const SectionWrapper = styled.section`

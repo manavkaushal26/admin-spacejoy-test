@@ -1,40 +1,12 @@
 import Button from "@components/Button";
-import SVGIcon from "@components/SVGIcon";
+import Card from "@components/Card";
+import Hoarding from "@sections/Checkout/Hoarding";
+import Success from "@sections/Checkout/Success";
 import themeConst from "@theme/index";
 import fetcher from "@utils/fetcher";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { CardElement, injectStripe } from "react-stripe-elements";
-import styled from "styled-components";
-
-const CheckoutFormStyled = styled.div`
-	background: ${({ theme }) => theme.colors.white};
-	padding: 2rem;
-	small.error {
-		display: block;
-		margin-top: 1rem;
-		color: ${({ theme }) => theme.colors.red};
-	}
-	button {
-		margin-top: 2rem;
-	}
-`;
-
-const PaymentSuccessStyled = styled.div`
-	text-align: center;
-	height: 200px;
-	color: ${({ theme }) => theme.colors.green};
-	background: ${({ theme }) => theme.colors.mild.green};
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	svg {
-		path {
-			fill: ${({ theme }) => theme.colors.green};
-		}
-	}
-`;
 
 const endPoint = "/order/payment";
 
@@ -58,33 +30,43 @@ const style = {
 	}
 };
 
-function CheckoutForm({ stripe }) {
-	const [complete, setComplete] = useState(false);
-	const [cardError, setCardError] = useState("");
+function CheckoutForm({ stripe, paymentType }) {
+	const [submitInProgress, setSubmitInProgress] = useState(false);
+	const [orderPlaced, setOrderPlaced] = useState(false);
+	const [pageError, setPageError] = useState("");
+
+	const handlePay = async token => {
+		setSubmitInProgress(true);
+		const response = await fetcher({
+			endPoint,
+			method: "POST",
+			body: {
+				data: {
+					token,
+					dev: process.env.NODE_ENV !== "production"
+				}
+			}
+		});
+		if (response.statusCode <= 300) {
+			setSubmitInProgress(false);
+			setOrderPlaced(true);
+		} else {
+			console.log("response", response);
+			setSubmitInProgress(false);
+			setOrderPlaced(false);
+			setPageError(response.message);
+		}
+	};
 
 	const handleSubmit = e => {
 		e.preventDefault();
 		if (stripe) {
-			stripe.createToken({ name: "Name" }).then(async ({ error, token }) => {
+			stripe.createToken({ name: "Name" }).then(({ error, token }) => {
 				if (error) {
-					setCardError(error.message);
+					setPageError(error.message);
 					return;
 				}
-				const response = await fetcher({
-					endPoint,
-					method: "POST",
-					body: {
-						data: {
-							token: token.id,
-							dev: process.env.NODE_ENV !== "production"
-						}
-					}
-				});
-				if (response.statusCode <= 300) {
-					setComplete(true);
-				} else {
-					setComplete(false);
-				}
+				handlePay(token.id);
 			});
 		} else {
 			// eslint-disable-next-line no-console
@@ -92,31 +74,34 @@ function CheckoutForm({ stripe }) {
 		}
 	};
 
-	if (complete)
-		return (
-			<PaymentSuccessStyled>
-				<SVGIcon name="tick" height={45} width={45} />
-				<h3>Order placed successfully</h3>
-			</PaymentSuccessStyled>
-		);
+	if (orderPlaced) return <Success />;
 	return (
-		<CheckoutFormStyled>
-			<form onSubmit={handleSubmit}>
-				<CardElement style={style} />
-				{cardError && <small className="error">{cardError}</small>}
-				<Button type="submit" variant="primary" shape="rounded">
+		<Card bg="white">
+			{pageError && <Hoarding type="error" msg={pageError} />}
+			{paymentType === "freeTrial" ? (
+				<Button variant="primary" shape="rounded" onClick={() => handlePay(null)} submitInProgress={submitInProgress}>
 					Place your order
 				</Button>
-			</form>
-		</CheckoutFormStyled>
+			) : (
+				<form onSubmit={handleSubmit}>
+					<CardElement style={style} />
+					<br />
+					<Button type="submit" variant="primary" shape="rounded">
+						Place your order
+					</Button>
+				</form>
+			)}
+		</Card>
 	);
 }
 
 CheckoutForm.defaultProps = {
+	paymentType: "",
 	stripe: {}
 };
 
 CheckoutForm.propTypes = {
+	paymentType: PropTypes.string,
 	stripe: PropTypes.shape({
 		createToken: PropTypes.func
 	})

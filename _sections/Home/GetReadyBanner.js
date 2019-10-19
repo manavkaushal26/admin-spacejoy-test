@@ -1,6 +1,6 @@
+import CTA from "@sections/CTA";
 import React from "react";
 import styled from "styled-components";
-import CTA from "./homeUtil";
 import SectionHeader from "./SectionHeader";
 
 const CTAStyled = styled(CTA)`

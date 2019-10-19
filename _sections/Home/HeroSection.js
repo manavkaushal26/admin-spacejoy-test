@@ -1,9 +1,9 @@
 import Image from "@components/Image";
+import CTA from "@sections/CTA";
 import Link from "next/link";
 import React from "react";
 import TextLoop from "react-text-loop";
 import styled from "styled-components";
-import CTA from "./homeUtil";
 
 const HeroWrapperStyled = styled.section`
 	display: flex;
