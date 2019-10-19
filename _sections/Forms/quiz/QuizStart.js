@@ -19,10 +19,13 @@ const BaseStyled = styled.div`
 `;
 const FreeStyled = styled(BaseStyled)`
 	background-color: ${({ theme }) => theme.colors.bg.light2};
-	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571468153/web/white-furniture_lsnszk.png");
+	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571471541/web/white-furniture_nfntsy.png");
 	background-position: 100% 100%;
 	background-size: 250px;
 	background-repeat: no-repeat;
+	@media (max-width: 576px) {
+		padding-bottom: 100px;
+	}
 `;
 const PaidStyled = styled(BaseStyled)`
 	background: ${({ theme }) => theme.colors.mild.blue};
@@ -30,6 +33,9 @@ const PaidStyled = styled(BaseStyled)`
 	background-position: 95% 0%;
 	background-size: 70px;
 	background-repeat: no-repeat;
+	@media (max-width: 576px) {
+		padding-top: 150px;
+	}
 `;
 
 function QuizStart({ plan }) {
