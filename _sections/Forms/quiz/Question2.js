@@ -242,7 +242,8 @@ function Question2({ plan }) {
 								<ImageWrapperStyled className={quizState === "" ? "active" : "inactive"}>
 									<Image
 										height="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1571313167/web/Spacejoy_quiz_blank_state_bm2xyu.svg"
+										width="100%"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1571468410/web/Spacejoy_quiz_blank_state_2x_tcbukh.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$10,000 or more" ? "active" : "inactive"}>

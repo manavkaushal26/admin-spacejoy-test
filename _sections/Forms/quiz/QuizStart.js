@@ -19,7 +19,7 @@ const BaseStyled = styled.div`
 `;
 const FreeStyled = styled(BaseStyled)`
 	background-color: ${({ theme }) => theme.colors.bg.light2};
-	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571406825/web/white-furniture_pyakvm.png");
+	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571468153/web/white-furniture_lsnszk.png");
 	background-position: 100% 100%;
 	background-size: 250px;
 	background-repeat: no-repeat;

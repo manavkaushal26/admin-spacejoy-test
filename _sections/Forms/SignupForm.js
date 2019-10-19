@@ -19,6 +19,7 @@ function SignupForm({ redirectUrl }) {
 				placeholder="Name"
 				error="Please enter your name"
 				hint="How do we address you?"
+				required
 			/>
 			<Field
 				name="userEmail"
