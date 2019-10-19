@@ -269,7 +269,6 @@ function checkout({ isServer, data, authVerification }) {
 													</div>
 												</CartHeaderRowStyled>
 											</CartHeaderStyled>
-
 											<BenefitList>
 												<BenefitList.Item icon="tick" nature="positive">
 													Get two concepts in your style & Budget
@@ -293,8 +292,8 @@ function checkout({ isServer, data, authVerification }) {
 											<Divider size="xs" />
 											<h4 className="accent">Do you know?</h4>
 											<p>
-												Your are saving close to <strong>$4000</strong> on standard interior designer fees by choosing
-												spacejoy.
+												Your are saving <strong>thousands of dollors</strong> on standard interior designer fees by
+												choosing spacejoy.
 											</p>
 										</CartStyled>
 									)}

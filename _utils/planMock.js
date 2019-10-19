@@ -19,7 +19,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Shopping List of your Designs",
+				label: "Shopping list of products",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -61,7 +61,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Shopping List of your Designs",
+				label: "Shopping list of products",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -102,7 +102,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Shopping List of your Designs",
+				label: "Shopping list of products",
 				icon: "tick",
 				nature: "positive"
 			},

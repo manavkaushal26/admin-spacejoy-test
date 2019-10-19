@@ -10,7 +10,7 @@ import { goToQuiz, quizReqBody } from "./QuizHelper";
 function Question5({ plan }) {
 	const quizId = 5;
 
-	const quizTitle = "Where do you get your design inspiration from?";
+	const quizTitle = "How Have You Decorated Your Room In The Past?";
 
 	const [quizState, setQuizState] = useState("");
 
@@ -59,7 +59,7 @@ function Question5({ plan }) {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-6">
-					<SectionHeader title={quizTitle} description="Your purpose, our vision!" />
+					<SectionHeader title={quizTitle} />
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">

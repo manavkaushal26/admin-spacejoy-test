@@ -27,6 +27,7 @@ export default class MyApp extends App {
 		});
 		Router.router.events.on("routeChangeComplete", () => {
 			this.setState({ loading: false });
+			window.scrollTo(0, 0);
 			RouteChange({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });
 		});
 		window.addEventListener("appinstalled", evt => {

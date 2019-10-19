@@ -79,13 +79,16 @@ function QuizStart({ plan }) {
 							<PaidStyled>
 								<h3>Love what you see? Upgrade and unlock</h3>
 								<BenefitList>
-									<BenefitList.Item icon="dot" nature="positive">
-										Revise your designs on our 3D App
+									<BenefitList.Item icon="plus" nature="positive">
+										Everything in the &quot;Delight&quot; package +
 									</BenefitList.Item>
-									<BenefitList.Item icon="dot" nature="positive">
+									<BenefitList.Item icon="tick" nature="positive">
+										Design revisions on our 3D App
+									</BenefitList.Item>
+									<BenefitList.Item icon="tick" nature="positive">
 										Shopping and styling assistance
 									</BenefitList.Item>
-									<BenefitList.Item icon="dot" nature="positive">
+									<BenefitList.Item icon="tick" nature="positive">
 										Access to our <strong>Deal-Hunter</strong>*
 									</BenefitList.Item>
 								</BenefitList>

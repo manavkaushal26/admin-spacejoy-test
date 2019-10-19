@@ -215,8 +215,8 @@ function HowWeDoIt() {
 								<span>3</span>
 								<h2>Shop from your designs</h2>
 								<p>
-									Shop for what you love, directly from your designs. We will find you the best deals on furniture and
-									decor from all your favorite brands
+									Shop the products you love, directly from your designs. We will find you the best deals on furniture
+									and decor from all your favorite brands
 								</p>
 								<Button
 									variant="ghost"
