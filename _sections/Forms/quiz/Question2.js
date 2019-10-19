@@ -95,8 +95,10 @@ const RadioStyled = styled(Button)`
 			display: block;
 		}
 		span {
+			font-weight: bold;
 			margin: 0.15rem 0;
 			font-size: 13px;
+			color: ${({ theme }) => theme.colors.fc.dark3};
 		}
 		small {
 			display: inline-block;
@@ -240,7 +242,6 @@ function Question2({ plan }) {
 								<ImageWrapperStyled className={quizState === "" ? "active" : "inactive"}>
 									<Image
 										height="100%"
-										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1571313167/web/Spacejoy_quiz_blank_state_bm2xyu.svg"
 									/>
 								</ImageWrapperStyled>

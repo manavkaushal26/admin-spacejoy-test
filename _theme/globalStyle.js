@@ -7,7 +7,9 @@ const GlobalStyle = createGlobalStyle`
 			text-decoration: none;
 			color: ${({ theme }) => theme.colors.primary1};
 		}
-
+		small{
+			font-size: 85%;
+		}
 	}
 `;
 export default GlobalStyle;
