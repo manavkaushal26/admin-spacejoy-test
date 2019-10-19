@@ -254,7 +254,7 @@ function checkout({ isServer, data, authVerification }) {
 											<CartHeaderStyled>
 												<CartHeaderRowStyled>
 													<div>
-														<h4 className="accent">Classic</h4>
+														<h4 className="accent">Delight</h4>
 													</div>
 													<div>
 														<h4>$49.00</h4>

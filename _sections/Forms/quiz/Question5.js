@@ -59,7 +59,7 @@ function Question5({ plan }) {
 		<div className="container">
 			<div className="grid text-center">
 				<div className="col-12 col-md-6">
-					<SectionHeader title={quizTitle} />
+					<SectionHeader title={quizTitle} description="We’d love to know" />
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">

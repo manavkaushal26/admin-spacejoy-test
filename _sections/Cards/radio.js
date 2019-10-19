@@ -6,6 +6,7 @@ import React from "react";
 import styled from "styled-components";
 
 const RadioCardBase = styled(Button)`
+	letter-spacing: normal;
 	border-radius: 2px;
 	width: 100%;
 	padding: 0;
@@ -115,7 +116,7 @@ function RadioCard({ version, image, value, onClick, checked, bg }) {
 						<SVGIcon name="tick" />
 					</span>
 					<div className="continent">
-						<Image src={image} height="50px" width="40px" />
+						<Image src={image} height="30px" />
 						<span>{value}</span>
 					</div>
 				</RadioCardStyledV2>

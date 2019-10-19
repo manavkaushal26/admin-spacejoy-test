@@ -46,6 +46,7 @@ const BudgetSelectionStyled = styled.div`
 `;
 
 const RadioStyled = styled(Button)`
+	letter-spacing: normal;
 	padding: 1rem 0;
 	width: 100%;
 	display: flex;
@@ -238,31 +239,36 @@ function Question2({ plan }) {
 							<SampleImageStyled>
 								<ImageWrapperStyled className={quizState === "" ? "active" : "inactive"}>
 									<Image
-										height="auto"
+										height="100%"
+										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1571313167/web/Spacejoy_quiz_blank_state_bm2xyu.svg"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$10,000 or more" ? "active" : "inactive"}>
 									<Image
-										height="auto"
+										height="100%"
+										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570444188/web/10000_gydis3.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$5000 - $7000" ? "active" : "inactive"}>
 									<Image
-										height="auto"
+										height="100%"
+										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$2000 - $5000" ? "active" : "inactive"}>
 									<Image
-										height="auto"
+										height="100%"
+										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$2000 or less" ? "active" : "inactive"}>
 									<Image
-										height="auto"
+										height="100%"
+										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png"
 									/>
 								</ImageWrapperStyled>
