@@ -28,11 +28,11 @@ export default function Closed() {
 					alt="We have received your order."
 				/>
 				<h3>We have received your order.</h3>
-				<p>We will call you</p>
+				<p>Next Step</p>
 				<Link href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
 					<a href="/dashboard">
 						<Button fill="ghost" shape="rounded" size="sm">
-							Dashboard
+							Go to Dashboard
 						</Button>
 					</a>
 				</Link>
