@@ -171,7 +171,7 @@ function HowWeDoIt() {
 						<div className="col-12 col-xs-5">
 							<Image
 								src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,h_400/w_650/v1570619193/web/step-1_s3ljeg.png"
-								height="400px"
+								width="100%"
 							/>
 						</div>
 					</div>
