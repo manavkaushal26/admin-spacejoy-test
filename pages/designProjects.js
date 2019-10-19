@@ -86,7 +86,11 @@ class designProjects extends PureComponent {
 					<title>Design Projects | {company.product}</title>
 				</Head>
 				<div className="container">
-					<Image src={`${cloudinary.baseDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg`} nolazy />
+					<Image
+						width="100%"
+						src={`${cloudinary.baseDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg`}
+						nolazy
+					/>
 					<div className="grid">
 						<div className="col-xs-12">
 							<h1>Real Designs, With Real Products</h1>
