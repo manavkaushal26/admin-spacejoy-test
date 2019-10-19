@@ -51,7 +51,7 @@ class Header extends PureComponent {
 	};
 
 	updateCookiePolicyStatus = () => {
-		cookie.set("cookie-policy", true, { expires: 30 });
+		cookie.set("cookie-policy", true, { expires: 365 });
 		this.setState({ cookiePolicyStatus: true });
 	};
 

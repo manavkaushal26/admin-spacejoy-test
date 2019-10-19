@@ -56,6 +56,7 @@ class FormBox extends Component {
 						password: state.userPassword.value,
 						firstName: state.userName.value,
 						lastName: "",
+						phone: state.userMobile.value,
 						tnc: state.userCommutePermissionGranted.value,
 						privacyPolicy: state.userCommutePermissionGranted.value
 					}

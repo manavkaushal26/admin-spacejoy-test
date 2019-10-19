@@ -30,7 +30,7 @@ function login({ token, redirectUrl }) {
 	cookie.remove("token");
 	cookie.remove("role");
 	window.localStorage.removeItem("authVerification");
-	cookie.set("token", token, { expires: 1 });
+	cookie.set("token", token, { expires: 365 });
 	if (redirectUrl !== null) {
 		const url = redirectUrl || "/dashboard";
 		redirectToLocation({ pathname: url, query: {}, url });
@@ -47,7 +47,7 @@ async function guestLogin() {
 			user: { role }
 		} = response.data;
 		login({ token, redirectUrl: null });
-		cookie.set("role", role, { expires: 1 });
+		cookie.set("role", role, { expires: 10 });
 	}
 }
 
