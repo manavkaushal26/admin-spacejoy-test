@@ -159,9 +159,9 @@ function HowWeDoIt() {
 									fill="ghost"
 									size="xs"
 									onClick={() => handleStepClick(2)}
-									action="HowWeDoItStep2"
+									action="Step1SytleBudget"
 									label="HowWeDoIt"
-									event="HowWeDoItStep2"
+									event="Step1SytleBudget"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
 									GO STEP 2 <SVGIcon name="arrow-right" height={6} width={10} />
@@ -191,9 +191,9 @@ function HowWeDoIt() {
 									fill="ghost"
 									size="xs"
 									onClick={() => handleStepClick(3)}
-									action="HowWeDoItStep3"
+									action="Step2DesignRevise"
 									label="HowWeDoIt"
-									event="HowWeDoItStep3"
+									event="Step2DesignRevise"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
 									GO STEP 3 <SVGIcon name="arrow-right" height={6} width={10} />
@@ -223,9 +223,9 @@ function HowWeDoIt() {
 									fill="ghost"
 									size="xs"
 									onClick={() => handleStepClick(1)}
-									action="HowWeDoItRepeat"
+									action="Step3Shop"
 									label="HowWeDoIt"
-									event="HowWeDoItRepeat"
+									event="Step3Shop"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
 									Repeat! Go Step 1

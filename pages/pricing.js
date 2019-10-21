@@ -43,6 +43,15 @@ function pricing({ isServer, authVerification }) {
 								</div>
 							))}
 						</div>
+						<div className="grid text-left">
+							<div className="col-12">
+								<br /> <h4>What is Deal-Hunter?</h4>
+								<small>
+									<sup>*</sup>We&apos;ll find you the best deals on products featured in your design <br /> Get at least
+									12% off on your entire shopping list <br /> Always looking to save your precious dollars!
+								</small>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

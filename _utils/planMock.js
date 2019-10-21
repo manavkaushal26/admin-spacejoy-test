@@ -2,14 +2,14 @@ const PlansData = [
 	{
 		name: "delight",
 		title: "Delight",
-		subTitle: "ADVICE & INSPIRATION",
+		subTitle: "TO GET YOU STARTED",
 		price: "Free",
 		description:
 			"Need a new layout in 3D of your current space with the existing furniture & upgrade advice on key pieces",
 		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618559/web/Classic_nm9als.png",
 		benefits: [
 			{
-				label: "Realistic 3D renders of your design",
+				label: "1 Designs and realistic 3D renders",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -56,7 +56,7 @@ const PlansData = [
 				nature: "positive"
 			},
 			{
-				label: "Shorter turnaround time of 7 Days",
+				label: "Turnaround time of 10 Days",
 				icon: "tick",
 				nature: "positive"
 			},
@@ -92,12 +92,12 @@ const PlansData = [
 		thumbnail: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_150/v1570618561/web/Premium_szdi5t.png",
 		benefits: [
 			{
-				label: "Realistic 3D renders of your design",
+				label: "2 Designs and realistic 3D renders",
 				icon: "tick",
 				nature: "positive"
 			},
 			{
-				label: "Turnaround time of 12 Days",
+				label: "Shorter turnaround time of 7 Days",
 				icon: "tick",
 				nature: "positive"
 			},

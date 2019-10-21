@@ -73,7 +73,7 @@ function QuizStart({ plan }) {
 					<div className="grid text-left">
 						<div className="col-12 col-md-6">
 							<FreeStyled>
-								<h3>Free trial Includes</h3>
+								<h3>Free trial includes</h3>
 								<BenefitList>
 									<BenefitList.Item icon="tick">Realistic 3D render of your design </BenefitList.Item>
 									<BenefitList.Item icon="tick">Turnaround time of 12 Days</BenefitList.Item>
@@ -107,16 +107,16 @@ function QuizStart({ plan }) {
 								shape="rounded"
 								onClick={handleClick}
 								submitInProgress={submitInProgress}
-								action="Quiz"
+								action="StartFreeTrial"
 								label="FreeTrialLanding"
-								event="Quiz"
+								event="StartFreeTrial"
 								data={{ PageName: "FreeTrialLanding", ButtonName: "Let's Begin" }}
 							>
 								Let&apos;s Begin <SVGIcon name="arrow-right" fill="#fff" />
 							</Button>
 						</div>
 						<div className="col-12">
-							<h4>What is Deal Hunter?</h4>
+							<h4>What is Deal-Hunter?</h4>
 							<small>
 								<sup>*</sup>We&apos;ll find you the best deals on products featured in your design <br /> Get at least
 								12% off on your entire shopping list <br /> Always looking to save your precious dollars!
