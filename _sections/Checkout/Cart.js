@@ -32,12 +32,12 @@ const CartHeaderRowStyled = styled.div`
 function Cart({ paymentType }) {
 	return (
 		<CartStyled bg="white">
-			<h4>Your Savings</h4>
+			<h4>{paymentType !== "freeTrial" ? "What you get" : "Order Details"}</h4>
 			{paymentType !== "freeTrial" && (
 				<CartHeaderStyled>
 					<CartHeaderRowStyled>
 						<div>
-							<h4 className="accent">Delight</h4>
+							<h4 className="accent">Bliss</h4>
 						</div>
 						<div>
 							<h4>$49.00</h4>
@@ -55,12 +55,16 @@ function Cart({ paymentType }) {
 			)}
 			<BenefitList>
 				<BenefitList.Item icon="tick" nature="positive">
-					Get two concepts in your style & Budget
+					Get {paymentType === "freeTrial" ? "1" : "2"} concept design{paymentType === "freeTrial" ? "" : "s"} in your
+					style & Budget
 				</BenefitList.Item>
 				<BenefitList.Item icon="tick" nature="positive">
 					See your home in 3D App
 				</BenefitList.Item>
-				<BenefitList.Item icon="tick" nature="positive">
+				<BenefitList.Item
+					icon={paymentType === "freeTrial" ? "cross" : "tick"}
+					nature={paymentType === "freeTrial" ? "negative" : "positive"}
+				>
 					Give feedback & get revisions
 				</BenefitList.Item>
 				<BenefitList.Item
@@ -83,9 +87,9 @@ function Cart({ paymentType }) {
 				</BenefitList.Item>
 			</BenefitList>
 			<Divider size="xs" />
-			<h4 className="accent">Do you know?</h4>
+			<h4 className="accent">Did you know?</h4>
 			<p>
-				Your are saving <strong>thousands of dollars</strong> on standard interior designer fees by choosing spacejoy.
+				Your are saving <strong>thousands of dollars</strong> on standard interior designer fees by choosing Spacejoy.
 			</p>
 		</CartStyled>
 	);

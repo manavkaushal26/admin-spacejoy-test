@@ -51,7 +51,8 @@ function CheckoutForm({ stripe, paymentType }) {
 			setSubmitInProgress(false);
 			setOrderPlaced(true);
 		} else {
-			console.log("response", response);
+			// eslint-disable-next-line no-console
+			// console.log("response", response);
 			setSubmitInProgress(false);
 			setOrderPlaced(false);
 			setPageError(response.message);
