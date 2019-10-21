@@ -30,7 +30,7 @@ const style = {
 	}
 };
 
-function CheckoutForm({ stripe, paymentType }) {
+function CheckoutForm({ stripe, paymentType, authVerification }) {
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 	const [orderPlaced, setOrderPlaced] = useState(false);
 	const [pageError, setPageError] = useState("");
@@ -80,15 +80,32 @@ function CheckoutForm({ stripe, paymentType }) {
 		<Card bg="white">
 			{pageError && <Hoarding type="error" msg={pageError} />}
 			{paymentType === "freeTrial" ? (
-				<Button variant="primary" shape="rounded" onClick={() => handlePay(null)} submitInProgress={submitInProgress}>
-					Place your order
+				<Button
+					variant="primary"
+					shape="rounded"
+					onClick={() => handlePay(null)}
+					submitInProgress={submitInProgress}
+					action="Checkout Free Trial"
+					label={`${authVerification.name} > ${authVerification.email}`}
+					event="Freetrial Checkout"
+					data={{ User: authVerification.name, Email: authVerification.email, Package: "Delight" }}
+				>
+					Place your order !
 				</Button>
 			) : (
 				<form onSubmit={handleSubmit}>
 					<CardElement style={style} />
 					<br />
-					<Button type="submit" variant="primary" shape="rounded">
-						Place your order
+					<Button
+						type="submit"
+						variant="primary"
+						shape="rounded"
+						action="Checkout Payment"
+						label={`${authVerification.name} > ${authVerification.email} > bliss`}
+						event="Payment Checkout"
+						data={{ User: authVerification.name, Email: authVerification.email, Package: "bliss" }}
+					>
+						Place your order X
 					</Button>
 				</form>
 			)}
@@ -98,13 +115,21 @@ function CheckoutForm({ stripe, paymentType }) {
 
 CheckoutForm.defaultProps = {
 	paymentType: "",
-	stripe: {}
+	stripe: {},
+	authVerification: {
+		name: "",
+		email: ""
+	}
 };
 
 CheckoutForm.propTypes = {
 	paymentType: PropTypes.string,
 	stripe: PropTypes.shape({
 		createToken: PropTypes.func
+	}),
+	authVerification: PropTypes.shape({
+		name: PropTypes.string,
+		email: PropTypes.string
 	})
 };
 

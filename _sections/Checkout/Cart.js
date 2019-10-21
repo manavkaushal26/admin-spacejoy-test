@@ -32,7 +32,7 @@ const CartHeaderRowStyled = styled.div`
 function Cart({ paymentType }) {
 	return (
 		<CartStyled bg="white">
-			<h4>{paymentType !== "freeTrial" ? "What you get" : "Order Details"}</h4>
+			<h4>{paymentType === "freeTrial" ? "What you get" : "Order Details"}</h4>
 			{paymentType !== "freeTrial" && (
 				<CartHeaderStyled>
 					<CartHeaderRowStyled>

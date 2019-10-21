@@ -62,6 +62,8 @@ const logException = (description = "", fatal = false) => {
 
 const PushEvent = (action, label, value, event, data) => {
 	const categoryLabel = `web${window.location.pathname}`;
+	// eslint-disable-next-line no-console
+	// console.log(`action: ${action}, label: ${label}`);
 	dataToPush(data, EventName.click);
 	logEvent(categoryLabel, action, label, value);
 	cleverTapPush(categoryLabel, action, label, value, event, data);

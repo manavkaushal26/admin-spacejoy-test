@@ -43,18 +43,35 @@ function checkout({ isServer, data, authVerification }) {
 					<div className="grid text-center">
 						<div className="col-12 col-md-10">
 							<SectionHeader title="Checkout" description="You are in good company" />
+
 							{data.status === "active" && (
 								<div className="grid text-left">
 									<div className="col-xs-8 ">
 										<ToggleButton className={paymentType}>
-											<Button fill="ghost" value="freeTrial" onClick={handleButtonToggle}>
+											<Button
+												fill="ghost"
+												value="freeTrial"
+												onClick={handleButtonToggle}
+												action="Checkout Free Trial (tab)"
+												label={`${authVerification.name} > ${authVerification.email}`}
+												event="Freetrial Checkout"
+												data={{ User: authVerification.name, Email: authVerification.email, Package: "Delight" }}
+											>
 												Free Trial
 											</Button>
-											<Button fill="ghost" value="payNow" onClick={handleButtonToggle}>
+											<Button
+												fill="ghost"
+												value="payNow"
+												onClick={handleButtonToggle}
+												action="Checkout Payment (tab)"
+												label={`${authVerification.name} > ${authVerification.email} > bliss`}
+												event="Payment Checkout"
+												data={{ User: authVerification.name, Email: authVerification.email, Package: "bliss" }}
+											>
 												Pay Now
 											</Button>
 										</ToggleButton>
-										<Checkout paymentType={paymentType} />
+										<Checkout paymentType={paymentType} authVerification={authVerification} />
 										<TrustStrip />
 										<Summary data={data} />
 									</div>
