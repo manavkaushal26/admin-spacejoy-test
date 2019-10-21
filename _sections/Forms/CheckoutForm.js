@@ -86,11 +86,11 @@ function CheckoutForm({ stripe, paymentType, authVerification }) {
 					onClick={() => handlePay(null)}
 					submitInProgress={submitInProgress}
 					action="Checkout Free Trial"
-					label={`${authVerification.name} > ${authVerification.email}`}
+					label={`${authVerification.name}`}
 					event="Freetrial Checkout"
-					data={{ User: authVerification.name, Email: authVerification.email, Package: "Delight" }}
+					data={{ User: authVerification.name, Package: "Delight" }}
 				>
-					Place your order !
+					Place your order
 				</Button>
 			) : (
 				<form onSubmit={handleSubmit}>
@@ -101,11 +101,11 @@ function CheckoutForm({ stripe, paymentType, authVerification }) {
 						variant="primary"
 						shape="rounded"
 						action="Checkout Payment"
-						label={`${authVerification.name} > ${authVerification.email} > bliss`}
+						label={`${authVerification.name} > bliss`}
 						event="Payment Checkout"
-						data={{ User: authVerification.name, Email: authVerification.email, Package: "bliss" }}
+						data={{ User: authVerification.name, Package: "bliss" }}
 					>
-						Place your order X
+						Place your order
 					</Button>
 				</form>
 			)}

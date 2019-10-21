@@ -53,9 +53,9 @@ function checkout({ isServer, data, authVerification }) {
 												value="freeTrial"
 												onClick={handleButtonToggle}
 												action="Checkout Free Trial (tab)"
-												label={`${authVerification.name} > ${authVerification.email}`}
+												label={`${authVerification.name}`}
 												event="Freetrial Checkout"
-												data={{ User: authVerification.name, Email: authVerification.email, Package: "Delight" }}
+												data={{ User: authVerification.name, Package: "Delight" }}
 											>
 												Free Trial
 											</Button>
@@ -64,9 +64,9 @@ function checkout({ isServer, data, authVerification }) {
 												value="payNow"
 												onClick={handleButtonToggle}
 												action="Checkout Payment (tab)"
-												label={`${authVerification.name} > ${authVerification.email} > bliss`}
+												label={`${authVerification.name} > bliss`}
 												event="Payment Checkout"
-												data={{ User: authVerification.name, Email: authVerification.email, Package: "bliss" }}
+												data={{ User: authVerification.name, Package: "bliss" }}
 											>
 												Pay Now
 											</Button>
