@@ -1,9 +1,10 @@
 import Image from "@components/Image";
 import CTA from "@sections/CTA";
-import Link from "next/link";
+// import Link from "next/link";
 import React from "react";
 import TextLoop from "react-text-loop";
 import styled from "styled-components";
+import Button from "@components/Button";
 
 const HeroWrapperStyled = styled.section`
 	display: flex;
@@ -83,11 +84,25 @@ function HeroSection() {
 								event="StartFreeTrial"
 								data={{ sectionName: "FirstHomeScreen" }}
 							/>
-							<Link href={{ pathname: "/designProjects" }} as="/designProjects">
-								<a href="/designProjects">
-									<p>Explore stunning design layouts</p>
-								</a>
-							</Link>
+							<br />
+							<br />
+
+							<Button
+								fill="ghost"
+								shape="flat"
+								size="lg"
+								action="ExploreDesigns"
+								label="FirstHomeScreen"
+								event="ExploreDesigns"
+								data={{ sectionName: "FirstHomeScreen" }}
+							>
+								See Our Design Projects
+							</Button>
+
+							<HeroSubText>
+								Your first room design is on us <br />
+								No credit card needed. No charges applied .
+							</HeroSubText>
 						</HeroCardStyled>
 					</div>
 					<div className="col-12 col-md-8">

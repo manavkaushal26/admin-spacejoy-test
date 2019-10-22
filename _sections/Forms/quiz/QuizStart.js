@@ -74,25 +74,35 @@ function QuizStart({ plan }) {
 						<div className="col-12 col-md-6">
 							<FreeStyled>
 								<h3>Free trial includes</h3>
+								<p>(Delight Package)</p>
 								<BenefitList>
-									<BenefitList.Item icon="tick">Realistic 3D render of your design </BenefitList.Item>
-									<BenefitList.Item icon="tick">Turnaround time of 12 Days</BenefitList.Item>
-									<BenefitList.Item icon="tick">Shopping list of products in your design</BenefitList.Item>
+									<BenefitList.Item icon="tick">Realistic 3D renders of your design </BenefitList.Item>
+									<BenefitList.Item icon="tick">Turnaround time of 12 days </BenefitList.Item>
+									<BenefitList.Item icon="tick">Customised shopping list </BenefitList.Item>
+									<BenefitList.Item icon="tick">Work with our design expert </BenefitList.Item>
 								</BenefitList>
 							</FreeStyled>
 						</div>
 						<div className="col-12 col-md-6">
 							<PaidStyled>
 								<h3>Love what you see? Upgrade and unlock</h3>
+								<p>(Bliss &amp; Euphoria Package)</p>
 								<BenefitList>
-									<BenefitList.Item icon="plus" nature="positive">
-										Everything in the &quot;Delight&quot; package +
+									<BenefitList.Item icon="tick" nature="positive">
+										Includes <strong>Free Trial</strong> benefits +
+									</BenefitList.Item>
+
+									<BenefitList.Item icon="tick" nature="positive">
+										Unlimited design revisions
 									</BenefitList.Item>
 									<BenefitList.Item icon="tick" nature="positive">
-										Design revisions on our 3D App
+										Window treatment options
 									</BenefitList.Item>
 									<BenefitList.Item icon="tick" nature="positive">
-										Shopping and styling assistance
+										Paint Recommendations
+									</BenefitList.Item>
+									<BenefitList.Item icon="tick" nature="positive">
+										Avail shopping assistance
 									</BenefitList.Item>
 									<BenefitList.Item icon="tick" nature="positive">
 										Access to our <strong>Deal-Hunter</strong>*
