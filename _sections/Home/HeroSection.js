@@ -5,6 +5,7 @@ import React from "react";
 import TextLoop from "react-text-loop";
 import styled from "styled-components";
 import Button from "@components/Button";
+import { redirectToLocation } from "@utils/auth";
 
 const HeroWrapperStyled = styled.section`
 	display: flex;
@@ -51,6 +52,15 @@ const HeroSubText = styled.h4`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
+const HeroBottomText = styled.p`
+	font-weight: normal;
+	font-family: inherit;
+	margin-top: 2em;
+	width: 80%;
+	color: ${({ theme }) => theme.colors.fc.dark2};
+	font-size: 0.8em;
+`;
+
 function HeroSection() {
 	return (
 		<HeroWrapperStyled>
@@ -94,15 +104,22 @@ function HeroSection() {
 								action="ExploreDesigns"
 								label="FirstHomeScreen"
 								event="ExploreDesigns"
+								onClick={() =>
+									redirectToLocation({
+										pathname: "/designProjects",
+										query: {},
+										url: "/designProjects"
+									})
+								}
 								data={{ sectionName: "FirstHomeScreen" }}
 							>
 								See Our Design Projects
 							</Button>
 
-							<HeroSubText>
-								Your first room design is on us <br />
+							<HeroBottomText>
+								Your first room design is on us. <br />
 								No credit card needed. No charges applied .
-							</HeroSubText>
+							</HeroBottomText>
 						</HeroCardStyled>
 					</div>
 					<div className="col-12 col-md-8">
