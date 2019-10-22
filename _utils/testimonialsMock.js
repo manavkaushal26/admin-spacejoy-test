@@ -14,7 +14,7 @@ const TestimonialsMock = [
 		name: "Erika Lee",
 		dp: "https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg",
 		address: "",
-		roomType: "Living room",
+		roomType: "Bedroom",
 		description:
 			"Our designer from Spacejoy immediately caught on to our vision and delivered. The execution was flawless. We couldn’t be happier with how amazing our home looks right now.",
 		before: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_700/v1571124581/web/Before_lbxxkl.jpg",

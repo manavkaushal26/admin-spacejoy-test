@@ -26,7 +26,7 @@ export default function Testimonials() {
 				<div className="grid text-center">
 					<div className="col-12 col-xs-8">
 						<h2>
-							&quot;We&apos;re incredibly happy with our designer who took our ideas and transformed our Living Room to
+							&quot;We&apos;re incredibly happy with our designer who took our ideas and transformed our bedroom to
 							match the vision!&quot;
 						</h2>
 						<Image

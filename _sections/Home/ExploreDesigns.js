@@ -23,11 +23,12 @@ function ExploreDesigns() {
 					title="Look! We designed this"
 					description="Explore spaces that spark ultimate joy! That’s not it, love something that you see? You can shop for products directly from each design"
 				/>
+
 				<div className="grid">
 					<div className="col-12 col-xs-3">
 						<ImageStyled
 							width="100%"
-							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d7b3a0e0eefdd279a564f1a/versions/5da02283f791b977e0336c7d/designimages/final%202_c.png"
+							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d5f8a916815d405db09c294/versions/5d662007efc3af13c08b2283/designimages/1_c.jpg"
 						/>
 					</div>
 					<div className="col-12 col-xs-3">
@@ -39,21 +40,22 @@ function ExploreDesigns() {
 					<div className="col-12 col-xs-3">
 						<ImageStyled
 							width="100%"
-							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d89bbd8200a584ab21b4b9b/versions/5d89c200200a584ab21b4c65/designimages/1_c.jpg"
+							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d6922e3efc3af13c08b6ea3/versions/5d7b57fd0eefdd279a564ff5/designimages/Final1_c.jpg"
 						/>
 					</div>
 					<div className="col-12 col-xs-3">
 						<ImageStyled
 							width="100%"
-							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d724b29d948dc2acd9c9431/versions/5d75fcad28f3e47a6ee0f989/designimages/Final_1_c.jpg"
+							src="https://api.homefuly.com/projects/5d034041d843662a63efe63b/rooms/5d43e6843bce5454b812fcf8/versions/5d48640b9d8c14049e562188/designimages/2_c.jpg"
 						/>
 					</div>
 					<div className="col-12 col-xs-3">
 						<ImageStyled
 							width="100%"
-							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d5f8a916815d405db09c294/versions/5d662007efc3af13c08b2283/designimages/1_c.jpg"
+							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d7b3a0e0eefdd279a564f1a/versions/5da02283f791b977e0336c7d/designimages/final%202_c.png"
 						/>
 					</div>
+
 					<div className="col-12 col-xs-3">
 						<ImageStyled
 							width="100%"
@@ -63,7 +65,7 @@ function ExploreDesigns() {
 					<div className="col-12 col-xs-3">
 						<ImageStyled
 							width="100%"
-							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d95c6d4f791b977e032b8a2/versions/5da9ab7f82611669ed70b2f3/designimages/Natural%20oasis%20nursery_View%202_c.jpg"
+							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d95c6d4f791b977e032b8a2/versions/5da9ab7f82611669ed70b2f3/designimages/Natural%20oasis%20nursery_View%203_c.jpg"
 						/>
 					</div>
 					<div className="col-12 col-xs-3">
