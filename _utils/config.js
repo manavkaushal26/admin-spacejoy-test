@@ -57,7 +57,7 @@ module.exports = {
 		},
 		app: {
 			android: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
-			ios: "https://apps.apple.com/us/app/homefuly/id1448690338"
+			ios: "https://apps.apple.com/us/app/spacejoy-home-design-makeover/id1484078338"
 		}
 	},
 	// ${secureDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg
