@@ -202,7 +202,7 @@ function HowWeDoIt() {
 						</div>
 						<div className="col-12 col-xs-5">
 							<Image
-								src="https://res.cloudinary.com/spacejoy/image/upload/v1571136682/web/Get_designs_revivse_2x_tfkfi3.png"
+								src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,h_400/v1571136682/web/Get_designs_revivse_2x_tfkfi3.png"
 								width="100%"
 							/>
 						</div>
