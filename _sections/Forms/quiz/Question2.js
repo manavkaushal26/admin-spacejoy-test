@@ -98,7 +98,7 @@ const RadioStyled = styled(Button)`
 			font-weight: bold;
 			margin: 0.15rem 0;
 			font-size: 13px;
-			color: ${({ theme }) => theme.colors.fc.dark3};
+			color: ${({ theme }) => theme.colors.fc.dark2};
 		}
 		small {
 			display: inline-block;
