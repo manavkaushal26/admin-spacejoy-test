@@ -52,6 +52,20 @@ const ButtonStyled = styled(ButtonBase)`
 				return "0.75rem 1rem";
 		}
 	}};
+	height: ${({ size }) => {
+		switch (size) {
+			case "xs":
+				return "25px";
+			case "sm":
+				return "32px";
+			case "md":
+				return "41px";
+			case "lg":
+				return "48px";
+			default:
+				return "41px";
+		}
+	}};
 	border-radius: ${({ shape }) => {
 		switch (shape) {
 			case "flat":
@@ -65,7 +79,7 @@ const ButtonStyled = styled(ButtonBase)`
 		}
 	}};
 	font-family: ${({ variant }) => (variant === "primary" ? "Airbnb Cereal App Medium" : "inherit")};
-	font-weight: ${({ variant }) => (variant === "primary" ? "bold" : "normal")};
+	font-weight: ${({ size }) => (size === "lg" ? "bold" : "normal")};
 	border: ${({ fill, theme }) =>
 		fill === "solid" || fill === "clean" ? "none" : `1px solid ${theme.colors.fc.dark2}`};
 	display: ${({ full }) => (full ? "block" : "inline-block")};

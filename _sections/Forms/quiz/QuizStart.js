@@ -74,7 +74,7 @@ function QuizStart({ plan }) {
 						<div className="col-12 col-md-6">
 							<FreeStyled>
 								<h3>Free trial includes</h3>
-								<p>(Delight Package)</p>
+								<strong>Packages</strong> - Delight Package
 								<BenefitList>
 									<BenefitList.Item icon="tick">Realistic 3D renders of your design </BenefitList.Item>
 									<BenefitList.Item icon="tick">Turnaround time of 12 days </BenefitList.Item>
@@ -86,12 +86,13 @@ function QuizStart({ plan }) {
 						<div className="col-12 col-md-6">
 							<PaidStyled>
 								<h3>Love what you see? Upgrade and unlock</h3>
-								<p>(Bliss &amp; Euphoria Package)</p>
+								<p>
+									<strong>Packages</strong> - Bliss &amp; Euphoria
+								</p>
 								<BenefitList>
 									<BenefitList.Item icon="tick" nature="positive">
 										Includes <strong>Free Trial</strong> benefits +
 									</BenefitList.Item>
-
 									<BenefitList.Item icon="tick" nature="positive">
 										Unlimited design revisions
 									</BenefitList.Item>

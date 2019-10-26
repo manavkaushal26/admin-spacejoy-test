@@ -1,11 +1,10 @@
+import Button from "@components/Button";
 import Image from "@components/Image";
 import CTA from "@sections/CTA";
-// import Link from "next/link";
+import Link from "next/link";
 import React from "react";
 import TextLoop from "react-text-loop";
 import styled from "styled-components";
-import Button from "@components/Button";
-import { redirectToLocation } from "@utils/auth";
 
 const HeroWrapperStyled = styled.section`
 	display: flex;
@@ -52,13 +51,11 @@ const HeroSubText = styled.h4`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-const HeroBottomText = styled.p`
-	font-weight: normal;
-	font-family: inherit;
+const HeroBottomText = styled.small`
+	display: block;
 	margin-top: 2em;
 	width: 80%;
 	color: ${({ theme }) => theme.colors.fc.dark2};
-	font-size: 0.8em;
 `;
 
 function HeroSection() {
@@ -94,28 +91,22 @@ function HeroSection() {
 								event="StartFreeTrial"
 								data={{ sectionName: "FirstHomeScreen" }}
 							/>
-							<br />
-							<br />
-
-							<Button
-								fill="ghost"
-								shape="flat"
-								size="lg"
-								action="ExploreDesigns"
-								label="FirstHomeScreen"
-								event="ExploreDesigns"
-								onClick={() =>
-									redirectToLocation({
-										pathname: "/designProjects",
-										query: {},
-										url: "/designProjects"
-									})
-								}
-								data={{ sectionName: "FirstHomeScreen" }}
-							>
-								See Our Design Projects
-							</Button>
-
+							<Link href={{ pathname: "/designProjects" }} as="/designProjects">
+								<a href="/designProjects">
+									<Button
+										fill="ghost"
+										shape="rounded"
+										size="lg"
+										action="ExploreDesigns"
+										label="FirstHomeScreen"
+										event="ExploreDesigns"
+										data={{ sectionName: "FirstHomeScreen" }}
+										style={{ marginTop: "2rem" }}
+									>
+										See Our Design Projects
+									</Button>
+								</a>
+							</Link>
 							<HeroBottomText>
 								Your first room design is on us. <br />
 								No credit card needed. No charges applied .
