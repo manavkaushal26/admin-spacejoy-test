@@ -74,7 +74,7 @@ function QuizStart({ plan }) {
 						<div className="col-12 col-md-6">
 							<FreeStyled>
 								<h3>Free trial includes</h3>
-								<strong>Packages</strong> - Delight Package
+								<strong>Package</strong> - Delight
 								<BenefitList>
 									<BenefitList.Item icon="tick">Realistic 3D renders of your design </BenefitList.Item>
 									<BenefitList.Item icon="tick">Turnaround time of 12 days </BenefitList.Item>
