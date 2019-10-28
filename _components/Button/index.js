@@ -7,7 +7,7 @@ import ButtonBase from "./ButtonBaseStyle";
 
 const ButtonStyled = styled(ButtonBase)`
 	background: ${({ theme, variant, fill }) => {
-		if (fill === "ghost") {
+		if (fill === "ghost" || fill === "clean") {
 			return "transparent";
 		}
 		switch (variant) {

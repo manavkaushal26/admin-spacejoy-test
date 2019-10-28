@@ -1,17 +1,19 @@
 import PropTypes from "prop-types";
 import React from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import styled from "styled-components";
+import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 
-const ImageStyled = styled.img`
-	vertical-align: bottom;
-`;
-
-function Image({ src, height, width, alt, circle, nolazy, ...props }) {
-	return nolazy ? (
-		<ImageStyled {...props} src={src} alt={alt} width={width} height={height} className={circle ? "circle" : ""} />
-	) : (
-		<LazyLoadImage {...props} src={src} alt={alt} width={width} height={height} className={circle ? "circle" : ""} />
+function Image({ src, height, width, alt, circle, nolazy, scrollPosition, ...props }) {
+	return (
+		<LazyLoadImage
+			{...props}
+			src={src}
+			alt={alt}
+			width={width}
+			height={height}
+			scrollPosition={scrollPosition}
+			visibleByDefault={nolazy}
+			className={circle ? "circle" : ""}
+		/>
 	);
 }
 
@@ -20,7 +22,8 @@ Image.defaultProps = {
 	width: "auto",
 	height: "auto",
 	circle: false,
-	nolazy: false
+	nolazy: false,
+	scrollPosition: {}
 };
 
 Image.propTypes = {
@@ -29,7 +32,8 @@ Image.propTypes = {
 	width: PropTypes.string,
 	height: PropTypes.string,
 	circle: PropTypes.bool,
-	nolazy: PropTypes.bool
+	nolazy: PropTypes.bool,
+	scrollPosition: PropTypes.shape({})
 };
 
-export default Image;
+export default trackWindowScroll(Image);

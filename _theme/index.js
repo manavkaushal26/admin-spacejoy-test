@@ -30,6 +30,9 @@ const theme = {
 			light1: "#f9fdff",
 			light2: "#c6c7cb"
 		}
+	},
+	sizes: {
+		topHeader: "70px"
 	}
 };
 
