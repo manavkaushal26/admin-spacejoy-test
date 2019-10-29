@@ -32,9 +32,16 @@ function OrderConcept({ project }) {
 							<strong>CONCEPT Name : </strong> {design.designName} <br />
 							<strong>CONCEPT ID : </strong> {design.designId}
 						</h5>
-						<Image width="100%" src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`} />
+						<Link
+							href={{ pathname: "/dashboard/designView", query: { pid: project.id, did: design.designId } }}
+							as={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}
+						>
+							<a href={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}>
+								<Image width="100%" src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`} />
+							</a>
+						</Link>
 						<ConceptToolBar id={design.designId} />
-						<p>{design.description}</p>
+						<p>{design.designDescription}</p>
 						<Divider />
 						<div className="grid">
 							<div className="col-12 text-center">
