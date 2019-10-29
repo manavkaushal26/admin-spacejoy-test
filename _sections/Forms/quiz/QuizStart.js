@@ -17,6 +17,7 @@ const BaseStyled = styled.div`
 		margin-top: 0;
 	}
 `;
+
 const FreeStyled = styled(BaseStyled)`
 	background-color: ${({ theme }) => theme.colors.bg.light2};
 	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571471541/web/white-furniture_nfntsy.png");
@@ -27,10 +28,11 @@ const FreeStyled = styled(BaseStyled)`
 		padding-bottom: 100px;
 	}
 `;
+
 const PaidStyled = styled(BaseStyled)`
 	background: ${({ theme }) => theme.colors.mild.blue};
 	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571408734/web/hanging-lamp_lbsn20.png");
-	background-position: 95% 0%;
+	background-position: 90% 0%;
 	background-size: 70px;
 	background-repeat: no-repeat;
 	@media (max-width: 576px) {
