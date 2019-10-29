@@ -54,6 +54,14 @@ const QZ = () => (
 	</li>
 );
 
+const DASHBORD = () => (
+	<li key="dashbord">
+		<Link href={{ pathname: "/dashboard" }} as="/dashboard">
+			<a href="/dashboard">Dashboard</a>
+		</Link>
+	</li>
+);
+
 const ACTIVE = query => (
 	<li key="active">
 		{query.quiz === "start" && "Intro"}
@@ -68,6 +76,7 @@ const ACTIVE = query => (
 const PRICING = () => <li key="pricing">Pricing</li>;
 const PROFILE = () => <li key="profile">Profile</li>;
 const DASHBOARD = () => <li key="dashboard">Dashboard</li>;
+const DASHBOARD_DESIGNVIEW = () => <li key="dashboard">Design View</li>;
 
 function index({ router }) {
 	const getCrumbs = () => {
@@ -89,6 +98,9 @@ function index({ router }) {
 				return crumbs;
 			case "/dashboard":
 				crumbs.push(DASHBOARD());
+				return crumbs;
+			case "/dashboard/designView":
+				crumbs.push(DASHBORD(), DASHBOARD_DESIGNVIEW());
 				return crumbs;
 			default:
 				return crumbs;

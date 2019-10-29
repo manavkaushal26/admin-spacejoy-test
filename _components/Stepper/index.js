@@ -15,6 +15,7 @@ const StepTitle = styled.span`
 	display: inline-block;
 	font-family: inherit;
 	font-size: 0.8em;
+	text-transform: capitalize;
 `;
 
 const StepCount = styled.div`
