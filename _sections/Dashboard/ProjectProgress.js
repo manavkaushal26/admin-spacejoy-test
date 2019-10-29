@@ -1,16 +1,22 @@
 import Stepper from "@components/Stepper";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
+
+const projectPhase = ["requirement", "brief", "designs", "final"];
 
 function ProjectProgress({ currentPhase }) {
-	const [stepActive] = useState(1);
 	return (
 		<div className="grid align-center text-center">
 			<div className="col-12 col-xs-12">
 				<Stepper>
-					<Stepper.Step title="1" description={currentPhase} isActive={stepActive <= 3} />
-					<Stepper.Step title="2" description="Get designs & revise" isActive={stepActive > 1 && stepActive <= 3} />
-					<Stepper.Step title="3" description="Shop from your designs" isActive={stepActive === 3} />
+					{projectPhase.map((phase, index) => (
+						<Stepper.Step
+							title={index + 1}
+							description={phase}
+							key={phase}
+							isActive={projectPhase.indexOf(phase) <= projectPhase.indexOf(currentPhase)} // 0 < 1
+						/>
+					))}
 				</Stepper>
 			</div>
 		</div>

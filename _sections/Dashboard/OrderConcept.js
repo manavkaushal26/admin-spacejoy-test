@@ -1,9 +1,9 @@
 import Button from "@components/Button";
 import Divider from "@components/Divider";
 import Image from "@components/Image";
-import Modal from "@components/Modal";
+import Link from "next/link";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import ConceptToolBar from "./ConceptToolBar";
 
@@ -21,50 +21,56 @@ const OrderConceptStyled = styled.div`
 	}
 `;
 
-function OrderConcept({ project }) {
-	const [modalVisibility, setModalVisibility] = useState(false);
-
-	const toggleModal = () => setModalVisibility(!modalVisibility);
+function OrderConcept({ project, final }) {
+	const renderConcept = design => (
+		<div className={project.currentPhase === "final" ? "col-xs-12" : "col-xs-6"} key={design.designId}>
+			<h3>Concept #{design.designConcept}</h3>
+			<h5>
+				<strong>CONCEPT Name : </strong> {design.designName} <br />
+				<strong>CONCEPT ID : </strong> {design.designId}
+			</h5>
+			<Link
+				href={{ pathname: "/dashboard/designView", query: { pid: project.id, did: design.designId } }}
+				as={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}
+			>
+				<a href={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}>
+					<Image width="100%" src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`} />
+				</a>
+			</Link>
+			{project.currentPhase !== "final" && <ConceptToolBar did={design.designId} pid={project.id} />}
+			<p>{design.designDescription}</p>
+			<Divider />
+			<div className="grid">
+				<div className="col-12 text-center">
+					<Link
+						href={{ pathname: "/dashboard/designView", query: { pid: project.id, did: design.designId } }}
+						as={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}
+					>
+						<a href={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}>
+							<Button fill="ghost" size="sm" shape="rounded">
+								View More
+							</Button>
+						</a>
+					</Link>
+				</div>
+			</div>
+		</div>
+	);
 
 	return (
 		<OrderConceptStyled>
 			<div className="grid">
-				{project.designs.map(design => (
-					<div className="col-xs-6" key={design.designId}>
-						<h3>Concept #{design.designConcept}</h3>
-						<h5>
-							<strong>CONCEPT Name : </strong> {design.designName} <br />
-							<strong>CONCEPT ID : </strong> {design.designId}
-						</h5>
-						<Image
-							width="100%"
-							src="https://api.homefuly.com/projects/5d5116716ec2df1947e6280c/rooms/5d7b3a0e0eefdd279a564f1a/versions/5da02283f791b977e0336c7d/designimages/final%201_c.png"
-						/>
-						<ConceptToolBar id={design.designId} />
-						<p>
-							{"Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti optio, repellat maiores voluptatum expedita hic reiciendis laborum tenetur veritatis aut error illo consequuntur odio quidem doloribus eius ipsum eveniet adipisci" ||
-								design.description}
-						</p>
-						<Divider />
-						<div className="grid">
-							<div className="col-12 text-center">
-								<Button variant="primary" shape="rounded" onClick={toggleModal}>
-									Finalize Design
-								</Button>
-							</div>
-						</div>
-					</div>
-				))}
+				{project.designs.map(design => {
+					return <>{final ? design.state === "finalized" && renderConcept(design) : renderConcept(design)}</>;
+				})}
 			</div>
-			<Modal isModalOpen={modalVisibility} close={toggleModal}>
-				hi
-			</Modal>
 		</OrderConceptStyled>
 	);
 }
 
 OrderConcept.defaultProps = {
 	project: {},
+	final: false,
 	authVerification: {
 		name: "",
 		email: ""
@@ -77,6 +83,8 @@ OrderConcept.propTypes = {
 		email: PropTypes.string
 	}),
 	project: PropTypes.shape({
+		id: PropTypes.string,
+		currentPhase: PropTypes.string,
 		designs: PropTypes.arrayOf(
 			PropTypes.shape({
 				designId: PropTypes.string,
@@ -86,7 +94,8 @@ OrderConcept.propTypes = {
 				designBanner: PropTypes.string
 			})
 		)
-	})
+	}),
+	final: PropTypes.bool
 };
 
 export default OrderConcept;

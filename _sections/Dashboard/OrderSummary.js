@@ -9,8 +9,8 @@ import ProjectProgress from "./ProjectProgress";
 const projectPhase = ["requirement", "brief", "designs", "final", "revision", "onhold", "cancelled", "rejected"];
 
 function OrderSummary({ project, authVerification }) {
-	// const { currentPhase } = project;
-	const currentPhase = projectPhase[0];
+	const { currentPhase } = project;
+	// const currentPhase = projectPhase[2];
 	const renderProjectPhase = () => {
 		switch (currentPhase) {
 			case projectPhase[0]:
@@ -31,7 +31,8 @@ function OrderSummary({ project, authVerification }) {
 	};
 	return (
 		<div>
-			<ProjectProgress currentPhase={currentPhase} />
+			<h3>{project.name}</h3>
+			{currentPhase !== "final" && <ProjectProgress currentPhase={currentPhase} />}
 			{renderProjectPhase()}
 		</div>
 	);
@@ -52,6 +53,7 @@ OrderSummary.propTypes = {
 	}),
 	project: PropTypes.shape({
 		currentPhase: PropTypes.string.isRequired,
+		name: PropTypes.string.isRequired,
 		designs: PropTypes.arrayOf(
 			PropTypes.shape({
 				designId: PropTypes.string,

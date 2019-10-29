@@ -15,6 +15,7 @@ const StepTitle = styled.span`
 	display: inline-block;
 	font-family: inherit;
 	font-size: 0.8em;
+	text-transform: capitalize;
 `;
 
 const StepCount = styled.div`
@@ -90,7 +91,7 @@ index.Step = ({ title, description, isActive, onClick }) => (
 );
 
 index.Step.propTypes = {
-	title: PropTypes.string,
+	title: PropTypes.number,
 	description: PropTypes.string,
 	isActive: PropTypes.bool,
 	onClick: PropTypes.func

@@ -104,6 +104,9 @@ app.prepare().then(() => {
 		server.get("/profile", (req, res) => {
 			app.render(req, res, "/profile", req.params);
 		});
+		server.get("/dashboard/designView/pid/:pid/did/:did", (req, res) => {
+			app.render(req, res, "/dashboard/designView", req.params);
+		});
 		server.get("/dashboard", (req, res) => {
 			app.render(req, res, "/dashboard", req.params);
 		});

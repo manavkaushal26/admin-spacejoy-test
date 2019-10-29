@@ -51,19 +51,19 @@ function HowWeDoIt() {
 					<div className="col-12 col-xs-6">
 						<Stepper>
 							<Stepper.Step
-								title="1"
+								title={1}
 								description="Set your budget & style"
 								isActive={slideActive <= 3}
 								onClick={() => handleStepClick(1)}
 							/>
 							<Stepper.Step
-								title="2"
+								title={2}
 								description="Get designs & revise"
 								isActive={slideActive > 1 && slideActive <= 3}
 								onClick={() => handleStepClick(2)}
 							/>
 							<Stepper.Step
-								title="3"
+								title={3}
 								description="Shop from your designs"
 								isActive={slideActive === 3}
 								onClick={() => handleStepClick(3)}

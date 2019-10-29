@@ -9,7 +9,7 @@ const Dialog = styled.div`
 	top: 0;
 	bottom: 0;
 	right: 0;
-	background: ${({ theme }) => theme.colors.mild.black};
+	background: rgba(0, 0, 0, 0.6);
 `;
 
 const DialogContent = styled.div`
@@ -60,7 +60,7 @@ class Modal extends PureComponent {
 	render() {
 		const { isModalOpen, children, size } = this.props;
 		return (
-			<Dialog style={{ display: isModalOpen ? "block" : "none" }}>
+			<Dialog role="dialog" style={{ display: isModalOpen ? "block" : "none" }}>
 				<DialogContent size={size}>
 					<CloseBtn onClick={this.modalClose}>&times;</CloseBtn>
 					<div>{children}</div>

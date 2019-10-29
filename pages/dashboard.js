@@ -16,17 +16,25 @@ const endPoint = "/user/dashboard/projects";
 const OrderSummaryTilesStyled = styled.div`
 	border-right: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	height: 100%;
+
 	@media (max-width: 576px) {
 		border-right: none;
 	}
 `;
 
 const OrderSummaryTileStyled = styled.div`
-	background: ${({ theme }) => theme.colors.mild.blue};
-	border-right: 1px solid ${({ theme }) => theme.colors.blue};
+	border-right: 1px solid transparent;
 	padding: 1rem;
 	border-radius: 2px 0 0 2px;
 	margin-right: -1px;
+	cursor: pointer;
+	&:hover {
+		background: ${({ theme }) => theme.colors.mild.blue};
+	}
+	&.active {
+		background: ${({ theme }) => theme.colors.mild.blue};
+		border-right: 1px solid ${({ theme }) => theme.colors.blue};
+	}
 	.header {
 		display: flex;
 		justify-content: space-between;
@@ -61,10 +69,15 @@ const dashboard = ({ isServer, authVerification, data }) => {
 								<h3>My Orders</h3>
 								{data &&
 									data.projects.map(project => (
-										<OrderSummaryTileStyled key={project.id} data-id={project.id} onClick={handleTabClick}>
+										<OrderSummaryTileStyled
+											key={project.id}
+											data-id={project.id}
+											onClick={handleTabClick}
+											className={project.id === activeTab ? "active" : ""}
+										>
 											<div className="header">
 												<h4>{project.name}</h4>
-												<SVGIcon name="arrow-right" height={15} width={15} />
+												<SVGIcon name="arrow-right" height={12} width={12} />
 											</div>
 										</OrderSummaryTileStyled>
 									))}
@@ -74,9 +87,7 @@ const dashboard = ({ isServer, authVerification, data }) => {
 							{data.projects.map(project => {
 								return project.id === activeTab ? (
 									<OrderSummary project={project} authVerification={authVerification} key={`project-${project.id}`} />
-								) : (
-									<div />
-								);
+								) : null;
 							})}
 						</div>
 					</div>

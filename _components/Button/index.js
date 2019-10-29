@@ -95,6 +95,11 @@ const ButtonStyled = styled(ButtonBase)`
 		cursor: not-allowed;
 		box-shadow: none;
 	}
+	& + {
+		button {
+			margin-left: ${({ raw }) => (raw ? 0 : "1rem")};
+		}
+	}
 `;
 
 function Button(props) {

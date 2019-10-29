@@ -34,7 +34,7 @@ function DesignTeam() {
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_center,h_300,w_200/v1569933570/web/designer-1_pw7lsf.jpg" />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/w_400/v1572423047/web/Spacejoy_Designers_Irina_ifgasy.jpg" />
 									<ProfileCard.Social fb="" tw="" li="" pi="" />
 								</ProfileCard>
 							</div>

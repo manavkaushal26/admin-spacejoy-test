@@ -1,10 +1,12 @@
 import SVGIcon from "@components/SVGIcon";
 import FAQCard from "@sections/Cards/faq";
 import Layout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import FaqData from "@utils/faqMock";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
+import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
 
@@ -47,9 +49,10 @@ class faq extends PureComponent {
 	};
 
 	render() {
+		const { isServer, authVerification } = this.props;
 		const { openId, filteredData, filteredTag, activeTag } = this.state;
 		return (
-			<Layout>
+			<Layout isServer={isServer} authVerification={authVerification}>
 				<Head>
 					{IndexPageMeta}
 					<title>Pricing | {company.product}</title>
@@ -94,4 +97,18 @@ class faq extends PureComponent {
 	}
 }
 
-export default faq;
+faq.getInitialProps = async ({ req }) => {
+	const isServer = !!req;
+	return { isServer };
+};
+
+faq.defaultProps = {
+	authVerification: {}
+};
+
+faq.propTypes = {
+	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({})
+};
+
+export default withAuthVerification(faq);

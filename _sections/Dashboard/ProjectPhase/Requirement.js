@@ -10,7 +10,6 @@ const TypeFormLinkStyled = styled.div`
 `;
 
 const Requirement = ({ authVerification, project }) => {
-	console.log("project", project);
 	return (
 		<div className="grid">
 			<div className="col-xs-8">

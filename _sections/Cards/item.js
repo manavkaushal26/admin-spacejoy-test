@@ -64,7 +64,7 @@ const ProductLoadMoreStyled = styled.div`
 	}
 `;
 
-function ItemCard({ products, gridCount, designName, designId, showLoadMore, size }) {
+function ItemCard({ products, gridCount, designName, designId, showLoadMore, size, secure }) {
 	const designNameClean = removeSpaces(designName);
 	return (
 		<div className="grid">
@@ -72,7 +72,14 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 				<div className={`col-xs-${gridCount}`} key={product.productId}>
 					<div className="grid">
 						<div className="col-12 justify-space-between col-bleed-y">
-							<ProductImageWrapperStyled url={product.productImage} size={size} />
+							<ProductImageWrapperStyled
+								url={
+									secure
+										? `https://api.spacejoy.com/api/file/download?url=${product.productImage}`
+										: product.productImage
+								}
+								size={size}
+							/>
 						</div>
 						<div className="col-7">
 							<ProductNameStyled>{product.productName}</ProductNameStyled>
@@ -117,7 +124,8 @@ ItemCard.defaultProps = {
 	products: [],
 	gridCount: 6,
 	showLoadMore: false,
-	size: "130"
+	size: "130",
+	secure: false
 };
 
 ItemCard.propTypes = {
@@ -126,7 +134,8 @@ ItemCard.propTypes = {
 	designName: PropTypes.string.isRequired,
 	designId: PropTypes.string.isRequired,
 	showLoadMore: PropTypes.bool,
-	size: PropTypes.string
+	size: PropTypes.string,
+	secure: PropTypes.bool
 };
 
 export default ItemCard;
