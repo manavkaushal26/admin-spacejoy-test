@@ -23,9 +23,9 @@ const DesignDescriptionStyled = styled.div`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-function designView({ isServer, data }) {
+function designView({ isServer, authVerification, data }) {
 	return (
-		<Layout isServer={isServer}>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>
