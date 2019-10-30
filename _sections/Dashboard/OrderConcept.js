@@ -40,7 +40,7 @@ function OrderConcept({ project }) {
 								<Image width="100%" src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`} />
 							</a>
 						</Link>
-						<ConceptToolBar id={design.designId} />
+						<ConceptToolBar did={design.designId} pid={project.id} />
 						<p>{design.designDescription}</p>
 						<Divider />
 						<div className="grid">

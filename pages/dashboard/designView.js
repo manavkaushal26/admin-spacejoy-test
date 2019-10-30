@@ -18,12 +18,11 @@ const CarouselWrapper = styled.div`
 	margin-bottom: 1rem;
 `;
 
-const DesignDescriptionStyled = styled.div`
-	margin-bottom: 4rem;
+const DesignDescriptionStyled = styled.p`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-function designView({ isServer, authVerification, data }) {
+function designView({ isServer, authVerification, data, pid, did }) {
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -50,7 +49,7 @@ function designView({ isServer, authVerification, data }) {
 								</Carousel>
 							)}
 						</CarouselWrapper>
-						<ConceptToolBar />
+						<ConceptToolBar did={did} pid={pid} />
 						{data.designDescription && data.designDescription !== "None" && (
 							<DesignDescriptionStyled>{data.designDescription}</DesignDescriptionStyled>
 						)}
@@ -102,6 +101,8 @@ designView.defaultProps = {
 
 designView.propTypes = {
 	isServer: PropTypes.bool.isRequired,
+	did: PropTypes.string.isRequired,
+	pid: PropTypes.string.isRequired,
 	authVerification: PropTypes.shape({
 		name: PropTypes.string,
 		email: PropTypes.string
