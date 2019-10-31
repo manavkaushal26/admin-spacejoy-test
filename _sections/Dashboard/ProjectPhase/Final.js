@@ -1,8 +1,22 @@
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
+import OrderConcept from "../OrderConcept";
 
-function Final() {
-	return <div>Final</div>;
+const FinalBanner = styled.div`
+	background: ${({ theme }) => theme.colors.mild.green};
+	padding: 2rem;
+	text-align: center;
+	color: ${({ theme }) => theme.colors.green};
+`;
+
+function Final({ authVerification, project }) {
+	return (
+		<>
+			<FinalBanner>Here is the final design of your living room</FinalBanner>
+			<OrderConcept authVerification={authVerification} project={project} final />
+		</>
+	);
 }
 
 Final.defaultProps = {

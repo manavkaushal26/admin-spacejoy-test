@@ -20,18 +20,44 @@ const ConceptToolBarStyled = styled.div`
 	}
 `;
 
-function ConceptToolBar({ designId, project }) {
+function ConceptToolBar({ did, pid }) {
+	const [submitInProgress, setSubmitInProgress] = useState(false);
 	const [modalVisibility, setModalVisibility] = useState(false);
+	const [modalName, setModalName] = useState("");
 
 	const closeModal = () => setModalVisibility(false);
 
-	const openModal = () => setModalVisibility(true);
+	const openModal = modalName => {
+		setModalName(modalName);
+		setModalVisibility(true);
+	};
+
+	const renderFinalize = () => {
+		return (
+			<>
+				<h3>We&apos;re happy to know that you are ready to finalize your design.</h3>
+				<p>Once you click on Proceed, we&apos;ll let your designer know that you have successfully checked out.</p>
+				<p>Happy shopping to you!</p>
+				<Divider />
+				<Button variant="primary" fill="ghost" shape="flat" size="sm" onClick={closeModal}>
+					Cancel
+				</Button>
+				<Button variant="primary" shape="flat" size="sm" onClick={changePhase} submitInProgress={submitInProgress}>
+					Finalize
+				</Button>
+			</>
+		);
+	};
+
+	const renderRevise = () => {
+		return <div>revise</div>;
+	};
 
 	const feedback = e => setFeedback(e.target.value);
 
 	const sendFeedBack = () => {
 		const formBody = {
-			project: project.id,
+			project: pid,
 			formData: [
 				{
 					entry: "",
@@ -45,10 +71,10 @@ function ConceptToolBar({ designId, project }) {
 		fetcher({ endPoint: `/feedback`, method: "POST", body: { formBody } }).then(() => {});
 	};
 
-	const reviseDesign = () => {
+	const changePhase = () => {
 		setSubmitInProgress(true);
 		let formBody = {};
-		if (modalName === "Finalize") {
+		if (modalName === "finalize") {
 			formBody = {
 				finalizeDesign: true,
 				reviseDesign: false
@@ -60,7 +86,7 @@ function ConceptToolBar({ designId, project }) {
 			};
 		}
 		fetcher({
-			endPoint: `/user/dashboard/project/${project.id}/design/${designId}`,
+			endPoint: `/user/dashboard/project/${pid}/design/${did}`,
 			method: "PUT",
 			body: { formBody }
 		}).then(() => {
@@ -77,16 +103,8 @@ function ConceptToolBar({ designId, project }) {
 				<SVGIcon name="download" height={12} width={12} /> Revise
 			</Button>
 			<Modal isModalOpen={modalVisibility} close={closeModal}>
-				<h3>We&apos;re happy to know that you are ready to finalize your design.</h3>
-				<p>Once you click on Proceed, we&apos;ll let your designer know that you have successfully checked out.</p>
-				<p>Happy shopping to you!</p>
-				<Divider />
-				<Button variant="primary" fill="ghost" shape="flat" size="sm" onClick={closeModal}>
-					Cancel
-				</Button>
-				<Button variant="primary" shape="flat" size="sm" onClick={reviseDesign}>
-					Finalize
-				</Button>
+				{modalName === "finalize" && renderFinalize()}
+				{modalName === "revise" && renderRevise()}
 			</Modal>
 		</ConceptToolBarStyled>
 	);

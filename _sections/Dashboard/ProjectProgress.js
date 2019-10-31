@@ -2,7 +2,7 @@ import Stepper from "@components/Stepper";
 import PropTypes from "prop-types";
 import React from "react";
 
-const projectPhase = ["requirement", "brief", "designs", "final", "revision"];
+const projectPhase = ["requirement", "brief", "designs", "final"];
 
 function ProjectProgress({ currentPhase }) {
 	return (

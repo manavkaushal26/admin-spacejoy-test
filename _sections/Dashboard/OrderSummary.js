@@ -32,7 +32,7 @@ function OrderSummary({ project, authVerification }) {
 	return (
 		<div>
 			<h3>{project.name}</h3>
-			<ProjectProgress currentPhase={currentPhase} />
+			{currentPhase !== "final" && <ProjectProgress currentPhase={currentPhase} />}
 			{renderProjectPhase()}
 		</div>
 	);
