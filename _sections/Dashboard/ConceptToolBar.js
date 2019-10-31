@@ -1,5 +1,6 @@
 /* eslint-disable */
 import Button from "@components/Button";
+import Divider from "@components/Divider";
 import Modal from "@components/Modal";
 import SVGIcon from "@components/SVGIcon";
 import fetcher from "@utils/fetcher";
@@ -69,19 +70,23 @@ function ConceptToolBar({ designId, project }) {
 
 	return (
 		<ConceptToolBarStyled>
-			<Button variant="primary" size="sm" onClick={openModal}>
+			<Button variant="primary" size="sm" onClick={() => openModal("finalize")}>
 				<SVGIcon name="heart" height={12} width={12} fill="#ffffff" /> Finalize
 			</Button>
-			<Button fill="ghost" size="sm" onClick={openModal}>
+			<Button fill="ghost" size="sm" onClick={() => openModal("revise")}>
 				<SVGIcon name="download" height={12} width={12} /> Revise
-			</Button>
-			<Button fill="clean">
-				<SVGIcon name="note" height={12} width={12} />
 			</Button>
 			<Modal isModalOpen={modalVisibility} close={closeModal}>
 				<h3>We&apos;re happy to know that you are ready to finalize your design.</h3>
 				<p>Once you click on Proceed, we&apos;ll let your designer know that you have successfully checked out.</p>
 				<p>Happy shopping to you!</p>
+				<Divider />
+				<Button variant="primary" fill="ghost" shape="flat" size="sm" onClick={closeModal}>
+					Cancel
+				</Button>
+				<Button variant="primary" shape="flat" size="sm" onClick={reviseDesign}>
+					Finalize
+				</Button>
 			</Modal>
 		</ConceptToolBarStyled>
 	);

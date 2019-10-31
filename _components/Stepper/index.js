@@ -91,7 +91,7 @@ index.Step = ({ title, description, isActive, onClick }) => (
 );
 
 index.Step.propTypes = {
-	title: PropTypes.string,
+	title: PropTypes.number,
 	description: PropTypes.string,
 	isActive: PropTypes.bool,
 	onClick: PropTypes.func
