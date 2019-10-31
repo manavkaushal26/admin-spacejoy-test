@@ -1,5 +1,6 @@
 import BreadCrumb from "@components/BreadCrumb";
 import Carousel from "@components/Carousel";
+import Divider from "@components/Divider";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import ConceptToolBar from "@sections/Dashboard/ConceptToolBar";
@@ -53,7 +54,8 @@ function designView({ isServer, authVerification, data, pid, did }) {
 						{data.designDescription && data.designDescription !== "None" && (
 							<DesignDescriptionStyled>{data.designDescription}</DesignDescriptionStyled>
 						)}
-						<h3>Assets List</h3>
+						<h3>Your Shopping List</h3>
+						<Divider />
 						<ItemCard
 							products={data.assets}
 							gridCount={4}
