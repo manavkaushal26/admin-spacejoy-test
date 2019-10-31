@@ -4,9 +4,16 @@ import Divider from "@components/Divider";
 import Modal from "@components/Modal";
 import SVGIcon from "@components/SVGIcon";
 import fetcher from "@utils/fetcher";
+import Router from "next/router";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+
+const TextareaStyled = styled.textarea`
+	width: 100%;
+	outline: none;
+	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+`;
 
 const ConceptToolBarStyled = styled.div`
 	padding: 1rem 0;
@@ -23,6 +30,7 @@ const ConceptToolBarStyled = styled.div`
 function ConceptToolBar({ did, pid }) {
 	const [submitInProgress, setSubmitInProgress] = useState(false);
 	const [modalVisibility, setModalVisibility] = useState(false);
+	const [feedback, setFeedback] = useState("");
 	const [modalName, setModalName] = useState("");
 
 	const closeModal = () => setModalVisibility(false);
@@ -31,6 +39,8 @@ function ConceptToolBar({ did, pid }) {
 		setModalName(modalName);
 		setModalVisibility(true);
 	};
+
+	const handleChange = e => setFeedback(e.currentTarget.value);
 
 	const renderFinalize = () => {
 		return (
@@ -43,54 +53,72 @@ function ConceptToolBar({ did, pid }) {
 					Cancel
 				</Button>
 				<Button variant="primary" shape="flat" size="sm" onClick={changePhase} submitInProgress={submitInProgress}>
-					Finalize
+					Proceed
 				</Button>
 			</>
 		);
 	};
 
 	const renderRevise = () => {
-		return <div>revise</div>;
+		return (
+			<>
+				<div className="col-xs-12 col-bleed-x">
+					<h3>What do you want us to change in your design? Give us your feedback in detail here.</h3>
+				</div>
+				<div className="col-xs-12 col-bleed-x">
+					<TextareaStyled rows="4" value={feedback} onChange={handleChange} />
+				</div>
+				<Divider />
+				<Button variant="primary" fill="ghost" shape="flat" size="sm" onClick={closeModal}>
+					Cancel
+				</Button>
+				<Button variant="primary" shape="flat" size="sm" onClick={sendFeedBack} submitInProgress={submitInProgress}>
+					Submit
+				</Button>
+			</>
+		);
 	};
 
-	const feedback = e => setFeedback(e.target.value);
-
 	const sendFeedBack = () => {
-		const formBody = {
-			project: pid,
-			formData: [
-				{
-					entry: "",
-					question: "",
-					answer: ""
-				}
-			],
-			text: feedback,
-			rating: 5
+		setSubmitInProgress(true);
+		const body = {
+			data: {
+				image: "https://url",
+				author: "Customer Name",
+				comment: feedback,
+				scope: "Design",
+				reference: did,
+				rating: 5
+			}
 		};
-		fetcher({ endPoint: `/feedback`, method: "POST", body: { formBody } }).then(() => {});
+		fetcher({ endPoint: `/feedback`, method: "POST", body }).then(() => {
+			setSubmitInProgress(false);
+			closeModal();
+		});
 	};
 
 	const changePhase = () => {
 		setSubmitInProgress(true);
-		let formBody = {};
-		if (modalName === "finalize") {
-			formBody = {
+		let body = {
+			data: {
 				finalizeDesign: true,
 				reviseDesign: false
-			};
-		} else {
-			formBody = {
-				finalizeDesign: false,
-				reviseDesign: true
-			};
-		}
+			}
+		};
 		fetcher({
 			endPoint: `/user/dashboard/project/${pid}/design/${did}`,
 			method: "PUT",
-			body: { formBody }
+			body
 		}).then(() => {
 			setSubmitInProgress(false);
+			closeModal();
+			Router.push(
+				{
+					pathname: "/dashboard/designView",
+					query: { pid, did }
+				},
+				`/dashboard/designView/pid/${pid}/did/${did}`
+			);
 		});
 	};
 
