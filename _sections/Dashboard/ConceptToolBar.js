@@ -91,7 +91,7 @@ function ConceptToolBar({ did, pid }) {
 				rating: 5
 			}
 		};
-		fetcher({ endPoint: `/feedback`, method: "POST", body }).then(() => {
+		fetcher({ endPoint: `/project/${pid}/feedback`, method: "POST", body }).then(() => {
 			setSubmitInProgress(false);
 			closeModal();
 		});
