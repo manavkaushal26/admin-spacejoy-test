@@ -60,9 +60,9 @@ function OrderConcept({ project, final }) {
 	return (
 		<OrderConceptStyled>
 			<div className="grid">
-				{project.designs.map(design => {
-					return <>{final ? design.state === "finalized" && renderConcept(design) : renderConcept(design)}</>;
-				})}
+				{project.designs.map(design =>
+					final ? design.state === "finalized" && renderConcept(design) : renderConcept(design)
+				)}
 			</div>
 		</OrderConceptStyled>
 	);
