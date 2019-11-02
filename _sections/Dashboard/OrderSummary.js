@@ -21,12 +21,8 @@ function OrderSummary({ project, authVerification }) {
 				return <Designs project={project} authVerification={authVerification} />;
 			case projectPhase[3]:
 				return <Final project={project} authVerification={authVerification} />;
-			case projectPhase[4]:
-				return <div>4</div>;
-			case projectPhase[5]:
-				return <div>5</div>;
 			default:
-				return <div>4</div>;
+				return <Requirement project={project} authVerification={authVerification} />;
 		}
 	};
 	return (

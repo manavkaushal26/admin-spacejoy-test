@@ -6,8 +6,8 @@ const projectPhase = ["requirement", "brief", "designs", "final"];
 
 function ProjectProgress({ currentPhase }) {
 	return (
-		<div className="grid align-center text-center">
-			<div className="col-12 col-xs-12">
+		<div className="grid align-center text-left">
+			<div className="col-12 col-xs-8 text-center">
 				<Stepper>
 					{projectPhase.map((phase, index) => (
 						<Stepper.Step

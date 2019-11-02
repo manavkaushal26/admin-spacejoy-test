@@ -1,15 +1,14 @@
 import Button from "@components/Button";
-import Divider from "@components/Divider";
 import Image from "@components/Image";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import ConceptToolBar from "./ConceptToolBar";
 
 const OrderConceptStyled = styled.div`
 	height: 100%;
 	h3 {
+		color: ${({ theme }) => theme.colors.accent};
 		margin-bottom: 0;
 		& + {
 			h5 {
@@ -23,7 +22,7 @@ const OrderConceptStyled = styled.div`
 
 function OrderConcept({ project, final }) {
 	const renderConcept = design => (
-		<div className={project.currentPhase === "final" ? "col-xs-12" : "col-xs-6"} key={design.designId}>
+		<div className={project.currentPhase === "final" ? "col-xs-12" : "col-xs-6 rounded"} key={design.designId}>
 			<h3>Concept #{design.designConcept}</h3>
 			<h5>
 				<strong>CONCEPT Name : </strong> {design.designName} <br />
@@ -34,21 +33,25 @@ function OrderConcept({ project, final }) {
 				as={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}
 			>
 				<a href={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}>
-					<Image width="100%" src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`} />
+					<div>
+						<Image
+							width="100%"
+							src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`}
+							shape="rounded"
+						/>
+					</div>
 				</a>
 			</Link>
-			{project.currentPhase !== "final" && <ConceptToolBar did={design.designId} pid={project.id} />}
 			<p>{design.designDescription}</p>
-			<Divider />
 			<div className="grid">
-				<div className="col-12 text-center">
+				<div className="col-12">
 					<Link
 						href={{ pathname: "/dashboard/designView", query: { pid: project.id, did: design.designId } }}
 						as={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}
 					>
 						<a href={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}>
-							<Button fill="ghost" size="sm" shape="rounded">
-								View More
+							<Button fill="ghost" size="sm" shape="flat">
+								Explore {design.designName}
 							</Button>
 						</a>
 					</Link>

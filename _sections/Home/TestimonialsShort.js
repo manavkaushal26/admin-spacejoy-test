@@ -32,7 +32,7 @@ export default function Testimonials() {
 						<Image
 							src="https://res.cloudinary.com/spacejoy/image/upload/v1568876294/web/customer3_z2vvn2.jpg"
 							width="120px"
-							circle
+							shape="circle"
 						/>
 						<div>
 							<h3>Erika Lee</h3>

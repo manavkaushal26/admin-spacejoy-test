@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 
-function Image({ src, height, width, alt, circle, nolazy, scrollPosition, ...props }) {
+function Image({ src, height, width, alt, shape, nolazy, scrollPosition, ...props }) {
 	return (
 		<LazyLoadImage
 			{...props}
@@ -12,7 +12,7 @@ function Image({ src, height, width, alt, circle, nolazy, scrollPosition, ...pro
 			height={height}
 			scrollPosition={scrollPosition}
 			visibleByDefault={nolazy}
-			className={circle ? "circle" : ""}
+			className={shape}
 		/>
 	);
 }
@@ -21,7 +21,7 @@ Image.defaultProps = {
 	alt: "spacejoy",
 	width: "auto",
 	height: "auto",
-	circle: false,
+	shape: "",
 	nolazy: false,
 	scrollPosition: {}
 };
@@ -31,7 +31,7 @@ Image.propTypes = {
 	alt: PropTypes.string,
 	width: PropTypes.string,
 	height: PropTypes.string,
-	circle: PropTypes.bool,
+	shape: PropTypes.string,
 	nolazy: PropTypes.bool,
 	scrollPosition: PropTypes.shape({})
 };

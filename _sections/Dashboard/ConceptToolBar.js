@@ -128,7 +128,7 @@ function ConceptToolBar({ did, pid }) {
 				<SVGIcon name="heart" height={12} width={12} fill="#ffffff" /> Finalize
 			</Button>
 			<Button fill="ghost" size="sm" onClick={() => openModal("revise")}>
-				<SVGIcon name="download" height={12} width={12} /> Revise
+				<SVGIcon name="revise" height={12} width={12} /> Revise
 			</Button>
 			<Modal isModalOpen={modalVisibility} close={closeModal}>
 				{modalName === "finalize" && renderFinalize()}
