@@ -155,7 +155,7 @@ function HowWeDoIt() {
 									event="Step3Shop"
 									data={{ sectionName: "HowWeDoIt" }}
 								>
-									Repeat! Go Step 1
+									<SVGIcon name="revise" height={10} width={10} /> Go Step 1
 								</Button>
 							</StepDescriptionStyled>
 						</div>

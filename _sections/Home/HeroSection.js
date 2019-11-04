@@ -10,6 +10,20 @@ const HeroWrapperStyled = styled.section`
 	display: flex;
 	align-items: center;
 	min-height: calc(100vh - 238px);
+	img {
+		box-shadow: 0 3px 5px 0 ${({ theme }) => theme.colors.mild.black};
+	}
+`;
+
+const StackImageStyled = styled.div`
+	img:nth-child(2) {
+		margin-top: 2rem;
+	}
+	@media (max-width: 576px) {
+		img:nth-child(2) {
+			margin-top: 1rem;
+		}
+	}
 `;
 
 const HeroCardStyled = styled.section`
@@ -24,10 +38,10 @@ const HeroText = styled.h1`
 	line-height: 3.75rem;
 	font-family: inherit;
 	span {
-		display: inline-block;
+		display: block;
 		margin-right: 1rem;
+		font-family: "Airbnb Cereal App Medium";
 		&:last-child {
-			font-family: "Airbnb Cereal App Medium";
 			background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570798848/web/colors_amte5j.jpg") 50% 50%;
 			background-size: 200px;
 			-webkit-background-clip: text;
@@ -117,23 +131,27 @@ function HeroSection() {
 						<div className="grid">
 							<div className="col-6">
 								<Image
+									shape="rounded"
 									width="100%"
-									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
+									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,h_550,w_393/v1570089310/web/home-page-image_xvpuyb.jpg"
 									nolazy
 								/>
 							</div>
 							<div className="col-6">
-								<Image
-									width="100%"
-									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"
-									nolazy
-								/>
-								<Image
-									style={{ marginTop: "30px" }}
-									width="100%"
-									src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_252,w_392/v1569939669/web/bedroom_s99hp2.jpg"
-									nolazy
-								/>
+								<StackImageStyled>
+									<Image
+										shape="rounded"
+										width="100%"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_262,w_392/v1569939505/web/kidsroom_xdr5ym.jpg"
+										nolazy
+									/>
+									<Image
+										shape="rounded"
+										width="100%"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,h_262,w_392/v1569939669/web/bedroom_s99hp2.jpg"
+										nolazy
+									/>
+								</StackImageStyled>
 							</div>
 						</div>
 					</div>

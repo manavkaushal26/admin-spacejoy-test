@@ -107,7 +107,7 @@ function HowSteps() {
 												<p>Use the App to shop for furniture & décor that we include in your designs.</p>
 											</StepStyled>
 										</div>
-										<div className="col-12">
+										<div className="col-12 col-bleed-x">
 											<CTA
 												variant="primary"
 												size="lg"

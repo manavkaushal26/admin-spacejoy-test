@@ -58,10 +58,18 @@ const MobileNavVisibleStyled = styled.div`
 	position: fixed;
 	background-color: white;
 	width: 100%;
-	top: 60px;
+	top: 50px;
 	left: 0;
 	right: 0;
 	box-shadow: 0px 10px 10px 0px ${({ theme }) => theme.colors.mild.black};
+	transition: all 0.2s ease-in-out;
+	pointer-events: none;
+	opacity: 0;
+	&.active {
+		opacity: 1;
+		top: 60px;
+		pointer-events: auto;
+	}
 	a {
 		display: block;
 	}
@@ -70,6 +78,30 @@ const MobileNavVisibleStyled = styled.div`
 	}
 	@media (min-width: 990px) {
 		display: block;
+	}
+`;
+
+const OverlayStyled = styled.div`
+	position: relative;
+	&:before {
+		opacity: 0;
+		content: "";
+		position: fixed;
+		z-index: -1;
+		top: 60px;
+		left: 0;
+		right: 0;
+		background: ${({ theme }) => theme.colors.mild.black};
+		transition: opacity 0.2s ease-in-out;
+	}
+	&.active {
+		&:before {
+			opacity: 1;
+			bottom: 0;
+		}
+	}
+	@media (min-width: 991px) {
+		display: none;
 	}
 `;
 
@@ -165,12 +197,11 @@ const HeaderBody = ({ authVerification }) => {
 						<SVGIcon name="menu" width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
 					</Button>
 				</MobileVisibleStyled>
-				{mobileNavStatus && (
-					<MobileNavVisibleStyled className="col-12">
-						{navCenter}
-						{navRight}
-					</MobileNavVisibleStyled>
-				)}
+				<MobileNavVisibleStyled className={`col-12 ${mobileNavStatus ? "active" : ""}`}>
+					{navCenter}
+					{navRight}
+				</MobileNavVisibleStyled>
+				<OverlayStyled className={mobileNavStatus ? "active" : ""} onClick={handleClick} />
 			</div>
 		</div>
 	);
