@@ -60,7 +60,7 @@ function DesignTeam() {
 								<ProfileCard>
 									<ProfileCard.Designation />
 									<ProfileCard.UserName />
-									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/c_fill,g_face,h_300,q_100,w_200/v1569914893/web/designer-2_kdi9o4.jpg" />
+									<ProfileCard.Image source="https://res.cloudinary.com/spacejoy/image/upload/v1572620082/web/Spacejoy_Designers_Maria_cwx91q.jpg" />
 									<ProfileCard.Social />
 								</ProfileCard>
 							</div>

@@ -111,6 +111,25 @@ function Question1({ plan }) {
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1570181061/web/nursery_suenxy.png"
 							/>
 						</div>
+						<div className="col-12 col-sm-6 col-md-4">
+							<RadioCard
+								value="Dining Room"
+								onClick={handleClick}
+								checked={quizState === "Dining Room"}
+								bg="rgba(63, 81, 181, 0.1)"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1572878520/web/DiningRoom_svif1k.png"
+							/>
+						</div>
+						<div className="col-12 col-sm-6 col-md-4">
+							<RadioCard
+								value="Home Office"
+								onClick={handleClick}
+								checked={quizState === "Home Office"}
+								bg="rgba(255, 193, 7, 0.06)"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1572878508/web/HomeOffice_m2wltr.png"
+							/>
+						</div>
+						<div className="col-12 col-sm-6 col-md-4" />
 						<div className="col-4 col-sm-2">
 							<Button
 								variant="secondary"
