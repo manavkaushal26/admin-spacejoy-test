@@ -241,35 +241,35 @@ function Question2({ plan }) {
 							<SampleImageStyled>
 								<ImageWrapperStyled className={quizState === "" ? "active" : "inactive"}>
 									<Image
-										height="100%"
+										height="auto"
 										width="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1571468410/web/Spacejoy_quiz_blank_state_2x_tcbukh.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/v1572881422/web/empty_lwygcd.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$10,000 or more" ? "active" : "inactive"}>
 									<Image
-										height="100%"
+										height="auto"
 										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570444188/web/10000_gydis3.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$5000 - $7000" ? "active" : "inactive"}>
 									<Image
-										height="100%"
+										height="auto"
 										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$2000 - $5000" ? "active" : "inactive"}>
 									<Image
-										height="100%"
+										height="auto"
 										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$2000 or less" ? "active" : "inactive"}>
 									<Image
-										height="100%"
+										height="auto"
 										width="100%"
 										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png"
 									/>
