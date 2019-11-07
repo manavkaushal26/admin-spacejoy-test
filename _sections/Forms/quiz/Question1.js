@@ -126,7 +126,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Home Office"}
 								bg="rgba(255, 193, 7, 0.06)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1572878508/web/HomeOffice_m2wltr.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1573120573/web/Home_Office_2x_q5gfma.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -135,10 +135,9 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Study Room"}
 								bg="rgba(255, 193, 7, 0.06)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1572937054/web/Study_Room_2x_qdahja.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1573120592/web/Study_Room_2x_irkrzm.png"
 							/>
 						</div>
-
 						<div className="col-4 col-sm-2">
 							<Button
 								variant="secondary"
