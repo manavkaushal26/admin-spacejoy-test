@@ -49,34 +49,18 @@ const settings = {
 	]
 };
 
-function Carousel({ children, slidesToShow, slidesToScroll, autoplay, draggable }) {
+function Carousel({ children, ...props }) {
 	return (
-		<Slider
-			{...settings}
-			ref={slider => slider}
-			slidesToShow={slidesToShow}
-			slidesToScroll={slidesToScroll}
-			autoplay={autoplay}
-			draggable={draggable}
-		>
+		<Slider {...settings} {...props} ref={slider => slider}>
 			{children}
 		</Slider>
 	);
 }
 
-Carousel.defaultProps = {
-	slidesToShow: 1,
-	slidesToScroll: 1,
-	autoplay: false,
-	draggable: true
-};
+Carousel.defaultProps = {};
 
 Carousel.propTypes = {
-	children: PropTypes.node.isRequired,
-	slidesToShow: PropTypes.number,
-	slidesToScroll: PropTypes.number,
-	autoplay: PropTypes.bool,
-	draggable: PropTypes.bool
+	children: PropTypes.node.isRequired
 };
 
 export default Carousel;

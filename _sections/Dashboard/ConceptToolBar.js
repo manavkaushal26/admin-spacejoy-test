@@ -18,8 +18,8 @@ const TextareaStyled = styled.textarea`
 const ConceptToolBarStyled = styled.div`
 	padding: 2rem 0;
 	margin: 2rem 0;
-	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-top: 1px solid ${({ theme }) => theme.colors.bg.light2};
+	border-bottom: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	button {
 		& + {
 			button {

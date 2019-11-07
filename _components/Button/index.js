@@ -78,7 +78,6 @@ const ButtonStyled = styled(ButtonBase)`
 				return "0";
 		}
 	}};
-	font-family: ${({ variant }) => (variant === "primary" ? "Airbnb Cereal App Medium" : "inherit")};
 	font-weight: ${({ size }) => (size === "lg" ? "bold" : "normal")};
 	border: ${({ fill, theme }) =>
 		fill === "solid" || fill === "clean" ? "none" : `1px solid ${theme.colors.fc.dark2}`};

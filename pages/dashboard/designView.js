@@ -21,8 +21,9 @@ const HeadingStyled = styled.h3`
 const DesignDescriptionStyled = styled.div`
 	position: relative;
 	margin-top: 100px;
-	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	padding: 1.5rem 1rem 1rem;
+	padding: 2rem 1rem 1rem;
+	border-radius: 5px;
+	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
