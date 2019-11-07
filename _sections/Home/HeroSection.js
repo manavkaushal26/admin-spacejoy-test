@@ -11,9 +11,6 @@ const HeroWrapperStyled = styled.section`
 	align-items: center;
 	min-height: calc(100vh - 270px);
 	margin-bottom: 2rem;
-	img {
-		box-shadow: 0 3px 5px 0 ${({ theme }) => theme.colors.mild.black};
-	}
 `;
 
 const StackImageStyled = styled.div`

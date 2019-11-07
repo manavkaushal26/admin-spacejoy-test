@@ -149,7 +149,7 @@ const HeaderBody = ({ authVerification }) => {
 						<DropMenu>
 							<DropMenu.Header>
 								<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
-									Dashboard
+									My Designs
 								</ActiveLink>
 							</DropMenu.Header>
 							<DropMenu.Body>
