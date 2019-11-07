@@ -13,7 +13,6 @@ const SectionWrapper = styled.section`
 	background-attachment: fixed;
 	padding: 100px 0;
 	max-height: 400px;
-	box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.5) inset;
 	&:after {
 		content: "";
 		position: absolute;

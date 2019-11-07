@@ -129,7 +129,16 @@ function Question1({ plan }) {
 								image="https://res.cloudinary.com/spacejoy/image/upload/v1572878508/web/HomeOffice_m2wltr.png"
 							/>
 						</div>
-						<div className="col-12 col-sm-6 col-md-4" />
+						<div className="col-12 col-sm-6 col-md-4">
+							<RadioCard
+								value="Study Room"
+								onClick={handleClick}
+								checked={quizState === "Study Room"}
+								bg="rgba(255, 193, 7, 0.06)"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1572937054/web/Study_Room_2x_qdahja.png"
+							/>
+						</div>
+
 						<div className="col-4 col-sm-2">
 							<Button
 								variant="secondary"

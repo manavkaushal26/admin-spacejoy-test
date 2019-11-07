@@ -2,6 +2,7 @@ import BenefitList from "@components/BenefitList";
 import BreadCrumb from "@components/BreadCrumb";
 import PriceCard from "@sections/Cards/price";
 import Layout from "@sections/Layout";
+import SectionHeader from "@sections/SectionHeader";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
@@ -21,10 +22,7 @@ function pricing({ isServer, authVerification }) {
 			<div className="container">
 				<div className="grid text-center">
 					<div className="col-12 col-sm-12 col-md-10">
-						<div className="col-12 ">
-							<h1>Pricing</h1>
-							<p>Custom made packages with your needs in mind.</p>
-						</div>
+						<SectionHeader title="Pricing" description="Custom made packages with your needs in mind." />
 						<div className="grid">
 							{PlansData.map(plan => (
 								<div className="col-12 col-sm-4" key={plan.name}>

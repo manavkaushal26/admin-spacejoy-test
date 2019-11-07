@@ -40,6 +40,7 @@ const OrderSummaryTileStyled = styled.div`
 		justify-content: space-between;
 		align-items: center;
 		h4 {
+			font-family: inherit;
 			margin: 0;
 			flex: 5;
 		}

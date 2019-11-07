@@ -1,4 +1,5 @@
 import Button from "@components/Button";
+import Image from "@components/Image";
 import SectionHeader from "@sections/SectionHeader";
 import { company } from "@utils/config";
 import PropTypes from "prop-types";
@@ -12,7 +13,12 @@ const TypeFormLinkStyled = styled.div`
 const Requirement = ({ authVerification, project }) => {
 	return (
 		<div className="grid">
-			<div className="col-xs-8">
+			<div className="col-md-10">
+				<Image
+					height="100px"
+					src="https://res.cloudinary.com/spacejoy/image/upload/h_120/v1573093084/web/requirement_ksa9ii.svg"
+					alt="Requirement phase"
+				/>
 				<SectionHeader title={`Welcome ${authVerification.name}`} description="" />
 				<div className="text-left">
 					<h4>Thanks so much for signing up with {company.product}!</h4>

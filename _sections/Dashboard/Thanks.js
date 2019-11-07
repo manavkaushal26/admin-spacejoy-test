@@ -7,7 +7,6 @@ import styled from "styled-components";
 
 const ThanksStyled = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};
-	border: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	position: sticky;
 	top: 100px;
 	padding: 2rem 3rem 3rem 2rem;

@@ -1,22 +1,31 @@
 import Image from "@components/Image";
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
+
+const BriefWrapper = styled.div`
+	min-height: 50vh;
+	display: flex;
+	align-items: center;
+`;
 
 function Brief() {
 	return (
-		<div className="grid text-center">
-			<div className="col-12">
-				<Image
-					height="200px"
-					src="https://res.cloudinary.com/spacejoy/image/upload/v1568649903/shared/Illustration_ajvkhk.svg"
-					alt="Dashboard Landing"
-				/>
+		<BriefWrapper>
+			<div className="grid text-center">
+				<div className="col-12">
+					<Image
+						height="150px"
+						src="https://res.cloudinary.com/spacejoy/image/upload/v1573094967/web/brief_nysgvc.svg"
+						alt="Dashboard Landing"
+					/>
+				</div>
+				<div className="col-xs-6">
+					Our designers are working on your designs. Hang on for just a little longer... They will appear here once they
+					are ready.
+				</div>
 			</div>
-			<div className="col-xs-6">
-				Our designers are working on your designs. Hang on for just a little longer... They will appear here once they
-				are ready.
-			</div>
-		</div>
+		</BriefWrapper>
 	);
 }
 

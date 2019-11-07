@@ -4,13 +4,11 @@ import Brief from "./ProjectPhase/Brief";
 import Designs from "./ProjectPhase/Designs";
 import Final from "./ProjectPhase/Final";
 import Requirement from "./ProjectPhase/Requirement";
-import ProjectProgress from "./ProjectProgress";
 
 const projectPhase = ["requirement", "brief", "designs", "final", "revision", "onhold", "cancelled", "rejected"];
 
 function OrderSummary({ project, authVerification }) {
 	const { currentPhase } = project;
-	// const currentPhase = projectPhase[2];
 	const renderProjectPhase = () => {
 		switch (currentPhase) {
 			case projectPhase[0]:
@@ -28,7 +26,6 @@ function OrderSummary({ project, authVerification }) {
 	return (
 		<div>
 			<h3>{project.name}</h3>
-			{currentPhase !== "final" && <ProjectProgress currentPhase={currentPhase} />}
 			{renderProjectPhase()}
 		</div>
 	);

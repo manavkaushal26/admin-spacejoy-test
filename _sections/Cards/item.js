@@ -33,6 +33,7 @@ const ProductExternalLinkStyled = styled.button`
 	padding: 0.35rem 0.75rem;
 	border: 1px solid ${({ theme }) => theme.colors.bg.dark1};
 	float: right;
+	cursor: pointer;
 	background: transparent;
 	font-size: 0.8rem;
 	outline: none;
