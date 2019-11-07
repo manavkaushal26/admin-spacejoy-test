@@ -21,8 +21,11 @@ function Brief() {
 					/>
 				</div>
 				<div className="col-xs-6">
-					Our designers are working on your designs. Hang on for just a little longer... They will appear here once they
-					are ready.
+					<p>
+						Our designers are working on your designs. <br />
+						Hang on for just a little longer... <br />
+						They will appear here once they are ready.
+					</p>
 				</div>
 			</div>
 		</BriefWrapper>

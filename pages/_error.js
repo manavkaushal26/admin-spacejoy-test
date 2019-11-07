@@ -1,6 +1,14 @@
+import Image from "@components/Image";
 import Layout from "@sections/Layout";
 import PropTypes from "prop-types";
 import React from "react";
+import styled from "styled-components";
+
+const ErrorWrapper = styled.div`
+	min-height: 70vh;
+	display: flex;
+	align-items: center;
+`;
 
 class Error extends React.Component {
 	static getInitialProps({ res, err }) {
@@ -19,13 +27,20 @@ class Error extends React.Component {
 		const { status } = this.props;
 		return (
 			<Layout>
-				<div className="container">
-					<div className="grid">
-						<div className="col-xs-12">
-							<p>{status ? `An error ${status} occurred on server` : "An error occurred on client"}</p>
+				<ErrorWrapper>
+					<div className="container">
+						<div className="grid">
+							<div className="col-xs-12 text-center">
+								<Image
+									height="250px"
+									src="https://res.cloudinary.com/spacejoy/image/upload/v1573097106/shared/404_btqimw.svg"
+									alt={status ? `An error ${status} occurred on server` : "An error occurred on client"}
+								/>
+								<p>{status ? `An error ${status} occurred on server` : "An error occurred on client"}</p>
+							</div>
 						</div>
 					</div>
-				</div>
+				</ErrorWrapper>
 			</Layout>
 		);
 	}
