@@ -15,8 +15,8 @@ const Requirement = ({ authVerification, project }) => {
 		<div className="grid">
 			<div className="col-md-10">
 				<Image
-					height="100px"
-					src="https://res.cloudinary.com/spacejoy/image/upload/h_120/v1573093084/web/requirement_ksa9ii.svg"
+					height="250px"
+					src="https://res.cloudinary.com/spacejoy/image/upload/h_250/v1573093084/web/requirement_ksa9ii.svg"
 					alt="Requirement phase"
 				/>
 				<SectionHeader title={`Welcome ${authVerification.name}`} description="" />

@@ -9,14 +9,9 @@ const OrderConceptStyled = styled.div`
 	height: 100%;
 	h3 {
 		color: ${({ theme }) => theme.colors.accent};
-		margin-bottom: 0;
-		& + {
-			h5 {
-				color: ${({ theme }) => theme.colors.fc.dark2};
-				font-weight: normal;
-				text-transform: uppercase;
-			}
-		}
+	}
+	img {
+		margin-bottom: 2rem;
 	}
 `;
 
@@ -24,25 +19,18 @@ function OrderConcept({ project, final }) {
 	const renderConcept = design => (
 		<div className={project.currentPhase === "final" ? "col-xs-12" : "col-xs-6 rounded"} key={design.designId}>
 			<h3>Concept #{design.designConcept}</h3>
-			<h5>
-				<strong>CONCEPT Name : </strong> {design.designName} <br />
-				<strong>CONCEPT ID : </strong> {design.designId}
-			</h5>
 			<Link
 				href={{ pathname: "/dashboard/designView", query: { pid: project.id, did: design.designId } }}
 				as={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}
 			>
 				<a href={`/dashboard/designView/pid/${project.id}/did/${design.designId}`}>
-					<div>
-						<Image
-							width="100%"
-							src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`}
-							shape="rounded"
-						/>
-					</div>
+					<Image
+						width="100%"
+						src={`https://api.spacejoy.com/api/file/download?url=${design.designBanner}`}
+						shape="rounded"
+					/>
 				</a>
 			</Link>
-			<p>{design.designDescription}</p>
 			<div className="grid">
 				<div className="col-12">
 					<Link

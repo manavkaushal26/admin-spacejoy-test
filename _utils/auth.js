@@ -58,8 +58,8 @@ function logout() {
 	window.localStorage.removeItem("authVerification");
 	redirectToLocation({
 		pathname: "/auth",
-		query: { flow: "login", redirectUrl: "/" },
-		url: "/auth/login?redirectUrl=/"
+		query: { flow: "login", redirectUrl: "/dashboard" },
+		url: "/auth/login?redirectUrl=/dashboard"
 	});
 }
 

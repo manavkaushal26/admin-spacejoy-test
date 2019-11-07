@@ -51,7 +51,7 @@ const OrderSummaryTileStyled = styled.div`
 `;
 
 const dashboard = ({ isServer, authVerification, data }) => {
-	const [activeTab, setActiveTab] = useState(data.projects[0].id);
+	const [activeTab, setActiveTab] = useState(data.projects ? data.projects[0].id : 0);
 
 	const handleTabClick = e => setActiveTab(e.currentTarget.getAttribute("data-id"));
 
@@ -69,6 +69,7 @@ const dashboard = ({ isServer, authVerification, data }) => {
 							<OrderSummaryTilesStyled>
 								<h3>My Orders</h3>
 								{data &&
+									data.projects &&
 									data.projects.map(project => (
 										<OrderSummaryTileStyled
 											key={project.id}
@@ -85,11 +86,13 @@ const dashboard = ({ isServer, authVerification, data }) => {
 							</OrderSummaryTilesStyled>
 						</div>
 						<div className="col-xs-8 col-lg-9">
-							{data.projects.map(project => {
-								return project.id === activeTab ? (
-									<OrderSummary project={project} authVerification={authVerification} key={`project-${project.id}`} />
-								) : null;
-							})}
+							{data &&
+								data.projects &&
+								data.projects.map(project => {
+									return project.id === activeTab ? (
+										<OrderSummary project={project} authVerification={authVerification} key={`project-${project.id}`} />
+									) : null;
+								})}
 						</div>
 					</div>
 				</div>

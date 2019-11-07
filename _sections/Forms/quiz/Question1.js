@@ -126,7 +126,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Home Office"}
 								bg="rgba(255, 193, 7, 0.06)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1573120573/web/Home_Office_2x_q5gfma.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/v1573121452/web/Home_Office_2x_cehmvi.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
