@@ -16,7 +16,17 @@ const TextareaStyled = styled.textarea`
 `;
 
 const ConceptToolBarStyled = styled.div`
-	padding: 1rem 0;
+	padding: 2rem 0;
+	margin: 2rem 0;
+	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark2};
+	button {
+		& + {
+			button {
+				margin-top: 1rem;
+			}
+		}
+	}
 	svg {
 		margin-right: 0.25rem;
 		&:hover {
@@ -124,10 +134,10 @@ function ConceptToolBar({ did, pid }) {
 
 	return (
 		<ConceptToolBarStyled>
-			<Button variant="primary" size="sm" onClick={() => openModal("finalize")}>
+			<Button variant="primary" full shape="rounded" onClick={() => openModal("finalize")}>
 				<SVGIcon name="heart" height={12} width={12} fill="#ffffff" /> Finalize
 			</Button>
-			<Button fill="ghost" size="sm" onClick={() => openModal("revise")}>
+			<Button fill="ghost" full shape="rounded" onClick={() => openModal("revise")}>
 				<SVGIcon name="revise" height={12} width={12} /> Revise
 			</Button>
 			<Modal isModalOpen={modalVisibility} close={closeModal}>
