@@ -52,6 +52,7 @@ class MyDocument extends Document {
 					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
 					<link rel="dns-prefetch" href="//res.cloudinary.com" />
 					<link rel="dns-prefetch" href="//www.google-analytics.com" />
+					<link rel="prefetch" href="//js.stripe.com/v3/" />
 					<link rel="manifest" href="/static/manifest.json" />
 					<link rel="preload" href="/static/styles/reflex.min.css?v1.0.2" as="style" />
 					<link rel="preload" href="/static/styles/style.css?v1.0.2" as="style" />
@@ -64,7 +65,7 @@ class MyDocument extends Document {
 						media="screen"
 						href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
 					/>
-					<script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} />
+					{/* <script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} /> */}
 					<script src="https://js.stripe.com/v3/" async defer />
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
 				</Head>
