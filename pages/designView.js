@@ -2,6 +2,7 @@ import Carousel from "@components/Carousel";
 import Image from "@components/Image";
 import ItemCard from "@sections/Cards/item";
 import Layout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 // import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
@@ -20,9 +21,9 @@ const DesignDescriptionStyled = styled.div`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-function designView({ isServer, data, designName, designId }) {
+function designView({ isServer, authVerification, data, designName, designId }) {
 	return (
-		<Layout isServer={isServer}>
+		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>
@@ -74,6 +75,10 @@ designView.getInitialProps = async ctx => {
 };
 
 designView.defaultProps = {
+	authVerification: {
+		name: "",
+		email: ""
+	},
 	data: {},
 	designName: "",
 	designId: ""
@@ -81,6 +86,10 @@ designView.defaultProps = {
 
 designView.propTypes = {
 	isServer: PropTypes.bool.isRequired,
+	authVerification: PropTypes.shape({
+		name: PropTypes.string,
+		email: PropTypes.string
+	}),
 	designName: PropTypes.string,
 	designId: PropTypes.string,
 	data: PropTypes.shape({
@@ -103,4 +112,4 @@ designView.propTypes = {
 	})
 };
 
-export default designView;
+export default withAuthVerification(designView);

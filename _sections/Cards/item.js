@@ -69,19 +69,39 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 	const designNameClean = removeSpaces(designName);
 	return (
 		<div className="grid">
-			{products.map(product => {
-				return product.shoppable && product.billable ? (
+			{secure &&
+				products.map(product => {
+					return product.shoppable && product.billable ? (
+						<div className={`col-xs-${gridCount}`} key={product.productId}>
+							<div className="grid">
+								<div className="col-12 justify-space-between col-bleed-y">
+									{JSON.stringify(product.shoppable)}
+									{JSON.stringify(product.billable)}
+									<ProductImageWrapperStyled
+										url={`https://api.spacejoy.com/api/file/download?url=${product.productImage}`}
+										size={size}
+									/>
+								</div>
+								<div className="col-7">
+									<ProductNameStyled>{product.productName}</ProductNameStyled>
+									<ProductBrandStyled>{product.productRetailer}</ProductBrandStyled>
+									<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
+								</div>
+								<div className="col-5">
+									<a href={product.productExternalUrl} target="_blank" rel="noopener noreferrer">
+										<ProductExternalLinkStyled>Buy Now</ProductExternalLinkStyled>
+									</a>
+								</div>
+							</div>
+						</div>
+					) : null;
+				})}
+			{!secure &&
+				products.map(product => (
 					<div className={`col-xs-${gridCount}`} key={product.productId}>
 						<div className="grid">
 							<div className="col-12 justify-space-between col-bleed-y">
-								<ProductImageWrapperStyled
-									url={
-										secure
-											? `https://api.spacejoy.com/api/file/download?url=${product.productImage}`
-											: product.productImage
-									}
-									size={size}
-								/>
+								<ProductImageWrapperStyled url={product.productImage} size={size} />
 							</div>
 							<div className="col-7">
 								<ProductNameStyled>{product.productName}</ProductNameStyled>
@@ -95,8 +115,7 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 							</div>
 						</div>
 					</div>
-				) : null;
-			})}
+				))}
 			{showLoadMore && (
 				<div className={`col-xs-${gridCount}`}>
 					<div className="grid">
