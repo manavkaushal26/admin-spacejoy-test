@@ -1,6 +1,5 @@
 import BenefitList from "@components/BenefitList";
 import Image from "@components/Image";
-import SVGIcon from "@components/SVGIcon";
 import { company } from "@utils/config";
 import React from "react";
 import styled from "styled-components";
@@ -42,11 +41,7 @@ export default function Thanks() {
 					Our designer will get to work right away
 				</BenefitList.Item>
 			</BenefitList>
-			<p>
-				We&apos;ll work on it until you land on a design you love <SVGIcon name="heart" height={12} width={12} />
-				<SVGIcon name="heart" height={12} width={12} />
-				<SVGIcon name="heart" height={12} width={12} />.
-			</p>
+			<p>We&apos;ll work on it until you land on a design you love.</p>
 			<p>
 				Regards
 				<br />

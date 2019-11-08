@@ -1,5 +1,7 @@
 import BreadCrumb from "@components/BreadCrumb";
+import Image from "@components/Image";
 import SVGIcon from "@components/SVGIcon";
+import CTA from "@sections/CTA";
 import OrderSummary from "@sections/Dashboard/OrderSummary";
 import Layout from "@sections/Layout";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
@@ -16,7 +18,6 @@ const endPoint = "/user/dashboard/projects";
 const OrderSummaryTilesStyled = styled.div`
 	border-right: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	height: 100%;
-
 	@media (max-width: 576px) {
 		border-right: none;
 	}
@@ -50,8 +51,22 @@ const OrderSummaryTileStyled = styled.div`
 	}
 `;
 
+const EmptyStateStyled = styled.div`
+	width: 400px;
+	margin: auto;
+	min-height: 70vh;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	img {
+		margin-bottom: 4rem;
+	}
+`;
+
 const dashboard = ({ isServer, authVerification, data }) => {
-	const [activeTab, setActiveTab] = useState(data.projects ? data.projects[0].id : 0);
+	const projectsCount = data && data.projects ? data.projects.length : 0;
+
+	const [activeTab, setActiveTab] = useState(projectsCount > 0 ? data.projects[0].id : 0);
 
 	const handleTabClick = e => setActiveTab(e.currentTarget.getAttribute("data-id"));
 
@@ -64,13 +79,12 @@ const dashboard = ({ isServer, authVerification, data }) => {
 			<div>
 				<BreadCrumb />
 				<div className="container">
-					<div className="grid">
-						<div className="col-xs-4 col-lg-3">
-							<OrderSummaryTilesStyled>
-								<h3>My Orders</h3>
-								{data &&
-									data.projects &&
-									data.projects.map(project => (
+					{data && projectsCount > 0 ? (
+						<div className="grid">
+							<div className="col-xs-4 col-lg-3">
+								<OrderSummaryTilesStyled>
+									<h3>My Orders</h3>
+									{data.projects.map(project => (
 										<OrderSummaryTileStyled
 											key={project.id}
 											data-id={project.id}
@@ -83,18 +97,34 @@ const dashboard = ({ isServer, authVerification, data }) => {
 											</div>
 										</OrderSummaryTileStyled>
 									))}
-							</OrderSummaryTilesStyled>
-						</div>
-						<div className="col-xs-8 col-lg-9">
-							{data &&
-								data.projects &&
-								data.projects.map(project => {
+								</OrderSummaryTilesStyled>
+							</div>
+							<div className="col-xs-8 col-lg-9">
+								{data.projects.map(project => {
 									return project.id === activeTab ? (
 										<OrderSummary project={project} authVerification={authVerification} key={`project-${project.id}`} />
 									) : null;
 								})}
+							</div>
 						</div>
-					</div>
+					) : (
+						<EmptyStateStyled className="text-center">
+							<Image
+								src="https://res.cloudinary.com/spacejoy/image/upload/v1568649903/shared/Illustration_ajvkhk.svg"
+								width="100%"
+								alt="no project! create new one now"
+							/>
+							<CTA
+								variant="primary"
+								shape="rounded"
+								size="lg"
+								action="StartFreeTrial"
+								label="EmptyDashboard"
+								event="StartFreeTrial"
+								data={{ sectionName: "EmptyDashboard" }}
+							/>
+						</EmptyStateStyled>
+					)}
 				</div>
 			</div>
 		</Layout>

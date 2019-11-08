@@ -6,7 +6,7 @@ import React from "react";
 import styled from "styled-components";
 
 const ProductImageWrapperStyled = styled.div`
-	background: ${({ url, theme }) => `${theme.colors.bg.light2} url('${url}')`};
+	background: ${({ url }) => `url('${url}')`};
 	border: 1px solid ${({ theme }) => theme.colors.bg.light2};
 	height: ${({ size }) => `${size}px`};
 	background-repeat: no-repeat;
@@ -69,32 +69,34 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 	const designNameClean = removeSpaces(designName);
 	return (
 		<div className="grid">
-			{products.map(product => (
-				<div className={`col-xs-${gridCount}`} key={product.productId}>
-					<div className="grid">
-						<div className="col-12 justify-space-between col-bleed-y">
-							<ProductImageWrapperStyled
-								url={
-									secure
-										? `https://api.spacejoy.com/api/file/download?url=${product.productImage}`
-										: product.productImage
-								}
-								size={size}
-							/>
-						</div>
-						<div className="col-7">
-							<ProductNameStyled>{product.productName}</ProductNameStyled>
-							<ProductBrandStyled>{product.productRetailer}</ProductBrandStyled>
-							<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
-						</div>
-						<div className="col-5">
-							<a href={product.productExternalUrl} target="_blank" rel="noopener noreferrer">
-								<ProductExternalLinkStyled>Buy Now</ProductExternalLinkStyled>
-							</a>
+			{products.map(product => {
+				return product.shoppable && product.billable ? (
+					<div className={`col-xs-${gridCount}`} key={product.productId}>
+						<div className="grid">
+							<div className="col-12 justify-space-between col-bleed-y">
+								<ProductImageWrapperStyled
+									url={
+										secure
+											? `https://api.spacejoy.com/api/file/download?url=${product.productImage}`
+											: product.productImage
+									}
+									size={size}
+								/>
+							</div>
+							<div className="col-7">
+								<ProductNameStyled>{product.productName}</ProductNameStyled>
+								<ProductBrandStyled>{product.productRetailer}</ProductBrandStyled>
+								<ProductPriceStyled>$ {product.productCost}</ProductPriceStyled>
+							</div>
+							<div className="col-5">
+								<a href={product.productExternalUrl} target="_blank" rel="noopener noreferrer">
+									<ProductExternalLinkStyled>Buy Now</ProductExternalLinkStyled>
+								</a>
+							</div>
 						</div>
 					</div>
-				</div>
-			))}
+				) : null;
+			})}
 			{showLoadMore && (
 				<div className={`col-xs-${gridCount}`}>
 					<div className="grid">
