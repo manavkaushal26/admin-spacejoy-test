@@ -1,4 +1,4 @@
-const data = {
+module.exports = {
 	customerName: "Susan",
 	customerId: "1",
 	roomType: "Living Room",
@@ -21,4 +21,3 @@ const data = {
 		}
 	]
 };
-module.exports = data;

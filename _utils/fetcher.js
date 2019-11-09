@@ -1,9 +1,9 @@
-import { page } from "@utils/config";
+import { cookieNames, page } from "@utils/config";
 import fetch from "isomorphic-unfetch";
 import getCookie from "./getCookie";
 
 async function fetcher({ ctx, endPoint, method, body }) {
-	const JWT = getCookie(ctx, page.token);
+	const JWT = getCookie(ctx, cookieNames.authToken);
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }
 		: { "Content-Type": "application/json" };

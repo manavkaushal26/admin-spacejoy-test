@@ -1,8 +1,8 @@
 import Button from "@components/Button";
+import ProjectDesignPurpose from "@mocks/ProjectDesignPurpose";
 import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
-import roomLookOptions from "@utils/roomLookQuizMock";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
@@ -63,7 +63,7 @@ function Question3({ plan }) {
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">
-								{roomLookOptions.map(room => (
+								{ProjectDesignPurpose.map(room => (
 									<div className="col-12 col-sm-6 col-md-3" key={room.title}>
 										<RadioCard
 											version={2}

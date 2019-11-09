@@ -1,8 +1,8 @@
 import Button from "@components/Button";
+import LastTimeDesign from "@mocks/LastTimeDesign";
 import RadioCard from "@sections/Cards/radio";
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
-import lastTimeDesignMock from "@utils/lastTimeDesignMock";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { goToQuiz, quizReqBody } from "./QuizHelper";
@@ -63,7 +63,7 @@ function Question5({ plan }) {
 					<div className="grid align-center">
 						<div className="col-12">
 							<div className="grid">
-								{lastTimeDesignMock.map(room => (
+								{LastTimeDesign.map(room => (
 									<div className="col-12 col-sm-6" key={room.title}>
 										<RadioCard
 											version={2}

@@ -1,9 +1,9 @@
 import SVGIcon from "@components/SVGIcon";
+import FaqData from "@mocks/FAQs";
 import FAQCard from "@sections/Cards/faq";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
-import FaqData from "@utils/faqMock";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import PropTypes from "prop-types";

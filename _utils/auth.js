@@ -1,4 +1,4 @@
-import { page } from "@utils/config";
+import { cookieNames } from "@utils/config";
 import cookie from "js-cookie";
 import Router from "next/router";
 import React, { Component } from "react";
@@ -27,10 +27,10 @@ function redirectToLocation({ pathname, query, url, res = {} }) {
 }
 
 function login({ token, redirectUrl }) {
-	cookie.remove("token");
-	cookie.remove("role");
+	cookie.remove(cookieNames.authToken);
+	cookie.remove(cookieNames.userRole);
 	window.localStorage.removeItem("authVerification");
-	cookie.set("token", token, { expires: 365 });
+	cookie.set(cookieNames.authToken, token, { expires: 365 });
 	if (redirectUrl !== null) {
 		const url = redirectUrl || "/dashboard";
 		redirectToLocation({ pathname: url, query: {}, url });
@@ -38,7 +38,7 @@ function login({ token, redirectUrl }) {
 }
 
 async function guestLogin() {
-	if (getCookie(null, page.token)) return;
+	if (getCookie(null, cookieNames.authToken)) return;
 	const body = {};
 	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
 	if (response.statusCode <= 300) {
@@ -47,13 +47,13 @@ async function guestLogin() {
 			user: { role }
 		} = response.data;
 		login({ token, redirectUrl: null });
-		cookie.set("role", role, { expires: 10 });
+		cookie.set(cookieNames.userRole, role, { expires: 10 });
 	}
 }
 
 function logout() {
-	cookie.remove("role");
-	cookie.remove("token");
+	cookie.remove(cookieNames.userRole);
+	cookie.remove(cookieNames.authToken);
 	window.localStorage.setItem("logout", Date.now());
 	window.localStorage.removeItem("authVerification");
 	redirectToLocation({
@@ -64,8 +64,8 @@ function logout() {
 }
 
 function auth(ctx) {
-	const token = getCookie(ctx, page.token);
-	const role = getCookie(ctx, page.role);
+	const token = getCookie(ctx, cookieNames.authToken);
+	const role = getCookie(ctx, cookieNames.userRole);
 	if (!token || role === "guest") {
 		const redirect = {
 			pathname: "/auth",
@@ -116,7 +116,7 @@ function withAuthVerification(WrappedComponent) {
 
 		static async getInitialProps(ctx) {
 			const isServer = !!ctx.req;
-			const token = getCookie(ctx, page.token);
+			const token = getCookie(ctx, cookieNames.authToken);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
 			if (token) {
 				if (!isServer && window.localStorage.getItem("authVerification")) {

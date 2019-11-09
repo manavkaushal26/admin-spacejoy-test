@@ -1,4 +1,4 @@
-const TestimonialsMock = [
+module.exports = [
 	{
 		name: "Alyssa",
 		dp: "https://res.cloudinary.com/spacejoy/image/upload/v1571124660/web/ALYSSA_j7gavb.jpg",
@@ -21,5 +21,3 @@ const TestimonialsMock = [
 		after: "https://res.cloudinary.com/spacejoy/image/upload/c_scale,w_700/v1571124582/web/After_wovbpl.jpg"
 	}
 ];
-
-module.exports = TestimonialsMock;

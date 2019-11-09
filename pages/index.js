@@ -1,13 +1,15 @@
 import Brands from "@sections/Brands";
-import DesignTeam from "@sections/Home/DesignTeam";
-import ExploreDesigns from "@sections/Home/ExploreDesigns";
-import GetReadyBanner from "@sections/Home/GetReadyBanner";
-import HeroSection from "@sections/Home/HeroSection";
-import HowSteps from "@sections/Home/HowSteps";
-import HowWeDoIt from "@sections/Home/HowWeDoIt";
-import TestimonialsLarge from "@sections/Home/TestimonialsLarge";
-import TestimonialsShort from "@sections/Home/TestimonialsShort";
-import ThreeDView from "@sections/Home/ThreeDView";
+import {
+	DesignTeam,
+	ExploreDesigns,
+	GetReadyBanner,
+	HeroSection,
+	HowSteps,
+	HowWeDoIt,
+	TestimonialsLarge,
+	TestimonialsShort,
+	ThreeDView
+} from "@sections/Home";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";

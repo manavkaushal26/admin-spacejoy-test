@@ -1,5 +1,5 @@
 import Image from "@components/Image";
-import BrandsMock from "@utils/brandsMock";
+import ProductBrands from "@mocks/ProductBrands";
 import React from "react";
 import styled from "styled-components";
 
@@ -28,7 +28,7 @@ const PartnerBrandStyled = styled.div`
 export default function index() {
 	return (
 		<div className="grid grid-bleed">
-			{BrandsMock.map((brand, i) => (
+			{ProductBrands.map((brand, i) => (
 				<div className={`${i === 2 || i === 5 ? "col-12" : "col-6"} col-xs-6 col-sm-4 col-md-2`} key={brand.name}>
 					<PartnerBrandStyled height={brand.size}>
 						<Image height={brand.size} src={brand.url} alt={brand.name} />

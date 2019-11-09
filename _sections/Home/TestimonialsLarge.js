@@ -1,6 +1,6 @@
 import Carousel from "@components/Carousel";
 import Image from "@components/Image";
-import testimonialsMock from "@utils/testimonialsMock";
+import Testimonials from "@mocks/Testimonials";
 import React from "react";
 import ReactCompareImage from "react-compare-image";
 import styled from "styled-components";
@@ -40,7 +40,7 @@ export default function TestimonialsLarge() {
 					description="They’ll tell you why they love us. Hear it straight from our beloved customers"
 				/>
 				<Carousel slidesToShow={1} slidesToScroll={1} draggable={false}>
-					{testimonialsMock.map(item => (
+					{Testimonials.map(item => (
 						<div key={item.name}>
 							<div className="grid justify-center">
 								<div className="col-md-3">

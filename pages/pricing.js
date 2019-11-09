@@ -1,12 +1,12 @@
 import BenefitList from "@components/BenefitList";
 import BreadCrumb from "@components/BreadCrumb";
+import UpgradePlans from "@mocks/UpgradePlans";
 import PriceCard from "@sections/Cards/price";
 import Layout from "@sections/Layout";
 import SectionHeader from "@sections/SectionHeader";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import PlansData from "@utils/planMock";
 import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
@@ -24,7 +24,7 @@ function pricing({ isServer, authVerification }) {
 					<div className="col-12 col-sm-12 col-md-10">
 						<SectionHeader title="Pricing" description="Custom made packages with your needs in mind." />
 						<div className="grid">
-							{PlansData.map(plan => (
+							{UpgradePlans.map(plan => (
 								<div className="col-12 col-sm-4" key={plan.name}>
 									<PriceCard plan={plan.name} variant={plan.variant}>
 										<PriceCard.Header title={plan.title} subTitle={plan.subTitle} />
