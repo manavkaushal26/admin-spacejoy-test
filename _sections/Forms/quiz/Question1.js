@@ -63,7 +63,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Living Room"}
 								bg="rgba(0, 188, 212, 0.05)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570170156/web/living-room-tile_xtghwr.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/c_scale,q_100,w_325/v1570170156/web/living-room-tile_xtghwr.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -72,7 +72,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Bedroom"}
 								bg="rgba(121, 85, 72, 0.15)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570170156/web/bedroom-tile_kisjld.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/c_scale,q_100,w_325/v1570170156/web/bedroom-tile_kisjld.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -81,7 +81,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Entryway"}
 								bg="rgba(103, 58, 183, 0.06)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_325/v1570602461/web/entryway.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/c_scale,q_100,w_325/v1570602461/web/entryway.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -90,7 +90,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Kid's Room"}
 								bg="rgba(255, 252, 222, 0.2)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1570448686/web/kids_bedroom_fknoyk.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/v1570448686/web/kids_bedroom_fknoyk.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -99,7 +99,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Studio"}
 								bg="rgba(158, 158, 158, 0.15)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1570451259/web/Studio_Apartment_nu1av3.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/v1570451259/web/Studio_Apartment_nu1av3.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -108,7 +108,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Nursery"}
 								bg="rgba(255, 193, 7, 0.01)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1570181061/web/nursery_suenxy.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/v1570181061/web/nursery_suenxy.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -117,7 +117,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Dining Room"}
 								bg="rgba(63, 81, 181, 0.1)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1572878520/web/DiningRoom_svif1k.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/v1572878520/web/DiningRoom_svif1k.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -126,7 +126,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Home Office"}
 								bg="rgba(255, 193, 7, 0.06)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1573121452/web/Home_Office_2x_cehmvi.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/v1573121452/web/Home_Office_2x_cehmvi.png"
 							/>
 						</div>
 						<div className="col-12 col-sm-6 col-md-4">
@@ -135,7 +135,7 @@ function Question1({ plan }) {
 								onClick={handleClick}
 								checked={quizState === "Study Room"}
 								bg="rgba(255, 193, 7, 0.06)"
-								image="https://res.cloudinary.com/spacejoy/image/upload/v1573120592/web/Study_Room_2x_irkrzm.png"
+								image="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_300/v1573120592/web/Study_Room_2x_irkrzm.png"
 							/>
 						</div>
 						<div className="col-4 col-sm-2">

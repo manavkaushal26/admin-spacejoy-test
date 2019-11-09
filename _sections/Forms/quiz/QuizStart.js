@@ -20,7 +20,7 @@ const BaseStyled = styled.div`
 
 const FreeStyled = styled(BaseStyled)`
 	background-color: ${({ theme }) => theme.colors.bg.light2};
-	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571471541/web/white-furniture_nfntsy.png");
+	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_200/v1571471541/web/white-furniture_nfntsy.png");
 	background-position: 100% 100%;
 	background-size: 250px;
 	background-repeat: no-repeat;
@@ -31,7 +31,7 @@ const FreeStyled = styled(BaseStyled)`
 
 const PaidStyled = styled(BaseStyled)`
 	background: ${({ theme }) => theme.colors.mild.blue};
-	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/v1571408734/web/hanging-lamp_lbsn20.png");
+	background-image: url("https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_200/v1571408734/web/hanging-lamp_lbsn20.png");
 	background-position: 90% 0%;
 	background-size: 70px;
 	background-repeat: no-repeat;

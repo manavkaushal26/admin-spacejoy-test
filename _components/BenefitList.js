@@ -13,6 +13,7 @@ const ListStyled = styled.li`
 	position: relative;
 	margin: 0.75rem 0;
 	svg {
+		margin-top: -0.25rem;
 		margin-right: 0.5rem;
 	}
 `;

@@ -95,12 +95,13 @@ const RadioStyled = styled(Button)`
 			display: block;
 		}
 		span {
-			font-weight: bold;
+			font-family: "Airbnb Cereal App Book";
 			margin: 0.15rem 0;
 			font-size: 13px;
-			color: ${({ theme }) => theme.colors.fc.dark2};
+			color: ${({ theme }) => theme.colors.fc.dark1};
 		}
 		small {
+			font-family: "Airbnb Cereal App Book";
 			display: inline-block;
 			color: ${({ theme }) => theme.colors.fc.dark2};
 		}
@@ -243,35 +244,35 @@ function Question2({ plan }) {
 									<Image
 										height="auto"
 										width="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1572881422/web/empty_lwygcd.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_700/v1572881422/web/empty_lwygcd.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$10,000 or more" ? "active" : "inactive"}>
 									<Image
 										height="auto"
 										width="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1570444188/web/10000_gydis3.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_700/v1570444188/web/10000_gydis3.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$5000 - $7000" ? "active" : "inactive"}>
 									<Image
 										height="auto"
 										width="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/7000_fojbqr.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_700/v1570442615/web/7000_fojbqr.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$2000 - $5000" ? "active" : "inactive"}>
 									<Image
 										height="auto"
 										width="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/5000_gy1xsz.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_700/v1570442615/web/5000_gy1xsz.png"
 									/>
 								</ImageWrapperStyled>
 								<ImageWrapperStyled className={quizState === "$2000 or less" ? "active" : "inactive"}>
 									<Image
 										height="auto"
 										width="100%"
-										src="https://res.cloudinary.com/spacejoy/image/upload/v1570442615/web/2000_clxfbs.png"
+										src="https://res.cloudinary.com/spacejoy/image/upload/c_scale,q_100,w_700/v1570442615/web/2000_clxfbs.png"
 									/>
 								</ImageWrapperStyled>
 							</SampleImageStyled>
