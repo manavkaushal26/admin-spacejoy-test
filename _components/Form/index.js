@@ -1,7 +1,7 @@
 import { login, redirectToLocation } from "@utils/auth";
 import fetcher from "@utils/fetcher";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
 import { ValidateEmail, ValidateMobile } from "./Validation";
 
@@ -30,7 +30,7 @@ const FormWrapperStyled = styled.form`
 	}
 `;
 
-class FormBox extends Component {
+class FormBox extends PureComponent {
 	constructor(props) {
 		super(props);
 		const stateObj = {};

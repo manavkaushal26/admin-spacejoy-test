@@ -9,7 +9,6 @@
 				"root": ["."],
 				"alias": {
 					"@components": "./_components",
-					"@context": "./_context",
 					"@utils": "./_utils",
 					"@theme": "./_theme",
 					"@sections": "./_sections",

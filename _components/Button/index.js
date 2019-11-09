@@ -155,4 +155,4 @@ Button.propTypes = {
 	data: PropTypes.shape({})
 };
 
-export default Button;
+export default React.memo(Button);

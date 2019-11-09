@@ -36,4 +36,4 @@ Image.propTypes = {
 	scrollPosition: PropTypes.shape({})
 };
 
-export default trackWindowScroll(Image);
+export default React.memo(trackWindowScroll(Image));
