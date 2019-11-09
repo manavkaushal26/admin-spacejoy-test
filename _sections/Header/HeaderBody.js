@@ -221,4 +221,4 @@ HeaderBody.propTypes = {
 	})
 };
 
-export default HeaderBody;
+export default React.memo(HeaderBody);
