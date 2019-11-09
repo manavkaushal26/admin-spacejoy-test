@@ -54,9 +54,6 @@ class MyDocument extends Document {
 					<link rel="dns-prefetch" href="//www.google-analytics.com" />
 					<link rel="prefetch" href="//js.stripe.com/v3/" />
 					<link rel="manifest" href="/static/manifest.json" />
-					<link rel="preload" href="/static/styles/reflex.min.css?v1.0.2" as="style" />
-					<link rel="preload" href="/static/styles/style.css?v1.0.2" as="style" />
-					<link rel="preload" href="/static/styles/sanitize.css?v1.0.2" as="style" />
 					<link href="/static/styles/reflex.min.css?v1.0.2" rel="stylesheet" media="screen" />
 					<link href="/static/styles/style.css?v1.0.2" rel="stylesheet" media="screen" />
 					<link href="/static/styles/sanitize.css?v1.0.2" rel="stylesheet" media="screen" />

@@ -36,7 +36,7 @@ function getHeadingText(flow) {
 	}
 }
 
-function auth({ isServer, authVerification, flow, redirectUrl }) {
+function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 	const renderLoginLink = (
 		<Link
 			href={{ pathname: "/auth", query: { flow: "login", redirectUrl } }}
@@ -71,7 +71,7 @@ function auth({ isServer, authVerification, flow, redirectUrl }) {
 							{flow === "login" && <LoginForm redirectUrl={redirectUrl} />}
 							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
 							{flow === "forgot-password" && <ForgotPasswordForm redirectUrl={redirectUrl} />}
-							{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} />}
+							{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} token={token} />}
 						</div>
 						<div className="col-12">
 							{flow === "signup" && (
@@ -110,20 +110,22 @@ function auth({ isServer, authVerification, flow, redirectUrl }) {
 	);
 }
 
-auth.getInitialProps = async ({ req, query: { flow, redirectUrl } }) => {
+auth.getInitialProps = async ({ req, query: { flow, redirectUrl, token } }) => {
 	const isServer = !!req;
-	return { isServer, flow, redirectUrl };
+	return { isServer, flow, redirectUrl, token };
 };
 
 auth.defaultProps = {
 	flow: "",
 	redirectUrl: "",
+	token: "",
 	authVerification: {}
 };
 
 auth.propTypes = {
 	isServer: PropTypes.bool.isRequired,
 	authVerification: PropTypes.shape({}),
+	token: PropTypes.string,
 	flow: PropTypes.string,
 	redirectUrl: PropTypes.string
 };

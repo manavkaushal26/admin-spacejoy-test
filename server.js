@@ -99,7 +99,12 @@ app.prepare().then(() => {
 			app.render(req, res, "/checkout", req.params);
 		});
 		server.get("/auth/:flow(login|signup|forgot-password|reset-password)", (req, res) => {
-			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
+			app.render(
+				req,
+				res,
+				"/auth",
+				Object.assign({ redirectUrl: req.query.redirectUrl, token: req.query.id }, { flow: req.params.flow })
+			);
 		});
 		server.get("/profile", (req, res) => {
 			app.render(req, res, "/profile", req.params);

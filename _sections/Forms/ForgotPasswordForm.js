@@ -8,7 +8,7 @@ function ForgotPasswordForm({ redirectUrl }) {
 		<FormBox
 			destination="/auth/password/forgot"
 			redirectUrl={redirectUrl}
-			description="Enter your details to Login"
+			description="Enter your email to send reset password link"
 			name="forgotPassword"
 		>
 			<Field

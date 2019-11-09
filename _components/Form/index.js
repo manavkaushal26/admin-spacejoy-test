@@ -70,12 +70,17 @@ class FormBox extends PureComponent {
 			}
 			if (name === "forgotPassword") {
 				return {
-					email: state.userEmail.value
+					data: {
+						email: state.userEmail.value
+					}
 				};
 			}
 			if (name === "resetPassword") {
 				return {
-					email: state.userPassword.value
+					data: {
+						token: state.resetToken.value,
+						password: state.userPassword.value
+					}
 				};
 			}
 			if (name === "designmyspace") {
@@ -155,6 +160,10 @@ class FormBox extends PureComponent {
 		const { target } = event;
 		const { name, value, type, checked } = target;
 		switch (type) {
+			case "hidden":
+				return value
+					? this.setState({ [name]: { value } })
+					: this.setState({ [name]: { value, error: target.getAttribute("data-error") } });
 			case "email":
 				return value && ValidateEmail(value)
 					? this.setState({ [name]: { value } })

@@ -3,14 +3,15 @@ import Field from "@components/Form/Field";
 import PropTypes from "prop-types";
 import React from "react";
 
-function ResetPasswordForm({ redirectUrl }) {
+function ResetPasswordForm({ redirectUrl, token }) {
 	return (
 		<FormBox
-			destination="/auth/password/forgot"
+			destination="/auth/password/reset"
 			redirectUrl={redirectUrl}
 			description="Enter your details to Login"
 			name="resetPassword"
 		>
+			<Field name="resetToken" type="hidden" label="" placeholder="" error="" hint="" value={token} required />
 			<Field
 				name="userPassword"
 				type="password"
@@ -26,11 +27,13 @@ function ResetPasswordForm({ redirectUrl }) {
 }
 
 ResetPasswordForm.defaultProps = {
-	redirectUrl: ""
+	redirectUrl: "",
+	token: ""
 };
 
 ResetPasswordForm.propTypes = {
-	redirectUrl: PropTypes.string
+	redirectUrl: PropTypes.string,
+	token: PropTypes.string
 };
 
 export default ResetPasswordForm;
