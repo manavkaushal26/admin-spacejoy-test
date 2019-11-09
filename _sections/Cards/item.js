@@ -75,8 +75,6 @@ function ItemCard({ products, gridCount, designName, designId, showLoadMore, siz
 						<div className={`col-xs-${gridCount}`} key={product.productId}>
 							<div className="grid">
 								<div className="col-12 justify-space-between col-bleed-y">
-									{JSON.stringify(product.shoppable)}
-									{JSON.stringify(product.billable)}
 									<ProductImageWrapperStyled
 										url={`https://api.spacejoy.com/api/file/download?url=${product.productImage}`}
 										size={size}
