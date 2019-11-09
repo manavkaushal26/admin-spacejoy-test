@@ -3,6 +3,7 @@
 	font-style: normal;
 	font-weight: normal;
 	src: local("Airbnb Cereal App Book"), url("/static/fonts/AirbnbCerealBook.woff") format("woff");
+	font-display: swap;
 }
 
 @font-face {
@@ -10,6 +11,7 @@
 	font-style: normal;
 	font-weight: normal;
 	src: local("Airbnb Cereal App Medium"), url("/static/fonts/AirbnbCerealMedium.woff") format("woff");
+	font-display: swap;
 }
 
 *,
@@ -24,7 +26,6 @@ html {
 	font-size: 14px;
 	line-height: 1.58;
 	letter-spacing: 0.025em;
-	font-display: swap;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
