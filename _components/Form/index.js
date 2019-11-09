@@ -73,6 +73,11 @@ class FormBox extends Component {
 					email: state.userEmail.value
 				};
 			}
+			if (name === "resetPassword") {
+				return {
+					email: state.userPassword.value
+				};
+			}
 			if (name === "designmyspace") {
 				if (destination === "/form") {
 					return {

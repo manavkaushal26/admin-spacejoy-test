@@ -31,7 +31,7 @@ const FieldWrapperStyled = styled.div`
 `;
 
 const LabelStyled = styled.label`
-	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "2rem")};
+	margin-bottom: ${({ selectionType }) => (selectionType ? "" : "1.5rem")};
 	display: block;
 	span.styled {
 		display: inline-block;
@@ -67,6 +67,7 @@ const InputStyled = styled.input`
 	padding: 0.75rem;
 	width: 100%;
 	box-sizing: border-box;
+	font-size: 1rem;
 	border: 1px solid ${({ hasError, theme }) => (hasError ? theme.colors.red : theme.colors.bg.dark1)};
 `;
 

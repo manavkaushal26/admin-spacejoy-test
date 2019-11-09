@@ -118,18 +118,18 @@ const HeaderBody = ({ authVerification }) => {
 					</ActiveLink>
 				</li>
 				<li>
-					<ActiveLink href="/pricing" as="/pricing">
-						<span>Pricing - Upgrade Plans</span>
-						<small>Starting From $49</small>
-					</ActiveLink>
-				</li>
-				<li>
 					<ActiveLink
 						href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "delight" } }}
 						as="/designMySpace/delight?quiz=start"
 					>
 						<span>Start Your Free Trial</span>
 						<small>No Credit Card Required</small>
+					</ActiveLink>
+				</li>
+				<li>
+					<ActiveLink href="/pricing" as="/pricing">
+						<span>Upgrade Plans</span>
+						<small>Starting From $49</small>
 					</ActiveLink>
 				</li>
 			</HorizontalListStyled>

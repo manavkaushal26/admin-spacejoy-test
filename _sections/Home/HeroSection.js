@@ -38,13 +38,8 @@ const HeroText = styled.h1`
 	span {
 		display: block;
 		margin-right: 1rem;
-		font-family: "Airbnb Cereal App Medium";
 		&:last-child {
-			background: url("https://res.cloudinary.com/spacejoy/image/upload/v1570798848/web/colors_amte5j.jpg") 50% 50%;
-			background-size: 200px;
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			background-attachment: fixed;
+			font-family: "Airbnb Cereal App Medium";
 		}
 	}
 	@media (max-width: 576px) {

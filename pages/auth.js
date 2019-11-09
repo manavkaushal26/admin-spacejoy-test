@@ -1,5 +1,6 @@
 import ForgotPasswordForm from "@sections/Forms/ForgotPasswordForm";
 import LoginForm from "@sections/Forms/LoginForm";
+import ResetPasswordForm from "@sections/Forms/ResetPasswordForm";
 import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
@@ -13,15 +14,22 @@ import React from "react";
 function getHeadingText(flow) {
 	switch (flow) {
 		case "signup":
-			return "Signup To Unlock Your Stunning Room";
+			return <h3>Signup To Unlock Your Stunning Room</h3>;
 		case "login":
-			return "Welcome Back";
+			return <h3>Welcome Back</h3>;
 		case "forgot-password":
 			return (
-				<span>
-					Forgot Password? <br />
-					No Worries. We’ll email you instructions to reset your password.
-				</span>
+				<>
+					<h3>Forgot Password?</h3>
+					<p>No Worries. We’ll email you instructions to reset your password.</p>
+				</>
+			);
+		case "reset-password":
+			return (
+				<>
+					<h3>Set New Password</h3>
+					<p>This Link will be active for next 30 Mins</p>
+				</>
 			);
 		default:
 			return "";
@@ -58,13 +66,12 @@ function auth({ isServer, authVerification, flow, redirectUrl }) {
 			<div className="container">
 				<div className="grid text-center">
 					<div className="col-12 col-sm-8 col-md-4">
-						<div className="col-12">
-							<h3>{getHeadingText(flow)}</h3>
-						</div>
+						<div className="col-12">{getHeadingText(flow)}</div>
 						<div className="col-12">
 							{flow === "login" && <LoginForm redirectUrl={redirectUrl} />}
 							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
 							{flow === "forgot-password" && <ForgotPasswordForm redirectUrl={redirectUrl} />}
+							{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} />}
 						</div>
 						<div className="col-12">
 							{flow === "signup" && (
