@@ -55,6 +55,15 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 		</Link>
 	);
 
+	const renderForgotPasswordLink = (
+		<Link
+			href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl } }}
+			as={redirectUrl ? `/auth/forgot-password?redirectUrl=${redirectUrl}` : "/auth/signup"}
+		>
+			<a href={redirectUrl ? `/auth/forgot-password?redirectUrl=${redirectUrl}` : "/auth/signup"}>Forgot Password?</a>
+		</Link>
+	);
+
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -85,12 +94,7 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 									<span>Create new Account </span>
 									{renderSignupLink}
 									<br />
-									<Link
-										href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl: "/auth/login" } }}
-										as="/auth/forgot-password?redirectUrl=/auth/login"
-									>
-										<a href="/auth/forgot-password?redirectUrl=/auth/login">Forgot Password?</a>
-									</Link>
+									{renderForgotPasswordLink}
 								</>
 							)}
 							{flow === "forgot-password" && (
