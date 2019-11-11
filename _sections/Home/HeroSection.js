@@ -1,7 +1,4 @@
-import Button from "@components/Button";
 import Image from "@components/Image";
-import CTA from "@sections/CTA";
-import Link from "next/link";
 import React from "react";
 import TextLoop from "react-text-loop";
 import styled from "styled-components";
@@ -58,13 +55,6 @@ const HeroSubText = styled.h4`
 	color: ${({ theme }) => theme.colors.fc.dark2};
 `;
 
-const HeroBottomText = styled.small`
-	display: block;
-	margin-top: 2em;
-	width: 80%;
-	color: ${({ theme }) => theme.colors.fc.dark2};
-`;
-
 function HeroSection() {
 	return (
 		<HeroWrapperStyled>
@@ -73,51 +63,16 @@ function HeroSection() {
 					<div className="col-lg-4 col-md-6 col-xs-12">
 						<HeroCardStyled>
 							<HeroText>
-								<span>Designing</span>
-								<span>Your</span>
+								<span>Admin</span>
+								<span>like a</span>
 								<TextLoop mask>
-									<span>Imagination</span>
-									<span>Living Room</span>
-									<span>Studio</span>
-									<span>Bedroom</span>
-									<span>Kid&apos;s Room</span>
-									<span>Entryway</span>
-									<span>Nursery</span>
+									<span>Owner</span>
+									<span>Designer</span>
+									<span>Manager</span>
+									<span>Developer</span>
 								</TextLoop>
 							</HeroText>
-							<HeroSubText>
-								Show us your room and let us design it for you in our 3D App. Within your budget, in your style and with
-								products you can buy
-							</HeroSubText>
-							<CTA
-								variant="primary"
-								shape="rounded"
-								size="lg"
-								action="StartFreeTrial"
-								label="FirstHomeScreen"
-								event="StartFreeTrial"
-								data={{ sectionName: "FirstHomeScreen" }}
-							/>
-							<Link href={{ pathname: "/designProjects" }} as="/designProjects">
-								<a href="/designProjects">
-									<Button
-										fill="ghost"
-										shape="rounded"
-										size="lg"
-										action="ExploreDesigns"
-										label="FirstHomeScreen"
-										event="ExploreDesigns"
-										data={{ sectionName: "FirstHomeScreen" }}
-										style={{ marginTop: "2rem" }}
-									>
-										See Our Design Projects
-									</Button>
-								</a>
-							</Link>
-							<HeroBottomText>
-								Your first room design is on us. <br />
-								No credit card needed. No charges applied .
-							</HeroBottomText>
+							<HeroSubText>Login to do what you do.</HeroSubText>
 						</HeroCardStyled>
 					</div>
 					<div className="col-12 col-md-8">

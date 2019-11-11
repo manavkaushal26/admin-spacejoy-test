@@ -110,29 +110,16 @@ const HeaderBody = ({ authVerification }) => {
 
 	const navCenter = (
 		<nav>
-			<HorizontalListStyled align="left">
-				<li>
-					<ActiveLink href="/designProjects" as="/designProjects">
-						<span>Design Projects</span>
-						<small>Explore stunning design layouts</small>
-					</ActiveLink>
-				</li>
-				<li>
-					<ActiveLink
-						href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "delight" } }}
-						as="/designMySpace/delight?quiz=start"
-					>
-						<span>Start Your Free Trial</span>
-						<small>No Credit Card Required</small>
-					</ActiveLink>
-				</li>
-				<li>
-					<ActiveLink href="/pricing" as="/pricing">
-						<span>Upgrade Plans</span>
-						<small>Starting From $49</small>
-					</ActiveLink>
-				</li>
-			</HorizontalListStyled>
+			{authVerification && authVerification.role === "customer" && (
+				<HorizontalListStyled align="left">
+					<li>
+						<ActiveLink href="/dashboard" as="/designProjects">
+							<span>Admin Dashboard</span>
+							<small>Be a pro Admin</small>
+						</ActiveLink>
+					</li>
+				</HorizontalListStyled>
+			)}
 		</nav>
 	);
 
@@ -140,16 +127,11 @@ const HeaderBody = ({ authVerification }) => {
 		<nav>
 			<HorizontalListStyled align="right">
 				<li>
-					<ActiveLink href="/faq" as="/faq">
-						FAQ
-					</ActiveLink>
-				</li>
-				<li>
 					{authVerification && authVerification.role === "customer" ? (
 						<DropMenu>
 							<DropMenu.Header>
 								<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
-									My Designs
+									{authVerification.name}
 								</ActiveLink>
 							</DropMenu.Header>
 							<DropMenu.Body>

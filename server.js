@@ -5,7 +5,7 @@ const next = require("next");
 const path = require("path");
 const os = require("os");
 const compression = require("compression");
-const LRUCache = require("lru-cache");
+// const LRUCache = require("lru-cache");
 const bodyParser = require("body-parser");
 const getParsedUrl = require("./_utils/getParsedUrl");
 
@@ -16,7 +16,7 @@ const handle = app.getRequestHandler();
 
 const workers = [];
 
-const getMaxAge = function() {
+const getMaxAge = () => {
 	return 31536000;
 };
 
@@ -25,35 +25,35 @@ const serve = (pathName, cache) =>
 		maxAge: cache && !dev ? getMaxAge() : 0
 	});
 
-function getCacheKey(req) {
-	return `${req.url}`;
-}
+// function getCacheKey(req) {
+// 	return `${req.url}`;
+// }
 
-const ssrCache = new LRUCache({
-	max: 100,
-	maxAge: 1000 * 60 * 60
-});
-
-async function renderAndCache(req, res, pagePath, queryParams) {
-	const key = getCacheKey(req);
-	if (ssrCache.has(key)) {
-		res.setHeader("x-cache", "HIT");
-		res.send(ssrCache.get(key));
-		return;
-	}
-	try {
-		const html = await app.renderToHTML(req, res, pagePath, queryParams);
-		if (res.statusCode !== 200) {
-			res.send(html);
-			return;
-		}
-		ssrCache.set(key, html);
-		res.setHeader("x-cache", "MISS");
-		res.send(html);
-	} catch (err) {
-		app.renderError(err, req, res, pagePath, queryParams);
-	}
-}
+// const ssrCache = new LRUCache({
+// 	max: 100,
+// 	maxAge: 1000 * 60 * 60
+// });
+//
+// async function renderAndCache(req, res, pagePath, queryParams) {
+// 	const key = getCacheKey(req);
+// 	if (ssrCache.has(key)) {
+// 		res.setHeader("x-cache", "HIT");
+// 		res.send(ssrCache.get(key));
+// 		return;
+// 	}
+// 	try {
+// 		const html = await app.renderToHTML(req, res, pagePath, queryParams);
+// 		if (res.statusCode !== 200) {
+// 			res.send(html);
+// 			return;
+// 		}
+// 		ssrCache.set(key, html);
+// 		res.setHeader("x-cache", "MISS");
+// 		res.send(html);
+// 	} catch (err) {
+// 		app.renderError(err, req, res, pagePath, queryParams);
+// 	}
+// }
 
 app.prepare().then(() => {
 	const server = express();
@@ -61,14 +61,14 @@ app.prepare().then(() => {
 		const cpuCount = os.cpus().length;
 		for (let i = 0; i < cpuCount; i += 1) {
 			workers.push(cluster.fork());
-			workers[i].on("message", function(message) {
+			workers[i].on("message", message => {
 				console.log(message);
 			});
 		}
-		cluster.on("online", function(worker) {
+		cluster.on("online", worker => {
 			console.log(`Worker ${worker.process.pid} is listening`);
 		});
-		cluster.on("exit", function(worker, code, signal) {
+		cluster.on("exit", (worker, code, signal) => {
 			console.log(`Worker ${worker.process.pid} died with code: ${code}, and signal: ${signal}`);
 			console.log("Starting a new worker");
 			workers.push(cluster.fork());
@@ -80,46 +80,11 @@ app.prepare().then(() => {
 		server.use(helmet({}));
 		server.use(compression({ threshold: 0 }));
 		server.use(bodyParser.json());
-		server.get("/pricing", (req, res) => {
-			renderAndCache(req, res, "/pricing", req.params);
-		});
-		server.get("/faq/:slug?", (req, res) => {
-			app.render(req, res, "/faq", { slug: req.params.slug });
-		});
-		server.get("/designProjects", (req, res) => {
-			renderAndCache(req, res, "/designProjects", req.params);
-		});
-		server.get("/designView/:designName/:designId", (req, res) => {
-			app.render(req, res, "/designView", { designName: req.params.designName, designId: req.params.designId });
-		});
-		server.get("/designMySpace/:plan(delight|bliss|euphoria)", (req, res) => {
-			app.render(req, res, "/designMySpace", Object.assign({ quiz: req.query.quiz }, { plan: req.params.plan }));
-		});
-		server.get("/checkout", (req, res) => {
-			app.render(req, res, "/checkout", req.params);
-		});
-		server.get("/auth/:flow(login|signup|forgot-password|reset-password)", (req, res) => {
-			app.render(
-				req,
-				res,
-				"/auth",
-				Object.assign({ redirectUrl: req.query.redirectUrl, token: req.query.id }, { flow: req.params.flow })
-			);
+		server.get("/auth/:flow(login|signup|forgot-password)", (req, res) => {
+			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
 		});
 		server.get("/profile", (req, res) => {
 			app.render(req, res, "/profile", req.params);
-		});
-		server.get("/dashboard/designView/pid/:pid/did/:did", (req, res) => {
-			app.render(req, res, "/dashboard/designView", req.params);
-		});
-		server.get("/dashboard", (req, res) => {
-			app.render(req, res, "/dashboard", req.params);
-		});
-		server.get("/terms", (req, res) => {
-			renderAndCache(req, res, "/terms", req.params);
-		});
-		server.get("/cookies", (req, res) => {
-			renderAndCache(req, res, "/cookies", req.params);
 		});
 		server.get("/ping", (req, res) => {
 			res.send("pong");

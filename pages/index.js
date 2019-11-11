@@ -1,15 +1,4 @@
-import Brands from "@sections/Brands";
-import {
-	DesignTeam,
-	ExploreDesigns,
-	GetReadyBanner,
-	HeroSection,
-	HowSteps,
-	HowWeDoIt,
-	TestimonialsLarge,
-	TestimonialsShort,
-	ThreeDView
-} from "@sections/Home";
+import HeroSection from "@sections/Home/HeroSection";
 import Layout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -26,15 +15,6 @@ function index({ isServer, authVerification }) {
 				<title>Get 3D Designs of Your Space | {company.product}</title>
 			</Head>
 			<HeroSection />
-			<Brands />
-			<HowSteps />
-			<TestimonialsShort />
-			<HowWeDoIt />
-			<ThreeDView />
-			<DesignTeam />
-			<ExploreDesigns />
-			<TestimonialsLarge />
-			<GetReadyBanner />
 		</Layout>
 	);
 }

@@ -2,7 +2,6 @@ import GlobalStyle from "@theme/globalStyle";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import Footer from "../Footer";
 import Header from "../Header";
 
 const dev = process.env.NODE_ENV !== "production";
@@ -37,7 +36,6 @@ function Layout({ isServer, authVerification, children }) {
 			<MainStyled isServer={isServer} className={dev ? "client-server-identifier" : ""}>
 				{children}
 			</MainStyled>
-			<Footer />
 		</>
 	);
 }
