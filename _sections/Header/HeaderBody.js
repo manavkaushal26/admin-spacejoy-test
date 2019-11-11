@@ -27,7 +27,6 @@ const HorizontalListStyled = styled.ul`
 		span {
 			display: block;
 			font-weight: bold;
-			font-family: "Airbnb Cereal App Medium";
 			padding-bottom: 2px;
 			& + {
 				small {

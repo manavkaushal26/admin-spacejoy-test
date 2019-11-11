@@ -26,7 +26,7 @@ const data = [
 	{
 		tag: "Who are we?",
 		question: "What is the design fee?",
-		answer: `We have three packages - <a href="/pricing">Consult</a>, <a href="/pricing">Classic</a> and <a href="/pricing">Premium</a>. You'll find details of the packages in our <a href="/pricing">Pricing Section</a>. Pick the one that best suits your requirements.`
+		answer: `We have three packages - <a href="/pricing">Delight</a>, <a href="/pricing">Bliss</a> and <a href="/pricing">Euphoria</a>. You'll find details of the packages in our <a href="/pricing">Pricing Section</a>. Pick the one that best suits your requirements.`
 	},
 	{
 		tag: "Who are we?",
@@ -43,7 +43,7 @@ const data = [
 	{
 		tag: "Who are we?",
 		question: "How long does it take for a design to be complete, from start to finish?",
-		answer: `If you choose the ‘<a href="/pricing">Classic</a>’ or the ‘<a href="/pricing">Consult</a>’ package, your initial 2 designs will be delivered within 7 days. If you choose the ‘<a href="/pricing">Premium</a>’ package, your initial 2 designs will be delivered within 5 days. Once the initial designs are delivered, assuming there will be revisions, the final design post your feedback and revisions will be delivered along with the shopping list within 5 days from the date of the initial design delivery.`
+		answer: `If you choose the ‘<a href="/pricing">Delight</a>’ package, your initial 2 designs will be delivered within 7 days. If you choose the ‘<a href="/pricing">Bliss</a>’ or the ‘<a href="/pricing">Euphoria</a>’ package, your initial 2 designs will be delivered within 5 days. Once the initial designs are delivered, assuming there will be revisions, the final design post your feedback and revisions will be delivered along with the shopping list within 5 days from the date of the initial design delivery.`
 	},
 	{
 		tag: "Who are we?",

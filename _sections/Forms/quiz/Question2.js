@@ -159,7 +159,7 @@ function Question2({ plan }) {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-xs-10">
+				<div className="col-lg-10">
 					<SectionHeader title={quizTitle} description="Pick one from the budget ranges below" />
 					<div className="grid align-center">
 						<div className="col-12 col-sm-5 col-md-4">
