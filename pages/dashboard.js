@@ -53,6 +53,7 @@ const OrderSummaryTileStyled = styled.div`
 
 const EmptyStateStyled = styled.div`
 	width: 400px;
+	max-width: 100%;
 	margin: auto;
 	min-height: 70vh;
 	display: flex;

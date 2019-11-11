@@ -58,7 +58,7 @@ function Question3({ plan }) {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-md-10">
+				<div className="col-12 col-lg-10">
 					<SectionHeader title={quizTitle} description="We build our vision around your purpose!" />
 					<div className="grid align-center">
 						<div className="col-12">

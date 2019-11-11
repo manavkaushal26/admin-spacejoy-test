@@ -41,7 +41,7 @@ function checkout({ isServer, data, authVerification }) {
 			<CheckoutPageStyled>
 				<div className="container">
 					<div className="grid text-center">
-						<div className="col-12 col-md-10">
+						<div className="col-12 col-lg-10">
 							<SectionHeader title="Checkout" description="You are in good company" />
 
 							{data.status === "active" && (

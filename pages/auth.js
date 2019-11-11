@@ -41,6 +41,7 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 		<Link
 			href={{ pathname: "/auth", query: { flow: "login", redirectUrl } }}
 			as={redirectUrl ? `/auth/login?redirectUrl=${redirectUrl}` : "/auth/login"}
+			replace
 		>
 			<a href={redirectUrl ? `/auth/login?redirectUrl=${redirectUrl}` : "/auth/login"}>Login</a>
 		</Link>
@@ -50,6 +51,7 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 		<Link
 			href={{ pathname: "/auth", query: { flow: "signup", redirectUrl } }}
 			as={redirectUrl ? `/auth/signup?redirectUrl=${redirectUrl}` : "/auth/signup"}
+			replace
 		>
 			<a href={redirectUrl ? `/auth/signup?redirectUrl=${redirectUrl}` : "/auth/signup"}>Signup</a>
 		</Link>
@@ -59,6 +61,7 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 		<Link
 			href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl } }}
 			as={redirectUrl ? `/auth/forgot-password?redirectUrl=${redirectUrl}` : "/auth/signup"}
+			replace
 		>
 			<a href={redirectUrl ? `/auth/forgot-password?redirectUrl=${redirectUrl}` : "/auth/signup"}>Forgot Password?</a>
 		</Link>
@@ -74,7 +77,7 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 			</Head>
 			<div className="container">
 				<div className="grid text-center">
-					<div className="col-12 col-sm-8 col-md-4">
+					<div className="col-12 col-sm-8 col-md-6 col-lg-4">
 						<div className="col-12">{getHeadingText(flow)}</div>
 						<div className="col-12">
 							{flow === "login" && <LoginForm redirectUrl={redirectUrl} />}

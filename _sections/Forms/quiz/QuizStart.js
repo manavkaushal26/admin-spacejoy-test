@@ -67,7 +67,7 @@ function QuizStart({ plan }) {
 	return (
 		<div className="container">
 			<div className="grid text-center">
-				<div className="col-12 col-md-10">
+				<div className="col-12 col-lg-10">
 					<SectionHeader
 						title="Start Your Free Trial. Unlock Fabulous Designs!"
 						description="Answer few more questions and submit images of your room to get your 3D designs going"

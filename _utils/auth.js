@@ -12,11 +12,9 @@ function redirectToLocation({ pathname, query, url, res = {} }) {
 	if (typeof window !== "undefined") {
 		switch (pathname) {
 			case "/auth":
-				return Router.push({ pathname, query }, url);
-			case "/designMySpace":
-				return Router.push({ pathname, query }, url);
+				return Router.replace({ pathname, query }, url);
 			default:
-				return Router.push({ pathname }, `${pathname}`);
+				return Router.push({ pathname, query }, url);
 		}
 	} else {
 		res.writeHead(302, {

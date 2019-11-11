@@ -21,7 +21,7 @@ function pricing({ isServer, authVerification }) {
 			<BreadCrumb />
 			<div className="container">
 				<div className="grid text-center">
-					<div className="col-12 col-sm-12 col-md-10">
+					<div className="col-lg-10">
 						<SectionHeader title="Pricing" description="Custom made packages with your needs in mind." />
 						<div className="grid">
 							{UpgradePlans.map(plan => (

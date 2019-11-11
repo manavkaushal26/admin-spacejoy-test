@@ -110,6 +110,7 @@ function HowSteps() {
 											<CTA
 												variant="primary"
 												size="lg"
+												shape="rounded"
 												action="StartFreeTrial"
 												label="WhatIsSpacejoy"
 												event="StartFreeTrial"

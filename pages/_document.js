@@ -46,24 +46,24 @@ class MyDocument extends Document {
 			<html lang="en-US">
 				<Head>
 					{prod && <script dangerouslySetInnerHTML={{ __html: stopFlicker }} />}
-					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
-					<link rel="preconnect" href="//res.cloudinary.com" />
-					<link rel="preconnect" href="//www.google-analytics.com" />
 					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
 					<link rel="dns-prefetch" href="//res.cloudinary.com" />
 					<link rel="dns-prefetch" href="//www.google-analytics.com" />
+					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
+					<link rel="preconnect" href="//res.cloudinary.com" />
+					<link rel="preconnect" href="//www.google-analytics.com" />
 					<link rel="prefetch" href="//js.stripe.com/v3/" />
+					<link rel="prefetch" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+					<link rel="preload" href="/static/styles/reflex.min.css?v1.0.3" as="style" />
+					<link rel="preload" href="/static/styles/style.css?v1.0.3" as="style" />
+					<link rel="preload" href="/static/styles/sanitize.css?v1.0.3" as="style" />
 					<link rel="manifest" href="/static/manifest.json" />
-					<link href="/static/styles/reflex.min.css?v1.0.2" rel="stylesheet" media="screen" />
-					<link href="/static/styles/style.css?v1.0.2" rel="stylesheet" media="screen" />
-					<link href="/static/styles/sanitize.css?v1.0.2" rel="stylesheet" media="screen" />
-					<link
-						rel="stylesheet"
-						media="screen"
-						href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-					/>
-					{/* <script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} /> */}
-					<script src="https://js.stripe.com/v3/" async defer />
+					<link href="/static/styles/reflex.min.css?v1.0.3" rel="stylesheet" />
+					<link href="/static/styles/style.css?v1.0.3" rel="stylesheet" />
+					<link href="/static/styles/sanitize.css?v1.0.3" rel="stylesheet" />
+					<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+					<script src="//js.stripe.com/v3/" defer />
+					{/* <script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} async/> */}
 					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
 				</Head>
 				<body>
