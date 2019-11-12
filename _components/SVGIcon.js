@@ -225,7 +225,10 @@ const SVGIcon = ({ name, style, fill, viewBox, width, className, height }) => (
 		viewBox={viewBox || getViewBox(name)}
 		xmlnsXlink="http://www.w3.org/1999/xlink"
 	>
-		<title>spacejoy {name}</title>
+		<title>
+			spacejoy
+			{name}
+		</title>
 		{getPath(name, { fill })}
 	</svg>
 );

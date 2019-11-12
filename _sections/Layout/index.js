@@ -23,9 +23,6 @@ const MainStyled = styled.main`
 			background: ${({ isServer, theme }) => (isServer ? theme.colors.red : theme.colors.green)};
 		}
 	}
-	@media (max-width: 576px) {
-		margin-top: 60px;
-	}
 `;
 
 function Layout({ isServer, authVerification, children }) {

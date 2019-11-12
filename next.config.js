@@ -1,10 +1,23 @@
 const withESLint = require("next-eslint");
 const withImages = require("next-images");
 const withOffline = require("next-offline");
+const path = require("path");
+const fs = require("fs");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const withLess = require("@zeit/next-less");
+const lessToJS = require("less-vars-to-js");
 
 const { ANALYZE } = process.env;
 const prod = process.env.NODE_ENV === "production";
+
+const themeVariables = lessToJS(
+	fs.readFileSync(path.resolve(__dirname, "./public/static/styles/antd-custom.less"), "utf8")
+);
+
+// fix: prevents error when .less files are required by node
+if (typeof require !== "undefined") {
+	require.extensions[".less"] = () => {};
+}
 
 const nextConfig = {
 	poweredByHeader: false,
@@ -49,6 +62,10 @@ const nextConfig = {
 			}
 		]
 	},
+	lessLoaderOptions: {
+		javascriptEnabled: true,
+		modifyVars: themeVariables // make your antd custom effective
+	},
 	webpack: config => {
 		if (ANALYZE) {
 			config.plugins.push(
@@ -66,4 +83,4 @@ const nextConfig = {
 	}
 };
 
-module.exports = withOffline(withESLint(withImages(nextConfig)));
+module.exports = withOffline(withESLint(withImages(withLess(nextConfig))));

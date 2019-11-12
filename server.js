@@ -83,9 +83,6 @@ app.prepare().then(() => {
 		server.get("/auth/:flow(login|signup|forgot-password)", (req, res) => {
 			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
 		});
-		server.get("/profile", (req, res) => {
-			app.render(req, res, "/profile", req.params);
-		});
 		server.get("/ping", (req, res) => {
 			res.send("pong");
 		});

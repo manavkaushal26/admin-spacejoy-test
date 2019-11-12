@@ -6,10 +6,10 @@ import { logout } from "@utils/auth";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { Row, Col } from "antd";
 import ActiveLink from "./ActiveLink";
 
 const HorizontalListStyled = styled.ul`
-	text-align: ${({ align }) => align};
 	margin: 0;
 	padding: 0;
 	li {
@@ -42,9 +42,12 @@ const HorizontalListStyled = styled.ul`
 	}
 `;
 
-const MobileHiddenStyled = styled.div`
+const MobileHiddenStyled = styled(Col)`
 	@media (max-width: 991px) {
 		display: none;
+	}
+	img {
+		padding: 20px 0 20px 0;
 	}
 `;
 
@@ -52,6 +55,13 @@ const MobileVisibleStyled = styled.div`
 	@media (min-width: 991px) {
 		display: none;
 	}
+	img {
+		padding: 20px 0 20px 0;
+	}
+`;
+
+const PaddedButton = styled(Button)`
+	padding: 26px 0 26px 0;
 `;
 
 const MobileNavVisibleStyled = styled.div`
@@ -135,9 +145,6 @@ const HeaderBody = ({ authVerification }) => {
 								</ActiveLink>
 							</DropMenu.Header>
 							<DropMenu.Body>
-								<ActiveLink href={{ pathname: "/profile", query: {} }} as="/profile">
-									Profile
-								</ActiveLink>
 								<Button size="xs" shape="rounded" variant="secondary" fill="ghost" onClick={logout}>
 									Logout
 								</Button>
@@ -160,32 +167,44 @@ const HeaderBody = ({ authVerification }) => {
 	const handleClick = () => updateMobileNavStatus(!mobileNavStatus);
 
 	return (
-		<div className="container">
-			<div className="grid align-center justify-content-space-between">
-				<MobileHiddenStyled className="col-2">
+		<Row>
+			<Row type="flex" justify="space-around" align="middle">
+				<MobileHiddenStyled offset={1} span={3}>
 					<ActiveLink href="/" as="/">
 						<Logo md />
 					</ActiveLink>
 				</MobileHiddenStyled>
-				<MobileHiddenStyled className="col-7">{navCenter}</MobileHiddenStyled>
-				<MobileHiddenStyled className="col-3">{navRight}</MobileHiddenStyled>
-				<MobileVisibleStyled className="col-8">
-					<ActiveLink href="/" as="/">
-						<Logo md />
-					</ActiveLink>
-				</MobileVisibleStyled>
-				<MobileVisibleStyled className="col-4 text-right">
-					<Button variant="clean" size="xs" fill="clean" onClick={handleClick}>
-						<SVGIcon name="menu" width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
-					</Button>
-				</MobileVisibleStyled>
-				<MobileNavVisibleStyled className={`col-12 ${mobileNavStatus ? "active" : ""}`}>
+				<MobileHiddenStyled type="flex" justify="center" align="middle" span={13}>
 					{navCenter}
+				</MobileHiddenStyled>
+				<MobileHiddenStyled align="middle" span={3}>
 					{navRight}
-				</MobileNavVisibleStyled>
-				<OverlayStyled className={mobileNavStatus ? "active" : ""} onClick={handleClick} />
-			</div>
-		</div>
+				</MobileHiddenStyled>
+			</Row>
+			<Row>
+				<Row type="flex" justify="space-around">
+					<MobileVisibleStyled span={18}>
+						<ActiveLink href="/" as="/">
+							<Logo md />
+						</ActiveLink>
+					</MobileVisibleStyled>
+					<MobileVisibleStyled align="right" span={10}>
+						<PaddedButton variant="clean" size="xs" fill="clean" onClick={handleClick}>
+							<SVGIcon name="menu" width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
+						</PaddedButton>
+					</MobileVisibleStyled>
+				</Row>
+				<Row>
+					<MobileNavVisibleStyled span={24} className={`${mobileNavStatus ? "active" : ""}`}>
+						{navCenter}
+						{navRight}
+					</MobileNavVisibleStyled>
+				</Row>
+				<Row>
+					<OverlayStyled className={mobileNavStatus ? "active" : ""} onClick={handleClick} />
+				</Row>
+			</Row>
+		</Row>
 	);
 };
 
