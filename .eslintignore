@@ -11,3 +11,4 @@ jsconfig.json
 *.css
 *.md
 _devops/**
+*.config.js

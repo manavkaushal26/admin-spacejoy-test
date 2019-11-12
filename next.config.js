@@ -66,9 +66,30 @@ const nextConfig = {
 		javascriptEnabled: true,
 		modifyVars: themeVariables // make your antd custom effective
 	},
-	webpack: config => {
+	webpack: (config, { isServer }) => {
+		const modifiedConfig = { ...config };
+		if (isServer) {
+			const antStyles = /antd\/.*?\/style.*?/;
+			const origExternals = [...config.externals];
+			modifiedConfig.externals = [
+				(context, request, callback) => {
+					if (request.match(antStyles)) return callback();
+					if (typeof origExternals[0] === "function") {
+						origExternals[0](context, request, callback);
+					} else {
+						callback();
+					}
+				},
+				...(typeof origExternals[0] === "function" ? [] : origExternals)
+			];
+
+			modifiedConfig.module.rules.unshift({
+				test: antStyles,
+				use: "null-loader"
+			});
+		}
 		if (ANALYZE) {
-			config.plugins.push(
+			modifiedConfig.plugins.push(
 				new BundleAnalyzerPlugin({
 					analyzerMode: "server",
 					analyzerPort: "auto",
@@ -79,7 +100,7 @@ const nextConfig = {
 				})
 			);
 		}
-		return config;
+		return modifiedConfig;
 	}
 };
 
