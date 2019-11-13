@@ -143,7 +143,11 @@ function Field({
 							</LabelStyled>
 							<AutoCompleteStyled className={loading ? "loading" : ""}>
 								{suggestions.map(suggestion => (
-									<SuggestionStyled {...getSuggestionItemProps(suggestion)} active={suggestion.active}>
+									<SuggestionStyled
+										key={suggestion.description.length}
+										{...getSuggestionItemProps(suggestion)}
+										active={suggestion.active}
+									>
 										{suggestion.description}
 									</SuggestionStyled>
 								))}

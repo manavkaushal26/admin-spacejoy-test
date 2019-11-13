@@ -7,7 +7,8 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
 
-function index({ isServer, authVerification }) {
+
+const index:React.FC<{isServer: boolean, authVerification: Object}> = ({ isServer, authVerification }) => {
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>

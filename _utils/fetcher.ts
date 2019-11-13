@@ -1,8 +1,21 @@
 import { cookieNames, page } from "@utils/config";
 import fetch from "isomorphic-unfetch";
+import { NextPageContext } from "next";
 import getCookie from "./getCookie";
 
-async function fetcher({ ctx, endPoint, method, body }) {
+interface FetcherParams {
+	ctx?: NextPageContext;
+	endPoint: string;
+	method: string;
+	body?: any;
+}
+
+interface ExtendedResponse extends Response {
+	statusCode?: number;
+	data?: any;
+}
+
+async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<ExtendedResponse> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }

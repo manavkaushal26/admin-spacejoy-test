@@ -8,6 +8,7 @@ const compression = require("compression");
 // const LRUCache = require("lru-cache");
 const bodyParser = require("body-parser");
 const getParsedUrl = require("./_utils/getParsedUrl");
+const customRouters = require("./_routes");
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const dev = process.env.NODE_ENV !== "production";
@@ -80,15 +81,11 @@ app.prepare().then(() => {
 		server.use(helmet({}));
 		server.use(compression({ threshold: 0 }));
 		server.use(bodyParser.json());
-		server.get("/auth/:flow(login|signup|forgot-password)", (req, res) => {
-			app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
-		});
+		server.use(customRouters.authRoutes(app));
+		server.use(customRouters.definedRoutes(app));
+
 		server.get("/ping", (req, res) => {
 			res.send("pong");
-		});
-		server.get(["/", "/index"], (req, res) => {
-			const { params } = req;
-			app.render(req, res, "/index", params);
 		});
 		server.use("/service-worker.js", serve(path.join(__dirname, ".next", "/service-worker.js"), true));
 		server.use("/manifest.json", serve(path.join(__dirname, "/static/manifest.json"), true));

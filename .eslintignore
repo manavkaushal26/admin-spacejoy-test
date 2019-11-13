@@ -11,4 +11,9 @@ jsconfig.json
 *.css
 *.md
 _devops/**
+**/*.less
+*.yaml
 *.config.js
+_routes/*
+server.js
+tsconfig.json
