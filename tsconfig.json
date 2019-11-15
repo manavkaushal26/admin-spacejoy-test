@@ -20,7 +20,8 @@
 			"@mocks/*": ["./_utils/Mocks/*"],
 			"@theme/*": ["./_theme/*"],
 			"@sections/*": ["./_sections/*"],
-			"@static/*": ["./public/static/*"]
+			"@static/*": ["./public/static/*"],
+			"@customTypes/*": ["./types/*"]
 		}
 	},
 	"exclude": ["node_modules"],

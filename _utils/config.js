@@ -20,6 +20,10 @@ const page = {
 	whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
 };
 
+const projectConfig = {
+	lifetime: 7
+};
+
 const cookieNames = {
 	authToken: "token",
 	userRole: "role"
@@ -78,5 +82,6 @@ module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary
+	cloudinary,
+	projectConfig
 };

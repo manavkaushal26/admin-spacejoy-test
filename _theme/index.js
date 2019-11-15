@@ -32,6 +32,17 @@ const theme = {
 			light2: "#c6c7cb"
 		}
 	},
+	spacing: {
+		xs: "0.15rem",
+		sm: "0.25rem",
+		md: "0.75rem",
+		lg: "1.15rem",
+		xl: "2rem",
+		icon: "0.5rem",
+		full: "100%",
+		gutter: "16px",
+		halfGutter: "8px"
+	},
 	sizes: {
 		topHeader: "70px"
 	}

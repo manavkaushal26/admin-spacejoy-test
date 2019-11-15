@@ -6,21 +6,10 @@ import fetcher from "./fetcher";
 import getCookie from "./getCookie";
 import { ServerResponse } from "http";
 import { NextPageContext } from "next";
+import { ExtendedComponentClass, ExtendedJSXElement, ExtendedJSXFC } from '@customTypes/extendedReactComponentTypes';
 
 const endPointAuthCheck: string = "/auth/check";
 const endPointGuestSignup: string = "/auth/register/guest";
-
-interface ExtendedJSXElement extends React.Component, React.SFC {
-	displayName?: string;
-	name?: string;
-	getInitialProps?: Function;
-}
-
-interface ExtendedJSXFC extends React.FC {
-	displayName?: string;
-	name?: string;
-	getInitialProps?: Function;
-}
 
 interface redirectArguments {
 	pathname: string;
@@ -31,6 +20,8 @@ interface redirectArguments {
 	url: string;
 	res?: ServerResponse;
 }
+
+
 
 const redirectToLocation = (params: redirectArguments): void => {
 	const { pathname, query, url, res } = params;
@@ -108,10 +99,10 @@ const auth = (ctx: NextPageContext): string | void => {
 	return token;
 };
 
-const getDisplayName = (JSXComponent: ExtendedJSXElement | ExtendedJSXFC): string =>
+const getDisplayName = (JSXComponent: ExtendedJSXElement | ExtendedJSXFC | ComponentClass): string =>
 	JSXComponent.displayName || JSXComponent.name || "Component";
 
-const withAuthSync = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC): ComponentClass => {
+const withAuthSync = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC): ExtendedComponentClass => {
 	return class extends Component {
 		static displayName = `withAuthSync(${getDisplayName(WrappedComponent)})`;
 
@@ -142,7 +133,7 @@ const withAuthSync = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC): Com
 	};
 };
 
-const withAuthVerification = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC): ComponentClass => {
+const withAuthVerification = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC| ExtendedComponentClass): ComponentClass => {
 	return class extends Component {
 		static displayName = `withAuthVerification(${getDisplayName(WrappedComponent)})`;
 

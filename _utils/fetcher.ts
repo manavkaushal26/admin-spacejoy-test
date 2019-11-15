@@ -10,12 +10,7 @@ interface FetcherParams {
 	body?: any;
 }
 
-interface ExtendedResponse extends Response {
-	statusCode?: number;
-	data?: any;
-}
-
-async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<ExtendedResponse> {
+async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }

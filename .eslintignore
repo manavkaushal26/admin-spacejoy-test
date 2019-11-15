@@ -17,3 +17,4 @@ _devops/**
 _routes/*
 server.js
 tsconfig.json
+types/*

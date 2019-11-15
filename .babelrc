@@ -13,7 +13,9 @@
 					"@utils": "./_utils",
 					"@theme": "./_theme",
 					"@sections": "./_sections",
-					"@static": "./public/static"
+					"@static": "./public/static",
+					"@customTypes": "./types",
+					"@mocks": "./_utils/Mocks"
 				}
 			}
 		]

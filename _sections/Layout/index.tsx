@@ -1,14 +1,15 @@
 import GlobalStyle from "@theme/globalStyle";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "../Header";
+import User, { Role } from "@customTypes/userType";
 
 const dev = process.env.NODE_ENV !== "production";
 
-const MainStyled = styled.main`
-	margin-top: 70px;
-	min-height: 70vh;
+const MainStyled = styled.main<{ isServer: boolean }>`
+	padding-top: 80px;
+	min-height: 100vh;
 	position: relative;
 	&.client-server-identifier {
 		&:after {
@@ -24,8 +25,13 @@ const MainStyled = styled.main`
 		}
 	}
 `;
+interface LayoutProps {
+	isServer: boolean | undefined;
+	authVerification: Partial<User>;
+	children: ReactNode;
+}
 
-function Layout({ isServer, authVerification, children }) {
+const Layout: React.FC<LayoutProps> = ({ isServer, authVerification, children }) => {
 	return (
 		<>
 			<GlobalStyle />
@@ -35,17 +41,14 @@ function Layout({ isServer, authVerification, children }) {
 			</MainStyled>
 		</>
 	);
-}
+};
 
 Layout.defaultProps = {
 	isServer: undefined,
-	authVerification: {}
-};
-
-Layout.propTypes = {
-	children: PropTypes.node.isRequired,
-	isServer: PropTypes.bool,
-	authVerification: PropTypes.shape({})
+	authVerification: {
+		role: Role.guest,
+		name: ""
+	}
 };
 
 export default Layout;
