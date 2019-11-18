@@ -4,7 +4,7 @@ import { UserProjectType } from "@customTypes/dashboardTypes";
 import styled from "styled-components";
 import ProgressBar from "@sections/Dashboard/progressBar";
 import { Status } from "@customTypes/userType";
-import { BottomPaddedDiv } from "./styled";
+import { BottomPaddedDiv, CustomDiv } from "./styled";
 import moment from "moment";
 const { Text } = Typography;
 
@@ -43,39 +43,43 @@ const UserProjectCard = ({
 				handleSelectCard(userProjectData._id);
 			}}
 		>
-			<Skeleton loading={loading}>
-				<Row>
-					<BottomPaddedDiv>
-						<Row type="flex" align="middle">
-							<Col span={4}>
-								<Avatar src={avatar}>{name[0]}</Avatar>
+			<Row>
+				<CustomDiv pb="15px">
+					<Row type="flex" align="middle">
+						<CustomDiv width="20%">
+							<Avatar src={avatar}>{name[0]}</Avatar>
+						</CustomDiv>
+						<CustomDiv width="60%">
+							<Text strong>{name}</Text>
+						</CustomDiv>
+						<CustomDiv width="20%">
+							<ProgressBar
+								status={status}
+								endTime={moment()
+									.add(4, "days")
+									.valueOf()}
+								width={30}
+							/>
+						</CustomDiv>
+					</Row>
+				</CustomDiv>
+
+				<Row type="flex" gutter={1}>
+					<Col span={24}>
+						<Row type="flex" gutter={2}>
+							<Col span={8}>
+								<StyledTag color="magenta">Phase: {phase}</StyledTag>
 							</Col>
-							<Col span={20}>
-								<Row type="flex" align="middle" justify="space-between">
-									<Text strong>{name}</Text>
-									<ProgressBar status={status} endTime={moment().add(4, 'days').valueOf()} width={30}/>
-								</Row>
+							<Col span={8}>
+								<StyledTag>Status: {status}</StyledTag>
+							</Col>
+							<Col span={8}>
+								<StyledTag>Task: Design</StyledTag>
 							</Col>
 						</Row>
-					</BottomPaddedDiv>
-
-					<Row type="flex" gutter={1}>
-						<Col span={24}>
-							<Row type="flex" gutter={2}>
-								<Col span={8}>
-									<StyledTag color="magenta">Phase: {phase}</StyledTag>
-								</Col>
-								<Col span={8}>
-									<StyledTag>Status: {status}</StyledTag>
-								</Col>
-								<Col span={8}>
-									<StyledTag>Task: Design</StyledTag>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
+					</Col>
 				</Row>
-			</Skeleton>
+			</Row>
 		</Card>
 	);
 };

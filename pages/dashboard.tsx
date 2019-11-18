@@ -8,7 +8,6 @@ import React, { useState, useEffect } from "react";
 import User from "@customTypes/userType";
 import { PaddedDiv } from "@sections/Header/styled";
 import Sidebar from "@sections/Dashboard/userProjectSidepanel";
-import { UserProjects } from "@mocks/userProjectMocks";
 import { UserProjectType } from "@customTypes/dashboardTypes";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
 import fetcher from "@utils/fetcher";
@@ -52,7 +51,6 @@ const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification }
 					<Col sm={24} md={14} lg={17} xl={18}>
 						<PaddedDiv>
 							{selectedUser!=='' && <UserProjectMainPanel userProjectData={selectedUser}/>}
-							Hello World
 						</PaddedDiv>
 					</Col>
 				</Row>

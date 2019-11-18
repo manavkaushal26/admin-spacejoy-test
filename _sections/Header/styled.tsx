@@ -1,6 +1,10 @@
 import Button from "@components/Button";
 import styled from 'styled-components';
 
+interface PaddedDivProps {
+	displa
+}
+
 export const PaddedDiv = styled.div`
 	padding: ${({theme}) => `0 ${theme.spacing.xl}`};
 `;

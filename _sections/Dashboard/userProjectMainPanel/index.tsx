@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserProjectType } from '@customTypes/dashboardTypes';
 import ProjectSummary from './projectSummary';
-import { number } from 'prop-types';
+import { Divider } from 'antd';
 
 
 const userProjectMainPanel:React.FC<{userProjectData:string}> = ({userProjectData}):JSX.Element => {
-    const [state, setState] = useState<UserProjectType>(null);
+    const [userData, setUserData] = useState<UserProjectType>(null);
     
+    useEffect(()=> {
 
+    }, [userProjectData]);
 
     return (
         <div>
-            {/* <ProjectSummary userProjectData={userProjectData}/> */}
+            <ProjectSummary userProjectData={userProjectData}/>
+            <Divider />
+            {/* <BasicDetails userProjectData={userProjectData}/> */}
         </div>
     )
 };

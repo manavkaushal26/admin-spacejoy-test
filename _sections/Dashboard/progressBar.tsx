@@ -4,7 +4,7 @@ import { Progress } from "antd";
 import { projectConfig } from '@utils/config';
 
 interface ProgressBarProps {
-	status: Status;
+	status: Status|"";
     endTime: number;
     width?: number
 }
