@@ -1,15 +1,15 @@
-import { Tabs, Input, Icon } from "antd";
+import { Tabs, Input, Icon, Menu, Divider } from "antd";
 import { Status } from "@customTypes/userType";
 import UserProjectCard from "@sections/Dashboard/userProjectCards";
 import { UserProjectType } from "@customTypes/dashboardTypes";
-import { MaxHeightDiv } from "./styled";
-import { useReducer, useMemo, ChangeEvent, useState, useRef, useEffect } from "react";
+import { MaxHeightDiv, SilentDivider } from "./styled";
+import { useReducer, useMemo, ChangeEvent, useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import InfiniteScroll from "react-infinite-scroller";
 import fetcher from "@utils/fetcher";
 import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
-import { NextPageContext } from "next";
 import LoadingCard from "./loadingCard";
+import { PaddedDiv } from "@sections/Header/styled";
 
 interface State {
 	searchText: string;
@@ -55,7 +55,10 @@ const reducer = (state: State, action: Action): State => {
 			return {
 				...state,
 				searchText: action.value.searchText,
-				searchActive: action.value.searchText.length !== 0
+				searchActive: action.value.searchText.length !== 0,
+				data: [],
+				pageCount: 0,
+				hasMore: true,
 			};
 		case actionTypes.UPDATE_HAS_MORE:
 			return {
@@ -63,9 +66,10 @@ const reducer = (state: State, action: Action): State => {
 				hasMore: action.value.hasMore
 			};
 		case actionTypes.LOAD_USER_DATA:
+			const dataToUpdate = action.value.pageCount === state.pageCount ? state.data : [...state.data, ...action.value.data];
 			return {
 				...state,
-				data: [...state.data, ...action.value.data],
+				data: [...dataToUpdate],
 				pageCount: action.value.pageCount,
 				hasMore: action.value.hasMore
 			};
@@ -78,33 +82,33 @@ const StyleCorrectedTab = styled(Tabs)`
 	.ant-tabs-nav-container {
 		width: 60%;
 	}
+	.ant-tabs-bar.ant-tabs-top-bar {
+		padding: 0px 12px;
+	}
 	.ant-tabs-extra-content {
 		width: 40%;
 	}
 `;
 
+const GrayMaxHeightDiv = styled(MaxHeightDiv)`
+	background: #f2f4f6;
+`;
+
 interface SidebarProps {
-	userProjectData?: UserProjectType[];
 	handleSelectCard: (user: string) => void;
-	isServer: boolean;
+	selectedUser: string;
 }
 
-const Sidebar: ExtendedJSXFC<SidebarProps> = ({ userProjectData, handleSelectCard, isServer }): JSX.Element => {
+const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser}): JSX.Element => {
 	const init = initialState => {
 		return {
 			...initialState,
-			data: userProjectData
+			data: []
 		};
 	};
-
 	const [state, dispatch] = useReducer(reducer, initalState, init);
 
-	const displayUsers = useMemo(() => {
-		return state.data.filter(user => {
-			console.log(user.name.toLowerCase().includes(state.searchText.toLowerCase()));
-			return user.name.toLowerCase().includes(state.searchText.toLowerCase());
-		});
-	}, [state.searchText, state.data]);
+	const displayUsers = state.data;
 
 	const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
 		const {
@@ -127,14 +131,16 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ userProjectData, handleSelectCar
 
 	const fetchData = async () => {
 		const { pageCount } = state;
-		const dataFeed = `?skip=${pageCount * 10}&limit=10`;
-		const resData = await fetcher({ endPoint: `/projects${dataFeed}`, method: "GET" });
+		const dataFeed = `skip=${pageCount * 10}&limit=10`;
+		const endpointToHit = state.searchActive ? `/admin/projects?keyword=name:${state.searchText}&` : '/admin/projects?';
+		const resData = await fetcher({ endPoint: `${endpointToHit}${dataFeed}`, method: "GET" });
 		if (resData.status === "success") {
-			if (resData.data.data.length > 0) {
-				console.log("dispatching");
+			const responseData = state.searchActive ? resData.data : resData.data.data || [];
+			console.log(responseData)
+			if (responseData.length > 0) {
 				dispatch(
 					actionCreator(actionTypes.LOAD_USER_DATA, {
-						data: resData.data.data,
+						data: responseData,
 						pageCount: state.pageCount + 1,
 						hasMore: true
 					})
@@ -152,10 +158,9 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ userProjectData, handleSelectCar
 	}, [scrollParentRef]);
 
 	return (
-		<MaxHeightDiv ref={scrollParentRef}>
+		<GrayMaxHeightDiv ref={scrollParentRef}>
 			<StyleCorrectedTab tabBarGutter={0} tabBarExtraContent={TabSearch()}>
 			<Tabs.TabPane tab="All" key="1">
-					<div>
 						<InfiniteScroll
 							loader={<LoadingCard/>}
 							loadMore={fetchData}
@@ -165,15 +170,16 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ userProjectData, handleSelectCar
 						>
 							{displayUsers.map(userProjectData => {
 								return (
-									<UserProjectCard
+									<><UserProjectCard
+										selectedUser={selectedUser}
 										key={userProjectData._id}
 										handleSelectCard={handleSelectCard}
 										userProjectData={userProjectData}
 									/>
+									<PaddedDiv><SilentDivider/></PaddedDiv></>
 								);
 							})}
 						</InfiniteScroll>
-					</div>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab="Active" key="2">
 					<div>
@@ -182,6 +188,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ userProjectData, handleSelectCar
 							.map(userProjectData => {
 								return (
 									<UserProjectCard
+										selectedUser={selectedUser}
 										key={userProjectData._id}
 										handleSelectCard={handleSelectCard}
 										userProjectData={userProjectData}
@@ -196,18 +203,19 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ userProjectData, handleSelectCar
 							.filter(userProjectData => userProjectData.status === Status.completed)
 							.map(userProjectData => {
 								return (
-									<UserProjectCard
-										key={userProjectData._id}
-										handleSelectCard={handleSelectCard}
-										userProjectData={userProjectData}
-									/>
+										<UserProjectCard
+										selectedUser={selectedUser}
+											key={userProjectData._id}
+											handleSelectCard={handleSelectCard}
+											userProjectData={userProjectData}
+										/>
 								);
 							})}
 					</div>
 				</Tabs.TabPane>
 				
 			</StyleCorrectedTab>
-		</MaxHeightDiv>
+		</GrayMaxHeightDiv>
 	);
 };
 

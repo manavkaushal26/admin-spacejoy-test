@@ -1,41 +1,51 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Card, Row, Tag, Col, Avatar, Typography, Skeleton } from "antd";
 import { UserProjectType } from "@customTypes/dashboardTypes";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ProgressBar from "@sections/Dashboard/progressBar";
-import { Status } from "@customTypes/userType";
-import { BottomPaddedDiv, CustomDiv } from "./styled";
+import { CustomDiv, StyledTag } from "./styled";
 import moment from "moment";
+import { getValueSafely } from "@utils/commonUtils";
 const { Text } = Typography;
 
-const StyledTag = styled(Tag)`
-	text-align: center;
-	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
+const UserCard = styled(Card)<{active: boolean}>`
+	background: transparent;
+	border: none;
+	${({active}) => active && css`
+		background: ${({theme})=>theme.colors.mild.antblue};
+		border-right: 3px solid ${({theme})=>theme.colors.antblue};
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+	`};
+	:hover {
+			background: ${({theme})=>theme.colors.mild.antblue};
+			border-right: 3px solid ${({theme})=>theme.colors.antblue};
+			}
 `;
+
+import { projectConfig } from '@utils/config';
 
 const UserProjectCard = ({
 	userProjectData,
 	handleSelectCard,
-	loading = false
+	selectedUser,
 }: {
 	userProjectData: UserProjectType;
 	handleSelectCard: (user: string) => void;
-	loading?: boolean;
+	selectedUser: string;
 }) => {
 	const {
 		name: room,
 		status,
-		avatar,
 		currentPhase: {
 			name: { internalName: phase }
 		},
-		customer: name
+		createdAt
 	} = userProjectData;
-
+	console.log(createdAt);
 	return (
-		<Card
+		<UserCard
+			size='small'
+			active={selectedUser===userProjectData._id}
 			hoverable
 			style={{ width: "100%" }}
 			onClick={e => {
@@ -46,41 +56,34 @@ const UserProjectCard = ({
 			<Row>
 				<CustomDiv pb="15px">
 					<Row type="flex" align="middle">
-						<CustomDiv width="20%">
-							<Avatar src={avatar}>{name[0]}</Avatar>
+						<CustomDiv width="15%"  overflow="visible">
+							<Avatar>{getValueSafely<string>(()=>{return room[0]}, 'N/A').toUpperCase()}</Avatar>
 						</CustomDiv>
-						<CustomDiv width="60%">
-							<Text strong>{name}</Text>
+						<CustomDiv width="75%">
+							<Text strong><CustomDiv width="100%" textTransform="capitalize">{getValueSafely<string>(()=>{return room}, 'N/A')}</CustomDiv></Text>
 						</CustomDiv>
-						<CustomDiv width="20%">
+						<CustomDiv width="10%" justifyContent="flex-end" type='flex' inline>
 							<ProgressBar
 								status={status}
-								endTime={moment()
-									.add(4, "days")
-									.valueOf()}
+								endTime={moment(createdAt)
+									.add(projectConfig.lifetime, "days")}
 								width={30}
 							/>
 						</CustomDiv>
 					</Row>
 				</CustomDiv>
 
-				<Row type="flex" gutter={1}>
+				<Row type="flex"  gutter={1}>
 					<Col span={24}>
-						<Row type="flex" gutter={2}>
-							<Col span={8}>
+						<Row type="flex">
+								<CustomDiv width="15%"/>
 								<StyledTag color="magenta">Phase: {phase}</StyledTag>
-							</Col>
-							<Col span={8}>
 								<StyledTag>Status: {status}</StyledTag>
-							</Col>
-							<Col span={8}>
-								<StyledTag>Task: Design</StyledTag>
-							</Col>
 						</Row>
 					</Col>
 				</Row>
 			</Row>
-		</Card>
+		</UserCard>
 	);
 };
 

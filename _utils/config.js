@@ -1,6 +1,7 @@
 const page = {
 	appName: "SpaceJoyWeb",
 	apiBaseUrl: "https://api.spacejoy.com/api",
+	stageApiBaseUrl: "https://server.staging.spacejoy.com/api",
 	placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 	googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
@@ -30,7 +31,7 @@ const cookieNames = {
 };
 
 const company = {
-	logo: "https://res.cloudinary.com/spacejoy/image/upload/v1568650421/shared/spacejoy_hgqxoa.svg",
+	logo: "v1573706986/shared/logo_h2nngf.svg",
 	name: "Neo Design Labs Inc",
 	product: "Spacejoy",
 	tagLine: "Designing your imagination",
@@ -78,10 +79,19 @@ const cloudinary = {
 	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy"
 };
 
+const stagingCloudinary = {
+	cloudName: "spacejoy-staging",
+	apiKey: "549421365942597",
+	apiSecret: "wzZmzPhV05-eCkbTC0xI2HNKg9Q",
+	environmentVariable: "CLOUDINARY_URL=cloudinary://549421365942597:wzZmzPhV05-eCkbTC0xI2HNKg9Q@spacejoy-staging",
+	baseDeliveryURL: "//res.cloudinary.com/spacejoy-staging",
+	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy-staging"
+};
+
 module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary,
+	cloudinary: process.env.NODE_ENV === "production" ? cloudinary : stagingCloudinary,
 	projectConfig
 };

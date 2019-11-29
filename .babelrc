@@ -15,7 +15,8 @@
 					"@sections": "./_sections",
 					"@static": "./public/static",
 					"@customTypes": "./types",
-					"@mocks": "./_utils/Mocks"
+					"@mocks": "./_utils/Mocks",
+					"@api": "./_api",
 				}
 			}
 		]

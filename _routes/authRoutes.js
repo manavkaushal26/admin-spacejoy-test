@@ -5,7 +5,7 @@
 const router = require("express").Router();
 
 function authRoutes(app) {
-	router.get("/:flow(login|signup|forgot-password)", (req, res) => {
+	router.get("/auth/:flow(login|signup|forgot-password)", (req, res) => {
 		app.render(req, res, "/auth", Object.assign({ redirectUrl: req.query.redirectUrl }, { flow: req.params.flow }));
 	});
 	return router;

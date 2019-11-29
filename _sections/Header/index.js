@@ -15,15 +15,13 @@ const CookieStyled = styled.div`
 `;
 
 const HeaderStyled = styled.div`
+	border-bottom: 1px #eaeaea solid;
 	background: ${({ theme }) => theme.colors.white};
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
 	z-index: 10;
-	&.raised {
-		box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
-	}
 `;
 
 class Header extends PureComponent {
@@ -33,21 +31,7 @@ class Header extends PureComponent {
 	};
 
 	componentDidMount = () => {
-		window.addEventListener("scroll", this.handleScroll);
 		this.setState({ cookiePolicyStatus: cookie.get("cookie-policy") });
-	};
-
-	componentWillUnmount = () => {
-		window.removeEventListener("scroll", this.handleScroll);
-	};
-
-	handleScroll = () => {
-		if (window.scrollY > 10) {
-			this.setState({ isRaised: true });
-		}
-		if (window.scrollY <= 10) {
-			this.setState({ isRaised: false });
-		}
 	};
 
 	updateCookiePolicyStatus = () => {

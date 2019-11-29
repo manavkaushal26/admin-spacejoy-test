@@ -1,5 +1,4 @@
 import GlobalStyle from "@theme/globalStyle";
-import PropTypes from "prop-types";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "../Header";
@@ -8,8 +7,8 @@ import User, { Role } from "@customTypes/userType";
 const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled.main<{ isServer: boolean }>`
-	padding-top: 80px;
-	min-height: 100vh;
+	padding-top: 62px;
+	min-height: calc(100vh - 62px);
 	position: relative;
 	&.client-server-identifier {
 		&:after {

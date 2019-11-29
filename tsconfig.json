@@ -21,7 +21,8 @@
 			"@theme/*": ["./_theme/*"],
 			"@sections/*": ["./_sections/*"],
 			"@static/*": ["./public/static/*"],
-			"@customTypes/*": ["./types/*"]
+			"@customTypes/*": ["./types/*"],
+			"@api/*": ["./_api/*"]
 		}
 	},
 	"exclude": ["node_modules"],

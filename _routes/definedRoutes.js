@@ -2,9 +2,11 @@
 
 const router = require("express").Router();
 const addIndexRoute = require("./appRoutes/indexRoute");
-
+const addPageRoutes = require("./appRoutes/pageRoutes");
 function definedRoutes(app) {
-	const modRouter = addIndexRoute(app, router);
+	let modRouter = router;
+	modRouter = addPageRoutes(app, modRouter);
+	modRouter = addIndexRoute(app, modRouter);
 	return modRouter;
 }
 

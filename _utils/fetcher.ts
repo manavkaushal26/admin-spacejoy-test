@@ -12,6 +12,7 @@ interface FetcherParams {
 
 async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
+	const apiBaseUrl = process.env.NODE_ENV !== "production" ? page.stageApiBaseUrl : page.apiBaseUrl;
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }
 		: { "Content-Type": "application/json" };
@@ -26,7 +27,7 @@ async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<
 					headers,
 					body: JSON.stringify(body)
 			  };
-	const response = await fetch(page.apiBaseUrl + endPoint, options);
+	const response = await fetch(apiBaseUrl + endPoint, options);
 	if (response.status) {
 		const resData = await response.json();
 		return resData;

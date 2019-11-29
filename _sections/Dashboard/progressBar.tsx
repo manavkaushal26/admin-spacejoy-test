@@ -1,11 +1,11 @@
-import moment from "moment";
+import moment, { Moment } from "moment";
 import { Status } from "@customTypes/userType";
 import { Progress } from "antd";
 import { projectConfig } from '@utils/config';
 
 interface ProgressBarProps {
 	status: Status|"";
-    endTime: number;
+    endTime: Moment;
     width?: number
 }
 
@@ -14,8 +14,8 @@ const getProgressBarText = (days:number):string => {
     return `${displayDays}`
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ status,endTime, width=66}):JSX.Element => {
-    const duration = moment.duration(moment(endTime).diff(moment()));
+const ProgressBar: React.FC<ProgressBarProps> = ({ status,endTime, width=33}):JSX.Element => {
+    const duration = moment.duration(endTime.diff(moment()));
     const days = duration.get('days');
     const progressPercentage = (days/projectConfig.lifetime)* 100;
     let progressStatus: "normal"|"exception" = 'normal';
@@ -24,7 +24,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ status,endTime, width=66}):JS
 	} else if (days===0) {
         progressStatus = 'exception'
     }
-	return (<Progress percent={progressPercentage} status={progressStatus} format={()=>getProgressBarText(days)} type="circle" width={width}/>)
+	return (<Progress trailColor={progressStatus === 'exception' ?`#f30000` : ''} percent={progressPercentage} status={progressStatus} format={()=>getProgressBarText(days)} type="circle" width={width}/>)
 }
 
 export default ProgressBar;

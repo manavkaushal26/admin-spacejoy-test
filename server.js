@@ -5,7 +5,7 @@ const next = require("next");
 const path = require("path");
 const os = require("os");
 const compression = require("compression");
-// const LRUCache = require("lru-cache");
+const LRUCache = require("lru-cache");
 const bodyParser = require("body-parser");
 const getParsedUrl = require("./_utils/getParsedUrl");
 const customRouters = require("./_routes");
@@ -26,35 +26,35 @@ const serve = (pathName, cache) =>
 		maxAge: cache && !dev ? getMaxAge() : 0
 	});
 
-// function getCacheKey(req) {
-// 	return `${req.url}`;
-// }
+function getCacheKey(req) {
+	return `${req.url}`;
+}
 
-// const ssrCache = new LRUCache({
-// 	max: 100,
-// 	maxAge: 1000 * 60 * 60
-// });
-//
-// async function renderAndCache(req, res, pagePath, queryParams) {
-// 	const key = getCacheKey(req);
-// 	if (ssrCache.has(key)) {
-// 		res.setHeader("x-cache", "HIT");
-// 		res.send(ssrCache.get(key));
-// 		return;
-// 	}
-// 	try {
-// 		const html = await app.renderToHTML(req, res, pagePath, queryParams);
-// 		if (res.statusCode !== 200) {
-// 			res.send(html);
-// 			return;
-// 		}
-// 		ssrCache.set(key, html);
-// 		res.setHeader("x-cache", "MISS");
-// 		res.send(html);
-// 	} catch (err) {
-// 		app.renderError(err, req, res, pagePath, queryParams);
-// 	}
-// }
+const ssrCache = new LRUCache({
+	max: 100,
+	maxAge: 1000 * 60 * 60
+});
+
+async function renderAndCache(req, res, pagePath, queryParams) {
+	const key = getCacheKey(req);
+	if (ssrCache.has(key)) {
+		res.setHeader("x-cache", "HIT");
+		res.send(ssrCache.get(key));
+		return;
+	}
+	try {
+		const html = await app.renderToHTML(req, res, pagePath, queryParams);
+		if (res.statusCode !== 200) {
+			res.send(html);
+			return;
+		}
+		ssrCache.set(key, html);
+		res.setHeader("x-cache", "MISS");
+		res.send(html);
+	} catch (err) {
+		app.renderError(err, req, res, pagePath, queryParams);
+	}
+}
 
 app.prepare().then(() => {
 	const server = express();

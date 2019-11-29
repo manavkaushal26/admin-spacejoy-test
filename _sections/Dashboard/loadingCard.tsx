@@ -1,15 +1,10 @@
 import React from 'react';
-import { Card, Skeleton, Avatar } from 'antd';
+import { Card, Skeleton, Spin } from 'antd';
 
 const LoadingCard = () => {
-    return <Card>
-        <Skeleton loading>
-            <Card.Meta>
-                <Avatar>A</Avatar>
-                <div>Name</div>
-            </Card.Meta>
-        </Skeleton>
-    </Card>
+    return <Spin spinning><Card>
+        <Skeleton loading avatar active/>
+    </Card></Spin>
 }
 
 export default LoadingCard;

@@ -7,11 +7,13 @@ const theme = {
 		yellow: "#fdcb6e",
 		red: "#e74c3c",
 		green: "#4CAF50",
+		antblue: "#1890ff",
 		blue: "#3498db",
 		teal: "#00BCD4",
 		dark: "#3d4245",
 		white: "#ffffff",
 		mild: {
+			antblue: "#e6f7ff",
 			yellow: "rgba(253, 203, 110, 0.1)",
 			red: "rgba(231, 76, 60, 0.1)",
 			green: "rgba(46, 204, 113, 0.1)",

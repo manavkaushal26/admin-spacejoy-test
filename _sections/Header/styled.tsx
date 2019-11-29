@@ -6,6 +6,8 @@ interface PaddedDivProps {
 }
 
 export const PaddedDiv = styled.div`
+	width: 100%;
+	height: 100%;
 	padding: ${({theme}) => `0 ${theme.spacing.xl}`};
 `;
 

@@ -1,17 +1,21 @@
 import styled from "styled-components";
-import { Tag } from "antd";
+import { Tag, Divider, Typography } from "antd";
+
+const { Text } = Typography;
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
-	max-height: 85vh;
+	height: calc(100vh - 60px);
 	overflow-y: scroll;
+	display: flex;
+	flex-direction: row;
+	justify-content: stretch;
+	align-content: stretch;
 `;
 
 export const StyledTag = styled(Tag)`
+	text-transform: capitalize;
 	text-align: center;
-	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
 `;
 
 export const VerticalPaddedDiv = styled.div`
@@ -22,15 +26,24 @@ export const BottomPaddedDiv = styled.div`
 	padding-bottom: 15px;
 `;
 
+interface ModifiedTextProps {
+	textTransform?: "uppercase" | "lowercase" | "capitalize";
+}
+
+export const ModifiedText = styled(Text)<ModifiedTextProps>`
+	text-transform: ${({ textTransform }) => textTransform};
+`;
+
 /**
  * Props Accepted by Customisable div
  */
 interface CustomDivProps {
-	type?: "flex"|"block"|"grid";
+	type?: "flex" | "block" | "grid";
 	inline?: boolean;
-	overflow?: "hidden"|"scroll";
-	overX?: "hidden"|"scroll";
-	overY?: "hidden"|"scroll";
+	overflow?: "hidden" | "scroll" | "visible";
+	overX?: "hidden" | "scroll";
+	overY?: "hidden" | "scroll";
+	height?: string;
 	width?: string;
 	/** Padding-x */
 	px?: string;
@@ -58,8 +71,23 @@ interface CustomDivProps {
 	/** margin-left */
 	ml?: string;
 	/** Text overflow */
-	textOverflow?: "clip"|"ellipsis"|"initial";
-	justifyContent?: "space-around"| "flex-end"| "flex-start"| "space-around"|"space-evenly"|"space-between";
+	textOverflow?: "clip" | "ellipsis" | "initial";
+	justifyContent?:
+		| "space-around"
+		| "flex-end"
+		| "flex-start"
+		| "space-evenly"
+		| "space-between"
+		| "baseline"
+		| "center"
+		| "stretch";
+	textTransform?: "capitalize" | "uppercase" | "lowercase";
+	align?: "center" | "start" | "end" | "baseline" | "stretch" | 'flex-end' | 'flex-start';
+	wrap?: "wrap" | "no-wrap" | "wrap-reverse";
+	flexGrow?: number;
+	maxHeight?: string;
+	flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
+	whiteSpace?: "pre" | "nowrap" | "normal" | "pre-line" | "pre-wrap";
 }
 
 export const CustomDiv = styled.div<CustomDivProps>`
@@ -69,11 +97,15 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	overflow: ${({ overflow = "hidden" }) => {
 		return overflow;
 	}};
+	overflow-x: ${({ overX }) => overX};
+	overflow-y: ${({ overY }) => overY};
 	word-break: initial;
-	text-overflow: ${({textOverflow="ellipsis"})=> textOverflow};
+	text-overflow: ${({ textOverflow = "ellipsis" }) => textOverflow};
+	height: ${({ height }) => height};
 	width: ${({ width }) => {
 		return width;
 	}};
+	text-transform: ${({ textTransform }) => textTransform};
 	/* Padding */
 	padding-left: ${({ px }) => px};
 	padding-right: ${({ px }) => px};
@@ -92,5 +124,15 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	margin-bottom: ${({ mb }) => mb};
 	margin-right: ${({ mr }) => mr};
 	margin-left: ${({ ml }) => ml};
-	justify-content: ${({justifyContent})=> justifyContent};
+	justify-content: ${({ justifyContent }) => justifyContent};
+	align-items: ${({ align }) => align};
+	flex-wrap: ${({ wrap }) => wrap};
+	flex-grow: ${({ flexGrow }) => flexGrow};
+	flex-direction: ${({ flexDirection }) => flexDirection};
+	max-height: ${({ maxHeight }) => maxHeight};
+	white-space: ${({ whiteSpace }) => whiteSpace};
+`;
+
+export const SilentDivider = styled(Divider)`
+	margin: 0 0;
 `;

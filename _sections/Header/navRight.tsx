@@ -8,8 +8,8 @@ import Button from "@components/Button";
 const navRight = (authVerification: Partial<User>):JSX.Element => (
     <nav>
         <HorizontalListStyled align="right">
-            <li>
-                {authVerification && authVerification.role === Role.customer ? (
+        <li>
+            {authVerification && (authVerification.role === Role.admin || authVerification.role === Role.designer || authVerification.role === Role.owner) ? (
                     <DropMenu>
                         <DropMenu.Header>
                             <ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">

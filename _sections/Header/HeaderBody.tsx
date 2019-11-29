@@ -53,7 +53,6 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				<MobileNavVisibleStyled className={`${mobileNavStatus ? "active" : ""}`}>
 					<Row>
 						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
-							{navCenter(authVerification)}
 							{navRight(authVerification)}
 						</Col>
 					</Row>
