@@ -1,9 +1,9 @@
 version: "3.3"
 services:
-  spacejoyweb:
+  spacejoyweb-admin:
     build: .
-    container_name: spacejoyweb
-    image: saurabhdsachan/spacejoyweb-react
+    container_name: spacejoyweb-admin
+    image: spacejoy/spacejoyweb-admin
     restart: always
     ports:
       - "3000:3000"
@@ -15,7 +15,7 @@ services:
     image: nginx:1.15-alpine
     container_name: nginx
     links:
-      - spacejoyweb
+      - spacejoyweb-admin
     ports:
       - "80:80"
       - "443:443"
