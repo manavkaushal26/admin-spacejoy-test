@@ -13,7 +13,7 @@ const index:React.FC<{isServer: boolean, authVerification: Object}> = ({ isServe
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
-				<title>Get 3D Designs of Your Space | {company.product}</title>
+				<title>Admin Panel | {company.product}</title>
 			</Head>
 			<HeroSection />
 		</Layout>

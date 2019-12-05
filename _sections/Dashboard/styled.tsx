@@ -90,6 +90,7 @@ interface CustomDivProps {
 	flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
 	whiteSpace?: "pre" | "nowrap" | "normal" | "pre-line" | "pre-wrap";
 	minWidth?: string;
+	maxWidth?: string;
 }
 
 export const CustomDiv = styled.div<CustomDivProps>`
@@ -133,6 +134,7 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	white-space: ${({ whiteSpace }) => whiteSpace};
 	flex-basis: ${({flexBasis})=>flexBasis};
 	min-width: ${({minWidth})=>minWidth};
+	max-width: ${({maxWidth})=>maxWidth};
 `;
 
 export const SilentDivider = styled(Divider)`
