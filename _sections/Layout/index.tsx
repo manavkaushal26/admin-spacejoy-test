@@ -7,8 +7,8 @@ import User, { Role } from "@customTypes/userType";
 const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled.main<{ isServer: boolean }>`
-	padding-top: 62px;
-	min-height: calc(100vh - 62px);
+	padding-top: 60px;
+	min-height: calc(100vh - 60px);
 	position: relative;
 	&.client-server-identifier {
 		&:after {

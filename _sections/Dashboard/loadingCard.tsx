@@ -1,5 +1,5 @@
-import React from 'react';
 import { Card, Skeleton, Spin } from 'antd';
+import React from 'react';
 
 const LoadingCard = () => {
     return <Spin spinning><Card>

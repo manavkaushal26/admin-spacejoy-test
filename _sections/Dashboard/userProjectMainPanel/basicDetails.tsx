@@ -1,13 +1,11 @@
-import React from "react";
-import { CustomDiv, ModifiedText } from "../styled";
-import { Row, Col, Typography, Icon } from "antd";
-
-import basicDetailMocks from "@mocks/dashboardMocks/basicDetailMocks";
-import styled from "styled-components";
 import { DetailedProject } from "@customTypes/dashboardTypes";
-import moment from "moment";
 import { Role } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
+import { Col, Icon, Row, Typography } from "antd";
+import moment from "moment";
+import React from "react";
+import { CustomDiv, ModifiedText } from "../styled";
+
 
 const { Text } = Typography;
 

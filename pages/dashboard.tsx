@@ -1,36 +1,35 @@
+import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
+import User from "@customTypes/userType";
+import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
+import Sidebar from "@sections/Dashboard/userProjectSidepanel";
+import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
-import { Row, Col } from "antd";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
-import Head from "next/head";
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import User from "@customTypes/userType";
-import { PaddedDiv } from "@sections/Header/styled";
-import Sidebar from "@sections/Dashboard/userProjectSidepanel";
-import { UserProjectType } from "@customTypes/dashboardTypes";
-import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
-import fetcher from "@utils/fetcher";
-import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
-import Router from "next/router";
+import { Col, Row, Spin } from "antd";
 import { NextPageContext } from "next";
-import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import Head from "next/head";
+import Router from "next/router";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const GreyDiv = styled.div`
-	background-color: ${({theme})=>theme.colors.bg.light1};
+	background-color: ${({ theme }) => theme.colors.bg.light1};
 `;
 interface DashboardProps {
 	isServer: boolean;
 	authVerification: Partial<User>;
 	projectId: string;
+	designId: string;
 }
 
-const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, projectId = "" }): JSX.Element => {
+const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, projectId, designId }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(false);
 	const handleSelectCard = (user: string): void => {
 		setSelectedUser(user);
-		Router.push({ pathname: "/dashboard", query: { user } }, `/dashboard/${user}`, { shallow: true });
+		Router.push({ pathname: "/dashboard", query: { user } }, `/dashboard/pid/${user}`);
 	};
 
 	useEffect(() => {
@@ -43,18 +42,25 @@ const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, 
 				<title>Dashboard | {company.product}</title>
 			</Head>
 			<GreyDiv>
-				<Row type={"flex"} align="top">
-					<Col sm={24} md={10} lg={7} xl={6}>
-						<Sidebar selectedUser={selectedUser} handleSelectCard={handleSelectCard} />
-					</Col>
-					<Col sm={24} md={14} lg={17} xl={18}>
-						<MaxHeightDiv>
-							<PaddedDiv>
-								<UserProjectMainPanel userProjectId={selectedUser} />
-							</PaddedDiv>
-						</MaxHeightDiv>
-					</Col>
-				</Row>
+				<Spin spinning={loading}>
+					<Row type={"flex"} align="top">
+						<Col sm={24} md={10} lg={7} xl={6}>
+								<Sidebar selectedUser={selectedUser} handleSelectCard={handleSelectCard} />
+						</Col>
+						<Col sm={24} md={14} lg={17} xl={18}>
+							<MaxHeightDiv>
+								<PaddedDiv>
+									<UserProjectMainPanel
+										loading={loading}
+										setLoading={setLoading}
+										designId={designId}
+										userProjectId={selectedUser}
+									/>
+								</PaddedDiv>
+							</MaxHeightDiv>
+						</Col>
+					</Row>
+				</Spin>
 			</GreyDiv>
 		</PageLayout>
 	);
@@ -63,15 +69,16 @@ const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, 
 dashboard.getInitialProps = async (ctx: NextPageContext): Promise<DashboardProps> => {
 	const {
 		req,
-		query: { pid }
+		query: { pid, designId: did }
 	} = ctx;
 	const isServer = !!req;
+	const designId: string = did as string;
 	const projectId: string = pid as string;
 	const authVerification = {
 		name: "",
 		email: ""
 	};
-	return { isServer, authVerification, projectId };
+	return { isServer, authVerification, projectId, designId };
 };
 
 export default withAuthVerification(withAuthSync(dashboard));

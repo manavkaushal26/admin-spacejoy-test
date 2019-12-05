@@ -1,11 +1,12 @@
-import React from "react";
-import { Card, Row, Tag, Col, Avatar, Typography, Skeleton } from "antd";
 import { UserProjectType } from "@customTypes/dashboardTypes";
-import styled, { css } from "styled-components";
 import ProgressBar from "@sections/Dashboard/progressBar";
-import { CustomDiv, StyledTag } from "./styled";
-import moment from "moment";
 import { getValueSafely } from "@utils/commonUtils";
+import { projectConfig } from '@utils/config';
+import { Avatar, Card, Col, Row, Typography } from "antd";
+import moment from "moment";
+import React from "react";
+import styled, { css } from "styled-components";
+import { CustomDiv, StyledTag } from "./styled";
 const { Text } = Typography;
 
 const UserCard = styled(Card)<{active: boolean}>`
@@ -22,7 +23,6 @@ const UserCard = styled(Card)<{active: boolean}>`
 			}
 `;
 
-import { projectConfig } from '@utils/config';
 
 const UserProjectCard = ({
 	userProjectData,
@@ -41,7 +41,6 @@ const UserProjectCard = ({
 		},
 		createdAt
 	} = userProjectData;
-	console.log(createdAt);
 	return (
 		<UserCard
 			size='small'

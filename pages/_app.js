@@ -1,6 +1,7 @@
 import theme from "@theme/index";
 import { initAnalytics, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
 import { guestLogin } from "@utils/auth";
+import { Spin } from "antd";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
@@ -40,9 +41,9 @@ export default class MyApp extends App {
 		const { Component, pageProps } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
-				<div className={`${loading ? "loading" : ""}`}>
+				<Spin spinning={!!loading}>
 					<Component {...pageProps} />
-				</div>
+				</Spin>
 			</ThemeProvider>
 		);
 	}

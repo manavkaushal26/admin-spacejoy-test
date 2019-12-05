@@ -1,7 +1,7 @@
+import { FormType } from "@customTypes/dashboardTypes";
+import { Card } from "antd";
 import React from "react";
 import { CustomDiv, ModifiedText } from "../styled";
-import { Card } from "antd";
-import { FormType } from "@customTypes/dashboardTypes";
 
 interface CustomerResponsesProps {
 	formData: FormType[];

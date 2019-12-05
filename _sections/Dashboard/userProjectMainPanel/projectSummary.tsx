@@ -1,14 +1,13 @@
-import React from "react";
-import { UserProjectType, DetailedProject } from "@customTypes/dashboardTypes";
-import { Row, Col, Avatar, Typography } from "antd";
-import styled from "styled-components";
-import ProgressBar from "@sections/Dashboard/progressBar";
-import { StyledTag, VerticalPaddedDiv, CustomDiv } from "../styled";
-import moment from "moment";
+import { DetailedProject } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { PaddedDiv } from "@sections/Header/styled";
+import ProgressBar from "@sections/Dashboard/progressBar";
 import { getValueSafely } from "@utils/commonUtils";
 import { projectConfig } from "@utils/config";
+import { Avatar, Col, Row, Typography } from "antd";
+import moment from "moment";
+import React from "react";
+import styled from "styled-components";
+import { CustomDiv, StyledTag } from "../styled";
 
 const { Title, Text } = Typography;
 

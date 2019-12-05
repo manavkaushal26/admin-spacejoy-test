@@ -1,15 +1,16 @@
-import { Tabs, Input, Icon, Menu, Divider } from "antd";
+import { UserProjectType } from "@customTypes/dashboardTypes";
+import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
 import { Status } from "@customTypes/userType";
 import UserProjectCard from "@sections/Dashboard/userProjectCards";
-import { UserProjectType } from "@customTypes/dashboardTypes";
-import { MaxHeightDiv, SilentDivider } from "./styled";
-import { useReducer, useMemo, ChangeEvent, useRef, useEffect, useState } from "react";
-import styled from "styled-components";
-import InfiniteScroll from "react-infinite-scroller";
-import fetcher from "@utils/fetcher";
-import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
-import LoadingCard from "./loadingCard";
 import { PaddedDiv } from "@sections/Header/styled";
+import fetcher from "@utils/fetcher";
+import { ChangeEvent, useReducer, useRef } from "react";
+import InfiniteScroll from "react-infinite-scroller";
+import styled from "styled-components";
+import LoadingCard from "./loadingCard";
+import { MaxHeightDiv, SilentDivider } from "./styled";
+import { Icon, Input, Tabs } from "antd";
+
 
 interface State {
 	searchText: string;
@@ -85,8 +86,19 @@ const StyleCorrectedTab = styled(Tabs)`
 	.ant-tabs-bar.ant-tabs-top-bar {
 		padding: 0px 12px;
 	}
+	&.ant-tabs {
+		overflow-y: scroll;
+	}
 	.ant-tabs-extra-content {
 		width: 40%;
+	}
+	div[role='tabpanel'] {
+		overflow-y: scroll;
+	}
+	.ant-tabs-content {
+		div[role='presentation'] + div {
+			overflow-y: scroll;
+		}
 	}
 `;
 
@@ -135,8 +147,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser})
 		const endpointToHit = state.searchActive ? `/admin/projects?keyword=name:${state.searchText}&` : '/admin/projects?';
 		const resData = await fetcher({ endPoint: `${endpointToHit}${dataFeed}`, method: "GET" });
 		if (resData.status === "success") {
-			const responseData = state.searchActive ? resData.data : resData.data.data || [];
-			console.log(responseData)
+			const responseData = resData.data.data;
 			if (responseData.length > 0) {
 				dispatch(
 					actionCreator(actionTypes.LOAD_USER_DATA, {
@@ -153,16 +164,12 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser})
 
 	const scrollParentRef = useRef(null);
 
-	useEffect(() => {
-		console.log(scrollParentRef);
-	}, [scrollParentRef]);
-
 	return (
 		<GrayMaxHeightDiv ref={scrollParentRef}>
 			<StyleCorrectedTab tabBarGutter={0} tabBarExtraContent={TabSearch()}>
 			<Tabs.TabPane tab="All" key="1">
 						<InfiniteScroll
-							loader={<LoadingCard/>}
+							loader={<LoadingCard key='loadingCard'/>}
 							loadMore={fetchData}
 							hasMore={state.hasMore}
 							useWindow={false}

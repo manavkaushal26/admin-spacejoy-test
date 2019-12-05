@@ -101,3 +101,15 @@ export interface AssetType {
 	_id: string;
 	imageUrl: string;
 }
+
+export interface MoodboardAsset {
+	recommendations: Partial<AssetType>[];
+	_id: string;
+	asset: Partial<AssetType>;
+}
+
+export interface MoodBoardType {
+	_id: string;
+	name: string;
+	assets: MoodboardAsset[];
+}

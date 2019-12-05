@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { CustomDiv } from "../styled";
-import { Row, Col, Avatar, Input, Button, Typography, Icon, Card, Empty } from "antd";
-import styled from "styled-components";
-import { DetailedDesign, DesignerNotes } from "@customTypes/dashboardTypes";
 import { updateNotesApi } from "@api/designApi";
-import { getLocalStorageValue } from "@utils/storageUtils";
-import User from "@customTypes/userType";
-import fetcher from "@utils/fetcher";
-import { getValueSafely } from "@utils/commonUtils";
 import Image from "@components/Image";
+import { DesignerNotes, DetailedDesign } from "@customTypes/dashboardTypes";
+import User from "@customTypes/userType";
+import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { getLocalStorageValue } from "@utils/storageUtils";
+import { Avatar, Button, Card, Col, Icon, Input, Row, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { CustomDiv } from "../styled";
 
 const { Text, Paragraph } = Typography;
 

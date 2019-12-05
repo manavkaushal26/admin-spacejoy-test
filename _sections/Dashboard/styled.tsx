@@ -1,16 +1,16 @@
+import { Divider, Tag, Typography } from "antd";
 import styled from "styled-components";
-import { Tag, Divider, Typography } from "antd";
 
 const { Text } = Typography;
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
 	height: calc(100vh - 60px);
-	overflow-y: scroll;
 	display: flex;
 	flex-direction: row;
 	justify-content: stretch;
 	align-content: stretch;
+	overflow-y: scroll !important;
 `;
 
 export const StyledTag = styled(Tag)`
@@ -86,17 +86,17 @@ interface CustomDivProps {
 	wrap?: "wrap" | "no-wrap" | "wrap-reverse";
 	flexGrow?: number;
 	maxHeight?: string;
+	flexBasis?: string;
 	flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
 	whiteSpace?: "pre" | "nowrap" | "normal" | "pre-line" | "pre-wrap";
+	minWidth?: string;
 }
 
 export const CustomDiv = styled.div<CustomDivProps>`
 	display: ${({ type = "block", inline }) => {
 		return `${inline ? `inline-${type}` : type}`;
 	}};
-	overflow: ${({ overflow = "hidden" }) => {
-		return overflow;
-	}};
+	overflow: ${({ overflow }) => overflow};
 	overflow-x: ${({ overX }) => overX};
 	overflow-y: ${({ overY }) => overY};
 	word-break: initial;
@@ -131,6 +131,8 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	flex-direction: ${({ flexDirection }) => flexDirection};
 	max-height: ${({ maxHeight }) => maxHeight};
 	white-space: ${({ whiteSpace }) => whiteSpace};
+	flex-basis: ${({flexBasis})=>flexBasis};
+	min-width: ${({minWidth})=>minWidth};
 `;
 
 export const SilentDivider = styled(Divider)`

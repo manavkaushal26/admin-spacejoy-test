@@ -1,0 +1,80 @@
+import Image from "@components/Image";
+import { AssetType } from "@customTypes/moodboardTypes";
+import { CustomDiv } from "@sections/Dashboard/styled";
+import { getValueSafely } from "@utils/commonUtils";
+import { Button, Typography } from "antd";
+import React, { useState } from "react";
+import styled from "styled-components";
+import { AssetCard } from "../styled";
+
+const { Text } = Typography;
+
+interface CartAssetCard {
+    asset: Partial<AssetType>;
+    type: 'primary' | 'recommendation';
+    onRecommendationClick?: (entryId: string) => void;
+	entryId?: string; 
+    addRemoveAsset: (action: 'ADD' | 'DELETE', assetId: string, assetEntryId?: string) => void;
+}
+
+const BorderlessAssetCard = styled(AssetCard)`
+	border: none;
+    background: transparent;
+`;
+
+const StyledButton = styled(Button)`
+	i.anticon {
+		display: flex;
+		justify-content: center;
+		align-content: center;
+	}
+`;
+
+
+
+const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({ asset, type, onRecommendationClick, entryId, addRemoveAsset }) => {
+    
+    const [loading, setLoading] = useState<boolean>(false);
+    
+    const onClick = async () => {
+        setLoading(true);
+        if( type==='primary') {
+            await addRemoveAsset("DELETE", entryId);
+        }
+        if (type === 'recommendation') {
+            await addRemoveAsset("DELETE", asset._id, entryId);
+        }
+        setLoading(false);
+    };
+
+    return (
+		<CustomDiv py="8px">
+			<BorderlessAssetCard>
+				<CustomDiv type="flex">
+					<CustomDiv overflow='hidden' width="30%" justifyContent='center' type='flex'>
+						<Image height="100px" src={`q_80,h_100/${asset.cdn}`} />
+					</CustomDiv>
+					<CustomDiv width="70%" px="8px" py="8px" type="flex" wrap="wrap" justifyContent="space-evenly" align="center">
+						<CustomDiv width="100%">
+							<Text style={{ width: "100%" }} strong ellipsis>
+								{getValueSafely(() => asset.name, "N/A")}
+							</Text>
+						</CustomDiv>
+						<CustomDiv width="100%">
+							<Text style={{ width: "100%" }} strong ellipsis>
+								{getValueSafely(() => asset.retailer.name, "N/A")}
+							</Text>
+						</CustomDiv>
+						<CustomDiv type="flex" width="80%" px="4px">
+						{type === 'primary' && <Button block onClick={() => onRecommendationClick(entryId)}>Recomendations</Button>}
+						</CustomDiv>
+						<CustomDiv type="flex" width="20%" px="4px">
+							<StyledButton loading={loading} onClick={onClick} icon="delete" type="danger" block></StyledButton>
+						</CustomDiv>
+					</CustomDiv>
+				</CustomDiv>
+			</BorderlessAssetCard>
+		</CustomDiv>
+	);
+};
+export default CartAssetCard;

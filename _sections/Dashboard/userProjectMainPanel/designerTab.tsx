@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useReducer, useMemo } from "react";
+import { addTeamMemberApi, userApi } from "@api/userApi";
 import { TeamMember } from "@customTypes/dashboardTypes";
-import { Col, Row, Card, Skeleton, Avatar, Typography, Checkbox, Button } from "antd";
-import { userApi, addTeamMemberApi } from "@api/userApi";
-import fetcher from "@utils/fetcher";
-import { response } from "express";
-import { CustomDiv, ModifiedText } from "../styled";
 import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { Avatar, Button, Card, Checkbox, Col, Row, Typography } from "antd";
+import React, { useEffect, useMemo, useReducer } from "react";
 import styled from "styled-components";
+import { CustomDiv, ModifiedText } from "../styled";
 
 const { Text, Title } = Typography;
 
@@ -192,47 +191,48 @@ const DesignerTab: React.FC<DesignerTabInterface> = ({
 		<CustomDiv py="10px" px="10px">
 			<Row>
 				<Col md={16}>
-					{state.designers.map(designer => {
-						return (
-							<Card
-								style={{ width: 175 }}
-								size="small"
-								title={
-									<CustomDiv>
-										<Row type="flex" align="middle">
-											<CustomDiv py="8px" width="30%" overflow="visible">
-												<Avatar>
-													{getValueSafely<string>(() => {
-														return designer.profile.name[0];
-													}, "N/A").toUpperCase()}
-												</Avatar>
-											</CustomDiv>
-											<CustomDiv width="70%">
-												<Text strong>
-													<CustomDiv width="100%" textTransform="capitalize" overflow="hidden">
+					<CustomDiv type="flex" wrap="wrap">
+						{state.designers.map(designer => {
+							return (
+								<CustomDiv flexBasis="25ch" px='8px' py='8px'>
+									<Card
+										size="small"
+										title={
+											<CustomDiv type="flex" align="center">
+												<CustomDiv py="8px" width="30%" overflow="visible">
+													<Avatar>
 														{getValueSafely<string>(() => {
-															return designer.profile.name;
-														}, "N/A")}
-													</CustomDiv>
-												</Text>
+															return designer.profile.name[0];
+														}, "N/A").toUpperCase()}
+													</Avatar>
+												</CustomDiv>
+												<CustomDiv width="70%">
+													<Text style={{width: "100%"}} ellipsis strong>
+														<CustomDiv width="100%" textTransform="capitalize" overflow="hidden">
+															{getValueSafely<string>(() => {
+																return designer.profile.name;
+															}, "N/A")}
+														</CustomDiv>
+													</Text>
+												</CustomDiv>
 											</CustomDiv>
-										</Row>
-									</CustomDiv>
-								}
-								extra={
-									<Checkbox
-										checked={selectedDesignersId.includes(designer._id)}
-										onChange={e => {
-											onDesignerSelect(designer._id, e.target.checked);
-										}}
-									/>
-								}
-								key={designer._id}
-							>
-								Current Projects: 4
-							</Card>
-						);
-					})}
+										}
+										extra={
+											<Checkbox
+												checked={selectedDesignersId.includes(designer._id)}
+												onChange={e => {
+													onDesignerSelect(designer._id, e.target.checked);
+												}}
+											/>
+										}
+										key={designer._id}
+									>
+										Current Projects: 4
+									</Card>
+								</CustomDiv>
+							);
+						})}
+					</CustomDiv>
 				</Col>
 				<GreyColumn md={8}>
 					<CustomDiv width="100%" type="flex" justifyContent="space-around">

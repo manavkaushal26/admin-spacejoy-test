@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-
-import { Tabs, Card, Row, Col, Tag, Typography, Divider } from "antd";
-import CustomerResponses from "./customerResponses";
-import { DetailedProject, DetailedDesign } from "@customTypes/dashboardTypes";
-import Image from "@components/Image";
-import { CustomDiv, SilentDivider } from "../styled";
-import DesignerTab from "./designerTab";
-import { Role } from "@customTypes/userType";
-import NotesTab from "./notesTab";
+import { Card, Col, Row, Tabs, Tag, Typography, Spin } from "antd";
 import { designApi } from "@api/designApi";
+import Image from "@components/Image";
+import { DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
+import { Role } from "@customTypes/userType";
+import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import fetcher from "@utils/fetcher";
+import React, { useEffect, useState } from "react";
+import { CustomDiv, SilentDivider } from "../styled";
+import CustomerResponses from "./customerResponses";
+import DesignerTab from "./designerTab";
+import NotesTab from "./notesTab";
 import styled from "styled-components";
-import MoodboardTab from "./moodboardTab";
+
 const { TabPane } = Tabs;
 
 const {Text} = Typography;
@@ -24,21 +24,28 @@ interface ProjectTabViewProps {
 	refetchData: () => void;
 }
 
+const ScrollableTabs = styled(Tabs)`
+	.ant-tabs-content {
+		div[role='presentation'] + div {
+			overflow-y: scroll;
+		}
+	}
+`;
+
 
 const ProjectTabView: React.FC<ProjectTabViewProps> = ({ projectData, designId, onSelectDesign, setLoading, refetchData }): JSX.Element => {
 
 	const { form: formData } = projectData;
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
-
+	const [designLoading, setDesignLoading] = useState<boolean>(false);
 	const fetchDesignData = async () => {
-		console.log('here')
-		setLoading(true);
+		setDesignLoading(true);
 		const endPoint = designApi(designId);
 		const responseData = await fetcher({endPoint: endPoint, method: 'GET'});
 		if(responseData.data) {
 			setDesignData(responseData.data);
 		}
-		setLoading(false);
+		setDesignLoading(false);
 	} 
 
 	const refetchDesignData = ():void => {
@@ -46,18 +53,19 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({ projectData, designId, 
 	}
 
 	useEffect(() => {
-		if(designId !== '') {
-			console.log(designId);
+		if(designId) {
 			fetchDesignData();
 			return;
+		} else {
+			setDesignData(null);
 		}
-		setDesignData(null);
+		return () => {setDesignData(null); setDesignLoading(false);};
 	},[designId]);
 
 	return (
 		<>
 			{designData !== null ? (
-				<Tabs defaultActiveKey="1">
+				<ScrollableTabs defaultActiveKey="1">
 					<TabPane tab="Customer Responses" key="1">
 						<CustomerResponses formData={formData || []} />
 					</TabPane>
@@ -65,7 +73,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({ projectData, designId, 
 						<NotesTab refetchDesignData={refetchDesignData} designData={designData}/>
 					</TabPane>
 					<TabPane tab="Moodboard" key="3">
-						<MoodboardTab />
+						<MoodboardTab setLoading={setLoading} projectId={projectData._id} designId={designId}/>
 					</TabPane>
 					<TabPane tab="Discussions" key="4">
 						Content of Tab Pane 4
@@ -73,13 +81,14 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({ projectData, designId, 
 					<TabPane tab="Designers" key="5">
 						<DesignerTab refetchData={refetchData} setLoading={setLoading} projectId={projectData._id} assignedDesigners={projectData.team.filter(member => member.role === Role.designer)}/>
 					</TabPane>
-				</Tabs>
+				</ScrollableTabs>
 			) : (
 				projectData.designs.map(design => {
-					return (<>
+					return (<React.Fragment key={design._id}>
+						<Spin spinning={designLoading}>
 					<SilentDivider/>
 						<CustomDiv overflow="visible" width="300px" mt="20px">
-							<Card hoverable cover={<Image width="300px" onClick={()=> onSelectDesign(design.design._id)} src={design.design.designImages[0].cdn} />}>
+							<Card hoverable cover={<Image width="300px" height="175px" onClick={()=> onSelectDesign(design.design._id)} src={`q_80,w_300/${design.design.designImages[0].cdn}`} />}>
 								<Row type="flex" justify="space-between">
 									<Col><Text>{design.design.name}</Text></Col>
 									<Col>
@@ -87,7 +96,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({ projectData, designId, 
 									</Col>
 								</Row>
 							</Card>
-						</CustomDiv></>
+						</CustomDiv></Spin></React.Fragment>
 					);
 				})
 			)}

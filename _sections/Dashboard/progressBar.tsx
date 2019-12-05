@@ -1,7 +1,7 @@
-import moment, { Moment } from "moment";
 import { Status } from "@customTypes/userType";
-import { Progress } from "antd";
 import { projectConfig } from '@utils/config';
+import { Progress } from "antd";
+import moment, { Moment } from "moment";
 
 interface ProgressBarProps {
 	status: Status|"";
