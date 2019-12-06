@@ -67,15 +67,8 @@ const nextConfig = {
 		modifyVars: themeVariables // make your antd custom effective
 	},
 	webpack: (config, { isServer }) => {
-		const modifiedConfig = { ...config };
-		if (isServer) {
-			modifiedConfig.module.rules.unshift({
-				test: antStyles,
-				use: "null-loader"
-			});
-		}
 		if (ANALYZE) {
-			modifiedConfig.plugins.push(
+			config.plugins.push(
 				new BundleAnalyzerPlugin({
 					analyzerMode: "server",
 					analyzerPort: "auto",
@@ -86,7 +79,7 @@ const nextConfig = {
 				})
 			);
 		}
-		return modifiedConfig;
+		return config;
 	}
 };
 
