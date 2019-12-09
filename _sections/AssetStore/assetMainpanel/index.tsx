@@ -6,8 +6,8 @@ import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Pagination, Row, Typography } from "antd";
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import AssetDescriptionPanel from "./assetDescriptionPanel";
-import ProductCard from "./productCard";
+import AssetDescriptionPanel from "./AssetDescriptionPanel";
+import ProductCard from "./ProductCard";
 
 const { Title } = Typography;
 
@@ -39,9 +39,14 @@ const fetchAndPopulate:fetchAndPopulate = async (state, pageCount, setAssetData,
 		body: {
 			data: {
 				retailer: { search: "array", value: state.retailerFilter },
+				"name": {search: 'single', value: state.searchText},
 				"meta.category": { search: "array", value: state.checkedKeys.category },
 				"meta.subcategory": { search: "array", value: state.checkedKeys.subCategory },
-				"meta.vertical": { search: "array", value: state.checkedKeys.verticals }
+				"meta.vertical": { search: "array", value: state.checkedKeys.verticals },
+				"price": {search: "range", value: state.priceRange},
+				"dimensions.depth": {search: "range", value: state.depthRange},
+				"dimensions.width": {search: "range", value: state.widthRange},
+				"dimensions.height": {search: "range", value: state.heightRange},
 			}
 		}
 	});
@@ -76,21 +81,35 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	};
 
 	useEffect(() => {
+		if(moodboard && assetEntryId) {
+			const asset = moodboard.assets.find(asset => {
+				return asset._id == assetEntryId;
+			});
+			dispatch({type: ASSET_ACTION_TYPES.SUB_CATEGORY, value: [asset.asset]})
+		}
+	},[assetEntryId]);
+
+	useEffect(() => {
 		debouncedFetchAsset(state, pageCount, setAssetData, setTotalCount, dispatch);
 	}, [
+		state.searchText,
 		state.checkedKeys.subCategory.length,
 		state.checkedKeys.verticals.length,
 		state.checkedKeys.category.length,
 		state.retailerFilter.length,
+		state.priceRange,
+		state.widthRange,
+		state.depthRange,
+		state.heightRange,
 		pageCount
 	]);
 	return (
 		<>
-			<Row type="flex" justify="center">
+			<Row type="flex" justify="start">
 				<CustomDiv pt="0.5em" pl="0.5em" width="100%">
 					<Title level={3}>{assetEntryId ? "Recommendation Selection" : "Primary product selection"}</Title>
 				</CustomDiv>
-				<CustomDiv type="flex" wrap="wrap" justifyContent="center" flexGrow={1}>
+				<CustomDiv type="flex" wrap="wrap" justifyContent="space-evenly" flexGrow={1}>
 					{assetData.map(asset => {
 						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
 					})}

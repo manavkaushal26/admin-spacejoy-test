@@ -1,7 +1,45 @@
 import { Divider, Tag, Typography } from "antd";
 import styled from "styled-components";
+import { string } from "prop-types";
+import { Status } from "@customTypes/userType";
+import { PhaseInternalNames } from "@customTypes/dashboardTypes";
 
 const { Text } = Typography;
+
+export const getTagColor = (text: string):string => {
+	switch (text) {
+		case Status.active:
+		case PhaseInternalNames.requirement:
+			return 'blue';
+		case Status.pending:
+		case PhaseInternalNames.designRender:
+			return 'orange';
+		case Status.inactive:
+		case PhaseInternalNames.onHold:
+			return '';
+		case Status.suspended:
+		case PhaseInternalNames.suspended:
+			return 'magenta';
+		case Status.closed:
+		case PhaseInternalNames.rejected:
+			return 'red';
+		case Status.completed:
+		case PhaseInternalNames.designReady:
+		case PhaseInternalNames.deliveryCompleted:
+			return 'green';
+		case PhaseInternalNames.designConcept:
+			return 'purple';
+		case PhaseInternalNames.design3D:
+			return 'cyan';
+		case PhaseInternalNames.designsInRevision:
+			return 'yellow';
+		case PhaseInternalNames.shop:
+			return 'geekblue';
+		default: 
+			return '#595959';
+
+	}
+}
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
@@ -12,6 +50,7 @@ export const MaxHeightDiv = styled.div`
 	align-content: stretch;
 	overflow-y: scroll !important;
 `;
+
 
 export const StyledTag = styled(Tag)`
 	text-transform: capitalize;

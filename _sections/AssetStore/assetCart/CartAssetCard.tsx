@@ -6,20 +6,23 @@ import { Button, Typography } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AssetCard } from "../styled";
+import { useRouter } from "next/router";
 
 const { Text } = Typography;
 
 interface CartAssetCard {
-    asset: Partial<AssetType>;
-    type: 'primary' | 'recommendation';
-    onRecommendationClick?: (entryId: string) => void;
-	entryId?: string; 
-    addRemoveAsset: (action: 'ADD' | 'DELETE', assetId: string, assetEntryId?: string) => void;
+	projectId: string;
+	designId: string;
+	asset: Partial<AssetType>;
+	type: "primary" | "recommendation";
+	onRecommendationClick?: (entryId: string) => void;
+	entryId?: string;
+	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
 }
 
 const BorderlessAssetCard = styled(AssetCard)`
 	border: none;
-    background: transparent;
+	background: transparent;
 `;
 
 const StyledButton = styled(Button)`
@@ -30,28 +33,45 @@ const StyledButton = styled(Button)`
 	}
 `;
 
+const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
+	projectId,
+	designId,
+	asset,
+	type,
+	onRecommendationClick,
+	entryId,
+	addRemoveAsset
+}) => {
+	const [loading, setLoading] = useState<boolean>(false);
 
+	const Router = useRouter();
 
-const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({ asset, type, onRecommendationClick, entryId, addRemoveAsset }) => {
-    
-    const [loading, setLoading] = useState<boolean>(false);
-    
-    const onClick = async () => {
-        setLoading(true);
-        if( type==='primary') {
-            await addRemoveAsset("DELETE", entryId);
-        }
-        if (type === 'recommendation') {
-            await addRemoveAsset("DELETE", asset._id, entryId);
-        }
-        setLoading(false);
-    };
+	const onClick = async () => {
+		setLoading(true);
+		if (type === "primary") {
+			await addRemoveAsset("DELETE", entryId);
+		}
+		if (type === "recommendation") {
+			await addRemoveAsset("DELETE", asset._id, entryId);
+		}
+		setLoading(false);
+	};
 
-    return (
+	const redirect = () => {
+		Router.push(
+			{ pathname: "/assetstore", query: { designId, assetEntryId: entryId, projectId } },
+			`/assetstore/pid/${projectId}/did/${designId}/aeid/${entryId}`
+		);
+	};
+
+	return (
 		<CustomDiv py="8px">
-			<BorderlessAssetCard>
+			<BorderlessAssetCard
+				hoverable={type==='primary' }
+				onClick={type==='primary' ? redirect : null}
+			>
 				<CustomDiv type="flex">
-					<CustomDiv overflow='hidden' width="30%" justifyContent='center' type='flex'>
+					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex">
 						<Image height="100px" src={`q_80,h_100/${asset.cdn}`} />
 					</CustomDiv>
 					<CustomDiv width="70%" px="8px" py="8px" type="flex" wrap="wrap" justifyContent="space-evenly" align="center">
@@ -66,7 +86,11 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({ asset, type, onR
 							</Text>
 						</CustomDiv>
 						<CustomDiv type="flex" width="80%" px="4px">
-						{type === 'primary' && <Button block onClick={() => onRecommendationClick(entryId)}>Recomendations</Button>}
+							{type === "primary" && (
+								<Button block onClick={() => onRecommendationClick(entryId)}>
+									Recomendations
+								</Button>
+							)}
 						</CustomDiv>
 						<CustomDiv type="flex" width="20%" px="4px">
 							<StyledButton loading={loading} onClick={onClick} icon="delete" type="danger" block></StyledButton>

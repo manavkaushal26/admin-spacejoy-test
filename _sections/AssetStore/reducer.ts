@@ -5,6 +5,11 @@ export interface AssetStoreState {
 	metaData: MetaDataType;
 	moodboard: MoodBoardType;
 	retailerFilter: string[];
+	priceRange: [number, number];
+	heightRange: [number, number];
+	widthRange: [number, number];
+	depthRange: [number, number];
+	searchText: string;
 	checkedKeys: {
 		category: string[];
 		subCategory: string[];
@@ -20,7 +25,12 @@ export interface AssetAction {
 }
 
 export enum ASSET_ACTION_TYPES {
+	PRICE_RANGE = "PRICE_RANGE",
+	WIDTH_RANGE = "WIDTH_RANGE",
+	HEIGHT_RANGE = "HEIGHT_RANGE",
+	DEPTH_RANGE = "DEPTH_RANGE",
 	RETAILER = "RETAILER",
+	SEARCH_TEXT = "SEARCH_TEXT",
 	CATEGORY = "CATEGORY",
 	SUB_CATEGORY = "SUB_CATEGORY",
 	CHECKED_ITEMS = "CHECKED_ITEMS",
@@ -37,6 +47,31 @@ export interface AssetReducerType {
 
 export const reducer: AssetReducerType = (state, action) => {
 	switch (action.type) {
+		case ASSET_ACTION_TYPES.SEARCH_TEXT:
+			return {
+				...state,
+				searchText: action.value
+			};
+		case ASSET_ACTION_TYPES.DEPTH_RANGE:
+			return {
+				...state,
+				depthRange: action.value
+			};
+		case ASSET_ACTION_TYPES.HEIGHT_RANGE:
+			return {
+				...state,
+				heightRange: action.value
+			};
+		case ASSET_ACTION_TYPES.WIDTH_RANGE:
+			return {
+				...state,
+				widthRange: action.value
+			};
+		case ASSET_ACTION_TYPES.PRICE_RANGE:
+			return {
+				...state,
+				priceRange: action.value
+			};
 		case ASSET_ACTION_TYPES.LOADING_STATUS:
 			return {
 				...state,

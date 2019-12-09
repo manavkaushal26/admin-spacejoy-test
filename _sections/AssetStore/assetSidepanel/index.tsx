@@ -1,14 +1,15 @@
 import { MetaDataType } from "@customTypes/moodboardTypes";
-import Filter from "@sections/AssetStore/assetSidepanel/filters/categoryFilter";
-import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
+import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
+import { AssetAction, ASSET_ACTION_TYPES, AssetStoreState } from "@sections/AssetStore/reducer";
 import { CustomDiv } from "@sections/Dashboard/styled";
-import { Card, Tree, Typography } from "antd";
-import React, { useMemo } from "react";
-import { ModifiedDivider } from "../styled";
+import { Card, Tree, Typography, Input } from "antd";
+import React, { useMemo, useState } from "react";
+import { ModifiedDivider, StyledInput, MarginCorrectedSlider, FilterCard } from "../styled";
+import SliderFilter from "./filters/SliderFilter";
 
 const { TreeNode } = Tree;
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 interface AssetSidePanelProps {
 	metaData: MetaDataType;
@@ -16,6 +17,10 @@ interface AssetSidePanelProps {
 }
 
 const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): JSX.Element => {
+	const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
+	const [width, setWidthRange] = useState<[number, number]>([0, 30]);
+	const [height, setHeightRange] = useState<[number, number]>([0, 30]);
+	const [depth, setDepthRange] = useState<[number, number]>([0, 30]);
 
 	const categoryMap = useMemo(() => {
 		if (metaData) {
@@ -53,6 +58,128 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		dispatch({ type: ASSET_ACTION_TYPES.CHECKED_ITEMS, value: checkedKeys });
 	};
 
+	const onSearchInput = (e) => {
+		const {
+			target: {
+				value
+			}
+		} = e;
+		dispatch({type: ASSET_ACTION_TYPES.SEARCH_TEXT, value: value});
+	}
+
+	const afterPriceChange = () => {
+		const [min, max] = priceRange;
+		if(min<max)
+			dispatch({ type: ASSET_ACTION_TYPES.PRICE_RANGE, value: priceRange });
+	};
+
+	const onPriceRangeChange = range => {
+		setPriceRange(range);
+	};
+
+	const onPriceSliderValueEntry = (e, type) => {
+		const {
+			target: { value }
+		} = e;
+		const [min, max] = priceRange;
+		let correctedValue = parseInt(value);
+		if (isNaN(correctedValue) || correctedValue < 0) {
+			correctedValue = 0;
+		}
+		if (type === "min") {
+			setPriceRange([correctedValue, max]);
+		}
+		if (type === "max") {
+			setPriceRange([min, correctedValue]);
+		}
+		afterPriceChange();
+	};
+
+	const afterHeightChange = () => {
+		const [min, max] = priceRange;
+		if(min<max)
+			dispatch({ type: ASSET_ACTION_TYPES.HEIGHT_RANGE, value: height });
+	};
+
+	const onHeightRangeChange = range => {
+		setHeightRange(range);
+	};
+
+	const onHeightSliderValueEntry = (e, type) => {
+		const {
+			target: { value }
+		} = e;
+		const [min, max] = priceRange;
+		let correctedValue = parseInt(value);
+		if (isNaN(correctedValue) || correctedValue < 0) {
+			correctedValue = 0;
+		}
+		if (type === "min") {
+			setHeightRange([correctedValue, max]);
+		}
+		if (type === "max") {
+			setHeightRange([min, correctedValue]);
+		}
+		afterHeightChange();
+	};
+
+	const afterWidthChange = () => {
+		const [min, max] = priceRange;
+		if(min<max)
+			dispatch({ type: ASSET_ACTION_TYPES.WIDTH_RANGE, value: width });
+	};
+
+	const onWidthRangeChange = range => {
+		setWidthRange(range);
+	};
+
+	const onWidthSliderValueEntry = (e, type) => {
+		const {
+			target: { value }
+		} = e;
+		const [min, max] = width;
+		let correctedValue = parseInt(value);
+		if (isNaN(correctedValue) || correctedValue < 0) {
+			correctedValue = 0;
+		}
+		if (type === "min") {
+			setWidthRange([correctedValue, max]);
+		}
+		if (type === "max") {
+			setWidthRange([min, correctedValue]);
+		}
+		afterWidthChange();
+	};
+
+	const afterDepthChange = () => {
+		const [min, max] = height;
+		if(min<max)
+			dispatch({ type: ASSET_ACTION_TYPES.DEPTH_RANGE, value: depth });
+	};
+
+	const onDepthRangeChange = range => {
+		setDepthRange(range);
+	};
+
+	const onDepthSliderValueEntry = (e, type) => {
+		const {
+			target: { value }
+		} = e;
+		const [min, max] = depth;
+		let correctedValue = parseInt(value);
+		if (isNaN(correctedValue) || correctedValue < 0) {
+			correctedValue = 0;
+		}
+		if (type === "min") {
+			setDepthRange([correctedValue, max]);
+		}
+		if (type === "max") {
+			setDepthRange([min, correctedValue]);
+		}
+		afterDepthChange();
+	};
+
+
 	const renderTreeNodes = options => {
 		return options.map(item => {
 			if (item.children) {
@@ -66,18 +193,26 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		});
 	};
 
+	const [priceMin, priceMax] = priceRange;
+	const [widthMin, widthMax] = width;
+	const [heightMin, heightMax] = height;
+	const [depthMin, depthMax] = depth;
+
 	return (
 		<>
 			{metaData && (
 				<>
 					<CustomDiv py="0.5em">
-						<Card>
+						<FilterCard>
+						<Text strong>Search by Name</Text>
+							<Input allowClear onChange={onSearchInput}/>
+							<Text strong>Category</Text>
 							<Tree onCheck={onCheck} checkable>
 								{renderTreeNodes(categoryMap)}
 							</Tree>
-						</Card>
+						</FilterCard>
 					</CustomDiv>
-					<Card>
+					<FilterCard>
 						<Title level={4} type="secondary">
 							Filter Products
 						</Title>
@@ -89,7 +224,57 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 							})}
 							dispatch={dispatch}
 						/>
-					</Card>
+						<Title type="secondary" level={4}>Range FIlters</Title>
+						<ModifiedDivider />
+						<Text strong>Price</Text>
+						<CustomDiv width="100%" type="flex" align="center">
+							<SliderFilter
+								min={priceMin}
+								max={priceMax}
+								range={[0,20000]}
+								value={priceRange}
+								onValueEntry={onPriceSliderValueEntry}
+								onChange={onPriceRangeChange}
+								onAfterChange={afterPriceChange}
+							/>
+						</CustomDiv>
+						<Text strong>Width</Text>
+						<CustomDiv width="100%" type="flex" align="center">
+							<SliderFilter
+								min={widthMin}
+								max={widthMax}
+								range={[0,30]}
+								value={width}
+								onValueEntry={onWidthSliderValueEntry}
+								onChange={onWidthRangeChange}
+								onAfterChange={afterWidthChange}
+							/>
+						</CustomDiv>
+						<Text strong>Height</Text>
+						<CustomDiv width="100%" type="flex" align="center">
+							<SliderFilter
+								min={heightMin}
+								max={heightMax}
+								range={[0,30]}
+								value={height}
+								onValueEntry={onHeightSliderValueEntry}
+								onChange={onHeightRangeChange}
+								onAfterChange={afterHeightChange}
+							/>
+						</CustomDiv>
+						<Text strong>Depth</Text>
+						<CustomDiv width="100%" type="flex" align="center">
+							<SliderFilter
+								min={depthMin}
+								max={depthMax}
+								range={[0,30]}
+								value={depth}
+								onValueEntry={onDepthSliderValueEntry}
+								onChange={onDepthRangeChange}
+								onAfterChange={afterDepthChange}
+							/>
+						</CustomDiv>
+					</FilterCard>
 				</>
 			)}
 		</>

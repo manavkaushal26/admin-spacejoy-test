@@ -11,6 +11,8 @@ const { Text } = Typography;
 
 interface AssetCartModalProps {
 	cartOpen: boolean;
+	designId: string;
+	projectId: string;
 	moodboard: MoodBoardType;
 	dispatch: React.Dispatch<AssetAction>;
 	dataLoading: boolean;
@@ -20,6 +22,8 @@ interface AssetCartModalProps {
 const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
 	cartOpen,
 	dispatch,
+	projectId,
+	designId,
 	moodboard,
 	addRemoveAsset,
 	dataLoading
@@ -60,6 +64,8 @@ const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
 						return (
 							<>
 								<CartAssetCard
+								projectId={projectId}
+								designId={designId}
 									addRemoveAsset={addRemoveAsset}
 									onRecommendationClick={onRecomendationClick}
 									type="primary"
@@ -87,6 +93,8 @@ const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
 									return (
 										<>
 											<CartAssetCard
+											projectId={projectId}
+											designId={designId}
 												entryId={selectedAsset._id}
 												addRemoveAsset={addRemoveAsset}
 												type="recommendation"

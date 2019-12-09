@@ -1,12 +1,12 @@
 import { DetailedProject } from "@customTypes/dashboardTypes";
-import BasicDetails from "@sections/Dashboard/userProjectMainPanel/basicDetails";
+import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import fetcher from "@utils/fetcher";
 import { Empty, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { CustomDiv, MaxHeightDiv, SilentDivider } from "../styled";
-import ProjectSummary from "./projectSummary";
-import ProjectTabView from "./projectTabView";
+import ProjectSummary from "./ProjectSummary";
+import ProjectTabView from "./ProjectTabView";
 
 const {Text} = Typography;
 

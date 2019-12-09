@@ -5,7 +5,7 @@ export enum ProjectScope {
 	designer = "designer"
 }
 
-enum PhaseInternalNames {
+export enum PhaseInternalNames {
 	requirement = "requirement",
 	designConcept = "designConcept",
 	design3D = "design3D",

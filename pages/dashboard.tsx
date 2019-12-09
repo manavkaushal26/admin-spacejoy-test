@@ -2,7 +2,7 @@ import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
-import Sidebar from "@sections/Dashboard/userProjectSidepanel";
+import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
 import { withAuthSync, withAuthVerification } from "@utils/auth";

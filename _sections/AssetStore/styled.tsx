@@ -1,4 +1,4 @@
-import { Card, Divider, Drawer, Icon, Spin } from "antd";
+import { Card, Divider, Drawer, Icon, Spin, Slider } from "antd";
 import styled from "styled-components";
 
 export const ModifiedDivider = styled(Divider)`
@@ -17,6 +17,17 @@ export const StyleCorrectedIcon = styled(Icon)`
 		display: flex;
 		justify-content: center;
 		align-content: center;
+	}
+`;
+
+export const FilterCard = styled(Card)`
+	.ant-card-body {
+		> * + * {
+			margin-top: 10px;
+		}
+		.ant-typography {
+			display: block;
+		}
 	}
 `;
 
@@ -44,4 +55,19 @@ export const GreyDrawer = styled(Drawer)`
 			flex-grow: 1;
 		}
 	}
+`;
+
+export const StyledInput = styled.input<{error: boolean}>`
+	::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin:0;
+	}
+	width: 100%;
+	border: 1px solid rgba(0,0,0,0.1);
+	border-radius: 4px;
+	border-color: ${({error}) => error ? 'red' : '' };
+`;
+
+export const MarginCorrectedSlider = styled(Slider)`
+	margin: 8px 8px
 `;

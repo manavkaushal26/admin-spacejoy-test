@@ -1,5 +1,5 @@
 import { MoodBoardType } from "@customTypes/moodboardTypes";
-import ProductCard from "@sections/AssetStore/assetMainpanel/productCard";
+import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { Typography } from "antd";
 import { useRouter } from "next/router";

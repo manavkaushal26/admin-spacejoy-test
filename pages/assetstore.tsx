@@ -17,7 +17,7 @@ import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { AssetStoreState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
 
-const {Title} = Typography;
+const { Title } = Typography;
 
 interface MoodboardProps {
 	isServer: boolean;
@@ -32,20 +32,40 @@ const initialState: AssetStoreState = {
 	moodboard: null,
 	loading: true,
 	retailerFilter: [],
+	priceRange: [0, 10000],
+	heightRange: [0, 30],
+	widthRange: [0, 30],
+	depthRange: [0, 30],
+	searchText: "",
 	checkedKeys: {
 		category: [],
 		subCategory: [],
 		verticals: []
 	},
-	selectedAsset: '',
-	cartOpen: false,
+	selectedAsset: "",
+	cartOpen: false
 };
 
-const Overlay = styled(MaxHeightDiv)`
-position: fixed;
-z-index: 1022;
-	width: 100vw;
-	background-color: rgba(0,0,0,0.1);
+const ParentContainer = styled.div`
+	display: flex;
+	flex-wrap: wrap;
+
+	> * {
+		flex-grow: 1;
+		flex-shrink: 1;
+	}
+`;
+const SidebarContainer = styled.div`
+	flex-basis: 35ch;
+	flex-grow: 1;
+	@media only screen and (max-width: 768px) {
+		flex-basis: 30ch;
+	}
+`;
+const MainContentContainer = styled.div`
+	flex-basis: 0;
+	flex-grow: 999;
+	min-width: 50%;
 `;
 
 const moodboard: ExtendedJSXFC<MoodboardProps> = ({
@@ -137,8 +157,8 @@ const moodboard: ExtendedJSXFC<MoodboardProps> = ({
 	};
 
 	const toggleCart = () => {
-		dispatch({type: ASSET_ACTION_TYPES.TOGGLE_CART, value: null})
-	}
+		dispatch({ type: ASSET_ACTION_TYPES.TOGGLE_CART, value: null });
+	};
 
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
@@ -146,41 +166,50 @@ const moodboard: ExtendedJSXFC<MoodboardProps> = ({
 				<title>Asset Store | {company.product}</title>
 			</Head>
 			<Spin spinning={state.loading}>
-
-			<Row type={"flex"} align="top">
-				<Col sm={8} md={6} lg={6} xl={5}>
-					<MaxHeightDiv>
-						<CustomDiv width="100%" px="8px" overY="scroll">
-							<CustomDiv pt="0.5em" pb="4px" width="100%">
-								<Button onClick={goToButtonClick} block type="primary">
-									{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
-								</Button>
+				<ParentContainer>
+					<SidebarContainer>
+						<MaxHeightDiv>
+							<CustomDiv width="100%" px="8px" overY="scroll">
+								<CustomDiv pt="0.5em" pb="4px" width="100%">
+									<Button onClick={goToButtonClick} block type="primary">
+										{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
+									</Button>
+								</CustomDiv>
+								<CustomDiv pt="0.5em" pb="4px" width="100%">
+									<Button onClick={toggleCart} block type="default">
+										Open Cart
+									</Button>
+								</CustomDiv>
+								<Sidebar dispatch={dispatch} metaData={state.metaData} />
 							</CustomDiv>
-							<CustomDiv pt="0.5em" pb="4px" width="100%">
-								<Button onClick={toggleCart} block type="default">
-									Open Cart
-								</Button>
+						</MaxHeightDiv>
+					</SidebarContainer>
+					<MainContentContainer>
+						<MaxHeightDiv>
+							<CustomDiv flexDirection="column">
+								<AssetMainPanel
+									projectId={projectId}
+									dispatch={dispatch}
+									state={state}
+									assetEntryId={assetEntryId}
+									designId={designId}
+									moodboard={state.moodboard}
+									addRemoveAsset={addRemoveAsset}
+								/>
 							</CustomDiv>
-							<Sidebar dispatch={dispatch} metaData={state.metaData} />
-						</CustomDiv>
-					</MaxHeightDiv>
-				</Col>
-				<Col sm={16} md={18} lg={18} xl={19}>
-					<MaxHeightDiv>
-						<AssetMainPanel
-							projectId={projectId}
-							dispatch={dispatch}
-							state={state}
-							assetEntryId={assetEntryId}
-							designId={designId}
-							moodboard={state.moodboard}
-							addRemoveAsset={addRemoveAsset}
-						/>
-					</MaxHeightDiv>
-				</Col>
-			</Row>
+						</MaxHeightDiv>
+					</MainContentContainer>
+				</ParentContainer>
 			</Spin>
-			<AssetCartModal dataLoading={state.loading} addRemoveAsset={addRemoveAsset} cartOpen={state.cartOpen} dispatch={dispatch} moodboard={state.moodboard}/>
+			<AssetCartModal
+			designId={designId}
+			projectId={projectId}
+				dataLoading={state.loading}
+				addRemoveAsset={addRemoveAsset}
+				cartOpen={state.cartOpen}
+				dispatch={dispatch}
+				moodboard={state.moodboard}
+			/>
 		</PageLayout>
 	);
 };
