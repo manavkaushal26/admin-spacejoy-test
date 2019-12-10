@@ -6,7 +6,7 @@ import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Pagination, Row, Typography } from "antd";
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import AssetDescriptionPanel from "./assetDescriptionPanel";
+import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
 import styled from "styled-components";
 
