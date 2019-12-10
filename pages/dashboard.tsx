@@ -45,7 +45,7 @@ const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, 
 				<Spin spinning={loading}>
 					<Row type={"flex"} align="top">
 						<Col sm={24} md={10} lg={7} xl={6}>
-								<Sidebar selectedUser={selectedUser} handleSelectCard={handleSelectCard} />
+							<Sidebar selectedUser={selectedUser} handleSelectCard={handleSelectCard} />
 						</Col>
 						<Col sm={24} md={14} lg={17} xl={18}>
 							<MaxHeightDiv>

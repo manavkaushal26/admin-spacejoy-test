@@ -66,10 +66,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 
 	return (
 		<CustomDiv py="8px">
-			<BorderlessAssetCard
-				hoverable={type==='primary' }
-				onClick={type==='primary' ? redirect : null}
-			>
+			<BorderlessAssetCard hoverable={type === "primary"} onClick={type === "primary" ? redirect : null}>
 				<CustomDiv type="flex">
 					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex">
 						<Image height="100px" src={`q_80,h_100/${asset.cdn}`} />
@@ -88,7 +85,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 						<CustomDiv type="flex" width="80%" px="4px">
 							{type === "primary" && (
 								<Button block onClick={() => onRecommendationClick(entryId)}>
-									Recomendations
+									Recommendations
 								</Button>
 							)}
 						</CustomDiv>

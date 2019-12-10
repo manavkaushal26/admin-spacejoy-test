@@ -64,8 +64,8 @@ const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
 						return (
 							<>
 								<CartAssetCard
-								projectId={projectId}
-								designId={designId}
+									projectId={projectId}
+									designId={designId}
 									addRemoveAsset={addRemoveAsset}
 									onRecommendationClick={onRecomendationClick}
 									type="primary"
@@ -93,8 +93,8 @@ const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
 									return (
 										<>
 											<CartAssetCard
-											projectId={projectId}
-											designId={designId}
+												projectId={projectId}
+												designId={designId}
 												entryId={selectedAsset._id}
 												addRemoveAsset={addRemoveAsset}
 												type="recommendation"

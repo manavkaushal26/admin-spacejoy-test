@@ -6,23 +6,24 @@ import { useRouter } from "next/router";
 import React from "react";
 
 interface MoodboardDisplayProps {
-    moodboard: MoodBoardType;
-    designId: string;
-    projectId: string;
+	moodboard: MoodBoardType;
+	designId: string;
+	projectId: string;
 }
 
 const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodboard, projectId, designId }) => {
-    const Router = useRouter();
-    const onPrimaryAssetClick = (assetEntryId) => {
+	const Router = useRouter();
+	const onPrimaryAssetClick = assetEntryId => {
 		Router.push(
-            { pathname: "/assetstore", query: { designId, assetEntryId, projectId } },
-            `/assetstore/pid/${projectId}/did/${designId}/aeid/${assetEntryId}`
-        );  }
+			{ pathname: "/assetstore", query: { designId, assetEntryId, projectId } },
+			`/assetstore/pid/${projectId}/did/${designId}/aeid/${assetEntryId}`
+		);
+	};
 
 	return (
 		<>
 			<CustomDiv mt="0.5em" type="flex" width="100%">
-				<CustomDiv inline minWidth="29ch" px="0.7em">
+				<CustomDiv inline minWidth="30ch" px="0.7em">
 					<Typography.Title style={{ width: "100%" }} level={3}>
 						Primary
 					</Typography.Title>
@@ -42,8 +43,13 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 					return (
 						<>
 							<CustomDiv type="flex" width="100%">
-								<CustomDiv inline minWidth="29ch">
-									<ProductCard asset={assetEntry.asset} onCardClick={() => {onPrimaryAssetClick(assetEntry._id)}} />
+								<CustomDiv inline minWidth="30ch">
+									<ProductCard
+										asset={assetEntry.asset}
+										onCardClick={() => {
+											onPrimaryAssetClick(assetEntry._id);
+										}}
+									/>
 								</CustomDiv>
 								<CustomDiv inline>
 									<SilentDivider style={{ height: "100%" }} type="vertical" />

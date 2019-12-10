@@ -6,8 +6,9 @@ import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Pagination, Row, Typography } from "antd";
 import React, { useCallback, useEffect, useState, useMemo } from "react";
-import AssetDescriptionPanel from "./AssetDescriptionPanel";
+import AssetDescriptionPanel from "./assetDescriptionPanel";
 import ProductCard from "./ProductCard";
+import styled from "styled-components";
 
 const { Title } = Typography;
 
@@ -22,31 +23,40 @@ interface AssetMainPanelProps {
 }
 
 interface fetchAndPopulate {
-	(state: AssetStoreState,
-	pageCount: number,
-	setAssetData: React.Dispatch<React.SetStateAction<AssetType[]>>,
-	setTotalCount: React.Dispatch<React.SetStateAction<number>>,
-	dispatch: React.Dispatch<AssetAction>): Promise<void>
+	(
+		state: AssetStoreState,
+		pageCount: number,
+		setAssetData: React.Dispatch<React.SetStateAction<AssetType[]>>,
+		setTotalCount: React.Dispatch<React.SetStateAction<number>>,
+		dispatch: React.Dispatch<AssetAction>
+	): Promise<void>;
 }
 
-const fetchAndPopulate:fetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
+const MainAssetPanel = styled(CustomDiv)`
+	> *:last-child {
+		align-self: flex-start;
+		justify-self: flex-start;
+	}
+`;
+
+const fetchAndPopulate: fetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetApi();
-	const queryParams = `?skip=${(pageCount - 1) * 10}&limit=12`;
+	const queryParams = `?skip=${(pageCount - 1) * 10}&limit=30`;
 	const responseData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
 		body: {
 			data: {
 				retailer: { search: "array", value: state.retailerFilter },
-				"name": {search: 'single', value: state.searchText},
+				name: { search: "single", value: state.searchText },
 				"meta.category": { search: "array", value: state.checkedKeys.category },
 				"meta.subcategory": { search: "array", value: state.checkedKeys.subCategory },
 				"meta.vertical": { search: "array", value: state.checkedKeys.verticals },
-				"price": {search: "range", value: state.priceRange},
-				"dimensions.depth": {search: "range", value: state.depthRange},
-				"dimensions.width": {search: "range", value: state.widthRange},
-				"dimensions.height": {search: "range", value: state.heightRange},
+				price: { search: "range", value: state.priceRange },
+				"dimensions.depth": { search: "range", value: state.depthRange },
+				"dimensions.width": { search: "range", value: state.widthRange },
+				"dimensions.height": { search: "range", value: state.heightRange }
 			}
 		}
 	});
@@ -57,10 +67,9 @@ const fetchAndPopulate:fetchAndPopulate = async (state, pageCount, setAssetData,
 		}
 	}
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
-}
+};
 
 const debouncedFetchAsset = debounce(fetchAndPopulate, 500);
-
 
 const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	state,
@@ -75,19 +84,18 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	const [pageCount, setPageCount] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 
-
 	const onCardClick = assetId => {
 		dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: assetId });
 	};
 
 	useEffect(() => {
-		if(moodboard && assetEntryId) {
+		if (moodboard && assetEntryId) {
 			const asset = moodboard.assets.find(asset => {
 				return asset._id == assetEntryId;
 			});
-			dispatch({type: ASSET_ACTION_TYPES.SUB_CATEGORY, value: [asset.asset]})
+			dispatch({ type: ASSET_ACTION_TYPES.SUB_CATEGORY, value: [asset.asset] });
 		}
-	},[assetEntryId]);
+	}, [assetEntryId]);
 
 	useEffect(() => {
 		debouncedFetchAsset(state, pageCount, setAssetData, setTotalCount, dispatch);
@@ -109,11 +117,11 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				<CustomDiv pt="0.5em" pl="0.5em" width="100%">
 					<Title level={3}>{assetEntryId ? "Recommendation Selection" : "Primary product selection"}</Title>
 				</CustomDiv>
-				<CustomDiv type="flex" wrap="wrap" justifyContent="space-evenly" flexGrow={1}>
+				<MainAssetPanel type="flex" wrap="wrap" justifyContent="space-evenly" flexGrow={1}>
 					{assetData.map(asset => {
 						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
 					})}
-				</CustomDiv>
+				</MainAssetPanel>
 				<CustomDiv py="16px" justifyContent="space-around" type="flex" align="center" width="100%">
 					<Pagination
 						defaultPageSize={12}
