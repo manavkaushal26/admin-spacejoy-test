@@ -12,7 +12,6 @@ import { MaxHeightDiv, SilentDivider } from "./styled";
 import { Icon, Input, Tabs } from "antd";
 import { debounce } from "@utils/commonUtils";
 
-
 interface State {
 	searchText: string;
 	searchActive: boolean;
@@ -60,7 +59,7 @@ const reducer = (state: State, action: Action): State => {
 				searchActive: action.value.searchText.length !== 0,
 				data: [],
 				pageCount: 0,
-				hasMore: true,
+				hasMore: true
 			};
 		case actionTypes.UPDATE_HAS_MORE:
 			return {
@@ -68,7 +67,8 @@ const reducer = (state: State, action: Action): State => {
 				hasMore: action.value.hasMore
 			};
 		case actionTypes.LOAD_USER_DATA:
-			const dataToUpdate = action.value.pageCount === state.pageCount ? state.data : [...state.data, ...action.value.data];
+			const dataToUpdate =
+				action.value.pageCount === state.pageCount ? state.data : [...state.data, ...action.value.data];
 			return {
 				...state,
 				data: [...dataToUpdate],
@@ -93,11 +93,11 @@ const StyleCorrectedTab = styled(Tabs)`
 	.ant-tabs-extra-content {
 		width: 40%;
 	}
-	div[role='tabpanel'] {
+	div[role="tabpanel"] {
 		overflow-y: scroll;
 	}
 	.ant-tabs-content {
-		div[role='presentation'] + div {
+		div[role="presentation"] + div {
 			overflow-y: scroll;
 		}
 	}
@@ -116,9 +116,9 @@ const handleSearch = (value: string, dispatch: React.Dispatch<Action>) => {
 	dispatch(actionCreator(actionTypes.SEARCH_TEXT, { searchText: value }));
 };
 
-const debouncedSearch = debounce(handleSearch,500);
+const debouncedSearch = debounce(handleSearch, 500);
 
-const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser}): JSX.Element => {
+const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }): JSX.Element => {
 	const init = initialState => {
 		return {
 			...initialState,
@@ -129,19 +129,16 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser})
 
 	const displayUsers = state.data;
 
-	
-
 	const TabSearch = () => {
 		return (
 			<Input
-				onChange={(e) => {
+				onChange={e => {
 					e.persist();
 					const {
-						target: {
-							value
-						}
+						target: { value }
 					} = e;
-					debouncedSearch(value, dispatch)}}
+					debouncedSearch(value, dispatch);
+				}}
 				placeholder="Search Users"
 				allowClear
 				prefix={<Icon type="search" />}
@@ -153,7 +150,9 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser})
 	const fetchData = async () => {
 		const { pageCount } = state;
 		const dataFeed = `skip=${pageCount * 10}&limit=10`;
-		const endpointToHit = state.searchActive ? `/admin/projects?keyword=name:${state.searchText}&` : '/admin/projects?';
+		const endpointToHit = state.searchActive
+			? `/admin/projects?keyword=customerName:${state.searchText}&`
+			: "/admin/projects?";
 		const resData = await fetcher({ endPoint: `${endpointToHit}${dataFeed}`, method: "GET" });
 		if (resData.status === "success") {
 			const responseData = resData.data.data;
@@ -176,26 +175,30 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser})
 	return (
 		<GrayMaxHeightDiv ref={scrollParentRef}>
 			<StyleCorrectedTab tabBarGutter={0} tabBarExtraContent={TabSearch()}>
-			<Tabs.TabPane tab="All" key="1">
-						<InfiniteScroll
-							loader={<LoadingCard key='loadingCard'/>}
-							loadMore={fetchData}
-							hasMore={state.hasMore}
-							useWindow={false}
-							getScrollParent={() => scrollParentRef.current}
-						>
-							{displayUsers.map(userProjectData => {
-								return (
-									<><UserProjectCard
+				<Tabs.TabPane tab="All" key="1">
+					<InfiniteScroll
+						loader={<LoadingCard key="loadingCard" />}
+						loadMore={fetchData}
+						hasMore={state.hasMore}
+						useWindow={false}
+						getScrollParent={() => scrollParentRef.current}
+					>
+						{displayUsers.map(userProjectData => {
+							return (
+								<>
+									<UserProjectCard
 										selectedUser={selectedUser}
 										key={userProjectData._id}
 										handleSelectCard={handleSelectCard}
 										userProjectData={userProjectData}
 									/>
-									<PaddedDiv><SilentDivider/></PaddedDiv></>
-								);
-							})}
-						</InfiniteScroll>
+									<PaddedDiv>
+										<SilentDivider />
+									</PaddedDiv>
+								</>
+							);
+						})}
+					</InfiniteScroll>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab="Active" key="2">
 					<div>
@@ -219,17 +222,16 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser})
 							.filter(userProjectData => userProjectData.status === Status.completed)
 							.map(userProjectData => {
 								return (
-										<UserProjectCard
+									<UserProjectCard
 										selectedUser={selectedUser}
-											key={userProjectData._id}
-											handleSelectCard={handleSelectCard}
-											userProjectData={userProjectData}
-										/>
+										key={userProjectData._id}
+										handleSelectCard={handleSelectCard}
+										userProjectData={userProjectData}
+									/>
 								);
 							})}
 					</div>
 				</Tabs.TabPane>
-				
 			</StyleCorrectedTab>
 		</GrayMaxHeightDiv>
 	);
