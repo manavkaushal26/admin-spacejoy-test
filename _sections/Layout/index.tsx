@@ -45,7 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ isServer, authVerification, children })
 Layout.defaultProps = {
 	isServer: undefined,
 	authVerification: {
-		role: Role.guest,
+		role: Role.Guest,
 		name: ""
 	}
 };

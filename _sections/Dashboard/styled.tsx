@@ -1,45 +1,43 @@
 import { Divider, Tag, Typography } from "antd";
 import styled from "styled-components";
-import { string } from "prop-types";
 import { Status } from "@customTypes/userType";
 import { PhaseInternalNames } from "@customTypes/dashboardTypes";
 
 const { Text } = Typography;
 
-export const getTagColor = (text: string):string => {
+export const getTagColor = (text: string): string => {
 	switch (text) {
 		case Status.active:
 		case PhaseInternalNames.requirement:
-			return 'blue';
+			return "blue";
 		case Status.pending:
 		case PhaseInternalNames.designRender:
-			return 'orange';
+			return "orange";
 		case Status.inactive:
 		case PhaseInternalNames.onHold:
-			return '';
+			return "";
 		case Status.suspended:
 		case PhaseInternalNames.suspended:
-			return 'magenta';
+			return "magenta";
 		case Status.closed:
 		case PhaseInternalNames.rejected:
-			return 'red';
+			return "red";
 		case Status.completed:
 		case PhaseInternalNames.designReady:
 		case PhaseInternalNames.deliveryCompleted:
-			return 'green';
+			return "green";
 		case PhaseInternalNames.designConcept:
-			return 'purple';
+			return "purple";
 		case PhaseInternalNames.design3D:
-			return 'cyan';
+			return "cyan";
 		case PhaseInternalNames.designsInRevision:
-			return 'yellow';
+			return "yellow";
 		case PhaseInternalNames.shop:
-			return 'geekblue';
-		default: 
-			return '#595959';
-
+			return "geekblue";
+		default:
+			return "#595959";
 	}
-}
+};
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
@@ -50,7 +48,6 @@ export const MaxHeightDiv = styled.div`
 	align-content: stretch;
 	overflow-y: scroll !important;
 `;
-
 
 export const StyledTag = styled(Tag)`
 	text-transform: capitalize;
@@ -121,7 +118,7 @@ interface CustomDivProps {
 		| "center"
 		| "stretch";
 	textTransform?: "capitalize" | "uppercase" | "lowercase";
-	align?: "center" | "start" | "end" | "baseline" | "stretch" | 'flex-end' | 'flex-start';
+	align?: "center" | "start" | "end" | "baseline" | "stretch" | "flex-end" | "flex-start";
 	wrap?: "wrap" | "no-wrap" | "wrap-reverse";
 	flexGrow?: number;
 	maxHeight?: string;
@@ -171,11 +168,44 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	flex-direction: ${({ flexDirection }) => flexDirection};
 	max-height: ${({ maxHeight }) => maxHeight};
 	white-space: ${({ whiteSpace }) => whiteSpace};
-	flex-basis: ${({flexBasis})=>flexBasis};
-	min-width: ${({minWidth})=>minWidth};
-	max-width: ${({maxWidth})=>maxWidth};
+	flex-basis: ${({ flexBasis }) => flexBasis};
+	min-width: ${({ minWidth }) => minWidth};
+	max-width: ${({ maxWidth }) => maxWidth};
 `;
 
 export const SilentDivider = styled(Divider)`
 	margin: 0 0;
+`;
+
+export const StepsContainer = styled(CustomDiv)`
+	> * + * {
+		margin-top: 1em;
+	}
+	padding: 1rem;
+
+	> *:last-child {
+		margin-bottom: 1em;
+	}
+`;
+
+export const ShadowDiv = styled.div`
+	box-shadow: 0px 2px 16px #999ba81f;
+	transition: all 0.3s;
+	:hover {
+		box-shadow: 0px 4px 32px #999ba85f;
+	}
+`;
+
+export const Form = styled.div`
+	> * + * {
+		margin-top: 1rem;
+	}
+	label {
+		padding: 0px 0.5rem;
+		flex-basis: 15ch;
+	}
+	label + * {
+		display: inline;
+		flex-grow: 1;
+	}
 `;

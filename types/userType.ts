@@ -1,13 +1,20 @@
 export enum Role {
-	admin = "admin",
-	designer = "designer",
-	customer = "customer",
-	guest = "guest",
-	service = "service",
-	analyst = "analyst",
-	vendor = "vendor",
-	team = "team",
-	owner = "owner"
+	Owner = "owner",
+	Admin = "admin",
+	Team = "team",
+	Designer = "designer",
+	"Account Manager" = "account manager",
+	Vendor = "vendor",
+	Analyst = "analyst",
+	Customer = "customer",
+	ServiceAcc = "service",
+	Guest = "guest"
+}
+
+export enum ProjectRoles {
+	Designer = "designer",
+	"Account Manager" = "account manager",
+	Administrator = "admin"
 }
 
 export enum Status {

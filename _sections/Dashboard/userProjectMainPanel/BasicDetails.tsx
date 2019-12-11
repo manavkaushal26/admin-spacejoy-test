@@ -1,11 +1,10 @@
 import { DetailedProject } from "@customTypes/dashboardTypes";
-import { Role } from "@customTypes/userType";
+import { Role, ProjectRoles } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import { Col, Icon, Row, Typography } from "antd";
 import moment from "moment";
-import React from "react";
+import React, { useMemo } from "react";
 import { CustomDiv, ModifiedText } from "../styled";
-
 
 const { Text } = Typography;
 
@@ -21,38 +20,72 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		team,
 		customer
 	} = projectData;
-	const designers = team
-		.filter(member => {
-			return member.role === Role.designer;
-		})
-		.map(designer => {
-			return designer.profile.name;
-		});
+	const designers = useMemo(
+		() =>
+			team
+				.filter(member => {
+					return member.member.role === ProjectRoles.Designer;
+				})
+				.map(designer => {
+					return designer.member.profile.name;
+				})
+				.join(", "),
+		[projectData.team]
+	);
+
+	const accountManagers = useMemo(
+		() =>
+			team
+				.filter(member => {
+					return member.member.role === ProjectRoles["Account Manager"];
+				})
+				.map(manager => {
+					return manager.member.profile.name;
+				})
+				.join(", "),
+		[projectData.team]
+	);
 	return (
 		<CustomDiv py="10px" px="10px">
 			<Row>
 				<Col xs={24} sm={12} lg={9}>
-					<Row type='flex'>
-						<Text strong>{"Concept Id:"}</Text> <ModifiedText textTransform='uppercase' ellipsis type="secondary">{id}</ModifiedText>
+					<Row type="flex">
+						<Text strong>{"Concept Id:"}</Text>{" "}
+						<ModifiedText textTransform="uppercase" ellipsis type="secondary">
+							{id}
+						</ModifiedText>
 					</Row>
 					<Row>
-						<Text strong>Account Manager:</Text> <ModifiedText textTransform='capitalize' type="secondary">Laurel</ModifiedText>
+						<Text strong>Account Manager:</Text>{" "}
+						<ModifiedText textTransform="capitalize" type="secondary">
+							{accountManagers || "Not Assigned"}
+						</ModifiedText>
 					</Row>
 					<Row>
-						<Text strong>Created on:</Text> <ModifiedText textTransform='capitalize' type="secondary">{moment(createdAt).format("YYYY-MM-DD")}</ModifiedText>
+						<Text strong>Created on:</Text>{" "}
+						<ModifiedText textTransform="capitalize" type="secondary">
+							{moment(createdAt).format("YYYY-MM-DD")}
+						</ModifiedText>
 					</Row>
 				</Col>
 				<Col xs={24} sm={12} lg={9}>
 					<Row>
-						<Text strong>Payment Status:</Text> <ModifiedText textTransform='capitalize' type="secondary">{paymentStatus}</ModifiedText>
+						<Text strong>Payment Status:</Text>{" "}
+						<ModifiedText textTransform="capitalize" type="secondary">
+							{paymentStatus}
+						</ModifiedText>
 					</Row>
 					<Row>
 						<Text strong>Assigned Designers:</Text>
-						<ModifiedText textTransform='capitalize' type="secondary">{designers.length ? designers.join(", ") : "Not assigned"}</ModifiedText>
+						<ModifiedText textTransform="capitalize" type="secondary">
+							{designers || "Not assigned"}
+						</ModifiedText>
 					</Row>
 					<Row>
 						<Text strong>Package:</Text>{" "}
-							<ModifiedText textTransform='capitalize' type="secondary">{getValueSafely(()=>items.join(", "),"N/A")}</ModifiedText>
+						<ModifiedText textTransform="capitalize" type="secondary">
+							{getValueSafely(() => items.join(", "), "N/A")}
+						</ModifiedText>
 					</Row>
 				</Col>
 				<Col xs={24} sm={12} lg={6}>
@@ -60,7 +93,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						<CustomDiv type="flex" inline>
 							<Icon type="phone" rotate={90} />
 						</CustomDiv>
-						<ModifiedText textTransform='capitalize' type="secondary">
+						<ModifiedText textTransform="capitalize" type="secondary">
 							{getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}
 						</ModifiedText>
 					</Row>
@@ -68,7 +101,9 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						<CustomDiv type="flex" inline>
 							<Icon type="mail" />
 						</CustomDiv>{" "}
-						<ModifiedText textTransform='lowercase' type="secondary">{getValueSafely(() => customer.email, "N/A")}</ModifiedText>
+						<ModifiedText textTransform="lowercase" type="secondary">
+							{getValueSafely(() => customer.email, "N/A")}
+						</ModifiedText>
 					</Row>
 				</Col>
 			</Row>

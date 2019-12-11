@@ -1,4 +1,4 @@
-import { Status, Role } from "./userType";
+import { Status, Role, ProjectRoles } from "./userType";
 
 export enum ProjectScope {
 	customer = "customer",
@@ -127,17 +127,14 @@ interface Order {
 	id: string;
 }
 export interface TeamMember {
+	_id: string;
 	profile: {
-		dob: string | null;
-		gender: string;
 		firstName: string;
 		lastName: string;
 		name: string;
 	};
-	role: Role;
-	_id: string;
+	role: ProjectRoles;
 	email: string;
-	id: string;
 }
 
 export interface FormType {
@@ -146,9 +143,15 @@ export interface FormType {
 	answer: string;
 }
 
+export interface DetailedProjectTeamMember {
+	_id: string;
+	memberName: string;
+	member: TeamMember;
+}
+
 export interface DetailedProject {
 	projectScope: ProjectScope;
-	team: TeamMember[];
+	team: DetailedProjectTeamMember[];
 	status: Status;
 	onTrial: boolean;
 	chat: [];
@@ -203,4 +206,22 @@ export interface DetailedDesign {
 	updatedAt: string;
 	designerNotes: DesignerNotes[];
 	id: string;
+}
+
+export enum Model3DFiles {
+	Obj = "legacy_obj",
+	Gltf = "gltf"
+}
+
+export enum ModelToExtensionMap {
+	legacy_obj = ".zip",
+	gltf = ".glb"
+}
+
+export enum RoomTypes {
+	Livingroom = "livingroom",
+	Bedroom = "bedroom",
+	Window = "window",
+	Door = "door",
+	House = "house"
 }

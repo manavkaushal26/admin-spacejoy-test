@@ -3,18 +3,25 @@ import SVGIcon from "@components/SVGIcon";
 import React, { useState } from "react";
 import { Row, Col } from "antd";
 import ActiveLink from "./ActiveLink";
-import { HorizontalListStyled, PaddedDiv, MobileHiddenStyled, MobileNavVisibleStyled, OverlayStyled, PaddedButton, MobileVisibleStyled } from "./styled";
+import {
+	HorizontalListStyled,
+	PaddedDiv,
+	MobileHiddenStyled,
+	MobileNavVisibleStyled,
+	OverlayStyled,
+	PaddedButton,
+	MobileVisibleStyled
+} from "./styled";
 import navRight from "./navRight";
 import navCenter from "./navCenter";
 import User, { Role } from "@customTypes/userType";
 
 interface HeaderBody {
 	authVerification: Partial<User>;
-};
+}
 
 const HeaderBody = ({ authVerification }: HeaderBody) => {
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
-	
 
 	const handleClick = () => updateMobileNavStatus(!mobileNavStatus);
 
@@ -36,16 +43,16 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 			<Row>
 				<MobileVisibleStyled>
 					<Row type="flex" justify="space-around">
-						<Col span={18} >
+						<Col span={18}>
 							<ActiveLink href="/" as="/">
 								<Logo md />
 							</ActiveLink>
 						</Col>
 						<Col span={6}>
 							<HorizontalListStyled align="right">
-							<PaddedButton variant="clean" size="xs" fill="clean" onClick={handleClick}>
-								<SVGIcon name="menu" width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
-							</PaddedButton>
+								<PaddedButton variant="clean" size="xs" fill="clean" onClick={handleClick}>
+									<SVGIcon name="menu" width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
+								</PaddedButton>
 							</HorizontalListStyled>
 						</Col>
 					</Row>
@@ -69,7 +76,7 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 HeaderBody.defaultProps = {
 	authVerification: {
 		name: "",
-		role: Role.guest,
+		role: Role.Guest
 	}
 };
 

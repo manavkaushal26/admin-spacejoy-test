@@ -1,63 +1,59 @@
-import React from "react";
-import { Typography, Avatar } from "antd";
-import { CustomDiv } from "@sections/Dashboard/styled";
+import React, { useState } from "react";
+import { Typography, Avatar, Upload, Button, Icon } from "antd";
+import { CustomDiv, SilentDivider, StepsContainer, ShadowDiv } from "@sections/Dashboard/styled";
 import styled from "styled-components";
+import Stage from "./Stage";
 
 const { Title, Text } = Typography;
 
-const StepsContainer = styled(CustomDiv)`
-	> * + * {
-		margin-top: 1em;
-	}
-	padding: 1rem;
-
-	> *:last-child {
-		margin-bottom: 1em;
-	}
-`;
-
-const ShadowDiv = styled.div`
-	box-shadow: 0px 2px 16px #999ba81f;
-`;
-
 export default function PipelineTab() {
+	const [stage, setStage] = useState<string>(null);
+
+	const onClick = step => {
+		setStage(step);
+	};
+
 	return (
 		<div>
 			<Title level={2}>Task Overview</Title>
-			<StepsContainer>
-				<ShadowDiv>
-					<CustomDiv px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>1</Avatar>
+			{!stage ? (
+				<StepsContainer>
+					<ShadowDiv onClick={onClick.bind(null, "assets")}>
+						<CustomDiv px="1.5rem" py="1.5rem">
+							<CustomDiv inline pr="0.5rem">
+								<Avatar>1</Avatar>
+							</CustomDiv>
+							<Text strong>Upload Room and Assets</Text>
 						</CustomDiv>
-						<Text strong>Upload Room and Assets</Text>
-					</CustomDiv>
-				</ShadowDiv>
-				<ShadowDiv>
-					<CustomDiv px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>2</Avatar>
+					</ShadowDiv>
+					<ShadowDiv onClick={onClick.bind(null, "3dstep")}>
+						<CustomDiv px="1.5rem" py="1.5rem">
+							<CustomDiv inline pr="0.5rem">
+								<Avatar>2</Avatar>
+							</CustomDiv>
+							<Text strong>Design in 3D app</Text>
 						</CustomDiv>
-						<Text strong>Design in 3D app</Text>
-					</CustomDiv>
-				</ShadowDiv>
-				<ShadowDiv>
-					<CustomDiv px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>3</Avatar>
+					</ShadowDiv>
+					<ShadowDiv onClick={onClick.bind(null, "render")}>
+						<CustomDiv px="1.5rem" py="1.5rem">
+							<CustomDiv inline pr="0.5rem">
+								<Avatar>3</Avatar>
+							</CustomDiv>
+							<Text strong>Render Design</Text>
 						</CustomDiv>
-						<Text strong>Render Design</Text>
-					</CustomDiv>
-				</ShadowDiv>
-				<ShadowDiv>
-					<CustomDiv px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>4</Avatar>
+					</ShadowDiv>
+					<ShadowDiv onClick={onClick.bind(null, "send")}>
+						<CustomDiv px="1.5rem" py="1.5rem">
+							<CustomDiv inline pr="0.5rem">
+								<Avatar>4</Avatar>
+							</CustomDiv>
+							<Text strong>Send to Client</Text>
 						</CustomDiv>
-						<Text strong>Send to Client</Text>
-					</CustomDiv>
-				</ShadowDiv>
-			</StepsContainer>
+					</ShadowDiv>
+				</StepsContainer>
+			) : (
+				<Stage stage={stage} />
+			)}
 		</div>
 	);
 }

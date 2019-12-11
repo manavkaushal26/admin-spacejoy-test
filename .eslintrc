@@ -52,6 +52,8 @@
 				},
 				"allowChildren": false
 			}
-		]
+		],
+		"no-underscore-dangle": 1,
+		"import/prefer-default-export": 1
 	}
 }

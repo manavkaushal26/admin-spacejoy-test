@@ -6,7 +6,7 @@ import getCookie from "./getCookie";
 interface FetcherParams {
 	ctx?: NextPageContext;
 	endPoint: string;
-	method: string;
+	method: "GET" | "POST" | "PUT" | "DELETE";
 	body?: any;
 }
 
