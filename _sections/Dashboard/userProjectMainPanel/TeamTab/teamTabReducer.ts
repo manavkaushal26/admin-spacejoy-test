@@ -45,7 +45,6 @@ export const designerTabReducer: DesignerTabReducer = (state, action): DesignerT
 				searchText: action.value
 			};
 		case DesignerTabActionType.UPDATE_DATA:
-			console.log(action.value.data);
 			return {
 				...state,
 				team: [...action.value.data],

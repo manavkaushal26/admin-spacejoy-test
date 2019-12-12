@@ -28,7 +28,6 @@ const UploadStep = () => {
 	};
 
 	const beforeUpload = (file, fileList) => {
-		console.log(file, fileList);
 		return false;
 	};
 

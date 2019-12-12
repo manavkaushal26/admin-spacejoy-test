@@ -3,8 +3,8 @@ import { Button, Col, Card } from "antd";
 
 styled;
 
-export const StyledButton = styled(Button)<{ fullWidth: boolean }>`
-	width: ${({ fullWidth }) => (fullWidth ? "100%" : null)};
+export const StyledButton = styled(Button)<{ fullwidth: boolean }>`
+	width: ${({ fullwidth }) => (fullwidth ? "100%" : null)};
 `;
 
 export const GreyColumn = styled(Col)`

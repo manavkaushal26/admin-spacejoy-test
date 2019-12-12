@@ -111,6 +111,7 @@ export default function TeamSidebar({
 					{assignedDesigners.length ? (
 						assignedDesigners.map(teamMember => (
 							<NoBodyCard
+								key={teamMember._id}
 								size="small"
 								title={
 									<>
@@ -153,7 +154,7 @@ export default function TeamSidebar({
 			</CustomDiv>
 
 			<CustomDiv>
-				<StyledButton fullWidth type="primary" onClick={assignDesigners}>
+				<StyledButton fullwidth type="primary" onClick={assignDesigners}>
 					Update Team
 				</StyledButton>
 			</CustomDiv>

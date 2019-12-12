@@ -13,6 +13,7 @@ import NotesTab from "./NotesTab";
 import styled from "styled-components";
 
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
+import { getValueSafely } from "@utils/commonUtils";
 
 const { TabPane } = Tabs;
 
@@ -102,21 +103,26 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					</TabPane>
 				</ScrollableTabs>
 			) : (
-				projectData.designs.map(design => {
-					return (
-						<React.Fragment key={design._id}>
-							<Spin spinning={designLoading}>
-								<SilentDivider />
-								<CustomDiv overflow="visible" width="300px" mt="20px">
+				<Spin spinning={designLoading}>
+					{projectData.designs.map(design => {
+						return (
+							<React.Fragment key={design._id}>
+								<CustomDiv inline overflow="visible" width="300px" mt="2rem" mr="1rem">
 									<Card
+										style={{ width: "300px" }}
 										hoverable
 										cover={
-											<Image
-												width="300px"
-												height="175px"
-												onClick={() => onSelectDesign(design.design._id)}
-												src={`q_80,w_300/${design.design.designImages[0].cdn}`}
-											/>
+											<CustomDiv>
+												<Image
+													width="300px"
+													height="175px"
+													onClick={() => onSelectDesign(design.design._id)}
+													src={`q_80,w_298/${getValueSafely(
+														() => design.design.designImages[0].cdn,
+														"v1574869657/shared/Illustration_mffq52.svg"
+													)}`}
+												/>
+											</CustomDiv>
 										}
 									>
 										<Row type="flex" justify="space-between">
@@ -129,10 +135,10 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 										</Row>
 									</Card>
 								</CustomDiv>
-							</Spin>
-						</React.Fragment>
-					);
-				})
+							</React.Fragment>
+						);
+					})}
+				</Spin>
 			)}
 		</>
 	);

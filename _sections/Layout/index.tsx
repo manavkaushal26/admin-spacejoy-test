@@ -25,8 +25,8 @@ const MainStyled = styled.main<{ isServer: boolean }>`
 	}
 `;
 interface LayoutProps {
-	isServer: boolean | undefined;
-	authVerification: Partial<User>;
+	isServer?: boolean | undefined;
+	authVerification?: Partial<User>;
 	children: ReactNode;
 }
 

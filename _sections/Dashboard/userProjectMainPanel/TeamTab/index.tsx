@@ -72,7 +72,6 @@ const TeamTab: React.FC<DesignerTabInterface> = ({ projectId, assignedTeam, setL
 
 	const selectedDesignersId = useMemo(() => {
 		return state.assignedTeam.map(teamMember => {
-			console.log(teamMember);
 			return { _id: teamMember._id, name: getValueSafely(() => teamMember.profile.name, "N/A") };
 		});
 	}, [state.assignedTeam]);
@@ -143,9 +142,8 @@ const TeamTab: React.FC<DesignerTabInterface> = ({ projectId, assignedTeam, setL
 					<CustomDiv type="flex" wrap="wrap">
 						{state.team.length ? (
 							state.team.map(teamMember => {
-								console.log(teamMember);
 								return (
-									<CustomDiv flexBasis="25ch" px="8px" py="8px">
+									<CustomDiv key={teamMember._id} flexBasis="25ch" px="8px" py="8px">
 										<Card
 											size="small"
 											title={

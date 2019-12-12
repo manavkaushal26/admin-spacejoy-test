@@ -8,8 +8,8 @@ import { ChangeEvent, useReducer, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "./LoadingCard";
-import { MaxHeightDiv, SilentDivider } from "./styled";
-import { Icon, Input, Tabs } from "antd";
+import { MaxHeightDiv, SilentDivider, CustomDiv } from "./styled";
+import { Icon, Input, Tabs, Empty } from "antd";
 import { debounce } from "@utils/commonUtils";
 
 interface State {
@@ -18,13 +18,15 @@ interface State {
 	data: UserProjectType[];
 	pageCount: number;
 	hasMore: boolean;
+	currentTab: string;
 	searchResults: UserProjectType[];
 }
 enum actionTypes {
 	CLEAR,
 	SEARCH_TEXT,
 	LOAD_USER_DATA,
-	UPDATE_HAS_MORE
+	UPDATE_HAS_MORE,
+	TAB_CHANGE
 }
 
 interface Action {
@@ -38,6 +40,7 @@ const initalState: State = {
 	data: [],
 	pageCount: 0,
 	hasMore: true,
+	currentTab: "all",
 	searchResults: []
 };
 
@@ -50,6 +53,14 @@ const actionCreator = (actionType: actionTypes, value: Partial<State>): Action =
 
 const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
+		case actionTypes.TAB_CHANGE:
+			return {
+				...state,
+				currentTab: action.value.currentTab,
+				data: [],
+				pageCount: 0,
+				hasMore: true
+			};
 		case actionTypes.CLEAR:
 			return { ...initalState };
 		case actionTypes.SEARCH_TEXT:
@@ -89,6 +100,7 @@ const StyleCorrectedTab = styled(Tabs)`
 	}
 	&.ant-tabs {
 		overflow-y: scroll;
+		width: 100%;
 	}
 	.ant-tabs-extra-content {
 		width: 40%;
@@ -151,8 +163,10 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		const { pageCount } = state;
 		const dataFeed = `skip=${pageCount * 10}&limit=10`;
 		const endpointToHit = state.searchActive
-			? `/admin/projects?keyword=customerName:${state.searchText}&`
-			: "/admin/projects?";
+			? `/admin/projects?keyword=customerName:${state.searchText}&${
+					state.currentTab !== "all" ? `status:${state.currentTab}&` : ""
+			  }`
+			: `/admin/projects?${state.currentTab !== "all" ? `keyword=status:${state.currentTab}&` : ""}`;
 		const resData = await fetcher({ endPoint: `${endpointToHit}${dataFeed}`, method: "GET" });
 		if (resData.status === "success") {
 			const responseData = resData.data.data;
@@ -172,65 +186,91 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 
 	const scrollParentRef = useRef(null);
 
+	const handleTabChange = (key: string, e: MouseEvent) => {
+		dispatch({ type: actionTypes.TAB_CHANGE, value: { currentTab: key } });
+	};
+
 	return (
-		<GrayMaxHeightDiv ref={scrollParentRef}>
-			<StyleCorrectedTab tabBarGutter={0} tabBarExtraContent={TabSearch()}>
-				<Tabs.TabPane tab="All" key="1">
-					<InfiniteScroll
-						loader={<LoadingCard key="loadingCard" />}
-						loadMore={fetchData}
-						hasMore={state.hasMore}
-						useWindow={false}
-						getScrollParent={() => scrollParentRef.current}
-					>
-						{displayUsers.map(userProjectData => {
-							return (
-								<>
-									<UserProjectCard
-										selectedUser={selectedUser}
-										key={userProjectData._id}
-										handleSelectCard={handleSelectCard}
-										userProjectData={userProjectData}
-									/>
-									<PaddedDiv>
-										<SilentDivider />
-									</PaddedDiv>
-								</>
-							);
-						})}
-					</InfiniteScroll>
+		<GrayMaxHeightDiv>
+			<StyleCorrectedTab tabBarGutter={0} onTabClick={handleTabChange} tabBarExtraContent={TabSearch()}>
+				<Tabs.TabPane tab="All" key="all">
+					<CustomDiv ref={scrollParentRef} overY="scroll">
+						<InfiniteScroll
+							loader={<LoadingCard key="loadingCard" />}
+							loadMore={fetchData}
+							hasMore={state.hasMore}
+							useWindow={false}
+							getScrollParent={() => scrollParentRef.current}
+						>
+							<CustomDiv {...(state.currentTab === "active" ? { ref: scrollParentRef } : {})} overY="scroll">
+								{displayUsers.length ? (
+									displayUsers.map(userProjectData => {
+										return (
+											<>
+												<UserProjectCard
+													selectedUser={selectedUser}
+													key={userProjectData._id}
+													handleSelectCard={handleSelectCard}
+													userProjectData={userProjectData}
+												/>
+												<PaddedDiv>
+													<SilentDivider />
+												</PaddedDiv>
+											</>
+										);
+									})
+								) : (
+									<Empty description="No Projects found" />
+								)}
+							</CustomDiv>
+						</InfiniteScroll>
+					</CustomDiv>
 				</Tabs.TabPane>
-				<Tabs.TabPane tab="Active" key="2">
-					<div>
-						{displayUsers
-							.filter(userProjectData => userProjectData.status === Status.active)
-							.map(userProjectData => {
+				<Tabs.TabPane tab="Active" key="active">
+					<CustomDiv {...(state.currentTab === "active" ? { ref: scrollParentRef } : {})} overY="scroll">
+						{displayUsers.length ? (
+							displayUsers.map(userProjectData => {
 								return (
-									<UserProjectCard
-										selectedUser={selectedUser}
-										key={userProjectData._id}
-										handleSelectCard={handleSelectCard}
-										userProjectData={userProjectData}
-									/>
+									<>
+										<UserProjectCard
+											selectedUser={selectedUser}
+											key={userProjectData._id}
+											handleSelectCard={handleSelectCard}
+											userProjectData={userProjectData}
+										/>
+										<PaddedDiv>
+											<SilentDivider />
+										</PaddedDiv>
+									</>
 								);
-							})}
-					</div>
+							})
+						) : (
+							<Empty description="No Active projects found" />
+						)}
+					</CustomDiv>
 				</Tabs.TabPane>
-				<Tabs.TabPane tab="Completed" key="3">
-					<div>
-						{displayUsers
-							.filter(userProjectData => userProjectData.status === Status.completed)
-							.map(userProjectData => {
+				<Tabs.TabPane tab="Completed" key="completed">
+					<CustomDiv {...(state.currentTab === "completed" ? { ref: scrollParentRef } : {})} overY="scroll">
+						{displayUsers.length ? (
+							displayUsers.map(userProjectData => {
 								return (
-									<UserProjectCard
-										selectedUser={selectedUser}
-										key={userProjectData._id}
-										handleSelectCard={handleSelectCard}
-										userProjectData={userProjectData}
-									/>
+									<>
+										<UserProjectCard
+											selectedUser={selectedUser}
+											key={userProjectData._id}
+											handleSelectCard={handleSelectCard}
+											userProjectData={userProjectData}
+										/>
+										<PaddedDiv>
+											<SilentDivider />
+										</PaddedDiv>
+									</>
 								);
-							})}
-					</div>
+							})
+						) : (
+							<Empty description="No Completed projects found" />
+						)}
+					</CustomDiv>
 				</Tabs.TabPane>
 			</StyleCorrectedTab>
 		</GrayMaxHeightDiv>
