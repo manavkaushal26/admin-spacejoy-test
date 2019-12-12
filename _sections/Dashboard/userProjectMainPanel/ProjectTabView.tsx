@@ -75,7 +75,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	return (
 		<>
 			{designData !== null ? (
-				<ScrollableTabs defaultActiveKey="5">
+				<ScrollableTabs defaultActiveKey="6">
 					<TabPane tab="Customer Responses" key="1">
 						<CustomerResponses formData={formData || []} />
 					</TabPane>
@@ -99,7 +99,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						/>
 					</TabPane>
 					<TabPane tab="Pipeline" key="6">
-						<PipelineTab />
+						<PipelineTab designData={designData} refetchDesignData={refetchDesignData} />
 					</TabPane>
 				</ScrollableTabs>
 			) : (

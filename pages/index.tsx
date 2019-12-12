@@ -7,18 +7,17 @@ import Head from "next/head";
 import PropTypes from "prop-types";
 import React from "react";
 
-
-const index:React.FC<{isServer: boolean, authVerification: Object}> = ({ isServer, authVerification }) => {
+const index: React.FC<{ isServer: boolean; authVerification: Object }> = ({ isServer, authVerification }) => {
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				{IndexPageMeta}
 				<title>Admin Panel | {company.product}</title>
 			</Head>
-			<HeroSection />
+			<HeroSection authVerification={authVerification} />
 		</Layout>
 	);
-}
+};
 
 index.defaultProps = {
 	authVerification: {}

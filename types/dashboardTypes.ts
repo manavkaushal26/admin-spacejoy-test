@@ -195,12 +195,27 @@ export interface DesignerNotes {
 	text: string;
 }
 
+export interface RoomType {
+	spatialData: {
+		fileUrls: {
+			glb: string;
+		};
+	};
+	status: Status;
+	_id: string;
+	name: string;
+	roomType: RoomTypes;
+	createdAt: string;
+	updatedAt: string;
+	id: string;
+}
+
 export interface DetailedDesign {
 	_id: string;
 	name: string;
 	description: string;
 	assets: Assets[];
-	room: string;
+	room: RoomType;
 	designImages: DesignImagesInterface[];
 	createdAt: string;
 	updatedAt: string;
@@ -210,16 +225,16 @@ export interface DetailedDesign {
 
 export enum Model3DFiles {
 	Obj = "legacy_obj",
-	Gltf = "gltf"
+	Glb = "glb"
 }
 
 export enum ModelToExtensionMap {
 	legacy_obj = ".zip",
-	gltf = ".glb"
+	glb = ".glb"
 }
 
 export enum RoomTypes {
-	Livingroom = "livingroom",
+	Livingroom = "living room",
 	Bedroom = "bedroom",
 	Window = "window",
 	Door = "door",

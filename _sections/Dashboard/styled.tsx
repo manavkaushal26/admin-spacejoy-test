@@ -192,7 +192,11 @@ export const ShadowDiv = styled.div`
 	box-shadow: 0px 2px 16px #999ba81f;
 	transition: all 0.3s;
 	:hover {
+		cursor: pointer;
 		box-shadow: 0px 4px 32px #999ba85f;
+	}
+	> * {
+		cursor: default;
 	}
 `;
 
