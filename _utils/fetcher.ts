@@ -12,7 +12,7 @@ interface FetcherParams {
 
 async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
-	const apiBaseUrl = process.env.NODE_ENV !== "production" ? page.apiBaseUrl : page.stageApiBaseUrl;
+	const apiBaseUrl = process.env.NODE_ENV === "production" ? page.apiBaseUrl : page.stageApiBaseUrl;
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }
 		: { "Content-Type": "application/json" };
