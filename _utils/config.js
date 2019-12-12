@@ -92,6 +92,6 @@ module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary: process.env.NODE_ENV === "production" ? cloudinary : stagingCloudinary,
+	cloudinary: process.env.NODE_ENV !== "production" ? cloudinary : stagingCloudinary,
 	projectConfig
 };

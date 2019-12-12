@@ -4,7 +4,7 @@ import { Status } from "@customTypes/userType";
 import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
 import fetcher from "@utils/fetcher";
-import { ChangeEvent, useReducer, useRef } from "react";
+import { ChangeEvent, useReducer, useRef, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "./LoadingCard";
@@ -99,19 +99,10 @@ const StyleCorrectedTab = styled(Tabs)`
 		padding: 0px 12px;
 	}
 	&.ant-tabs {
-		overflow-y: scroll;
 		width: 100%;
 	}
 	.ant-tabs-extra-content {
 		width: 40%;
-	}
-	div[role="tabpanel"] {
-		overflow-y: scroll;
-	}
-	.ant-tabs-content {
-		div[role="presentation"] + div {
-			overflow-y: scroll;
-		}
 	}
 `;
 
@@ -184,6 +175,10 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		}
 	};
 
+	useEffect(() => {
+		fetchData();
+	}, [state.currentTab]);
+
 	const scrollParentRef = useRef(null);
 
 	const handleTabChange = (key: string, e: MouseEvent) => {
@@ -192,9 +187,9 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 
 	return (
 		<GrayMaxHeightDiv>
-			<StyleCorrectedTab tabBarGutter={0} onTabClick={handleTabChange} tabBarExtraContent={TabSearch()}>
-				<Tabs.TabPane tab="All" key="all">
-					<CustomDiv ref={scrollParentRef} overY="scroll">
+			<CustomDiv ref={scrollParentRef} overY="scroll">
+				<StyleCorrectedTab tabBarGutter={0} onTabClick={handleTabChange} tabBarExtraContent={TabSearch()}>
+					<Tabs.TabPane tab="All" key="all">
 						<InfiniteScroll
 							loader={<LoadingCard key="loadingCard" />}
 							loadMore={fetchData}
@@ -202,32 +197,28 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 							useWindow={false}
 							getScrollParent={() => scrollParentRef.current}
 						>
-							<CustomDiv {...(state.currentTab === "active" ? { ref: scrollParentRef } : {})} overY="scroll">
-								{displayUsers.length ? (
-									displayUsers.map(userProjectData => {
-										return (
-											<>
-												<UserProjectCard
-													selectedUser={selectedUser}
-													key={userProjectData._id}
-													handleSelectCard={handleSelectCard}
-													userProjectData={userProjectData}
-												/>
-												<PaddedDiv>
-													<SilentDivider />
-												</PaddedDiv>
-											</>
-										);
-									})
-								) : (
-									<Empty description="No Projects found" />
-								)}
-							</CustomDiv>
+							{displayUsers.length ? (
+								displayUsers.map(userProjectData => {
+									return (
+										<>
+											<UserProjectCard
+												selectedUser={selectedUser}
+												key={userProjectData._id}
+												handleSelectCard={handleSelectCard}
+												userProjectData={userProjectData}
+											/>
+											<PaddedDiv>
+												<SilentDivider />
+											</PaddedDiv>
+										</>
+									);
+								})
+							) : (
+								<Empty description="No Projects found" />
+							)}
 						</InfiniteScroll>
-					</CustomDiv>
-				</Tabs.TabPane>
-				<Tabs.TabPane tab="Active" key="active">
-					<CustomDiv {...(state.currentTab === "active" ? { ref: scrollParentRef } : {})} overY="scroll">
+					</Tabs.TabPane>
+					<Tabs.TabPane tab="Active" key="active">
 						{displayUsers.length ? (
 							displayUsers.map(userProjectData => {
 								return (
@@ -247,10 +238,8 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 						) : (
 							<Empty description="No Active projects found" />
 						)}
-					</CustomDiv>
-				</Tabs.TabPane>
-				<Tabs.TabPane tab="Completed" key="completed">
-					<CustomDiv {...(state.currentTab === "completed" ? { ref: scrollParentRef } : {})} overY="scroll">
+					</Tabs.TabPane>
+					<Tabs.TabPane tab="Completed" key="completed">
 						{displayUsers.length ? (
 							displayUsers.map(userProjectData => {
 								return (
@@ -270,9 +259,9 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 						) : (
 							<Empty description="No Completed projects found" />
 						)}
-					</CustomDiv>
-				</Tabs.TabPane>
-			</StyleCorrectedTab>
+					</Tabs.TabPane>
+				</StyleCorrectedTab>
+			</CustomDiv>
 		</GrayMaxHeightDiv>
 	);
 };
