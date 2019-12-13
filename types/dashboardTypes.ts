@@ -212,12 +212,26 @@ export interface RoomType {
 	id: string;
 }
 
+export interface PhaseDetails {
+	status: Status;
+	startTime: Date;
+	endTime: Date;
+}
+export interface PhaseType {
+	concept: PhaseDetails;
+	design3D: PhaseDetails;
+	render: PhaseDetails;
+	renderRevision: PhaseDetails;
+	ready: PhaseDetails;
+}
+
 export interface DetailedDesign {
 	_id: string;
 	name: string;
 	description: string;
 	assets: Assets[];
 	room: RoomType;
+	phase: PhaseType;
 	designImages: DesignImagesInterface[];
 	createdAt: string;
 	updatedAt: string;
@@ -236,9 +250,31 @@ export enum ModelToExtensionMap {
 }
 
 export enum RoomTypes {
-	Livingroom = "living room",
-	Bedroom = "bedroom",
+	LivingRoom = "living room",
+	Bedroom = "bed room",
+	DiningRoom = "dining room",
+	StudyRoom = "study room",
+	EntryWay = "entryway",
+	KidsRoom = "kids room",
+	Studio = "studio",
+	Nursery = "nursery",
+	HomeOffice = "home office",
 	Window = "window",
 	Door = "door",
 	House = "house"
+}
+
+export enum RoomLabels {
+	LivingRoom = "Living room",
+	Bedroom = "Bedroom",
+	DiningRoom = "Dining room",
+	StudyRoom = "Study room",
+	EntryWay = "Entryway",
+	KidsRoom = "Kids room",
+	Studio = "Studio",
+	Nursery = "Nursery",
+	HomeOffice = "Home office",
+	Window = "Window",
+	Door = "Door",
+	House = "House"
 }

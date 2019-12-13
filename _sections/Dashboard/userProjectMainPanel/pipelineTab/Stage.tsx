@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { StepsContainer, ShadowDiv, CustomDiv, SilentDivider, Form } from "@sections/Dashboard/styled";
 import { Avatar, Typography, Upload, Button, Icon, Select, Input } from "antd";
-import { RoomTypes, Model3DFiles, ModelToExtensionMap, DetailedDesign } from "@customTypes/dashboardTypes";
+import { RoomTypes, Model3DFiles, ModelToExtensionMap, DetailedDesign, RoomLabels } from "@customTypes/dashboardTypes";
 import { uploadRoomApi } from "@api/pipelineApi";
 
 import { cookieNames } from "@utils/config";
@@ -20,7 +20,7 @@ interface Stage {
 const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	const [source, setSource] = useState<BinaryType>(null);
 	const [blend, setBlend] = useState<BinaryType>(null);
-	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.Livingroom);
+	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [roomName, setRoomName] = useState<string>("");
 
@@ -69,7 +69,7 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	useEffect(() => {
 		if (designData.room) {
 			setRoomName(getValueSafely(() => designData.room.name, ""));
-			setRoomType(getValueSafely(() => designData.room.roomType, RoomTypes.Livingroom));
+			setRoomType(getValueSafely(() => designData.room.roomType, RoomTypes.LivingRoom));
 		}
 	}, [designData.room]);
 
@@ -92,7 +92,7 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 								{Object.keys(RoomTypes).map(key => {
 									return (
 										<Option key={key} value={`roomType:${RoomTypes[key]}`}>
-											{key}
+											{RoomLabels[key]}
 										</Option>
 									);
 								})}
@@ -154,10 +154,32 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	);
 };
 
+const Design3D: React.FC = () => {
+	return (
+		<StepsContainer>
+			<ShadowDiv>
+				<CustomDiv px="1rem" py="1rem">
+					<a href="//www.microsoft.com/store/apps/9n954dnxj4zx?cid=storebadge&ocid=badge">
+						<img
+							src="https://assets.windowsphone.com/85864462-9c82-451e-9355-a3d5f874397a/English_get-it-from-MS_InvariantCulture_Default.png"
+							alt="English badge"
+							style={{ width: "284px", height: "104px" }}
+						/>
+					</a>
+				</CustomDiv>
+			</ShadowDiv>
+		</StepsContainer>
+	);
+};
+
 export default function Stage(props: Stage): JSX.Element {
+	console.log(props.stage);
 	switch (props.stage) {
 		case "assets":
 			return <UploadStep {...props} />;
+		case "design3d":
+			console.log("here");
+			return <Design3D />;
 		default:
 			return (
 				<CustomDiv px="1rem" py="1rem">
