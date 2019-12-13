@@ -98,6 +98,21 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	}, [assetEntryId]);
 
 	useEffect(() => {
+		console.log("hello");
+		setPageCount(1);
+	}, [
+		state.searchText,
+		state.checkedKeys.subCategory.length,
+		state.checkedKeys.verticals.length,
+		state.checkedKeys.category.length,
+		state.retailerFilter.length,
+		state.priceRange,
+		state.widthRange,
+		state.depthRange,
+		state.heightRange
+	]);
+
+	useEffect(() => {
 		debouncedFetchAsset(state, pageCount, setAssetData, setTotalCount, dispatch);
 	}, [
 		state.searchText,
@@ -124,6 +139,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				</MainAssetPanel>
 				<CustomDiv py="16px" justifyContent="space-around" type="flex" align="center" width="100%">
 					<Pagination
+						current={pageCount}
 						defaultPageSize={12}
 						hideOnSinglePage={true}
 						total={totalCount}
