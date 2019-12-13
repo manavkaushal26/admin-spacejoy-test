@@ -72,7 +72,15 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex">
 						<Image height="100px" src={`q_80,h_100/${asset.cdn}`} />
 					</CustomDiv>
-					<CustomDiv width="70%" px="8px" py="8px" type="flex" wrap="wrap" justifyContent="space-evenly" align="center">
+					<CustomDiv
+						width="70%"
+						px="8px"
+						py="8px"
+						type="flex"
+						flexWrap="wrap"
+						justifyContent="space-evenly"
+						align="center"
+					>
 						<CustomDiv width="100%">
 							<Text style={{ width: "100%" }} strong ellipsis>
 								{getValueSafely(() => asset.name, "N/A")}

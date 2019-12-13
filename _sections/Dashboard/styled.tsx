@@ -1,9 +1,9 @@
-import { Divider, Tag, Typography } from "antd";
-import styled from "styled-components";
+import { Divider, Tag, Typography, Col, Icon, Button } from "antd";
+import styled, { css } from "styled-components";
 import { Status } from "@customTypes/userType";
 import { PhaseInternalNames } from "@customTypes/dashboardTypes";
 
-const { Text } = Typography;
+const { Text, Paragraph } = Typography;
 
 export const getTagColor = (text: string): string => {
 	switch (text) {
@@ -121,7 +121,7 @@ interface CustomDivProps {
 		| "stretch";
 	textTransform?: "capitalize" | "uppercase" | "lowercase";
 	align?: "center" | "start" | "end" | "baseline" | "stretch" | "flex-end" | "flex-start";
-	wrap?: "wrap" | "no-wrap" | "wrap-reverse";
+	flexWrap?: "wrap" | "no-wrap" | "wrap-reverse";
 	flexGrow?: number;
 	maxHeight?: string;
 	flexBasis?: string;
@@ -165,7 +165,7 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	margin-left: ${({ ml }) => ml};
 	justify-content: ${({ justifyContent }) => justifyContent};
 	align-items: ${({ align }) => align};
-	flex-wrap: ${({ wrap }) => wrap};
+	flex-wrap: ${({ flexWrap }) => flexWrap};
 	flex-grow: ${({ flexGrow }) => flexGrow};
 	flex-direction: ${({ flexDirection }) => flexDirection};
 	max-height: ${({ maxHeight }) => maxHeight};
@@ -216,5 +216,65 @@ export const Form = styled.div`
 		flex-basis: 20ch;
 		display: inline;
 		flex-grow: 1;
+	}
+`;
+
+export const BorderedParagraph = styled(Paragraph)`
+	border: 1px #d9d9d9 solid;
+	border-radius: 4px;
+	padding: 8px 8px;
+	background-color: white;
+	div[role="button"] {
+		display: inline-flex !important;
+	}
+	textarea.ant-input:focus {
+		border: none;
+		box-shadow: none;
+	}
+`;
+
+export const EndCol = styled(Col)`
+	display: flex;
+	justify-content: flex-end;
+`;
+export const FitIcon = styled(Icon)`
+	display: flex;
+`;
+
+export const CustomUl = styled.ul`
+	list-style-type: none;
+	margin-left: 0px;
+	padding-left: 1rem;
+	text-indent: -1rem;
+	li:before {
+		content: "-";
+		padding-right: 4px;
+	}
+`;
+
+export const StatusButton = styled(Button)<{ status: Status }>`
+	:disabled {
+		:hover {
+			${({ status }) => {
+				return (
+					status === Status.completed &&
+					css`
+						background-color: #d0fcbd;
+						border-color: #d0fcbd;
+					`
+				);
+			}};
+			color: rgba(0, 0, 0, 0.65);
+		}
+		${({ status }) => {
+			return (
+				status === Status.completed &&
+				css`
+					background-color: #d0fcbd;
+					border-color: #d0fcbd;
+				`
+			);
+		}};
+		color: rgba(0, 0, 0, 0.65);
 	}
 `;

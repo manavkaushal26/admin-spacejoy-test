@@ -70,7 +70,7 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, pro
 	};
 
 	return (
-		<CustomDiv type="flex" width="100%" wrap="wrap" overY="scroll">
+		<CustomDiv type="flex" width="100%" flexWrap="wrap" overY="scroll">
 			<CustomDiv width="50%" pr="8px" justifyContent="center">
 				<Button block type="primary" onClick={goToStore}>
 					Open Asset Store

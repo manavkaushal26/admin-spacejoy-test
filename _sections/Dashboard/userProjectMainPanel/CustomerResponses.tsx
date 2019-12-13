@@ -10,7 +10,7 @@ interface CustomerResponsesProps {
 const CustomerResponses: React.FC<CustomerResponsesProps> = ({ formData }): JSX.Element => {
 	return (
 		<>
-			<CustomDiv py="16px" wrap="wrap" type="flex" justifyContent="flex-start">
+			<CustomDiv py="16px" flexWrap="wrap" type="flex" justifyContent="flex-start">
 				{formData.map(question => {
 					return (
 						<CustomDiv key={question.entry} mx="8px" my="8px">

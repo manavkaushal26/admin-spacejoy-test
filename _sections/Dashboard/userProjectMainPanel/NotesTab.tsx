@@ -8,43 +8,9 @@ import { getLocalStorageValue } from "@utils/storageUtils";
 import { Avatar, Button, Card, Col, Icon, Input, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { CustomDiv } from "../styled";
+import { CustomDiv, CustomUl, EndCol, FitIcon, BorderedParagraph } from "../styled";
 
 const { Text, Paragraph } = Typography;
-
-const BorderedParagraph = styled(Paragraph)`
-	border: 1px #d9d9d9 solid;
-	border-radius: 4px;
-	padding: 8px 8px;
-	background-color: white;
-	div[role="button"] {
-		display: inline-flex !important;
-	}
-	textarea.ant-input:focus {
-		border: none;
-		box-shadow: none;
-	}
-`;
-
-const EndCol = styled(Col)`
-	display: flex;
-	justify-content: flex-end;
-`;
-
-const FitIcon = styled(Icon)`
-	display: flex;
-`;
-
-const CustomUl = styled.ul`
-	list-style-type: none;
-	margin-left: 0px;
-	padding-left: 1rem;
-	text-indent: -1rem;
-	li:before {
-		content: "-";
-		padding-right: 4px;
-	}
-`;
 
 interface NotesTab {
 	designData: DetailedDesign;
@@ -129,7 +95,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 			<CustomDiv px="10px" py="10px">
 				<CustomDiv py="10px">
 					<Card>
-						<CustomDiv type="flex" width="100%" justifyContent="stretch" flexDirection="row" wrap="no-wrap">
+						<CustomDiv type="flex" width="100%" justifyContent="stretch" flexDirection="row" flexWrap="no-wrap">
 							<CustomDiv width="30%">
 								<Image src={NotesImageURL} height="125px" width="100%" />
 							</CustomDiv>

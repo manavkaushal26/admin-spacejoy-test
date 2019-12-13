@@ -81,9 +81,16 @@ interface Phase {
 	_id: string;
 }
 
-interface DesignImagesInterface {
+export interface DesignerImageComments {
+	_id?: string;
+	author: string;
+	text: string;
+	status: string;
+}
+export interface DesignImagesInterface {
 	cdn: string;
 	_id: string;
+	comments: DesignerImageComments[];
 	imgType: string;
 	path: string;
 }
@@ -221,7 +228,7 @@ export interface PhaseType {
 	concept: PhaseDetails;
 	design3D: PhaseDetails;
 	render: PhaseDetails;
-	renderRevision: PhaseDetails;
+	revision: PhaseDetails;
 	ready: PhaseDetails;
 }
 
@@ -231,7 +238,7 @@ export interface DetailedDesign {
 	description: string;
 	assets: Assets[];
 	room: RoomType;
-	phase: PhaseType;
+	phases: PhaseType;
 	designImages: DesignImagesInterface[];
 	createdAt: string;
 	updatedAt: string;
@@ -277,4 +284,9 @@ export enum RoomLabels {
 	Window = "Window",
 	Door = "Door",
 	House = "House"
+}
+
+export enum DesignImgTypes {
+	Render = "render",
+	Panorama = "panorama"
 }

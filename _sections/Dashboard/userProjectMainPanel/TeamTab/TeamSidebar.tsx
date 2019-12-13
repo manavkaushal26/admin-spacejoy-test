@@ -57,7 +57,7 @@ export default function TeamSidebar({
 					<Text strong>Account Managers</Text>
 				</CustomDiv>
 				<SilentDivider />
-				<CardContainer px="8px" py="1rem" type="flex" wrap="wrap">
+				<CardContainer px="8px" py="1rem" type="flex" flexWrap="wrap">
 					{assignedAccountManagers.length ? (
 						assignedAccountManagers.map(teamMember => (
 							<NoBodyCard
@@ -107,7 +107,7 @@ export default function TeamSidebar({
 					<Text strong>Designers</Text>
 				</CustomDiv>
 				<SilentDivider />
-				<CardContainer px="8px" py="1rem" type="flex" wrap="wrap">
+				<CardContainer px="8px" py="1rem" type="flex" flexWrap="wrap">
 					{assignedDesigners.length ? (
 						assignedDesigners.map(teamMember => (
 							<NoBodyCard

@@ -139,7 +139,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({ projectId, assignedTeam, setL
 					</CustomDiv>
 				</Form>
 				<Col md={16}>
-					<CustomDiv type="flex" wrap="wrap">
+					<CustomDiv type="flex" flexWrap="wrap">
 						{state.team.length ? (
 							state.team.map(teamMember => {
 								return (

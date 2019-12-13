@@ -80,7 +80,7 @@ const UserProjectCard = ({
 
 				<Row type="flex" gutter={1}>
 					<Col span={24}>
-						<CustomDiv type="flex" wrap="no-wrap">
+						<CustomDiv type="flex" flexWrap="no-wrap">
 							<CustomDiv width="15%" />
 							<StyledTag color={getTagColor(phase)}>Phase: {phase}</StyledTag>
 							<StyledTag color={getTagColor(status)}>Status: {status}</StyledTag>

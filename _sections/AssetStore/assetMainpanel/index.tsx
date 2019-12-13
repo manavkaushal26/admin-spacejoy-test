@@ -117,7 +117,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				<CustomDiv pt="0.5em" pl="0.5em" width="100%">
 					<Title level={3}>{assetEntryId ? "Recommendation Selection" : "Primary product selection"}</Title>
 				</CustomDiv>
-				<MainAssetPanel type="flex" wrap="wrap" justifyContent="space-evenly" flexGrow={1}>
+				<MainAssetPanel type="flex" flexWrap="wrap" justifyContent="space-evenly" flexGrow={1}>
 					{assetData.map(asset => {
 						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
 					})}
