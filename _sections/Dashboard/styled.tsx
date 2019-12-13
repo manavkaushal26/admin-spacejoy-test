@@ -67,6 +67,8 @@ interface ModifiedTextProps {
 }
 
 export const ModifiedText = styled(Text)<ModifiedTextProps>`
+	text-overflow: ellipsis;
+	overflow: hidden;
 	text-transform: ${({ textTransform }) => textTransform};
 `;
 

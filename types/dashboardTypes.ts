@@ -198,7 +198,9 @@ export interface DesignerNotes {
 export interface RoomType {
 	spatialData: {
 		fileUrls: {
-			glb: string;
+			glb?: string;
+			blend?: string;
+			legacy_obj?: string;
 		};
 	};
 	status: Status;

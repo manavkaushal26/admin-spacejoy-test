@@ -99,7 +99,7 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 							</Select>
 						</CustomDiv>
 						<CustomDiv flexBasis="30ch" align="baseline" type="flex" flexDirection="row">
-							<label>Source File type</label>
+							<label>Room File type</label>
 							<Select value={`fileType:${model3dFiles}`} onSelect={onSelect}>
 								{Object.keys(Model3DFiles).map(key => {
 									return (
@@ -160,11 +160,13 @@ export default function Stage(props: Stage): JSX.Element {
 			return <UploadStep {...props} />;
 		default:
 			return (
-				<ShadowDiv>
-					<CustomDiv type="flex" justifyContent="center">
-						<Text>Work in Progress</Text>
-					</CustomDiv>
-				</ShadowDiv>
+				<CustomDiv px="1rem" py="1rem">
+					<ShadowDiv>
+						<CustomDiv type="flex" justifyContent="center">
+							<Text>Work in Progress</Text>
+						</CustomDiv>
+					</ShadowDiv>
+				</CustomDiv>
 			);
 	}
 }

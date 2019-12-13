@@ -5,12 +5,17 @@ import { Col, Icon, Row, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { CustomDiv, ModifiedText } from "../styled";
+import styled from "styled-components";
 
 const { Text } = Typography;
 
 interface BasicDetailsProps {
 	projectData?: Partial<DetailedProject>;
 }
+
+const FontCorrectedPre = styled.pre`
+	font-family: inherit;
+`;
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	const {
@@ -49,62 +54,78 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		<CustomDiv py="10px" px="10px">
 			<Row>
 				<Col xs={24} sm={12} lg={9}>
-					<Row type="flex">
-						<Text strong>{"Concept Id:"}</Text>{" "}
+					<CustomDiv type="flex">
+						<Text strong>
+							<FontCorrectedPre>Concept Id: </FontCorrectedPre>
+						</Text>
 						<ModifiedText textTransform="uppercase" ellipsis type="secondary">
 							{id}
 						</ModifiedText>
-					</Row>
-					<Row>
-						<Text strong>Account Manager:</Text>{" "}
+					</CustomDiv>
+					<CustomDiv type="flex">
+						<Text strong>
+							<FontCorrectedPre>Account Manager: </FontCorrectedPre>
+						</Text>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{accountManagers || "Not Assigned"}
 						</ModifiedText>
-					</Row>
-					<Row>
-						<Text strong>Created on:</Text>{" "}
+					</CustomDiv>
+					<CustomDiv type="flex">
+						<Text strong>
+							<FontCorrectedPre>Created on: </FontCorrectedPre>
+						</Text>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{moment(createdAt).format("YYYY-MM-DD")}
 						</ModifiedText>
-					</Row>
+					</CustomDiv>
 				</Col>
 				<Col xs={24} sm={12} lg={9}>
-					<Row>
-						<Text strong>Payment Status:</Text>{" "}
+					<CustomDiv type="flex">
+						<Text strong>
+							<FontCorrectedPre>Payment Status: </FontCorrectedPre>
+						</Text>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{paymentStatus}
 						</ModifiedText>
-					</Row>
-					<Row>
-						<Text strong>Assigned Designers:</Text>
+					</CustomDiv>
+					<CustomDiv type="flex">
+						<Text strong>
+							<FontCorrectedPre>Assigned Designers: </FontCorrectedPre>
+						</Text>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{designers || "Not assigned"}
 						</ModifiedText>
-					</Row>
-					<Row>
-						<Text strong>Package:</Text>{" "}
+					</CustomDiv>
+					<CustomDiv type="flex">
+						<Text strong>
+							<FontCorrectedPre>Package: </FontCorrectedPre>
+						</Text>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{getValueSafely(() => items.join(", "), "N/A")}
 						</ModifiedText>
-					</Row>
+					</CustomDiv>
 				</Col>
 				<Col xs={24} sm={12} lg={6}>
-					<Row>
+					<CustomDiv type="flex">
 						<CustomDiv type="flex" inline>
-							<Icon type="phone" rotate={90} />
+							<Text strong>
+								<FontCorrectedPre>Phone: </FontCorrectedPre>
+							</Text>
 						</CustomDiv>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}
 						</ModifiedText>
-					</Row>
-					<Row>
+					</CustomDiv>
+					<CustomDiv type="flex">
 						<CustomDiv type="flex" inline>
-							<Icon type="mail" />
-						</CustomDiv>{" "}
+							<Text strong>
+								<FontCorrectedPre>Email: </FontCorrectedPre>
+							</Text>
+						</CustomDiv>
 						<ModifiedText textTransform="lowercase" type="secondary">
 							{getValueSafely(() => customer.email, "N/A")}
 						</ModifiedText>
-					</Row>
+					</CustomDiv>
 				</Col>
 			</Row>
 		</CustomDiv>

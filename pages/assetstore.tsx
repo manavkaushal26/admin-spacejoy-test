@@ -9,7 +9,7 @@ import PageLayout from "@sections/Layout";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Row, Spin, Typography } from "antd";
+import { Button, Col, Row, Spin, Typography, message } from "antd";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -99,6 +99,12 @@ const moodboard: ExtendedJSXFC<MoodboardProps> = ({
 	const refetchMoodBoard = () => {
 		fetchMoodBoard();
 	};
+
+	useEffect(() => {
+		if (assetEntryId) {
+			message.warn("In Recommendation Selection Mode");
+		} else message.warn("Primary Asset Selection mode");
+	}, [assetEntryId]);
 
 	useEffect(() => {
 		fetchMetaData();
@@ -202,8 +208,8 @@ const moodboard: ExtendedJSXFC<MoodboardProps> = ({
 				</ParentContainer>
 			</Spin>
 			<AssetCartModal
-			designId={designId}
-			projectId={projectId}
+				designId={designId}
+				projectId={projectId}
 				dataLoading={state.loading}
 				addRemoveAsset={addRemoveAsset}
 				cartOpen={state.cartOpen}

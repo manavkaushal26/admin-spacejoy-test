@@ -5,7 +5,7 @@ import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Anchor, Button, Icon, Spin, Typography } from "antd";
+import { Anchor, Button, Icon, Spin, Typography, message, Popconfirm } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -42,7 +42,7 @@ interface AssetDescriptionPanelProps {
 	assetEntryId: string;
 	projectId: string;
 	dispatch: React.Dispatch<AssetAction>;
-	dataLoading: boolean
+	dataLoading: boolean;
 }
 
 const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element = ({
@@ -110,13 +110,16 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 			await dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
 		} else {
 			await addRemoveAsset("ADD", assetId, assetEntryId);
+			message.success(assetEntryId ? "Added Recommendation" : "Added Primary Asset");
 		}
+
 		setLoading(false);
 	};
 
 	const onRemoveClick = async () => {
 		setLoading(true);
 		await addRemoveAsset("DELETE", moodboardAssetIdMap[assetId], assetEntryId);
+		message.success(assetEntryId ? "Removed Recommendation" : "Removed Primary Asset");
 		setLoading(false);
 	};
 
@@ -157,13 +160,12 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<Text type="secondary">Dimensions</Text>
 								<CustomDiv py="0.25em">
 									<CustomDiv>
-										<Text>Height: </Text>
-										<Text>{getValueSafely<string | number>(() => singleAssetData.dimension.height, "N/A")} Feet</Text>
-									</CustomDiv>
-
-									<CustomDiv>
 										<Text>Width: </Text>
 										<Text>{getValueSafely<string | number>(() => singleAssetData.dimension.width, "N/A")} Feet</Text>
+									</CustomDiv>
+									<CustomDiv>
+										<Text>Height: </Text>
+										<Text>{getValueSafely<string | number>(() => singleAssetData.dimension.height, "N/A")} Feet</Text>
 									</CustomDiv>
 									<CustomDiv>
 										<Text>Depth: </Text>
@@ -188,9 +190,11 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<CustomDiv flexGrow={1} type="flex" flexDirection="column" justifyContent="flex-end">
 							{assetInMoodboard && (
 								<CustomDiv py="0.5em" width="100%">
-									<Button block type="danger" onClick={onRemoveClick}>
-										Remove Asset
-									</Button>
+									<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
+										<Button block type="danger">
+											Remove Asset
+										</Button>
+									</Popconfirm>
 								</CustomDiv>
 							)}
 							{!assetInMoodboard && assetEntryId && (

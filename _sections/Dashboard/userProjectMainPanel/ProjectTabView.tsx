@@ -111,12 +111,12 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 									<Card
 										style={{ width: "300px" }}
 										hoverable
+										onClick={() => onSelectDesign(design.design._id)}
 										cover={
 											<CustomDiv>
 												<Image
 													width="300px"
 													height="175px"
-													onClick={() => onSelectDesign(design.design._id)}
 													src={`q_80,w_298/${getValueSafely(
 														() => design.design.designImages[0].cdn,
 														"v1574869657/shared/Illustration_mffq52.svg"

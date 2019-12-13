@@ -56,7 +56,7 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						<CustomDiv inline pr="0.5rem">
 							<Avatar>4</Avatar>
 						</CustomDiv>
-						<Text strong>Send to Client</Text>
+						<Text strong>Mark Design as complete</Text>
 					</CustomDiv>
 				</ShadowDiv>
 				{stage === "send" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}

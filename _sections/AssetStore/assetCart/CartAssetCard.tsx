@@ -2,7 +2,7 @@ import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Button, Typography } from "antd";
+import { Button, Typography, Popconfirm, message } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AssetCard } from "../styled";
@@ -54,6 +54,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 		if (type === "recommendation") {
 			await addRemoveAsset("DELETE", asset._id, entryId);
 		}
+		message.success(type === "primary" ? "Primary Asset Removed" : "Recommendation Removed");
 		setLoading(false);
 	};
 
@@ -90,7 +91,15 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 							)}
 						</CustomDiv>
 						<CustomDiv type="flex" width="20%" px="4px">
-							<StyledButton loading={loading} onClick={onClick} icon="delete" type="danger" block></StyledButton>
+							<Popconfirm
+								placement="topRight"
+								onConfirm={onClick}
+								title="Are you sure?"
+								okText="Yes"
+								cancelText="Cancel"
+							>
+								<StyledButton loading={loading} icon="delete" type="danger" block></StyledButton>
+							</Popconfirm>
 						</CustomDiv>
 					</CustomDiv>
 				</CustomDiv>
