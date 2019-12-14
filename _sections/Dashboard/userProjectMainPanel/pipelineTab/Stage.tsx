@@ -184,12 +184,7 @@ const Design3D: React.FC = () => {
 					</CustomDiv>
 					<CustomDiv inline>
 						<a target="_blank" href="//www.microsoft.com/store/apps/9n954dnxj4zx?cid=storebadge&ocid=badge">
-							<Image
-								src="q_80,w_284/v1571050296/shared/windows_m7lpx7.png"
-								alt="Microsoft Store"
-								width="284px"
-								height="104px"
-							/>
+							<Image src="q_80,w_284/v1571050296/shared/windows_m7lpx7.png" alt="Microsoft Store" width="284px" />
 						</a>
 					</CustomDiv>
 				</CustomDiv>
@@ -404,9 +399,16 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 };
 
 const RevisionStage: React.FC<Stage> = ({ designData, refetchDesignData }) => {
+	const [designDataCopy, setDesignDataCopy] = useState<DetailedDesign>(null);
 	const [designImages, setDesignImages] = useState<DesignImagesInterface[]>([]);
 	const [imageId, setImageId] = useState<string>(null);
 	const [designerNote, setDesignerNote] = useState<string>(null);
+
+	useEffect(() => {
+		if (designData) {
+			setDesignDataCopy(designData);
+		}
+	}, [designData]);
 
 	useEffect(() => {
 		if (designData) {
