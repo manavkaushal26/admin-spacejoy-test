@@ -1,7 +1,7 @@
-import { DetailedDesign } from "@customTypes/dashboardTypes";
+import { DetailedDesign, PhaseType } from "@customTypes/dashboardTypes";
 import { CustomDiv, ShadowDiv, StepsContainer, StatusButton } from "@sections/Dashboard/styled";
 import { Avatar, Typography, Button, message, Popconfirm, Icon } from "antd";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Stage from "./Stage";
 import { Status } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
@@ -34,13 +34,18 @@ const getButtonText = (status: Status) => {
 export default function PipelineTab({ designData, refetchDesignData }: PipelineTab): JSX.Element {
 	const [stage, setStage] = useState<string>(null);
 	const [updationPhase, setUpdationPhase] = useState<string>(null);
+	const [phaseData, setPhaseData] = useState<PhaseType>(null);
 	const onClick = step => {
 		if (stage === step) {
 			setStage(null);
 		} else setStage(step);
 	};
 
-	const phaseData = designData.phases;
+	useEffect(() => {
+		if (designData) {
+			setPhaseData(designData.phases);
+		}
+	}, [designData.phases]);
 
 	const conceptStatus = getValueSafely(() => phaseData.concept.status, Status.pending);
 	const design3DStatus = getValueSafely(() => phaseData.design3D.status, Status.pending);
@@ -75,6 +80,9 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 		});
 		if (data.status === "error") {
 			message.error(data.message);
+		} else {
+			console.log("setting");
+			setPhaseData(data.data);
 		}
 		setUpdationPhase(null);
 	};
@@ -122,7 +130,7 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 									loading={updationPhase === "concept"}
 									status={conceptStatus}
 									type="danger"
-									disabled={conceptStatus !== Status.pending}
+									disabled={conceptStatus === Status.pending}
 								>
 									<Icon type="undo" rotate={135} />
 								</StatusButton>
@@ -131,7 +139,7 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 					</CustomDiv>
 				</ShadowDiv>
 				{stage === "concept" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
-				<ShadowDiv onClick={onClick.bind(null, "design3d")}>
+				<ShadowDiv onClick={onClick.bind(null, "design3D")}>
 					<CustomDiv inline px="1.5rem" py="1.5rem">
 						<CustomDiv inline pr="0.5rem">
 							<Avatar>2</Avatar>
@@ -151,10 +159,10 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						<CustomDiv flexBasis="25ch">
 							<StatusButton
 								block
-								loading={updationPhase === "design3d"}
+								loading={updationPhase === "design3D"}
 								status={design3DStatus}
 								type="primary"
-								onClick={updateDesignState.bind(null, "design3d", design3DStatus)}
+								onClick={updateDesignState.bind(null, "design3D", design3DStatus)}
 								disabled={design3DStatus === Status.completed || conceptStatus !== Status.completed}
 							>
 								{getButtonText(design3DStatus)}
@@ -164,10 +172,10 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 							<Popconfirm
 								title="Are you sure you want to revert status to pending?"
 								okText="Yes"
-								onConfirm={updateDesignState.bind(null, "design3d", "reset")}
+								onConfirm={updateDesignState.bind(null, "design3D", "reset")}
 							>
 								<StatusButton
-									loading={updationPhase === "design3d"}
+									loading={updationPhase === "design3D"}
 									status={design3DStatus}
 									type="danger"
 									disabled={design3DStatus == Status.pending}
@@ -178,7 +186,7 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						</CustomDiv>
 					</CustomDiv>
 				</ShadowDiv>
-				{stage === "design3d" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
+				{stage === "design3D" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
 				<ShadowDiv onClick={onClick.bind(null, "render")}>
 					<CustomDiv inline px="1.5rem" py="1.5rem">
 						<CustomDiv inline pr="0.5rem">

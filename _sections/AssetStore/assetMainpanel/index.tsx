@@ -98,7 +98,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	}, [assetEntryId]);
 
 	useEffect(() => {
-		console.log("hello");
 		setPageCount(1);
 	}, [
 		state.searchText,

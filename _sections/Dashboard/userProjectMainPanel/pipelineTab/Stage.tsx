@@ -66,7 +66,6 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	);
 
 	const beforeUpload = (file, fileList) => {
-		console.log(file);
 		return false;
 	};
 
@@ -211,7 +210,6 @@ const RenderDesign: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	};
 
 	const onSelect = selectedValue => {
-		console.log(selectedValue);
 		setImageType(selectedValue);
 	};
 
@@ -434,41 +432,44 @@ const RevisionStage: React.FC<Stage> = ({ designData }) => {
 	return (
 		<StepsContainer>
 			<ShadowDiv>
-				<CustomDiv type="flex" justifyContent="space-evenly" flexWrap="wrap" width="100%" px="1rem" py="1rem">
-					{designImages.map(image => {
-						return (
-							<CustomDiv
-								px="1rem"
-								py="1rem"
-								type="flex"
-								flexBasis="50ch"
-								flexDirection="column"
-								justifyContent="center"
-							>
-								<Image width="100%" src={`q_80,w_400/${image.cdn}`} />
-								<CustomDiv>
-									<Button block onClick={() => setImageId(image._id)}>
-										{"Add Comments"}
-									</Button>
+				<CustomDiv display="flex" flexDirection="column">
+					<CustomDiv type="flex" justifyContent="space-evenly" flexWrap="wrap" width="100%" px="1rem" py="1rem">
+						{designImages.map(image => {
+							return (
+								<CustomDiv
+									px="1rem"
+									py="1rem"
+									type="flex"
+									flexBasis="50ch"
+									flexDirection="column"
+									justifyContent="center"
+								>
+									<Image width="100%" src={`q_80,w_400/${image.cdn}`} />
+									<CustomDiv>
+										<Button block onClick={() => setImageId(image._id)}>
+											{"Add Comments"}
+										</Button>
+									</CustomDiv>
 								</CustomDiv>
-							</CustomDiv>
-						);
-					})}
+							);
+						})}
+					</CustomDiv>
+					<SilentDivider />
+
+					<CustomDiv
+						type="flex"
+						justifyContent="space-evenly"
+						flexWrap="wrap"
+						flexDirection="column"
+						width="100%"
+						px="1rem"
+						py="1rem"
+					>
+						<Title level={4}>Designer Note</Title>
+						<Input.TextArea style={{ marginBottom: "1rem" }} autoSize={{ minRows: 2 }}></Input.TextArea>
+						<Button>Add Note</Button>
+					</CustomDiv>
 				</CustomDiv>
-				<CustomDiv
-					type="flex"
-					justifyContent="space-evenly"
-					flexWrap="wrap"
-					flexDirection="column"
-					width="100%"
-					px="1rem"
-					py="1rem"
-				>
-					<Title>Designer Note</Title>
-					<Input.TextArea autoSize={{ minRows: 2 }}></Input.TextArea>
-					<Button>Add Note</Button>
-				</CustomDiv>
-				<SilentDivider />
 			</ShadowDiv>
 			<ImageCommentDrawer
 				setImageId={setImageId}
@@ -482,11 +483,10 @@ const RevisionStage: React.FC<Stage> = ({ designData }) => {
 };
 
 export default function Stage(props: Stage): JSX.Element {
-	console.log(props.stage);
 	switch (props.stage) {
 		case "concept":
 			return <UploadStep {...props} />;
-		case "design3d":
+		case "design3D":
 			return <Design3D />;
 		case "render":
 			return <RenderDesign {...props} />;
