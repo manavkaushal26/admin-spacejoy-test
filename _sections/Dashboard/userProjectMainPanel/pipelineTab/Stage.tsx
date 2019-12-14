@@ -9,7 +9,7 @@ import {
 	BorderedParagraph,
 	FitIcon
 } from "@sections/Dashboard/styled";
-import { Avatar, Typography, Upload, Button, Icon, Select, Input, Drawer, Row, Col, Spin } from "antd";
+import { Avatar, Typography, Upload, Button, Icon, Select, Input, Drawer, Row, Col, Spin, message } from "antd";
 import {
 	RoomTypes,
 	Model3DFiles,
@@ -20,7 +20,7 @@ import {
 	DesignImagesInterface,
 	DesignerImageComments
 } from "@customTypes/dashboardTypes";
-import { uploadRoomApi, uploadRenderImages, addRenderImageComment } from "@api/pipelineApi";
+import { uploadRoomApi, uploadRenderImages, addRenderImageComment, addDesignerNote } from "@api/pipelineApi";
 
 import { cookieNames } from "@utils/config";
 import getCookie from "@utils/getCookie";
@@ -403,14 +403,22 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 	);
 };
 
-const RevisionStage: React.FC<Stage> = ({ designData }) => {
+const RevisionStage: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	const [designImages, setDesignImages] = useState<DesignImagesInterface[]>([]);
 	const [imageId, setImageId] = useState<string>(null);
+	const [designerNote, setDesignerNote] = useState<string>(null);
+
 	useEffect(() => {
 		if (designData) {
 			setDesignImages(designData.designImages);
 		}
 	}, [designData.designImages]);
+
+	useEffect(() => {
+		if (designData) {
+			setDesignerNote(designData.description);
+		}
+	}, [designData.description]);
 
 	const selectedImageComments: DesignerImageComments[] = useMemo(() => {
 		return getValueSafely(
@@ -429,10 +437,36 @@ const RevisionStage: React.FC<Stage> = ({ designData }) => {
 		setDesignImages([...designImages]);
 	};
 
+	const handleTextChange = e => {
+		const {
+			target: { value }
+		} = e;
+		setDesignerNote(value);
+	};
+
+	const saveDesignerNote = async () => {
+		const endpoint = addDesignerNote(designData._id);
+
+		const data = await fetcher({
+			endPoint: endpoint,
+			method: "PUT",
+			body: {
+				data: {
+					description: designerNote
+				}
+			}
+		});
+		if (data.status !== "error") {
+			refetchDesignData();
+		} else {
+			message.error(data.message);
+		}
+	};
+
 	return (
 		<StepsContainer>
 			<ShadowDiv>
-				<CustomDiv display="flex" flexDirection="column">
+				<CustomDiv type="flex" flexDirection="column">
 					<CustomDiv type="flex" justifyContent="space-evenly" flexWrap="wrap" width="100%" px="1rem" py="1rem">
 						{designImages.map(image => {
 							return (
@@ -466,8 +500,13 @@ const RevisionStage: React.FC<Stage> = ({ designData }) => {
 						py="1rem"
 					>
 						<Title level={4}>Designer Note</Title>
-						<Input.TextArea style={{ marginBottom: "1rem" }} autoSize={{ minRows: 2 }}></Input.TextArea>
-						<Button>Add Note</Button>
+						<Input.TextArea
+							style={{ marginBottom: "1rem" }}
+							value={designerNote}
+							autoSize={{ minRows: 2 }}
+							onChange={handleTextChange}
+						/>
+						<Button onClick={saveDesignerNote}>Add Note</Button>
 					</CustomDiv>
 				</CustomDiv>
 			</ShadowDiv>

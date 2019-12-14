@@ -22,3 +22,7 @@ export const addRenderImageComment = (designId: string, imageId: string) => {
 export const updateDesignPhase = (designId: string) => {
 	return `/admin/design/${designId}/phase`;
 };
+
+export const addDesignerNote = (designId: string) => {
+	return `/design/${designId}`;
+};
