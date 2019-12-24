@@ -6,6 +6,7 @@ import { CustomDiv } from "@sections/Dashboard/styled";
 import { Typography, Button } from "antd";
 import { useRouter } from "next/router";
 import { redirectToLocation } from "@utils/auth";
+import { allowedRoles } from "@utils/constants";
 
 const redirectObj = {
 	pathname: "/dashboard",
@@ -34,13 +35,13 @@ function HeroSection({ authVerification }) {
 					<Typography.Title level={2}>Spacejoy Admin</Typography.Title>
 				</CustomDiv>
 				<CustomDiv justifyContent="center" type="flex" py="1em">
-					{authVerification.role === "guest" ? (
-						<Button onClick={redirectToLogin} type="primary">
-							Login
-						</Button>
-					) : (
+					{allowedRoles.includes(authVerification.role) ? (
 						<Button onClick={redirectToLocation.bind(null, redirectObj)} type="primary">
 							Go to Dashboard
+						</Button>
+					) : (
+						<Button onClick={redirectToLogin} type="primary">
+							Login
 						</Button>
 					)}
 				</CustomDiv>

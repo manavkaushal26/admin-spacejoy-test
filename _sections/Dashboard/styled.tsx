@@ -213,7 +213,7 @@ export const Form = styled.div`
 		flex-basis: 15ch;
 	}
 	label + * {
-		flex-basis: 20ch;
+		flex-basis: 50ch;
 		display: inline;
 		flex-grow: 1;
 	}

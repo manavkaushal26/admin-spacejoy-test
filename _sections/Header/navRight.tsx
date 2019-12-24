@@ -4,15 +4,13 @@ import { HorizontalListStyled } from "./styled";
 import User, { Role } from "@customTypes/userType";
 import ActiveLink from "./ActiveLink";
 import Button from "@components/Button";
+import { allowedRoles } from "@utils/constants";
 
 const navRight = (authVerification: Partial<User>): JSX.Element => (
 	<nav>
 		<HorizontalListStyled align="right">
 			<li>
-				{authVerification &&
-				(authVerification.role === Role.Admin ||
-					authVerification.role === Role.Designer ||
-					authVerification.role === Role.Owner) ? (
+				{authVerification && allowedRoles.includes(authVerification.role) ? (
 					<DropMenu>
 						<DropMenu.Header>
 							<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">

@@ -18,7 +18,8 @@ import {
 	RoomLabels,
 	DesignImgTypes,
 	DesignImagesInterface,
-	DesignerImageComments
+	DesignerImageComments,
+	PhaseType
 } from "@customTypes/dashboardTypes";
 import { uploadRoomApi, uploadRenderImages, addRenderImageComment, addDesignerNote } from "@api/pipelineApi";
 
@@ -35,6 +36,7 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 interface Stage {
 	designData: DetailedDesign;
+	phaseData: PhaseType;
 	refetchDesignData: () => void;
 	stage: string;
 }
@@ -42,7 +44,59 @@ interface Stage {
 const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
-	const [roomName, setRoomName] = useState<string>("");
+	const [roomName, setRoomName] = useState<string>(null);
+	const [roomFileList, setRoomFileList] = useState<UploadFile<any>[]>([]);
+	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
+
+	useEffect(() => {
+		if (designData) {
+			const {
+				room: {
+					spatialData: {
+						fileUrls: { glb, source, legacy_obj }
+					}
+				}
+			} = designData;
+			if (glb) {
+				const roomName = glb.split("/").pop();
+				setRoomFileList([
+					{
+						uid: "-1",
+						name: roomName,
+						status: "done",
+						url: glb,
+						size: 0,
+						type: "application/octet-stream"
+					}
+				]);
+			} else if (legacy_obj) {
+				const roomName = legacy_obj.split("/").pop();
+				setRoomFileList([
+					{
+						uid: "-1",
+						name: roomName,
+						status: "done",
+						url: legacy_obj,
+						size: 0,
+						type: "application/octet-stream"
+					}
+				]);
+			}
+			if (source) {
+				const fileName = legacy_obj.split("/").pop();
+				setSourceFileList([
+					{
+						uid: "-1",
+						name: fileName,
+						status: "done",
+						url: source,
+						size: 0,
+						type: "application/octet-stream"
+					}
+				]);
+			}
+		}
+	}, [designData]);
 
 	const onSelect = selectedValue => {
 		let type: string, value: RoomTypes | Model3DFiles;
@@ -65,10 +119,6 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 		[designData._id, designData.room]
 	);
 
-	const beforeUpload = (file, fileList) => {
-		return false;
-	};
-
 	const handleNameChange = e => {
 		const {
 			target: { value }
@@ -76,7 +126,19 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 		setRoomName(value);
 	};
 
-	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>) => {
+	const handleOnFileUploadChange = (uploadFileType: "room" | "source", info: UploadChangeParam<UploadFile>) => {
+		let fileList = [...info.fileList];
+
+		// 1. Limit the number of uploaded files
+		// Only to show one recent uploaded files, and old ones will be replaced by the new
+		fileList = fileList.slice(-1);
+
+		if (uploadFileType === "room") {
+			setRoomFileList(fileList);
+		} else if (uploadFileType === "source") {
+			setSourceFileList(fileList);
+		}
+
 		if (info.file.status === "done") {
 			refetchDesignData();
 		}
@@ -94,7 +156,7 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 	return (
 		<StepsContainer>
 			<ShadowDiv>
-				<CustomDiv px="1rem" py="1rem">
+				<CustomDiv px="1rem" py="1rem" width="100%">
 					<Form>
 						<Text strong>Rooms</Text>
 						<SilentDivider />
@@ -134,8 +196,10 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 							<Upload
 								supportServerRender={true}
 								name="file"
+								fileList={roomFileList}
 								action={uploadRoomUrl}
-								onChange={handleOnFileUploadChange}
+								onRemove={() => false}
+								onChange={handleOnFileUploadChange.bind(null, "room")}
 								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 								data={{ name: roomName, fileType: model3dFiles, roomType: roomType }}
 								accept={ModelToExtensionMap[model3dFiles]}
@@ -152,8 +216,10 @@ const UploadStep: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 								<Upload
 									supportServerRender={true}
 									name="file"
+									fileList={sourceFileList}
 									action={uploadRoomUrl}
-									onChange={handleOnFileUploadChange}
+									onRemove={() => false}
+									onChange={handleOnFileUploadChange.bind(null, "source")}
 									headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 									data={{ name: roomName, fileType: "source", roomType: roomType }}
 									accept=".blend"
@@ -193,7 +259,7 @@ const Design3D: React.FC = () => {
 	);
 };
 
-const RenderDesign: React.FC<Stage> = ({ designData, refetchDesignData }) => {
+const RenderDesign: React.FC<Stage> = ({ designData, refetchDesignData, phaseData }) => {
 	const [imageType, setImageType] = useState<DesignImgTypes>(DesignImgTypes.Render);
 
 	const uploadRenderImage = useMemo(() => uploadRenderImages(designData._id, imageType), [designData._id, imageType]);
@@ -238,11 +304,7 @@ const RenderDesign: React.FC<Stage> = ({ designData, refetchDesignData }) => {
 								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 								accept="image/*"
 							>
-								<Button
-									disabled={
-										getValueSafely(() => designData.phases.design3D.status, Status.pending) !== Status.completed
-									}
-								>
+								<Button disabled={getValueSafely(() => phaseData.design3D.status, Status.pending) !== Status.completed}>
 									<Icon type="upload" />
 									Click to Upload
 								</Button>

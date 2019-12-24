@@ -206,7 +206,7 @@ export interface RoomType {
 	spatialData: {
 		fileUrls: {
 			glb?: string;
-			blend?: string;
+			source?: string;
 			legacy_obj?: string;
 		};
 	};

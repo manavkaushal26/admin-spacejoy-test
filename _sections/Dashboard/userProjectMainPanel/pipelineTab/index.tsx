@@ -138,7 +138,9 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						</CustomDiv>
 					</CustomDiv>
 				</ShadowDiv>
-				{stage === "concept" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
+				{stage === "concept" && (
+					<Stage phaseData={phaseData} designData={designData} refetchDesignData={refetchDesignData} stage={stage} />
+				)}
 				<ShadowDiv onClick={onClick.bind(null, "design3D")}>
 					<CustomDiv inline px="1.5rem" py="1.5rem">
 						<CustomDiv inline pr="0.5rem">
@@ -186,7 +188,9 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						</CustomDiv>
 					</CustomDiv>
 				</ShadowDiv>
-				{stage === "design3D" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
+				{stage === "design3D" && (
+					<Stage phaseData={phaseData} designData={designData} refetchDesignData={refetchDesignData} stage={stage} />
+				)}
 				<ShadowDiv onClick={onClick.bind(null, "render")}>
 					<CustomDiv inline px="1.5rem" py="1.5rem">
 						<CustomDiv inline pr="0.5rem">
@@ -234,7 +238,9 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						</CustomDiv>
 					</CustomDiv>
 				</ShadowDiv>
-				{stage === "render" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
+				{stage === "render" && (
+					<Stage designData={designData} phaseData={phaseData} refetchDesignData={refetchDesignData} stage={stage} />
+				)}
 				<ShadowDiv onClick={onClick.bind(null, "revision")}>
 					<CustomDiv inline px="1.5rem" py="1.5rem">
 						<CustomDiv inline pr="0.5rem">
@@ -255,12 +261,12 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 							<StatusButton
 								block
 								loading={updationPhase === "revision"}
-								status={readyStatus}
+								status={revisionStatus}
 								type="primary"
 								onClick={updateDesignState.bind(null, "revision", revisionStatus)}
-								disabled={readyStatus === Status.completed || renderStatus !== Status.completed}
+								disabled={revisionStatus === Status.completed || renderStatus !== Status.completed}
 							>
-								{getButtonText(readyStatus)}
+								{getButtonText(revisionStatus)}
 							</StatusButton>
 						</CustomDiv>
 
@@ -282,7 +288,9 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 						</CustomDiv>
 					</CustomDiv>
 				</ShadowDiv>
-				{stage === "revision" && <Stage designData={designData} refetchDesignData={refetchDesignData} stage={stage} />}
+				{stage === "revision" && (
+					<Stage phaseData={phaseData} designData={designData} refetchDesignData={refetchDesignData} stage={stage} />
+				)}
 			</StepsContainer>
 		</div>
 	);
