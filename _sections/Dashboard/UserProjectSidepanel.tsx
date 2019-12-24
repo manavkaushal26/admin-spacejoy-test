@@ -187,7 +187,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 
 	return (
 		<GrayMaxHeightDiv>
-			<CustomDiv ref={scrollParentRef} overY="scroll">
+			<CustomDiv ref={scrollParentRef} overY="scroll" width="100%">
 				<StyleCorrectedTab tabBarGutter={0} onTabClick={handleTabChange} tabBarExtraContent={TabSearch()}>
 					<Tabs.TabPane tab="All" key="all">
 						<InfiniteScroll

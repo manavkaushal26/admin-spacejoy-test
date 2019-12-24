@@ -5,7 +5,7 @@ import User from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { getLocalStorageValue } from "@utils/storageUtils";
-import { Avatar, Button, Card, Col, Icon, Input, Row, Typography } from "antd";
+import { Avatar, Button, Card, Col, Icon, Input, Row, Typography, message } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { CustomDiv, CustomUl, EndCol, FitIcon, BorderedParagraph } from "../styled";
@@ -31,20 +31,13 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 		setAuthVerification(getLocalStorageValue<User>("authVerification"));
 	}, []);
 
-	useEffect(() => {
-		return saveNotes;
-	}, [designerNotes]);
-
 	const saveNotes = async (notes = []) => {
 		const endpoint = updateNotesApi(designData._id);
-		const body = notes.length
-			? notes
-			: designerNotes.map(note => {
-					delete note._id;
-					return note;
-			  });
-		await fetcher({ endPoint: endpoint, body: { data: { designerNotes: body } }, method: "PUT" });
-		refetchDesignData();
+		const body = notes;
+		const data = await fetcher({ endPoint: endpoint, body: { data: { designerNotes: body } }, method: "PUT" });
+		if (data.data) {
+			setDesignerNotes(data.data.designerNotes);
+		}
 	};
 
 	const onNewNote = e => {
@@ -67,11 +60,15 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 			},
 			...body
 		];
-		await setDesignerNotes(data);
-		await saveNotes(data);
+		try {
+			await saveNotes(data);
+			message.success("Note Added");
+		} catch (e) {
+			message.error("Failed to add Note");
+		}
 	};
 
-	const editNote = (id: string, value) => {
+	const editNote = async (id: string, value) => {
 		const modifiedDesignerNotes = designerNotes.map(note => {
 			if (note._id === id) {
 				note.text = value;
@@ -80,14 +77,22 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 				...note
 			};
 		});
-		setDesignerNotes(modifiedDesignerNotes);
+		try {
+			await saveNotes(modifiedDesignerNotes);
+			message.success("Note edited");
+		} catch (e) {
+			message.error("Failed to add Note");
+		}
 	};
 
-	const deleteNote = (text: string) => {
+	const deleteNote = async (id: string) => {
 		const modifiedDesignerNotes = designerNotes.filter(note => {
-			return note.text !== text;
+			return note._id !== id;
 		});
-		setDesignerNotes(modifiedDesignerNotes);
+		message.success("Note deleted");
+		try {
+			await saveNotes(modifiedDesignerNotes);
+		} catch (e) {}
 	};
 
 	return (
@@ -146,7 +151,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 									{getValueSafely(() => authVerification.name, "")}
 								</Text>
 								<CustomDiv px="8px">
-									<FitIcon onClick={() => deleteNote(note.text)} theme="twoTone" type="delete" />
+									<FitIcon onClick={() => deleteNote(note._id)} theme="twoTone" type="delete" />
 								</CustomDiv>
 							</CustomDiv>
 						</Row>
