@@ -1,5 +1,5 @@
 import { page } from "@utils/config";
-import { DesignImgTypes } from "@customTypes/dashboardTypes";
+import { RenderImgUploadTypes } from "@customTypes/dashboardTypes";
 
 export const uploadRoomApi: (designId: string, roomId?: string) => string = (designId, roomId) => {
 	if (process.env.NODE_ENV !== "production") {
@@ -8,7 +8,7 @@ export const uploadRoomApi: (designId: string, roomId?: string) => string = (des
 	return `${page.apiBaseUrl}/admin/design/${designId}/config/room${roomId ? `/${roomId}` : ""}`;
 };
 
-export const uploadRenderImages = (designId: string, imageType: DesignImgTypes) => {
+export const uploadRenderImages = (designId: string, imageType: RenderImgUploadTypes | "floorplan") => {
 	if (process.env.NODE_ENV !== "production") {
 		return `${page.stageApiBaseUrl}/admin/design/${designId}/image/${imageType}`;
 	}
@@ -23,6 +23,6 @@ export const updateDesignPhase = (designId: string) => {
 	return `/admin/design/${designId}/phase`;
 };
 
-export const addDesignerNote = (designId: string) => {
+export const editDesignApi = (designId: string) => {
 	return `/design/${designId}`;
 };

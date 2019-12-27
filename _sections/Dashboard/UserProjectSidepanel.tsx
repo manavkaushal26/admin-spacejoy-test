@@ -154,7 +154,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		const { pageCount } = state;
 		const dataFeed = `skip=${pageCount * 10}&limit=10`;
 		const endpointToHit = state.searchActive
-			? `/admin/projects?keyword=customerName:${state.searchText}&${
+			? `/admin/projects?sort=-1&keyword=customerName:${state.searchText}&${
 					state.currentTab !== "all" ? `status:${state.currentTab}&` : ""
 			  }`
 			: `/admin/projects?${state.currentTab !== "all" ? `keyword=status:${state.currentTab}&` : ""}`;

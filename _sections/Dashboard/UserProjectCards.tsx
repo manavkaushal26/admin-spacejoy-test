@@ -1,4 +1,4 @@
-import { UserProjectType } from "@customTypes/dashboardTypes";
+import { UserProjectType, HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
 import ProgressBar from "@sections/Dashboard/ProgressBar";
 import { getValueSafely } from "@utils/commonUtils";
 import { projectConfig } from "@utils/config";
@@ -36,10 +36,11 @@ const UserProjectCard = ({
 }) => {
 	const {
 		name: room,
-		status,
+		customerName,
 		currentPhase: {
 			name: { internalName: phase }
 		},
+		status,
 		createdAt
 	} = userProjectData;
 	return (
@@ -67,7 +68,7 @@ const UserProjectCard = ({
 							<Text strong>
 								<CustomDiv width="100%" textTransform="capitalize">
 									{getValueSafely<string>(() => {
-										return room;
+										return customerName;
 									}, "N/A")}
 								</CustomDiv>
 							</Text>
@@ -82,7 +83,7 @@ const UserProjectCard = ({
 					<Col span={24}>
 						<CustomDiv type="flex" flexWrap="no-wrap">
 							<CustomDiv width="15%" />
-							<StyledTag color={getTagColor(phase)}>Phase: {phase}</StyledTag>
+							<StyledTag color={getTagColor(phase)}>Phase: {HumanizePhaseInternalNames[phase]}</StyledTag>
 							<StyledTag color={getTagColor(status)}>Status: {status}</StyledTag>
 						</CustomDiv>
 					</Col>

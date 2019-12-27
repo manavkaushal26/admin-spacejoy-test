@@ -1,12 +1,13 @@
 {
 	"extends": [
 		"airbnb",
-		"prettier",
+		"prettier/@typescript-eslint",
 		"prettier/react",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
 	],
-	"plugins": ["prettier"],
+	"plugins": ["@typescript-eslint", "prettier"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2016,
@@ -53,6 +54,7 @@
 				"allowChildren": false
 			}
 		],
+		"react/prop-types": 0,
 		"no-underscore-dangle": 1,
 		"import/prefer-default-export": 1
 	}

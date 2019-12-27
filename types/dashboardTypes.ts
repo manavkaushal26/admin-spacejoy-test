@@ -1,8 +1,9 @@
 import { Status, Role, ProjectRoles } from "./userType";
 
 export enum ProjectScope {
-	customer = "customer",
-	designer = "designer"
+	customer = Role.Customer,
+	designer = Role.Designer,
+	admin = Role.Admin
 }
 
 export enum PhaseInternalNames {
@@ -30,6 +31,20 @@ enum PhaseCustomerNames {
 	rejected = "rejected"
 }
 
+export enum HumanizePhaseInternalNames {
+	requirement = "Requirement",
+	designConcept = "Design Concept",
+	design3D = "Design 3D",
+	designRender = "Design Render",
+	designReady = "Design Ready",
+	designsInRevision = "Design's in Revision",
+	shop = "Shop",
+	deliveryCompleted = "Delivery Completed",
+	onHold = "On Hold",
+	suspended = "Suspended",
+	rejected = "Rejected"
+}
+
 interface CurrentPhase {
 	name: {
 		internalName: PhaseInternalNames;
@@ -43,6 +58,7 @@ export interface UserProjectType {
 	projectScope: ProjectScope;
 	status: Status;
 	name: string;
+	customerName: string;
 	customer: {
 		_id: string;
 		email: string;
@@ -61,6 +77,7 @@ interface DesignInterface {
 	_id: string;
 	design: {
 		lock: false;
+		phases: PhaseType;
 		status: string;
 		_id: string;
 		name: string;
@@ -81,6 +98,15 @@ interface Phase {
 	_id: string;
 }
 
+export enum DesignImgTypes {
+	Render = "render",
+	Moodboard = "moodboard",
+	Layout2D = "layout2d",
+	Cover = "cover",
+	Panorama = "panorama",
+	Image360 = "image360",
+	Floorplan = "floorplan"
+}
 export interface DesignerImageComments {
 	_id?: string;
 	author: string;
@@ -91,7 +117,7 @@ export interface DesignImagesInterface {
 	cdn: string;
 	_id: string;
 	comments: DesignerImageComments[];
-	imgType: string;
+	imgType: DesignImgTypes;
 	path: string;
 }
 
@@ -224,12 +250,32 @@ export interface PhaseDetails {
 	startTime: Date;
 	endTime: Date;
 }
+
+export enum DesignPhases {
+	Concept = "concept",
+	Modelling = "modelling",
+	Design3D = "design3D",
+	Render = "render",
+	Revision = "revision",
+	Ready = "ready"
+}
+
+export enum HumanizeDesignPhases {
+	concept = "Concept",
+	modelling = "Modelling",
+	design3D = "Design 3D",
+	Render = "Render",
+	Revision = "Revision",
+	ready = "Ready"
+}
+
 export interface PhaseType {
-	concept: PhaseDetails;
-	design3D: PhaseDetails;
-	render: PhaseDetails;
-	revision: PhaseDetails;
-	ready: PhaseDetails;
+	[DesignPhases.Concept]: PhaseDetails;
+	[DesignPhases.Modelling]: PhaseDetails;
+	[DesignPhases.Design3D]: PhaseDetails;
+	[DesignPhases.Render]: PhaseDetails;
+	[DesignPhases.Revision]: PhaseDetails;
+	[DesignPhases.Ready]: PhaseDetails;
 }
 
 export interface DetailedDesign {
@@ -241,6 +287,7 @@ export interface DetailedDesign {
 	phases: PhaseType;
 	designImages: DesignImagesInterface[];
 	createdAt: string;
+	missingAssetUrls: string[];
 	updatedAt: string;
 	designerNotes: DesignerNotes[];
 	id: string;
@@ -286,7 +333,7 @@ export enum RoomLabels {
 	House = "House"
 }
 
-export enum DesignImgTypes {
+export enum RenderImgUploadTypes {
 	Render = "render",
 	Panorama = "panorama"
 }

@@ -1,7 +1,7 @@
 import { Card, Col, Row, Tabs, Tag, Typography, Spin } from "antd";
 import { designApi } from "@api/designApi";
 import Image from "@components/Image";
-import { DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedDesign, DetailedProject, HumanizeDesignPhases } from "@customTypes/dashboardTypes";
 import { Role } from "@customTypes/userType";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import fetcher from "@utils/fetcher";
@@ -14,6 +14,7 @@ import styled from "styled-components";
 
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import { getValueSafely } from "@utils/commonUtils";
+import DesignSelection from "./DesignSelection";
 
 const { TabPane } = Tabs;
 
@@ -45,6 +46,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const { form: formData } = projectData;
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
+
 	const fetchDesignData = async () => {
 		setDesignLoading(true);
 		const endPoint = designApi(designId);
@@ -83,7 +85,13 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						<NotesTab refetchDesignData={refetchDesignData} designData={designData} />
 					</TabPane>
 					<TabPane tab="Moodboard" key="3">
-						<MoodboardTab setLoading={setLoading} projectId={projectData._id} designId={designId} />
+						<MoodboardTab
+							setDesignData={setDesignData}
+							missingAssets={designData.missingAssetUrls}
+							setLoading={setLoading}
+							projectId={projectData._id}
+							designId={designId}
+						/>
 					</TabPane>
 					<TabPane tab="Discussions" key="4">
 						Content of Tab Pane 4
@@ -104,40 +112,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 				</ScrollableTabs>
 			) : (
 				<Spin spinning={designLoading}>
-					{projectData.designs.map(design => {
-						return (
-							<React.Fragment key={design._id}>
-								<CustomDiv inline overflow="visible" width="300px" mt="2rem" mr="1rem">
-									<Card
-										style={{ width: "300px" }}
-										hoverable
-										onClick={() => onSelectDesign(design.design._id)}
-										cover={
-											<CustomDiv>
-												<Image
-													width="300px"
-													height="175px"
-													src={`q_80,w_298/${getValueSafely(
-														() => design.design.designImages[0].cdn,
-														"v1574869657/shared/Illustration_mffq52.svg"
-													)}`}
-												/>
-											</CustomDiv>
-										}
-									>
-										<Row type="flex" justify="space-between">
-											<Col>
-												<Text>{design.design.name}</Text>
-											</Col>
-											<Col>
-												<Tag>Status: {design.design.status}</Tag>
-											</Col>
-										</Row>
-									</Card>
-								</CustomDiv>
-							</React.Fragment>
-						);
-					})}
+					<DesignSelection projectData={projectData} onSelectDesign={onSelectDesign} />
 				</Spin>
 			)}
 		</>

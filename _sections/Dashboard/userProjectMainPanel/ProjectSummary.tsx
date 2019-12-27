@@ -1,4 +1,4 @@
-import { DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedProject, HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import ProgressBar from "@sections/Dashboard/ProgressBar";
 import { getValueSafely } from "@utils/commonUtils";
@@ -56,7 +56,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 			</Col>
 			<Col sm={24} md={12} lg={12} xl={6}>
 				<CustomDiv width="100%" py="16px">
-					<StyledTag color={getTagColor(phase)}>Phase: {phase}</StyledTag>
+					<StyledTag color={getTagColor(phase)}>Phase: {HumanizePhaseInternalNames[phase]}</StyledTag>
 					<StyledTag color={getTagColor(status)}>Status: {status}</StyledTag>
 				</CustomDiv>
 			</Col>

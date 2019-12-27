@@ -129,6 +129,7 @@ interface CustomDivProps {
 	whiteSpace?: "pre" | "nowrap" | "normal" | "pre-line" | "pre-wrap";
 	minWidth?: string;
 	maxWidth?: string;
+	cursor?: string;
 }
 
 export const CustomDiv = styled.div<CustomDivProps>`
@@ -173,6 +174,7 @@ export const CustomDiv = styled.div<CustomDivProps>`
 	flex-basis: ${({ flexBasis }) => flexBasis};
 	min-width: ${({ minWidth }) => minWidth};
 	max-width: ${({ maxWidth }) => maxWidth};
+	cursor: ${({ cursor }) => cursor};
 `;
 
 export const SilentDivider = styled(Divider)`
@@ -190,12 +192,19 @@ export const StepsContainer = styled(CustomDiv)`
 	}
 `;
 
-export const ShadowDiv = styled.div`
+export const ShadowDiv = styled.div<{ active: boolean }>`
 	box-shadow: 0px 2px 16px #999ba81f;
 	transition: all 0.3s;
 	display: flex;
 	justify-content: space-between;
-	:hover {
+	${({ active }) => {
+			return active
+				? css`
+						box-shadow: 0px 4px 32px #999ba85f;
+				  `
+				: null;
+		}}
+		:hover {
 		cursor: pointer;
 		box-shadow: 0px 4px 32px #999ba85f;
 	}

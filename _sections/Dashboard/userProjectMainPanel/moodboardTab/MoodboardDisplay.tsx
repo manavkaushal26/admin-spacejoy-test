@@ -4,6 +4,7 @@ import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { Typography } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
+import { getValueSafely } from "@utils/commonUtils";
 
 interface MoodboardDisplayProps {
 	moodboard: MoodBoardType;
@@ -25,7 +26,7 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 			<CustomDiv mt="0.5em" type="flex" width="100%">
 				<CustomDiv inline minWidth="30ch" px="0.7em">
 					<Typography.Title style={{ width: "100%" }} level={3}>
-						Primary
+						Primary ({getValueSafely(() => moodboard.assets.length, 0)})
 					</Typography.Title>
 				</CustomDiv>
 				<CustomDiv inline>

@@ -1,4 +1,4 @@
-import { DetailedDesign, PhaseType } from "@customTypes/dashboardTypes";
+import { DetailedDesign, PhaseType, DesignPhases } from "@customTypes/dashboardTypes";
 import { CustomDiv, ShadowDiv, StepsContainer, StatusButton } from "@sections/Dashboard/styled";
 import { Avatar, Typography, Button, message, Popconfirm, Icon } from "antd";
 import React, { useState, useEffect } from "react";
@@ -31,6 +31,52 @@ const getButtonText = (status: Status) => {
 	return "Contact Shubam";
 };
 
+interface Steps {
+	stepNumber: number;
+	stepName: string;
+	prevPhase: DesignPhases;
+	phaseName: DesignPhases;
+	nextPhase: DesignPhases;
+}
+
+const steps: Steps[] = [
+	{
+		stepNumber: 1,
+		stepName: "Moodboard and Floorplan (Design Team)",
+		prevPhase: null,
+		phaseName: DesignPhases.Concept,
+		nextPhase: DesignPhases.Modelling
+	},
+	{
+		stepNumber: 2,
+		stepName: "3D Room Upload (3D Team)",
+		prevPhase: DesignPhases.Concept,
+		phaseName: DesignPhases.Modelling,
+		nextPhase: DesignPhases.Design3D
+	},
+	{
+		stepNumber: 3,
+		stepName: "Design in 3D App (Design Team)",
+		prevPhase: DesignPhases.Modelling,
+		phaseName: DesignPhases.Design3D,
+		nextPhase: DesignPhases.Render
+	},
+	{
+		stepNumber: 4,
+		stepName: "Upload Rendered Room Images (3D Team)",
+		prevPhase: DesignPhases.Design3D,
+		phaseName: DesignPhases.Render,
+		nextPhase: DesignPhases.Revision
+	},
+	{
+		stepNumber: 5,
+		stepName: "Design Finalization (Design Team)",
+		prevPhase: DesignPhases.Render,
+		phaseName: DesignPhases.Revision,
+		nextPhase: null
+	}
+];
+
 export default function PipelineTab({ designData, refetchDesignData }: PipelineTab): JSX.Element {
 	const [stage, setStage] = useState<string>(null);
 	const [updationPhase, setUpdationPhase] = useState<string>(null);
@@ -47,11 +93,14 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 		}
 	}, [designData.phases]);
 
-	const conceptStatus = getValueSafely(() => phaseData.concept.status, Status.pending);
-	const design3DStatus = getValueSafely(() => phaseData.design3D.status, Status.pending);
-	const renderStatus = getValueSafely(() => phaseData.render.status, Status.pending);
-	const revisionStatus = getValueSafely(() => phaseData.revision.status, Status.pending);
-	const readyStatus = getValueSafely(() => phaseData.ready.status, Status.pending);
+	const phaseStatus = {
+		[DesignPhases.Concept]: getValueSafely(() => phaseData.concept.status, Status.pending),
+		[DesignPhases.Modelling]: getValueSafely(() => phaseData.modelling.status, Status.pending),
+		[DesignPhases.Design3D]: getValueSafely(() => phaseData.design3D.status, Status.pending),
+		[DesignPhases.Render]: getValueSafely(() => phaseData.render.status, Status.pending),
+		[DesignPhases.Revision]: getValueSafely(() => phaseData.revision.status, Status.pending),
+		[DesignPhases.Ready]: getValueSafely(() => phaseData.ready.status, Status.pending)
+	};
 
 	const updateDesignState = async (stage, status: Status | "reset", e: MouseEvent) => {
 		e.stopPropagation();
@@ -63,10 +112,7 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 		} else if (status === Status.active) {
 			updatedStatus = Status.completed;
 		} else if (status === "reset") {
-			updatedStatus = Status.pending;
-			if (stage === "concept") {
-				updatedStatus = Status.active;
-			}
+			updatedStatus = Status.active;
 		}
 		const data = await fetcher({
 			endPoint: endpoint,
@@ -91,206 +137,67 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 		<div>
 			<Title level={2}>Task Overview</Title>
 			<StepsContainer>
-				<ShadowDiv onClick={onClick.bind(null, "concept")}>
-					<CustomDiv inline px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>1</Avatar>
-						</CustomDiv>
-						<Text strong>Upload Room and Assets</Text>
-					</CustomDiv>
-					<CustomDiv
-						flexBasis="25ch"
-						type="flex"
-						flexDirection="row"
-						flexGrow={1}
-						justifyContent="flex-end"
-						inline
-						px="1.5rem"
-						py="1.5rem"
-					>
-						<CustomDiv flexBasis="25ch">
-							<StatusButton
-								block
-								loading={updationPhase === "concept"}
-								status={conceptStatus}
-								type="primary"
-								onClick={updateDesignState.bind(null, "concept", conceptStatus)}
-								disabled={conceptStatus === Status.completed}
-							>
-								{getButtonText(conceptStatus)}
-							</StatusButton>
-						</CustomDiv>
-						<CustomDiv pl="1rem">
-							<Popconfirm
-								title="Are you sure you want to revert status to pending?"
-								okText="Yes"
-								onConfirm={updateDesignState.bind(null, "concept", "reset")}
-							>
-								<StatusButton
-									loading={updationPhase === "concept"}
-									status={conceptStatus}
-									type="danger"
-									disabled={conceptStatus === Status.pending}
+				{steps.map(step => {
+					return (
+						<div key={step.phaseName}>
+							<ShadowDiv active={step.phaseName === stage} onClick={onClick.bind(null, step.phaseName)}>
+								<CustomDiv inline px="1.5rem" py="1.5rem">
+									<CustomDiv inline pr="0.5rem">
+										<Avatar>{step.stepNumber}</Avatar>
+									</CustomDiv>
+									<Text strong>{step.stepName}</Text>
+								</CustomDiv>
+								<CustomDiv
+									flexBasis="25ch"
+									type="flex"
+									flexDirection="row"
+									flexGrow={1}
+									justifyContent="flex-end"
+									inline
+									px="1.5rem"
+									py="1.5rem"
 								>
-									<Icon type="undo" rotate={135} />
-								</StatusButton>
-							</Popconfirm>
-						</CustomDiv>
-					</CustomDiv>
-				</ShadowDiv>
-				{stage === "concept" && (
-					<Stage phaseData={phaseData} designData={designData} refetchDesignData={refetchDesignData} stage={stage} />
-				)}
-				<ShadowDiv onClick={onClick.bind(null, "design3D")}>
-					<CustomDiv inline px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>2</Avatar>
-						</CustomDiv>
-						<Text strong>Design in 3D app</Text>
-					</CustomDiv>
-					<CustomDiv
-						flexBasis="25ch"
-						type="flex"
-						flexDirection="row"
-						flexGrow={1}
-						justifyContent="flex-end"
-						inline
-						px="1.5rem"
-						py="1.5rem"
-					>
-						<CustomDiv flexBasis="25ch">
-							<StatusButton
-								block
-								loading={updationPhase === "design3D"}
-								status={design3DStatus}
-								type="primary"
-								onClick={updateDesignState.bind(null, "design3D", design3DStatus)}
-								disabled={design3DStatus === Status.completed || conceptStatus !== Status.completed}
-							>
-								{getButtonText(design3DStatus)}
-							</StatusButton>
-						</CustomDiv>
-						<CustomDiv pl="1rem">
-							<Popconfirm
-								title="Are you sure you want to revert status to pending?"
-								okText="Yes"
-								onConfirm={updateDesignState.bind(null, "design3D", "reset")}
-							>
-								<StatusButton
-									loading={updationPhase === "design3D"}
-									status={design3DStatus}
-									type="danger"
-									disabled={design3DStatus == Status.pending}
-								>
-									<Icon type="undo" rotate={135} />
-								</StatusButton>
-							</Popconfirm>
-						</CustomDiv>
-					</CustomDiv>
-				</ShadowDiv>
-				{stage === "design3D" && (
-					<Stage phaseData={phaseData} designData={designData} refetchDesignData={refetchDesignData} stage={stage} />
-				)}
-				<ShadowDiv onClick={onClick.bind(null, "render")}>
-					<CustomDiv inline px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>3</Avatar>
-						</CustomDiv>
-						<Text strong>Render Design</Text>
-					</CustomDiv>
-					<CustomDiv
-						flexBasis="25ch"
-						type="flex"
-						flexDirection="row"
-						flexGrow={1}
-						justifyContent="flex-end"
-						inline
-						px="1.5rem"
-						py="1.5rem"
-					>
-						<CustomDiv flexBasis="25ch">
-							<StatusButton
-								block
-								loading={updationPhase === "render"}
-								status={renderStatus}
-								type="primary"
-								onClick={updateDesignState.bind(null, "render", renderStatus)}
-								disabled={renderStatus === Status.completed || design3DStatus !== Status.completed}
-							>
-								{getButtonText(renderStatus)}
-							</StatusButton>
-						</CustomDiv>
-						<CustomDiv pl="1rem">
-							<Popconfirm
-								title="Are you sure you want to revert status to pending?"
-								okText="Yes"
-								onConfirm={updateDesignState.bind(null, "render", "reset")}
-							>
-								<StatusButton
-									loading={updationPhase === "render"}
-									status={renderStatus}
-									type="danger"
-									disabled={renderStatus == Status.pending}
-								>
-									<Icon type="undo" rotate={135} />
-								</StatusButton>
-							</Popconfirm>
-						</CustomDiv>
-					</CustomDiv>
-				</ShadowDiv>
-				{stage === "render" && (
-					<Stage designData={designData} phaseData={phaseData} refetchDesignData={refetchDesignData} stage={stage} />
-				)}
-				<ShadowDiv onClick={onClick.bind(null, "revision")}>
-					<CustomDiv inline px="1.5rem" py="1.5rem">
-						<CustomDiv inline pr="0.5rem">
-							<Avatar>4</Avatar>
-						</CustomDiv>
-						<Text strong>Design Revision</Text>
-					</CustomDiv>
-					<CustomDiv
-						type="flex"
-						flexDirection="row"
-						flexGrow={1}
-						justifyContent="flex-end"
-						inline
-						px="1.5rem"
-						py="1.5rem"
-					>
-						<CustomDiv flexBasis="25ch">
-							<StatusButton
-								block
-								loading={updationPhase === "revision"}
-								status={revisionStatus}
-								type="primary"
-								onClick={updateDesignState.bind(null, "revision", revisionStatus)}
-								disabled={revisionStatus === Status.completed || renderStatus !== Status.completed}
-							>
-								{getButtonText(revisionStatus)}
-							</StatusButton>
-						</CustomDiv>
-
-						<CustomDiv pl="1rem">
-							<Popconfirm
-								title="Are you sure you want to revert status to pending?"
-								okText="Yes"
-								onConfirm={updateDesignState.bind(null, "revision", "reset")}
-							>
-								<StatusButton
-									loading={updationPhase === "revision"}
-									status={revisionStatus}
-									type="danger"
-									disabled={revisionStatus == Status.pending}
-								>
-									<Icon type="undo" rotate={135} />
-								</StatusButton>
-							</Popconfirm>
-						</CustomDiv>
-					</CustomDiv>
-				</ShadowDiv>
-				{stage === "revision" && (
-					<Stage phaseData={phaseData} designData={designData} refetchDesignData={refetchDesignData} stage={stage} />
-				)}
+									<CustomDiv flexBasis="25ch">
+										<StatusButton
+											block
+											loading={updationPhase === step.phaseName}
+											status={phaseStatus[step.phaseName]}
+											type="primary"
+											onClick={updateDesignState.bind(null, step.phaseName, phaseStatus[step.phaseName])}
+											disabled={
+												phaseStatus[step.phaseName] === Status.completed ||
+												(step.prevPhase ? phaseStatus[step.prevPhase] !== Status.completed : false)
+											}
+											icon={phaseStatus[step.phaseName] === Status.completed ? "check" : null}
+										>
+											{getButtonText(phaseStatus[step.phaseName])}
+										</StatusButton>
+									</CustomDiv>
+									<CustomDiv pl="1rem">
+										<Popconfirm
+											title="Are you sure you want to send back to previous team?"
+											okText="Yes"
+											disabled={step.phaseName === DesignPhases.Concept}
+											onConfirm={updateDesignState.bind(null, step.prevPhase, "reset")}
+										>
+											<Button
+												loading={updationPhase === step.phaseName}
+												type="danger"
+												disabled={
+													phaseStatus[step.phaseName] === Status.pending || step.phaseName === DesignPhases.Concept
+												}
+												icon="rollback"
+											>
+												Send back
+											</Button>
+										</Popconfirm>
+									</CustomDiv>
+								</CustomDiv>
+							</ShadowDiv>
+							{stage === step.phaseName && <Stage phaseData={phaseData} designData={designData} stage={stage} />}
+						</div>
+					);
+				})}
 			</StepsContainer>
 		</div>
 	);

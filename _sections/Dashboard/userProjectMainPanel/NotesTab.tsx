@@ -63,6 +63,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 		try {
 			await saveNotes(data);
 			message.success("Note Added");
+			setNewNote("");
 		} catch (e) {
 			message.error("Failed to add Note");
 		}
@@ -127,7 +128,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 						</CustomDiv>
 					</Col>
 					<Col sm={22} md={22} lg={18} xl={14}>
-						<Input.TextArea onChange={onNewNote} autosize={{ minRows: 2 }} />
+						<Input.TextArea value={newNote} onChange={onNewNote} autosize={{ minRows: 2 }} />
 					</Col>
 				</Row>
 				<CustomDiv py="10px">

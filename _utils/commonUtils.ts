@@ -1,9 +1,10 @@
-// ToDo : remove when more imports are present
+import { HumanizeDesignPhases, DesignPhases, PhaseType } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
+
 interface GetValueFunction {
 	<T>(func: () => T, defaultValue: T): T;
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const getValueSafely: GetValueFunction = (func, defaultValue) => {
 	try {
 		const value = func();
@@ -19,4 +20,20 @@ export const debounce = (func, wait) => {
 		clearTimeout(timeout);
 		timeout = setTimeout(() => func.apply(this, args), wait);
 	};
+};
+
+export function getBase64(file) {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = error => reject(error);
+	});
+}
+
+export const getHumanizedActivePhase = (phases: PhaseType) => {
+	return Object.keys(phases).reduce((acc, curr) => {
+		if (phases[curr].status === Status.active) return HumanizeDesignPhases[curr];
+		return acc;
+	}, HumanizeDesignPhases[DesignPhases.Concept]);
 };
