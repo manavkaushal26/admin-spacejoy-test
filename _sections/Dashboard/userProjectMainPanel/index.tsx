@@ -40,6 +40,12 @@ const userProjectMainPanel: React.FC<{
 	};
 
 	useEffect(() => {
+		if (!designId) {
+			fetchAndPopulate();
+		}
+	}, [designId]);
+
+	useEffect(() => {
 		if (userProjectId) {
 			fetchAndPopulate();
 		}
@@ -62,6 +68,7 @@ const userProjectMainPanel: React.FC<{
 							projectData={projectData}
 							onSelectDesign={onSelectDesign}
 							designId={designId}
+							setProjectData={setProjectData}
 						/>
 					</>
 				) : (

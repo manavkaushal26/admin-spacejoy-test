@@ -1,6 +1,6 @@
+import { CustomDiv, ShadowDiv } from "@sections/Dashboard/styled";
+import { Avatar, Button, Typography } from "antd";
 import React from "react";
-import { ShadowDiv, CustomDiv } from "@sections/Dashboard/styled";
-import { Avatar, Typography, Button } from "antd";
 
 const { Text } = Typography;
 

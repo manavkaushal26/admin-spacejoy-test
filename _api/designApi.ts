@@ -14,6 +14,10 @@ export const getAssetApi: () => string = () => {
 	return "admin/assets/search";
 };
 
+export const deleteUploadedImage = (designId: string, imageId: string) => {
+	return `/admin/design/${designId}/image/${imageId}`;
+};
+
 export const getSingleAssetApi: (assetId: string) => string = assetId => {
 	return `/admin/asset/${assetId}`;
 };

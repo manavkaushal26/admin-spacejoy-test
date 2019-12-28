@@ -19,7 +19,6 @@ export enum PhaseInternalNames {
 	suspended = "suspended",
 	rejected = "rejected"
 }
-
 enum PhaseCustomerNames {
 	requirement = "requirement",
 	brief = "brief",
@@ -72,7 +71,7 @@ export interface UserProjectType {
 	id: string;
 }
 
-interface DesignInterface {
+export interface DesignInterface {
 	state: string;
 	_id: string;
 	design: {
@@ -147,10 +146,16 @@ enum PaymentStatus {
 	fail = "fail"
 }
 
-enum Packages {
+export enum Packages {
 	delight = "delight",
 	bliss = "bliss",
 	euphoria = "euphoria"
+}
+
+export enum PackageDesignValue {
+	delight = 1,
+	bliss,
+	euphoria = 2
 }
 
 interface Order {
@@ -264,8 +269,8 @@ export enum HumanizeDesignPhases {
 	concept = "Concept",
 	modelling = "Modelling",
 	design3D = "Design 3D",
-	Render = "Render",
-	Revision = "Revision",
+	render = "Render",
+	revision = "Revision",
 	ready = "Ready"
 }
 

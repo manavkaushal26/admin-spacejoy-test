@@ -26,6 +26,7 @@ interface ProjectTabViewProps {
 	onSelectDesign: (designId: string) => void;
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	refetchData: () => void;
+	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
 }
 
 const ScrollableTabs = styled(Tabs)`
@@ -41,7 +42,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	designId,
 	onSelectDesign,
 	setLoading,
-	refetchData
+	refetchData,
+	setProjectData
 }): JSX.Element => {
 	const { form: formData } = projectData;
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
@@ -112,7 +114,12 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 				</ScrollableTabs>
 			) : (
 				<Spin spinning={designLoading}>
-					<DesignSelection projectData={projectData} onSelectDesign={onSelectDesign} />
+					<DesignSelection
+						refetchData={refetchData}
+						setProjectData={setProjectData}
+						projectData={projectData}
+						onSelectDesign={onSelectDesign}
+					/>
 				</Spin>
 			)}
 		</>

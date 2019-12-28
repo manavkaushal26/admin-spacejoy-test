@@ -1,12 +1,12 @@
-import { DesignerImageComments } from "@customTypes/dashboardTypes";
-import { useState, useEffect } from "react";
-import { getLocalStorageValue } from "@utils/storageUtils";
 import { addRenderImageComment } from "@api/pipelineApi";
-import fetcher from "@utils/fetcher";
+import { DesignerImageComments } from "@customTypes/dashboardTypes";
 import User, { Status } from "@customTypes/userType";
-import { Drawer, Spin, Row, Col, Avatar, Button, Input, Typography } from "antd";
-import { CustomDiv, EndCol, FitIcon, BorderedParagraph } from "@sections/Dashboard/styled";
+import { BorderedParagraph, CustomDiv, EndCol, FitIcon } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { getLocalStorageValue } from "@utils/storageUtils";
+import { Avatar, Button, Col, Drawer, Input, Row, Spin, Typography } from "antd";
+import { useEffect, useState } from "react";
 
 const { Text } = Typography;
 

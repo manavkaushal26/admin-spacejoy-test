@@ -1,4 +1,4 @@
-import { UserProjectType, HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
+import { HumanizePhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import ProgressBar from "@sections/Dashboard/ProgressBar";
 import { getValueSafely } from "@utils/commonUtils";
 import { projectConfig } from "@utils/config";
@@ -6,7 +6,7 @@ import { Avatar, Card, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React from "react";
 import styled, { css } from "styled-components";
-import { CustomDiv, StyledTag, getTagColor } from "./styled";
+import { CustomDiv, getTagColor, StyledTag } from "./styled";
 const { Text } = Typography;
 
 const UserCard = styled(Card)<{ active: boolean }>`

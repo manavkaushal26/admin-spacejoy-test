@@ -1,15 +1,12 @@
-import { DetailedDesign, PhaseType, DesignPhases } from "@customTypes/dashboardTypes";
-import { CustomDiv, ShadowDiv, StepsContainer, StatusButton } from "@sections/Dashboard/styled";
-import { Avatar, Typography, Button, message, Popconfirm, Icon } from "antd";
-import React, { useState, useEffect } from "react";
-import Stage from "./Stage";
-import { Status } from "@customTypes/userType";
-import { getValueSafely } from "@utils/commonUtils";
-import { render } from "react-dom";
-import { read } from "fs";
-import styled, { css } from "styled-components";
-import fetcher from "@utils/fetcher";
 import { updateDesignPhase } from "@api/pipelineApi";
+import { DesignPhases, DetailedDesign, PhaseType } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
+import { CustomDiv, ShadowDiv, StatusButton, StepsContainer } from "@sections/Dashboard/styled";
+import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { Avatar, Button, message, Popconfirm, Typography } from "antd";
+import React, { useEffect, useState } from "react";
+import Stage from "./Stage";
 
 const { Title, Text } = Typography;
 
@@ -194,7 +191,14 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 									</CustomDiv>
 								</CustomDiv>
 							</ShadowDiv>
-							{stage === step.phaseName && <Stage phaseData={phaseData} designData={designData} stage={stage} />}
+							{stage === step.phaseName && (
+								<Stage
+									phaseData={phaseData}
+									designData={designData}
+									stage={stage}
+									refetchDesignData={refetchDesignData}
+								/>
+							)}
 						</div>
 					);
 				})}

@@ -1,10 +1,10 @@
-import React, { ChangeEvent, useState } from "react";
-import { Modal, Input, Typography, Button, List, message } from "antd";
+import { editDesignApi } from "@api/pipelineApi";
 import { DetailedDesign } from "@customTypes/dashboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
-import styled from "styled-components";
-import { editDesignApi } from "@api/pipelineApi";
 import fetcher from "@utils/fetcher";
+import { Button, Input, List, message, Modal, Typography } from "antd";
+import React, { ChangeEvent, useState } from "react";
+import styled from "styled-components";
 
 const { Text } = Typography;
 

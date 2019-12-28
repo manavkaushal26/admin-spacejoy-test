@@ -1,14 +1,13 @@
-import { getMoodboardApi, getAddRemoveAssetApi } from "@api/designApi";
+import { getMoodboardApi } from "@api/designApi";
+import { DetailedDesign } from "@customTypes/dashboardTypes";
 import { MoodBoardType } from "@customTypes/moodboardTypes";
 import fetcher from "@utils/fetcher";
-import { Button, Modal, Input } from "antd";
+import { Button } from "antd";
 import Router from "next/router";
-import React, { useEffect, useState, ChangeEvent } from "react";
-import { DetailedDesign } from "@customTypes/dashboardTypes";
-import { editDesignApi } from "@api/pipelineApi";
+import React, { useEffect, useState } from "react";
 import { CustomDiv } from "../../styled";
-import MoodboardDisplay from "./MoodboardDisplay";
 import MissingAssetModal from "./missingAssetModal";
+import MoodboardDisplay from "./MoodboardDisplay";
 
 interface MoodboardTabProps {
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;

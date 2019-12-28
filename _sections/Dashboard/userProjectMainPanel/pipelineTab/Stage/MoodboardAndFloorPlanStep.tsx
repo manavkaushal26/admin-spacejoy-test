@@ -4,25 +4,42 @@ import { CustomDiv, Form, SilentDivider } from "@sections/Dashboard/styled";
 import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, Typography, Upload } from "antd";
+import { Button, Icon, Typography, Upload, message } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
 import { StepDiv } from "../styled";
 import ImageDisplayModal from "./Components/ImageDisplayModal";
+import { deleteUploadedImage } from "@api/designApi";
+import fetcher from "@utils/fetcher";
 
 const { Text } = Typography;
 
 interface MoodboardAndFloorPlanStep {
 	designDataCopy: DetailedDesign;
 	setDesignDataCopy: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	refetchDesignData: () => void;
 }
 
-const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ designDataCopy, setDesignDataCopy }) => {
+const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
+	designDataCopy,
+	setDesignDataCopy,
+	refetchDesignData
+}) => {
 	const [floorPlanList, setFloorPlanList] = useState<UploadFile<any>[]>([]);
 	const [preview, setPreview] = useState({
 		previewImage: "",
 		previewVisible: false
 	});
+
+	const deleteImage = async (file: UploadFile) => {
+		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
+
+		const response = await fetcher({ endPoint: endPoint, method: "DELETE" });
+		if (response.status === 200) {
+			refetchDesignData();
+			message.success("Image deleted successfully");
+		}
+	};
 
 	useEffect(() => {
 		if (designDataCopy) {
@@ -32,7 +49,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 			const floorPlanFileList = floorplanImages.map((image, index) => {
 				const filename = image.path.split("/").pop();
 				return {
-					uid: index.toString(),
+					uid: image._id,
 					name: filename,
 					url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
 					size: 0,
@@ -93,7 +110,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 							listType="picture-card"
 							onPreview={handlePreview}
 							action={floorPlanUploadEndpoint}
-							onRemove={() => false}
+							onRemove={deleteImage}
 							onChange={handleOnFileUploadChange}
 							headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 							accept="images/*"

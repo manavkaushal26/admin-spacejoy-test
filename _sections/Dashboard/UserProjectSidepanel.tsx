@@ -1,16 +1,15 @@
 import { UserProjectType } from "@customTypes/dashboardTypes";
 import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
-import { Status } from "@customTypes/userType";
 import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
+import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { ChangeEvent, useReducer, useRef, useEffect } from "react";
+import { Empty, Icon, Input, Tabs } from "antd";
+import { useEffect, useReducer, useRef } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "./LoadingCard";
-import { MaxHeightDiv, SilentDivider, CustomDiv } from "./styled";
-import { Icon, Input, Tabs, Empty } from "antd";
-import { debounce } from "@utils/commonUtils";
+import { CustomDiv, MaxHeightDiv, SilentDivider } from "./styled";
 
 interface State {
 	searchText: string;

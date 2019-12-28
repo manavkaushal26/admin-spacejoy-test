@@ -1,13 +1,13 @@
 import { addTeamMemberApi, userApi } from "@api/userApi";
-import { DetailedProjectTeamMember, TeamMember } from "@customTypes/dashboardTypes";
-import { getValueSafely, debounce } from "@utils/commonUtils";
+import { TeamMember } from "@customTypes/dashboardTypes";
+import { ProjectRoles } from "@customTypes/userType";
+import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Avatar, Card, Checkbox, Col, Row, Typography, Select, Empty, Input } from "antd";
+import { Avatar, Card, Checkbox, Col, Empty, Input, Row, Select, Typography } from "antd";
 import React, { useEffect, useMemo, useReducer } from "react";
 import { CustomDiv, Form } from "../../styled";
-import { DesignerTabReducer, DesignerTabState, DesignerTabActionType, designerTabReducer } from "./teamTabReducer";
 import TeamSidebar from "./TeamSidebar";
-import { ProjectRoles } from "@customTypes/userType";
+import { DesignerTabActionType, DesignerTabReducer, designerTabReducer, DesignerTabState } from "./teamTabReducer";
 
 const { Text } = Typography;
 const { Option } = Select;

@@ -1,7 +1,7 @@
-import React from "react";
-import { Modal } from "antd";
 import Image from "@components/Image";
-import styled, { StyledProps } from "styled-components";
+import { Modal } from "antd";
+import React from "react";
+import styled from "styled-components";
 
 interface ImageDisplayModal {
 	previewVisible: boolean;
