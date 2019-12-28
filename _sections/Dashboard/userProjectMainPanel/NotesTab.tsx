@@ -36,7 +36,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 		const body = notes;
 		const response = await fetcher({ endPoint: endpoint, body: { data: { designerNotes: body } }, method: "PUT" });
 		if (response.statusCode <= 300) {
-			setDesignerNotes(data.data.designerNotes);
+			setDesignerNotes(response.data.designerNotes);
 		}
 	};
 
