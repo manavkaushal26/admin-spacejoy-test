@@ -47,7 +47,7 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({
 		setLoading(true);
 		const endPoint = getMoodboardApi(designId);
 		const responseData = await fetcher({ endPoint, method: "GET" });
-		if (responseData.data) {
+		if (responseData.statusCode <= 300) {
 			setMoodboard(responseData.data);
 		}
 		setLoading(false);

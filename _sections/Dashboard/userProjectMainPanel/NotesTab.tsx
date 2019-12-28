@@ -34,8 +34,8 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 	const saveNotes = async (notes = []) => {
 		const endpoint = updateNotesApi(designData._id);
 		const body = notes;
-		const data = await fetcher({ endPoint: endpoint, body: { data: { designerNotes: body } }, method: "PUT" });
-		if (data.data) {
+		const response = await fetcher({ endPoint: endpoint, body: { data: { designerNotes: body } }, method: "PUT" });
+		if (response.statusCode <= 300) {
 			setDesignerNotes(data.data.designerNotes);
 		}
 	};

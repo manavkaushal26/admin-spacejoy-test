@@ -35,8 +35,7 @@ const RenderStep: React.FC<RenderStep> = ({ designDataCopy, setDesignDataCopy, p
 		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
 
 		const response = await fetcher({ endPoint: endPoint, method: "DELETE" });
-		if (response) {
-			console.log("here");
+		if (response.statusCode <= 300) {
 			refetchDesignData();
 			message.success("Image deleted successfully");
 		}

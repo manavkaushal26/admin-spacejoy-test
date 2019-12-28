@@ -53,7 +53,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		setDesignLoading(true);
 		const endPoint = designApi(designId);
 		const responseData = await fetcher({ endPoint: endPoint, method: "GET" });
-		if (responseData.data) {
+		if (responseData.statusCode <= 300) {
 			setDesignData(responseData.data);
 		}
 		setDesignLoading(false);

@@ -23,7 +23,7 @@ const userProjectMainPanel: React.FC<{
 	const fetchAndPopulate = async () => {
 		setLoading(true);
 		const response = await fetcher({ endPoint: `/admin/project/${userProjectId}`, method: "GET" });
-		if (response.data) {
+		if (response.statusCode <= 300) {
 			setProjectData(response.data);
 		}
 		setLoading(false);

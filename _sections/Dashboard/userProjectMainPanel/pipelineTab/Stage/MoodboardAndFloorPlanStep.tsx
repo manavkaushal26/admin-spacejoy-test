@@ -35,7 +35,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
 
 		const response = await fetcher({ endPoint: endPoint, method: "DELETE" });
-		if (response.status === 200) {
+		if (response.status <= 300) {
 			refetchDesignData();
 			message.success("Image deleted successfully");
 		}

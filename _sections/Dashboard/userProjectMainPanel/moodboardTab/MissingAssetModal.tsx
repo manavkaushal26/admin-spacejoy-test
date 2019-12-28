@@ -51,7 +51,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 					}
 				}
 			});
-			if (response.data) {
+			if (response.statusCode <= 300) {
 				setDesignData(response.data);
 				setAssetUrl("");
 				message.success("Asset added successfully");

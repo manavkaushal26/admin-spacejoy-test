@@ -111,7 +111,7 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 		} else if (status === "reset") {
 			updatedStatus = Status.active;
 		}
-		const data = await fetcher({
+		const response = await fetcher({
 			endPoint: endpoint,
 			method: "PUT",
 			body: {
@@ -121,11 +121,10 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 				}
 			}
 		});
-		if (data.status === "error") {
-			message.error(data.message);
+		if (response.statusCode <= 300) {
+			message.error(response.message);
 		} else {
-			console.log("setting");
-			setPhaseData(data.data);
+			setPhaseData(response.data);
 		}
 		setUpdationPhase(null);
 	};

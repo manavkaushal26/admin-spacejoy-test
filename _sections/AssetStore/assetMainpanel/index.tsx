@@ -60,7 +60,7 @@ const fetchAndPopulate: fetchAndPopulate = async (state, pageCount, setAssetData
 			}
 		}
 	});
-	if (responseData.data) {
+	if (responseData.statusCode <= 300) {
 		if (responseData.data.data) {
 			setAssetData(responseData.data.data);
 			setTotalCount(responseData.data.count);

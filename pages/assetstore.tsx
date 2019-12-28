@@ -90,7 +90,7 @@ const moodboard: ExtendedJSXFC<MoodboardProps> = ({
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 		const endPoint = getMoodboardApi(designId);
 		const responseData = await fetcher({ endPoint: endPoint, method: "GET" });
-		if (responseData.data) {
+		if (responseData.statusCode <= 300) {
 			dispatch({ type: ASSET_ACTION_TYPES.MOODBOARD, value: responseData.data });
 		}
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });

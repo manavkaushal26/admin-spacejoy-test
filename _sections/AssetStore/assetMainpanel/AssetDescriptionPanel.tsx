@@ -61,7 +61,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		setLoading(true);
 		const endpoint = getSingleAssetApi(assetId);
 		const responseData = await fetcher({ endPoint: endpoint, method: "GET" });
-		if (responseData.data) {
+		if (responseData.statusCode <= 300) {
 			setSingleAssetData(responseData.data);
 		}
 		setLoading(false);

@@ -90,7 +90,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 	const saveDesignerNote = async () => {
 		const endpoint = editDesignApi(designDataCopy._id);
 
-		const data = await fetcher({
+		const response = await fetcher({
 			endPoint: endpoint,
 			method: "PUT",
 			body: {
@@ -99,11 +99,11 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 				}
 			}
 		});
-		if (data.status !== "error") {
-			setDesignDataCopy(data.data);
+		if (response.statusCode <= 300) {
+			setDesignDataCopy(response.data);
 			message.success("Description Added successfully");
 		} else {
-			message.error(data.message);
+			message.error(response.message);
 		}
 	};
 
