@@ -6,7 +6,7 @@ import { Button } from "antd";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import { CustomDiv } from "../../styled";
-import MissingAssetModal from "./missingAssetModal";
+import MissingAssetModal from "./MissingAssetModal";
 import MoodboardDisplay from "./MoodboardDisplay";
 
 interface MoodboardTabProps {

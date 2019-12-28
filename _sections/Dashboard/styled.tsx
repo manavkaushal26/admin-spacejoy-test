@@ -192,7 +192,7 @@ export const StepsContainer = styled(CustomDiv)`
 	}
 `;
 
-export const ShadowDiv = styled.div<{ active: boolean }>`
+export const ShadowDiv = styled.div<{ active?: boolean }>`
 	box-shadow: 0px 2px 16px #999ba81f;
 	transition: all 0.3s;
 	display: flex;
