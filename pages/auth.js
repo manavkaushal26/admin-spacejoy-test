@@ -47,16 +47,6 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 		</Link>
 	);
 
-	const renderSignupLink = (
-		<Link
-			href={{ pathname: "/auth", query: { flow: "signup", redirectUrl } }}
-			as={redirectUrl ? `/auth/signup?redirectUrl=${redirectUrl}` : "/auth/signup"}
-			replace
-		>
-			<a href={redirectUrl ? `/auth/signup?redirectUrl=${redirectUrl}` : "/auth/signup"}>Signup</a>
-		</Link>
-	);
-
 	const renderForgotPasswordLink = (
 		<Link
 			href={{ pathname: "/auth", query: { flow: "forgot-password", redirectUrl } }}
@@ -81,30 +71,13 @@ function auth({ isServer, authVerification, flow, redirectUrl, token }) {
 						<div className="col-12">{getHeadingText(flow)}</div>
 						<div className="col-12">
 							{flow === "login" && <LoginForm redirectUrl={redirectUrl} />}
-							{flow === "signup" && <SignupForm redirectUrl={redirectUrl} />}
 							{flow === "forgot-password" && <ForgotPasswordForm redirectUrl={redirectUrl} />}
 							{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} token={token} />}
 						</div>
 						<div className="col-12">
-							{flow === "signup" && (
-								<>
-									<span>Already have an account? </span>
-									{renderLoginLink}
-								</>
-							)}
-							{flow === "login" && (
-								<>
-									<span>Create new Account </span>
-									{renderSignupLink}
-									<br />
-									{renderForgotPasswordLink}
-								</>
-							)}
+							{flow === "login" && <>{renderForgotPasswordLink}</>}
 							{flow === "forgot-password" && (
 								<>
-									<span>Create new Account </span>
-									{renderSignupLink}
-									<br />
 									<span>Already have an account? </span>
 									{renderLoginLink}
 								</>

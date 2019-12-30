@@ -157,7 +157,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 			? `/admin/projects?sort=-1&keyword=customerName:${state.searchText}&${
 					state.currentTab !== "all" ? `status:${state.currentTab}&` : ""
 			  }`
-			: `/admin/projects?${state.currentTab !== "all" ? `keyword=status:${state.currentTab}&` : ""}`;
+			: `/admin/projects?sort=-1&${state.currentTab !== "all" ? `keyword=status:${state.currentTab}&` : ""}`;
 		const resData = await fetcher({ endPoint: `${endpointToHit}${dataFeed}`, method: "GET" });
 		if (resData.statusCode <= 300) {
 			const responseData = resData.data.data;
