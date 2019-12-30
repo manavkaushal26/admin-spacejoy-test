@@ -67,7 +67,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 
 	const afterPriceChange = () => {
 		const [min, max] = priceRange;
-		if (min < max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.PRICE_RANGE, value: priceRange });
+		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.PRICE_RANGE, value: priceRange });
 	};
 
 	useEffect(() => {
@@ -97,7 +97,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 
 	const afterHeightChange = () => {
 		const [min, max] = height;
-		if (min < max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.HEIGHT_RANGE, value: height });
+		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.HEIGHT_RANGE, value: height });
 	};
 
 	useEffect(() => {
@@ -127,7 +127,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 
 	const afterWidthChange = () => {
 		const [min, max] = width;
-		if (min < max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.WIDTH_RANGE, value: width });
+		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.WIDTH_RANGE, value: width });
 	};
 
 	useEffect(() => {
@@ -157,7 +157,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 
 	const afterDepthChange = () => {
 		const [min, max] = depth;
-		if (min < max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.DEPTH_RANGE, value: depth });
+		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.DEPTH_RANGE, value: depth });
 	};
 
 	useEffect(() => {

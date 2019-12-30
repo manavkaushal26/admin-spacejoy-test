@@ -122,9 +122,9 @@ export default function PipelineTab({ designData, refetchDesignData }: PipelineT
 			}
 		});
 		if (response.statusCode <= 300) {
-			message.error(response.message);
-		} else {
 			setPhaseData(response.data);
+		} else {
+			message.error(response.message);
 		}
 		setUpdationPhase(null);
 	};
