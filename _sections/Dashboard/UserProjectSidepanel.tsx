@@ -5,7 +5,7 @@ import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Empty, Icon, Input, Tabs } from "antd";
-import { useEffect, useReducer, useRef } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "./LoadingCard";
@@ -128,7 +128,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		};
 	};
 	const [state, dispatch] = useReducer(reducer, initalState, init);
-
+	const [loading, setLoading] = useState(false);
 	const displayUsers = state.data;
 
 	const TabSearch = () => {
@@ -152,6 +152,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 	const fetchData = async () => {
 		const { pageCount } = state;
 		const dataFeed = `skip=${pageCount * 10}&limit=10`;
+		setLoading(true);
 		const endpointToHit = state.searchActive
 			? `/admin/projects?sort=-1&keyword=customerName:${state.searchText}&${
 					state.currentTab !== "all" ? `status:${state.currentTab}&` : ""
@@ -172,6 +173,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 				dispatch(actionCreator(actionTypes.UPDATE_HAS_MORE, { hasMore: false }));
 			}
 		}
+		setLoading(false);
 	};
 
 	useEffect(() => {
@@ -189,74 +191,90 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 			<CustomDiv ref={scrollParentRef} overY="scroll" width="100%">
 				<StyleCorrectedTab tabBarGutter={0} onTabClick={handleTabChange} tabBarExtraContent={TabSearch()}>
 					<Tabs.TabPane tab="All" key="all">
-						<InfiniteScroll
-							loader={<LoadingCard key="loadingCard" />}
-							loadMore={fetchData}
-							hasMore={state.hasMore}
-							useWindow={false}
-							getScrollParent={() => scrollParentRef.current}
-						>
-							{displayUsers.length ? (
-								displayUsers.map(userProjectData => {
-									return (
-										<>
-											<UserProjectCard
-												selectedUser={selectedUser}
-												key={userProjectData._id}
-												handleSelectCard={handleSelectCard}
-												userProjectData={userProjectData}
-											/>
-											<PaddedDiv>
-												<SilentDivider />
-											</PaddedDiv>
-										</>
-									);
-								})
-							) : (
-								<Empty description="No Projects found" />
-							)}
-						</InfiniteScroll>
+						{state.currentTab === "all" && (
+							<InfiniteScroll
+								loader={<LoadingCard key="loadingCard" />}
+								loadMore={fetchData}
+								hasMore={state.hasMore}
+								useWindow={false}
+								getScrollParent={() => scrollParentRef.current}
+							>
+								{displayUsers.length
+									? displayUsers.map(userProjectData => {
+											return (
+												<>
+													<UserProjectCard
+														selectedUser={selectedUser}
+														key={userProjectData._id}
+														handleSelectCard={handleSelectCard}
+														userProjectData={userProjectData}
+													/>
+													<PaddedDiv>
+														<SilentDivider />
+													</PaddedDiv>
+												</>
+											);
+									  })
+									: !loading && <Empty description="No Projects found" />}
+							</InfiniteScroll>
+						)}
 					</Tabs.TabPane>
 					<Tabs.TabPane tab="Active" key="active">
-						{displayUsers.length ? (
-							displayUsers.map(userProjectData => {
-								return (
-									<>
-										<UserProjectCard
-											selectedUser={selectedUser}
-											key={userProjectData._id}
-											handleSelectCard={handleSelectCard}
-											userProjectData={userProjectData}
-										/>
-										<PaddedDiv>
-											<SilentDivider />
-										</PaddedDiv>
-									</>
-								);
-							})
-						) : (
-							<Empty description="No Active projects found" />
+						{state.currentTab === "active" && (
+							<InfiniteScroll
+								loader={<LoadingCard key="loadingCard" />}
+								loadMore={fetchData}
+								hasMore={state.hasMore}
+								useWindow={false}
+								getScrollParent={() => scrollParentRef.current}
+							>
+								{displayUsers.length
+									? displayUsers.map(userProjectData => {
+											return (
+												<>
+													<UserProjectCard
+														selectedUser={selectedUser}
+														key={userProjectData._id}
+														handleSelectCard={handleSelectCard}
+														userProjectData={userProjectData}
+													/>
+													<PaddedDiv>
+														<SilentDivider />
+													</PaddedDiv>
+												</>
+											);
+									  })
+									: !loading && <Empty description="No Projects found" />}
+							</InfiniteScroll>
 						)}
 					</Tabs.TabPane>
 					<Tabs.TabPane tab="Completed" key="completed">
-						{displayUsers.length ? (
-							displayUsers.map(userProjectData => {
-								return (
-									<>
-										<UserProjectCard
-											selectedUser={selectedUser}
-											key={userProjectData._id}
-											handleSelectCard={handleSelectCard}
-											userProjectData={userProjectData}
-										/>
-										<PaddedDiv>
-											<SilentDivider />
-										</PaddedDiv>
-									</>
-								);
-							})
-						) : (
-							<Empty description="No Completed projects found" />
+						{state.currentTab === "completed" && (
+							<InfiniteScroll
+								loader={<LoadingCard key="loadingCard" />}
+								loadMore={fetchData}
+								hasMore={state.hasMore}
+								useWindow={false}
+								getScrollParent={() => scrollParentRef.current}
+							>
+								{displayUsers.length
+									? displayUsers.map(userProjectData => {
+											return (
+												<>
+													<UserProjectCard
+														selectedUser={selectedUser}
+														key={userProjectData._id}
+														handleSelectCard={handleSelectCard}
+														userProjectData={userProjectData}
+													/>
+													<PaddedDiv>
+														<SilentDivider />
+													</PaddedDiv>
+												</>
+											);
+									  })
+									: !loading && <Empty description="No Projects found" />}
+							</InfiniteScroll>
 						)}
 					</Tabs.TabPane>
 				</StyleCorrectedTab>
