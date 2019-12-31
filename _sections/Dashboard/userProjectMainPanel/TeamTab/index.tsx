@@ -1,5 +1,5 @@
-import { addTeamMemberApi, userApi } from "@api/userApi";
-import { TeamMember } from "@customTypes/dashboardTypes";
+import { teamAssignApi, userApi } from "@api/userApi";
+import { TeamMember, DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
@@ -16,7 +16,7 @@ interface DesignerTabInterface {
 	projectId: string;
 	assignedTeam: TeamMember[];
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-	refetchData: () => void;
+	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
 }
 
 const intialState: DesignerTabState = {
@@ -58,9 +58,22 @@ const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Pr
 	setLoading(false);
 };
 
+const morphTeamMemberForApi = (member: TeamMember) => {
+	return {
+		member: member._id,
+		memberName: member.profile.name,
+		memberEmail: member.email
+	};
+};
+
 const debouncedFetchDesigners = debounce(fetchDesigners, 500);
 
-const TeamTab: React.FC<DesignerTabInterface> = ({ projectId, assignedTeam, setLoading, refetchData }): JSX.Element => {
+const TeamTab: React.FC<DesignerTabInterface> = ({
+	projectId,
+	assignedTeam,
+	setLoading,
+	setProjectData
+}): JSX.Element => {
 	const init = (initialState: DesignerTabState): DesignerTabState => {
 		return {
 			...initialState,
@@ -95,17 +108,38 @@ const TeamTab: React.FC<DesignerTabInterface> = ({ projectId, assignedTeam, setL
 
 	const assignDesigners = async () => {
 		setLoading(true);
-		const assignedTeam = state.assignedTeam.map(teamMember => {
-			return { member: teamMember._id, memberName: teamMember.profile.name };
-		});
-		const endpoint = addTeamMemberApi(projectId);
-		const body = {
-			data: {
-				memberList: assignedTeam
-			}
-		};
-		await fetcher({ endPoint: endpoint, method: "PUT", body: body });
-		refetchData();
+		const addMemberEndpoint = teamAssignApi(projectId, "add");
+		const removeMemberEndpoint = teamAssignApi(projectId, "remove");
+
+		const addedMembers = state.assignedTeam
+			.filter(teamMember => !assignedTeam.map(member => member._id).includes(teamMember._id))
+			.map(morphTeamMemberForApi);
+		const removedMembers = assignedTeam
+			.filter(teamMember => !state.assignedTeam.map(member => member._id).includes(teamMember._id))
+			.map(morphTeamMemberForApi);
+		console.log(addedMembers, removedMembers);
+		let response: {
+			statusCode?: number;
+			data?: DetailedProject;
+		} = {};
+		if (addedMembers.length > 0) {
+			const body = {
+				data: {
+					memberList: addedMembers
+				}
+			};
+			response = await fetcher({ endPoint: addMemberEndpoint, method: "PUT", body: body });
+		}
+		if (removedMembers.length > 0) {
+			const body = {
+				data: {
+					memberList: removedMembers
+				}
+			};
+			response = await fetcher({ endPoint: removeMemberEndpoint, method: "DELETE", body: body });
+		}
+
+		setProjectData(response.data);
 		setLoading(false);
 	};
 

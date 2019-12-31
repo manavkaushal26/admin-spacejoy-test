@@ -1,4 +1,4 @@
-import { HumanizeDesignPhases, DesignPhases, PhaseType } from "@customTypes/dashboardTypes";
+import { DesignPhases, HumanizeDesignPhases, PhaseType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 
 interface GetValueFunction {

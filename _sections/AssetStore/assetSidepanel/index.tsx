@@ -1,10 +1,10 @@
 import { MetaDataType } from "@customTypes/moodboardTypes";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
-import { AssetAction, ASSET_ACTION_TYPES, AssetStoreState } from "@sections/AssetStore/reducer";
+import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv } from "@sections/Dashboard/styled";
-import { Card, Tree, Typography, Input } from "antd";
-import React, { useMemo, useState, useEffect } from "react";
-import { ModifiedDivider, StyledInput, MarginCorrectedSlider, FilterCard } from "../styled";
+import { Input, Tree, Typography } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { FilterCard, ModifiedDivider } from "../styled";
 import SliderFilter from "./filters/SliderFilter";
 
 const { TreeNode } = Tree;

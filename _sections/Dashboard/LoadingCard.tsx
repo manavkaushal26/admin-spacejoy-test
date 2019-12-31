@@ -1,4 +1,4 @@
-import { Card, Skeleton, Spin } from "antd";
+import { Card, Skeleton } from "antd";
 import React from "react";
 
 const LoadingCard = () => {

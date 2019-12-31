@@ -7,7 +7,8 @@ export enum DesignerTabActionType {
 	TOGGLE_LOADING,
 	ASSIGN_DESIGNER,
 	UNASSIGN_DESIGNER,
-	ROLE_CHANGE
+	ROLE_CHANGE,
+	UPDATE_ASSIGNED_DESIGNERS
 }
 
 export interface DesignerTabAction {
@@ -29,6 +30,12 @@ export interface DesignerTabReducer {
 }
 export const designerTabReducer: DesignerTabReducer = (state, action): DesignerTabState => {
 	switch (action.type) {
+		case DesignerTabActionType.UPDATE_ASSIGNED_DESIGNERS:
+			console.log(action.value, "action");
+			return {
+				...state,
+				assignedTeam: action.value
+			};
 		case DesignerTabActionType.ROLE_CHANGE:
 			return {
 				...state,

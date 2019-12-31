@@ -1,18 +1,18 @@
-import React from "react";
+import { MarginCorrectedSlider, StyledInput } from "@sections/AssetStore/styled";
 import { CustomDiv } from "@sections/Dashboard/styled";
-import { StyledInput, MarginCorrectedSlider } from "@sections/AssetStore/styled";
+import React from "react";
 
 interface SliderFilter {
-    min: number;
+	min: number;
 	max: number;
 	range: [number, number];
-    onChange: (array:[number, number]) => void;
-    onAfterChange: (array:[number, number]) => void ;
-    value: [number, number];
-    onValueEntry: (e: React.ChangeEvent<HTMLInputElement>, type:string) => void;
-};
+	onChange: (array: [number, number]) => void;
+	onAfterChange: (array: [number, number]) => void;
+	value: [number, number];
+	onValueEntry: (e: React.ChangeEvent<HTMLInputElement>, type: string) => void;
+}
 
-export default function SliderFilter({ min, max, range, onChange, onAfterChange, value, onValueEntry }:SliderFilter) {
+export default function SliderFilter({ min, max, range, onChange, onAfterChange, value, onValueEntry }: SliderFilter) {
 	const [minVal, maxVal] = range;
 	return (
 		<>

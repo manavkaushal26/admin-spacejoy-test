@@ -1,16 +1,16 @@
+import { deleteUploadedImage } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
 import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
 import { CustomDiv, Form, SilentDivider } from "@sections/Dashboard/styled";
 import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, Typography, Upload, message } from "antd";
+import { Button, Icon, message, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
 import { StepDiv } from "../styled";
 import ImageDisplayModal from "./Components/ImageDisplayModal";
-import { deleteUploadedImage } from "@api/designApi";
-import fetcher from "@utils/fetcher";
 
 const { Text } = Typography;
 

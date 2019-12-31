@@ -2,6 +2,6 @@ export const userApi: () => string = () => {
 	return `/admin/users`;
 };
 
-export const addTeamMemberApi: (projectId: string) => string = projectId => {
-	return `/admin/project/${projectId}/team`;
+export const teamAssignApi: (projectId: string, action: "add" | "remove") => string = (projectId, action) => {
+	return `/admin/project/${projectId}/team/${action}`;
 };

@@ -8,11 +8,11 @@ const CheckboxGroup = Checkbox.Group;
 const { Text } = Typography;
 interface CategoryFilterProps {
 	name: {
-        categoryName: string;
-        dispatchName: ASSET_ACTION_TYPES;
-    };
-    options: { label: string; value: string }[];
-    dispatch: React.Dispatch<AssetAction>
+		categoryName: string;
+		dispatchName: ASSET_ACTION_TYPES;
+	};
+	options: { label: string; value: string }[];
+	dispatch: React.Dispatch<AssetAction>;
 }
 
 const BlockCheckboxGroup = styled(CheckboxGroup)`
@@ -31,7 +31,12 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({ name, options, dispatch
 		<>
 			<Text strong>{name.categoryName}</Text>
 			<CustomDiv my="12px" maxHeight="150px" overY="scroll">
-				<BlockCheckboxGroup onChange={(selectedValues) => {dispatch({type:name.dispatchName, value:selectedValues})}} options={options} />
+				<BlockCheckboxGroup
+					onChange={selectedValues => {
+						dispatch({ type: name.dispatchName, value: selectedValues });
+					}}
+					options={options}
+				/>
 			</CustomDiv>
 		</>
 	);

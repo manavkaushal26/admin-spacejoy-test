@@ -1,14 +1,14 @@
 import { getAssetApi } from "@api/designApi";
 import { AssetType, MoodBoardType } from "@customTypes/moodboardTypes";
-import { AssetStoreState, AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
+import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Pagination, Row, Typography } from "antd";
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
-import styled from "styled-components";
 
 const { Title } = Typography;
 

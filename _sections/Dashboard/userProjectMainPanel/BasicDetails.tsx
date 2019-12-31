@@ -29,6 +29,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		() =>
 			team
 				.filter(member => {
+					console.log(member);
 					return member.member.role === ProjectRoles.Designer;
 				})
 				.map(designer => {

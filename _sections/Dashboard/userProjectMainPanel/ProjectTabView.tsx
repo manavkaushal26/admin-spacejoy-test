@@ -100,7 +100,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					</TabPane>
 					<TabPane tab="Team" key="5">
 						<TeamTab
-							refetchData={refetchData}
+							setProjectData={setProjectData}
 							setLoading={setLoading}
 							projectId={projectData._id}
 							assignedTeam={projectData.team.map(memberData => {
