@@ -5,7 +5,7 @@ import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Anchor, Button, Icon, Spin, Typography, message, Popconfirm } from "antd";
+import { Anchor, Button, Icon, message, Popconfirm, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";

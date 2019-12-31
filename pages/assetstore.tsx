@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { AssetStoreState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
+import IndexPageMeta from "@utils/meta";
 
 const { Title } = Typography;
 
@@ -170,6 +171,7 @@ const moodboard: ExtendedJSXFC<MoodboardProps> = ({
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Asset Store | {company.product}</title>
+				{IndexPageMeta}
 			</Head>
 			<Spin spinning={state.loading}>
 				<ParentContainer>

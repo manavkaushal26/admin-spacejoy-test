@@ -1,91 +1,78 @@
 import { cookieNames } from "@utils/config";
 import cookie from "js-cookie";
 import Router from "next/router";
-import React, { Component, ComponentClass } from "react";
+import React, { Component } from "react";
 import fetcher from "./fetcher";
 import getCookie from "./getCookie";
-import { ServerResponse } from "http";
-import { NextPageContext } from "next";
-import { ExtendedComponentClass, ExtendedJSXElement, ExtendedJSXFC } from '@customTypes/extendedReactComponentTypes';
 
-const endPointAuthCheck: string = "/auth/check";
-const endPointGuestSignup: string = "/auth/register/guest";
+const endPointAuthCheck = "/auth/check";
+const endPointSocialSignup = "/auth/login/oauth";
 
-interface redirectArguments {
-	pathname: string;
-	query: {
-		flow?: string;
-		redirectUrl?: string;
-	};
-	url: string;
-	res?: ServerResponse;
-}
-
-
-
-const redirectToLocation = (params: redirectArguments): void => {
-	const { pathname, query, url, res } = params;
+function redirectToLocation({ pathname, query, url, res = {} }) {
 	if (typeof window !== "undefined") {
 		switch (pathname) {
 			case "/auth":
-				Router.replace({ pathname, query }, url);
-				return;
+				return Router.replace({ pathname, query }, url);
 			default:
-				Router.push({ pathname, query }, url);
-				return;
+				return Router.push({ pathname, query }, url);
 		}
 	} else {
 		res.writeHead(302, {
 			Location: url
 		});
-		res.end();
-		return;
+		return res.end();
 	}
-};
-
-interface LoginArguments {
-	token: string;
-	redirectUrl: string;
 }
 
-const login = ({ token, redirectUrl }: LoginArguments): void => {
-	cookie.remove(cookieNames.authToken);
+function clearAllStorage() {
 	cookie.remove(cookieNames.userRole);
-	window.localStorage.removeItem("authVerification");
+	cookie.remove(cookieNames.authToken);
+	window.localStorage.clear();
+}
+
+function login({ token, role, redirectUrl = "/dashboard" }) {
+	clearAllStorage();
 	cookie.set(cookieNames.authToken, token, { expires: 365 });
+	cookie.set(cookieNames.userRole, role, { expires: 365 });
 	if (redirectUrl !== null) {
 		const url = redirectUrl || "/dashboard";
-		redirectToLocation({ pathname: url, query: {}, url });
+		redirectToLocation({ pathname: url, url });
 	}
-};
+}
 
-const guestLogin = async (): Promise<void> => {
-	if (getCookie(null, cookieNames.authToken)) return;
-	const body = {};
-	const response = await fetcher({ endPoint: endPointGuestSignup, method: "POST", body });
+async function oAuthLogin(data, redirectUrl = "/dashboard", cb) {
+	const response = await fetcher({
+		endPoint: endPointSocialSignup,
+		method: "POST",
+		body: {
+			data: {
+				provider: data._provider,
+				token: data._token.idToken || data._token.accessToken
+			}
+		}
+	});
 	if (response.statusCode <= 300) {
 		const {
 			token,
 			user: { role }
 		} = response.data;
-		login({ token, redirectUrl: null });
-		cookie.set(cookieNames.userRole, role, { expires: 10 });
+		login({ token, role, redirectUrl });
+	} else {
+		cb("Error");
 	}
-};
+}
 
-const logout = (): void => {
-	cookie.remove(cookieNames.userRole);
-	cookie.remove(cookieNames.authToken);
-	window.localStorage.setItem("logout", Date.now().toString());
-	window.localStorage.removeItem("authVerification");
+function logout() {
+	clearAllStorage();
+	window.localStorage.setItem("logout", Date.now());
 	redirectToLocation({
 		pathname: "/auth",
 		query: { flow: "login", redirectUrl: "/dashboard" },
 		url: "/auth/login?redirectUrl=/dashboard"
 	});
-};
+}
 
-const auth = (ctx: NextPageContext): string | void => {
+function auth(ctx) {
 	const token = getCookie(ctx, cookieNames.authToken);
 	const role = getCookie(ctx, cookieNames.userRole);
 	if (!token || role === "guest") {
@@ -97,12 +84,11 @@ const auth = (ctx: NextPageContext): string | void => {
 		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
 	}
 	return token;
-};
+}
 
-const getDisplayName = (JSXComponent: ExtendedJSXElement | ExtendedJSXFC | ComponentClass): string =>
-	JSXComponent.displayName || JSXComponent.name || "Component";
+const getDisplayName = JSXComponent => JSXComponent.displayName || JSXComponent.name || "Component";
 
-const withAuthSync = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC): ExtendedComponentClass => {
+function withAuthSync(WrappedComponent) {
 	return class extends Component {
 		static displayName = `withAuthSync(${getDisplayName(WrappedComponent)})`;
 
@@ -131,9 +117,9 @@ const withAuthSync = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC): Ext
 			return <WrappedComponent {...this.props} />;
 		}
 	};
-};
+}
 
-const withAuthVerification = (WrappedComponent: ExtendedJSXElement | ExtendedJSXFC| ExtendedComponentClass): ComponentClass => {
+function withAuthVerification(WrappedComponent) {
 	return class extends Component {
 		static displayName = `withAuthVerification(${getDisplayName(WrappedComponent)})`;
 
@@ -160,6 +146,6 @@ const withAuthVerification = (WrappedComponent: ExtendedJSXElement | ExtendedJSX
 			return <WrappedComponent {...this.props} />;
 		}
 	};
-};
+}
 
-export { login, guestLogin, logout, withAuthSync, withAuthVerification, auth, redirectToLocation };
+export { login, oAuthLogin, logout, withAuthSync, withAuthVerification, auth, redirectToLocation };

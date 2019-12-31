@@ -1,11 +1,10 @@
 import theme from "@theme/index";
 import { initAnalytics, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
-import { guestLogin } from "@utils/auth";
-import { Spin } from "antd";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import { Spin } from "antd";
 
 export default class MyApp extends App {
 	state = {
@@ -15,7 +14,6 @@ export default class MyApp extends App {
 	getUtmParam = url => url.split("utm_")[1];
 
 	componentDidMount() {
-		guestLogin();
 		if (!window.GA_INITIALIZED) {
 			initAnalytics();
 			window.GA_INITIALIZED = true;

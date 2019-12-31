@@ -1,12 +1,10 @@
-import Image from "@components/Image";
-import React from "react";
-import TextLoop from "react-text-loop";
-import styled from "styled-components";
+import Button from "@components/Button";
 import { CustomDiv } from "@sections/Dashboard/styled";
-import { Typography, Button } from "antd";
-import { useRouter } from "next/router";
 import { redirectToLocation } from "@utils/auth";
 import { allowedRoles } from "@utils/constants";
+import { Typography } from "antd";
+import { useRouter } from "next/router";
+import React from "react";
 
 const redirectObj = {
 	pathname: "/dashboard",
@@ -36,11 +34,11 @@ function HeroSection({ authVerification }) {
 				</CustomDiv>
 				<CustomDiv justifyContent="center" type="flex" py="1em">
 					{allowedRoles.includes(authVerification.role) ? (
-						<Button onClick={redirectToLocation.bind(null, redirectObj)} type="primary">
+						<Button variant="primary" onClick={redirectToLocation.bind(null, redirectObj)} type="primary">
 							Go to Dashboard
 						</Button>
 					) : (
-						<Button onClick={redirectToLogin} type="primary">
+						<Button variant="primary" onClick={redirectToLogin} type="primary">
 							Login
 						</Button>
 					)}

@@ -1,11 +1,11 @@
 import { DetailedProject } from "@customTypes/dashboardTypes";
-import { Role, ProjectRoles } from "@customTypes/userType";
+import { ProjectRoles } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
-import { Col, Icon, Row, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
-import { CustomDiv, ModifiedText } from "../styled";
 import styled from "styled-components";
+import { CustomDiv, ModifiedText } from "../styled";
 
 const { Text } = Typography;
 

@@ -142,8 +142,11 @@ class FormBox extends PureComponent {
 		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
 		if (response.statusCode <= 300) {
 			if (name === "login" || name === "signup") {
-				const { token } = response.data;
-				await login({ token, redirectUrl });
+				const {
+					token,
+					user: { role }
+				} = response.data;
+				await login({ token, role, redirectUrl });
 			}
 			if (redirectUrl && redirectUrl !== "") {
 				redirectToLocation({ pathname: redirectUrl, query: {}, url: redirectUrl, res: response });

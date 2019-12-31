@@ -1,15 +1,16 @@
 import ForgotPasswordForm from "@sections/Forms/ForgotPasswordForm";
 import LoginForm from "@sections/Forms/LoginForm";
 import ResetPasswordForm from "@sections/Forms/ResetPasswordForm";
-import SignupForm from "@sections/Forms/SignupForm";
 import Layout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { withAuthVerification, redirectToLocation } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
+import { allowedRoles } from "@utils/constants";
+import { useRouter } from "next/router";
 
 function getHeadingText(flow) {
 	switch (flow) {
@@ -37,6 +38,14 @@ function getHeadingText(flow) {
 }
 
 function auth({ isServer, authVerification, flow, redirectUrl, token }) {
+	const Router = useRouter();
+
+	useEffect(() => {
+		if (allowedRoles.includes(authVerification.role)) {
+			redirectToLocation({ pathname: "/dashboard", query: {}, url: "/dashboard" });
+		}
+	}, [authVerification.role]);
+
 	const renderLoginLink = (
 		<Link
 			href={{ pathname: "/auth", query: { flow: "login", redirectUrl } }}

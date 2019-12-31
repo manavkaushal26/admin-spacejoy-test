@@ -8,11 +8,12 @@ import PageLayout from "@sections/Layout";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import { Col, Row, Spin } from "antd";
-import { NextPageContext } from "next";
+import { NextPageContext, NextPage } from "next";
 import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import IndexPageMeta from "@utils/meta";
 
 const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};
@@ -24,7 +25,7 @@ interface DashboardProps {
 	designId: string;
 }
 
-const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, projectId, designId }): JSX.Element => {
+const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, projectId, designId }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading, setLoading] = useState<boolean>(false);
 	const handleSelectCard = (user: string): void => {
@@ -40,6 +41,7 @@ const dashboard: ExtendedJSXFC<DashboardProps> = ({ isServer, authVerification, 
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Dashboard | {company.product}</title>
+				{IndexPageMeta}
 			</Head>
 			<GreyDiv>
 				<Spin spinning={loading}>
@@ -81,4 +83,4 @@ dashboard.getInitialProps = async (ctx: NextPageContext): Promise<DashboardProps
 	return { isServer, authVerification, projectId, designId };
 };
 
-export default withAuthVerification(withAuthSync(dashboard));
+export default withAuthVerification(dashboard);
