@@ -29,10 +29,14 @@ const userProjectMainPanel: React.FC<{
 		setLoading(false);
 	};
 	const onSelectDesign = (designId: string): void => {
-		Router.push(
-			{ pathname: "/dashboard", query: { user: userProjectId, designId: designId } },
-			`/dashboard/pid/${userProjectId}/did/${designId}`
-		);
+		if (designId !== "") {
+			Router.push(
+				{ pathname: "/dashboard", query: { user: userProjectId, designId: designId } },
+				`/dashboard/pid/${userProjectId}/did/${designId}`
+			);
+			return;
+		}
+		Router.push({ pathname: "/dashboard", query: { user: userProjectId } }, `/dashboard/pid/${userProjectId}`);
 	};
 
 	const refetchData = () => {

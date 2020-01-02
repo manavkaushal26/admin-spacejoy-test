@@ -31,7 +31,7 @@ const getLongTimeString = (endTime: number): string => {
 const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Element => {
 	// const { phase, task, status, avatar, name } = userProjectData;
 	const {
-		name,
+		name: room,
 		status,
 		customer,
 		createdAt,
@@ -49,9 +49,12 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 					<CustomDiv textOverflow="ellipsis" inline type="flex" px="12px">
 						<Avatar size={48}>{displayName[0].toUpperCase()}</Avatar>{" "}
 					</CustomDiv>
-					<SilentTitle ellipsis level={3}>
-						{displayName}
-					</SilentTitle>
+					<CustomDiv type="flex" inline flexDirection="column">
+						<SilentTitle ellipsis level={3}>
+							{displayName}
+						</SilentTitle>
+						<Text>{room}</Text>
+					</CustomDiv>
 				</CustomDiv>
 			</Col>
 			<Col sm={24} md={12} lg={12} xl={6}>

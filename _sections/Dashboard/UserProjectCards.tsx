@@ -25,6 +25,12 @@ const UserCard = styled(Card)<{ active: boolean }>`
 	}
 `;
 
+const RoomNameText = styled(Text)`
+	position: relative;
+	font-size: 0.8em;
+	top: -5px;
+`;
+
 const UserProjectCard = ({
 	userProjectData,
 	handleSelectCard,
@@ -55,7 +61,7 @@ const UserProjectCard = ({
 			}}
 		>
 			<Row>
-				<CustomDiv pb="15px">
+				<CustomDiv>
 					<Row type="flex" align="middle">
 						<CustomDiv width="15%" overflow="visible">
 							<Avatar>
@@ -78,7 +84,14 @@ const UserProjectCard = ({
 						</CustomDiv>
 					</Row>
 				</CustomDiv>
-
+				<Row type="flex" gutter={1}>
+					<Col span={24}>
+						<CustomDiv type="flex" flexWrap="no-wrap">
+							<CustomDiv width="15%" />
+							<RoomNameText>{room}</RoomNameText>
+						</CustomDiv>
+					</Col>
+				</Row>
 				<Row type="flex" gutter={1}>
 					<Col span={24}>
 						<CustomDiv type="flex" flexWrap="no-wrap">

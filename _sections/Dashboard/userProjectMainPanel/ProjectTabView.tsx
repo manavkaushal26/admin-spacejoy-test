@@ -1,4 +1,4 @@
-import { Card, Col, Row, Tabs, Tag, Typography, Spin } from "antd";
+import { Card, Col, Row, Tabs, Tag, Typography, Spin, PageHeader } from "antd";
 import { designApi } from "@api/designApi";
 import Image from "@components/Image";
 import { DetailedDesign, DetailedProject, HumanizeDesignPhases } from "@customTypes/dashboardTypes";
@@ -13,7 +13,6 @@ import NotesTab from "./NotesTab";
 import styled from "styled-components";
 
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
-import { getValueSafely } from "@utils/commonUtils";
 import DesignSelection from "./DesignSelection";
 
 const { TabPane } = Tabs;
@@ -35,6 +34,10 @@ const ScrollableTabs = styled(Tabs)`
 			overflow-y: scroll;
 		}
 	}
+`;
+
+const SilentPageHeader = styled(PageHeader)`
+	padding: 10px 0;
 `;
 
 const ProjectTabView: React.FC<ProjectTabViewProps> = ({
@@ -79,39 +82,41 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	return (
 		<>
 			{designData !== null ? (
-				<ScrollableTabs defaultActiveKey="6">
-					<TabPane tab="Customer Responses" key="1">
-						<CustomerResponses formData={formData || []} />
-					</TabPane>
-					<TabPane tab="Your Notes" key="2">
-						<NotesTab refetchDesignData={refetchDesignData} designData={designData} />
-					</TabPane>
-					<TabPane tab="Moodboard" key="3">
-						<MoodboardTab
-							setDesignData={setDesignData}
-							missingAssets={designData.missingAssetUrls}
-							setLoading={setLoading}
-							projectId={projectData._id}
-							designId={designId}
-						/>
-					</TabPane>
-					<TabPane tab="Discussions" key="4">
-						Content of Tab Pane 4
-					</TabPane>
-					<TabPane tab="Team" key="5">
-						<TeamTab
-							setProjectData={setProjectData}
-							setLoading={setLoading}
-							projectId={projectData._id}
-							assignedTeam={projectData.team.map(memberData => {
-								return memberData.member;
-							})}
-						/>
-					</TabPane>
-					<TabPane tab="Pipeline" key="6">
-						<PipelineTab designData={designData} refetchDesignData={refetchDesignData} />
-					</TabPane>
-				</ScrollableTabs>
+				<>
+					<SilentPageHeader title={designData.name} onBack={onSelectDesign.bind(null, "")} />
+					<SilentDivider />
+
+					<ScrollableTabs defaultActiveKey="6">
+						<TabPane tab="Customer Responses" key="1">
+							<CustomerResponses formData={formData || []} />
+						</TabPane>
+						<TabPane tab="Team" key="5">
+							<TeamTab
+								setProjectData={setProjectData}
+								setLoading={setLoading}
+								projectId={projectData._id}
+								assignedTeam={projectData.team.map(memberData => {
+									return memberData.member;
+								})}
+							/>
+						</TabPane>
+						<TabPane tab="Moodboard" key="3">
+							<MoodboardTab
+								setDesignData={setDesignData}
+								missingAssets={designData.missingAssetUrls}
+								setLoading={setLoading}
+								projectId={projectData._id}
+								designId={designId}
+							/>
+						</TabPane>
+						<TabPane tab="Discussion" key="2">
+							<NotesTab refetchDesignData={refetchDesignData} designData={designData} />
+						</TabPane>
+						<TabPane tab="Pipeline" key="6">
+							<PipelineTab designData={designData} refetchDesignData={refetchDesignData} />
+						</TabPane>
+					</ScrollableTabs>
+				</>
 			) : (
 				<Spin spinning={designLoading}>
 					<DesignSelection
