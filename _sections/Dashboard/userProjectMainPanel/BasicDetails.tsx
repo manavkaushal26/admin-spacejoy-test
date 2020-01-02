@@ -29,11 +29,10 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		() =>
 			team
 				.filter(member => {
-					console.log(member);
-					return member.member.role === ProjectRoles.Designer;
+					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
 				})
 				.map(designer => {
-					return designer.member.profile.name;
+					return getValueSafely(() => designer.member.profile.name, designer.memberName);
 				})
 				.join(", "),
 		[projectData.team]
@@ -43,10 +42,10 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		() =>
 			team
 				.filter(member => {
-					return member.member.role === ProjectRoles["Account Manager"];
+					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles["Account Manager"];
 				})
 				.map(manager => {
-					return manager.member.profile.name;
+					return getValueSafely(() => manager.member.profile.name, manager.memberName);
 				})
 				.join(", "),
 		[projectData.team]

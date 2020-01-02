@@ -1,37 +1,18 @@
-import theme from "@theme/index";
-import { initAnalytics, LandingPage, PwaInstalled, RouteChange } from "@utils/analyticsLogger";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
 import { ThemeProvider } from "styled-components";
-import { Spin } from "antd";
+import SVGIcon from "../_components/SVGIcon";
+import theme from "../_theme";
 
 export default class MyApp extends App {
 	state = {
 		loading: false
 	};
 
-	getUtmParam = url => url.split("utm_")[1];
-
 	componentDidMount() {
-		if (!window.GA_INITIALIZED) {
-			initAnalytics();
-			window.GA_INITIALIZED = true;
-		}
-		LandingPage({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });
-		Router.router.events.on("routeChangeStart", url => {
-			if (url.split("/")[1] !== "playstore") {
-				this.setState({ loading: true });
-			}
-		});
-		Router.router.events.on("routeChangeComplete", () => {
-			this.setState({ loading: false });
-			window.scrollTo(0, 0);
-			RouteChange({ route: window.location.pathname, utm_source: this.getUtmParam(window.location.href) });
-		});
-		window.addEventListener("appinstalled", evt => {
-			PwaInstalled({ evt });
-		});
+		Router.router.events.on("routeChangeStart", () => this.setState({ loading: true }));
+		Router.router.events.on("routeChangeComplete", () => this.setState({ loading: false }));
 	}
 
 	render() {
@@ -39,9 +20,12 @@ export default class MyApp extends App {
 		const { Component, pageProps } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
-				<Spin spinning={!!loading}>
+				<div className={`${loading ? "loading" : ""}`}>
 					<Component {...pageProps} />
-				</Spin>
+					<div className="loader-ring">
+						<SVGIcon name="spinner" className="loading-spinner" height={20} width={20} />
+					</div>
+				</div>
 			</ThemeProvider>
 		);
 	}

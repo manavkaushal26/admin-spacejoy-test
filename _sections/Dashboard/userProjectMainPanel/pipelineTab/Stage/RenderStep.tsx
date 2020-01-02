@@ -1,18 +1,18 @@
+import { deleteUploadedImage } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
 import { DesignImgTypes, DetailedDesign, PhaseType, RenderImgUploadTypes } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { CustomDiv, Form } from "@sections/Dashboard/styled";
 import { getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, Select, Typography, message } from "antd";
+import { Button, Icon, message, Select, Typography } from "antd";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { StepDiv } from "../styled";
 import ImageDisplayModal from "./Components/ImageDisplayModal";
-import { deleteUploadedImage } from "@api/designApi";
-import fetcher from "@utils/fetcher";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -33,7 +33,6 @@ const RenderStep: React.FC<RenderStep> = ({ designDataCopy, setDesignDataCopy, p
 
 	const deleteImage = async (file: UploadFile) => {
 		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
-
 		const response = await fetcher({ endPoint: endPoint, method: "DELETE" });
 		if (response.statusCode <= 300) {
 			refetchDesignData();

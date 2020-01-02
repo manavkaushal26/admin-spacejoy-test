@@ -1,8 +1,8 @@
-import { login, redirectToLocation } from "@utils/auth";
 import fetcher from "@utils/fetcher";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
+import { login, redirectToLocation } from "../../_utils/auth";
 import { ValidateEmail, ValidateMobile } from "./Validation";
 
 const ErrorText = "error";
@@ -146,10 +146,9 @@ class FormBox extends PureComponent {
 					token,
 					user: { role }
 				} = response.data;
-				await login({ token, role, redirectUrl });
-			}
-			if (redirectUrl && redirectUrl !== "") {
-				redirectToLocation({ pathname: redirectUrl, query: {}, url: redirectUrl, res: response });
+				login({ token, role, redirectUrl });
+			} else if (redirectUrl && redirectUrl !== "") {
+				redirectToLocation({ pathname: redirectUrl, url: redirectUrl });
 			}
 		}
 		this.setState({

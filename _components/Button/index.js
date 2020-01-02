@@ -1,5 +1,4 @@
 import SVGIcon from "@components/SVGIcon";
-import { PushEvent } from "@utils/analyticsLogger";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -97,19 +96,16 @@ const ButtonStyled = styled(ButtonBase)`
 `;
 
 function Button(props) {
-	const { children, onClick, raw, disabled, submitInProgress, action, label, value, event, data } = props;
-	const onClickWithGA = e => {
-		onClick(e);
-		PushEvent(action, label, value, event, data);
-	};
+	const { children, onClick, raw, disabled, submitInProgress } = props;
+
 	return (
 		<>
 			{raw ? (
-				<ButtonBase {...props} onClick={e => onClickWithGA(e)}>
+				<ButtonBase {...props} onClick={onClick}>
 					{children}
 				</ButtonBase>
 			) : (
-				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={submitInProgress || disabled}>
+				<ButtonStyled {...props} onClick={onClick} disabled={submitInProgress || disabled}>
 					{submitInProgress ? <SVGIcon name="spinner" className="loading-spinner" height={15} width={15} /> : children}
 				</ButtonStyled>
 			)}
@@ -128,12 +124,7 @@ Button.defaultProps = {
 	full: false,
 	raw: false,
 	disabled: false,
-	submitInProgress: false,
-	action: "",
-	value: "",
-	label: "",
-	event: "",
-	data: {}
+	submitInProgress: false
 };
 
 Button.propTypes = {
@@ -147,12 +138,7 @@ Button.propTypes = {
 	full: PropTypes.bool,
 	raw: PropTypes.bool,
 	disabled: PropTypes.bool,
-	submitInProgress: PropTypes.bool,
-	action: PropTypes.string,
-	label: PropTypes.string,
-	event: PropTypes.string,
-	value: PropTypes.string,
-	data: PropTypes.shape({})
+	submitInProgress: PropTypes.bool
 };
 
 export default React.memo(Button);

@@ -92,6 +92,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						</TabPane>
 						<TabPane tab="Team" key="5">
 							<TeamTab
+								projectData={projectData}
 								setProjectData={setProjectData}
 								setLoading={setLoading}
 								projectId={projectData._id}

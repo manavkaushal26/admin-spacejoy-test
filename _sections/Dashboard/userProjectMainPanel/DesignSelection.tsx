@@ -1,18 +1,18 @@
+import { updateProjectPhase } from "@api/projectApi";
 import Image from "@components/Image";
 import {
-	DetailedProject,
-	Packages,
-	PackageDesignValue,
 	DesignInterface,
+	DetailedProject,
+	PackageDesignValue,
+	Packages,
 	PhaseInternalNames
 } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
-import { Card, Col, Row, Tag, Typography, Button, message } from "antd";
+import fetcher from "@utils/fetcher";
+import { Button, Card, Col, message, Row, Tag, Typography } from "antd";
 import React, { useMemo } from "react";
 import { CustomDiv } from "../styled";
-import { Status } from "@customTypes/userType";
-import { updateProjectPhase } from "@api/projectApi";
-import fetcher from "@utils/fetcher";
 
 const { Text } = Typography;
 
@@ -51,7 +51,6 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 
 	const onSubmit = async () => {
 		const endpoint = updateProjectPhase(projectData._id);
-
 		const response = await fetcher({ endPoint: endpoint, method: "PUT" });
 		if (response.statusCode <= 200) {
 			const projectData: DetailedProject = response.data;

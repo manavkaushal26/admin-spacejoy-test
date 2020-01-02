@@ -41,7 +41,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 	} = projectData;
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
-	}, name);
+	}, room);
 	return (
 		<Row type="flex" align="middle" gutter={1}>
 			<Col sm={24} md={24} lg={24} xl={10}>

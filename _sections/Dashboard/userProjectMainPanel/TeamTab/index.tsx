@@ -17,6 +17,7 @@ interface DesignerTabInterface {
 	assignedTeam: TeamMember[];
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	projectData: DetailedProject;
 }
 
 const intialState: DesignerTabState = {
@@ -72,7 +73,8 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 	projectId,
 	assignedTeam,
 	setLoading,
-	setProjectData
+	setProjectData,
+	projectData
 }): JSX.Element => {
 	const init = (initialState: DesignerTabState): DesignerTabState => {
 		return {
@@ -117,7 +119,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 		const removedMembers = assignedTeam
 			.filter(teamMember => !state.assignedTeam.map(member => member._id).includes(teamMember._id))
 			.map(morphTeamMemberForApi);
-		console.log(addedMembers, removedMembers);
+
 		let response: {
 			statusCode?: number;
 			data?: DetailedProject;
@@ -139,7 +141,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 			response = await fetcher({ endPoint: removeMemberEndpoint, method: "DELETE", body: body });
 		}
 
-		setProjectData(response.data);
+		setProjectData({ ...projectData, team: response.data.team });
 		setLoading(false);
 	};
 

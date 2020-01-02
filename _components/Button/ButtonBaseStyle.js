@@ -14,7 +14,7 @@ const ButtonStyled = styled.button`
 	text-align: center;
 	letter-spacing: 1px;
 	font-size: 1rem;
-	font-family: "Airbnb Cereal App Medium";
+	font-family: "AirbnbCerealBook";
 `;
 
 export default ButtonStyled;

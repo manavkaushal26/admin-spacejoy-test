@@ -1,11 +1,10 @@
 import Image from "@components/Image";
-import { CustomDiv } from "@sections/Dashboard/styled";
+import User from "@customTypes/userType";
 import Layout from "@sections/Layout";
+import { redirectToLocation } from "@utils/auth";
+import { Button, Typography } from "antd";
 import React from "react";
 import styled from "styled-components";
-import { Typography, Divider, Button } from "antd";
-import { redirectToLocation, withAuthVerification, withAuthSync } from "@utils/auth";
-import User from "@customTypes/userType";
 
 const { Text } = Typography;
 
@@ -35,7 +34,6 @@ const errorImage =
 
 const routeParameters = {
 	pathname: "/dashboard",
-	query: {},
 	url: "/dashboard"
 };
 

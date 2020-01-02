@@ -11,7 +11,6 @@ const BaseMeta = [
 	<meta key="themeColor" name="theme-color" content="#ffffff" />,
 	<meta key="googleSiteVerification" name="google-site-verification" content={page.googleSiteVerification} />,
 	<link key="icon" rel="icon" sizes="192x192" href="/static/logo-icons/icon.png" />,
-	<link key="canonical" rel="canonical" href="/" />,
 	<link key="favicon" rel="shortcut icon" href="/static/logo-icons/favicon.ico" />,
 	<link key="favicon-android" rel="icon" type="image/png" sizes="192x192" href="/static/logo-icons/icon.png" />,
 	<link key="favicon-32" rel="icon" type="image/png" sizes="32x32" href="/static/logo-icons/favicon-32x32.png" />,
@@ -66,16 +65,10 @@ const AppleLink = [
 ];
 
 const IndexPage = [
-	<meta
-		key="keywords"
-		name="keywords"
-		content="spacejoy, home-decor, interior, design tips, who to improve your home"
-	/>,
 	<meta key="language" name="language" content="ES" />,
 	<meta key="robots" name="robots" content="index,follow" />,
 	<meta key="topic" name="topic" content={company.subject} />,
-	<meta key="summary" name="summary" content={company.description} />,
-	<meta key="description" name="description" content={company.description} />
+	<meta key="summary" name="summary" content={company.description} />
 ];
 
 const IndexPageMeta = [...BaseMeta, ...OGMeta, ...AppleMeta, ...IEMeta, ...AppleLink, ...IndexPage];

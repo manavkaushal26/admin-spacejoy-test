@@ -1,8 +1,8 @@
+import User, { Role } from "@customTypes/userType";
 import GlobalStyle from "@theme/globalStyle";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "../Header";
-import User, { Role } from "@customTypes/userType";
 
 const dev = process.env.NODE_ENV !== "production";
 

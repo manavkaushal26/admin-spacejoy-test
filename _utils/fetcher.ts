@@ -32,7 +32,11 @@ async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<
 		const resData = await response.json();
 		return resData;
 	}
-	return response;
+	const data = {
+		status: response.status,
+		message: response.statusText
+	};
+	return { ...response, ...data };
 }
 
 export default fetcher;

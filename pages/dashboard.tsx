@@ -1,19 +1,18 @@
-import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
 import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthSync, withAuthVerification } from "@utils/auth";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
+import IndexPageMeta from "@utils/meta";
 import { Col, Row, Spin } from "antd";
-import { NextPageContext, NextPage } from "next";
+import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import IndexPageMeta from "@utils/meta";
 
 const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};

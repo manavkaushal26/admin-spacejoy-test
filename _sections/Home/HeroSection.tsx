@@ -3,22 +3,15 @@ import { CustomDiv } from "@sections/Dashboard/styled";
 import { redirectToLocation } from "@utils/auth";
 import { allowedRoles } from "@utils/constants";
 import { Typography } from "antd";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import React from "react";
 
 const redirectObj = {
 	pathname: "/dashboard",
-	query: {},
 	url: "/dashboard"
 };
 
 function HeroSection({ authVerification }) {
-	const Router = useRouter();
-
-	const redirectToLogin = () => {
-		Router.push({ pathname: "/auth/login" });
-	};
-
 	return (
 		<CustomDiv>
 			<CustomDiv
@@ -38,9 +31,13 @@ function HeroSection({ authVerification }) {
 							Go to Dashboard
 						</Button>
 					) : (
-						<Button variant="primary" onClick={redirectToLogin} type="primary">
-							Login
-						</Button>
+						<Link href="/auth/login">
+							<a href="/auth/login">
+								<Button variant="primary" type="primary">
+									Login
+								</Button>
+							</a>
+						</Link>
 					)}
 				</CustomDiv>
 			</CustomDiv>

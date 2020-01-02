@@ -57,7 +57,7 @@ const UserProjectCard = ({
 			style={{ width: "100%" }}
 			onClick={e => {
 				e.preventDefault();
-				handleSelectCard(userProjectData._id);
+				return handleSelectCard(userProjectData._id);
 			}}
 		>
 			<Row>

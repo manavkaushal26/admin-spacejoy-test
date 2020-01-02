@@ -1,10 +1,10 @@
-import { logout } from "@utils/auth";
-import DropMenu from "@components/DropMenu";
-import { HorizontalListStyled } from "./styled";
-import User, { Role } from "@customTypes/userType";
-import ActiveLink from "./ActiveLink";
 import Button from "@components/Button";
+import DropMenu from "@components/DropMenu";
+import User from "@customTypes/userType";
+import { logout } from "@utils/auth";
 import { allowedRoles } from "@utils/constants";
+import ActiveLink from "./ActiveLink";
+import { HorizontalListStyled } from "./styled";
 
 const navRight = (authVerification: Partial<User>): JSX.Element => (
 	<nav>
@@ -13,7 +13,7 @@ const navRight = (authVerification: Partial<User>): JSX.Element => (
 				{authVerification && allowedRoles.includes(authVerification.role) ? (
 					<DropMenu>
 						<DropMenu.Header>
-							<ActiveLink href={{ pathname: "/dashboard", query: {} }} as="/dashboard">
+							<ActiveLink href="/dashboard" as="/dashboard">
 								{authVerification.name}
 							</ActiveLink>
 						</DropMenu.Header>

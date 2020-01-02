@@ -8,19 +8,14 @@ import getCookie from "./getCookie";
 const endPointAuthCheck = "/auth/check";
 const endPointSocialSignup = "/auth/login/oauth";
 
-function redirectToLocation({ pathname, query, url, res = {} }) {
+function redirectToLocation({ pathname, query = {}, url, res = {} }) {
 	if (typeof window !== "undefined") {
-		switch (pathname) {
-			case "/auth":
-				return Router.replace({ pathname, query }, url);
-			default:
-				return Router.push({ pathname, query }, url);
-		}
+		Router.push({ pathname, query }, url);
 	} else {
 		res.writeHead(302, {
 			Location: url
 		});
-		return res.end();
+		res.end();
 	}
 }
 
@@ -75,7 +70,7 @@ function logout() {
 function auth(ctx) {
 	const token = getCookie(ctx, cookieNames.authToken);
 	const role = getCookie(ctx, cookieNames.userRole);
-	if (!token || role === "guest") {
+	if (!token) {
 		const redirect = {
 			pathname: "/auth",
 			query: { flow: "signup", redirectUrl: ctx.pathname },
