@@ -5,7 +5,8 @@
 		"prettier/react",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/recommended",
-		"plugin:prettier/recommended"
+		"plugin:prettier/recommended",
+		"eslint:recommended"
 	],
 	"plugins": ["@typescript-eslint", "prettier"],
 	"parser": "@typescript-eslint/parser",
@@ -30,9 +31,9 @@
 		}
 	},
 	"rules": {
-		"@typescript-eslint/camelcase": 1,
+		"@typescript-eslint/camelcase": 2,
 		"react/jsx-filename-extension": [
-			1,
+			2,
 			{
 				"extensions": [".js", ".jsx", ".ts", ".tsx"]
 			}
@@ -54,7 +55,10 @@
 				"allowChildren": false
 			}
 		],
-		"no-underscore-dangle": 1,
-		"import/prefer-default-export": 1
-	}
+		"no-console": 2,
+		"no-underscore-dangle": 0,
+		"import/prefer-default-export": 1,
+		"react/prop-types": 0
+	},
+	"reportUnusedDisableDirectives": true
 }

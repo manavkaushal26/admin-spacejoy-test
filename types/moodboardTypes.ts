@@ -96,6 +96,11 @@ export interface AssetType {
 		_id: string;
 		name: string;
 	};
+	meta: {
+		category: string;
+		subcategory: string;
+		vertical: string;
+	};
 	retailLink: string;
 	cdn: string;
 	_id: string;

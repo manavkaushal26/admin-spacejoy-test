@@ -2,6 +2,8 @@ import App from "next/app";
 import Router from "next/router";
 import React from "react";
 import { ThemeProvider } from "styled-components";
+import SVGIcon from "../_components/SVGIcon";
+import theme from "../_theme";
 import "../node_modules/antd/lib/button/style/index";
 import "../node_modules/antd/lib/card/style/index";
 import "../node_modules/antd/lib/checkbox/style/index";
@@ -27,8 +29,7 @@ import "../node_modules/antd/lib/tag/style/index";
 import "../node_modules/antd/lib/tree/style/index";
 import "../node_modules/antd/lib/typography/style/index";
 import "../node_modules/antd/lib/upload/style/index";
-import SVGIcon from "../_components/SVGIcon";
-import theme from "../_theme";
+import "../node_modules/antd/lib/statistic/style/index";
 
 export default class MyApp extends App {
 	state = {

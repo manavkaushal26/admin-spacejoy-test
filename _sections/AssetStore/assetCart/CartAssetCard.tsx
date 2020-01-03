@@ -2,11 +2,11 @@ import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Button, Typography, Popconfirm, message } from "antd";
+import { Button, Icon, message, Popconfirm, Typography } from "antd";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AssetCard } from "../styled";
-import { useRouter } from "next/router";
 
 const { Text } = Typography;
 
@@ -18,6 +18,7 @@ interface CartAssetCard {
 	onRecommendationClick?: (entryId: string) => void;
 	entryId?: string;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
+	currentlySelectingRecommendation?: boolean;
 }
 
 const BorderlessAssetCard = styled(AssetCard)`
@@ -40,25 +41,26 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 	type,
 	onRecommendationClick,
 	entryId,
-	addRemoveAsset
+	addRemoveAsset,
+	currentlySelectingRecommendation
 }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const Router = useRouter();
 
-	const onClick = async () => {
+	const onClick = (): void => {
 		setLoading(true);
 		if (type === "primary") {
-			await addRemoveAsset("DELETE", entryId);
+			addRemoveAsset("DELETE", entryId);
 		}
 		if (type === "recommendation") {
-			await addRemoveAsset("DELETE", asset._id, entryId);
+			addRemoveAsset("DELETE", asset._id, entryId);
 		}
 		message.success(type === "primary" ? "Primary Asset Removed" : "Recommendation Removed");
 		setLoading(false);
 	};
 
-	const redirect = () => {
+	const redirect = (): void => {
 		Router.push(
 			{ pathname: "/assetstore", query: { designId, assetEntryId: entryId, projectId } },
 			`/assetstore/pid/${projectId}/did/${designId}/aeid/${entryId}`
@@ -69,8 +71,8 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 		<CustomDiv py="8px">
 			<BorderlessAssetCard hoverable={type === "primary"} onClick={type === "primary" ? redirect : null}>
 				<CustomDiv type="flex">
-					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex">
-						<Image height="100px" src={`q_80,h_100/${asset.cdn}`} />
+					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex" align="center">
+						<Image height="115px" src={`q_80,h_100/${asset.cdn}`} />
 					</CustomDiv>
 					<CustomDiv
 						width="70%"
@@ -87,13 +89,27 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 							</Text>
 						</CustomDiv>
 						<CustomDiv width="100%">
-							<Text style={{ width: "100%" }} strong ellipsis>
+							<Text style={{ width: "100%" }} ellipsis>
 								{getValueSafely(() => asset.retailer.name, "N/A")}
 							</Text>
 						</CustomDiv>
-						<CustomDiv type="flex" width="80%" px="4px">
+						<CustomDiv width="100%" type="flex" justifyContent="baseline" pb="0.5rem" align="center">
+							<CustomDiv type="flex" pr="5px">
+								<Icon type="dollar-circle" theme="filled" />
+							</CustomDiv>
+							<CustomDiv>
+								<Text strong>{asset.price}</Text>
+							</CustomDiv>
+						</CustomDiv>
+						<CustomDiv type="flex" width="80%" pr="4px">
 							{type === "primary" && (
-								<Button block onClick={() => onRecommendationClick(entryId)}>
+								<Button
+									block
+									onClick={(e): void => {
+										e.stopPropagation();
+										onRecommendationClick(entryId);
+									}}
+								>
 									Recommendations
 								</Button>
 							)}
@@ -104,9 +120,17 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 								onConfirm={onClick}
 								title="Are you sure?"
 								okText="Yes"
+								disabled={currentlySelectingRecommendation}
 								cancelText="Cancel"
 							>
-								<StyledButton loading={loading} icon="delete" type="danger" block></StyledButton>
+								<StyledButton
+									disabled={currentlySelectingRecommendation}
+									loading={loading}
+									icon="delete"
+									onClick={(e): void => e.stopPropagation()}
+									type="danger"
+									block
+								/>
 							</Popconfirm>
 						</CustomDiv>
 					</CustomDiv>

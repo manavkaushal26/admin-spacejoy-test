@@ -47,6 +47,15 @@ export interface AssetReducerType {
 
 export const reducer: AssetReducerType = (state, action) => {
 	switch (action.type) {
+		case ASSET_ACTION_TYPES.SUB_CATEGORY:
+			return {
+				...state,
+				checkedKeys: {
+					category: [],
+					verticals: [],
+					subCategory: [action.value.meta.subcategory]
+				}
+			};
 		case ASSET_ACTION_TYPES.SEARCH_TEXT:
 			return {
 				...state,

@@ -4,18 +4,13 @@ import { getValueSafely } from "@utils/commonUtils";
 import { Col, Row, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
-import styled from "styled-components";
-import { CustomDiv, ModifiedText } from "../styled";
+import { CustomDiv, FontCorrectedPre, ModifiedText } from "../styled";
 
 const { Text } = Typography;
 
 interface BasicDetailsProps {
 	projectData?: Partial<DetailedProject>;
 }
-
-const FontCorrectedPre = styled.pre`
-	font-family: inherit;
-`;
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	const {

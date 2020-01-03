@@ -1,9 +1,9 @@
 import { MetaDataType } from "@customTypes/moodboardTypes";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
-import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
+import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { Input, Tree, Typography } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { FilterCard, ModifiedDivider } from "../styled";
 import SliderFilter from "./filters/SliderFilter";
 
@@ -14,9 +14,14 @@ const { Title, Text } = Typography;
 interface AssetSidePanelProps {
 	metaData: MetaDataType;
 	dispatch: React.Dispatch<AssetAction>;
+	state: AssetStoreState;
 }
 
-const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): JSX.Element => {
+const addLevel = (level: string, elem): string => {
+	return `${elem}-${level}`;
+};
+
+const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state }): JSX.Element => {
 	const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000]);
 	const [width, setWidthRange] = useState<[number, number]>([0, 30]);
 	const [height, setHeightRange] = useState<[number, number]>([0, 30]);
@@ -54,18 +59,27 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		return [];
 	}, [metaData]);
 
-	const onCheck = checkedKeys => {
+	const mergedArray: string[] = useMemo(
+		() => [
+			...state.checkedKeys.category.map<string>(addLevel.bind(null, "category")),
+			...state.checkedKeys.subCategory.map<string>(addLevel.bind(null, "subCategory")),
+			...state.checkedKeys.verticals.map<string>(addLevel.bind(null, "verticals"))
+		],
+		[state.checkedKeys]
+	);
+
+	const onCheck = (checkedKeys: string[]): void => {
 		dispatch({ type: ASSET_ACTION_TYPES.CHECKED_ITEMS, value: checkedKeys });
 	};
 
-	const onSearchInput = e => {
+	const onSearchInput = (e): void => {
 		const {
 			target: { value }
 		} = e;
-		dispatch({ type: ASSET_ACTION_TYPES.SEARCH_TEXT, value: value });
+		dispatch({ type: ASSET_ACTION_TYPES.SEARCH_TEXT, value });
 	};
 
-	const afterPriceChange = () => {
+	const afterPriceChange = (): void => {
 		const [min, max] = priceRange;
 		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.PRICE_RANGE, value: priceRange });
 	};
@@ -74,17 +88,17 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		afterPriceChange();
 	}, priceRange);
 
-	const onPriceRangeChange = range => {
+	const onPriceRangeChange = (range): void => {
 		setPriceRange(range);
 	};
 
-	const onPriceSliderValueEntry = (e, type) => {
+	const onPriceSliderValueEntry = (e, type): void => {
 		const {
 			target: { value }
 		} = e;
 		const [min, max] = priceRange;
-		let correctedValue = parseInt(value);
-		if (isNaN(correctedValue) || correctedValue < 0) {
+		let correctedValue = parseInt(value, 10);
+		if (Number.isNaN(correctedValue) || correctedValue < 0) {
 			correctedValue = 0;
 		}
 		if (type === "min") {
@@ -95,7 +109,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		}
 	};
 
-	const afterHeightChange = () => {
+	const afterHeightChange = (): void => {
 		const [min, max] = height;
 		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.HEIGHT_RANGE, value: height });
 	};
@@ -104,17 +118,17 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		afterHeightChange();
 	}, height);
 
-	const onHeightRangeChange = range => {
+	const onHeightRangeChange = (range): void => {
 		setHeightRange(range);
 	};
 
-	const onHeightSliderValueEntry = (e, type) => {
+	const onHeightSliderValueEntry = (e, type): void => {
 		const {
 			target: { value }
 		} = e;
 		const [min, max] = priceRange;
-		let correctedValue = parseInt(value);
-		if (isNaN(correctedValue) || correctedValue < 0) {
+		let correctedValue = parseInt(value, 10);
+		if (Number.isNaN(correctedValue) || correctedValue < 0) {
 			correctedValue = 0;
 		}
 		if (type === "min") {
@@ -125,7 +139,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		}
 	};
 
-	const afterWidthChange = () => {
+	const afterWidthChange = (): void => {
 		const [min, max] = width;
 		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.WIDTH_RANGE, value: width });
 	};
@@ -134,17 +148,17 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		afterWidthChange();
 	}, width);
 
-	const onWidthRangeChange = range => {
+	const onWidthRangeChange = (range): void => {
 		setWidthRange(range);
 	};
 
-	const onWidthSliderValueEntry = async (e, type) => {
+	const onWidthSliderValueEntry = (e, type): void => {
 		const {
 			target: { value }
 		} = e;
 		const [min, max] = width;
-		let correctedValue = parseInt(value);
-		if (isNaN(correctedValue) || correctedValue < 0) {
+		let correctedValue = parseInt(value, 10);
+		if (Number.isNaN(correctedValue) || correctedValue < 0) {
 			correctedValue = 0;
 		}
 		if (type === "min") {
@@ -155,7 +169,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		}
 	};
 
-	const afterDepthChange = () => {
+	const afterDepthChange = (): void => {
 		const [min, max] = depth;
 		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.DEPTH_RANGE, value: depth });
 	};
@@ -164,17 +178,17 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		afterDepthChange();
 	}, depth);
 
-	const onDepthRangeChange = range => {
+	const onDepthRangeChange = (range): void => {
 		setDepthRange(range);
 	};
 
-	const onDepthSliderValueEntry = (e, type) => {
+	const onDepthSliderValueEntry = (e, type): void => {
 		const {
 			target: { value }
 		} = e;
 		const [min, max] = depth;
-		let correctedValue = parseInt(value);
-		if (isNaN(correctedValue) || correctedValue < 0) {
+		let correctedValue = parseInt(value, 10);
+		if (Number.isNaN(correctedValue) || correctedValue < 0) {
 			correctedValue = 0;
 		}
 		if (type === "min") {
@@ -185,7 +199,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 		}
 	};
 
-	const renderTreeNodes = options => {
+	const renderTreeNodes = (options): ReactNode => {
 		return options.map(item => {
 			if (item.children) {
 				return (
@@ -202,7 +216,6 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 	const [widthMin, widthMax] = width;
 	const [heightMin, heightMax] = height;
 	const [depthMin, depthMax] = depth;
-
 	return (
 		<>
 			{metaData && (
@@ -212,7 +225,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch }): 
 							<Text strong>Search by Name</Text>
 							<Input allowClear onChange={onSearchInput} />
 							<Text strong>Category</Text>
-							<Tree onCheck={onCheck} checkable>
+							<Tree onCheck={onCheck} checkedKeys={mergedArray} checkable>
 								{renderTreeNodes(categoryMap)}
 							</Tree>
 						</FilterCard>
