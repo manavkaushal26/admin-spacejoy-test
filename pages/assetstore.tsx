@@ -9,16 +9,14 @@ import PageLayout from "@sections/Layout";
 import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Row, Spin, Typography, message } from "antd";
+import IndexPageMeta from "@utils/meta";
+import { Button, message, Spin, Typography } from "antd";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
 import { AssetStoreState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
-import IndexPageMeta from "@utils/meta";
-
-const { Title } = Typography;
 
 interface MoodboardProps {
 	isServer: boolean;

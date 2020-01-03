@@ -1,5 +1,5 @@
+import { Button, Card, Col } from "antd";
 import styled from "styled-components";
-import { Button, Col, Card } from "antd";
 
 styled;
 

@@ -32,14 +32,11 @@ export const FilterCard = styled(Card)`
 `;
 
 export const FullheightSpin = styled(Spin)`
-	&.ant-spin-nested-loading {
-		width: 100%;
-		height: 100%;
-		.ant-spin-container {
-			width: 100%;
-			height: 100%;
-		}
-	}
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 export const GreyDrawer = styled(Drawer)`
@@ -57,17 +54,18 @@ export const GreyDrawer = styled(Drawer)`
 	}
 `;
 
-export const StyledInput = styled.input<{error: boolean}>`
-	::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+export const StyledInput = styled.input<{ error: boolean }>`
+	::-webkit-inner-spin-button,
+	::-webkit-outer-spin-button {
 		-webkit-appearance: none;
-		margin:0;
+		margin: 0;
 	}
 	width: 100%;
-	border: 1px solid rgba(0,0,0,0.1);
+	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 4px;
-	border-color: ${({error}) => error ? 'red' : '' };
+	border-color: ${({ error }) => (error ? "red" : "")};
 `;
 
 export const MarginCorrectedSlider = styled(Slider)`
-	margin: 8px 8px
+	margin: 8px 8px;
 `;

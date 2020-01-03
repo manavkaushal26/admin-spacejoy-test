@@ -1,7 +1,7 @@
 {
 	"presets": [["next/babel"]],
 	"plugins": [
-		["import", { "libraryName": "antd", "style": true }],
+		["import", { "libraryName": "antd", "style": false }],
 		["styled-components", { "ssr": true }],
 		[
 			"module-resolver",
@@ -16,7 +16,7 @@
 					"@static": "./public/static",
 					"@customTypes": "./types",
 					"@mocks": "./_utils/Mocks",
-					"@api": "./_api",
+					"@api": "./_api"
 				}
 			}
 		]

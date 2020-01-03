@@ -1,5 +1,5 @@
 import { teamAssignApi, userApi } from "@api/userApi";
-import { TeamMember, DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedProject, TeamMember } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";

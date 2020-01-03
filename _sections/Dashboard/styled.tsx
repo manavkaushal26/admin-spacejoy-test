@@ -1,4 +1,4 @@
-import { Divider, Tag, Typography, Col, Icon, Button } from "antd";
+import { Divider, Tag, Typography, Col, Icon, Button, Input } from "antd";
 import styled, { css } from "styled-components";
 import { Status } from "@customTypes/userType";
 import { PhaseInternalNames } from "@customTypes/dashboardTypes";
@@ -70,6 +70,15 @@ export const ModifiedText = styled(Text)<ModifiedTextProps>`
 	text-overflow: ellipsis;
 	overflow: hidden;
 	text-transform: ${({ textTransform }) => textTransform};
+`;
+
+export const AddOnAfterWithoutPadding = styled(Input)`
+	.ant-input-group-addon {
+		padding: 0px;
+	}
+	.ant-btn {
+		height: 30px;
+	}
 `;
 
 /**

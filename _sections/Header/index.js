@@ -1,9 +1,5 @@
-import Button from "@components/Button";
-import SVGIcon from "@components/SVGIcon";
-import cookie from "js-cookie";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import ActiveLink from "./ActiveLink";
 import HeaderBody from "./HeaderBody";
 
 const CookieStyled = styled.div`

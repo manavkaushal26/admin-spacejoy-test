@@ -124,7 +124,7 @@ const RenderStep: React.FC<RenderStep> = ({ designDataCopy, setDesignDataCopy, p
 							</Select>
 						</CustomDiv>
 					</CustomDiv>
-					<CustomDiv width="100%">
+					<CustomDiv width="100%" type="flex">
 						<label>Images</label>
 						<CustomDiv inline pl="1rem">
 							<Upload

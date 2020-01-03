@@ -1,11 +1,11 @@
+import { ProjectRoles } from "@customTypes/userType";
 import { CustomDiv, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Avatar, Row, Typography, Checkbox, Empty } from "antd";
+import { Avatar, Checkbox, Empty, Typography } from "antd";
 import React, { useMemo } from "react";
+import styled from "styled-components";
 import { GreyColumn, NoBodyCard, StyledButton } from "./styled";
 import { DesignerTabState } from "./teamTabReducer";
-import { ProjectRoles } from "@customTypes/userType";
-import styled from "styled-components";
 const { Text, Title } = Typography;
 
 interface TeamSidebarProps {

@@ -11,27 +11,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { FullheightSpin, GreyDrawer } from "../styled";
 
-const { Link } = Anchor;
 const { Title, Text } = Typography;
 
 const CenteredTitle = styled(Title)`
 	text-align: center;
-`;
-
-const PositionFixedMaxHeightDiv = styled(MaxHeightDiv)<{ assetId: string }>`
-	position: fixed;
-	right: 0;
-	transition: transform 0.2s;
-	background-color: #f2f4f6;
-	width: 300px;
-	transform: translateX(${({ assetId }) => (assetId === "" ? "300px" : 0)});
-	z-index: 1024;
-	box-shadow: ${({ assetId }) => (assetId ? "-2px 0px 10px 0px rgba(0,0,0,0.2)" : "")};
-`;
-
-const FullWidthSpin = styled(Spin)`
-	width: 100%;
-	height: 100%;
 `;
 
 interface AssetDescriptionPanelProps {
@@ -96,6 +79,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 			fetchAndPopulate();
 			return;
 		}
+		return () => {
+			setSingleAssetData(null);
+		};
 	}, [assetId]);
 
 	const assetInMoodboard = moodboardAssetIdMap[assetId] ? true : false;

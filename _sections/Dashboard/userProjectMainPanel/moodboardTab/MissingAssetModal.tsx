@@ -1,13 +1,13 @@
 import { editDesignApi } from "@api/pipelineApi";
 import { DetailedDesign } from "@customTypes/dashboardTypes";
-import { CustomDiv } from "@sections/Dashboard/styled";
+import { CustomDiv, AddOnAfterWithoutPadding } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
 import { Button, Input, List, message, Modal, Typography } from "antd";
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
 const { Text } = Typography;
-
+const { Search } = Input;
 const ChildSpacedDiv = styled.div`
 	> * + * {
 		margin-top: 1rem;
@@ -73,19 +73,25 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 					<Text>Copy the URL for the missing product into the below textbox</Text>
 				</CustomDiv>
 
-				<Input onChange={assetUrlChange} value={assetUrl} />
-				<CustomDiv type="flex" justifyContent="flex-end">
-					<Button loading={loading} type="primary" onClick={addAsset}>
-						Add
-					</Button>
-				</CustomDiv>
+				<AddOnAfterWithoutPadding
+					onChange={assetUrlChange}
+					onPressEnter={addAsset}
+					value={assetUrl}
+					addonAfter={
+						<Button loading={loading} type="primary" onClick={addAsset}>
+							Add
+						</Button>
+					}
+				/>
 				<List
 					header={<Text strong>Added Asset URL&apos;s</Text>}
 					bordered
 					dataSource={missingAssets}
 					renderItem={asset => (
 						<List.Item>
-							<a href={`${asset}`}>{asset}</a>
+							<a style={{ width: "100%" }} href={`${asset}`}>
+								{asset}
+							</a>
 						</List.Item>
 					)}
 				/>

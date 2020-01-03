@@ -39,10 +39,6 @@ const userProjectMainPanel: React.FC<{
 		Router.push({ pathname: "/dashboard", query: { user: userProjectId } }, `/dashboard/pid/${userProjectId}`);
 	};
 
-	const refetchData = () => {
-		fetchAndPopulate();
-	};
-
 	useEffect(() => {
 		if (!designId) {
 			fetchAndPopulate();
@@ -67,7 +63,7 @@ const userProjectMainPanel: React.FC<{
 						<SilentDivider />
 						<BasicDetails projectData={projectData} />
 						<ProjectTabView
-							refetchData={refetchData}
+							refetchData={fetchAndPopulate}
 							setLoading={setLoading}
 							projectData={projectData}
 							onSelectDesign={onSelectDesign}

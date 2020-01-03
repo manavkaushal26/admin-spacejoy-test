@@ -28,7 +28,7 @@ const UserCard = styled(Card)<{ active: boolean }>`
 const RoomNameText = styled(Text)`
 	position: relative;
 	font-size: 0.8em;
-	top: -5px;
+	top: -3px;
 `;
 
 const UserProjectCard = ({
@@ -70,7 +70,7 @@ const UserProjectCard = ({
 								}, "N/A").toUpperCase()}
 							</Avatar>
 						</CustomDiv>
-						<CustomDiv width="75%">
+						<CustomDiv width="75%" type="flex" flexDirection="column">
 							<Text strong>
 								<CustomDiv width="100%" textTransform="capitalize">
 									{getValueSafely<string>(() => {
@@ -78,20 +78,13 @@ const UserProjectCard = ({
 									}, "N/A")}
 								</CustomDiv>
 							</Text>
+							<RoomNameText>{room}</RoomNameText>
 						</CustomDiv>
 						<CustomDiv width="10%" justifyContent="flex-end" type="flex" inline>
 							<ProgressBar status={status} endTime={moment(createdAt).add(projectConfig.lifetime, "days")} width={30} />
 						</CustomDiv>
 					</Row>
 				</CustomDiv>
-				<Row type="flex" gutter={1}>
-					<Col span={24}>
-						<CustomDiv type="flex" flexWrap="no-wrap">
-							<CustomDiv width="15%" />
-							<RoomNameText>{room}</RoomNameText>
-						</CustomDiv>
-					</Col>
-				</Row>
 				<Row type="flex" gutter={1}>
 					<Col span={24}>
 						<CustomDiv type="flex" flexWrap="no-wrap">

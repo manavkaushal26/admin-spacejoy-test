@@ -54,7 +54,6 @@
 				"allowChildren": false
 			}
 		],
-		"react/prop-types": 0,
 		"no-underscore-dangle": 1,
 		"import/prefer-default-export": 1
 	}

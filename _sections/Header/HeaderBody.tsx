@@ -31,9 +31,9 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				<MobileHiddenStyled>
 					<Row type="flex" justify="space-around" align="middle">
 						<Col span={8}>
-							<ActiveLink href="/" as="/">
+							<a href="/">
 								<Logo md />
-							</ActiveLink>
+							</a>
 						</Col>
 						<Col span={13}>{navCenter(authVerification)}</Col>
 						<Col span={3}> {navRight(authVerification)}</Col>
