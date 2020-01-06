@@ -1,4 +1,4 @@
-import { getAddRemoveAssetApi, getMetaDataApi, getMoodboardApi } from "@api/designApi";
+import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import User from "@customTypes/userType";
 import AssetCartModal from "@sections/AssetStore/assetCart";
 import AssetMainPanel from "@sections/AssetStore/assetMainpanel";
@@ -15,7 +15,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
-import { AssetStoreState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
+import { MoodboardAsset } from "@customTypes/moodboardTypes";
+import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
 
 interface AssetStoreProps {
 	isServer: boolean;
@@ -24,25 +25,6 @@ interface AssetStoreProps {
 	assetEntryId: string;
 	projectId: string;
 }
-
-const initialState: AssetStoreState = {
-	metaData: null,
-	moodboard: null,
-	loading: true,
-	retailerFilter: [],
-	priceRange: [0, 10000],
-	heightRange: [0, 30],
-	widthRange: [0, 30],
-	depthRange: [0, 30],
-	searchText: "",
-	checkedKeys: {
-		category: [],
-		subCategory: [],
-		verticals: []
-	},
-	selectedAsset: "",
-	cartOpen: false
-};
 
 const ParentContainer = styled.div`
 	display: flex;
@@ -73,7 +55,7 @@ const AssetStore = ({
 	designId,
 	assetEntryId
 }: AssetStoreProps): JSX.Element => {
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
 
 	const fetchMetaData = async (): Promise<void> => {
@@ -84,18 +66,14 @@ const AssetStore = ({
 		}
 	};
 
-	const fetchMoodBoard = async () => {
+	const fetchMoodBoard = async (): Promise<void> => {
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 		const endPoint = getMoodboardApi(designId);
 		const responseData = await fetcher({ endPoint, method: "GET" });
 		if (responseData.statusCode <= 300) {
-			dispatch({ type: ASSET_ACTION_TYPES.MOODBOARD, value: responseData.data });
+			dispatch({ type: ASSET_ACTION_TYPES.MOODBOARD, value: responseData.data.moodboard });
 		}
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
-	};
-
-	const refetchMoodBoard = () => {
-		fetchMoodBoard();
 	};
 
 	useEffect(() => {
@@ -114,39 +92,40 @@ const AssetStore = ({
 		assetId,
 		aeid = ""
 	) => {
-		const endpoint = getAddRemoveAssetApi(designId, aeid);
+		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 
+		const endpoint = getMoodboardApi(designId, aeid);
+		let response: { status: string; data: { moodboard: MoodboardAsset[] } } = null;
 		if (action === "ADD") {
-			await fetcher({
+			response = await fetcher({
 				endPoint: endpoint,
 				method: "POST",
 				body: {
 					data: {
-						assetArr: [assetId]
+						assets: [assetId],
+						assetUrls: []
 					}
 				}
 			});
 		} else if (action === "DELETE") {
-			await fetcher({
+			response = await fetcher({
 				endPoint: endpoint,
 				method: "DELETE",
 				body: {
 					data: {
-						assetArr: [assetId]
+						assets: [assetId],
+						assetUrls: []
 					}
 				}
 			});
 		}
-		if (assetEntryId === assetId) {
-			Router.push(
-				{ pathname: "/assetstore", query: { designId, projectId } },
-				`/assetstore/pid/${projectId}/did/${designId}`
-			);
+		if (response.data.moodboard) {
+			dispatch({ type: ASSET_ACTION_TYPES.MOODBOARD, value: response.data.moodboard });
 		}
-		await refetchMoodBoard();
+		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
 	};
 
-	const goToButtonClick = () => {
+	const goToButtonClick = (): void => {
 		if (assetEntryId) {
 			Router.push(
 				{ pathname: "/assetstore", query: { designId, projectId } },
@@ -160,7 +139,7 @@ const AssetStore = ({
 		);
 	};
 
-	const toggleCart = () => {
+	const toggleCart = (): void => {
 		dispatch({ type: ASSET_ACTION_TYPES.TOGGLE_CART, value: null });
 	};
 
@@ -174,13 +153,13 @@ const AssetStore = ({
 				<ParentContainer>
 					<SidebarContainer>
 						<MaxHeightDiv>
-							<CustomDiv width="100%" px="8px" overY="scroll">
-								<CustomDiv pt="0.5em" pb="4px" width="100%">
-									<Button onClick={goToButtonClick} block type="primary">
+							<CustomDiv px="0.5rem" width="100%" overY="scroll">
+								<CustomDiv py="0.5rem" width="100%">
+									<Button icon="rollback" onClick={goToButtonClick} block type="primary">
 										{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
 									</Button>
 								</CustomDiv>
-								<CustomDiv pt="0.5em" pb="4px" width="100%">
+								<CustomDiv py="0.5rem" width="100%">
 									<Button onClick={toggleCart} block type="default">
 										Open Cart
 									</Button>
@@ -191,7 +170,7 @@ const AssetStore = ({
 					</SidebarContainer>
 					<MainContentContainer>
 						<MaxHeightDiv>
-							<CustomDiv flexDirection="column" width="100%">
+							<CustomDiv flexDirection="column" width="100%" px="0.5rem">
 								<AssetMainPanel
 									projectId={projectId}
 									dispatch={dispatch}
@@ -222,16 +201,28 @@ const AssetStore = ({
 	);
 };
 
-AssetStore.getInitialProps = async (ctx: NextPageContext) => {
+AssetStore.getInitialProps = (
+	ctx: NextPageContext
+): {
+	isServer: boolean;
+	authVerification: Partial<User>;
+	projectId: string;
+	designId: string;
+	assetEntryId: string;
+} => {
 	const {
 		req,
-		query: { designId, assetEntryId, projectId }
+		query: { designId: did, assetEntryId: aeid, projectId: pid }
 	} = ctx;
 	const isServer = !!req;
 	const authVerification = {
 		name: "",
 		email: ""
 	};
+
+	const designId: string = did as string;
+	const assetEntryId: string = aeid as string;
+	const projectId: string = pid as string;
 	return { isServer, authVerification, projectId, designId, assetEntryId };
 };
 

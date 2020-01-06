@@ -31,7 +31,6 @@ export interface DesignerTabReducer {
 export const designerTabReducer: DesignerTabReducer = (state, action): DesignerTabState => {
 	switch (action.type) {
 		case DesignerTabActionType.UPDATE_ASSIGNED_DESIGNERS:
-			console.log(action.value, "action");
 			return {
 				...state,
 				assignedTeam: action.value

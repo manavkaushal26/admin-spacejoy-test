@@ -214,10 +214,12 @@ class FormBox extends PureComponent {
 								data: state[name],
 								onchange: this.handleChange,
 								handleAddressChange: this.handleAddressChange
+								// eslint-disable-next-line no-mixed-spaces-and-tabs
 						  })
 						: React.cloneElement(child, {
 								data: state[name],
 								submitInProgress: state.submitInProgress
+								// eslint-disable-next-line no-mixed-spaces-and-tabs
 						  });
 				})}
 			</FormWrapperStyled>

@@ -69,7 +69,6 @@ function logout() {
 
 function auth(ctx) {
 	const token = getCookie(ctx, cookieNames.authToken);
-	const role = getCookie(ctx, cookieNames.userRole);
 	if (!token) {
 		const redirect = {
 			pathname: "/auth",

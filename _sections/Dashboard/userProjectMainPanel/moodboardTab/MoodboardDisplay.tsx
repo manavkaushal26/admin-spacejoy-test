@@ -1,13 +1,13 @@
-import { MoodBoardType } from "@customTypes/moodboardTypes";
+import { MoodboardAsset } from "@customTypes/moodboardTypes";
 import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
-import { Typography } from "antd";
+import { Typography, Empty } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 import { getValueSafely } from "@utils/commonUtils";
 
 interface MoodboardDisplayProps {
-	moodboard: MoodBoardType;
+	moodboard: MoodboardAsset[];
 	designId: string;
 	projectId: string;
 }
@@ -26,7 +26,7 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 			<CustomDiv mt="0.5em" type="flex" width="100%">
 				<CustomDiv inline minWidth="30ch" px="0.7em">
 					<Typography.Title style={{ width: "100%" }} level={3}>
-						Primary ({getValueSafely(() => moodboard.assets.length, 0)})
+						Primary ({getValueSafely(() => moodboard.filter(asset => asset.isExistingAsset).length, 0)})
 					</Typography.Title>
 				</CustomDiv>
 				<CustomDiv inline>
@@ -40,35 +40,51 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 			</CustomDiv>
 			<SilentDivider />
 			{moodboard &&
-				moodboard.assets.map(assetEntry => {
-					return (
-						<>
-							<CustomDiv type="flex" width="100%">
-								<CustomDiv inline minWidth="30ch">
-									<ProductCard
-										asset={assetEntry.asset}
-										onCardClick={() => {
-											onPrimaryAssetClick(assetEntry._id);
-										}}
-									/>
-								</CustomDiv>
-								<CustomDiv inline>
-									<SilentDivider style={{ height: "100%" }} type="vertical" />
-								</CustomDiv>
-								<CustomDiv inline overX="scroll" whiteSpace="nowrap">
-									{assetEntry.recommendations.map(asset => {
-										return (
-											<CustomDiv inline>
-												<ProductCard hoverable={false} asset={asset} onCardClick={() => {}} />
+				moodboard
+					.filter(assetEntry => assetEntry.isExistingAsset)
+					.map(assetEntry => {
+						return (
+							<>
+								<CustomDiv type="flex" width="100%">
+									<CustomDiv inline minWidth="30ch" maxWidth="30ch">
+										<ProductCard
+											height="200px"
+											width="auto"
+											asset={assetEntry.asset}
+											onCardClick={() => {
+												onPrimaryAssetClick(assetEntry.asset._id);
+											}}
+										/>
+									</CustomDiv>
+									<CustomDiv inline>
+										<SilentDivider style={{ height: "100%" }} type="vertical" />
+									</CustomDiv>
+									<CustomDiv inline overX="scroll" whiteSpace="nowrap">
+										{assetEntry.recommendations.length ? (
+											assetEntry.recommendations.map(asset => {
+												return (
+													<CustomDiv minWidth="30ch" key={assetEntry._id} inline>
+														<ProductCard
+															height="200px"
+															hoverable={false}
+															width="auto"
+															asset={asset}
+															onCardClick={() => {}}
+														/>
+													</CustomDiv>
+												);
+											})
+										) : (
+											<CustomDiv type="flex" px="1rem" align="center" width="100%" height="100%">
+												<Empty description="No Assets added for this product yet" />
 											</CustomDiv>
-										);
-									})}
+										)}
+									</CustomDiv>
 								</CustomDiv>
-							</CustomDiv>
-							<SilentDivider />
-						</>
-					);
-				})}
+								<SilentDivider />
+							</>
+						);
+					})}
 		</>
 	);
 };

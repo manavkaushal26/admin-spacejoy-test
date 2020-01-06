@@ -2,7 +2,7 @@ import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
 import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Typography } from "antd";
+import { Typography, Icon } from "antd";
 import React from "react";
 import { AssetCard } from "../styled";
 
@@ -12,32 +12,44 @@ interface AssetCards {
 	asset: Partial<AssetType>;
 	onCardClick: (id: string) => void;
 	hoverable?: boolean;
+	height?: string;
+	width?: string;
 }
 
-const ProductCard: (props: AssetCards) => JSX.Element = ({ asset, onCardClick, hoverable = true }) => {
+const ProductCard: (props: AssetCards) => JSX.Element = ({ asset, onCardClick, hoverable = true, height, width }) => {
+	const imageHeight = height || "auto";
+	const imageWidth = width || "100%";
 	return (
-		<CustomDiv flexBasis="30ch" type="flex" px="10px" py="10px" inline justifyContent="center">
-			<AssetCard onClick={() => onCardClick(asset._id)} hoverable={hoverable} style={{ width: "225px" }}>
-				<CustomDiv height="100%" type="flex" flexDirection="column">
-					<CustomDiv height="70%" overflow="hidden" justifyContent="space-around" type="flex">
-						<Image height="200px" src={`q_80,h_200/${asset.cdn}`} />
+		<AssetCard onClick={() => onCardClick(asset._id)} hoverable={hoverable}>
+			<CustomDiv width="100%" type="flex" overflow="hidden" flexDirection="column">
+				<CustomDiv justifyContent="space-around" type="flex">
+					<Image width={imageWidth} height={imageHeight} src={asset.cdn} />
+				</CustomDiv>
+				<SilentDivider />
+				<CustomDiv type="flex" justifyContent="center" flexDirection="column" height="30%" py="1rem" px="1rem">
+					<CustomDiv>
+						<Text style={{ width: "100%" }} strong>
+							{getValueSafely(() => asset.retailer.name, "N/A")}
+						</Text>
 					</CustomDiv>
-					<SilentDivider />
-					<CustomDiv type="flex" justifyContent="center" flexDirection="column" height="30%" px="15px">
-						<CustomDiv>
-							<Text style={{ width: "100%" }} strong>
-								{getValueSafely(() => asset.retailer.name, "N/A")}
-							</Text>
-						</CustomDiv>
-						<CustomDiv whiteSpace="nowrap">
-							<Text style={{ width: "100%" }} ellipsis strong>
-								{getValueSafely(() => asset.name, "N/A")}
-							</Text>
+					<CustomDiv whiteSpace="nowrap">
+						<Text style={{ width: "100%" }} ellipsis strong>
+							{getValueSafely(() => asset.name, "N/A")}
+						</Text>
+					</CustomDiv>
+					<CustomDiv>
+						<CustomDiv type="flex" justifyContent="baseline" align="center">
+							<CustomDiv type="flex" pr="5px">
+								<Icon type="dollar-circle" theme="filled" />
+							</CustomDiv>
+							<CustomDiv>
+								<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
+							</CustomDiv>
 						</CustomDiv>
 					</CustomDiv>
 				</CustomDiv>
-			</AssetCard>
-		</CustomDiv>
+			</CustomDiv>
+		</AssetCard>
 	);
 };
 

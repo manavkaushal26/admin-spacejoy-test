@@ -1,13 +1,13 @@
-import { editDesignApi } from "@api/pipelineApi";
-import { DetailedDesign } from "@customTypes/dashboardTypes";
 import { CustomDiv, AddOnAfterWithoutPadding } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
-import { Button, Input, List, message, Modal, Typography } from "antd";
+import { Button, List, message, Modal, Typography } from "antd";
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
+import { MoodboardAsset } from "@customTypes/moodboardTypes";
+import { getMoodboardApi } from "@api/designApi";
 
 const { Text } = Typography;
-const { Search } = Input;
+
 const ChildSpacedDiv = styled.div`
 	> * + * {
 		margin-top: 1rem;
@@ -16,8 +16,8 @@ const ChildSpacedDiv = styled.div`
 
 interface MissingAssetModal {
 	designId: string;
-	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
-	missingAssets: string[];
+	setMoodboard: React.Dispatch<React.SetStateAction<MoodboardAsset[]>>;
+	missingAssets: MoodboardAsset[];
 	toggleAddMissingAssetModal: () => void;
 	addMissingAssetModalVisible: boolean;
 }
@@ -26,7 +26,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	designId,
 	missingAssets,
 	addMissingAssetModalVisible,
-	setDesignData,
+	setMoodboard,
 	toggleAddMissingAssetModal
 }) => {
 	const [assetUrl, setAssetUrl] = useState<string>("");
@@ -41,18 +41,19 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	const addAsset = async () => {
 		if (assetUrl) {
 			setLoading(true);
-			const endpoint = editDesignApi(designId);
+			const endpoint = getMoodboardApi(designId);
 			const response = await fetcher({
 				endPoint: endpoint,
-				method: "PUT",
+				method: "POST",
 				body: {
 					data: {
-						missingAssetUrls: [assetUrl, ...missingAssets]
+						assets: [],
+						assetUrls: [assetUrl]
 					}
 				}
 			});
 			if (response.statusCode <= 300) {
-				setDesignData(response.data);
+				setMoodboard(response.data.moodboard);
 				setAssetUrl("");
 				message.success("Asset added successfully");
 			}
@@ -89,8 +90,8 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 					dataSource={missingAssets}
 					renderItem={asset => (
 						<List.Item>
-							<a style={{ width: "100%" }} href={`${asset}`}>
-								{asset}
+							<a style={{ width: "100%" }} href={`${asset.externalUrl}`}>
+								{asset.externalUrl}
 							</a>
 						</List.Item>
 					)}

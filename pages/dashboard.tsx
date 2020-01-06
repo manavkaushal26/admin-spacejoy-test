@@ -44,7 +44,7 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 			</Head>
 			<GreyDiv>
 				<Spin spinning={loading}>
-					<Row type={"flex"} align="top">
+					<Row type="flex" align="top">
 						<Col sm={24} md={10} lg={7} xl={6}>
 							<Sidebar selectedUser={selectedUser} handleSelectCard={handleSelectCard} />
 						</Col>

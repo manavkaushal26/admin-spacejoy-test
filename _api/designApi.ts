@@ -22,8 +22,8 @@ export const getSingleAssetApi: (assetId: string) => string = assetId => {
 	return `/admin/asset/${assetId}`;
 };
 
-export const getMoodboardApi: (designId: string) => string = designId => {
-	return `/admin/design/${designId}/config/asset`;
+export const getMoodboardApi: (designId: string, assetEntryId?: string) => string = (designId, assetEntryId) => {
+	return `/admin/design/${designId}/moodboard${assetEntryId ? `/${assetEntryId}` : ""}`;
 };
 
 export const getAddRemoveAssetApi: (designId: string, assetEntryId: string) => string = (designId, assetEntryId) => {

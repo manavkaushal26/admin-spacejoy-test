@@ -1,5 +1,5 @@
 import Image from "@components/Image";
-import { MoodBoardType } from "@customTypes/moodboardTypes";
+import { MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
@@ -14,7 +14,7 @@ interface AssetCartModalProps {
 	cartOpen: boolean;
 	designId: string;
 	projectId: string;
-	moodboard: MoodBoardType;
+	moodboard: MoodboardAsset[];
 	dispatch: React.Dispatch<AssetAction>;
 	dataLoading: boolean;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
@@ -42,18 +42,22 @@ const AssetCartModal = ({
 	};
 
 	const costOfMoodboard = useMemo(() => {
-		if (moodboard.assets)
-			return moodboard.assets.reduce((acc, asset) => {
-				return acc + asset.asset.price;
-			}, 0);
+		if (moodboard)
+			return moodboard
+				.filter(asset => asset.isExistingAsset)
+				.reduce((acc, asset) => {
+					return acc + asset.asset.price;
+				}, 0);
 		return 0;
-	}, [moodboard.assets]);
+	}, [moodboard]);
 
 	const selectedAsset = useMemo(() => {
 		if (moodboard) {
-			const assetEntry = moodboard.assets.find(asset => {
-				return asset._id === selectedEntry;
-			});
+			const assetEntry = moodboard
+				.filter(asset => asset.isExistingAsset)
+				.find(asset => {
+					return asset.asset._id === selectedEntry;
+				});
 			return assetEntry;
 		}
 		return null;
@@ -77,24 +81,26 @@ const AssetCartModal = ({
 			visible={cartOpen}
 		>
 			<Spin spinning={dataLoading}>
-				{getValueSafely<boolean>(() => moodboard.assets.length > 0, false) ? (
-					moodboard.assets.map(assetEntry => {
-						return (
-							<>
-								<CartAssetCard
-									projectId={projectId}
-									designId={designId}
-									addRemoveAsset={addRemoveAsset}
-									onRecommendationClick={onRecomendationClick}
-									type="primary"
-									currentlySelectingRecommendation={selectedAssetId === assetEntry._id}
-									asset={assetEntry.asset}
-									entryId={assetEntry._id}
-								/>
-								<SilentDivider />
-							</>
-						);
-					})
+				{getValueSafely<boolean>(() => moodboard.length > 0, false) ? (
+					moodboard
+						.filter(assetEntry => assetEntry.isExistingAsset)
+						.map(assetEntry => {
+							return (
+								<>
+									<CartAssetCard
+										projectId={projectId}
+										designId={designId}
+										addRemoveAsset={addRemoveAsset}
+										onRecommendationClick={onRecomendationClick}
+										type="primary"
+										currentlySelectingRecommendation={selectedAssetId === assetEntry.asset._id}
+										asset={assetEntry.asset}
+										entryId={assetEntry.asset._id}
+									/>
+									<SilentDivider />
+								</>
+							);
+						})
 				) : (
 					<Empty description="Add some products to design" />
 				)}
@@ -121,7 +127,7 @@ const AssetCartModal = ({
 											<CartAssetCard
 												projectId={projectId}
 												designId={designId}
-												entryId={selectedAsset._id}
+												entryId={selectedAsset.asset._id}
 												addRemoveAsset={addRemoveAsset}
 												type="recommendation"
 												asset={asset}

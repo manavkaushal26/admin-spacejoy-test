@@ -1,14 +1,14 @@
 import { getSingleAssetApi } from "@api/designApi";
 import Image from "@components/Image";
-import { MoodBoardType, SingleAssetType } from "@customTypes/moodboardTypes";
+import { SingleAssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
-import { CustomDiv, MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
+import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Anchor, Button, Icon, message, Popconfirm, Spin, Typography } from "antd";
-import { useRouter } from "next/router";
+import { Button, Icon, message, Popconfirm, Typography } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import { FullheightSpin, GreyDrawer } from "../styled";
 
 const { Title, Text } = Typography;
@@ -20,7 +20,7 @@ const CenteredTitle = styled(Title)`
 interface AssetDescriptionPanelProps {
 	assetId: string;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
-	moodboard: MoodBoardType;
+	moodboard: MoodboardAsset[];
 	designId: string;
 	assetEntryId: string;
 	projectId: string;
@@ -40,7 +40,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 }) => {
 	const [singleAssetData, setSingleAssetData] = useState<SingleAssetType>(null);
 	const [loading, setLoading] = useState<boolean>(true);
-	const fetchAndPopulate = async () => {
+	const fetchAndPopulate = async (): Promise<void> => {
 		setLoading(true);
 		const endpoint = getSingleAssetApi(assetId);
 		const responseData = await fetcher({ endPoint: endpoint, method: "GET" });
@@ -50,25 +50,26 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		setLoading(false);
 	};
 
-	const Router = useRouter();
-
 	const moodboardAssetIdMap = useMemo(() => {
 		setLoading(true);
 		if (moodboard) {
 			if (assetEntryId) {
 				setLoading(false);
-				return moodboard.assets
+				return moodboard
+					.filter(asset => asset.isExistingAsset)
 					.find(elem => {
-						return elem._id === assetEntryId;
+						return elem.asset._id === assetEntryId;
 					})
 					.recommendations.reduce((acc, currRecommendation) => {
 						return { ...acc, [currRecommendation._id]: currRecommendation._id };
 					}, {});
 			}
 			setLoading(false);
-			return moodboard.assets.reduce((acc, currAsset) => {
-				return { ...acc, [currAsset.asset._id]: currAsset._id };
-			}, {});
+			return moodboard
+				.filter(asset => asset.isExistingAsset)
+				.reduce((acc, currAsset) => {
+					return { ...acc, [currAsset.asset._id]: currAsset.asset._id };
+				}, {});
 		}
 		setLoading(false);
 		return {};
@@ -77,39 +78,38 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	useEffect(() => {
 		if (assetId) {
 			fetchAndPopulate();
-			return;
+			return (): void => {};
 		}
-		return () => {
+		return (): void => {
 			setSingleAssetData(null);
 		};
 	}, [assetId]);
-
-	const assetInMoodboard = moodboardAssetIdMap[assetId] ? true : false;
-	const onButtonClick = async () => {
+	const Router = useRouter();
+	const assetInMoodboard = !!moodboardAssetIdMap[assetId];
+	const onButtonClick = async (): Promise<void> => {
 		setLoading(true);
 		if (assetInMoodboard && !assetEntryId) {
-			const assetEntryId = moodboardAssetIdMap[assetId];
+			const primaryAssetId = moodboardAssetIdMap[assetId];
 			Router.push(
-				{ pathname: "/assetstore", query: { designId, assetEntryId, projectId } },
-				`/assetstore/pid/${projectId}/did/${designId}/aeid/${assetEntryId}`
+				{ pathname: "/assetstore", query: { designId, assetEntryId: primaryAssetId, projectId } },
+				`/assetstore/pid/${projectId}/did/${designId}/aeid/${primaryAssetId}`
 			);
 			await dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
 		} else {
 			await addRemoveAsset("ADD", assetId, assetEntryId);
 			message.success(assetEntryId ? "Added Recommendation" : "Added Primary Asset");
 		}
-
 		setLoading(false);
 	};
 
-	const onRemoveClick = async () => {
+	const onRemoveClick = async (): Promise<void> => {
 		setLoading(true);
 		await addRemoveAsset("DELETE", moodboardAssetIdMap[assetId], assetEntryId);
 		message.success(assetEntryId ? "Removed Recommendation" : "Removed Primary Asset");
 		setLoading(false);
 	};
 
-	const closeDrawer = () => {
+	const closeDrawer = (): void => {
 		dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
 	};
 
@@ -133,7 +133,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<Icon type="dollar-circle" theme="filled" />
 							</CustomDiv>
 							<CustomDiv>
-								<Text type="secondary">{"Cost: $"}</Text> <Text strong>{singleAssetData.price}</Text>
+								<Text type="secondary">Cost: $</Text> <Text strong>{singleAssetData.price}</Text>
 							</CustomDiv>
 						</CustomDiv>
 						<SilentDivider />
@@ -147,15 +147,24 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<CustomDiv py="0.25em">
 									<CustomDiv>
 										<Text>Width: </Text>
-										<Text>{getValueSafely<string | number>(() => singleAssetData.dimension.width, "N/A")} Feet</Text>
+										<Text>
+											{getValueSafely<string | number>(() => (singleAssetData.dimension.width * 12).toFixed(2), "N/A")}{" "}
+											Inches
+										</Text>
 									</CustomDiv>
 									<CustomDiv>
 										<Text>Height: </Text>
-										<Text>{getValueSafely<string | number>(() => singleAssetData.dimension.height, "N/A")} Feet</Text>
+										<Text>
+											{getValueSafely<string | number>(() => (singleAssetData.dimension.height * 12).toFixed(2), "N/A")}{" "}
+											Inches
+										</Text>
 									</CustomDiv>
 									<CustomDiv>
 										<Text>Depth: </Text>
-										<Text>{getValueSafely<string | number>(() => singleAssetData.dimension.depth, "N/A")} Feet</Text>
+										<Text>
+											{getValueSafely<string | number>(() => (singleAssetData.dimension.depth * 12).toFixed(2), "N/A")}{" "}
+											Inches
+										</Text>
 									</CustomDiv>
 								</CustomDiv>
 							</CustomDiv>
@@ -167,7 +176,11 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							</CustomDiv>
 							<CustomDiv>
 								<Text type="secondary">
-									<a target="_blank" href={getValueSafely(() => singleAssetData.retailLink, "#")}>
+									<a
+										target="_blank"
+										rel="noopener noreferrer"
+										href={getValueSafely(() => singleAssetData.retailLink, "#")}
+									>
 										{getValueSafely(() => singleAssetData.retailer.name, "N/A")}
 									</a>
 								</Text>

@@ -110,11 +110,7 @@ export interface AssetType {
 export interface MoodboardAsset {
 	recommendations: Partial<AssetType>[];
 	_id: string;
+	isExistingAsset: boolean;
 	asset: Partial<AssetType>;
-}
-
-export interface MoodBoardType {
-	_id: string;
-	name: string;
-	assets: MoodboardAsset[];
+	externalUrl?: string;
 }

@@ -6,7 +6,7 @@ import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { getLocalStorageValue } from "@utils/storageUtils";
 import { Avatar, Button, Col, Drawer, Input, Row, Spin, Typography } from "antd";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -47,7 +47,6 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 
 	const addNote = async () => {
 		const body = [...imageComments];
-		console.log(body);
 		const data: DesignerImageComments[] = [
 			{
 				author: authVerification.name,

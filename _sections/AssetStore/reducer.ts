@@ -1,9 +1,9 @@
-import { MetaDataType, MoodBoardType } from "@customTypes/moodboardTypes";
+import { MetaDataType, MoodboardAsset } from "@customTypes/moodboardTypes";
 
 export interface AssetStoreState {
 	loading: boolean;
 	metaData: MetaDataType;
-	moodboard: MoodBoardType;
+	moodboard: MoodboardAsset[];
 	retailerFilter: string[];
 	priceRange: [number, number];
 	heightRange: [number, number];
@@ -18,6 +18,25 @@ export interface AssetStoreState {
 	selectedAsset: string;
 	cartOpen: boolean;
 }
+
+export const assetStoreInitialState: AssetStoreState = {
+	metaData: null,
+	moodboard: null,
+	loading: true,
+	retailerFilter: [],
+	priceRange: [0, 10000],
+	heightRange: [0, 30],
+	widthRange: [0, 30],
+	depthRange: [0, 30],
+	searchText: "",
+	checkedKeys: {
+		category: [],
+		subCategory: [],
+		verticals: []
+	},
+	selectedAsset: "",
+	cartOpen: false
+};
 
 export interface AssetAction {
 	type: string;
@@ -38,7 +57,8 @@ export enum ASSET_ACTION_TYPES {
 	MOODBOARD = "MOODBOARD",
 	LOADING_STATUS = "LOADING_STATUS",
 	SELECTED_ASSET = "SELECTED_ASSET",
-	TOGGLE_CART = "TOGGLE_CART"
+	TOGGLE_CART = "TOGGLE_CART",
+	RESET_FILTERS = "RESET_FILTERS"
 }
 
 export interface AssetReducerType {
@@ -47,6 +67,22 @@ export interface AssetReducerType {
 
 export const reducer: AssetReducerType = (state, action) => {
 	switch (action.type) {
+		case ASSET_ACTION_TYPES.RESET_FILTERS:
+			return {
+				...state,
+				retailerFilter: [],
+				priceRange: [0, 10000],
+				heightRange: [0, 30],
+				widthRange: [0, 30],
+				depthRange: [0, 30],
+				searchText: "",
+				checkedKeys: {
+					category: [],
+					subCategory: [],
+					verticals: []
+				},
+				selectedAsset: ""
+			};
 		case ASSET_ACTION_TYPES.SUB_CATEGORY:
 			return {
 				...state,

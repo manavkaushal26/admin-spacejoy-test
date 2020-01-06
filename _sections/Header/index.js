@@ -2,14 +2,6 @@ import React, { PureComponent } from "react";
 import styled from "styled-components";
 import HeaderBody from "./HeaderBody";
 
-const CookieStyled = styled.div`
-	background: ${({ theme }) => theme.colors.fc.dark1};
-	color: white;
-	a {
-		color: ${({ theme }) => theme.colors.accent};
-	}
-`;
-
 const HeaderStyled = styled.div`
 	border-bottom: 1px #eaeaea solid;
 	background: ${({ theme }) => theme.colors.white};

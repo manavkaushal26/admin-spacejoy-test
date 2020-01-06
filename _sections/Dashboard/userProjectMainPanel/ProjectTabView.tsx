@@ -1,28 +1,23 @@
-import { Card, Col, Row, Tabs, Tag, Typography, Spin, PageHeader } from "antd";
 import { designApi } from "@api/designApi";
-import Image from "@components/Image";
-import { DetailedDesign, DetailedProject, HumanizeDesignPhases } from "@customTypes/dashboardTypes";
-import { Role } from "@customTypes/userType";
+import { DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
-import fetcher from "@utils/fetcher";
-import React, { useEffect, useState } from "react";
-import { CustomDiv, SilentDivider } from "../styled";
-import CustomerResponses from "./CustomerResponses";
-import TeamTab from "./TeamTab";
-import NotesTab from "./NotesTab";
-import styled from "styled-components";
-
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
+import fetcher from "@utils/fetcher";
+import { PageHeader, Spin, Tabs } from "antd";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import { SilentDivider } from "../styled";
+import CustomerResponses from "./CustomerResponses";
 import DesignSelection from "./DesignSelection";
+import NotesTab from "./NotesTab";
+import TeamTab from "./TeamTab";
 
 const { TabPane } = Tabs;
-
-const { Text } = Typography;
 
 interface ProjectTabViewProps {
 	projectData: DetailedProject;
 	designId: string;
-	onSelectDesign: (designId: string) => void;
+	onSelectDesign: (designId?: string) => void;
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	refetchData: () => void;
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
@@ -52,10 +47,10 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
 
-	const fetchDesignData = async () => {
+	const fetchDesignData = async (): Promise<void> => {
 		setDesignLoading(true);
 		const endPoint = designApi(designId);
-		const responseData = await fetcher({ endPoint: endPoint, method: "GET" });
+		const responseData = await fetcher({ endPoint, method: "GET" });
 		if (responseData.statusCode <= 300) {
 			setDesignData(responseData.data);
 		}
@@ -69,24 +64,22 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	useEffect(() => {
 		if (designId) {
 			fetchDesignData();
-			return;
-		} else {
-			setDesignData(null);
+			return () => {};
 		}
-		return () => {
+		setDesignData(null);
+		return (): void => {
 			setDesignData(null);
 			setDesignLoading(false);
 		};
 	}, [designId]);
-
 	return (
 		<>
 			{designData !== null ? (
 				<>
-					<SilentPageHeader title={designData.name} onBack={onSelectDesign.bind(null, "")} />
+					<SilentPageHeader title={designData.name} onBack={(): void => onSelectDesign()} />
 					<SilentDivider />
 
-					<ScrollableTabs defaultActiveKey="6">
+					<ScrollableTabs defaultActiveKey="3">
 						<TabPane tab="Customer Responses" key="1">
 							<CustomerResponses formData={formData || []} />
 						</TabPane>
@@ -104,7 +97,6 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						<TabPane tab="Moodboard" key="3">
 							<MoodboardTab
 								setDesignData={setDesignData}
-								missingAssets={designData.missingAssetUrls}
 								setLoading={setLoading}
 								projectId={projectData._id}
 								designId={designId}

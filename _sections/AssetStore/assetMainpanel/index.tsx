@@ -1,11 +1,11 @@
 import { getAssetApi } from "@api/designApi";
 import Image from "@components/Image";
-import { AssetType, MoodBoardType } from "@customTypes/moodboardTypes";
+import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, FontCorrectedPre, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Icon, Pagination, Row, Typography } from "antd";
+import { Icon, Pagination, Row, Col, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
@@ -17,7 +17,7 @@ interface AssetMainPanelProps {
 	state: AssetStoreState;
 	assetEntryId: string;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
-	moodboard: MoodBoardType;
+	moodboard: MoodboardAsset[];
 	designId: string;
 	dispatch: React.Dispatch<AssetAction>;
 	projectId: string;
@@ -33,17 +33,43 @@ interface FetchAndPopulate {
 	): Promise<void>;
 }
 
-const MainAssetPanel = styled(CustomDiv)`
-	> *:last-child {
-		align-self: flex-start;
-		justify-self: flex-start;
+const TopMarginTitle = styled(Title)<{ level: number }>`
+	margin-top: 0.5em;
+`;
+
+const MainAssetPanel = styled.div`
+	margin: 1rem auto;
+	column-gap: 1rem;
+	column-count: 4;
+
+	/* The Masonry Brick */
+	> * {
+		display: inline-block;
+		background: #fff;
+		margin: 0 0 1rem;
+		width: 100%;
+	}
+
+	/* Masonry on large screens */
+	@media only screen and (min-width: 1024px) {
+		column-count: 4;
+	}
+
+	/* Masonry on medium-sized screens */
+	@media only screen and (max-width: 1023px) and (min-width: 768px) {
+		column-count: 3;
+	}
+
+	/* Masonry on small screens */
+	@media only screen and (max-width: 767px) and (min-width: 540px) {
+		column-count: 2;
 	}
 `;
 
 const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetApi();
-	const queryParams = `?skip=${(pageCount - 1) * 10}&limit=30`;
+	const queryParams = `?skip=${(pageCount - 1) * 10}&limit=50`;
 	const responseData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
@@ -91,12 +117,18 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 
 	useEffect(() => {
 		if (moodboard && assetEntryId) {
-			const asset = moodboard.assets.find(moodboardAsset => {
-				return moodboardAsset._id === assetEntryId;
-			});
+			const asset = moodboard
+				.filter(asset => asset.isExistingAsset)
+				.find(moodboardAsset => {
+					return moodboardAsset.asset._id === assetEntryId;
+				});
 			setPrimaryAsset(asset.asset);
 			dispatch({ type: ASSET_ACTION_TYPES.SUB_CATEGORY, value: asset.asset });
 		}
+		return (): void => {
+			setPrimaryAsset(null);
+			dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: null });
+		};
 	}, [assetEntryId, moodboard]);
 
 	useEffect(() => {
@@ -128,69 +160,75 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		pageCount
 	]);
 	return (
-		<>
-			<Row type="flex" justify="start">
-				<CustomDiv pt="0.5rem" pl="0.5rem" width="100%">
-					<Title level={3}>{assetEntryId ? "Recommendation Selection" : "Primary product selection"}</Title>
-				</CustomDiv>
+		<Row>
+			<Col span={24}>
+				<TopMarginTitle level={3}>
+					{assetEntryId ? "Recommendation Selection" : "Primary product selection"}
+				</TopMarginTitle>
+			</Col>
+			<Col span={24}>
 				<SilentDivider />
-				{primaryAsset && (
-					<>
-						<CustomDiv pl="0.5rem">
-							<Text strong>For Primary Asset</Text>
+			</Col>
+			{primaryAsset && (
+				<Col span={24}>
+					<CustomDiv pt="0.5rem">
+						<Text strong>For Primary Asset</Text>
+					</CustomDiv>
+					<CustomDiv width="100%" py="1rem" type="flex">
+						<CustomDiv inline>
+							<Image height="100px" src={primaryAsset.cdn} />
 						</CustomDiv>
-						<CustomDiv pl="0.5rem" width="100%" py="1rem" type="flex">
-							<CustomDiv inline>
-								<Image height="100px" src={primaryAsset.cdn} />
+						<CustomDiv inline pl="1rem">
+							<CustomDiv type="flex">
+								<Text strong>
+									<FontCorrectedPre>Name: </FontCorrectedPre>
+								</Text>
+								<ModifiedText textTransform="capitalize" type="secondary">
+									{primaryAsset.name}
+								</ModifiedText>
 							</CustomDiv>
-							<CustomDiv inline pl="1rem">
-								<CustomDiv type="flex">
-									<Text strong>
-										<FontCorrectedPre>Name: </FontCorrectedPre>
-									</Text>
-									<ModifiedText textTransform="capitalize" type="secondary">
-										{primaryAsset.name}
-									</ModifiedText>
+							<CustomDiv py="0.5em" type="flex" justifyContent="baseline" align="center">
+								<CustomDiv type="flex" pr="5px">
+									<Icon type="dollar-circle" theme="filled" />
 								</CustomDiv>
-								<CustomDiv py="0.5em" type="flex" justifyContent="baseline" align="center">
-									<CustomDiv type="flex" pr="5px">
-										<Icon type="dollar-circle" theme="filled" />
-									</CustomDiv>
-									<CustomDiv>
-										<Text strong>{primaryAsset.price}</Text>
-									</CustomDiv>
+								<CustomDiv>
+									<Text strong>{primaryAsset.price}</Text>
 								</CustomDiv>
 							</CustomDiv>
 						</CustomDiv>
-						<SilentDivider />
-					</>
-				)}
-				<MainAssetPanel type="flex" flexWrap="wrap" justifyContent="space-evenly" flexGrow={1}>
+					</CustomDiv>
+					<SilentDivider />
+				</Col>
+			)}
+			<Col span={24}>
+				<MainAssetPanel>
 					{assetData.map(asset => {
 						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
 					})}
 				</MainAssetPanel>
-				<CustomDiv py="16px" justifyContent="space-around" type="flex" align="center" width="100%">
+			</Col>
+			<Col span={24}>
+				<Row type="flex" justify="center">
 					<Pagination
 						current={pageCount}
-						defaultPageSize={12}
+						defaultPageSize={50}
 						hideOnSinglePage
 						total={totalCount}
 						onChange={(page): void => setPageCount(page)}
 					/>
-				</CustomDiv>
-				<AssetDescriptionPanel
-					dataLoading={state.loading}
-					dispatch={dispatch}
-					projectId={projectId}
-					assetEntryId={assetEntryId}
-					designId={designId}
-					moodboard={moodboard}
-					addRemoveAsset={addRemoveAsset}
-					assetId={state.selectedAsset}
-				/>
-			</Row>
-		</>
+				</Row>
+			</Col>
+			<AssetDescriptionPanel
+				dataLoading={state.loading}
+				dispatch={dispatch}
+				projectId={projectId}
+				assetEntryId={assetEntryId}
+				designId={designId}
+				moodboard={moodboard}
+				addRemoveAsset={addRemoveAsset}
+				assetId={state.selectedAsset}
+			/>
+		</Row>
 	);
 };
 

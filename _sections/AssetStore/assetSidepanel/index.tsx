@@ -220,7 +220,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		<>
 			{metaData && (
 				<>
-					<CustomDiv py="0.5em">
+					<CustomDiv py="0.5rem">
 						<FilterCard>
 							<Text strong>Search by Name</Text>
 							<Input allowClear onChange={onSearchInput} />

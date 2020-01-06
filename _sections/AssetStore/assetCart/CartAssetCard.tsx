@@ -48,7 +48,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 
 	const Router = useRouter();
 
-	const onClick = (): void => {
+	const onClick = (e): void => {
 		setLoading(true);
 		if (type === "primary") {
 			addRemoveAsset("DELETE", entryId);
@@ -60,16 +60,17 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 		setLoading(false);
 	};
 
-	const redirect = (): void => {
-		Router.push(
-			{ pathname: "/assetstore", query: { designId, assetEntryId: entryId, projectId } },
-			`/assetstore/pid/${projectId}/did/${designId}/aeid/${entryId}`
-		);
+	const redirect = (e, typeOfCard: string): void => {
+		if (typeOfCard === "primary" && !e.target.className.startsWith("ant"))
+			Router.push(
+				{ pathname: "/assetstore", query: { designId, assetEntryId: entryId, projectId } },
+				`/assetstore/pid/${projectId}/did/${designId}/aeid/${entryId}`
+			);
 	};
 
 	return (
 		<CustomDiv py="8px">
-			<BorderlessAssetCard hoverable={type === "primary"} onClick={type === "primary" ? redirect : null}>
+			<BorderlessAssetCard id="cartCard" hoverable={type === "primary"} onClick={e => redirect(e, type)}>
 				<CustomDiv type="flex">
 					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex" align="center">
 						<Image height="115px" src={`q_80,h_100/${asset.cdn}`} />
@@ -116,7 +117,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 						</CustomDiv>
 						<CustomDiv type="flex" width="20%" px="4px">
 							<Popconfirm
-								placement="topRight"
+								placement="left"
 								onConfirm={onClick}
 								title="Are you sure?"
 								okText="Yes"

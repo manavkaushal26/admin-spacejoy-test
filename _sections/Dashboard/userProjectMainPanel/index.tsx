@@ -28,11 +28,11 @@ const userProjectMainPanel: React.FC<{
 		}
 		setLoading(false);
 	};
-	const onSelectDesign = (designId: string): void => {
-		if (designId !== "") {
+	const onSelectDesign = (selectedDesignId?: string): void => {
+		if (selectedDesignId) {
 			Router.push(
-				{ pathname: "/dashboard", query: { user: userProjectId, designId: designId } },
-				`/dashboard/pid/${userProjectId}/did/${designId}`
+				{ pathname: "/dashboard", query: { user: userProjectId, designId: selectedDesignId } },
+				`/dashboard/pid/${userProjectId}/did/${selectedDesignId}`
 			);
 			return;
 		}

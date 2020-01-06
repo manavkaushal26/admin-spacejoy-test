@@ -53,8 +53,8 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		const endpoint = updateProjectPhase(projectData._id);
 		const response = await fetcher({ endPoint: endpoint, method: "PUT" });
 		if (response.statusCode <= 200) {
-			const projectData: DetailedProject = response.data;
-			if (projectData.currentPhase.name.internalName === PhaseInternalNames.designReady) {
+			const responseProjectData: DetailedProject = response.data;
+			if (responseProjectData.currentPhase.name.internalName === PhaseInternalNames.designReady) {
 				message.success("Project Ready");
 			} else {
 				message.warning("Project not Marked as Ready");
