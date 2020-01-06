@@ -79,7 +79,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					<SilentPageHeader title={designData.name} onBack={(): void => onSelectDesign()} />
 					<SilentDivider />
 
-					<ScrollableTabs defaultActiveKey="3">
+					<ScrollableTabs defaultActiveKey="6">
 						<TabPane tab="Customer Responses" key="1">
 							<CustomerResponses formData={formData || []} />
 						</TabPane>

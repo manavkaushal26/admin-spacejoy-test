@@ -89,10 +89,17 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 								{getValueSafely(() => asset.name, "N/A")}
 							</Text>
 						</CustomDiv>
-						<CustomDiv width="100%">
-							<Text style={{ width: "100%" }} ellipsis>
-								{getValueSafely(() => asset.retailer.name, "N/A")}
-							</Text>
+						<CustomDiv pb="0.2rem" width="100%" type="flex" justifyContent="baseline" align="baseline">
+							<CustomDiv type="flex" pr="5px">
+								<Icon type="link" />
+							</CustomDiv>
+							<CustomDiv>
+								<Text type="secondary">
+									<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
+										{getValueSafely(() => asset.retailer.name, "N/A")}
+									</a>
+								</Text>
+							</CustomDiv>
 						</CustomDiv>
 						<CustomDiv width="100%" type="flex" justifyContent="baseline" pb="0.5rem" align="center">
 							<CustomDiv type="flex" pr="5px">

@@ -27,10 +27,17 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({ asset, onCardClick, h
 				</CustomDiv>
 				<SilentDivider />
 				<CustomDiv type="flex" justifyContent="center" flexDirection="column" height="30%" py="1rem" px="1rem">
-					<CustomDiv>
-						<Text style={{ width: "100%" }} strong>
-							{getValueSafely(() => asset.retailer.name, "N/A")}
-						</Text>
+					<CustomDiv type="flex" justifyContent="baseline" align="baseline">
+						<CustomDiv type="flex" pr="5px">
+							<Icon type="link" />
+						</CustomDiv>
+						<CustomDiv>
+							<Text type="secondary">
+								<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
+									{getValueSafely(() => asset.retailer.name, "N/A")}
+								</a>
+							</Text>
+						</CustomDiv>
 					</CustomDiv>
 					<CustomDiv whiteSpace="nowrap">
 						<Text style={{ width: "100%" }} ellipsis strong>
