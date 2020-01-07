@@ -1,6 +1,6 @@
 import { CustomDiv, AddOnAfterWithoutPadding } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
-import { Button, List, message, Modal, Typography } from "antd";
+import { Button, List, message, Modal, Typography, Row, Col, Icon, Spin } from "antd";
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { MoodboardAsset } from "@customTypes/moodboardTypes";
@@ -31,6 +31,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 }) => {
 	const [assetUrl, setAssetUrl] = useState<string>("");
 	const [loading, setLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
 	const assetUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const {
 			target: { value }
@@ -38,7 +39,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		setAssetUrl(value);
 	};
 
-	const addAsset = async () => {
+	const addAsset = async (): Promise<void> => {
 		if (assetUrl) {
 			setLoading(true);
 			const endpoint = getMoodboardApi(designId);
@@ -59,6 +60,26 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			}
 			setLoading(false);
 		}
+	};
+
+	const removeAsset = async (missingAssetUrl): Promise<void> => {
+		setDeleteLoading(true);
+		const endpoint = getMoodboardApi(designId);
+		const response = await fetcher({
+			endPoint: endpoint,
+			method: "DELETE",
+			body: {
+				data: {
+					assets: [],
+					assetUrls: [missingAssetUrl]
+				}
+			}
+		});
+		if (response.statusCode <= 300) {
+			setMoodboard(response.data.moodboard);
+			message.success("Asset deleted successfully");
+		}
+		setDeleteLoading(false);
 	};
 
 	return (
@@ -84,18 +105,29 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 						</Button>
 					}
 				/>
-				<List
-					header={<Text strong>Added Asset URL&apos;s</Text>}
-					bordered
-					dataSource={missingAssets}
-					renderItem={asset => (
-						<List.Item>
-							<a style={{ width: "100%" }} href={`${asset.externalUrl}`}>
-								{asset.externalUrl}
-							</a>
-						</List.Item>
-					)}
-				/>
+				<Spin spinning={deleteLoading}>
+					<List
+						header={<Text strong>Added Product URL&apos;s</Text>}
+						bordered
+						dataSource={missingAssets}
+						renderItem={(asset): JSX.Element => (
+							<List.Item>
+								<Row type="flex" style={{ width: "100%" }}>
+									<Col span={22}>
+										<a style={{ width: "100%" }} href={`${asset.externalUrl}`}>
+											{asset.externalUrl}
+										</a>
+									</Col>
+									<Col span={1}>
+										<Row align="middle" justify="center" type="flex">
+											<Icon onClick={() => removeAsset(asset.externalUrl)} type="delete" />
+										</Row>
+									</Col>
+								</Row>
+							</List.Item>
+						)}
+					/>
+				</Spin>
 			</ChildSpacedDiv>
 		</Modal>
 	);

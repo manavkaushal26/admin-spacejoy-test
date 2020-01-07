@@ -64,7 +64,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	useEffect(() => {
 		if (designId) {
 			fetchDesignData();
-			return () => {};
+			return (): void => {};
 		}
 		setDesignData(null);
 		return (): void => {
@@ -103,7 +103,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							/>
 						</TabPane>
 						<TabPane tab="Discussion" key="2">
-							<NotesTab refetchDesignData={refetchDesignData} designData={designData} />
+							<NotesTab designData={designData} />
 						</TabPane>
 						<TabPane tab="Pipeline" key="6">
 							<PipelineTab designData={designData} refetchDesignData={refetchDesignData} />

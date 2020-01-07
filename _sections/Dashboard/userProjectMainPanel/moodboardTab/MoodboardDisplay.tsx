@@ -76,7 +76,7 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 											})
 										) : (
 											<CustomDiv type="flex" px="1rem" align="center" width="100%" height="100%">
-												<Empty description="No Assets added for this product yet" />
+												<Empty description="No Recommendations added for this product yet." />
 											</CustomDiv>
 										)}
 									</CustomDiv>

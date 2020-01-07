@@ -5,16 +5,14 @@ import User from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { getLocalStorageValue } from "@utils/storageUtils";
-import { Avatar, Button, Card, Col, Icon, Input, Row, Typography, message } from "antd";
+import { Avatar, Button, Card, Col, Input, message, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { CustomDiv, CustomUl, EndCol, FitIcon, BorderedParagraph } from "../styled";
+import { BorderedParagraph, CustomDiv, CustomUl, EndCol, FitIcon } from "../styled";
 
-const { Text, Paragraph } = Typography;
+const { Text } = Typography;
 
 interface NotesTab {
 	designData: DetailedDesign;
-	refetchDesignData: () => void;
 }
 
 const NotesImageURL =
@@ -22,7 +20,7 @@ const NotesImageURL =
 		? "q_80,h_125/v1576131412/call_customer_b1xjqf.svg"
 		: "q_80,h_125/v1574849424/shared/call_customer_b1xjqf.svg";
 
-const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
+const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 	const [designerNotes, setDesignerNotes] = useState<DesignerNotes[]>(designData.designerNotes);
 	const [authVerification, setAuthVerification] = useState<User>(null);
 	const [newNote, setNewNote] = useState<string>("");
@@ -71,11 +69,12 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 
 	const editNote = async (id: string, value) => {
 		const modifiedDesignerNotes = designerNotes.map(note => {
-			if (note._id === id) {
-				note.text = value;
+			const copyNote = { ...note };
+			if (copyNote._id === id) {
+				copyNote.text = value;
 			}
 			return {
-				...note
+				...copyNote
 			};
 		});
 		try {
@@ -91,9 +90,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 			return note._id !== id;
 		});
 		message.success("Note deleted");
-		try {
-			await saveNotes(modifiedDesignerNotes);
-		} catch (e) {}
+		await saveNotes(modifiedDesignerNotes);
 	};
 
 	return (
@@ -107,9 +104,8 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 							</CustomDiv>
 							<CustomDiv width="70%" px="24px">
 								<Text type="secondary">
-									{
-										"Please call the customer and check if they or you have any further questions to be answered. This helps build the credibility of Spacejoy being customer-centric company."
-									}
+									Please call the customer and check if they or you have any further questions to be answered. This
+									helps build the credibility of Spacejoy being customer-centric company.
 								</Text>
 								<br />
 								<Text strong>Few pointers to remember on call:</Text>
@@ -142,7 +138,7 @@ const NotesTab = ({ designData, refetchDesignData }: NotesTab): JSX.Element => {
 					</Row>
 				</CustomDiv>
 				{designerNotes.map(note => (
-					<CustomDiv py="12px">
+					<CustomDiv key={note._id} py="12px">
 						<Row type="flex" align="stretch" justify="start">
 							<CustomDiv width="100%" inline type="flex" textOverflow="ellipsis" py="16px" align="center">
 								<CustomDiv textOverflow="ellipsis" inline type="flex" px="12px">
