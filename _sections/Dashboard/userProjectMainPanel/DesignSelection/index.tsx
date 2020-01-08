@@ -1,4 +1,4 @@
-import { updateProjectPhase } from "@api/projectApi";
+import { updateProjectPhase, notifyCustomerApi } from "@api/projectApi";
 import Image from "@components/Image";
 import {
 	DesignInterface,
@@ -10,7 +10,7 @@ import {
 import { Status } from "@customTypes/userType";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, message, Row, Tag, Typography, Icon } from "antd";
+import { Button, Card, Col, message, Row, Tag, Typography, Icon, Modal, Popconfirm } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { CustomDiv } from "@sections/Dashboard/styled";
@@ -28,11 +28,27 @@ const OrangeButton = styled(Button)`
 	}
 `;
 
+const CyanButton = styled(Button)`
+	background: #36cfc9;
+	border: ${({ theme }): string => theme.colors.primary2};
+	:hover {
+		background: #5cdbd3;
+		border: ${({ theme }): string => theme.colors.primary2};
+		color: rgba(0, 0, 0, 0.65);
+	}
+	:focus {
+		background: #36cfc9;
+		color: rgba(0, 0, 0, 0.65);
+		border: ${({ theme }): string => theme.colors.primary2};
+	}
+`;
+
 const HoverCard = styled.div`
 	border: 1px solid #e8e8e8;
 	height: 100%;
 	padding: 24px;
 	background: white;
+
 	:hover {
 		cursor: pointer;
 
@@ -110,6 +126,23 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 	const sendToRevision = () => {
 		updateStatus(PhaseInternalNames.designsInRevision);
 	};
+
+	const emailCustomer = async (): Promise<void> => {
+		const endPoint = notifyCustomerApi(projectData._id);
+		const response = await fetcher({ endPoint, method: "POST" });
+		if (response.statusCode <= 300) {
+			message.success(`Email sent to ${projectData.customer.profile.name}`);
+		}
+	};
+
+	const warnUser = (): void => {
+		Modal.confirm({
+			title: "Do you want to send the current project status to the Customer?",
+			content: "Please avoid sending unnecessary Emails to customers.",
+			onOk: emailCustomer,
+		});
+	};
+
 	return (
 		<CustomDiv>
 			<CustomDiv type="flex" flexWrap="wrap">
@@ -177,8 +210,8 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 				)}
 			</CustomDiv>
 			<CustomDiv py="1rem" width="100%" type="flex" flexWrap="wrap" justifyContent="center">
-				<Row gutter={1}>
-					<Col span={12}>
+				<Row type="flex" justify="end" style={{ width: "100%" }} gutter={1}>
+					<Col span={7}>
 						<Button
 							onClick={onSubmit}
 							disabled={
@@ -190,13 +223,19 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 							Submit Project
 						</Button>
 					</Col>
-					<Col span={12}>
-						<OrangeButton
+					<Col span={7}>
+						<Popconfirm
+							title="Are you sure?"
+							onConfirm={sendToRevision}
 							disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
-							onClick={sendToRevision}
 						>
-							Send to Revision
-						</OrangeButton>
+							<OrangeButton disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}>
+								Send to Revision
+							</OrangeButton>
+						</Popconfirm>
+					</Col>
+					<Col span={7}>
+						<CyanButton onClick={warnUser}>Email Customer</CyanButton>
 					</Col>
 				</Row>
 				{(numberOfActiveProjects !== numberOfDesigns ||
