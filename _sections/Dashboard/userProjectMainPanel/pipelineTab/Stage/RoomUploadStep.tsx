@@ -1,13 +1,7 @@
-import { uploadRenderImages, uploadRoomApi } from "@api/pipelineApi";
-import {
-	DesignImgTypes,
-	DetailedDesign,
-	Model3DFiles,
-	ModelToExtensionMap,
-	PhaseType,
-	RoomLabels,
-	RoomTypes
-} from "@customTypes/dashboardTypes";
+/* eslint-disable jsx-a11y/label-has-for */
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import { uploadRoomApi } from "@api/pipelineApi";
+import { DetailedDesign, Model3DFiles, ModelToExtensionMap, RoomLabels, RoomTypes } from "@customTypes/dashboardTypes";
 import { CustomDiv, Form, SilentDivider } from "@sections/Dashboard/styled";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 import { getValueSafely } from "@utils/commonUtils";
@@ -36,37 +30,37 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 				const {
 					room: {
 						spatialData: {
-							fileUrls: { glb, source, legacy_obj }
-						}
-					}
+							fileUrls: { glb, source, legacy_obj: legacyObj },
+						},
+					},
 				} = designDataCopy;
 				if (glb) {
-					const roomName = glb.split("/").pop();
+					const uploadedRoomFiles = glb.split("/").pop();
 					setRoomFileList([
 						{
 							uid: "-1",
-							name: roomName,
+							name: uploadedRoomFiles,
 							status: "done",
 							url: glb,
 							size: 0,
-							type: "application/octet-stream"
-						}
+							type: "application/octet-stream",
+						},
 					]);
-				} else if (legacy_obj) {
-					const roomName = legacy_obj.split("/").pop();
+				} else if (legacyObj) {
+					const uploadedRoomFiles = legacyObj.split("/").pop();
 					setRoomFileList([
 						{
 							uid: "-1",
-							name: roomName,
+							name: uploadedRoomFiles,
 							status: "done",
-							url: legacy_obj,
+							url: legacyObj,
 							size: 0,
-							type: "application/octet-stream"
-						}
+							type: "application/octet-stream",
+						},
 					]);
 				}
 				if (source) {
-					const fileName = legacy_obj.split("/").pop();
+					const fileName = legacyObj.split("/").pop();
 					setSourceFileList([
 						{
 							uid: "-1",
@@ -74,8 +68,8 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 							status: "done",
 							url: source,
 							size: 0,
-							type: "application/octet-stream"
-						}
+							type: "application/octet-stream",
+						},
 					]);
 				}
 			}
@@ -83,15 +77,16 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 	}, [designDataCopy]);
 
 	const onSelect = selectedValue => {
-		let type: string;
-		let value: RoomTypes | Model3DFiles;
-		[type, value] = selectedValue.split(":");
+		const type: string = selectedValue.split(":")[0];
+		const value: RoomTypes | Model3DFiles = selectedValue.split(":")[1];
 		switch (type) {
 			case "fileType":
 				setModel3dFiles(value as Model3DFiles);
 				break;
 			case "roomType":
 				setRoomType(value as RoomTypes);
+				break;
+			default:
 		}
 	};
 
@@ -106,7 +101,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 
 	const handleNameChange = e => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		setRoomName(value);
 	};
@@ -188,8 +183,8 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 							name="file"
 							fileList={roomFileList}
 							action={uploadRoomUrl}
-							onRemove={() => false}
-							onChange={handleOnFileUploadChange.bind(null, "room")}
+							onRemove={(): false => false}
+							onChange={(info): void => handleOnFileUploadChange("room", info)}
 							headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 							data={{ name: roomName, fileType: model3dFiles, roomType }}
 							accept={ModelToExtensionMap[model3dFiles]}
@@ -208,8 +203,8 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 								name="file"
 								fileList={sourceFileList}
 								action={uploadRoomUrl}
-								onRemove={() => false}
-								onChange={handleOnFileUploadChange.bind(null, "source")}
+								onRemove={(): false => false}
+								onChange={(info): void => handleOnFileUploadChange("source", info)}
 								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 								data={{ name: roomName, fileType: "source", roomType }}
 								accept=".blend"

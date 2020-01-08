@@ -124,7 +124,7 @@ Button.defaultProps = {
 	full: false,
 	raw: false,
 	disabled: false,
-	submitInProgress: false
+	submitInProgress: false,
 };
 
 Button.propTypes = {
@@ -138,7 +138,7 @@ Button.propTypes = {
 	full: PropTypes.bool,
 	raw: PropTypes.bool,
 	disabled: PropTypes.bool,
-	submitInProgress: PropTypes.bool
+	submitInProgress: PropTypes.bool,
 };
 
 export default React.memo(Button);

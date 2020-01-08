@@ -81,6 +81,7 @@ function index({ children }) {
 	return <StepperWrapper>{children}</StepperWrapper>;
 }
 
+// eslint-disable-next-line react/display-name
 index.Step = ({ title, description, isActive, onClick }) => (
 	<StepBlock>
 		<StepCount className={isActive ? "active" : ""} onClick={onClick}>
@@ -94,18 +95,18 @@ index.Step.propTypes = {
 	title: PropTypes.number,
 	description: PropTypes.string,
 	isActive: PropTypes.bool,
-	onClick: PropTypes.func
+	onClick: PropTypes.func,
 };
 
 index.Step.defaultProps = {
 	title: "",
 	description: "",
 	isActive: false,
-	onClick: () => {}
+	onClick: () => {},
 };
 
 index.propTypes = {
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 };
 
 export default index;

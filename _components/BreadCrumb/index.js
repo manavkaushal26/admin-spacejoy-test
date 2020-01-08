@@ -133,9 +133,9 @@ index.propTypes = {
 	router: PropTypes.shape({
 		pathname: PropTypes.string,
 		query: PropTypes.shape({
-			quiz: PropTypes.string
-		})
-	}).isRequired
+			quiz: PropTypes.string,
+		}),
+	}).isRequired,
 };
 
 export default withRouter(index);

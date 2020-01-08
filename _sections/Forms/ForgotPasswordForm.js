@@ -31,11 +31,11 @@ function ForgotPasswordForm({ redirectUrl }) {
 }
 
 ForgotPasswordForm.defaultProps = {
-	redirectUrl: ""
+	redirectUrl: "",
 };
 
 ForgotPasswordForm.propTypes = {
-	redirectUrl: PropTypes.string
+	redirectUrl: PropTypes.string,
 };
 
 export default ForgotPasswordForm;

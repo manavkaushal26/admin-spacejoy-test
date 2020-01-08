@@ -23,18 +23,18 @@ interface MoodboardAndFloorPlanStep {
 const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 	designDataCopy,
 	setDesignDataCopy,
-	refetchDesignData
+	refetchDesignData,
 }) => {
 	const [floorPlanList, setFloorPlanList] = useState<UploadFile<any>[]>([]);
 	const [preview, setPreview] = useState({
 		previewImage: "",
-		previewVisible: false
+		previewVisible: false,
 	});
 
 	const deleteImage = async (file: UploadFile) => {
 		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
 
-		const response = await fetcher({ endPoint: endPoint, method: "DELETE" });
+		const response = await fetcher({ endPoint, method: "DELETE" });
 		if (response.status <= 300) {
 			refetchDesignData();
 			message.success("Image deleted successfully");
@@ -53,7 +53,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 					name: filename,
 					url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
 					size: 0,
-					type: "image/*"
+					type: "image/*",
 				};
 			});
 			setFloorPlanList(floorPlanFileList);
@@ -67,19 +67,20 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 		}
 	};
 
-	const handlePreview = async file => {
-		if (!file.url && !file.preview) {
-			file.preview = await getBase64(file.originFileObj);
+	const handlePreview = async (file): Promise<void> => {
+		const fileCopy = { ...file };
+		if (!fileCopy.url && !fileCopy.preview) {
+			fileCopy.preview = await getBase64(fileCopy.originFileObj);
 		}
 
 		setPreview({
-			previewImage: file.url || file.preview,
-			previewVisible: true
+			previewImage: fileCopy.url || fileCopy.preview,
+			previewVisible: true,
 		});
 	};
 
 	const floorPlanUploadEndpoint = useMemo(() => uploadRenderImages(designDataCopy._id, "floorplan"), [
-		designDataCopy._id
+		designDataCopy._id,
 	]);
 	const handleCancel = () => setPreview({ previewImage: "", previewVisible: false });
 

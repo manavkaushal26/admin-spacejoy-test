@@ -13,7 +13,7 @@ function redirectToLocation({ pathname, query = {}, url, res = {} }) {
 		Router.push({ pathname, query }, url);
 	} else {
 		res.writeHead(302, {
-			Location: url
+			Location: url,
 		});
 		res.end();
 	}
@@ -42,14 +42,14 @@ async function oAuthLogin(data, redirectUrl = "/dashboard", cb) {
 		body: {
 			data: {
 				provider: data._provider,
-				token: data._token.idToken || data._token.accessToken
-			}
-		}
+				token: data._token.idToken || data._token.accessToken,
+			},
+		},
 	});
 	if (response.statusCode <= 300) {
 		const {
 			token,
-			user: { role }
+			user: { role },
 		} = response.data;
 		login({ token, role, redirectUrl });
 	} else {
@@ -63,7 +63,7 @@ function logout() {
 	redirectToLocation({
 		pathname: "/auth",
 		query: { flow: "login", redirectUrl: "/dashboard" },
-		url: "/auth/login?redirectUrl=/dashboard"
+		url: "/auth/login?redirectUrl=/dashboard",
 	});
 }
 
@@ -73,7 +73,7 @@ function auth(ctx) {
 		const redirect = {
 			pathname: "/auth",
 			query: { flow: "signup", redirectUrl: ctx.pathname },
-			url: `/auth/signup?redirectUrl=${ctx.pathname}`
+			url: `/auth/signup?redirectUrl=${ctx.pathname}`,
 		};
 		return ctx.req ? redirectToLocation({ ...redirect, res: ctx.res }) : redirectToLocation(redirect);
 	}

@@ -42,13 +42,13 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 	onRecommendationClick,
 	entryId,
 	addRemoveAsset,
-	currentlySelectingRecommendation
+	currentlySelectingRecommendation,
 }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const Router = useRouter();
 
-	const onClick = (e): void => {
+	const onClick = (): void => {
 		setLoading(true);
 		if (type === "primary") {
 			addRemoveAsset("DELETE", entryId);

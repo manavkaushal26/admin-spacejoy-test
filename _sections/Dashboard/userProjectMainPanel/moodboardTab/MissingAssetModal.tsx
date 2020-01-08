@@ -56,7 +56,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			if (response.statusCode <= 300) {
 				setMoodboard(response.data.moodboard);
 				setAssetUrl("");
-				message.success("Asset added successfully");
+				message.success("Product added successfully");
 			}
 			setLoading(false);
 		}
@@ -77,14 +77,14 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		});
 		if (response.statusCode <= 300) {
 			setMoodboard(response.data.moodboard);
-			message.success("Asset deleted successfully");
+			message.success("Product deleted successfully");
 		}
 		setDeleteLoading(false);
 	};
 
 	return (
 		<Modal
-			title="Add Missing Asset"
+			title="Add Missing Product"
 			onCancel={toggleAddMissingAssetModal}
 			footer={null}
 			visible={addMissingAssetModalVisible}

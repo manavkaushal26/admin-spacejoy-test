@@ -16,11 +16,11 @@ function Divider({ fancy, size }) {
 
 Divider.propTypes = {
 	size: PropTypes.string,
-	fancy: PropTypes.bool
+	fancy: PropTypes.bool,
 };
 
 Divider.defaultProps = {
 	size: "md",
-	fancy: false
+	fancy: false,
 };
 export default Divider;

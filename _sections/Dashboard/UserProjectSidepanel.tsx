@@ -5,7 +5,7 @@ import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Empty, Icon, Input, Tabs } from "antd";
-import { useEffect, useReducer, useRef, useState } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "./LoadingCard";
@@ -46,7 +46,7 @@ const initalState: State = {
 const actionCreator = (actionType: actionTypes, value: Partial<State>): Action => {
 	return {
 		type: actionType,
-		value: value
+		value
 	};
 };
 
@@ -76,7 +76,7 @@ const reducer = (state: State, action: Action): State => {
 				...state,
 				hasMore: action.value.hasMore
 			};
-		case actionTypes.LOAD_USER_DATA:
+		case actionTypes.LOAD_USER_DATA: {
 			const dataToUpdate =
 				action.value.pageCount === state.pageCount ? state.data : [...state.data, ...action.value.data];
 			return {
@@ -85,6 +85,7 @@ const reducer = (state: State, action: Action): State => {
 				pageCount: action.value.pageCount,
 				hasMore: action.value.hasMore
 			};
+		}
 		default:
 			return state;
 	}
@@ -182,7 +183,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 
 	const scrollParentRef = useRef(null);
 
-	const handleTabChange = (key: string, e: MouseEvent) => {
+	const handleTabChange = (key: string) => {
 		dispatch({ type: actionTypes.TAB_CHANGE, value: { currentTab: key } });
 	};
 

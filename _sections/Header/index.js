@@ -14,7 +14,7 @@ const HeaderStyled = styled.div`
 
 class Header extends PureComponent {
 	state = {
-		isRaised: false
+		isRaised: false,
 	};
 
 	render() {

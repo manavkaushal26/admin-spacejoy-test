@@ -43,10 +43,10 @@ const settings = {
 			breakpoint: 480,
 			settings: {
 				slidesToShow: 1,
-				slidesToScroll: 1
-			}
-		}
-	]
+				slidesToScroll: 1,
+			},
+		},
+	],
 };
 
 function Carousel({ children, ...props }) {
@@ -60,7 +60,7 @@ function Carousel({ children, ...props }) {
 Carousel.defaultProps = {};
 
 Carousel.propTypes = {
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 };
 
 export default Carousel;

@@ -37,7 +37,7 @@ class FormBox extends PureComponent {
 		React.Children.map(props.children, ({ props: { name, value, type } }) => {
 			stateObj[name] = {
 				value: type === "checkbox" ? false : value || "",
-				error: ""
+				error: "",
 			};
 		});
 		this.state = { ...stateObj, formStatus: "", formMessage: "", submitInProgress: false, address: {} };
@@ -58,29 +58,29 @@ class FormBox extends PureComponent {
 						lastName: "",
 						phone: state.userMobile.value,
 						tnc: state.userCommutePermissionGranted.value,
-						privacyPolicy: state.userCommutePermissionGranted.value
-					}
+						privacyPolicy: state.userCommutePermissionGranted.value,
+					},
 				};
 			}
 			if (name === "login") {
 				return {
 					email: state.userEmail.value,
-					password: state.userPassword.value
+					password: state.userPassword.value,
 				};
 			}
 			if (name === "forgotPassword") {
 				return {
 					data: {
-						email: state.userEmail.value
-					}
+						email: state.userEmail.value,
+					},
 				};
 			}
 			if (name === "resetPassword") {
 				return {
 					data: {
 						token: state.resetToken.value,
-						password: state.userPassword.value
-					}
+						password: state.userPassword.value,
+					},
 				};
 			}
 			if (name === "designmyspace") {
@@ -92,40 +92,40 @@ class FormBox extends PureComponent {
 							formData: [
 								{
 									key: "firstName",
-									value: state.userName.value
+									value: state.userName.value,
 								},
 								{
 									key: "email",
-									value: state.userEmail.value
+									value: state.userEmail.value,
 								},
 								{
 									key: "mobile",
-									value: state.userMobile.value
+									value: state.userMobile.value,
 								},
 								{
 									key: "package",
-									value: state.selectedPlan.value
+									value: state.selectedPlan.value,
 								},
 								{
 									key: "whichRoomAreYouDesigning",
-									value: state.whichRoomAreYouDesigning.value
+									value: state.whichRoomAreYouDesigning.value,
 								},
 								{
 									key: "haveABudgetInMind",
-									value: state.haveABudgetInMind.value
+									value: state.haveABudgetInMind.value,
 								},
 								{
 									key: "howDoesYourRoomLookToday",
-									value: state.howDoesYourRoomLookToday.value
+									value: state.howDoesYourRoomLookToday.value,
 								},
 								{
 									key: "address",
-									value: state.address.value
-								}
+									value: state.address.value,
+								},
 							],
 							userId: "",
-							userEmail: state.userEmail.value
-						}
+							userEmail: state.userEmail.value,
+						},
 					};
 				}
 				return {
@@ -134,7 +134,7 @@ class FormBox extends PureComponent {
 					mobile: state.userMobile.value,
 					whichRoomAreYouDesigning: state.whichRoomAreYouDesigning.value,
 					haveABudgetInMind: state.haveABudgetInMind.value,
-					howDoesYourRoomLookToday: state.howDoesYourRoomLookToday.value
+					howDoesYourRoomLookToday: state.howDoesYourRoomLookToday.value,
 				};
 			}
 			return {};
@@ -144,7 +144,7 @@ class FormBox extends PureComponent {
 			if (name === "login" || name === "signup") {
 				const {
 					token,
-					user: { role }
+					user: { role },
 				} = response.data;
 				login({ token, role, redirectUrl });
 			} else if (redirectUrl && redirectUrl !== "") {
@@ -154,7 +154,7 @@ class FormBox extends PureComponent {
 		this.setState({
 			formStatus: response.statusCode <= 300 ? SuccessText : ErrorText,
 			formMessage: response.message,
-			submitInProgress: false
+			submitInProgress: false,
 		});
 	};
 
@@ -213,12 +213,12 @@ class FormBox extends PureComponent {
 						? React.cloneElement(child, {
 								data: state[name],
 								onchange: this.handleChange,
-								handleAddressChange: this.handleAddressChange
+								handleAddressChange: this.handleAddressChange,
 								// eslint-disable-next-line no-mixed-spaces-and-tabs
 						  })
 						: React.cloneElement(child, {
 								data: state[name],
-								submitInProgress: state.submitInProgress
+								submitInProgress: state.submitInProgress,
 								// eslint-disable-next-line no-mixed-spaces-and-tabs
 						  });
 				})}
@@ -229,7 +229,7 @@ class FormBox extends PureComponent {
 
 FormBox.defaultProps = {
 	description: "",
-	redirectUrl: ""
+	redirectUrl: "",
 };
 
 FormBox.propTypes = {
@@ -237,7 +237,7 @@ FormBox.propTypes = {
 	destination: PropTypes.string.isRequired,
 	name: PropTypes.string.isRequired,
 	description: PropTypes.string,
-	redirectUrl: PropTypes.string
+	redirectUrl: PropTypes.string,
 };
 
 export default FormBox;

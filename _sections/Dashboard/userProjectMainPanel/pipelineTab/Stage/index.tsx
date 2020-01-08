@@ -2,15 +2,14 @@ import { DetailedDesign, PhaseType } from "@customTypes/dashboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import RoomUploadStep from "@sections/Dashboard/userProjectMainPanel/pipelineTab/Stage/RoomUploadStep";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
-import { Select, Typography } from "antd";
+import { Typography } from "antd";
 import React, { useState } from "react";
 import Design3D from "./Design3D";
 import DesignFinalization from "./DesignFinalization";
 import MoodboardAndFloorPlanStep from "./MoodboardAndFloorPlanStep";
 import RenderStep from "./RenderStep";
 
-const { Title, Text } = Typography;
-const { Option } = Select;
+const { Text } = Typography;
 interface Stage {
 	designData: DetailedDesign;
 	phaseData: PhaseType;

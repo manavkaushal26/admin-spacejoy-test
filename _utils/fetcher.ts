@@ -20,12 +20,12 @@ async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<
 		method === "GET"
 			? {
 					method,
-					headers
+					headers,
 			  }
 			: {
 					method,
 					headers,
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
 			  };
 	const response = await fetch(apiBaseUrl + endPoint, options);
 	if (response.status) {
@@ -34,7 +34,7 @@ async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<
 	}
 	const data = {
 		status: response.status,
-		message: response.statusText
+		message: response.statusText,
 	};
 	return { ...response, ...data };
 }

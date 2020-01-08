@@ -2,6 +2,10 @@ export const designApi: (designId: string | string[]) => string = designId => {
 	return `/admin/design/${designId}`;
 };
 
+export const designCopyApi: (designId: string) => string = designId => {
+	return `/admin/design/${designId}/copy`;
+};
+
 export const getMetaDataApi: () => string = () => {
 	return "/unity/meta";
 };

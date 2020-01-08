@@ -119,7 +119,7 @@ ItemCard.defaultProps = {
 	assets: [],
 	gridCount: 6,
 	showLoadMore: false,
-	size: "130"
+	size: "130",
 };
 
 ItemCard.propTypes = {
@@ -128,7 +128,7 @@ ItemCard.propTypes = {
 	designName: PropTypes.string.isRequired,
 	designId: PropTypes.string.isRequired,
 	showLoadMore: PropTypes.bool,
-	size: PropTypes.string
+	size: PropTypes.string,
 };
 
 export default ItemCard;

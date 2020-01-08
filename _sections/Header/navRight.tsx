@@ -3,6 +3,7 @@ import DropMenu from "@components/DropMenu";
 import User from "@customTypes/userType";
 import { logout } from "@utils/auth";
 import { allowedRoles } from "@utils/constants";
+import React from "react";
 import ActiveLink from "./ActiveLink";
 import { HorizontalListStyled } from "./styled";
 

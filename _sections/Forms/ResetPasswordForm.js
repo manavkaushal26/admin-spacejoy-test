@@ -33,12 +33,12 @@ function ResetPasswordForm({ redirectUrl, token }) {
 
 ResetPasswordForm.defaultProps = {
 	redirectUrl: "",
-	token: ""
+	token: "",
 };
 
 ResetPasswordForm.propTypes = {
 	redirectUrl: PropTypes.string,
-	token: PropTypes.string
+	token: PropTypes.string,
 };
 
 export default ResetPasswordForm;

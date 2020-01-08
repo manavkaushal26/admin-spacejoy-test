@@ -2,6 +2,7 @@ import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
 import React, { useState } from "react";
 import { Row, Col } from "antd";
+import User, { Role } from "@customTypes/userType";
 import ActiveLink from "./ActiveLink";
 import {
 	HorizontalListStyled,
@@ -10,11 +11,10 @@ import {
 	MobileNavVisibleStyled,
 	OverlayStyled,
 	PaddedButton,
-	MobileVisibleStyled
+	MobileVisibleStyled,
 } from "./styled";
 import navRight from "./navRight";
 import navCenter from "./navCenter";
-import User, { Role } from "@customTypes/userType";
 
 interface HeaderBody {
 	authVerification: Partial<User>;
@@ -76,8 +76,8 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 HeaderBody.defaultProps = {
 	authVerification: {
 		name: "",
-		role: Role.Guest
-	}
+		role: Role.Guest,
+	},
 };
 
 export default React.memo(HeaderBody);

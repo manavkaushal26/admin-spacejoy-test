@@ -3,7 +3,7 @@ import { Status, Role, ProjectRoles } from "./userType";
 export enum ProjectScope {
 	customer = Role.Customer,
 	designer = Role.Designer,
-	admin = Role.Admin
+	admin = Role.Admin,
 }
 
 export enum PhaseInternalNames {
@@ -17,7 +17,7 @@ export enum PhaseInternalNames {
 	deliveryCompleted = "deliveryCompleted",
 	onHold = "onHold",
 	suspended = "suspended",
-	rejected = "rejected"
+	rejected = "rejected",
 }
 enum PhaseCustomerNames {
 	requirement = "requirement",
@@ -27,7 +27,7 @@ enum PhaseCustomerNames {
 	final = "final",
 	onHold = "onHold",
 	cancelled = "cancelled",
-	rejected = "rejected"
+	rejected = "rejected",
 }
 
 export enum HumanizePhaseInternalNames {
@@ -41,7 +41,7 @@ export enum HumanizePhaseInternalNames {
 	deliveryCompleted = "Delivery Completed",
 	onHold = "On Hold",
 	suspended = "Suspended",
-	rejected = "Rejected"
+	rejected = "Rejected",
 }
 
 interface CurrentPhase {
@@ -73,7 +73,7 @@ export interface UserProjectType {
 
 export interface DesignInterface {
 	state: string;
-	_id: string;
+	_id?: string;
 	design: {
 		lock: false;
 		phases: PhaseType;
@@ -104,7 +104,7 @@ export enum DesignImgTypes {
 	Cover = "cover",
 	Panorama = "panorama",
 	Image360 = "image360",
-	Floorplan = "floorplan"
+	Floorplan = "floorplan",
 }
 export interface DesignerImageComments {
 	_id?: string;
@@ -143,20 +143,41 @@ enum PaymentStatus {
 	pending = "pending",
 	paid = "paid",
 	refunded = "refunded",
-	fail = "fail"
+	fail = "fail",
 }
 
 export enum Packages {
 	delight = "delight",
 	bliss = "bliss",
-	euphoria = "euphoria"
+	euphoria = "euphoria",
 }
 
 export enum PackageDesignValue {
 	delight = 1,
 	bliss,
-	euphoria = 2
+	euphoria = 2,
 }
+
+export enum PackageTimeline {
+	delight = 12,
+	bliss = 10,
+	euphoria = 7,
+}
+
+export const PackageDetails = {
+	delight: {
+		designs: PackageDesignValue.delight,
+		days: PackageTimeline.delight,
+	},
+	bliss: {
+		designs: PackageDesignValue.bliss,
+		days: PackageTimeline.bliss,
+	},
+	euphoria: {
+		designs: PackageDesignValue.euphoria,
+		days: PackageTimeline.euphoria,
+	},
+};
 
 interface Order {
 	paymentStatus: PaymentStatus;
@@ -262,7 +283,7 @@ export enum DesignPhases {
 	Design3D = "design3D",
 	Render = "render",
 	Revision = "revision",
-	Ready = "ready"
+	Ready = "ready",
 }
 
 export enum HumanizeDesignPhases {
@@ -271,7 +292,7 @@ export enum HumanizeDesignPhases {
 	design3D = "Design 3D",
 	render = "Render",
 	revision = "Revision",
-	ready = "Ready"
+	ready = "Ready",
 }
 
 export interface PhaseType {
@@ -300,12 +321,12 @@ export interface DetailedDesign {
 
 export enum Model3DFiles {
 	Obj = "legacy_obj",
-	Glb = "glb"
+	Glb = "glb",
 }
 
 export enum ModelToExtensionMap {
 	legacy_obj = ".zip",
-	glb = ".glb"
+	glb = ".glb",
 }
 
 export enum RoomTypes {
@@ -320,7 +341,7 @@ export enum RoomTypes {
 	HomeOffice = "home office",
 	Window = "window",
 	Door = "door",
-	House = "house"
+	House = "house",
 }
 
 export enum RoomLabels {
@@ -335,10 +356,10 @@ export enum RoomLabels {
 	HomeOffice = "Home office",
 	Window = "Window",
 	Door = "Door",
-	House = "House"
+	House = "House",
 }
 
 export enum RenderImgUploadTypes {
 	Render = "render",
-	Panorama = "panorama"
+	Panorama = "panorama",
 }
