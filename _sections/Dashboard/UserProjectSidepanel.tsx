@@ -5,7 +5,7 @@ import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Empty, Icon, Input, Tabs } from "antd";
-import React, { useEffect, useReducer, useRef, useState } from "react";
+import React, { useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "./LoadingCard";
@@ -25,7 +25,7 @@ enum actionTypes {
 	SEARCH_TEXT,
 	LOAD_USER_DATA,
 	UPDATE_HAS_MORE,
-	TAB_CHANGE
+	TAB_CHANGE,
 }
 
 interface Action {
@@ -40,13 +40,13 @@ const initalState: State = {
 	pageCount: 0,
 	hasMore: true,
 	currentTab: "active",
-	searchResults: []
+	searchResults: [],
 };
 
 const actionCreator = (actionType: actionTypes, value: Partial<State>): Action => {
 	return {
 		type: actionType,
-		value
+		value,
 	};
 };
 
@@ -58,7 +58,7 @@ const reducer = (state: State, action: Action): State => {
 				currentTab: action.value.currentTab,
 				data: [],
 				pageCount: 0,
-				hasMore: true
+				hasMore: true,
 			};
 		case actionTypes.CLEAR:
 			return { ...initalState };
@@ -69,12 +69,12 @@ const reducer = (state: State, action: Action): State => {
 				searchActive: action.value.searchText.length !== 0,
 				data: [],
 				pageCount: 0,
-				hasMore: true
+				hasMore: true,
 			};
 		case actionTypes.UPDATE_HAS_MORE:
 			return {
 				...state,
-				hasMore: action.value.hasMore
+				hasMore: action.value.hasMore,
 			};
 		case actionTypes.LOAD_USER_DATA: {
 			const dataToUpdate =
@@ -83,7 +83,7 @@ const reducer = (state: State, action: Action): State => {
 				...state,
 				data: [...dataToUpdate],
 				pageCount: action.value.pageCount,
-				hasMore: action.value.hasMore
+				hasMore: action.value.hasMore,
 			};
 		}
 		default:
@@ -115,30 +115,30 @@ interface SidebarProps {
 	selectedUser: string;
 }
 
-const handleSearch = (value: string, dispatch: React.Dispatch<Action>) => {
+const handleSearch = (value: string, dispatch: React.Dispatch<Action>): void => {
 	dispatch(actionCreator(actionTypes.SEARCH_TEXT, { searchText: value }));
 };
 
 const debouncedSearch = debounce(handleSearch, 500);
 
 const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }): JSX.Element => {
-	const init = initialState => {
+	const init = (initialState): State => {
 		return {
 			...initialState,
-			data: []
+			data: [],
 		};
 	};
 	const [state, dispatch] = useReducer(reducer, initalState, init);
 	const [loading, setLoading] = useState(false);
 	const displayUsers = state.data;
 
-	const TabSearch = () => {
+	const TabSearch = (): JSX.Element => {
 		return (
 			<Input
-				onChange={e => {
+				onChange={(e): void => {
 					e.persist();
 					const {
-						target: { value }
+						target: { value },
 					} = e;
 					debouncedSearch(value, dispatch);
 				}}
@@ -150,7 +150,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		);
 	};
 
-	const fetchData = async () => {
+	const fetchData = async (): Promise<void> => {
 		const { pageCount } = state;
 		const dataFeed = `skip=${pageCount * 10}&limit=10`;
 		setLoading(true);
@@ -167,7 +167,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 					actionCreator(actionTypes.LOAD_USER_DATA, {
 						data: responseData,
 						pageCount: state.pageCount + 1,
-						hasMore: true
+						hasMore: true,
 					})
 				);
 			} else {
@@ -177,13 +177,9 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		setLoading(false);
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, [state.currentTab]);
-
 	const scrollParentRef = useRef(null);
 
-	const handleTabChange = (key: string) => {
+	const handleTabChange = (key: string): void => {
 		dispatch({ type: actionTypes.TAB_CHANGE, value: { currentTab: key } });
 	};
 

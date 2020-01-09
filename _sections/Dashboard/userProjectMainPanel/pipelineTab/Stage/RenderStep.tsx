@@ -10,70 +10,76 @@ import getCookie from "@utils/getCookie";
 import { Button, Icon, message, Select, Typography } from "antd";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { StepDiv } from "../styled";
 import ImageDisplayModal from "./Components/ImageDisplayModal";
 
 const { Option } = Select;
 const { Text } = Typography;
 interface RenderStep {
-	designDataCopy: DetailedDesign;
-	setDesignDataCopy: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	designData: DetailedDesign;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 	phaseData: PhaseType;
-	refetchDesignData: () => void;
 }
 
-const RenderStep: React.FC<RenderStep> = ({ designDataCopy, setDesignDataCopy, phaseData, refetchDesignData }) => {
+const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData, phaseData }) => {
 	const [imageType, setImageType] = useState<RenderImgUploadTypes>(RenderImgUploadTypes.Render);
 	const [designImagesList, setDesignImagesList] = useState<UploadFile[]>([]);
 	const [preview, setPreview] = useState<{ previewImage: string; previewVisible: boolean }>({
 		previewImage: "",
-		previewVisible: false
+		previewVisible: false,
 	});
 
-	const deleteImage = async (file: UploadFile) => {
-		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
-		const response = await fetcher({ endPoint: endPoint, method: "DELETE" });
+	const deleteImage = async (file: UploadFile): Promise<void> => {
+		const endPoint = deleteUploadedImage(designData._id, file.uid);
+		const response: {
+			statusCode: number;
+			data: DetailedDesign;
+		} = await fetcher({ endPoint, method: "DELETE" });
 		if (response.statusCode <= 300) {
-			refetchDesignData();
+			setDesignData({
+				...designData,
+				designImages: [...response.data.designImages],
+			});
 			message.success("Image deleted successfully");
 		}
 	};
 
 	useEffect(() => {
-		if (designDataCopy) {
-			const renderImageFiles = designDataCopy.designImages.filter(image => {
+		if (designData) {
+			const renderImageFiles = designData.designImages.filter(image => {
 				return image.imgType !== DesignImgTypes.Floorplan;
 			});
-
-			const renderImageFilesList = renderImageFiles.map((image, index) => {
+			console.log("renderImagefiles", renderImageFiles);
+			const renderImageFilesList = renderImageFiles.map(image => {
+				console.log("image,path", image.path);
 				const filename = image.path.split("/").pop();
 				return {
 					uid: image._id,
 					name: filename,
 					url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
 					size: 0,
-					type: "image/*"
+					type: "image/*",
 				};
 			});
 
 			setDesignImagesList(renderImageFilesList);
 		}
-	}, [designDataCopy.designImages]);
+	}, [designData.designImages]);
 
-	const uploadRenderImage = useMemo(() => uploadRenderImages(designDataCopy._id, imageType), [
-		designDataCopy._id,
-		imageType
-	]);
+	const uploadRenderImage = useMemo(() => uploadRenderImages(designData._id, imageType), [designData._id, imageType]);
 
-	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>) => {
+	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>): void => {
 		setDesignImagesList(info.fileList);
 		if (info.file.status === "done") {
-			setDesignDataCopy(info.file.response.data);
+			setDesignData({
+				...designData,
+				designImages: [...info.file.response.data.designImages],
+			});
 		}
 	};
 
-	const onSelect = selectedValue => {
+	const onSelect = (selectedValue): void => {
 		setImageType(selectedValue);
 	};
 
@@ -83,17 +89,18 @@ const RenderStep: React.FC<RenderStep> = ({ designDataCopy, setDesignDataCopy, p
 		ref.current.scrollIntoView({ behavior: "smooth" });
 	}, []);
 
-	const handlePreview = async file => {
-		if (!file.url && !file.preview) {
-			file.preview = await getBase64(file.originFileObj);
+	const handlePreview = async (file): Promise<void> => {
+		const fileCopy = { ...file };
+		if (!fileCopy.url && !fileCopy.preview) {
+			fileCopy.preview = await getBase64(fileCopy.originFileObj);
 		}
 
 		setPreview({
-			previewImage: file.url || file.preview,
-			previewVisible: true
+			previewImage: fileCopy.url || fileCopy.preview,
+			previewVisible: true,
 		});
 	};
-	const handleCancel = () => setPreview({ previewImage: "", previewVisible: false });
+	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	return (
 		<StepDiv>

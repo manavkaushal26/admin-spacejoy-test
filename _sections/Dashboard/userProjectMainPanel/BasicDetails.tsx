@@ -15,10 +15,11 @@ interface BasicDetailsProps {
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	const {
 		id,
+		name,
 		createdAt,
 		order: { paymentStatus, items },
 		team,
-		customer
+		customer,
 	} = projectData;
 	const designers = useMemo(
 		() =>
@@ -108,7 +109,9 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 							</Text>
 						</CustomDiv>
 						<ModifiedText textTransform="capitalize" type="secondary">
-							{getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}
+							<a href={`tel:${getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}`}>
+								{getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}
+							</a>
 						</ModifiedText>
 					</CustomDiv>
 					<CustomDiv type="flex">
@@ -118,7 +121,14 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 							</Text>
 						</CustomDiv>
 						<ModifiedText textTransform="lowercase" type="secondary">
-							{getValueSafely(() => customer.email, "N/A")}
+							<a
+								href={`mailto:${getValueSafely(
+									() => customer.email,
+									"N/A"
+								)}?subject=Regarding%20your%20${name}%20Project&body=Hi%20${customer.profile.firstName},`}
+							>
+								{getValueSafely(() => customer.email, "N/A")}
+							</a>
 						</ModifiedText>
 					</CustomDiv>
 				</Col>

@@ -24,6 +24,7 @@ import "antd/lib/tag/style";
 import "antd/lib/tree/style";
 import "antd/lib/typography/style";
 import "antd/lib/upload/style";
+import "antd/lib/carousel/style";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
@@ -33,7 +34,7 @@ import theme from "../_theme";
 
 export default class MyApp extends App {
 	state = {
-		loading: false
+		loading: false,
 	};
 
 	componentDidMount(): void {

@@ -1,14 +1,18 @@
-import { getSingleAssetApi } from "@api/designApi";
+import { getSingleAssetApi, uploadAssetModel } from "@api/designApi";
 import Image from "@components/Image";
 import { SingleAssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Icon, message, Popconfirm, Typography } from "antd";
+import { Button, Icon, message, Popconfirm, Typography, Upload } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
+import getCookie from "@utils/getCookie";
+import { cookieNames } from "@utils/config";
+import { ModelToExtensionMap } from "@customTypes/dashboardTypes";
+import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
 import { FullheightSpin, GreyDrawer } from "../styled";
 
 const { Title, Text } = Typography;
@@ -36,9 +40,11 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	assetEntryId,
 	projectId,
 	dispatch,
-	dataLoading
+	dataLoading,
 }) => {
 	const [singleAssetData, setSingleAssetData] = useState<SingleAssetType>(null);
+	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
+
 	const [loading, setLoading] = useState<boolean>(true);
 	const fetchAndPopulate = async (): Promise<void> => {
 		setLoading(true);
@@ -74,6 +80,15 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		setLoading(false);
 		return {};
 	}, [moodboard, assetEntryId]);
+
+	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>): void => {
+		let fileList = [...info.fileList];
+
+		fileList = fileList.slice(-1);
+		// 1. Limit the number of uploaded files
+		// Only to show one recent uploaded files, and old ones will be replaced by the new
+		setAssetFile(fileList);
+	};
 
 	useEffect(() => {
 		if (assetId) {
@@ -114,6 +129,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	};
 
 	const buttonText = assetInMoodboard ? "Add Recommendations" : "Add to Design";
+
+	const uploadModelEndpoint = uploadAssetModel(assetId);
 
 	return (
 		<GreyDrawer onClose={closeDrawer} width={360} visible={!!assetId}>
@@ -186,31 +203,51 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								</Text>
 							</CustomDiv>
 						</CustomDiv>
-						<CustomDiv flexGrow={1} type="flex" flexDirection="column" justifyContent="flex-end">
-							{assetInMoodboard && (
-								<CustomDiv py="0.5em" width="100%">
-									<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
-										<Button block type="danger">
-											Remove Asset
+						{projectId ? (
+							<CustomDiv flexGrow={1} type="flex" flexDirection="column" justifyContent="flex-end">
+								{assetInMoodboard && (
+									<CustomDiv py="0.5em" width="100%">
+										<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
+											<Button block type="danger">
+												Remove Asset
+											</Button>
+										</Popconfirm>
+									</CustomDiv>
+								)}
+								{!assetInMoodboard && assetEntryId && (
+									<CustomDiv py="0.5em" width="100%">
+										<Button block type="primary" loading={loading} onClick={onButtonClick}>
+											Add as Recommendation
 										</Button>
-									</Popconfirm>
-								</CustomDiv>
-							)}
-							{!assetInMoodboard && assetEntryId && (
-								<CustomDiv py="0.5em" width="100%">
-									<Button block type="primary" loading={loading} onClick={onButtonClick}>
-										Add as Recommendation
+									</CustomDiv>
+								)}
+								{!assetEntryId && (
+									<CustomDiv py="0.5em" width="100%">
+										<Button block type="primary" loading={loading} onClick={onButtonClick}>
+											{buttonText}
+										</Button>
+									</CustomDiv>
+								)}
+							</CustomDiv>
+						) : (
+							<CustomDiv>
+								<Upload
+									supportServerRender
+									name="file"
+									fileList={assetFile}
+									action={uploadModelEndpoint}
+									onRemove={(): false => false}
+									onChange={(info): void => handleOnFileUploadChange(info)}
+									headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+									accept={ModelToExtensionMap.glb}
+								>
+									<Button>
+										<Icon type="upload" />
+										Click to Upload
 									</Button>
-								</CustomDiv>
-							)}
-							{!assetEntryId && (
-								<CustomDiv py="0.5em" width="100%">
-									<Button block type="primary" loading={loading} onClick={onButtonClick}>
-										{buttonText}
-									</Button>
-								</CustomDiv>
-							)}
-						</CustomDiv>
+								</Upload>
+							</CustomDiv>
+						)}
 					</CustomDiv>
 				)}
 			</FullheightSpin>

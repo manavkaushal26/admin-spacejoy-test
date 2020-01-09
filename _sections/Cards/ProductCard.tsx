@@ -1,15 +1,21 @@
 import Button from "@components/Button";
-import Divider from "@components/Divider";
 import { removeSpaces } from "@utils/helper";
 import Link from "next/link";
-import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
+import { Assets } from "@customTypes/dashboardTypes";
+import { Col, Row } from "antd";
 
-const ProductImageWrapperStyled = styled.div`
-	background: ${({ url }) => `url('${url}')`};
-	border: 1px solid ${({ theme }) => theme.colors.bg.light2};
-	height: ${({ size }) => `${size}px`};
+const ProductCardRow = styled(Row)`
+	> * + * {
+		margin-top: 1rem;
+	}
+`;
+
+const ProductImageWrapperStyled = styled.div<{ size?: string; url?: string }>`
+	background: ${({ url }): string => `url('${url}')`};
+	border: 1px solid ${({ theme }): string => theme.colors.bg.light2};
+	height: ${({ size }): string => `${size}px`};
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
@@ -20,26 +26,29 @@ const ProductBrandStyled = styled.h5`
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
+	color: ${({ theme }): string => theme.colors.primary1};
 `;
 
 const ProductNameStyled = styled(ProductBrandStyled)`
 	font-weight: normal;
+	font-family: "AirbnbCerealBook";
+	color: ${({ theme }): string => theme.colors.fc.dark1};
 `;
 
 const ProductPriceStyled = styled.h3`
 	margin: 0;
 `;
 
-const ProductLoadMoreStyled = styled.div`
+const ProductLoadMoreStyled = styled.div<{ size: string }>`
 	width: 100%;
-	height: ${({ size }) => `${size}px`};
+	height: ${({ size }): string => `${size}px`};
 	padding: 1rem;
-	box-shadow: 0 0 10px 0px ${({ theme }) => theme.colors.mild.black};
+	box-shadow: 0 0 10px 0px ${({ theme }): string => theme.colors.mild.black};
 	div {
-		border: 1px dashed ${({ theme }) => theme.colors.bg.light2};
+		border: 1px dashed ${({ theme }): string => theme.colors.bg.light2};
 		display: flex;
 		flex-direction: column;
-		height: ${({ size }) => `calc(${size}px - 2rem)`};
+		height: ${({ size }): string => `calc(${size}px - 2rem)`};
 		justify-content: center;
 		align-items: center;
 		img {
@@ -51,26 +60,35 @@ const ProductLoadMoreStyled = styled.div`
 	}
 `;
 
-function ItemCard({ assets, gridCount, designName, designId, showLoadMore, size }) {
+interface ProductCard {
+	assets: Assets[];
+	gridCount: number;
+	designName: string;
+	designId: string;
+	showLoadMore?: boolean;
+	size: string;
+}
+
+const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, designId, showLoadMore, size }) => {
 	const designNameClean = removeSpaces(designName);
 	return (
-		<div className="grid">
+		<ProductCardRow type="flex" justify="space-between">
 			{assets.map(item => {
-				return item.asset.shoppable ? (
-					<div className={`col-xs-${gridCount}`} key={item.asset.id}>
-						<div className="grid">
-							<div className="col-12 justify-space-between col-bleed-y">
+				return item.asset.shoppable && item.billable ? (
+					<Col md={11} lg={7} key={item.asset._id}>
+						<Row>
+							<Row type="flex" justify="space-between">
 								<ProductImageWrapperStyled
 									url={`//res.cloudinary.com/spacejoy/image/upload/q_100,w_300/${item.asset.cdn}`}
 									size={size}
 								/>
-							</div>
-							<div className="col-8">
+							</Row>
+							<div className="col-xs-7 col-bleed-y">
+								<ProductBrandStyled>{item.asset.retailer.name}</ProductBrandStyled>
 								<ProductNameStyled>{item.asset.name}</ProductNameStyled>
-								<ProductBrandStyled>{item.asset.retailer}</ProductBrandStyled>
 								<ProductPriceStyled>$ {item.asset.price}</ProductPriceStyled>
 							</div>
-							<div className="col-4 text-right">
+							<div className="col-xs-5 col-bleed-y text-right">
 								<a href={item.asset.retailLink} target="_blank" rel="noopener noreferrer">
 									<Button
 										variant="secondary"
@@ -85,14 +103,14 @@ function ItemCard({ assets, gridCount, designName, designId, showLoadMore, size 
 									</Button>
 								</a>
 							</div>
-						</div>
-					</div>
+						</Row>
+					</Col>
 				) : null;
 			})}
 			{showLoadMore && (
 				<div className={`col-xs-${gridCount}`}>
 					<div className="grid">
-						<div className="col-xs-12 col-bleed-y">
+						<div className="col-xs-12">
 							<Link
 								href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
 								as={`/designView/${designNameClean}/${designId}`}
@@ -100,9 +118,7 @@ function ItemCard({ assets, gridCount, designName, designId, showLoadMore, size 
 								<a href={`/designView/${designNameClean}/${designId}`}>
 									<ProductLoadMoreStyled size={size}>
 										<div>
-											<Divider fancy size="20px" />
-											<span>See All assets</span>
-											<Divider fancy size="20px" />
+											<span>See All Products</span>
 										</div>
 									</ProductLoadMoreStyled>
 								</a>
@@ -111,24 +127,8 @@ function ItemCard({ assets, gridCount, designName, designId, showLoadMore, size 
 					</div>
 				</div>
 			)}
-		</div>
+		</ProductCardRow>
 	);
-}
-
-ItemCard.defaultProps = {
-	assets: [],
-	gridCount: 6,
-	showLoadMore: false,
-	size: "130",
 };
 
-ItemCard.propTypes = {
-	assets: PropTypes.arrayOf(PropTypes.shape({})),
-	gridCount: PropTypes.number,
-	designName: PropTypes.string.isRequired,
-	designId: PropTypes.string.isRequired,
-	showLoadMore: PropTypes.bool,
-	size: PropTypes.string,
-};
-
-export default ItemCard;
+export default ProductCard;

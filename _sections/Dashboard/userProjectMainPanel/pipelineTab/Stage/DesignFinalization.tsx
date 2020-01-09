@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
-import { StepDiv } from "../styled";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { editDesignApi } from "@api/pipelineApi";
 import fetcher from "@utils/fetcher";
@@ -7,20 +6,21 @@ import {
 	DetailedDesign,
 	DesignerImageComments,
 	DesignImagesInterface,
-	DesignImgTypes
+	DesignImgTypes,
 } from "@customTypes/dashboardTypes";
 import { Typography, message, Input, Button } from "antd";
-import ImageCommentDrawer from "./Components/ImageCommentsDrawer";
 import { getValueSafely } from "@utils/commonUtils";
 import Image from "@components/Image";
 import styled from "styled-components";
+import ImageCommentDrawer from "./Components/ImageCommentsDrawer";
+import { StepDiv } from "../styled";
 import ImageDisplayModal from "./Components/ImageDisplayModal";
 
 const { Text } = Typography;
 
 interface DesignFinalization {
-	designDataCopy: DetailedDesign;
-	setDesignDataCopy: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	designData: DetailedDesign;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 }
 
 const LastChildJustifiedStartCustomDiv = styled(CustomDiv)`
@@ -29,7 +29,7 @@ const LastChildJustifiedStartCustomDiv = styled(CustomDiv)`
 	}
 `;
 
-const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setDesignDataCopy }) => {
+const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesignData }) => {
 	const [designerNote, setDesignerNote] = useState<string>(null);
 	const [designImages, setDesignImages] = useState<DesignImagesInterface[]>([]);
 	const [imageId, setImageId] = useState<string>(null);
@@ -37,35 +37,35 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 	const [preview, setPreview] = useState({
 		previewImage: "",
 		previewVisible: false,
-		cdn: false
+		cdn: false,
 	});
 
-	const handleCancel = () => {
+	const handleCancel = (): void => {
 		setPreview({
 			previewImage: "",
 			previewVisible: false,
-			cdn: false
+			cdn: false,
 		});
 	};
 
 	useEffect(() => {
-		if (designDataCopy) {
-			const filteredImages = designDataCopy.designImages.filter(image => {
+		if (designData) {
+			const filteredImages = designData.designImages.filter(image => {
 				return image.imgType !== DesignImgTypes.Floorplan;
 			});
 			setDesignImages(filteredImages);
 		}
-	}, [designDataCopy.designImages]);
+	}, [designData.designImages]);
 
 	useEffect(() => {
-		if (designDataCopy) {
-			setDesignerNote(designDataCopy.description);
+		if (designData) {
+			setDesignerNote(designData.description);
 		}
-	}, [designDataCopy.description]);
+	}, [designData.description]);
 
-	const handleTextChange = e => {
+	const handleTextChange = (e): void => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		setDesignerNote(value);
 	};
@@ -75,7 +75,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 			() => [
 				...designImages.find(image => {
 					return image._id === imageId;
-				}).comments
+				}).comments,
 			],
 			[]
 		);
@@ -87,20 +87,20 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 		setDesignImages([...designImages]);
 	};
 
-	const saveDesignerNote = async () => {
-		const endpoint = editDesignApi(designDataCopy._id);
+	const saveDesignerNote = async (): Promise<void> => {
+		const endpoint = editDesignApi(designData._id);
 
 		const response = await fetcher({
 			endPoint: endpoint,
 			method: "PUT",
 			body: {
 				data: {
-					description: designerNote
-				}
-			}
+					description: designerNote,
+				},
+			},
 		});
 		if (response.statusCode <= 300) {
-			setDesignDataCopy(response.data);
+			setDesignData(response.data);
 			message.success("Description Added successfully");
 		} else {
 			message.error(response.message);
@@ -113,11 +113,11 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 		ref.current.scrollIntoView({ behavior: "smooth" });
 	}, []);
 
-	const previewImage = cdn => {
+	const previewImage = (cdn): void => {
 		setPreview({
 			previewImage: cdn,
 			previewVisible: true,
-			cdn: true
+			cdn: true,
 		});
 	};
 
@@ -147,6 +147,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 						{designImages.map(image => {
 							return (
 								<CustomDiv
+									key={image._id}
 									height="100%"
 									type="flex"
 									flexBasis="50ch"
@@ -157,13 +158,13 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 								>
 									<Image
 										width="100%"
-										onClick={() => {
+										onClick={(): void => {
 											previewImage(image.cdn);
 										}}
 										src={`q_80,w_400/${image.cdn}`}
 									/>
 									<CustomDiv>
-										<Button onClick={() => setImageId(image._id)} block>
+										<Button onClick={(): void => setImageId(image._id)} block>
 											Add Comments
 										</Button>
 									</CustomDiv>
@@ -175,7 +176,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designDataCopy, setD
 				<ImageCommentDrawer
 					setImageId={setImageId}
 					imageId={imageId}
-					designId={designDataCopy._id}
+					designId={designData._id}
 					imageComments={selectedImageComments}
 					setImageComments={setImageComments}
 				/>

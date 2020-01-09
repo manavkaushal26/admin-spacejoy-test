@@ -245,6 +245,7 @@ export interface Assets {
 		imageUrl: string;
 		createdAt: string;
 		updatedAt: string;
+		shoppable: boolean;
 	};
 }
 

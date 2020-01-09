@@ -23,7 +23,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({ asset, onCardClick, h
 		<AssetCard onClick={() => onCardClick(asset._id)} hoverable={hoverable}>
 			<CustomDiv width="100%" type="flex" overflow="hidden" flexDirection="column">
 				<CustomDiv justifyContent="space-around" type="flex">
-					<Image width={imageWidth} height={imageHeight} src={asset.cdn} />
+					<Image width={imageWidth} height={imageHeight} src={asset.cdn} nolazy />
 				</CustomDiv>
 				<SilentDivider />
 				<CustomDiv type="flex" justifyContent="center" flexDirection="column" height="30%" py="1rem" px="1rem">

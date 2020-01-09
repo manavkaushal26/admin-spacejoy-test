@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Modal, Select, Input, Button, Row, Col, Typography, message } from "antd";
 import { DesignInterface, DetailedProject } from "@customTypes/dashboardTypes";
-import { designApi, designCopyApi } from "@api/designApi";
+import { designCopyApi } from "@api/designApi";
 import fetcher from "@utils/fetcher";
 
 const { Option } = Select;
@@ -95,7 +95,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 	);
 
 	return (
-		<Modal visible={copyDesignModalVisible} title="Choose a design to copy" footer={footer}>
+		<Modal visible={copyDesignModalVisible} title="Choose a design to copy" onCancel={toggleModal} footer={footer}>
 			<Row>
 				<Col>
 					<Text>Design</Text>

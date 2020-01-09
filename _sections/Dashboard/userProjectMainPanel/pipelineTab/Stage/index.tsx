@@ -3,7 +3,7 @@ import { CustomDiv } from "@sections/Dashboard/styled";
 import RoomUploadStep from "@sections/Dashboard/userProjectMainPanel/pipelineTab/Stage/RoomUploadStep";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 import { Typography } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import Design3D from "./Design3D";
 import DesignFinalization from "./DesignFinalization";
 import MoodboardAndFloorPlanStep from "./MoodboardAndFloorPlanStep";
@@ -14,38 +14,23 @@ interface Stage {
 	designData: DetailedDesign;
 	phaseData: PhaseType;
 	stage: string;
-	refetchDesignData: () => void;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 }
 
 export default function Stage(props: Stage): JSX.Element {
-	const { designData, phaseData, stage, refetchDesignData } = props;
-
-	const [designDataCopy, setDesignDataCopy] = useState<DetailedDesign>(designData);
+	const { designData, phaseData, stage, setDesignData } = props;
 
 	switch (stage) {
 		case "concept":
-			return (
-				<MoodboardAndFloorPlanStep
-					refetchDesignData={refetchDesignData}
-					designDataCopy={designDataCopy}
-					setDesignDataCopy={setDesignDataCopy}
-				/>
-			);
+			return <MoodboardAndFloorPlanStep designData={designData} setDesignData={setDesignData} />;
 		case "modelling":
-			return <RoomUploadStep designDataCopy={designDataCopy} />;
+			return <RoomUploadStep designData={designData} setDesignData={setDesignData} />;
 		case "design3D":
 			return <Design3D />;
 		case "render":
-			return (
-				<RenderStep
-					refetchDesignData={refetchDesignData}
-					designDataCopy={designDataCopy}
-					setDesignDataCopy={setDesignDataCopy}
-					phaseData={phaseData}
-				/>
-			);
+			return <RenderStep designData={designData} setDesignData={setDesignData} phaseData={phaseData} />;
 		case "revision":
-			return <DesignFinalization designDataCopy={designData} setDesignDataCopy={setDesignDataCopy} />;
+			return <DesignFinalization designData={designData} setDesignData={setDesignData} />;
 		default:
 			return (
 				<CustomDiv px="1rem" py="1rem">

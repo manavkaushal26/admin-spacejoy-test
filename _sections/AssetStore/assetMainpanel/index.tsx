@@ -83,9 +83,9 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 				price: { search: "range", value: state.priceRange },
 				"dimensions.depth": { search: "range", value: state.depthRange },
 				"dimensions.width": { search: "range", value: state.widthRange },
-				"dimensions.height": { search: "range", value: state.heightRange }
-			}
-		}
+				"dimensions.height": { search: "range", value: state.heightRange },
+			},
+		},
 	});
 	if (responseData.statusCode <= 300) {
 		if (responseData.data.data) {
@@ -105,7 +105,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	designId,
 	assetEntryId,
 	dispatch,
-	projectId
+	projectId,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
 	const [pageCount, setPageCount] = useState<number>(1);
@@ -115,10 +115,11 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: assetId });
 	};
 
+
 	useEffect(() => {
 		if (moodboard && assetEntryId) {
 			const asset = moodboard
-				.filter(asset => asset.isExistingAsset)
+				.filter(moodboardAsset => moodboardAsset.isExistingAsset)
 				.find(moodboardAsset => {
 					return moodboardAsset.asset._id === assetEntryId;
 				});
@@ -142,7 +143,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.priceRange,
 		state.widthRange,
 		state.depthRange,
-		state.heightRange
+		state.heightRange,
 	]);
 
 	useEffect(() => {
@@ -157,7 +158,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.widthRange,
 		state.depthRange,
 		state.heightRange,
-		pageCount
+		pageCount,
 	]);
 	return (
 		<Row>
@@ -176,7 +177,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 					</CustomDiv>
 					<CustomDiv width="100%" py="1rem" type="flex">
 						<CustomDiv inline>
-							<Image height="100px" src={primaryAsset.cdn} />
+							<Image height="100px" src={primaryAsset.cdn} nolazy />
 						</CustomDiv>
 						<CustomDiv inline pl="1rem">
 							<CustomDiv type="flex">

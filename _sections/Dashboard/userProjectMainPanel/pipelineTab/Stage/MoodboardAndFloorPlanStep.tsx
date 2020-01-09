@@ -15,38 +15,40 @@ import ImageDisplayModal from "./Components/ImageDisplayModal";
 const { Text } = Typography;
 
 interface MoodboardAndFloorPlanStep {
-	designDataCopy: DetailedDesign;
-	setDesignDataCopy: React.Dispatch<React.SetStateAction<DetailedDesign>>;
-	refetchDesignData: () => void;
+	designData: DetailedDesign;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 }
 
-const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
-	designDataCopy,
-	setDesignDataCopy,
-	refetchDesignData,
-}) => {
+const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ designData, setDesignData }) => {
 	const [floorPlanList, setFloorPlanList] = useState<UploadFile<any>[]>([]);
 	const [preview, setPreview] = useState({
 		previewImage: "",
 		previewVisible: false,
 	});
 
-	const deleteImage = async (file: UploadFile) => {
-		const endPoint = deleteUploadedImage(designDataCopy._id, file.uid);
+	const deleteImage = async (file: UploadFile): Promise<void> => {
+		const endPoint = deleteUploadedImage(designData._id, file.uid);
 
-		const response = await fetcher({ endPoint, method: "DELETE" });
-		if (response.status <= 300) {
-			refetchDesignData();
+		const response: {
+			statusCode: number;
+			data: DetailedDesign;
+		} = await fetcher({ endPoint, method: "DELETE" });
+
+		if (response.statusCode <= 300) {
+			setDesignData({
+				...designData,
+				designImages: [...response.data.designImages],
+			});
 			message.success("Image deleted successfully");
 		}
 	};
 
 	useEffect(() => {
-		if (designDataCopy) {
-			const floorplanImages = designDataCopy.designImages.filter(image => {
+		if (designData) {
+			const floorplanImages = designData.designImages.filter(image => {
 				return image.imgType === DesignImgTypes.Floorplan;
 			});
-			const floorPlanFileList = floorplanImages.map((image, index) => {
+			const floorPlanFileList = floorplanImages.map(image => {
 				const filename = image.path.split("/").pop();
 				return {
 					uid: image._id,
@@ -58,12 +60,15 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 			});
 			setFloorPlanList(floorPlanFileList);
 		}
-	}, [designDataCopy.designImages]);
+	}, [designData.designImages]);
 
-	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>) => {
+	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>): void => {
 		setFloorPlanList([...info.fileList]);
 		if (info.file.status === "done") {
-			setDesignDataCopy(info.file.response.data);
+			setDesignData({
+				...designData,
+				designImages: [...info.file.response.data.designImages],
+			});
 		}
 	};
 
@@ -79,10 +84,8 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 		});
 	};
 
-	const floorPlanUploadEndpoint = useMemo(() => uploadRenderImages(designDataCopy._id, "floorplan"), [
-		designDataCopy._id,
-	]);
-	const handleCancel = () => setPreview({ previewImage: "", previewVisible: false });
+	const floorPlanUploadEndpoint = useMemo(() => uploadRenderImages(designData._id, "floorplan"), [designData._id]);
+	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	return (
 		<StepDiv>

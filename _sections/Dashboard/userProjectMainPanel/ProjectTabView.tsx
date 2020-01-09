@@ -11,6 +11,7 @@ import CustomerResponses from "./CustomerResponses";
 import DesignSelection from "./DesignSelection";
 import NotesTab from "./NotesTab";
 import TeamTab from "./TeamTab";
+import CustomerView from "./CustomerView";
 
 const { TabPane } = Tabs;
 
@@ -41,7 +42,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	onSelectDesign,
 	setLoading,
 	refetchData,
-	setProjectData
+	setProjectData,
 }): JSX.Element => {
 	const { form: formData } = projectData;
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
@@ -55,10 +56,6 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			setDesignData(responseData.data);
 		}
 		setDesignLoading(false);
-	};
-
-	const refetchDesignData = (): void => {
-		fetchDesignData();
 	};
 
 	useEffect(() => {
@@ -79,7 +76,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					<SilentPageHeader title={designData.name} onBack={(): void => onSelectDesign()} />
 					<SilentDivider />
 
-					<ScrollableTabs defaultActiveKey="6">
+					<ScrollableTabs defaultActiveKey="7">
 						<TabPane tab="Customer Responses" key="1">
 							<CustomerResponses formData={formData || []} />
 						</TabPane>
@@ -106,7 +103,10 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							<NotesTab designData={designData} />
 						</TabPane>
 						<TabPane tab="Pipeline" key="6">
-							<PipelineTab designData={designData} refetchDesignData={refetchDesignData} />
+							<PipelineTab designData={designData} setDesignData={setDesignData} />
+						</TabPane>
+						<TabPane tab="Customer View" key="7">
+							<CustomerView projectName={projectData.name} designData={designData} />
 						</TabPane>
 					</ScrollableTabs>
 				</>

@@ -53,7 +53,7 @@ const AssetStore = ({
 	authVerification,
 	projectId,
 	designId,
-	assetEntryId
+	assetEntryId,
 }: AssetStoreProps): JSX.Element => {
 	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
@@ -103,9 +103,9 @@ const AssetStore = ({
 				body: {
 					data: {
 						assets: [assetId],
-						assetUrls: []
-					}
-				}
+						assetUrls: [],
+					},
+				},
 			});
 		} else if (action === "DELETE") {
 			response = await fetcher({
@@ -114,9 +114,9 @@ const AssetStore = ({
 				body: {
 					data: {
 						assets: [assetId],
-						assetUrls: []
-					}
-				}
+						assetUrls: [],
+					},
+				},
 			});
 		}
 		if (response.data.moodboard) {
@@ -133,10 +133,14 @@ const AssetStore = ({
 			);
 			return;
 		}
-		Router.push(
-			{ pathname: "/dashboard", query: { designId, pid: projectId } },
-			`/dashboard/pid/${projectId}/did/${designId}`
-		);
+		if (!!projectId && !!designId) {
+			Router.push(
+				{ pathname: "/dashboard", query: { designId, pid: projectId } },
+				`/dashboard/pid/${projectId}/did/${designId}`
+			);
+			return;
+		}
+		Router.push({ pathname: "/dashboard" }, "/dashboard");
 	};
 
 	const toggleCart = (): void => {
@@ -212,12 +216,12 @@ AssetStore.getInitialProps = (
 } => {
 	const {
 		req,
-		query: { designId: did, assetEntryId: aeid, projectId: pid }
+		query: { designId: did, assetEntryId: aeid, projectId: pid },
 	} = ctx;
 	const isServer = !!req;
 	const authVerification = {
 		name: "",
-		email: ""
+		email: "",
 	};
 
 	const designId: string = did as string;

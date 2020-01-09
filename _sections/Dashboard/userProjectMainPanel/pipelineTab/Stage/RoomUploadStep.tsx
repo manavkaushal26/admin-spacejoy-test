@@ -14,10 +14,11 @@ import React, { useEffect, useMemo, useState } from "react";
 const { Text } = Typography;
 const { Option } = Select;
 interface Stage {
-	designDataCopy: DetailedDesign;
+	designData: DetailedDesign;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 }
 
-const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
+const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [roomName, setRoomName] = useState<string>(null);
@@ -25,15 +26,15 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 
 	useEffect(() => {
-		if (designDataCopy) {
-			if (designDataCopy.room) {
+		if (designData) {
+			if (designData.room) {
 				const {
 					room: {
 						spatialData: {
 							fileUrls: { glb, source, legacy_obj: legacyObj },
 						},
 					},
-				} = designDataCopy;
+				} = designData;
 				if (glb) {
 					const uploadedRoomFiles = glb.split("/").pop();
 					setRoomFileList([
@@ -74,7 +75,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 				}
 			}
 		}
-	}, [designDataCopy]);
+	}, [designData]);
 
 	const onSelect = selectedValue => {
 		const type: string = selectedValue.split(":")[0];
@@ -93,10 +94,10 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 	const uploadRoomUrl = useMemo(
 		() =>
 			uploadRoomApi(
-				designDataCopy._id,
-				getValueSafely(() => designDataCopy.room._id, undefined)
+				designData._id,
+				getValueSafely(() => designData.room._id, undefined)
 			),
-		[designDataCopy._id, designDataCopy.room]
+		[designData._id, designData.room]
 	);
 
 	const handleNameChange = e => {
@@ -106,13 +107,18 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 		setRoomName(value);
 	};
 
-	const handleOnFileUploadChange = (uploadFileType: "room" | "source", info: UploadChangeParam<UploadFile>) => {
+	const handleOnFileUploadChange = (uploadFileType: "room" | "source", info: UploadChangeParam<UploadFile>): void => {
 		let fileList = [...info.fileList];
 
+		fileList = fileList.slice(-1);
 		// 1. Limit the number of uploaded files
 		// Only to show one recent uploaded files, and old ones will be replaced by the new
-		fileList = fileList.slice(-1);
-
+		if (info.file.status === "done") {
+			setDesignData({
+				...designData,
+				room: { ...info.file.response.data },
+			});
+		}
 		if (uploadFileType === "room") {
 			setRoomFileList(fileList);
 		} else if (uploadFileType === "source") {
@@ -120,13 +126,13 @@ const RoomUploadStep: React.FC<Stage> = ({ designDataCopy }) => {
 		}
 	};
 
-	const room = useMemo(() => designDataCopy.room, []);
+	const room = useMemo(() => designData.room, []);
 	useEffect(() => {
-		if (designDataCopy.room) {
-			setRoomName(getValueSafely(() => designDataCopy.room.name, ""));
-			setRoomType(getValueSafely(() => designDataCopy.room.roomType, RoomTypes.LivingRoom));
+		if (designData.room) {
+			setRoomName(getValueSafely(() => designData.room.name, ""));
+			setRoomType(getValueSafely(() => designData.room.roomType, RoomTypes.LivingRoom));
 		}
-	}, [designDataCopy.room]);
+	}, [designData.room]);
 
 	return (
 		<StepDiv>

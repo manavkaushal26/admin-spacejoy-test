@@ -19,21 +19,20 @@ import CopyDesignModal from "./CopyDesignModal";
 const { Text } = Typography;
 
 const OrangeButton = styled(Button)`
-	background: #f39c12;
-	border: ${({ theme }): string => theme.colors.primary2};
+	background: #faad14;
+	border: ${(): string => "#faad14"};
 	:hover {
-		background: #f39c12;
-		border: ${({ theme }): string => theme.colors.primary2};
-		color: white;
+		background: #ffc53d;
+		border: ${(): string => "#ffc53d"};
 	}
 `;
 
 const CyanButton = styled(Button)`
-	background: #36cfc9;
-	border: ${({ theme }): string => theme.colors.primary2};
+	background: #13c2c2;
+	border: ${(): string => "#36cfc9"};
 	:hover {
-		background: #5cdbd3;
-		border: ${({ theme }): string => theme.colors.primary2};
+		background: #36cfc9;
+		border: ${(): string => "#36cfc9"};
 		color: rgba(0, 0, 0, 0.65);
 	}
 	:focus {
@@ -89,7 +88,7 @@ const getNumberOfActiveProjects = (designs: DesignInterface[]): number => {
 const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesign, setProjectData }) => {
 	const [copyDesignModalVisible, setCopyDesignModalVisible] = useState<boolean>(false);
 
-	const toggleCopyDesignModal = () => {
+	const toggleCopyDesignModal = (): void => {
 		setCopyDesignModalVisible(!copyDesignModalVisible);
 	};
 
@@ -119,11 +118,11 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 
 	const numberOfActiveProjects = getNumberOfActiveProjects(projectData.designs);
 
-	const onSubmit = () => {
+	const onSubmit = (): void => {
 		updateStatus();
 	};
 
-	const sendToRevision = () => {
+	const sendToRevision = (): void => {
 		updateStatus(PhaseInternalNames.designsInRevision);
 	};
 
@@ -153,7 +152,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 								<Card
 									style={{ width: "300px" }}
 									hoverable
-									onClick={() => onSelectDesign(design.design._id)}
+									onClick={(): void => onSelectDesign(design.design._id)}
 									cover={
 										<CustomDiv>
 											<Image

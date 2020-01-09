@@ -7,6 +7,7 @@ import moment from "moment";
 import React from "react";
 import styled, { css } from "styled-components";
 import { CustomDiv, getTagColor, StyledTag } from "./styled";
+
 const { Text } = Typography;
 
 const UserCard = styled(Card)<{ active: boolean }>`
@@ -31,23 +32,19 @@ const RoomNameText = styled(Text)`
 	top: -3px;
 `;
 
-const UserProjectCard = ({
-	userProjectData,
-	handleSelectCard,
-	selectedUser
-}: {
+const UserProjectCard: React.FC<{
 	userProjectData: UserProjectType;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
-}) => {
+}> = ({ userProjectData, handleSelectCard, selectedUser }) => {
 	const {
 		name: room,
 		customerName,
 		currentPhase: {
-			name: { internalName: phase }
+			name: { internalName: phase },
 		},
 		status,
-		createdAt
+		createdAt,
 	} = userProjectData;
 	return (
 		<UserCard

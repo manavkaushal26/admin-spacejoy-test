@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-const ButtonStyled = styled.button`
+const ButtonBase = styled.button`
+	padding: 0;
 	display: inline-block;
 	cursor: pointer;
 	user-select: none;
@@ -9,12 +10,13 @@ const ButtonStyled = styled.button`
 	outline: none;
 	white-space: nowrap;
 	border: none;
-	text-transform: uppercase;
 	position: relative;
-	text-align: center;
-	letter-spacing: 1px;
-	font-size: 1rem;
-	font-family: "AirbnbCerealBook";
+	text-align: unset;
+	background: transparent;
 `;
 
-export default ButtonStyled;
+const ButtonNormalStyled = styled(ButtonBase)`
+	font-size: 1rem;
+`;
+
+export { ButtonBase, ButtonNormalStyled };
