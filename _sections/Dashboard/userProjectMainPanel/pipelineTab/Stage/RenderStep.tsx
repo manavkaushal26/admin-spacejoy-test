@@ -1,9 +1,8 @@
 import { deleteUploadedImage } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
 import { DesignImgTypes, DetailedDesign, PhaseType, RenderImgUploadTypes } from "@customTypes/dashboardTypes";
-import { Status } from "@customTypes/userType";
 import { CustomDiv, Form } from "@sections/Dashboard/styled";
-import { getBase64, getValueSafely } from "@utils/commonUtils";
+import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
@@ -22,7 +21,7 @@ interface RenderStep {
 	phaseData: PhaseType;
 }
 
-const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData, phaseData }) => {
+const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 	const [imageType, setImageType] = useState<RenderImgUploadTypes>(RenderImgUploadTypes.Render);
 	const [designImagesList, setDesignImagesList] = useState<UploadFile[]>([]);
 	const [preview, setPreview] = useState<{ previewImage: string; previewVisible: boolean }>({
@@ -50,9 +49,7 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData, phaseData
 			const renderImageFiles = designData.designImages.filter(image => {
 				return image.imgType !== DesignImgTypes.Floorplan;
 			});
-			console.log("renderImagefiles", renderImageFiles);
 			const renderImageFilesList = renderImageFiles.map(image => {
-				console.log("image,path", image.path);
 				const filename = image.path.split("/").pop();
 				return {
 					uid: image._id,

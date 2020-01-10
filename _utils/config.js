@@ -36,12 +36,12 @@ const company = {
 			? "v1577958957/shared/spacejoy-logo_rdqft7.svg"
 			: "v1578482972/shared/spacejoy-logo_rdqft7.svg",
 	name: "Neo Design Labs Inc",
-	product: "Spacejoy",
+	product: "Spacejoy-Dashboard",
 	tagLine: "Designing your imagination",
-	url: "//spacejoy.com",
+	url: "//admin.spacejoy.com",
 	country: "us",
-	subject: "Smart Online Interior Design & Decorating in 3D",
-	description: "Experience the joy of designing your home in 3D using products from brands you can buy immediately",
+	subject: "Dashboard to manage customer projects",
+	description: "Dashboard for managing customer projects by Spacejoy employees",
 	email: {
 		support: "hello@spacejoy.com",
 		connect: "",
