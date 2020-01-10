@@ -6,6 +6,7 @@ import {
 	Packages,
 	PhaseInternalNames,
 	PackageDetails,
+	DesignImgTypes,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
@@ -159,7 +160,8 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 												width="300px"
 												height="175px"
 												src={`q_80,w_298/${getValueSafely(
-													() => design.design.designImages[0].cdn,
+													() =>
+														design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0].cdn,
 													process.env.NODE_ENV === "production"
 														? "v1574869657/shared/Illustration_mffq52.svg"
 														: "v1578482972/shared/Illustration_mffq52.svg"

@@ -5,6 +5,7 @@ import React from "react";
 import styled from "styled-components";
 import { Assets } from "@customTypes/dashboardTypes";
 import { Col, Row } from "antd";
+import { getValueSafely } from "@utils/commonUtils";
 
 const ProductCardRow = styled(Row)`
 	> * + * {
@@ -19,6 +20,7 @@ const ProductImageWrapperStyled = styled.div<{ size?: string; url?: string }>`
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: contain;
+	width: 100%;
 `;
 
 const ProductBrandStyled = styled.h5`
@@ -79,14 +81,17 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 						<Row>
 							<Row type="flex" justify="space-between">
 								<ProductImageWrapperStyled
-									url={`//res.cloudinary.com/spacejoy/image/upload/q_100,w_300/${item.asset.cdn}`}
+									url={`//res.cloudinary.com/spacejoy/image/upload/q_100,w_300/${getValueSafely(
+										() => item.asset.cdn,
+										"N/A"
+									)}`}
 									size={size}
 								/>
 							</Row>
 							<div className="col-xs-7 col-bleed-y">
-								<ProductBrandStyled>{item.asset.retailer.name}</ProductBrandStyled>
-								<ProductNameStyled>{item.asset.name}</ProductNameStyled>
-								<ProductPriceStyled>$ {item.asset.price}</ProductPriceStyled>
+								<ProductBrandStyled>{getValueSafely(() => item.asset.retailer.name, "N/A")}</ProductBrandStyled>
+								<ProductNameStyled>{getValueSafely(() => item.asset.name, "N/A")}</ProductNameStyled>
+								<ProductPriceStyled>$ {getValueSafely(() => item.asset.price, NaN)}</ProductPriceStyled>
 							</div>
 							<div className="col-xs-5 col-bleed-y text-right">
 								<a href={item.asset.retailLink} target="_blank" rel="noopener noreferrer">

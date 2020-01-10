@@ -117,7 +117,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 							onRemove={deleteImage}
 							onChange={handleOnFileUploadChange}
 							headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-							accept="images/*"
+							accept="image/*"
 						>
 							<Button>
 								<Icon type="upload" />
