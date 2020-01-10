@@ -22,9 +22,9 @@ export const getAssetApi: () => string = () => {
 
 export const uploadAssetModel: (assetId: string) => string = assetId => {
 	if (process.env.NODE_ENV !== "production") {
-		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/file?filetype=glb`;
+		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/model?filetype=glb`;
 	}
-	return `${page.apiBaseUrl}/admin/asset/${assetId}/file?filetype=glb`;
+	return `${page.apiBaseUrl}/admin/asset/${assetId}/model?filetype=glb`;
 };
 
 export const deleteUploadedImage = (designId: string, imageId: string) => {
