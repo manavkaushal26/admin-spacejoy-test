@@ -1,12 +1,15 @@
 import { getAssetApi } from "@api/designApi";
+import Card from "@components/Card";
 import Image from "@components/Image";
+import SVGIcon from "@components/SVGIcon";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, FontCorrectedPre, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Icon, Pagination, Row, Col, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import { Col, Icon, Pagination, Row, Typography } from "antd";
+import React, { useEffect, useRef, useState } from "react";
+import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
@@ -29,13 +32,20 @@ interface FetchAndPopulate {
 		pageCount: number,
 		setAssetData: React.Dispatch<React.SetStateAction<AssetType[]>>,
 		setTotalCount: React.Dispatch<React.SetStateAction<number>>,
-		dispatch: React.Dispatch<AssetAction>
+		dispatch: React.Dispatch<AssetAction>,
+		setHasMore: React.Dispatch<React.SetStateAction<boolean>>
 	): Promise<void>;
 }
 
 const TopMarginTitle = styled(Title)<{ level: number }>`
 	margin-top: 0.5em;
 `;
+
+const RenderLoader: React.FC<{}> = () => (
+	<Card className="text-center" noMargin noShadow>
+		<SVGIcon name="spinner" className="loading-spinner" height={25} width={25} />
+	</Card>
+);
 
 const MainAssetPanel = styled.div`
 	margin: 1rem auto;
@@ -66,7 +76,14 @@ const MainAssetPanel = styled.div`
 	}
 `;
 
-const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
+const fetchAndPopulate: FetchAndPopulate = async (
+	state,
+	pageCount,
+	setAssetData,
+	setTotalCount,
+	dispatch,
+	setHasMore
+) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetApi();
 	const queryParams = `?skip=${(pageCount - 1) * 10}&limit=50`;
@@ -89,8 +106,12 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 	});
 	if (responseData.statusCode <= 300) {
 		if (responseData.data.data) {
-			setAssetData(responseData.data.data);
-			setTotalCount(responseData.data.count);
+			if (responseData.data.data.length) {
+				setAssetData(responseData.data.data);
+				setTotalCount(responseData.data.count);
+			} else {
+				setHasMore(false);
+			}
 		}
 	}
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
@@ -108,6 +129,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	projectId,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
+	const [hasMore, setHasMore] = useState<boolean>(true);
 	const [pageCount, setPageCount] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [primaryAsset, setPrimaryAsset] = useState<Partial<AssetType>>(null);
@@ -144,6 +166,8 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.depthRange,
 		state.heightRange,
 	]);
+
+	const scrollParentRef = useRef();
 
 	useEffect(() => {
 		debouncedFetchAsset(state, pageCount, setAssetData, setTotalCount, dispatch);
@@ -201,10 +225,22 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				</Col>
 			)}
 			<Col span={24}>
-				<MainAssetPanel>
-					{assetData.map(asset => {
-						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
-					})}
+				<MainAssetPanel ref={scrollParentRef}>
+					<InfiniteScroll
+						loader={
+							<div>
+								<RenderLoader />
+							</div>
+						}
+						loadMore={() => fetchAndPopulate(state, pageCount, setAssetData, setTotalCount, dispatch, setHasMore)}
+						hasMore={hasMore}
+						useWindow={false}
+						getScrollParent={() => scrollParentRef.current}
+					>
+						{assetData.map(asset => {
+							return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
+						})}
+					</InfiniteScroll>
 				</MainAssetPanel>
 			</Col>
 			<Col span={24}>

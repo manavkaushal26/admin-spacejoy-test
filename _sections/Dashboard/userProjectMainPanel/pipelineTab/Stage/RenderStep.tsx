@@ -147,7 +147,7 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData, phaseData
 								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 								accept="image/*"
 							>
-								<Button disabled={getValueSafely(() => phaseData.design3D.status, Status.pending) !== Status.completed}>
+								<Button>
 									<Icon type="upload" />
 									Click to Upload
 								</Button>
