@@ -115,7 +115,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: assetId });
 	};
 
-
 	useEffect(() => {
 		if (moodboard && assetEntryId) {
 			const asset = moodboard
@@ -130,7 +129,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 			setPrimaryAsset(null);
 			dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: null });
 		};
-	}, [assetEntryId, moodboard]);
+	}, [assetEntryId]);
 
 	useEffect(() => {
 		setPageCount(1);

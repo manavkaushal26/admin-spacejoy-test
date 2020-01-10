@@ -136,8 +136,8 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 
 	const warnUser = (): void => {
 		Modal.confirm({
-			title: "Do you want to send the current project status to the Customer?",
-			content: "Please avoid sending unnecessary Emails to customers.",
+			title: "Are you sure?",
+			content: "Please double check the Project phase is marked as 'Design Ready' before sending out this mail.",
 			onOk: emailCustomer,
 		});
 	};
@@ -234,7 +234,12 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 						</Popconfirm>
 					</Col>
 					<Col span={7}>
-						<CyanButton onClick={warnUser}>Email Customer</CyanButton>
+						<CyanButton
+							disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
+							onClick={warnUser}
+						>
+							Email Customer
+						</CyanButton>
 					</Col>
 				</Row>
 				{(numberOfActiveProjects !== numberOfDesigns ||
