@@ -1,7 +1,5 @@
 import { getAssetApi } from "@api/designApi";
-import Card from "@components/Card";
 import Image from "@components/Image";
-import SVGIcon from "@components/SVGIcon";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv, FontCorrectedPre, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
@@ -9,7 +7,6 @@ import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Col, Icon, Pagination, Row, Typography } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
@@ -40,12 +37,6 @@ interface FetchAndPopulate {
 const TopMarginTitle = styled(Title)<{ level: number }>`
 	margin-top: 0.5em;
 `;
-
-const RenderLoader: React.FC<{}> = () => (
-	<Card className="text-center" noMargin noShadow>
-		<SVGIcon name="spinner" className="loading-spinner" height={25} width={25} />
-	</Card>
-);
 
 const MainAssetPanel = styled.div`
 	margin: 1rem auto;
@@ -129,7 +120,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	projectId,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
-	const [hasMore, setHasMore] = useState<boolean>(true);
 	const [pageCount, setPageCount] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [primaryAsset, setPrimaryAsset] = useState<Partial<AssetType>>(null);
@@ -226,21 +216,9 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 			)}
 			<Col span={24}>
 				<MainAssetPanel ref={scrollParentRef}>
-					<InfiniteScroll
-						loader={
-							<div>
-								<RenderLoader />
-							</div>
-						}
-						loadMore={() => fetchAndPopulate(state, pageCount, setAssetData, setTotalCount, dispatch, setHasMore)}
-						hasMore={hasMore}
-						useWindow={false}
-						getScrollParent={() => scrollParentRef.current}
-					>
-						{assetData.map(asset => {
-							return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
-						})}
-					</InfiniteScroll>
+					{assetData.map(asset => {
+						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
+					})}
 				</MainAssetPanel>
 			</Col>
 			<Col span={24}>
