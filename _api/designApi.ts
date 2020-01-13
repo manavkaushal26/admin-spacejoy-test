@@ -8,6 +8,14 @@ export const designCopyApi: (designId: string) => string = designId => {
 	return `/admin/design/${designId}/copy`;
 };
 
+export const createDesignApi: () => string = () => {
+	return `/design`;
+};
+
+export const deleteDesignApi: (designId) => string = designId => {
+	return `/design/${designId}`;
+};
+
 export const getMetaDataApi: () => string = () => {
 	return "/unity/meta";
 };

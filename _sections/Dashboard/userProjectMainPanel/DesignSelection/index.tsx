@@ -15,6 +15,7 @@ import { Button, Card, Col, message, Row, Tag, Typography, Icon, Modal, Popconfi
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { CustomDiv } from "@sections/Dashboard/styled";
+import { deleteDesignApi } from "@api/designApi";
 import CopyDesignModal from "./CopyDesignModal";
 
 const { Text } = Typography;
@@ -135,11 +136,28 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		}
 	};
 
+	const cardText = getValueSafely(
+		() =>
+			projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
+				? "Add Revision design"
+				: "Add Room",
+		""
+	);
+
 	const warnUser = (): void => {
 		Modal.confirm({
 			title: "Are you sure?",
 			content: "Please double check the Project phase is marked as 'Design Ready' before sending out this mail.",
 			onOk: emailCustomer,
+		});
+	};
+
+	const deleteDesign = async (id: string): Promise<void> => {
+		const endPoint = deleteDesignApi(id);
+		await fetcher({ endPoint, method: "DELETE" });
+		setProjectData({
+			...projectData,
+			designs: [...projectData.designs.filter(design => design.design._id !== id)],
 		});
 	};
 
@@ -154,6 +172,9 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 									style={{ width: "300px" }}
 									hoverable
 									onClick={(): void => onSelectDesign(design.design._id)}
+									actions={[
+										<Icon type="delete" key="delete" onClick={(): Promise<void> => deleteDesign(design.design._id)} />,
+									]}
 									cover={
 										<CustomDiv>
 											<Image
@@ -183,32 +204,30 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 						</React.Fragment>
 					);
 				})}
-				{projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision && (
-					<CustomDiv
-						onClick={toggleCopyDesignModal}
-						inline
-						overflow="visible"
-						width="300px"
-						height="248px"
-						mt="2rem"
-						mr="1rem"
-					>
-						<HoverCard>
-							<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
-								<Col span="24">
-									<Row type="flex" justify="center" align="middle">
-										<Icon style={{ fontSize: "36px" }} type="file-add" />
-									</Row>
-								</Col>
-								<Col span="24">
-									<Row style={{ padding: "15px" }} type="flex" justify="center" align="middle">
-										<Text>Add revision design</Text>
-									</Row>
-								</Col>
-							</Row>
-						</HoverCard>
-					</CustomDiv>
-				)}
+				<CustomDiv
+					onClick={toggleCopyDesignModal}
+					inline
+					overflow="visible"
+					width="300px"
+					height="248px"
+					mt="2rem"
+					mr="1rem"
+				>
+					<HoverCard>
+						<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
+							<Col span="24">
+								<Row type="flex" justify="center" align="middle">
+									<Icon style={{ fontSize: "36px" }} type="file-add" />
+								</Row>
+							</Col>
+							<Col span="24">
+								<Row style={{ padding: "15px" }} type="flex" justify="center" align="middle">
+									<Text>{cardText}</Text>
+								</Row>
+							</Col>
+						</Row>
+					</HoverCard>
+				</CustomDiv>
 			</CustomDiv>
 			<CustomDiv py="1rem" width="100%" type="flex" flexWrap="wrap" justifyContent="center">
 				<Row type="flex" justify="end" style={{ width: "100%" }} gutter={1}>

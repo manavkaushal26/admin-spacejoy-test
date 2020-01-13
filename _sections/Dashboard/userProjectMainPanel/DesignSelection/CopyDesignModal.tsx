@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Modal, Select, Input, Button, Row, Col, Typography, message } from "antd";
-import { DesignInterface, DetailedProject } from "@customTypes/dashboardTypes";
-import { designCopyApi } from "@api/designApi";
+import { DesignInterface, DetailedProject, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { designCopyApi, createDesignApi } from "@api/designApi";
 import fetcher from "@utils/fetcher";
 
 const { Option } = Select;
@@ -19,12 +19,14 @@ const Footer: React.FC<{
 	selectedDesignId: string;
 	toggleModal: () => void;
 	onSubmit: () => void;
+	phase: PhaseInternalNames;
 	loading: boolean;
-}> = ({ roomName, selectedDesignId, toggleModal, onSubmit, loading }) => {
+}> = ({ roomName, selectedDesignId, toggleModal, onSubmit, phase, loading }) => {
+	const disabled: boolean = phase === PhaseInternalNames.designsInRevision ? !roomName || !selectedDesignId : !roomName;
 	return (
 		<>
 			<Button onClick={toggleModal}>Cancel</Button>
-			<Button type="primary" loading={loading} onClick={onSubmit} disabled={!roomName || !selectedDesignId}>
+			<Button type="primary" loading={loading} onClick={onSubmit} disabled={disabled}>
 				Submit
 			</Button>
 		</>
@@ -53,13 +55,17 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 
 	const onSubmit = async (): Promise<void> => {
 		setLoading(true);
-		const endpoint = designCopyApi(selectedDesignId);
+		const endpoint =
+			projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision || selectedDesignId !== null
+				? designCopyApi(selectedDesignId)
+				: createDesignApi();
 		const response = await fetcher({
 			endPoint: endpoint,
 			method: "POST",
 			body: {
 				data: {
 					name: roomName,
+					project: projectData._id,
 				},
 			},
 		});
@@ -89,10 +95,16 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 				toggleModal={toggleModal}
 				onSubmit={onSubmit}
 				loading={loading}
+				phase={projectData.currentPhase.name.internalName}
 			/>
 		),
 		[!!selectedDesignId, roomName]
 	);
+
+	const placeholderText =
+		projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
+			? "Revision Room Name"
+			: "Add Room";
 
 	return (
 		<Modal visible={copyDesignModalVisible} title="Choose a design to copy" onCancel={toggleModal} footer={footer}>
@@ -102,6 +114,9 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 				</Col>
 				<Col>
 					<Select placeholder="Select a Room" style={{ width: "100%" }} onSelect={onSelect}>
+						<Option key={Math.random()} value={null}>
+							Select Design
+						</Option>
 						{projectData.designs.map(design => {
 							return (
 								<Option key={design.design._id} value={design.design._id}>
@@ -118,7 +133,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 					<Text>Room Name</Text>
 				</Col>
 				<Col>
-					<Input value={roomName} placeholder="Revision Room Name" onChange={onChange} />
+					<Input value={roomName} placeholder={placeholderText} onChange={onChange} />
 				</Col>
 			</Row>
 		</Modal>

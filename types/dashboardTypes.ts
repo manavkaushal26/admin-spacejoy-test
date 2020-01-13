@@ -88,8 +88,8 @@ export interface DesignInterface {
 
 interface Phase {
 	name: {
-		internalName: string;
-		customerName: string;
+		internalName: PhaseInternalNames;
+		customerName: PhaseCustomerNames;
 	};
 	startTime: string;
 	endTime: null;
@@ -235,6 +235,7 @@ interface Retailer {
 
 export interface Assets {
 	billable: boolean;
+	hidden: boolean;
 	asset: {
 		name: string;
 		price: number;
