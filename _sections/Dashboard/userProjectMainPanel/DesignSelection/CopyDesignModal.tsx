@@ -50,7 +50,13 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 	};
 
 	const onSelect = (value: string): void => {
-		setSelectedDesignId(value);
+		if (value) {
+			const [id, name] = value.split(":");
+			setSelectedDesignId(id);
+			setRoomName(name);
+		} else {
+			setSelectedDesignId(null);
+		}
 	};
 
 	const onSubmit = async (): Promise<void> => {
@@ -104,7 +110,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 	const placeholderText =
 		projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
 			? "Revision Room Name"
-			: "Add Room";
+			: "Add Design";
 
 	return (
 		<Modal visible={copyDesignModalVisible} title="Choose a design to copy" onCancel={toggleModal} footer={footer}>
@@ -119,7 +125,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 						</Option>
 						{projectData.designs.map(design => {
 							return (
-								<Option key={design.design._id} value={design.design._id}>
+								<Option key={design.design._id} value={`${design.design._id}:${design.design.name} copy`}>
 									{design.design.name}
 								</Option>
 							);

@@ -140,7 +140,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		() =>
 			projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
 				? "Add Revision design"
-				: "Add Room",
+				: "Add Design",
 		""
 	);
 
@@ -160,6 +160,13 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 			designs: [...projectData.designs.filter(design => design.design._id !== id)],
 		});
 	};
+	const confirmDelete = (id: string): void => {
+		Modal.confirm({
+			title: "Are you sure?",
+			content: "This action is irreversible",
+			onOk: () => deleteDesign(id),
+		});
+	};
 
 	return (
 		<CustomDiv>
@@ -173,7 +180,14 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 									hoverable
 									onClick={(): void => onSelectDesign(design.design._id)}
 									actions={[
-										<Icon type="delete" key="delete" onClick={(): Promise<void> => deleteDesign(design.design._id)} />,
+										<Icon
+											type="delete"
+											key="delete"
+											onClick={(e): void => {
+												e.stopPropagation();
+												confirmDelete(design.design._id);
+											}}
+										/>,
 									]}
 									cover={
 										<CustomDiv>
