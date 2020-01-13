@@ -1,7 +1,6 @@
 function indexRoute(app, router) {
 	router.get(["/", "/index"], (req, res) => {
-		const { params } = req;
-		app.render(req, res, "/index", params);
+		app.render(req, res, "/index", { flow: "login" });
 	});
 
 	return router;

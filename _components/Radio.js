@@ -81,7 +81,7 @@ Radio.propTypes = {
 	checked: PropTypes.bool.isRequired,
 	required: PropTypes.bool.isRequired,
 	onChange: PropTypes.func.isRequired,
-	selectionType: PropTypes.bool.isRequired
+	selectionType: PropTypes.bool.isRequired,
 };
 
 export default Radio;

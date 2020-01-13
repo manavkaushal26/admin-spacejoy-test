@@ -6,13 +6,13 @@ import getCookie from "./getCookie";
 interface FetcherParams {
 	ctx?: NextPageContext;
 	endPoint: string;
-	method: string;
+	method: "GET" | "POST" | "PUT" | "DELETE";
 	body?: any;
 }
 
 async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
-	const apiBaseUrl = process.env.NODE_ENV !== "production" ? page.stageApiBaseUrl : page.apiBaseUrl;
+	const apiBaseUrl = process.env.NODE_ENV === "production" ? page.apiBaseUrl : page.stageApiBaseUrl;
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }
 		: { "Content-Type": "application/json" };
@@ -20,19 +20,23 @@ async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<
 		method === "GET"
 			? {
 					method,
-					headers
+					headers,
 			  }
 			: {
 					method,
 					headers,
-					body: JSON.stringify(body)
+					body: JSON.stringify(body),
 			  };
 	const response = await fetch(apiBaseUrl + endPoint, options);
 	if (response.status) {
 		const resData = await response.json();
 		return resData;
 	}
-	return response;
+	const data = {
+		status: response.status,
+		message: response.statusText,
+	};
+	return { ...response, ...data };
 }
 
 export default fetcher;

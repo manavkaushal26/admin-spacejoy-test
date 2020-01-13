@@ -4,6 +4,8 @@ const withOffline = require("next-offline");
 const path = require("path");
 const fs = require("fs");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
+
 const withLess = require("@zeit/next-less");
 const lessToJS = require("less-vars-to-js");
 
@@ -67,11 +69,17 @@ const nextConfig = {
 		modifyVars: themeVariables // make your antd custom effective
 	},
 	webpack: (config, { isServer }) => {
-		const modifiedConfig = { ...config };
+		config.plugins.push(
+			new MomentLocalesPlugin(),
+			new MomentLocalesPlugin({
+				localesToKeep: ["es-us"]
+			})
+		);
+
 		if (isServer) {
 			const antStyles = /antd\/.*?\/style.*?/;
 			const origExternals = [...config.externals];
-			modifiedConfig.externals = [
+			config.externals = [
 				(context, request, callback) => {
 					if (request.match(antStyles)) return callback();
 					if (typeof origExternals[0] === "function") {
@@ -83,13 +91,14 @@ const nextConfig = {
 				...(typeof origExternals[0] === "function" ? [] : origExternals)
 			];
 
-			modifiedConfig.module.rules.unshift({
+			config.module.rules.unshift({
 				test: antStyles,
 				use: "null-loader"
 			});
 		}
+
 		if (ANALYZE) {
-			modifiedConfig.plugins.push(
+			config.plugins.push(
 				new BundleAnalyzerPlugin({
 					analyzerMode: "server",
 					analyzerPort: "auto",
@@ -100,7 +109,7 @@ const nextConfig = {
 				})
 			);
 		}
-		return modifiedConfig;
+		return config;
 	}
 };
 

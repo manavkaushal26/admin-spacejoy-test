@@ -66,11 +66,11 @@ function SignupForm({ redirectUrl }) {
 }
 
 SignupForm.defaultProps = {
-	redirectUrl: ""
+	redirectUrl: "",
 };
 
 SignupForm.propTypes = {
-	redirectUrl: PropTypes.string
+	redirectUrl: PropTypes.string,
 };
 
 export default SignupForm;

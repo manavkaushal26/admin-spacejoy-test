@@ -1,32 +1,111 @@
-import HeroSection from "@sections/Home/HeroSection";
+import ForgotPasswordForm from "@sections/Forms/ForgotPasswordForm";
+import LoginForm from "@sections/Forms/LoginForm";
+import ResetPasswordForm from "@sections/Forms/ResetPasswordForm";
 import Layout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
-import { company } from "@utils/config";
-import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
+import Link from "next/link";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useEffect } from "react";
+import { withAuthVerification, redirectToLocation } from "../_utils/auth";
+import { company } from "../_utils/config";
+import { allowedRoles } from "@utils/constants";
 
+function getHeadingText(flow) {
+	switch (flow) {
+		case "login":
+			return <h3>Welcome Back</h3>;
+		case "forgot-password":
+			return (
+				<>
+					<h3>Forgot Password?</h3>
+					<p>No Worries. We’ll email you instructions to reset your password.</p>
+				</>
+			);
+		case "reset-password":
+			return (
+				<>
+					<h3>Set New Password</h3>
+					<p>This Link will be active for next 30 Mins</p>
+				</>
+			);
+		default:
+			return "";
+	}
+}
 
-const index:React.FC<{isServer: boolean, authVerification: Object}> = ({ isServer, authVerification }) => {
+function auth({ isServer, authVerification, flow = "login", redirectUrl, token }) {
+	useEffect(() => {
+		if (allowedRoles.includes(authVerification.role)) {
+			redirectToLocation({ pathname: "/dashboard", url: "/dashboard" });
+		}
+	}, [authVerification]);
+
+	const renderLoginLink = (
+		<Link
+			href={{ pathname: "/auth", query: { flow: "login", redirectUrl } }}
+			as={redirectUrl ? `/auth/login?redirectUrl=${redirectUrl}` : "/auth/login"}
+			replace
+		>
+			<a href={redirectUrl ? `/auth/login?redirectUrl=${redirectUrl}` : "/auth/login"}>Login</a>
+		</Link>
+	);
+
 	return (
 		<Layout isServer={isServer} authVerification={authVerification}>
 			<Head>
-				{IndexPageMeta}
-				<title>Get 3D Designs of Your Space | {company.product}</title>
+				<title>
+					{flow} | {company.product}
+				</title>
 			</Head>
-			<HeroSection />
+			<div className="container">
+				<div className="grid text-center">
+					<div className="col-12 col-sm-8 col-md-6 col-lg-4">
+						<div className="col-12">{getHeadingText(flow)}</div>
+						{flow === "login" && (
+							<div className="col-12">
+								<LoginForm redirectUrl={redirectUrl} />
+							</div>
+						)}
+
+						{flow === "forgot-password" && (
+							<>
+								<div className="col-12">
+									<ForgotPasswordForm />
+								</div>
+								<span>Already have an account? </span>
+								{renderLoginLink}
+							</>
+						)}
+						{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} token={token} />}
+					</div>
+				</div>
+			</div>
 		</Layout>
 	);
 }
 
-index.defaultProps = {
-	authVerification: {}
+auth.getInitialProps = async ({ req, query: { flow, redirectUrl, token } }) => {
+	const isServer = !!req;
+	return { isServer, flow, redirectUrl, token };
 };
 
-index.propTypes = {
+auth.defaultProps = {
+	flow: "",
+	redirectUrl: "",
+	token: "",
+	authVerification: {
+		role: ""
+	}
+};
+
+auth.propTypes = {
 	isServer: PropTypes.bool.isRequired,
-	authVerification: PropTypes.shape({})
+	authVerification: PropTypes.shape({
+		role: PropTypes.string
+	}),
+	token: PropTypes.string,
+	flow: PropTypes.string,
+	redirectUrl: PropTypes.string
 };
 
-export default withAuthVerification(index);
+export default withAuthVerification(auth);

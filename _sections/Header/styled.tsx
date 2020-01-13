@@ -1,14 +1,14 @@
 import Button from "@components/Button";
-import styled from 'styled-components';
+import styled from "styled-components";
 
 interface PaddedDivProps {
-	displa
+	displa;
 }
 
 export const PaddedDiv = styled.div`
 	width: 100%;
 	height: 100%;
-	padding: ${({theme}) => `0 ${theme.spacing.xl}`};
+	padding: ${({ theme }) => `0 ${theme.spacing.lg}`};
 `;
 
 export const HorizontalListStyled = styled.ul<{ align: string }>`

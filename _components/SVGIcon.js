@@ -240,7 +240,7 @@ SVGIcon.defaultProps = {
 	viewBox: "",
 	width: 14,
 	className: "",
-	height: 14
+	height: 14,
 };
 
 SVGIcon.propTypes = {
@@ -250,7 +250,7 @@ SVGIcon.propTypes = {
 	viewBox: PropTypes.string,
 	width: PropTypes.number,
 	className: PropTypes.string,
-	height: PropTypes.number
+	height: PropTypes.number,
 };
 
 export default SVGIcon;

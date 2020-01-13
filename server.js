@@ -81,17 +81,17 @@ app.prepare().then(() => {
 		server.use(helmet({}));
 		server.use(compression({ threshold: 0 }));
 		server.use(bodyParser.json());
+		server.use(express.static("public"));
 		server.use(customRouters.authRoutes(app));
 		server.use(customRouters.definedRoutes(app));
-
 		server.get("/ping", (req, res) => {
 			res.send("pong");
 		});
 		server.use("/service-worker.js", serve(path.join(__dirname, ".next", "/service-worker.js"), true));
-		server.use("/manifest.json", serve(path.join(__dirname, "/static/manifest.json"), true));
-		server.use("/robots.txt", serve(path.join(__dirname, "/static/robots.txt"), true));
-		server.use("/sitemap.xml", serve(path.join(__dirname, "/static/sitemap.xml"), true));
-		server.use("/favicon.ico", serve(path.join(__dirname, "/static/favicon.ico"), true));
+		server.use("/manifest.json", serve(path.join(__dirname, "public", "static", "/manifest.json"), true));
+		server.use("/robots.txt", serve(path.join(__dirname, "public", "static", "/robots.txt"), true));
+		server.use("/sitemap.xml", serve(path.join(__dirname, "public", "static", "/sitemap.xml"), true));
+		server.use("/favicon.ico", serve(path.join(__dirname, "public", "static", "logo-icons", "/favicon.ico"), true));
 		server.get("*", (req, res) => {
 			const parsedUrl = getParsedUrl(req);
 			if (!dev) res.setHeader("Cache-Control", `public, max-age=${getMaxAge()}, immutable`);

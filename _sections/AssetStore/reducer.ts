@@ -1,10 +1,15 @@
-import { MetaDataType, MoodBoardType } from "@customTypes/moodboardTypes";
+import { MetaDataType, MoodboardAsset } from "@customTypes/moodboardTypes";
 
 export interface AssetStoreState {
 	loading: boolean;
 	metaData: MetaDataType;
-	moodboard: MoodBoardType;
+	moodboard: MoodboardAsset[];
 	retailerFilter: string[];
+	priceRange: [number, number];
+	heightRange: [number, number];
+	widthRange: [number, number];
+	depthRange: [number, number];
+	searchText: string;
 	checkedKeys: {
 		category: string[];
 		subCategory: string[];
@@ -14,13 +19,37 @@ export interface AssetStoreState {
 	cartOpen: boolean;
 }
 
+export const assetStoreInitialState: AssetStoreState = {
+	metaData: null,
+	moodboard: null,
+	loading: true,
+	retailerFilter: [],
+	priceRange: [0, 10000],
+	heightRange: [0, 30],
+	widthRange: [0, 30],
+	depthRange: [0, 30],
+	searchText: "",
+	checkedKeys: {
+		category: [],
+		subCategory: [],
+		verticals: []
+	},
+	selectedAsset: "",
+	cartOpen: false
+};
+
 export interface AssetAction {
 	type: string;
 	value: any;
 }
 
 export enum ASSET_ACTION_TYPES {
+	PRICE_RANGE = "PRICE_RANGE",
+	WIDTH_RANGE = "WIDTH_RANGE",
+	HEIGHT_RANGE = "HEIGHT_RANGE",
+	DEPTH_RANGE = "DEPTH_RANGE",
 	RETAILER = "RETAILER",
+	SEARCH_TEXT = "SEARCH_TEXT",
 	CATEGORY = "CATEGORY",
 	SUB_CATEGORY = "SUB_CATEGORY",
 	CHECKED_ITEMS = "CHECKED_ITEMS",
@@ -28,7 +57,8 @@ export enum ASSET_ACTION_TYPES {
 	MOODBOARD = "MOODBOARD",
 	LOADING_STATUS = "LOADING_STATUS",
 	SELECTED_ASSET = "SELECTED_ASSET",
-	TOGGLE_CART = "TOGGLE_CART"
+	TOGGLE_CART = "TOGGLE_CART",
+	RESET_FILTERS = "RESET_FILTERS"
 }
 
 export interface AssetReducerType {
@@ -37,6 +67,56 @@ export interface AssetReducerType {
 
 export const reducer: AssetReducerType = (state, action) => {
 	switch (action.type) {
+		case ASSET_ACTION_TYPES.RESET_FILTERS:
+			return {
+				...state,
+				retailerFilter: [],
+				priceRange: [0, 10000],
+				heightRange: [0, 30],
+				widthRange: [0, 30],
+				depthRange: [0, 30],
+				searchText: "",
+				checkedKeys: {
+					category: [],
+					subCategory: [],
+					verticals: []
+				},
+				selectedAsset: ""
+			};
+		case ASSET_ACTION_TYPES.SUB_CATEGORY:
+			return {
+				...state,
+				checkedKeys: {
+					category: [],
+					verticals: [],
+					subCategory: [action.value.meta.subcategory]
+				}
+			};
+		case ASSET_ACTION_TYPES.SEARCH_TEXT:
+			return {
+				...state,
+				searchText: action.value
+			};
+		case ASSET_ACTION_TYPES.DEPTH_RANGE:
+			return {
+				...state,
+				depthRange: action.value
+			};
+		case ASSET_ACTION_TYPES.HEIGHT_RANGE:
+			return {
+				...state,
+				heightRange: action.value
+			};
+		case ASSET_ACTION_TYPES.WIDTH_RANGE:
+			return {
+				...state,
+				widthRange: action.value
+			};
+		case ASSET_ACTION_TYPES.PRICE_RANGE:
+			return {
+				...state,
+				priceRange: action.value
+			};
 		case ASSET_ACTION_TYPES.LOADING_STATUS:
 			return {
 				...state,

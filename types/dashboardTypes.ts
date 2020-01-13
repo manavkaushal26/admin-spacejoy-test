@@ -1,11 +1,12 @@
-import { Status, Role } from "./userType";
+import { Status, Role, ProjectRoles } from "./userType";
 
 export enum ProjectScope {
-	customer = "customer",
-	designer = "designer"
+	customer = Role.Customer,
+	designer = Role.Designer,
+	admin = Role.Admin,
 }
 
-enum PhaseInternalNames {
+export enum PhaseInternalNames {
 	requirement = "requirement",
 	designConcept = "designConcept",
 	design3D = "design3D",
@@ -16,9 +17,8 @@ enum PhaseInternalNames {
 	deliveryCompleted = "deliveryCompleted",
 	onHold = "onHold",
 	suspended = "suspended",
-	rejected = "rejected"
+	rejected = "rejected",
 }
-
 enum PhaseCustomerNames {
 	requirement = "requirement",
 	brief = "brief",
@@ -27,7 +27,21 @@ enum PhaseCustomerNames {
 	final = "final",
 	onHold = "onHold",
 	cancelled = "cancelled",
-	rejected = "rejected"
+	rejected = "rejected",
+}
+
+export enum HumanizePhaseInternalNames {
+	requirement = "Requirement",
+	designConcept = "Design Concept",
+	design3D = "Design 3D",
+	designRender = "Design Render",
+	designReady = "Design Ready",
+	designsInRevision = "Design's in Revision",
+	shop = "Shop",
+	deliveryCompleted = "Delivery Completed",
+	onHold = "On Hold",
+	suspended = "Suspended",
+	rejected = "Rejected",
 }
 
 interface CurrentPhase {
@@ -43,6 +57,7 @@ export interface UserProjectType {
 	projectScope: ProjectScope;
 	status: Status;
 	name: string;
+	customerName: string;
 	customer: {
 		_id: string;
 		email: string;
@@ -56,11 +71,12 @@ export interface UserProjectType {
 	id: string;
 }
 
-interface DesignInterface {
+export interface DesignInterface {
 	state: string;
-	_id: string;
+	_id?: string;
 	design: {
 		lock: false;
+		phases: PhaseType;
 		status: string;
 		_id: string;
 		name: string;
@@ -81,10 +97,26 @@ interface Phase {
 	_id: string;
 }
 
-interface DesignImagesInterface {
+export enum DesignImgTypes {
+	Render = "render",
+	Moodboard = "moodboard",
+	Layout2D = "layout2d",
+	Cover = "cover",
+	Panorama = "panorama",
+	Image360 = "image360",
+	Floorplan = "floorplan",
+}
+export interface DesignerImageComments {
+	_id?: string;
+	author: string;
+	text: string;
+	status: string;
+}
+export interface DesignImagesInterface {
 	cdn: string;
 	_id: string;
-	imgType: string;
+	comments: DesignerImageComments[];
+	imgType: DesignImgTypes;
 	path: string;
 }
 
@@ -111,14 +143,41 @@ enum PaymentStatus {
 	pending = "pending",
 	paid = "paid",
 	refunded = "refunded",
-	fail = "fail"
+	fail = "fail",
 }
 
-enum Packages {
+export enum Packages {
 	delight = "delight",
 	bliss = "bliss",
-	euphoria = "euphoria"
+	euphoria = "euphoria",
 }
+
+export enum PackageDesignValue {
+	delight = 1,
+	bliss,
+	euphoria = 2,
+}
+
+export enum PackageTimeline {
+	delight = 12,
+	bliss = 10,
+	euphoria = 7,
+}
+
+export const PackageDetails = {
+	delight: {
+		designs: PackageDesignValue.delight,
+		days: PackageTimeline.delight,
+	},
+	bliss: {
+		designs: PackageDesignValue.bliss,
+		days: PackageTimeline.bliss,
+	},
+	euphoria: {
+		designs: PackageDesignValue.euphoria,
+		days: PackageTimeline.euphoria,
+	},
+};
 
 interface Order {
 	paymentStatus: PaymentStatus;
@@ -127,17 +186,14 @@ interface Order {
 	id: string;
 }
 export interface TeamMember {
+	_id: string;
 	profile: {
-		dob: string | null;
-		gender: string;
 		firstName: string;
 		lastName: string;
 		name: string;
 	};
-	role: Role;
-	_id: string;
+	role: ProjectRoles;
 	email: string;
-	id: string;
 }
 
 export interface FormType {
@@ -146,9 +202,15 @@ export interface FormType {
 	answer: string;
 }
 
+export interface DetailedProjectTeamMember {
+	_id: string;
+	memberName: string;
+	member: TeamMember;
+}
+
 export interface DetailedProject {
 	projectScope: ProjectScope;
-	team: TeamMember[];
+	team: DetailedProjectTeamMember[];
 	status: Status;
 	onTrial: boolean;
 	chat: [];
@@ -183,6 +245,7 @@ export interface Assets {
 		imageUrl: string;
 		createdAt: string;
 		updatedAt: string;
+		shoppable: boolean;
 	};
 }
 
@@ -192,15 +255,112 @@ export interface DesignerNotes {
 	text: string;
 }
 
+export interface RoomType {
+	spatialData: {
+		fileUrls: {
+			glb?: string;
+			source?: string;
+			legacy_obj?: string;
+		};
+	};
+	status: Status;
+	_id: string;
+	name: string;
+	roomType: RoomTypes;
+	createdAt: string;
+	updatedAt: string;
+	id: string;
+}
+
+export interface PhaseDetails {
+	status: Status;
+	startTime: Date;
+	endTime: Date;
+}
+
+export enum DesignPhases {
+	Concept = "concept",
+	Modelling = "modelling",
+	Design3D = "design3D",
+	Render = "render",
+	Revision = "revision",
+	Ready = "ready",
+}
+
+export enum HumanizeDesignPhases {
+	concept = "Concept",
+	modelling = "Modelling",
+	design3D = "Design 3D",
+	render = "Render",
+	revision = "Revision",
+	ready = "Ready",
+}
+
+export interface PhaseType {
+	[DesignPhases.Concept]: PhaseDetails;
+	[DesignPhases.Modelling]: PhaseDetails;
+	[DesignPhases.Design3D]: PhaseDetails;
+	[DesignPhases.Render]: PhaseDetails;
+	[DesignPhases.Revision]: PhaseDetails;
+	[DesignPhases.Ready]: PhaseDetails;
+}
+
 export interface DetailedDesign {
 	_id: string;
 	name: string;
 	description: string;
 	assets: Assets[];
-	room: string;
+	room: RoomType;
+	phases: PhaseType;
 	designImages: DesignImagesInterface[];
 	createdAt: string;
+	missingAssetUrls: string[];
 	updatedAt: string;
 	designerNotes: DesignerNotes[];
 	id: string;
+}
+
+export enum Model3DFiles {
+	Obj = "legacy_obj",
+	Glb = "glb",
+}
+
+export enum ModelToExtensionMap {
+	legacy_obj = ".zip",
+	glb = ".glb",
+}
+
+export enum RoomTypes {
+	LivingRoom = "living room",
+	Bedroom = "bed room",
+	DiningRoom = "dining room",
+	StudyRoom = "study room",
+	EntryWay = "entryway",
+	KidsRoom = "kids room",
+	Studio = "studio",
+	Nursery = "nursery",
+	HomeOffice = "home office",
+	Window = "window",
+	Door = "door",
+	House = "house",
+}
+
+export enum RoomLabels {
+	LivingRoom = "Living room",
+	Bedroom = "Bedroom",
+	DiningRoom = "Dining room",
+	StudyRoom = "Study room",
+	EntryWay = "Entryway",
+	KidsRoom = "Kids room",
+	Studio = "Studio",
+	Nursery = "Nursery",
+	HomeOffice = "Home office",
+	Window = "Window",
+	Door = "Door",
+	House = "House",
+}
+
+export enum RenderImgUploadTypes {
+	Render = "render",
+	Panorama = "panorama",
 }

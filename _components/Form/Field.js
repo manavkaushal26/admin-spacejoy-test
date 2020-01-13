@@ -85,7 +85,7 @@ function Field({
 	hint,
 	inline,
 	required,
-	submitInProgress
+	submitInProgress,
 }) {
 	return (
 		<FieldWrapperStyled hasError={data.error}>
@@ -137,7 +137,7 @@ function Field({
 										name: "address",
 										id: "address",
 										placeholder: "Search Places ...",
-										className: "input-field"
+										className: "input-field",
 									})}
 								/>
 							</LabelStyled>
@@ -221,7 +221,7 @@ function Field({
 Field.defaultProps = {
 	data: {
 		value: "",
-		error: ""
+		error: "",
 	},
 	options: [],
 	onchange: () => {},
@@ -232,13 +232,13 @@ Field.defaultProps = {
 	inline: false,
 	required: false,
 	readonly: false,
-	submitInProgress: false
+	submitInProgress: false,
 };
 
 Field.propTypes = {
 	data: PropTypes.shape({
 		value: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-		error: PropTypes.string
+		error: PropTypes.string,
 	}),
 	onchange: PropTypes.func,
 	handleAddressChange: PropTypes.func,
@@ -252,7 +252,7 @@ Field.propTypes = {
 	inline: PropTypes.bool,
 	required: PropTypes.bool,
 	readonly: PropTypes.bool,
-	submitInProgress: PropTypes.bool
+	submitInProgress: PropTypes.bool,
 };
 
 export default Field;

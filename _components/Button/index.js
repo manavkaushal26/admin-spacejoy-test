@@ -3,9 +3,13 @@ import { PushEvent } from "@utils/analyticsLogger";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
-import ButtonBase from "./ButtonBaseStyle";
+import { ButtonNormalStyled } from "./ButtonBaseStyle";
 
-const ButtonStyled = styled(ButtonBase)`
+const ButtonStyled = styled(ButtonNormalStyled)`
+	font-family: "AirbnbCerealBold";
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: 1px;
 	background: ${({ theme, variant, fill }) => {
 		if (fill === "ghost" || fill === "clean") {
 			return "transparent";
@@ -15,14 +19,19 @@ const ButtonStyled = styled(ButtonBase)`
 				return `linear-gradient(135deg,${theme.colors.primary1} 0%,${theme.colors.primary2} 100%)`;
 			case "secondary":
 				return theme.colors.primary2;
+			case "facebook":
+				return theme.colors.social.facebook;
+			case "google":
+				return theme.colors.social.google;
 			default:
 				return "transparent";
 		}
 	}};
-	color: ${({ theme, variant, fill }) => {
-		return fill !== "ghost" && (variant === "primary" || variant === "secondary")
-			? theme.colors.white
-			: theme.colors.fc.dark2;
+	color: ${({ theme, fill }) => {
+		if (fill === "ghost" || fill === "clean") {
+			return theme.colors.fc.dark2;
+		}
+		return theme.colors.white;
 	}};
 	font-size: ${({ size }) => {
 		switch (size) {
@@ -43,7 +52,7 @@ const ButtonStyled = styled(ButtonBase)`
 			case "xs":
 				return "0.3rem 0.5rem";
 			case "sm":
-				return "0.5rem 0.75rem";
+				return "0.5rem 1rem";
 			case "md":
 				return "0.75rem 2rem";
 			case "lg":
@@ -71,21 +80,20 @@ const ButtonStyled = styled(ButtonBase)`
 			case "flat":
 				return "0";
 			case "rounded":
-				return "3px";
+				return "2px";
 			case "circle":
 				return "50%";
 			default:
 				return "0";
 		}
 	}};
-	font-weight: ${({ size }) => (size === "lg" ? "bold" : "normal")};
 	border: ${({ fill, theme }) =>
 		fill === "solid" || fill === "clean" ? "none" : `1px solid ${theme.colors.fc.dark2}`};
 	display: ${({ full }) => (full ? "block" : "inline-block")};
 	width: ${({ full }) => (full ? "100%" : "auto")};
 	transition: all ease-in 0.15s;
 	&:hover {
-		box-shadow: ${({ fill }) => (fill === "clean" ? "none" : "0 2px 5px 0px rgba(0, 0, 0, 0.15)")};
+		box-shadow: ${({ fill }) => (fill === "clean" ? "none" : "0px 5px 10px 0px rgba(0, 0, 0, 0.2)")};
 	}
 	&:disabled {
 		background: ${({ theme }) => theme.colors.bg.light2};
@@ -93,6 +101,21 @@ const ButtonStyled = styled(ButtonBase)`
 		border-color: ${({ theme }) => theme.colors.bg.light2};
 		cursor: not-allowed;
 		box-shadow: none;
+	}
+	div.true-center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		svg {
+			margin: 0 0.5rem;
+			path: {
+				fill: ${({ theme, variant, fill }) => {
+					return fill !== "ghost" && fill !== "clean" && (variant === "primary" || variant === "secondary")
+						? theme.colors.white
+						: theme.colors.fc.dark2;
+				}};
+			}
+		}
 	}
 `;
 
@@ -105,12 +128,18 @@ function Button(props) {
 	return (
 		<>
 			{raw ? (
-				<ButtonBase {...props} onClick={e => onClickWithGA(e)}>
+				<ButtonNormalStyled {...props} onClick={onClickWithGA}>
 					{children}
-				</ButtonBase>
+				</ButtonNormalStyled>
 			) : (
-				<ButtonStyled {...props} onClick={e => onClickWithGA(e)} disabled={submitInProgress || disabled}>
-					{submitInProgress ? <SVGIcon name="spinner" className="loading-spinner" height={15} width={15} /> : children}
+				<ButtonStyled {...props} onClick={onClickWithGA} disabled={submitInProgress || disabled}>
+					<div className="true-center">
+						{submitInProgress ? (
+							<SVGIcon name="spinner" className="loading-spinner" height={17} width={17} />
+						) : (
+							children
+						)}
+					</div>
 				</ButtonStyled>
 			)}
 		</>
@@ -120,7 +149,7 @@ function Button(props) {
 Button.defaultProps = {
 	children: null,
 	onClick: () => {},
-	shape: "flat",
+	shape: "rounded",
 	variant: "secondary",
 	size: "md",
 	type: "button",
@@ -133,7 +162,7 @@ Button.defaultProps = {
 	value: "",
 	label: "",
 	event: "",
-	data: {}
+	data: {},
 };
 
 Button.propTypes = {
@@ -152,7 +181,7 @@ Button.propTypes = {
 	label: PropTypes.string,
 	event: PropTypes.string,
 	value: PropTypes.string,
-	data: PropTypes.shape({})
+	data: PropTypes.shape({}),
 };
 
-export default React.memo(Button);
+export default Button;

@@ -1,8 +1,8 @@
+import User, { Role } from "@customTypes/userType";
 import GlobalStyle from "@theme/globalStyle";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "../Header";
-import User, { Role } from "@customTypes/userType";
 
 const dev = process.env.NODE_ENV !== "production";
 
@@ -25,8 +25,8 @@ const MainStyled = styled.main<{ isServer: boolean }>`
 	}
 `;
 interface LayoutProps {
-	isServer: boolean | undefined;
-	authVerification: Partial<User>;
+	isServer?: boolean | undefined;
+	authVerification?: Partial<User>;
 	children: ReactNode;
 }
 
@@ -45,7 +45,7 @@ const Layout: React.FC<LayoutProps> = ({ isServer, authVerification, children })
 Layout.defaultProps = {
 	isServer: undefined,
 	authVerification: {
-		role: Role.guest,
+		role: Role.Guest,
 		name: ""
 	}
 };

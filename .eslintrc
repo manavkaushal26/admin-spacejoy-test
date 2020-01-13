@@ -1,12 +1,14 @@
 {
 	"extends": [
 		"airbnb",
-		"prettier",
+		"prettier/@typescript-eslint",
 		"prettier/react",
 		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended"
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended",
+		"eslint:recommended"
 	],
-	"plugins": ["prettier"],
+	"plugins": ["@typescript-eslint", "prettier"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2016,
@@ -29,9 +31,9 @@
 		}
 	},
 	"rules": {
-		"@typescript-eslint/camelcase": 1,
+		"@typescript-eslint/camelcase": 2,
 		"react/jsx-filename-extension": [
-			1,
+			2,
 			{
 				"extensions": [".js", ".jsx", ".ts", ".tsx"]
 			}
@@ -52,6 +54,23 @@
 				},
 				"allowChildren": false
 			}
+		],
+		"no-console": 2,
+		"no-underscore-dangle": 0,
+		"import/prefer-default-export": 1,
+		"react/prop-types": 0,
+		"no-mixed-spaces-and-tabs": 0,
+		"no-extra-semi": 0,
+		"@typescript-eslint/type-annotation-spacing": 0,
+		"@typescript-eslint/member-delimiter-style": 0,
+		"jsx-a11y/label-has-associated-control": [
+			1,
+			{
+				"labelAttributes": ["label"],
+				"controlComponents": ["Input", "Upload"],
+				"depth": 5
+			}
 		]
-	}
+	},
+	"reportUnusedDisableDirectives": true
 }

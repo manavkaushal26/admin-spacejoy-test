@@ -40,11 +40,11 @@ function LoginForm({ redirectUrl }) {
 }
 
 LoginForm.defaultProps = {
-	redirectUrl: ""
+	redirectUrl: "",
 };
 
 LoginForm.propTypes = {
-	redirectUrl: PropTypes.string
+	redirectUrl: PropTypes.string,
 };
 
 export default LoginForm;

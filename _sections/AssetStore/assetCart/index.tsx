@@ -1,8 +1,9 @@
-import { MoodBoardType } from "@customTypes/moodboardTypes";
+import Image from "@components/Image";
+import { MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
-import { SilentDivider } from "@sections/Dashboard/styled";
+import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Empty, Spin, Typography } from "antd";
+import { Empty, Icon, Spin, Statistic, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import { GreyDrawer } from "../styled";
 import CartAssetCard from "./CartAssetCard";
@@ -11,74 +12,111 @@ const { Text } = Typography;
 
 interface AssetCartModalProps {
 	cartOpen: boolean;
-	moodboard: MoodBoardType;
+	designId: string;
+	projectId: string;
+	moodboard: MoodboardAsset[];
 	dispatch: React.Dispatch<AssetAction>;
 	dataLoading: boolean;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
+	selectedAssetId: string;
 }
 
-const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
+const AssetCartModal = ({
 	cartOpen,
 	dispatch,
+	projectId,
+	designId,
 	moodboard,
 	addRemoveAsset,
-	dataLoading
-}) => {
+	dataLoading,
+	selectedAssetId
+}: AssetCartModalProps): JSX.Element => {
 	const [selectedEntry, setSelectedEntry] = useState<string>(null);
 
-	const onRecomendationClick = entryId => {
+	const onRecomendationClick = (entryId): void => {
 		setSelectedEntry(entryId);
 	};
 
-	const onSecondaryClose = () => {
+	const onSecondaryClose = (): void => {
 		setSelectedEntry(null);
 	};
+
+	const costOfMoodboard = useMemo(() => {
+		if (moodboard)
+			return moodboard
+				.filter(asset => asset.isExistingAsset)
+				.reduce((acc, asset) => {
+					return acc + asset.asset.price;
+				}, 0);
+		return 0;
+	}, [moodboard]);
+
 	const selectedAsset = useMemo(() => {
 		if (moodboard) {
-			const assetEntry = moodboard.assets.find(asset => {
-				return asset._id === selectedEntry;
-			});
+			const assetEntry = moodboard
+				.filter(asset => asset.isExistingAsset)
+				.find(asset => {
+					return asset.asset._id === selectedEntry;
+				});
 			return assetEntry;
 		}
+		return null;
 	}, [selectedEntry, moodboard]);
 
-	const handlePrimaryMoodboardClose = () => {
+	const handlePrimaryMoodboardClose = (): void => {
 		dispatch({ type: ASSET_ACTION_TYPES.TOGGLE_CART, value: null });
 	};
 
 	return (
 		<GreyDrawer
-			title="Primary product list"
+			title={
+				<CustomDiv>
+					<Text>Primary Assets</Text>
+					<Statistic value={costOfMoodboard} prefix={<Icon type="dollar-circle" theme="filled" />} />
+				</CustomDiv>
+			}
 			width={360}
 			onClose={handlePrimaryMoodboardClose}
-			closable={true}
+			closable
 			visible={cartOpen}
 		>
 			<Spin spinning={dataLoading}>
-				{getValueSafely<boolean>(() => moodboard.assets.length > 0, false) ? (
-					moodboard.assets.map(assetEntry => {
-						return (
-							<>
-								<CartAssetCard
-									addRemoveAsset={addRemoveAsset}
-									onRecommendationClick={onRecomendationClick}
-									type="primary"
-									asset={assetEntry.asset}
-									entryId={assetEntry._id}
-								/>
-								<SilentDivider />
-							</>
-						);
-					})
+				{getValueSafely<boolean>(() => moodboard.length > 0, false) ? (
+					moodboard
+						.filter(assetEntry => assetEntry.isExistingAsset)
+						.map(assetEntry => {
+							return (
+								<>
+									<CartAssetCard
+										projectId={projectId}
+										designId={designId}
+										addRemoveAsset={addRemoveAsset}
+										onRecommendationClick={onRecomendationClick}
+										type="primary"
+										currentlySelectingRecommendation={selectedAssetId === assetEntry.asset._id}
+										asset={assetEntry.asset}
+										entryId={assetEntry.asset._id}
+									/>
+									<SilentDivider />
+								</>
+							);
+						})
 				) : (
 					<Empty description="Add some products to design" />
 				)}
 				{selectedEntry && (
 					<GreyDrawer
-						title={getValueSafely(() => `${selectedAsset.asset.name} Recommendation`, "Recommendations")}
+						title={
+							<>
+								<CustomDiv type="flex" flexDirection="column" justifyContent="center" align="center">
+									<Image width="40%" src={`/q_80/${selectedAsset.asset.cdn}`} />
+									{getValueSafely(() => `${selectedAsset.asset.name} Recommendation`, "Recommendations")}
+								</CustomDiv>
+							</>
+						}
 						width={360}
 						onClose={onSecondaryClose}
-						closable={true}
+						closable
 						visible={selectedEntry !== null}
 					>
 						<Spin spinning={dataLoading}>
@@ -87,7 +125,9 @@ const AssetCartModal: (props: AssetCartModalProps) => JSX.Element = ({
 									return (
 										<>
 											<CartAssetCard
-												entryId={selectedAsset._id}
+												projectId={projectId}
+												designId={designId}
+												entryId={selectedAsset.asset._id}
 												addRemoveAsset={addRemoveAsset}
 												type="recommendation"
 												asset={asset}

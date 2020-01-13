@@ -1,4 +1,4 @@
-import { Card, Divider, Drawer, Icon, Spin } from "antd";
+import { Card, Divider, Drawer, Icon, Spin, Slider } from "antd";
 import styled from "styled-components";
 
 export const ModifiedDivider = styled(Divider)`
@@ -10,6 +10,7 @@ export const AssetCard = styled(Card)`
 		padding: 0px 0px;
 		height: 100%;
 	}
+	min-height: 150px;
 `;
 
 export const StyleCorrectedIcon = styled(Icon)`
@@ -20,15 +21,23 @@ export const StyleCorrectedIcon = styled(Icon)`
 	}
 `;
 
-export const FullheightSpin = styled(Spin)`
-	&.ant-spin-nested-loading {
-		width: 100%;
-		height: 100%;
-		.ant-spin-container {
-			width: 100%;
-			height: 100%;
+export const FilterCard = styled(Card)`
+	.ant-card-body {
+		> * + * {
+			margin-top: 10px;
+		}
+		.ant-typography {
+			display: block;
 		}
 	}
+`;
+
+export const FullheightSpin = styled(Spin)`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
 
 export const GreyDrawer = styled(Drawer)`
@@ -44,4 +53,20 @@ export const GreyDrawer = styled(Drawer)`
 			flex-grow: 1;
 		}
 	}
+`;
+
+export const StyledInput = styled.input<{ error: boolean }>`
+	::-webkit-inner-spin-button,
+	::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+	width: 100%;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	border-color: ${({ error }) => (error ? "red" : "")};
+`;
+
+export const MarginCorrectedSlider = styled(Slider)`
+	margin: 8px 8px;
 `;

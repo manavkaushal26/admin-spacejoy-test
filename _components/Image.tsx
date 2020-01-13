@@ -37,7 +37,7 @@ Image.defaultProps = {
 	height: "auto",
 	shape: "",
 	nolazy: false,
-	scrollPosition: {}
+	scrollPosition: {},
 };
 
 Image.propTypes = {
@@ -47,7 +47,7 @@ Image.propTypes = {
 	height: PropTypes.string,
 	shape: PropTypes.string,
 	nolazy: PropTypes.bool,
-	scrollPosition: PropTypes.shape({})
+	scrollPosition: PropTypes.shape({}),
 };
 
 export default React.memo(trackWindowScroll(Image));
