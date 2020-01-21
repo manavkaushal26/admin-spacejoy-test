@@ -4,13 +4,12 @@ import ResetPasswordForm from "@sections/Forms/ResetPasswordForm";
 import Layout from "@sections/Layout";
 import Head from "next/head";
 import Link from "next/link";
-import PropTypes from "prop-types";
 import React, { useEffect } from "react";
+import { allowedRoles } from "@utils/constants";
 import { withAuthVerification, redirectToLocation } from "../_utils/auth";
 import { company } from "../_utils/config";
-import { allowedRoles } from "@utils/constants";
 
-function getHeadingText(flow) {
+function getHeadingText(flow): JSX.Element {
 	switch (flow) {
 		case "login":
 			return <h3>Welcome Back</h3>;
@@ -29,11 +28,11 @@ function getHeadingText(flow) {
 				</>
 			);
 		default:
-			return "";
+			return <></>;
 	}
 }
 
-function auth({ isServer, authVerification, flow = "login", redirectUrl, token }) {
+function auth({ isServer, authVerification, flow = "login", redirectUrl, token }): JSX.Element {
 	useEffect(() => {
 		if (allowedRoles.includes(authVerification.role)) {
 			redirectToLocation({ pathname: "/dashboard", url: "/dashboard" });
@@ -84,28 +83,17 @@ function auth({ isServer, authVerification, flow = "login", redirectUrl, token }
 	);
 }
 
-auth.getInitialProps = async ({ req, query: { flow, redirectUrl, token } }) => {
+auth.getInitialProps = async ({
+	req,
+	query: { flow, redirectUrl, token },
+}): Promise<{
+	isServer: boolean;
+	flow: string | string[];
+	redirectUrl: string | string[];
+	token: string | string[];
+}> => {
 	const isServer = !!req;
 	return { isServer, flow, redirectUrl, token };
-};
-
-auth.defaultProps = {
-	flow: "",
-	redirectUrl: "",
-	token: "",
-	authVerification: {
-		role: ""
-	}
-};
-
-auth.propTypes = {
-	isServer: PropTypes.bool.isRequired,
-	authVerification: PropTypes.shape({
-		role: PropTypes.string
-	}),
-	token: PropTypes.string,
-	flow: PropTypes.string,
-	redirectUrl: PropTypes.string
 };
 
 export default withAuthVerification(auth);

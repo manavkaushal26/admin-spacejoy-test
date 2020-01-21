@@ -1,4 +1,4 @@
-import { DesignPhases, HumanizeDesignPhases, PhaseType } from "@customTypes/dashboardTypes";
+import { DesignPhases, HumanizeDesignPhases, PhaseType, Packages, PackageDetails } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 
 interface GetValueFunction {
@@ -36,4 +36,51 @@ export const getHumanizedActivePhase = (phases: PhaseType) => {
 		if (phases[curr].status === Status.active) return HumanizeDesignPhases[curr];
 		return acc;
 	}, HumanizeDesignPhases[DesignPhases.Concept]);
+};
+
+export const getNumberOfDesigns = (items: Packages[]): number => {
+	if (items.includes(Packages.euphoria)) {
+		return PackageDetails.euphoria.designs;
+	}
+	if (items.includes(Packages.bliss)) {
+		return PackageDetails.bliss.designs;
+	}
+	if (items.includes(Packages.delight)) {
+		return PackageDetails.delight.designs;
+	}
+	return 1;
+};
+
+export const getNumberOfDays = (items: Packages[]): number => {
+	if (items.includes(Packages.euphoria)) {
+		return PackageDetails.euphoria.days;
+	}
+	if (items.includes(Packages.bliss)) {
+		return PackageDetails.bliss.days;
+	}
+	if (items.includes(Packages.delight)) {
+		return PackageDetails.delight.days;
+	}
+	return 1;
+};
+
+export const getColorsForPackages = (items: Packages[]): Record<string, string> => {
+	if (items.includes(Packages.euphoria)) {
+		return {
+			backgroundColor: "#da98f6",
+		};
+	}
+	if (items.includes(Packages.bliss)) {
+		return {
+			backgroundColor: "#ffc53d",
+			color: "#314659",
+		};
+	}
+	if (items.includes(Packages.delight)) {
+		return {
+			backgroundColor: "#cd2d82",
+			color: "white",
+		};
+	}
+	return undefined;
 };

@@ -26,16 +26,30 @@ interface DashboardProps {
 
 const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, projectId, designId }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
-	const [loading, setLoading] = useState<boolean>(false);
+	const [loading] = useState<boolean>(false);
+	const [startDate, setStartDate] = useState<string>(null);
 	const handleSelectCard = (user: string): void => {
 		setSelectedUser(user);
-		Router.push({ pathname: "/dashboard", query: { user } }, `/dashboard/pid/${user}`);
+		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
 
 	useEffect(() => {
-		setSelectedUser(projectId);
+		if (projectId) {
+			setSelectedUser(projectId);
+		}
 	}, []);
 
+	/**
+	 * Function to cause main panel to update start date and hece the progress bar when the start button
+	 * is clicked on the sidebar and the project is open in mainpanel
+	 * @param pid ProjectID
+	 * @param startDate Time when the start button is clicked in the sidepanel
+	 */
+	const updateStartDateInMainPanel = (pid, date): void => {
+		if (pid === projectId) {
+			setStartDate(date);
+		}
+	};
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -46,16 +60,20 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 				<Spin spinning={loading}>
 					<Row type="flex" align="top">
 						<Col sm={24} md={10} lg={7} xl={6}>
-							<Sidebar selectedUser={selectedUser} handleSelectCard={handleSelectCard} />
+							<Sidebar
+								updateStartDateInMainPanel={updateStartDateInMainPanel}
+								selectedUser={selectedUser}
+								handleSelectCard={handleSelectCard}
+							/>
 						</Col>
 						<Col sm={24} md={14} lg={17} xl={18}>
 							<MaxHeightDiv>
 								<PaddedDiv>
 									<UserProjectMainPanel
-										loading={loading}
-										setLoading={setLoading}
 										designId={designId}
 										userProjectId={selectedUser}
+										startDate={startDate}
+										setStartDate={setStartDate}
 									/>
 								</PaddedDiv>
 							</MaxHeightDiv>
@@ -70,14 +88,14 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 dashboard.getInitialProps = async (ctx: NextPageContext): Promise<DashboardProps> => {
 	const {
 		req,
-		query: { pid, designId: did }
+		query: { pid, designId: did },
 	} = ctx;
 	const isServer = !!req;
 	const designId: string = did as string;
 	const projectId: string = pid as string;
 	const authVerification = {
 		name: "",
-		email: ""
+		email: "",
 	};
 	return { isServer, authVerification, projectId, designId };
 };

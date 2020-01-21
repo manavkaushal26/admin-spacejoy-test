@@ -1,16 +1,17 @@
-import { UserProjectType } from "@customTypes/dashboardTypes";
-import { ExtendedJSXFC } from "@customTypes/extendedReactComponentTypes";
+import { UserProjectType, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Empty, Icon, Input, Tabs } from "antd";
+import { Empty, Icon, Input, Tabs, Select } from "antd";
 import React, { useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
+import { editProjectApi } from "@api/projectApi";
 import LoadingCard from "./LoadingCard";
 import { CustomDiv, MaxHeightDiv, SilentDivider } from "./styled";
 
+const { Option } = Select;
 interface State {
 	searchText: string;
 	searchActive: boolean;
@@ -18,6 +19,7 @@ interface State {
 	pageCount: number;
 	hasMore: boolean;
 	currentTab: string;
+	phase: PhaseInternalNames;
 	searchResults: UserProjectType[];
 }
 enum actionTypes {
@@ -26,6 +28,9 @@ enum actionTypes {
 	LOAD_USER_DATA,
 	UPDATE_HAS_MORE,
 	TAB_CHANGE,
+	PHASE_FILTER,
+	CLEAR_DATA,
+	UPDATE_PROJECT_START_DATE,
 }
 
 interface Action {
@@ -38,6 +43,7 @@ const initalState: State = {
 	searchActive: false,
 	data: [],
 	pageCount: 0,
+	phase: null,
 	hasMore: true,
 	currentTab: "active",
 	searchResults: [],
@@ -52,6 +58,14 @@ const actionCreator = (actionType: actionTypes, value: Partial<State>): Action =
 
 const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
+		case actionTypes.PHASE_FILTER:
+			return {
+				...state,
+				phase: action.value.phase,
+				data: [],
+				pageCount: 0,
+				hasMore: true,
+			};
 		case actionTypes.TAB_CHANGE:
 			return {
 				...state,
@@ -62,14 +76,18 @@ const reducer = (state: State, action: Action): State => {
 			};
 		case actionTypes.CLEAR:
 			return { ...initalState };
+		case actionTypes.CLEAR_DATA:
+			return {
+				...state,
+				data: [],
+				pageCount: 0,
+				hasMore: true,
+			};
 		case actionTypes.SEARCH_TEXT:
 			return {
 				...state,
 				searchText: action.value.searchText,
 				searchActive: action.value.searchText.length !== 0,
-				data: [],
-				pageCount: 0,
-				hasMore: true,
 			};
 		case actionTypes.UPDATE_HAS_MORE:
 			return {
@@ -86,23 +104,20 @@ const reducer = (state: State, action: Action): State => {
 				hasMore: action.value.hasMore,
 			};
 		}
+		case actionTypes.UPDATE_PROJECT_START_DATE:
+			return {
+				...state,
+				data: [...action.value.data],
+			};
 		default:
 			return state;
 	}
 };
 
 const StyleCorrectedTab = styled(Tabs)`
-	.ant-tabs-nav-container {
-		width: 60%;
-	}
 	.ant-tabs-bar.ant-tabs-top-bar {
 		padding: 0px 12px;
-	}
-	&.ant-tabs {
-		width: 100%;
-	}
-	.ant-tabs-extra-content {
-		width: 40%;
+		margin: 0;
 	}
 `;
 
@@ -111,17 +126,50 @@ const GrayMaxHeightDiv = styled(MaxHeightDiv)`
 `;
 
 interface SidebarProps {
+	updateStartDateInMainPanel: (pid: string, date: string) => void;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
 }
 
-const handleSearch = (value: string, dispatch: React.Dispatch<Action>): void => {
-	dispatch(actionCreator(actionTypes.SEARCH_TEXT, { searchText: value }));
+const clearData = (dispatch: React.Dispatch<Action>): void => {
+	dispatch(actionCreator(actionTypes.CLEAR_DATA, { data: [] }));
 };
 
-const debouncedSearch = debounce(handleSearch, 500);
+const debouncedClear = debounce(clearData, 500);
 
-const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }): JSX.Element => {
+const handleSearch = (value: string, dispatch: React.Dispatch<Action>): void => {
+	dispatch(actionCreator(actionTypes.SEARCH_TEXT, { searchText: value }));
+	debouncedClear(dispatch);
+};
+
+const getApiUrl = (
+	searchActive: boolean,
+	searchText: string,
+	phase: PhaseInternalNames,
+	currentTab: string,
+	dataFeed: string
+): string => {
+	let url = `/admin/projects?sort=-1&${dataFeed}&keyword=`;
+	if (searchActive) {
+		url = url.concat(`customerName:${searchText},`);
+	}
+	if (phase) {
+		url = url.concat(`currentPhase.name.internalName:${phase},`);
+	}
+	if (currentTab !== "all") {
+		url = url.concat(`status:${currentTab},`);
+	}
+	if (url.endsWith(",")) {
+		url = url.slice(0, -1);
+	}
+	return url;
+};
+
+const Sidebar: React.FC<SidebarProps> = ({
+	handleSelectCard,
+	selectedUser,
+	updateStartDateInMainPanel,
+}): JSX.Element => {
 	const init = (initialState): State => {
 		return {
 			...initialState,
@@ -132,34 +180,66 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 	const [loading, setLoading] = useState(false);
 	const displayUsers = state.data;
 
+	const handlePhaseChange = (value): void => {
+		dispatch(actionCreator(actionTypes.PHASE_FILTER, { phase: value }));
+	};
+
 	const TabSearch = (): JSX.Element => {
 		return (
-			<Input
-				onChange={(e): void => {
-					e.persist();
-					const {
-						target: { value },
-					} = e;
-					debouncedSearch(value, dispatch);
-				}}
-				placeholder="Search Users"
-				allowClear
-				prefix={<Icon type="search" />}
-				style={{ width: "100%" }}
-			/>
+			<Input.Group compact>
+				<Select value={state.phase} style={{ width: "50%" }} defaultValue={null} onChange={handlePhaseChange}>
+					<Option value={null}>Filter by Phase</Option>
+					{Object.keys(HumanizePhaseInternalNames).map(key => {
+						return (
+							<Option key={key} value={key}>
+								{HumanizePhaseInternalNames[key]}
+							</Option>
+						);
+					})}
+				</Select>
+				<Input
+					value={state.searchText}
+					style={{ width: "50%" }}
+					onChange={(e): void => {
+						e.persist();
+						const {
+							target: { value },
+						} = e;
+						handleSearch(value, dispatch);
+					}}
+					placeholder="Search Users"
+					allowClear
+					prefix={<Icon type="search" />}
+				/>
+			</Input.Group>
 		);
+	};
+
+	const updateStartDate = (projectId, startDate): void => {
+		const newData = state.data.map(project => {
+			if (project._id === projectId) {
+				return {
+					...project,
+					startedAt: startDate,
+				};
+			}
+
+			return { ...project };
+		});
+		dispatch(
+			actionCreator(actionTypes.UPDATE_PROJECT_START_DATE, {
+				data: newData,
+			})
+		);
+		updateStartDateInMainPanel(projectId, startDate);
 	};
 
 	const fetchData = async (): Promise<void> => {
 		const { pageCount } = state;
 		const dataFeed = `skip=${pageCount * 10}&limit=10`;
 		setLoading(true);
-		const endpointToHit = state.searchActive
-			? `/admin/projects?sort=-1&keyword=customerName:${state.searchText}&${
-					state.currentTab !== "all" ? `status:${state.currentTab}&` : ""
-			  }`
-			: `/admin/projects?sort=-1&${state.currentTab !== "all" ? `keyword=status:${state.currentTab}&` : ""}`;
-		const resData = await fetcher({ endPoint: `${endpointToHit}${dataFeed}`, method: "GET" });
+		const endpointToHit = getApiUrl(state.searchActive, state.searchText, state.phase, state.currentTab, dataFeed);
+		const resData = await fetcher({ endPoint: endpointToHit, method: "GET" });
 		if (resData.statusCode <= 300) {
 			const responseData = resData.data.data;
 			if (responseData.length > 0) {
@@ -183,11 +263,28 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 		dispatch({ type: actionTypes.TAB_CHANGE, value: { currentTab: key } });
 	};
 
+	const onStartClick = async (projectId): Promise<void> => {
+		const endpoint = editProjectApi(projectId);
+		const currentTime = new Date().toISOString();
+		await fetcher({
+			endPoint: endpoint,
+			body: {
+				data: {
+					startedAt: currentTime,
+				},
+			},
+			method: "PUT",
+		});
+		updateStartDate(projectId, currentTime);
+	};
+
 	return (
 		<GrayMaxHeightDiv>
 			<CustomDiv ref={scrollParentRef} overY="scroll" width="100%">
-				<StyleCorrectedTab tabBarGutter={0} onTabClick={handleTabChange} tabBarExtraContent={TabSearch()}>
+				<StyleCorrectedTab onTabClick={handleTabChange}>
 					<Tabs.TabPane tab="Active" key="active">
+						{TabSearch()}
+
 						{state.currentTab === "active" && (
 							<InfiniteScroll
 								loader={<LoadingCard key="loadingCard" />}
@@ -201,6 +298,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 											return (
 												<>
 													<UserProjectCard
+														onStartClick={onStartClick}
 														selectedUser={selectedUser}
 														key={userProjectData._id}
 														handleSelectCard={handleSelectCard}
@@ -217,6 +315,8 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 						)}
 					</Tabs.TabPane>
 					<Tabs.TabPane tab="Completed" key="completed">
+						{TabSearch()}
+
 						{state.currentTab === "completed" && (
 							<InfiniteScroll
 								loader={<LoadingCard key="loadingCard" />}
@@ -230,6 +330,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 											return (
 												<>
 													<UserProjectCard
+														onStartClick={onStartClick}
 														selectedUser={selectedUser}
 														key={userProjectData._id}
 														handleSelectCard={handleSelectCard}
@@ -241,11 +342,13 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 												</>
 											);
 									  })
-									: !loading && <Empty description="No Projects found" />}
+									: !loading && <Empty description="No Completed Projects found" />}
 							</InfiniteScroll>
 						)}
 					</Tabs.TabPane>
 					<Tabs.TabPane tab="All" key="all">
+						{TabSearch()}
+
 						{state.currentTab === "all" && (
 							<InfiniteScroll
 								loader={<LoadingCard key="loadingCard" />}
@@ -260,6 +363,7 @@ const Sidebar: ExtendedJSXFC<SidebarProps> = ({ handleSelectCard, selectedUser }
 												<>
 													<UserProjectCard
 														selectedUser={selectedUser}
+														onStartClick={onStartClick}
 														key={userProjectData._id}
 														handleSelectCard={handleSelectCard}
 														userProjectData={userProjectData}

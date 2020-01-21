@@ -14,7 +14,7 @@ interface BasicDetailsProps {
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	const {
-		id,
+		_id,
 		name,
 		createdAt,
 		order: { paymentStatus, items },
@@ -55,7 +55,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 							<FontCorrectedPre>Concept Id: </FontCorrectedPre>
 						</Text>
 						<ModifiedText textTransform="uppercase" ellipsis type="secondary">
-							{id}
+							{_id}
 						</ModifiedText>
 					</CustomDiv>
 					<CustomDiv type="flex">

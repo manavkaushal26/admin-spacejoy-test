@@ -1,8 +1,7 @@
 import { DetailedProject, HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import ProgressBar from "@sections/Dashboard/ProgressBar";
-import { getValueSafely } from "@utils/commonUtils";
-import { projectConfig } from "@utils/config";
+import { getValueSafely, getNumberOfDays, getColorsForPackages } from "@utils/commonUtils";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React from "react";
@@ -35,10 +34,17 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		status,
 		customer,
 		createdAt,
+		startedAt,
 		currentPhase: {
-			name: { internalName: phase }
-		}
+			name: { internalName: phase },
+		},
+		order: { items },
 	} = projectData;
+
+	const endTime = startedAt
+		? moment(startedAt).add(getNumberOfDays(items), "days")
+		: moment(createdAt).add(getNumberOfDays(items), "days");
+
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
 	}, room);
@@ -47,7 +53,9 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 			<Col sm={24} md={24} lg={24} xl={10}>
 				<CustomDiv width="100%" inline type="flex" textOverflow="ellipsis" py="16px" align="center">
 					<CustomDiv textOverflow="ellipsis" inline type="flex" px="12px">
-						<Avatar size={48}>{displayName[0].toUpperCase()}</Avatar>{" "}
+						<Avatar size={48} style={getColorsForPackages(items)}>
+							{displayName[0].toUpperCase()}
+						</Avatar>{" "}
 					</CustomDiv>
 					<CustomDiv type="flex" inline flexDirection="column">
 						<SilentTitle ellipsis level={3}>
@@ -68,19 +76,9 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 					<Row align="middle" type="flex" justify="center">
 						<Col span={24}>
 							<CustomDiv px="12px" type="flex" inline>
-								<ProgressBar
-									width={33}
-									status={Status.active}
-									endTime={moment(createdAt).add(projectConfig.lifetime, "days")}
-								/>
+								<ProgressBar width={33} status={Status.active} endTime={endTime} />
 							</CustomDiv>
-							<Text>
-								{getLongTimeString(
-									moment(createdAt)
-										.add(projectConfig.lifetime, "days")
-										.valueOf()
-								)}
-							</Text>
+							<Text>{getLongTimeString(endTime.valueOf())}</Text>
 						</Col>
 					</Row>
 				</CustomDiv>

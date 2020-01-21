@@ -33,6 +33,7 @@ enum PhaseCustomerNames {
 export enum HumanizePhaseInternalNames {
 	requirement = "Requirement",
 	designConcept = "Design Concept",
+	modelling = "Modelling",
 	design3D = "Design 3D",
 	designRender = "Design Render",
 	designReady = "Design Ready",
@@ -53,6 +54,7 @@ interface CurrentPhase {
 
 export interface UserProjectType {
 	createdAt: string;
+	startedAt: string;
 	_id: string;
 	projectScope: ProjectScope;
 	status: Status;
@@ -67,8 +69,11 @@ export interface UserProjectType {
 		id: string;
 	};
 	currentPhase: CurrentPhase;
-	order: string;
-	id: string;
+	order: {
+		paymentStatus: string;
+		items: Packages[];
+		_id: string;
+	};
 }
 
 export interface DesignInterface {
@@ -225,7 +230,7 @@ export interface DetailedProject {
 	feedback: [];
 	createdAt: string;
 	updatedAt: string;
-	id: string;
+	startedAt: string;
 }
 
 interface Retailer {

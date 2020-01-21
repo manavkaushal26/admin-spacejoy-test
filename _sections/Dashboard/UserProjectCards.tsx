@@ -1,11 +1,11 @@
-import { HumanizePhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
+import { HumanizePhaseInternalNames, UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import ProgressBar from "@sections/Dashboard/ProgressBar";
-import { getValueSafely } from "@utils/commonUtils";
-import { projectConfig } from "@utils/config";
-import { Avatar, Card, Col, Row, Typography } from "antd";
+import { getValueSafely, getNumberOfDays, getColorsForPackages } from "@utils/commonUtils";
+import { Avatar, Card, Col, Row, Typography, Button } from "antd";
 import moment from "moment";
 import React from "react";
 import styled, { css } from "styled-components";
+import { start } from "repl";
 import { CustomDiv, getTagColor, StyledTag } from "./styled";
 
 const { Text } = Typography;
@@ -25,6 +25,7 @@ const UserCard = styled(Card)<{ active: boolean }>`
 		border-right: 3px solid ${({ theme }) => theme.colors.antblue};
 	}
 `;
+const initialPhases = [PhaseInternalNames.requirement, PhaseInternalNames.designConcept];
 
 const RoomNameText = styled(Text)`
 	position: relative;
@@ -36,16 +37,21 @@ const UserProjectCard: React.FC<{
 	userProjectData: UserProjectType;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
-}> = ({ userProjectData, handleSelectCard, selectedUser }) => {
+	onStartClick: (projectId: string) => void;
+}> = ({ userProjectData, handleSelectCard, selectedUser, onStartClick }) => {
 	const {
+		_id: projectId,
 		name: room,
+		startedAt,
 		customerName,
 		currentPhase: {
 			name: { internalName: phase },
 		},
+		order: { items },
 		status,
 		createdAt,
 	} = userProjectData;
+
 	return (
 		<UserCard
 			size="small"
@@ -61,9 +67,9 @@ const UserProjectCard: React.FC<{
 				<CustomDiv>
 					<Row type="flex" align="middle">
 						<CustomDiv width="15%" overflow="visible">
-							<Avatar>
+							<Avatar style={getColorsForPackages(items)}>
 								{getValueSafely<string>(() => {
-									return room[0];
+									return customerName[0];
 								}, "N/A").toUpperCase()}
 							</Avatar>
 						</CustomDiv>
@@ -78,7 +84,28 @@ const UserProjectCard: React.FC<{
 							<RoomNameText>{room}</RoomNameText>
 						</CustomDiv>
 						<CustomDiv width="10%" justifyContent="flex-end" type="flex" inline>
-							<ProgressBar status={status} endTime={moment(createdAt).add(projectConfig.lifetime, "days")} width={30} />
+							{initialPhases.includes(phase) && !startedAt ? (
+								<Button
+									onClick={e => {
+										e.stopPropagation();
+										onStartClick(projectId);
+									}}
+									style={{ padding: "0px 6px", height: "auto" }}
+									type="default"
+								>
+									<Text>Start</Text>
+								</Button>
+							) : (
+								<ProgressBar
+									status={status}
+									endTime={
+										startedAt
+											? moment(startedAt).add(getNumberOfDays(items), "days")
+											: moment(createdAt).add(getNumberOfDays(items), "days")
+									}
+									width={30}
+								/>
+							)}
 						</CustomDiv>
 					</Row>
 				</CustomDiv>

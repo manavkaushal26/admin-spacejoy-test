@@ -26,7 +26,7 @@ const intialState: DesignerTabState = {
 	loading: false,
 	searchText: "",
 	pageCount: 0,
-	role: ProjectRoles.Designer
+	role: ProjectRoles.Designer,
 };
 
 const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Promise<void> => {
@@ -39,11 +39,11 @@ const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Pr
 			data: {
 				role: {
 					search: "single",
-					value: state.role
+					value: state.role,
 				},
-				"profile.name": { search: "single", value: state.searchText }
-			}
-		}
+				"profile.name": { search: "single", value: state.searchText },
+			},
+		},
 	});
 	if (responseData.data) {
 		if (responseData.data.data) {
@@ -51,8 +51,8 @@ const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Pr
 				type: DesignerTabActionType.UPDATE_DATA,
 				value: {
 					data: responseData.data.data,
-					pageCount: state.pageCount + 1
-				}
+					pageCount: state.pageCount + 1,
+				},
 			});
 		}
 	}
@@ -63,7 +63,7 @@ const morphTeamMemberForApi = (member: TeamMember) => {
 	return {
 		member: member._id,
 		memberName: member.profile.name,
-		memberEmail: member.email
+		memberEmail: member.email,
 	};
 };
 
@@ -74,12 +74,12 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 	assignedTeam,
 	setLoading,
 	setProjectData,
-	projectData
+	projectData,
 }): JSX.Element => {
 	const init = (initialState: DesignerTabState): DesignerTabState => {
 		return {
 			...initialState,
-			assignedTeam: assignedTeam || []
+			assignedTeam: assignedTeam || [],
 		};
 	};
 
@@ -97,10 +97,10 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 		}
 	}, [state.role, state.searchText]);
 
-	const onDesignerSelect = (id: string, checked: boolean) => {
+	const onDesignerSelect = (id: string, checked: boolean): void => {
 		if (checked) {
-			const teamMember = state.team.find(teamMember => {
-				return teamMember._id === id;
+			const teamMember = state.team.find(member => {
+				return member._id === id;
 			});
 			dispatch({ type: DesignerTabActionType.ASSIGN_DESIGNER, value: teamMember });
 		} else {
@@ -127,18 +127,18 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 		if (addedMembers.length > 0) {
 			const body = {
 				data: {
-					memberList: addedMembers
-				}
+					memberList: addedMembers,
+				},
 			};
-			response = await fetcher({ endPoint: addMemberEndpoint, method: "PUT", body: body });
+			response = await fetcher({ endPoint: addMemberEndpoint, method: "PUT", body });
 		}
 		if (removedMembers.length > 0) {
 			const body = {
 				data: {
-					memberList: removedMembers
-				}
+					memberList: removedMembers,
+				},
 			};
-			response = await fetcher({ endPoint: removeMemberEndpoint, method: "DELETE", body: body });
+			response = await fetcher({ endPoint: removeMemberEndpoint, method: "DELETE", body });
 		}
 
 		setProjectData({ ...projectData, team: response.data.team });
@@ -147,9 +147,9 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 
 	const onSearchTextChange = e => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
-		dispatch({ type: DesignerTabActionType.UPDATE_SEARCH_TEXT, value: value });
+		dispatch({ type: DesignerTabActionType.UPDATE_SEARCH_TEXT, value });
 	};
 
 	return (
@@ -165,10 +165,14 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 							<label style={{ flexBasis: "4ch" }}>Role</label>
 							<Select
 								value={state.role}
-								onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value: value })}
+								onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value })}
 							>
 								{Object.keys(ProjectRoles).map(key => {
-									return <Option value={ProjectRoles[key]}>{key}</Option>;
+									return (
+										<Option key={key} value={ProjectRoles[key]}>
+											{key}
+										</Option>
+									);
 								})}
 							</Select>
 						</CustomDiv>

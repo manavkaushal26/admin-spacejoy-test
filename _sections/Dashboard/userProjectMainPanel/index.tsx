@@ -13,9 +13,9 @@ const { Text } = Typography;
 const userProjectMainPanel: React.FC<{
 	userProjectId: string;
 	designId: string;
-	loading: boolean;
-	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ userProjectId, designId }): JSX.Element => {
+	startDate: string;
+	setStartDate: React.Dispatch<React.SetStateAction<string>>;
+}> = ({ userProjectId, designId, startDate, setStartDate }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const Router = useRouter();
@@ -28,6 +28,18 @@ const userProjectMainPanel: React.FC<{
 		}
 		setLoading(false);
 	};
+
+	useEffect(() => {
+		console.log("startDate", startDate);
+		if (startDate) {
+			setProjectData({
+				...projectData,
+				startedAt: startDate,
+			});
+			setStartDate(null);
+		}
+	}, [startDate]);
+
 	const onSelectDesign = (selectedDesignId?: string): void => {
 		if (selectedDesignId) {
 			Router.push(
@@ -41,7 +53,9 @@ const userProjectMainPanel: React.FC<{
 
 	useEffect(() => {
 		if (!designId) {
-			fetchAndPopulate();
+			if (userProjectId) {
+				fetchAndPopulate();
+			}
 		}
 	}, [designId]);
 
