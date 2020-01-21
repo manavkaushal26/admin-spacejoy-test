@@ -5,7 +5,6 @@ import { Avatar, Card, Col, Row, Typography, Button } from "antd";
 import moment from "moment";
 import React from "react";
 import styled, { css } from "styled-components";
-import { start } from "repl";
 import { CustomDiv, getTagColor, StyledTag } from "./styled";
 
 const { Text } = Typography;

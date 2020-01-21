@@ -10,6 +10,7 @@ export enum PhaseInternalNames {
 	requirement = "requirement",
 	designConcept = "designConcept",
 	design3D = "design3D",
+	modelling = "modelling",
 	designRender = "designRender",
 	designReady = "designReady",
 	designsInRevision = "designsInRevision",

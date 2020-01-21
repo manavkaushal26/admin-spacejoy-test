@@ -32,10 +32,11 @@ export const getTagColor = (text: string): string => {
 			return "green";
 		case PhaseInternalNames.designConcept:
 			return "purple";
+		case PhaseInternalNames.modelling:
 		case PhaseInternalNames.design3D:
 			return "cyan";
 		case PhaseInternalNames.designsInRevision:
-			return "yellow";
+			return "gold";
 		case PhaseInternalNames.shop:
 			return "geekblue";
 		default:
