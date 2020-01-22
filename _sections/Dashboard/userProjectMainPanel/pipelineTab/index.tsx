@@ -1,5 +1,11 @@
 import { updateDesignPhase } from "@api/pipelineApi";
-import { DesignPhases, DetailedDesign, PhaseType } from "@customTypes/dashboardTypes";
+import {
+	DesignPhases,
+	DetailedDesign,
+	PhaseType,
+	PhaseCustomerNames,
+	PhaseInternalNames,
+} from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { CustomDiv, ShadowDiv, StatusButton, StepsContainer } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
@@ -13,6 +19,7 @@ const { Title, Text } = Typography;
 interface PipelineTab {
 	designData: DetailedDesign;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	setProjectPhase: (phase: { internalName: PhaseInternalNames; customerName: PhaseCustomerNames }) => void;
 }
 
 const getButtonText = (status: Status): string => {
@@ -74,7 +81,7 @@ const steps: Steps[] = [
 	},
 ];
 
-export default function PipelineTab({ designData, setDesignData }: PipelineTab): JSX.Element {
+export default function PipelineTab({ designData, setDesignData, setProjectPhase }: PipelineTab): JSX.Element {
 	const [stage, setStage] = useState<string>(null);
 	const [updationPhase, setUpdationPhase] = useState<string>(null);
 	const [phaseData, setPhaseData] = useState<PhaseType>(null);
@@ -122,7 +129,8 @@ export default function PipelineTab({ designData, setDesignData }: PipelineTab):
 			},
 		});
 		if (response.statusCode <= 300) {
-			setPhaseData(response.data);
+			setPhaseData(response.data.designPhase);
+			setProjectPhase(response.data.projectPhase);
 		} else {
 			message.error(response.message);
 		}

@@ -20,7 +20,7 @@ export enum PhaseInternalNames {
 	suspended = "suspended",
 	rejected = "rejected",
 }
-enum PhaseCustomerNames {
+export enum PhaseCustomerNames {
 	requirement = "requirement",
 	brief = "brief",
 	designs = "designs",
@@ -92,15 +92,11 @@ export interface DesignInterface {
 	};
 }
 
-interface Phase {
+export interface Phase {
 	name: {
 		internalName: PhaseInternalNames;
 		customerName: PhaseCustomerNames;
 	};
-	startTime: string;
-	endTime: null;
-	owner: null;
-	_id: string;
 }
 
 export enum DesignImgTypes {
@@ -339,7 +335,7 @@ export enum ModelToExtensionMap {
 
 export enum RoomTypes {
 	LivingRoom = "living room",
-	Bedroom = "bed room",
+	Bedroom = "bedroom",
 	DiningRoom = "dining room",
 	StudyRoom = "study room",
 	EntryWay = "entryway",
@@ -350,6 +346,7 @@ export enum RoomTypes {
 	Window = "window",
 	Door = "door",
 	House = "house",
+	OpenLivingDining = "open living and dining room",
 }
 
 export enum RoomLabels {
@@ -365,6 +362,7 @@ export enum RoomLabels {
 	Window = "Window",
 	Door = "Door",
 	House = "House",
+	OpenLivingDining = "Open Living and Dining Room",
 }
 
 export enum RenderImgUploadTypes {

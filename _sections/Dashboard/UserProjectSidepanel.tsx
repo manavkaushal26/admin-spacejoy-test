@@ -1,10 +1,15 @@
-import { UserProjectType, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import {
+	UserProjectType,
+	HumanizePhaseInternalNames,
+	PhaseInternalNames,
+	PhaseCustomerNames,
+} from "@customTypes/dashboardTypes";
 import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Empty, Icon, Input, Tabs, Select } from "antd";
-import React, { useReducer, useRef, useState } from "react";
+import React, { useReducer, useRef, useState, useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import { editProjectApi } from "@api/projectApi";
@@ -129,6 +134,22 @@ interface SidebarProps {
 	updateStartDateInMainPanel: (pid: string, date: string) => void;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
+	projectPhaseUpdateValue: {
+		pid: string;
+		projectPhase: {
+			internalName: PhaseInternalNames;
+			customerName: PhaseCustomerNames;
+		};
+	};
+	setProjectPhaseUpdateValue: React.Dispatch<
+		React.SetStateAction<{
+			pid: string;
+			projectPhase: {
+				internalName: PhaseInternalNames;
+				customerName: PhaseCustomerNames;
+			};
+		}>
+	>;
 }
 
 const clearData = (dispatch: React.Dispatch<Action>): void => {
@@ -169,6 +190,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 	handleSelectCard,
 	selectedUser,
 	updateStartDateInMainPanel,
+	projectPhaseUpdateValue,
+	setProjectPhaseUpdateValue,
 }): JSX.Element => {
 	const init = (initialState): State => {
 		return {
@@ -183,6 +206,30 @@ const Sidebar: React.FC<SidebarProps> = ({
 	const handlePhaseChange = (value): void => {
 		dispatch(actionCreator(actionTypes.PHASE_FILTER, { phase: value }));
 	};
+
+	useEffect(() => {
+		if (projectPhaseUpdateValue) {
+			const newData = state.data.map(project => {
+				if (project._id === projectPhaseUpdateValue.pid) {
+					return {
+						...project,
+						currentPhase: {
+							...project.currentPhase,
+							name: projectPhaseUpdateValue.projectPhase,
+						},
+					};
+				}
+				return { ...project };
+			});
+			dispatch(
+				actionCreator(actionTypes.UPDATE_PROJECT_START_DATE, {
+					data: newData,
+				})
+			);
+		}
+
+		setProjectPhaseUpdateValue(null);
+	}, [projectPhaseUpdateValue]);
 
 	const TabSearch = (): JSX.Element => {
 		return (

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Modal, Select, Input, Button, Row, Col, Typography, message } from "antd";
 import { DesignInterface, DetailedProject, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { designCopyApi, createDesignApi } from "@api/designApi";
@@ -93,33 +93,33 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 		setLoading(false);
 	};
 
-	const footer = useMemo(
-		() => (
-			<Footer
-				roomName={roomName}
-				selectedDesignId={selectedDesignId}
-				toggleModal={toggleModal}
-				onSubmit={onSubmit}
-				loading={loading}
-				phase={projectData.currentPhase.name.internalName}
-			/>
-		),
-		[!!selectedDesignId, roomName]
-	);
-
 	const placeholderText =
 		projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
 			? "Revision Room Name"
 			: "Add Design";
 
 	return (
-		<Modal visible={copyDesignModalVisible} title="Choose a design to copy" onCancel={toggleModal} footer={footer}>
+		<Modal
+			visible={copyDesignModalVisible}
+			title="Choose a design to copy"
+			onCancel={toggleModal}
+			footer={
+				<Footer
+					roomName={roomName}
+					selectedDesignId={selectedDesignId}
+					toggleModal={toggleModal}
+					onSubmit={onSubmit}
+					loading={loading}
+					phase={projectData.currentPhase.name.internalName}
+				/>
+			}
+		>
 			<Row>
 				<Col>
 					<Text>Design</Text>
 				</Col>
 				<Col>
-					<Select placeholder="Select a Room" style={{ width: "100%" }} onSelect={onSelect}>
+					<Select placeholder="Select a Design" style={{ width: "100%" }} onSelect={onSelect}>
 						<Option key={Math.random()} value={null}>
 							Select Design
 						</Option>
@@ -136,7 +136,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 			<Row style={{ height: "1rem" }} />
 			<Row>
 				<Col>
-					<Text>Room Name</Text>
+					<Text>Design Name</Text>
 				</Col>
 				<Col>
 					<Input value={roomName} placeholder={placeholderText} onChange={onChange} />

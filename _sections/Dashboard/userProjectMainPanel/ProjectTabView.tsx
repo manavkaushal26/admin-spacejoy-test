@@ -1,5 +1,5 @@
 import { designApi } from "@api/designApi";
-import { DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedDesign, DetailedProject, PhaseInternalNames, PhaseCustomerNames } from "@customTypes/dashboardTypes";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import fetcher from "@utils/fetcher";
@@ -47,6 +47,18 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const { form: formData } = projectData;
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
+
+	const setProjectPhase = (projectPhase: {
+		internalName: PhaseInternalNames;
+		customerName: PhaseCustomerNames;
+	}): void => {
+		setProjectData({
+			...projectData,
+			currentPhase: {
+				name: projectPhase,
+			},
+		});
+	};
 
 	const fetchDesignData = async (): Promise<void> => {
 		setDesignLoading(true);
@@ -103,7 +115,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							<NotesTab designData={designData} />
 						</TabPane>
 						<TabPane tab="Pipeline" key="6">
-							<PipelineTab designData={designData} setDesignData={setDesignData} />
+							<PipelineTab setProjectPhase={setProjectPhase} designData={designData} setDesignData={setDesignData} />
 						</TabPane>
 						<TabPane tab="Customer View" key="7">
 							<CustomerView projectName={projectData.name} designData={designData} />

@@ -13,6 +13,7 @@ import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { PhaseInternalNames, PhaseCustomerNames } from "@customTypes/dashboardTypes";
 
 const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};
@@ -33,6 +34,14 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
 
+	const [projectPhaseUpdateValue, setProjectPhaseUpdateValue] = useState<{
+		pid: string;
+		projectPhase: {
+			internalName: PhaseInternalNames;
+			customerName: PhaseCustomerNames;
+		};
+	}>(null);
+
 	useEffect(() => {
 		if (projectId) {
 			setSelectedUser(projectId);
@@ -50,6 +59,20 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 			setStartDate(date);
 		}
 	};
+
+	const updateProjectPhaseInSidepanel = (
+		id,
+		phase: {
+			internalName: PhaseInternalNames;
+			customerName: PhaseCustomerNames;
+		}
+	): void => {
+		setProjectPhaseUpdateValue({
+			pid: id,
+			projectPhase: phase,
+		});
+	};
+
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -64,12 +87,15 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 								updateStartDateInMainPanel={updateStartDateInMainPanel}
 								selectedUser={selectedUser}
 								handleSelectCard={handleSelectCard}
+								projectPhaseUpdateValue={projectPhaseUpdateValue}
+								setProjectPhaseUpdateValue={setProjectPhaseUpdateValue}
 							/>
 						</Col>
 						<Col sm={24} md={14} lg={17} xl={18}>
 							<MaxHeightDiv>
 								<PaddedDiv>
 									<UserProjectMainPanel
+										updateProjectPhaseInSidepanel={updateProjectPhaseInSidepanel}
 										designId={designId}
 										userProjectId={selectedUser}
 										startDate={startDate}

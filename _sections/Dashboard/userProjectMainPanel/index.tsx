@@ -1,9 +1,10 @@
-import { DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedProject, PhaseInternalNames, PhaseCustomerNames } from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import fetcher from "@utils/fetcher";
 import { Empty, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { getValueSafely } from "@utils/commonUtils";
 import { CustomDiv, MaxHeightDiv, SilentDivider } from "../styled";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
@@ -11,16 +12,23 @@ import ProjectTabView from "./ProjectTabView";
 const { Text } = Typography;
 
 const userProjectMainPanel: React.FC<{
+	updateProjectPhaseInSidepanel: (
+		id: string,
+		phase: {
+			internalName: PhaseInternalNames;
+			customerName: PhaseCustomerNames;
+		}
+	) => void;
 	userProjectId: string;
 	designId: string;
 	startDate: string;
 	setStartDate: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ userProjectId, designId, startDate, setStartDate }): JSX.Element => {
+}> = ({ updateProjectPhaseInSidepanel, userProjectId, designId, startDate, setStartDate }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const Router = useRouter();
 
-	const fetchAndPopulate = async () => {
+	const fetchAndPopulate = async (): Promise<void> => {
 		setLoading(true);
 		const response = await fetcher({ endPoint: `/admin/project/${userProjectId}`, method: "GET" });
 		if (response.statusCode <= 300) {
@@ -28,6 +36,17 @@ const userProjectMainPanel: React.FC<{
 		}
 		setLoading(false);
 	};
+
+	useEffect(() => {
+		if (projectData) {
+			updateProjectPhaseInSidepanel(userProjectId, projectData.currentPhase.name);
+		}
+	}, [
+		getValueSafely(() => projectData.currentPhase.name, {
+			internalName: PhaseInternalNames.requirement,
+			customerName: PhaseCustomerNames.brief,
+		}),
+	]);
 
 	useEffect(() => {
 		if (startDate) {
@@ -62,7 +81,7 @@ const userProjectMainPanel: React.FC<{
 		if (userProjectId) {
 			fetchAndPopulate();
 		}
-		return () => {
+		return (): void => {
 			setProjectData(null);
 		};
 	}, [userProjectId]);
