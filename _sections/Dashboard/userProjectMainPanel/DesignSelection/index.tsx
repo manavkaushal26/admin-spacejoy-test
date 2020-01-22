@@ -1,4 +1,4 @@
-import { updateProjectPhase, notifyCustomerApi } from "@api/projectApi";
+import { updateProjectPhase, notifyCustomerApi, editProjectApi } from "@api/projectApi";
 import Image from "@components/Image";
 import {
 	DesignInterface,
@@ -8,18 +8,21 @@ import {
 	PackageDetails,
 	DesignImgTypes,
 } from "@customTypes/dashboardTypes";
-import { Status } from "@customTypes/userType";
+import { cookieNames } from "@utils/config";
+
+import { Status, Role } from "@customTypes/userType";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, message, Row, Tag, Typography, Icon, Modal, Popconfirm } from "antd";
+import { Button, Card, Col, message, Row, Tag, Typography, Icon, Modal, Popconfirm, Select } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import { CustomDiv } from "@sections/Dashboard/styled";
 import { deleteDesignApi } from "@api/designApi";
+import getCookie from "@utils/getCookie";
+import { CapitalizedText } from "@sections/AssetStore/styled";
 import CopyDesignModal from "./CopyDesignModal";
 
 const { Text } = Typography;
-
+const { Option } = Select;
 const OrangeButton = styled(Button)`
 	background: #faad14;
 	border: ${(): string => "#faad14"};
@@ -168,15 +171,33 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		});
 	};
 
+	const userRole = getCookie(null, cookieNames.userRole);
+
+	const onStatusChange = async (value): Promise<void> => {
+		const endpoint = editProjectApi(projectData._id);
+		const response = await fetcher({
+			endPoint: endpoint,
+			method: "PUT",
+			body: {
+				data: {
+					status: value,
+				},
+			},
+		});
+		setProjectData({
+			...projectData,
+			status: response.data.status,
+		});
+	};
+
 	return (
-		<CustomDiv>
-			<CustomDiv type="flex" flexWrap="wrap">
-				{projectData.designs.map(design => {
-					return (
-						<React.Fragment key={design._id}>
-							<CustomDiv inline overflow="visible" mt="2rem" mr="1rem">
+		<Row gutter={[0, 8]}>
+			<Col>
+				<Row type="flex" gutter={[8, 8]}>
+					{projectData.designs.map(design => {
+						return (
+							<Col md={12} lg={8} xl={6} key={design._id}>
 								<Card
-									style={{ width: "300px" }}
 									hoverable
 									onClick={(): void => onSelectDesign(design.design._id)}
 									actions={[
@@ -190,19 +211,21 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 										/>,
 									]}
 									cover={
-										<CustomDiv>
-											<Image
-												width="300px"
-												height="175px"
-												src={`q_80,w_298/${getValueSafely(
-													() =>
-														design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0].cdn,
-													process.env.NODE_ENV === "production"
-														? "v1574869657/shared/Illustration_mffq52.svg"
-														: "v1578482972/shared/Illustration_mffq52.svg"
-												)}`}
-											/>
-										</CustomDiv>
+										<Row>
+											<Col span={24}>
+												<Image
+													width="100%"
+													src={`q_80/${getValueSafely(
+														() =>
+															design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0]
+																.cdn,
+														process.env.NODE_ENV === "production"
+															? "v1574869657/shared/Illustration_mffq52.svg"
+															: "v1578482972/shared/Illustration_mffq52.svg"
+													)}`}
+												/>
+											</Col>
+										</Row>
 									}
 								>
 									<Row type="flex" justify="space-between">
@@ -214,36 +237,28 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 										</Col>
 									</Row>
 								</Card>
-							</CustomDiv>
-						</React.Fragment>
-					);
-				})}
-				<CustomDiv
-					onClick={toggleCopyDesignModal}
-					inline
-					overflow="visible"
-					width="300px"
-					height="248px"
-					mt="2rem"
-					mr="1rem"
-				>
-					<HoverCard>
-						<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
-							<Col span="24">
-								<Row type="flex" justify="center" align="middle">
-									<Icon style={{ fontSize: "36px" }} type="file-add" />
-								</Row>
 							</Col>
-							<Col span="24">
-								<Row style={{ padding: "15px" }} type="flex" justify="center" align="middle">
-									<Text>{cardText}</Text>
-								</Row>
-							</Col>
-						</Row>
-					</HoverCard>
-				</CustomDiv>
-			</CustomDiv>
-			<CustomDiv py="1rem" width="100%" type="flex" flexWrap="wrap" justifyContent="center">
+						);
+					})}
+					<Col md={12} lg={8} xl={6} onClick={toggleCopyDesignModal}>
+						<HoverCard>
+							<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
+								<Col span="24">
+									<Row type="flex" justify="center" align="middle">
+										<Icon style={{ fontSize: "36px" }} type="file-add" />
+									</Row>
+								</Col>
+								<Col span="24">
+									<Row style={{ padding: "15px" }} type="flex" justify="center" align="middle">
+										<Text>{cardText}</Text>
+									</Row>
+								</Col>
+							</Row>
+						</HoverCard>
+					</Col>
+				</Row>
+			</Col>
+			<Col>
 				<Row type="flex" justify="end" style={{ width: "100%" }} gutter={1}>
 					<Col span={7}>
 						<Button
@@ -277,22 +292,39 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 						</CyanButton>
 					</Col>
 				</Row>
+			</Col>
+			<Col>
 				{(numberOfActiveProjects !== numberOfDesigns ||
 					projectData.currentPhase.name.internalName === PhaseInternalNames.designReady) && (
-					<CustomDiv width="100%" type="flex" justifyContent="center" pt="1rem">
+					<Row type="flex" justify="center">
 						<Text>
 							Disabled? The project is either already marked complete or the required number designs are not yet ready.
 						</Text>
-					</CustomDiv>
+					</Row>
 				)}
-			</CustomDiv>
+			</Col>
+			<Col>
+				{(userRole === Role.Admin || userRole === Role.Owner) && (
+					<Row type="flex" justify="center">
+						<Select onChange={onStatusChange} style={{ width: 200 }} defaultValue={projectData.status}>
+							{Object.keys(Status).map(key => {
+								return (
+									<Option key={key} value={key}>
+										<CapitalizedText>{key}</CapitalizedText>
+									</Option>
+								);
+							})}
+						</Select>
+					</Row>
+				)}
+			</Col>
 			<CopyDesignModal
 				projectData={projectData}
 				toggleModal={toggleCopyDesignModal}
 				copyDesignModalVisible={copyDesignModalVisible}
 				setProjectData={setProjectData}
 			/>
-		</CustomDiv>
+		</Row>
 	);
 };
 
