@@ -10,8 +10,8 @@ import { Button, Icon, message, Select, Typography } from "antd";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import ImageDisplayModal from "@components/ImageDisplayModal";
 import { StepDiv } from "../styled";
-import ImageDisplayModal from "./Components/ImageDisplayModal";
 
 const { Option } = Select;
 const { Text } = Typography;

@@ -1,7 +1,7 @@
 enum ServiceType {
 	furniture = "furniture",
 	paint = "paint",
-	other = "other"
+	other = "other",
 }
 
 export interface RetailersList {
@@ -20,7 +20,7 @@ enum CategoryNames {
 	APPLIANCES = "Appliances",
 	OUTDOOR = "Outdoor",
 	OTHERS = "Others",
-	NON_SHOPPABLE = "Non Shoppable"
+	NON_SHOPPABLE = "Non Shoppable",
 }
 
 export interface CategoriesList {
@@ -62,32 +62,6 @@ export interface MetaDataType {
 	cdnPrefix: string;
 }
 
-export interface SingleAssetType {
-	dimension: {
-		depth: number;
-		width: number;
-		height: number;
-	};
-	meta: {
-		category: string;
-		subcategory: string;
-		vertical: string;
-	};
-	name: string;
-	price: number;
-	currency: string;
-	retailer: {
-		_id: string;
-		name: string;
-	};
-	retailLink: string;
-	cdn: string;
-	_id: string;
-	imageUrl: string;
-	createdAt: string;
-	updatedAt: string;
-}
-
 export interface AssetType {
 	name: string;
 	price: number;
@@ -95,6 +69,11 @@ export interface AssetType {
 	retailer: {
 		_id: string;
 		name: string;
+	};
+	dimension: {
+		depth: number;
+		width: number;
+		height: number;
 	};
 	meta: {
 		category: string;

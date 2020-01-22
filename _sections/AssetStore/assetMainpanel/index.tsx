@@ -6,7 +6,7 @@ import { CustomDiv, FontCorrectedPre, ModifiedText, SilentDivider } from "@secti
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Col, Icon, Pagination, Row, Typography } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import styled from "styled-components";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
@@ -46,7 +46,6 @@ const MainAssetPanel = styled.div`
 	/* The Masonry Brick */
 	> * {
 		display: inline-block;
-		background: #fff;
 		margin: 0 0 1rem;
 		width: 100%;
 	}
@@ -77,7 +76,7 @@ const fetchAndPopulate: FetchAndPopulate = async (
 ) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetApi();
-	const queryParams = `?skip=${(pageCount - 1) * 10}&limit=50`;
+	const queryParams = `?skip=${(pageCount - 1) * 35}&limit=35`;
 	const responseData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
@@ -120,11 +119,14 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	projectId,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
+	const [selectedAssetData, setSelectedAssetData] = useState<AssetType>(null);
 	const [pageCount, setPageCount] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [primaryAsset, setPrimaryAsset] = useState<Partial<AssetType>>(null);
-	const onCardClick = (assetId): void => {
-		dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: assetId });
+
+	const onCardClick = (selectedProduct): void => {
+		console.log("selectedProduct", selectedProduct);
+		setSelectedAssetData(selectedProduct);
 	};
 
 	useEffect(() => {
@@ -173,6 +175,29 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.heightRange,
 		pageCount,
 	]);
+
+	const categoryMap = useMemo(() => {
+		if (state.metaData) {
+			return state.metaData.categories.list.reduce((acc, category) => ({ ...acc, [category._id]: category.name }), {});
+		}
+		return {};
+	}, [state.metaData]);
+
+	const subCategoryMap = useMemo(() => {
+		if (state.metaData) {
+			return state.metaData.subcategories.list.reduce(
+				(acc, subCategory) => ({ ...acc, [subCategory._id]: subCategory.name }),
+				{}
+			);
+		}
+		return {};
+	}, [state.metaData]);
+	const verticalMap = useMemo(() => {
+		if (state.metaData) {
+			return state.metaData.verticals.list.reduce((acc, vertical) => ({ ...acc, [vertical._id]: vertical.name }), {});
+		}
+		return {};
+	}, [state.metaData]);
 	return (
 		<Row>
 			<Col span={24}>
@@ -217,19 +242,21 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 			<Col span={24}>
 				<MainAssetPanel ref={scrollParentRef}>
 					{assetData.map(asset => {
-						return <ProductCard key={asset._id} asset={asset} onCardClick={onCardClick} />;
+						return <ProductCard verticalMap={verticalMap} key={asset._id} asset={asset} onCardClick={onCardClick} />;
 					})}
 				</MainAssetPanel>
 			</Col>
 			<Col span={24}>
-				<Row type="flex" justify="center">
-					<Pagination
-						current={pageCount}
-						defaultPageSize={50}
-						hideOnSinglePage
-						total={totalCount}
-						onChange={(page): void => setPageCount(page)}
-					/>
+				<Row type="flex" gutter={[10, 10]} justify="center">
+					<Col>
+						<Pagination
+							current={pageCount}
+							defaultPageSize={35}
+							hideOnSinglePage
+							total={totalCount}
+							onChange={(page): void => setPageCount(page)}
+						/>
+					</Col>
 				</Row>
 			</Col>
 			<AssetDescriptionPanel
@@ -237,10 +264,14 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				dispatch={dispatch}
 				projectId={projectId}
 				assetEntryId={assetEntryId}
+				selectedAssetData={selectedAssetData}
+				setSelectedAssetData={setSelectedAssetData}
+				categoryMap={categoryMap}
+				verticalMap={verticalMap}
+				subCategoryMap={subCategoryMap}
 				designId={designId}
 				moodboard={moodboard}
 				addRemoveAsset={addRemoveAsset}
-				assetId={state.selectedAsset}
 			/>
 		</Row>
 	);

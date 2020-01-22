@@ -1,5 +1,7 @@
-import { Card, Divider, Drawer, Icon, Spin, Slider } from "antd";
+import { Card, Divider, Drawer, Icon, Spin, Slider, Typography } from "antd";
 import styled from "styled-components";
+
+const { Text } = Typography;
 
 export const ModifiedDivider = styled(Divider)`
 	margin: 12px 0;
@@ -53,6 +55,10 @@ export const GreyDrawer = styled(Drawer)`
 			flex-grow: 1;
 		}
 	}
+`;
+
+export const CapitalizedText = styled(Text)`
+	text-transform: capitalize;
 `;
 
 export const StyledInput = styled.input<{ error: boolean }>`

@@ -23,7 +23,7 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 	imageComments,
 	designId,
 	setImageComments,
-	setImageId
+	setImageId,
 }) => {
 	const [authVerification, setAuthVerification] = useState<User>(null);
 	const [newComment, setNewComment] = useState<string>("");
@@ -51,9 +51,9 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 			{
 				author: authVerification.name,
 				text: newComment,
-				status: Status.pending
+				status: Status.pending,
 			},
-			...body
+			...body,
 		];
 		await setImageComments(data);
 		setNewComment("");
@@ -61,20 +61,20 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 
 	const onNewComment = e => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		setNewComment(value);
 	};
 
 	const editImageComments = (id: string, value) => {
 		const modifiedImageComments = imageComments.map(comment => {
+			const modComment = { ...comment };
+
 			if (comment._id === id) {
-				comment.text = value;
-				comment.status = Status.pending;
+				modComment.text = value;
+				modComment.status = Status.pending;
 			}
-			return {
-				...comment
-			};
+			return modComment;
 		});
 		setImageComments(modifiedImageComments);
 	};
@@ -136,7 +136,7 @@ const ImageCommentDrawer: React.FC<ImagesCommentDrawer> = ({
 												? {
 														onChange: (value: string) => {
 															editImageComments(comment._id, value);
-														}
+														},
 												  }
 												: false
 										}

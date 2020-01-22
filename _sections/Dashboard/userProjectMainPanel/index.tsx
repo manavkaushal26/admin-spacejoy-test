@@ -30,7 +30,6 @@ const userProjectMainPanel: React.FC<{
 	};
 
 	useEffect(() => {
-		console.log("startDate", startDate);
 		if (startDate) {
 			setProjectData({
 				...projectData,

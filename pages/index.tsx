@@ -90,10 +90,18 @@ auth.getInitialProps = async ({
 	isServer: boolean;
 	flow: string | string[];
 	redirectUrl: string | string[];
+	authVerification: {
+		name: string;
+		role: string;
+	};
 	token: string | string[];
 }> => {
 	const isServer = !!req;
-	return { isServer, flow, redirectUrl, token };
+	const authVerification = {
+		name: "",
+		role: "",
+	};
+	return { isServer, flow, redirectUrl, authVerification, token };
 };
 
 export default withAuthVerification(auth);

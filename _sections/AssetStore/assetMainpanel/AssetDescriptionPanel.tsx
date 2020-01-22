@@ -1,60 +1,67 @@
-import { getSingleAssetApi, uploadAssetModel } from "@api/designApi";
+import { uploadAssetModel } from "@api/designApi";
 import Image from "@components/Image";
-import { SingleAssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
+import { MoodboardAsset, AssetType } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
-import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
+import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import fetcher from "@utils/fetcher";
-import { Button, Icon, message, Popconfirm, Typography, Upload } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
+import { Button, Icon, message, Popconfirm, Typography, Upload, Row, Col } from "antd";
+import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import getCookie from "@utils/getCookie";
 import { cookieNames } from "@utils/config";
 import { ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
-import { FullheightSpin, GreyDrawer } from "../styled";
+import ImageDisplayModal from "@components/ImageDisplayModal";
+import { FullheightSpin, GreyDrawer, CapitalizedText } from "../styled";
 
 const { Title, Text } = Typography;
 
-const CenteredTitle = styled(Title)`
-	text-align: center;
-`;
-
 interface AssetDescriptionPanelProps {
-	assetId: string;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
 	moodboard: MoodboardAsset[];
 	designId: string;
 	assetEntryId: string;
+	selectedAssetData: AssetType;
+	setSelectedAssetData: React.Dispatch<React.SetStateAction<AssetType>>;
 	projectId: string;
 	dispatch: React.Dispatch<AssetAction>;
 	dataLoading: boolean;
+	verticalMap?: Record<string, string>;
+	categoryMap?: Record<string, string>;
+	subCategoryMap?: Record<string, string>;
 }
+
+const SilentTitle = styled(Title)`
+	text-transform: capitalize;
+	margin-bottom: 0 !important;
+`;
+
+const ClickDiv = styled.div`
+	cursor: pointer;
+`;
 
 const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element = ({
 	addRemoveAsset,
-	assetId,
 	moodboard,
 	designId,
 	assetEntryId,
+	selectedAssetData,
+	setSelectedAssetData,
 	projectId,
 	dispatch,
 	dataLoading,
+	verticalMap,
+	categoryMap,
+	subCategoryMap,
 }) => {
-	const [singleAssetData, setSingleAssetData] = useState<SingleAssetType>(null);
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 
 	const [loading, setLoading] = useState<boolean>(true);
-	const fetchAndPopulate = async (): Promise<void> => {
-		setLoading(true);
-		const endpoint = getSingleAssetApi(assetId);
-		const responseData = await fetcher({ endPoint: endpoint, method: "GET" });
-		if (responseData.statusCode <= 300) {
-			setSingleAssetData(responseData.data);
-		}
-		setLoading(false);
-	};
+
+	const assetId = getValueSafely(() => selectedAssetData._id, "");
+
+	const [imagePreviewVisible, setImagePreviewVisible] = useState<boolean>(false);
 
 	const moodboardAssetIdMap = useMemo(() => {
 		setLoading(true);
@@ -89,16 +96,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		// Only to show one recent uploaded files, and old ones will be replaced by the new
 		setAssetFile(fileList);
 	};
-
-	useEffect(() => {
-		if (assetId) {
-			fetchAndPopulate();
-			return (): void => {};
-		}
-		return (): void => {
-			setSingleAssetData(null);
-		};
-	}, [assetId]);
 	const Router = useRouter();
 	const assetInMoodboard = !!moodboardAssetIdMap[assetId];
 	const onButtonClick = async (): Promise<void> => {
@@ -125,112 +122,190 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	};
 
 	const closeDrawer = (): void => {
-		dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
+		setSelectedAssetData(null);
 	};
 
 	const buttonText = assetInMoodboard ? "Add Recommendations" : "Add to Design";
 
 	const uploadModelEndpoint = uploadAssetModel(assetId);
 
+	const toggleImagePreviewModal = (): void => {
+		setImagePreviewVisible(!imagePreviewVisible);
+	};
+
 	return (
-		<GreyDrawer onClose={closeDrawer} width={360} visible={!!assetId}>
+		<GreyDrawer
+			onClose={closeDrawer}
+			width={360}
+			visible={!!selectedAssetData}
+			title={<SilentTitle level={4}>{getValueSafely<string>(() => selectedAssetData.name, "")}</SilentTitle>}
+		>
 			<FullheightSpin spinning={loading || dataLoading}>
-				{singleAssetData && (
-					<CustomDiv height="100%" type="flex" flexDirection="column" width="100%" px="16px" overY="scroll">
-						<CustomDiv type="flex" justifyContent="center">
-							<Image height="200px" src={`q_100,h_200/${singleAssetData.cdn}`} />
-						</CustomDiv>
-						<CustomDiv pt="0.5em" type="flex" justifyContent="center">
-							<CenteredTitle level={3}>{singleAssetData.name}</CenteredTitle>
-						</CustomDiv>
-						<SilentDivider />
+				{selectedAssetData && (
+					<Row gutter={[0, 10]}>
+						<Col span={24}>
+							<Row type="flex" justify="center">
+								<ClickDiv onClick={toggleImagePreviewModal}>
+									<Image width="100%" src={`${selectedAssetData.cdn}`} />
+								</ClickDiv>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row type="flex" justify="space-between">
+								<Col>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
+											<Icon type="dollar-circle" theme="filled" />
+										</Col>
+										<Col>
+											<Text strong>{selectedAssetData.price}</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
+											<Icon type="link" />
+										</Col>
+										<Col>
+											<Text type="secondary">
+												<a
+													target="_blank"
+													rel="noopener noreferrer"
+													href={getValueSafely(() => selectedAssetData.retailLink, "#")}
+												>
+													{getValueSafely(() => selectedAssetData.retailer.name, "N/A")}
+												</a>
+											</Text>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<SilentDivider />
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 10]}>
+								<Col>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
+											<Icon type="drag" />
+										</Col>
+										<Col>
+											<Text type="secondary">Dimensions</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Row type="flex" justify="space-between" gutter={[0, 10]}>
+										<Col>
+											<Text strong>Width: </Text>
+											<Text>
+												{getValueSafely<string | number>(
+													() => (selectedAssetData.dimension.width * 12).toFixed(2),
+													"N/A"
+												)}
+												&#34;
+											</Text>
+										</Col>
+										<Col>
+											<Text strong>Height: </Text>
+											<Text>
+												{getValueSafely<string | number>(
+													() => (selectedAssetData.dimension.height * 12).toFixed(2),
+													"N/A"
+												)}
+												&#34;
+											</Text>
+										</Col>
+										<Col>
+											<Text strong>Depth: </Text>
+											<Text>
+												{getValueSafely<string | number>(
+													() => (selectedAssetData.dimension.depth * 12).toFixed(2),
+													"N/A"
+												)}
+												&#34;
+											</Text>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<SilentDivider />
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 10]}>
+								<Col>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
+											<Icon type="book" />
+										</Col>
+										<Col>
+											<Text type="secondary">Categorization</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Row gutter={[0, 10]}>
+										<Col>
+											<Text strong>Category: </Text>
+											<CapitalizedText>
+												{getValueSafely(() => categoryMap[selectedAssetData.meta.category], "Undefined")}
+											</CapitalizedText>
+										</Col>
+										<Col>
+											<Text strong>Sub-Category: </Text>
+											<CapitalizedText>
+												{getValueSafely(() => subCategoryMap[selectedAssetData.meta.subcategory], "Undefined")}
+											</CapitalizedText>
+										</Col>
+										<Col>
+											<Text strong>Vertical: </Text>
+											<CapitalizedText>
+												{getValueSafely(() => verticalMap[selectedAssetData.meta.vertical], "Undefined")}
+											</CapitalizedText>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<SilentDivider />
+						</Col>
 
-						<CustomDiv py="0.5em" type="flex" justifyContent="baseline" align="baseline">
-							<CustomDiv type="flex" pr="5px">
-								<Icon type="dollar-circle" theme="filled" />
-							</CustomDiv>
-							<CustomDiv>
-								<Text type="secondary">Cost: $</Text> <Text strong>{singleAssetData.price}</Text>
-							</CustomDiv>
-						</CustomDiv>
-						<SilentDivider />
-
-						<CustomDiv py="0.5em" type="flex" justifyContent="baseline" align="baseline">
-							<CustomDiv type="flex" pr="5px">
-								<Icon type="drag" />
-							</CustomDiv>
-							<CustomDiv>
-								<Text type="secondary">Dimensions</Text>
-								<CustomDiv py="0.25em">
-									<CustomDiv>
-										<Text>Width: </Text>
-										<Text>
-											{getValueSafely<string | number>(() => (singleAssetData.dimension.width * 12).toFixed(2), "N/A")}{" "}
-											Inches
-										</Text>
-									</CustomDiv>
-									<CustomDiv>
-										<Text>Height: </Text>
-										<Text>
-											{getValueSafely<string | number>(() => (singleAssetData.dimension.height * 12).toFixed(2), "N/A")}{" "}
-											Inches
-										</Text>
-									</CustomDiv>
-									<CustomDiv>
-										<Text>Depth: </Text>
-										<Text>
-											{getValueSafely<string | number>(() => (singleAssetData.dimension.depth * 12).toFixed(2), "N/A")}{" "}
-											Inches
-										</Text>
-									</CustomDiv>
-								</CustomDiv>
-							</CustomDiv>
-						</CustomDiv>
-						<SilentDivider />
-						<CustomDiv py="0.5em" type="flex" justifyContent="baseline" align="baseline">
-							<CustomDiv type="flex" pr="5px">
-								<Icon type="link" />
-							</CustomDiv>
-							<CustomDiv>
-								<Text type="secondary">
-									<a
-										target="_blank"
-										rel="noopener noreferrer"
-										href={getValueSafely(() => singleAssetData.retailLink, "#")}
-									>
-										{getValueSafely(() => singleAssetData.retailer.name, "N/A")}
-									</a>
-								</Text>
-							</CustomDiv>
-						</CustomDiv>
 						{projectId ? (
-							<CustomDiv flexGrow={1} type="flex" flexDirection="column" justifyContent="flex-end">
-								{assetInMoodboard && (
-									<CustomDiv py="0.5em" width="100%">
-										<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
-											<Button block type="danger">
-												Remove Asset
+							<Col span={24}>
+								<Row gutter={[0, 10]}>
+									{assetInMoodboard && (
+										<Col>
+											<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
+												<Button block type="danger">
+													Remove Asset
+												</Button>
+											</Popconfirm>
+										</Col>
+									)}
+									{!assetInMoodboard && assetEntryId && (
+										<Col>
+											<Button block type="primary" loading={loading} onClick={onButtonClick}>
+												Add as Recommendation
 											</Button>
-										</Popconfirm>
-									</CustomDiv>
-								)}
-								{!assetInMoodboard && assetEntryId && (
-									<CustomDiv py="0.5em" width="100%">
-										<Button block type="primary" loading={loading} onClick={onButtonClick}>
-											Add as Recommendation
-										</Button>
-									</CustomDiv>
-								)}
-								{!assetEntryId && (
-									<CustomDiv py="0.5em" width="100%">
-										<Button block type="primary" loading={loading} onClick={onButtonClick}>
-											{buttonText}
-										</Button>
-									</CustomDiv>
-								)}
-							</CustomDiv>
+										</Col>
+									)}
+									{!assetEntryId && (
+										<Col>
+											<Button block type="primary" loading={loading} onClick={onButtonClick}>
+												{buttonText}
+											</Button>
+										</Col>
+									)}
+								</Row>
+							</Col>
 						) : (
-							<CustomDiv>
+							<Col span={24}>
 								<Upload
 									supportServerRender
 									name="file"
@@ -246,11 +321,20 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										Click to Upload
 									</Button>
 								</Upload>
-							</CustomDiv>
+							</Col>
 						)}
-					</CustomDiv>
+					</Row>
 				)}
 			</FullheightSpin>
+			{selectedAssetData && (
+				<ImageDisplayModal
+					previewImage={getValueSafely(() => selectedAssetData.cdn, "")}
+					previewVisible={imagePreviewVisible}
+					handleCancel={toggleImagePreviewModal}
+					altText={getValueSafely(() => selectedAssetData.name, "Product Image")}
+					cdn
+				/>
+			)}
 		</GreyDrawer>
 	);
 };

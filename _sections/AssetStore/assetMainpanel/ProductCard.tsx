@@ -1,61 +1,112 @@
 import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
-import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
+import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Typography, Icon } from "antd";
+import { Typography, Icon, Row, Col } from "antd";
 import React from "react";
-import { AssetCard } from "../styled";
+import styled from "styled-components";
+import { AssetCard, CapitalizedText } from "../styled";
 
 const { Text } = Typography;
 
 interface AssetCards {
 	asset: Partial<AssetType>;
-	onCardClick: (id: string) => void;
+	onCardClick: (assetData: Partial<AssetType>) => void;
 	hoverable?: boolean;
 	height?: string;
 	width?: string;
+	verticalMap?: Record<string, string>;
 }
 
-const ProductCard: (props: AssetCards) => JSX.Element = ({ asset, onCardClick, hoverable = true, height, width }) => {
+const CardPadding = styled.div`
+	padding: 0.5rem;
+`;
+
+const ProductCard: (props: AssetCards) => JSX.Element = ({
+	asset,
+	onCardClick,
+	hoverable = true,
+	height,
+	width,
+	verticalMap,
+}) => {
 	const imageHeight = height || "auto";
 	const imageWidth = width || "100%";
 	return (
-		<AssetCard onClick={() => onCardClick(asset._id)} hoverable={hoverable}>
-			<CustomDiv width="100%" type="flex" overflow="hidden" flexDirection="column">
-				<CustomDiv justifyContent="space-around" type="flex">
+		<AssetCard onClick={(): void => onCardClick(asset)} hoverable={hoverable}>
+			<Row gutter={[10, 0]}>
+				<Col span={24}>
 					<Image width={imageWidth} height={imageHeight} src={asset.cdn} nolazy />
-				</CustomDiv>
-				<SilentDivider />
-				<CustomDiv type="flex" justifyContent="center" flexDirection="column" height="30%" py="1rem" px="1rem">
-					<CustomDiv type="flex" justifyContent="baseline" align="baseline">
-						<CustomDiv type="flex" pr="5px">
-							<Icon type="link" />
-						</CustomDiv>
-						<CustomDiv>
-							<Text type="secondary">
-								<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
-									{getValueSafely(() => asset.retailer.name, "N/A")}
-								</a>
-							</Text>
-						</CustomDiv>
-					</CustomDiv>
-					<CustomDiv whiteSpace="nowrap">
-						<Text style={{ width: "100%" }} ellipsis strong>
-							{getValueSafely(() => asset.name, "N/A")}
-						</Text>
-					</CustomDiv>
-					<CustomDiv>
-						<CustomDiv type="flex" justifyContent="baseline" align="center">
-							<CustomDiv type="flex" pr="5px">
+					<SilentDivider />
+				</Col>
+				<Col span={24}>
+					<CardPadding>
+						<Row type="flex" gutter={[5, 0]}>
+							<Col>
+								<Icon type="link" />
+							</Col>
+							<Col>
+								<Text type="secondary">
+									<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
+										{getValueSafely(() => asset.retailer.name, "N/A")}
+									</a>
+								</Text>
+							</Col>
+						</Row>
+						<Row>
+							<Col>
+								<Text strong>{getValueSafely(() => asset.name, "N/A")}</Text>
+							</Col>
+						</Row>
+
+						<Row type="flex" gutter={[5, 0]}>
+							<Col>
+								<Text strong>Vertical: </Text>
+							</Col>
+							<Col>
+								<CapitalizedText>{` ${getValueSafely<string>(
+									() => verticalMap[asset.meta.vertical],
+									"Undefined"
+								)}`}</CapitalizedText>
+							</Col>
+						</Row>
+						<Row type="flex" gutter={[5, 0]}>
+							<Col>
+								<Text strong>W:</Text>
+							</Col>
+							<Col>
+								<CapitalizedText>
+									{getValueSafely<string | number>(() => (asset.dimension.width * 12).toFixed(2), "N/A")}&#34;
+								</CapitalizedText>
+							</Col>
+							<Col>
+								<Text strong>H:</Text>
+							</Col>
+							<Col>
+								<CapitalizedText>
+									{getValueSafely<string | number>(() => (asset.dimension.height * 12).toFixed(2), "N/A")}&#34;
+								</CapitalizedText>
+							</Col>
+							<Col>
+								<Text strong>D:</Text>
+							</Col>
+							<Col>
+								<CapitalizedText>
+									{getValueSafely<string | number>(() => (asset.dimension.depth * 12).toFixed(2), "N/A")}&#34;
+								</CapitalizedText>
+							</Col>
+						</Row>
+						<Row type="flex" gutter={[10, 0]}>
+							<Col>
 								<Icon type="dollar-circle" theme="filled" />
-							</CustomDiv>
-							<CustomDiv>
+							</Col>
+							<Col>
 								<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
-							</CustomDiv>
-						</CustomDiv>
-					</CustomDiv>
-				</CustomDiv>
-			</CustomDiv>
+							</Col>
+						</Row>
+					</CardPadding>
+				</Col>
+			</Row>
 		</AssetCard>
 	);
 };

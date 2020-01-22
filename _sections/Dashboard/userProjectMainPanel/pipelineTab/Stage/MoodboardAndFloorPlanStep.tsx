@@ -9,8 +9,8 @@ import getCookie from "@utils/getCookie";
 import { Button, Icon, message, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
+import ImageDisplayModal from "@components/ImageDisplayModal";
 import { StepDiv } from "../styled";
-import ImageDisplayModal from "./Components/ImageDisplayModal";
 
 const { Text } = Typography;
 

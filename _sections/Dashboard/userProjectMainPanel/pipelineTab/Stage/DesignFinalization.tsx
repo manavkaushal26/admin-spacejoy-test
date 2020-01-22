@@ -12,9 +12,9 @@ import { Typography, message, Input, Button } from "antd";
 import { getValueSafely } from "@utils/commonUtils";
 import Image from "@components/Image";
 import styled from "styled-components";
+import ImageDisplayModal from "@components/ImageDisplayModal";
 import ImageCommentDrawer from "./Components/ImageCommentsDrawer";
 import { StepDiv } from "../styled";
-import ImageDisplayModal from "./Components/ImageDisplayModal";
 
 const { Text } = Typography;
 
