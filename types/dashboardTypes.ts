@@ -295,7 +295,7 @@ export enum HumanizeDesignPhases {
 	modelling = "Modelling",
 	design3D = "Design 3D",
 	render = "Render",
-	revision = "Revision",
+	revision = "Render Revision",
 	ready = "Ready",
 }
 
