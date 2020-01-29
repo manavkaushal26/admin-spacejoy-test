@@ -1,4 +1,4 @@
-import { Card, Divider, Drawer, Icon, Spin, Slider, Typography } from "antd";
+import { Card, Divider, Drawer, Icon, Spin, Slider, Typography, Modal } from "antd";
 import styled from "styled-components";
 
 const { Text } = Typography;
@@ -75,4 +75,10 @@ export const StyledInput = styled.input<{ error: boolean }>`
 
 export const MarginCorrectedSlider = styled(Slider)`
 	margin: 8px 8px;
+`;
+
+export const SizeAdjustedModal = styled(Modal)`
+	height: 80% !important;
+	min-width: 360px;
+	width: 75% !important;
 `;

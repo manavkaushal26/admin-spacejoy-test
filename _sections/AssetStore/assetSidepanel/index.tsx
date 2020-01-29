@@ -11,59 +11,37 @@ const { TreeNode } = Tree;
 
 const { Title, Text } = Typography;
 
+interface CategoryMap {
+	key: string;
+	title: {
+		name: string;
+		level: string;
+	};
+	children?: Array<CategoryMap>;
+}
+
 interface AssetSidePanelProps {
 	metaData: MetaDataType;
 	dispatch: React.Dispatch<AssetAction>;
 	state: AssetStoreState;
+	categoryMap: Array<CategoryMap>;
 }
 
 const addLevel = (level: string, elem): string => {
 	return `${elem}-${level}`;
 };
 
-const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state }): JSX.Element => {
+const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state, categoryMap }): JSX.Element => {
 	const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000]);
 	const [width, setWidthRange] = useState<[number, number]>([0, 30]);
 	const [height, setHeightRange] = useState<[number, number]>([0, 30]);
 	const [depth, setDepthRange] = useState<[number, number]>([0, 30]);
 
-	const categoryMap = useMemo(() => {
-		if (metaData) {
-			return metaData.categories.list.map(elem => {
-				return {
-					title: { name: elem.name, level: "category" },
-					key: elem._id,
-					children: metaData.subcategories.list
-						.filter(subElem => {
-							return subElem.category === elem._id;
-						})
-						.map(subElem => {
-							return {
-								title: { name: subElem.name, level: "subCategory" },
-								key: subElem._id,
-								children: metaData.verticals.list
-									.filter(vert => {
-										return vert.subcategory === subElem._id;
-									})
-									.map(filtVert => {
-										return {
-											title: { name: filtVert.name, level: "verticals" },
-											key: filtVert._id
-										};
-									})
-							};
-						})
-				};
-			});
-		}
-		return [];
-	}, [metaData]);
-
 	const mergedArray: string[] = useMemo(
 		() => [
 			...state.checkedKeys.category.map<string>(addLevel.bind(null, "category")),
 			...state.checkedKeys.subCategory.map<string>(addLevel.bind(null, "subCategory")),
-			...state.checkedKeys.verticals.map<string>(addLevel.bind(null, "verticals"))
+			...state.checkedKeys.verticals.map<string>(addLevel.bind(null, "verticals")),
 		],
 		[state.checkedKeys]
 	);
@@ -74,7 +52,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 
 	const onSearchInput = (e): void => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		dispatch({ type: ASSET_ACTION_TYPES.SEARCH_TEXT, value });
 	};
@@ -94,7 +72,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 
 	const onPriceSliderValueEntry = (e, type): void => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		const [min, max] = priceRange;
 		let correctedValue = parseInt(value, 10);
@@ -124,7 +102,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 
 	const onHeightSliderValueEntry = (e, type): void => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		const [min, max] = priceRange;
 		let correctedValue = parseInt(value, 10);
@@ -154,7 +132,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 
 	const onWidthSliderValueEntry = (e, type): void => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		const [min, max] = width;
 		let correctedValue = parseInt(value, 10);
@@ -184,7 +162,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 
 	const onDepthSliderValueEntry = (e, type): void => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		const [min, max] = depth;
 		let correctedValue = parseInt(value, 10);
@@ -199,7 +177,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		}
 	};
 
-	const renderTreeNodes = (options): ReactNode => {
+	const renderTreeNodes = (options: Array<CategoryMap>): ReactNode => {
 		return options.map(item => {
 			if (item.children) {
 				return (

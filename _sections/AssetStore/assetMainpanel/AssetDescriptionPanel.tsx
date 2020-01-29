@@ -1,23 +1,20 @@
-import { uploadAssetModel } from "@api/designApi";
 import Image from "@components/Image";
-import { MoodboardAsset, AssetType } from "@customTypes/moodboardTypes";
+import ImageDisplayModal from "@components/ImageDisplayModal";
+import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Button, Icon, message, Popconfirm, Typography, Upload, Row, Col } from "antd";
+import { Button, Col, Icon, message, Popconfirm, Row, Typography } from "antd";
+import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router";
-import getCookie from "@utils/getCookie";
-import { cookieNames } from "@utils/config";
-import { ModelToExtensionMap } from "@customTypes/dashboardTypes";
-import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
-import ImageDisplayModal from "@components/ImageDisplayModal";
-import { FullheightSpin, GreyDrawer, CapitalizedText } from "../styled";
+import { CapitalizedText, FullheightSpin, GreyDrawer } from "../styled";
 
 const { Title, Text } = Typography;
 
 interface AssetDescriptionPanelProps {
+	editAsset: (assetData: AssetType) => void;
+
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
 	moodboard: MoodboardAsset[];
 	designId: string;
@@ -54,9 +51,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	verticalMap,
 	categoryMap,
 	subCategoryMap,
+	editAsset,
 }) => {
-	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
-
 	const [loading, setLoading] = useState<boolean>(true);
 
 	const assetId = getValueSafely(() => selectedAssetData._id, "");
@@ -88,14 +84,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		return {};
 	}, [moodboard, assetEntryId]);
 
-	const handleOnFileUploadChange = (info: UploadChangeParam<UploadFile>): void => {
-		let fileList = [...info.fileList];
-
-		fileList = fileList.slice(-1);
-		// 1. Limit the number of uploaded files
-		// Only to show one recent uploaded files, and old ones will be replaced by the new
-		setAssetFile(fileList);
-	};
 	const Router = useRouter();
 	const assetInMoodboard = !!moodboardAssetIdMap[assetId];
 	const onButtonClick = async (): Promise<void> => {
@@ -127,8 +115,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 
 	const buttonText = assetInMoodboard ? "Add Recommendations" : "Add to Design";
 
-	const uploadModelEndpoint = uploadAssetModel(assetId);
-
 	const toggleImagePreviewModal = (): void => {
 		setImagePreviewVisible(!imagePreviewVisible);
 	};
@@ -151,7 +137,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							</Row>
 						</Col>
 						<Col span={24}>
-							<Row type="flex" justify="space-between">
+							<Row type="flex" align="middle" justify="space-between">
 								<Col>
 									<Row type="flex" gutter={[10, 0]}>
 										<Col>
@@ -162,6 +148,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										</Col>
 									</Row>
 								</Col>
+
 								<Col>
 									<Row type="flex" gutter={[10, 0]}>
 										<Col>
@@ -179,6 +166,16 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											</Text>
 										</Col>
 									</Row>
+								</Col>
+								<Col>
+									<Button
+										type="primary"
+										icon="edit"
+										onClick={(): void => {
+											editAsset(selectedAssetData);
+											setSelectedAssetData(null);
+										}}
+									/>
 								</Col>
 							</Row>
 						</Col>
@@ -275,8 +272,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<SilentDivider />
 						</Col>
-
-						{projectId ? (
+						{projectId && (
 							<Col span={24}>
 								<Row gutter={[0, 10]}>
 									{assetInMoodboard && (
@@ -303,24 +299,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										</Col>
 									)}
 								</Row>
-							</Col>
-						) : (
-							<Col span={24}>
-								<Upload
-									supportServerRender
-									name="file"
-									fileList={assetFile}
-									action={uploadModelEndpoint}
-									onRemove={(): false => false}
-									onChange={(info): void => handleOnFileUploadChange(info)}
-									headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-									accept={ModelToExtensionMap.glb}
-								>
-									<Button>
-										<Icon type="upload" />
-										Click to Upload
-									</Button>
-								</Upload>
 							</Col>
 						)}
 					</Row>

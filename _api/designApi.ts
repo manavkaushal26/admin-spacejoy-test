@@ -1,4 +1,5 @@
 import { page } from "@utils/config";
+import { Model3DFiles } from "@customTypes/dashboardTypes";
 
 export const designApi: (designId: string | string[]) => string = designId => {
 	return `/admin/design/${designId}`;
@@ -28,11 +29,21 @@ export const getAssetApi: () => string = () => {
 	return "admin/assets/search";
 };
 
-export const uploadAssetModel: (assetId: string) => string = assetId => {
+export const uploadAssetModel: (assetId: string, filetype?: Model3DFiles | "source") => string = (
+	assetId,
+	filetype = Model3DFiles.Glb
+) => {
 	if (process.env.NODE_ENV !== "production") {
-		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/model?filetype=glb`;
+		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/model?filetype=${filetype}`;
 	}
-	return `${page.apiBaseUrl}/admin/asset/${assetId}/model?filetype=glb`;
+	return `${page.apiBaseUrl}/admin/asset/${assetId}/model?filetype=${filetype}`;
+};
+
+export const uploadAssetImage: (assetId: string) => string = assetId => {
+	if (process.env.NODE_ENV !== "production") {
+		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/image`;
+	}
+	return `${page.apiBaseUrl}/admin/asset/${assetId}/image`;
 };
 
 export const deleteUploadedImage = (designId: string, imageId: string) => {

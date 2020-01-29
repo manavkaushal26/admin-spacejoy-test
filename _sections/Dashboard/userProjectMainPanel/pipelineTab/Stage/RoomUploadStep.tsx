@@ -61,7 +61,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
 					]);
 				}
 				if (source) {
-					const fileName = legacyObj.split("/").pop();
+					const fileName = source.split("/").pop();
 					setSourceFileList([
 						{
 							uid: "-1",

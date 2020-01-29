@@ -9,13 +9,14 @@ import { withAuthSync, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, message, Spin } from "antd";
+import { Button, message, Spin, Icon } from "antd";
 import { NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useMemo, useState } from "react";
 import styled from "styled-components";
-import { MoodboardAsset } from "@customTypes/moodboardTypes";
+import { MoodboardAsset, AssetType } from "@customTypes/moodboardTypes";
+import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
 
 interface AssetStoreProps {
@@ -24,6 +25,15 @@ interface AssetStoreProps {
 	designId: string;
 	assetEntryId: string;
 	projectId: string;
+}
+
+interface CategoryMap {
+	key: string;
+	title: {
+		name: string;
+		level: string;
+	};
+	children?: Array<CategoryMap>;
 }
 
 const ParentContainer = styled.div`
@@ -48,6 +58,25 @@ const MainContentContainer = styled.div`
 	min-width: 50%;
 `;
 
+const FAB = styled.button`
+	position: absolute;
+	bottom: 1.5rem;
+	right: 1.5rem;
+	width: 56px;
+	height: 56px;
+	font-size: 2.2rem;
+	border-radius: 28px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+	border-width: 0px;
+	background-color: #f44336;
+	cursor: pointer;
+	> i {
+		display: flex;
+		justify-content: center;
+		color: white;
+	}
+`;
+
 const AssetStore = ({
 	isServer,
 	authVerification,
@@ -57,7 +86,7 @@ const AssetStore = ({
 }: AssetStoreProps): JSX.Element => {
 	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
-
+	const [editAssetData, setEditAssetData] = useState<AssetType>(null);
 	const fetchMetaData = async (): Promise<void> => {
 		const endpoint = getMetaDataApi();
 		const response = await fetcher({ endPoint: endpoint, method: "GET" });
@@ -84,7 +113,7 @@ const AssetStore = ({
 
 	useEffect(() => {
 		fetchMetaData();
-		fetchMoodBoard();
+		if (!!projectId && !!designId) fetchMoodBoard();
 	}, []);
 
 	const addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, aeid?: string) => void = async (
@@ -147,6 +176,47 @@ const AssetStore = ({
 		dispatch({ type: ASSET_ACTION_TYPES.TOGGLE_CART, value: null });
 	};
 
+	const toggleNewAssetModal = (): void => {
+		dispatch({ type: ASSET_ACTION_TYPES.NEW_ASSET_MODAL_VISIBLE, value: null });
+	};
+
+	const editAsset = (assetData): void => {
+		setEditAssetData(assetData);
+		toggleNewAssetModal();
+	};
+
+	const categoryMap: Array<CategoryMap> = useMemo(() => {
+		if (state.metaData) {
+			return state.metaData.categories.list.map(elem => {
+				return {
+					title: { name: elem.name, level: "category" },
+					key: elem._id,
+					children: state.metaData.subcategories.list
+						.filter(subElem => {
+							return subElem.category === elem._id;
+						})
+						.map(subElem => {
+							return {
+								title: { name: subElem.name, level: "subCategory" },
+								key: subElem._id,
+								children: state.metaData.verticals.list
+									.filter(vert => {
+										return vert.subcategory === subElem._id;
+									})
+									.map(filtVert => {
+										return {
+											title: { name: filtVert.name, level: "verticals" },
+											key: filtVert._id,
+										};
+									}),
+							};
+						}),
+				};
+			});
+		}
+		return [];
+	}, [state.metaData]);
+
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -163,12 +233,14 @@ const AssetStore = ({
 										{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
 									</Button>
 								</CustomDiv>
-								<CustomDiv py="0.5rem" width="100%">
-									<Button onClick={toggleCart} block type="default">
-										Open Cart
-									</Button>
-								</CustomDiv>
-								<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} />
+								{projectId && (
+									<CustomDiv py="0.5rem" width="100%">
+										<Button onClick={toggleCart} block type="default">
+											Open Cart
+										</Button>
+									</CustomDiv>
+								)}
+								<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
 							</CustomDiv>
 						</MaxHeightDiv>
 					</SidebarContainer>
@@ -176,6 +248,7 @@ const AssetStore = ({
 						<MaxHeightDiv>
 							<CustomDiv flexDirection="column" width="100%" px="0.5rem">
 								<AssetMainPanel
+									editAsset={editAsset}
 									projectId={projectId}
 									dispatch={dispatch}
 									state={state}
@@ -188,7 +261,19 @@ const AssetStore = ({
 						</MaxHeightDiv>
 					</MainContentContainer>
 				</ParentContainer>
+				<FAB onClick={toggleNewAssetModal}>
+					<Icon type="plus" />
+				</FAB>
 			</Spin>
+
+			<NewAssetModal
+				assetData={editAssetData}
+				setAssetData={setEditAssetData}
+				metadata={state.metaData}
+				categoryMap={categoryMap}
+				toggleNewAssetModal={toggleNewAssetModal}
+				isOpen={state.newAssetModalVisible}
+			/>
 			{state.moodboard && (
 				<AssetCartModal
 					designId={designId}

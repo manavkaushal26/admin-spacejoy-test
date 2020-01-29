@@ -17,6 +17,7 @@ export interface AssetStoreState {
 	};
 	selectedAsset: string;
 	cartOpen: boolean;
+	newAssetModalVisible: boolean;
 }
 
 export const assetStoreInitialState: AssetStoreState = {
@@ -32,10 +33,11 @@ export const assetStoreInitialState: AssetStoreState = {
 	checkedKeys: {
 		category: [],
 		subCategory: [],
-		verticals: []
+		verticals: [],
 	},
 	selectedAsset: "",
-	cartOpen: false
+	cartOpen: false,
+	newAssetModalVisible: false,
 };
 
 export interface AssetAction {
@@ -58,7 +60,8 @@ export enum ASSET_ACTION_TYPES {
 	LOADING_STATUS = "LOADING_STATUS",
 	SELECTED_ASSET = "SELECTED_ASSET",
 	TOGGLE_CART = "TOGGLE_CART",
-	RESET_FILTERS = "RESET_FILTERS"
+	RESET_FILTERS = "RESET_FILTERS",
+	NEW_ASSET_MODAL_VISIBLE = "NEW_ASSET_MODAL_VISIBLE",
 }
 
 export interface AssetReducerType {
@@ -79,9 +82,9 @@ export const reducer: AssetReducerType = (state, action) => {
 				checkedKeys: {
 					category: [],
 					subCategory: [],
-					verticals: []
+					verticals: [],
 				},
-				selectedAsset: ""
+				selectedAsset: "",
 			};
 		case ASSET_ACTION_TYPES.SUB_CATEGORY:
 			return {
@@ -89,64 +92,64 @@ export const reducer: AssetReducerType = (state, action) => {
 				checkedKeys: {
 					category: [],
 					verticals: [],
-					subCategory: [action.value.meta.subcategory]
-				}
+					subCategory: [action.value.meta.subcategory],
+				},
 			};
 		case ASSET_ACTION_TYPES.SEARCH_TEXT:
 			return {
 				...state,
-				searchText: action.value
+				searchText: action.value,
 			};
 		case ASSET_ACTION_TYPES.DEPTH_RANGE:
 			return {
 				...state,
-				depthRange: action.value
+				depthRange: action.value,
 			};
 		case ASSET_ACTION_TYPES.HEIGHT_RANGE:
 			return {
 				...state,
-				heightRange: action.value
+				heightRange: action.value,
 			};
 		case ASSET_ACTION_TYPES.WIDTH_RANGE:
 			return {
 				...state,
-				widthRange: action.value
+				widthRange: action.value,
 			};
 		case ASSET_ACTION_TYPES.PRICE_RANGE:
 			return {
 				...state,
-				priceRange: action.value
+				priceRange: action.value,
 			};
 		case ASSET_ACTION_TYPES.LOADING_STATUS:
 			return {
 				...state,
-				loading: action.value
+				loading: action.value,
 			};
 		case ASSET_ACTION_TYPES.RETAILER:
 			return {
 				...state,
-				retailerFilter: action.value
+				retailerFilter: action.value,
 			};
 		case ASSET_ACTION_TYPES.CATEGORY:
 			return {
 				...state,
-				categoryFilter: action.value
+				categoryFilter: action.value,
 			};
 		case ASSET_ACTION_TYPES.METADATA:
 			return {
 				...state,
-				metaData: action.value
+				metaData: action.value,
 			};
 
 		case ASSET_ACTION_TYPES.MOODBOARD:
 			return {
 				...state,
-				moodboard: action.value
+				moodboard: action.value,
 			};
 		case ASSET_ACTION_TYPES.SELECTED_ASSET:
 			return {
 				...state,
-				selectedAsset: action.value
+				selectedAsset: action.value,
 			};
 		case ASSET_ACTION_TYPES.CHECKED_ITEMS:
 			return {
@@ -161,21 +164,23 @@ export const reducer: AssetReducerType = (state, action) => {
 							currentSelectionArray.push(curr[0]);
 							return {
 								...acc,
-								[curr[1]]: currentSelectionArray
+								[curr[1]]: currentSelectionArray,
 							};
 						},
 						{
 							category: [],
 							subCategory: [],
-							verticals: []
+							verticals: [],
 						}
-					)
+					),
 			};
 		case ASSET_ACTION_TYPES.TOGGLE_CART:
 			return {
 				...state,
-				cartOpen: !state.cartOpen
+				cartOpen: !state.cartOpen,
 			};
+		case ASSET_ACTION_TYPES.NEW_ASSET_MODAL_VISIBLE:
+			return { ...state, newAssetModalVisible: !state.newAssetModalVisible };
 		default:
 			return state;
 	}

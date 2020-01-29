@@ -27,14 +27,14 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	missingAssets,
 	addMissingAssetModalVisible,
 	setMoodboard,
-	toggleAddMissingAssetModal
+	toggleAddMissingAssetModal,
 }) => {
 	const [assetUrl, setAssetUrl] = useState<string>("");
 	const [loading, setLoading] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState(false);
 	const assetUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		setAssetUrl(value);
 	};
@@ -49,9 +49,9 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 				body: {
 					data: {
 						assets: [],
-						assetUrls: [assetUrl]
-					}
-				}
+						assetUrls: [assetUrl],
+					},
+				},
 			});
 			if (response.statusCode <= 300) {
 				setMoodboard(response.data.moodboard);
@@ -71,9 +71,9 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			body: {
 				data: {
 					assets: [],
-					assetUrls: [missingAssetUrl]
-				}
-			}
+					assetUrls: [missingAssetUrl],
+				},
+			},
 		});
 		if (response.statusCode <= 300) {
 			setMoodboard(response.data.moodboard);

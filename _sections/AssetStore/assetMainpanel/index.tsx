@@ -14,6 +14,7 @@ import ProductCard from "./ProductCard";
 const { Title, Text } = Typography;
 
 interface AssetMainPanelProps {
+	editAsset: (assetData: AssetType) => void;
 	state: AssetStoreState;
 	assetEntryId: string;
 	addRemoveAsset: (action: "ADD" | "DELETE", assetId: string, assetEntryId?: string) => void;
@@ -110,6 +111,7 @@ const fetchAndPopulate: FetchAndPopulate = async (
 const debouncedFetchAsset = debounce(fetchAndPopulate, 500);
 
 const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
+	editAsset,
 	state,
 	addRemoveAsset,
 	moodboard,
@@ -125,7 +127,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	const [primaryAsset, setPrimaryAsset] = useState<Partial<AssetType>>(null);
 
 	const onCardClick = (selectedProduct): void => {
-		console.log("selectedProduct", selectedProduct);
 		setSelectedAssetData(selectedProduct);
 	};
 
@@ -260,6 +261,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				</Row>
 			</Col>
 			<AssetDescriptionPanel
+				editAsset={editAsset}
 				dataLoading={state.loading}
 				dispatch={dispatch}
 				projectId={projectId}

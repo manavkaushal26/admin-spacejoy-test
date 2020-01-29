@@ -1,3 +1,6 @@
+import { MountTypes } from "./assetInfoTypes";
+import { Status } from "./userType";
+
 enum ServiceType {
 	furniture = "furniture",
 	paint = "paint",
@@ -34,6 +37,12 @@ export interface SubcategoryList {
 	category: string;
 }
 
+export interface Themes {
+	_id: string;
+	name: string;
+	description?: string;
+}
+
 export interface VerticalsList {
 	_id: string;
 	name: string;
@@ -58,6 +67,10 @@ export interface MetaDataType {
 		list: VerticalsList[];
 		count: number;
 	};
+	themes: {
+		list: Themes[];
+		count: number;
+	};
 	designImgTypes: string[];
 	cdnPrefix: string;
 }
@@ -66,9 +79,21 @@ export interface AssetType {
 	name: string;
 	price: number;
 	currency: string;
+	description: string;
 	retailer: {
 		_id: string;
 		name: string;
+	};
+	status: Status;
+	shoppable: boolean;
+	spatialData: {
+		fileUrls: {
+			source: string;
+			glb: string;
+			legacy_obj: string;
+		};
+		mountType: MountTypes;
+		clampValue: -1 | 0;
 	};
 	dimension: {
 		depth: number;
@@ -79,11 +104,16 @@ export interface AssetType {
 		category: string;
 		subcategory: string;
 		vertical: string;
+		theme: string;
 	};
 	retailLink: string;
 	cdn: string;
 	_id: string;
 	imageUrl: string;
+	artist: {
+		_id: string;
+		name: string;
+	};
 }
 
 export interface MoodboardAsset {
