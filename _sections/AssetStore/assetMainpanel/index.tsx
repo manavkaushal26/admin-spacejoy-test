@@ -22,6 +22,7 @@ interface AssetMainPanelProps {
 	designId: string;
 	dispatch: React.Dispatch<AssetAction>;
 	projectId: string;
+	themeIdToNameMap: Record<string, string>;
 }
 
 interface FetchAndPopulate {
@@ -119,6 +120,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	assetEntryId,
 	dispatch,
 	projectId,
+	themeIdToNameMap,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
 	const [selectedAssetData, setSelectedAssetData] = useState<AssetType>(null);
@@ -263,6 +265,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				</Row>
 			</Col>
 			<AssetDescriptionPanel
+				themeIdToNameMap={themeIdToNameMap}
 				editAsset={editAsset}
 				dataLoading={state.loading}
 				dispatch={dispatch}

@@ -106,9 +106,11 @@ const AssetStore = ({
 	};
 
 	useEffect(() => {
-		if (assetEntryId) {
-			message.warn("In Recommendation Selection Mode");
-		} else message.warn("Primary Asset Selection mode");
+		if (projectId) {
+			if (assetEntryId) {
+				message.warn("In Recommendation Selection Mode");
+			} else message.warn("Primary Asset Selection mode");
+		}
 	}, [assetEntryId]);
 
 	useEffect(() => {
@@ -217,6 +219,15 @@ const AssetStore = ({
 		return [];
 	}, [state.metaData]);
 
+	const themeIdToNameMap = useMemo(() => {
+		if (state.metaData) {
+			return state.metaData.themes.list.reduce((acc, theme) => {
+				return { ...acc, [theme._id]: theme.name };
+			}, {});
+		}
+		return {};
+	}, [state.metaData]);
+
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
@@ -248,6 +259,7 @@ const AssetStore = ({
 						<MaxHeightDiv>
 							<CustomDiv flexDirection="column" width="100%" px="0.5rem">
 								<AssetMainPanel
+									themeIdToNameMap={themeIdToNameMap}
 									editAsset={editAsset}
 									projectId={projectId}
 									dispatch={dispatch}

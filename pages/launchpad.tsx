@@ -1,17 +1,15 @@
 import User from "@customTypes/userType";
+import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification, redirectToLocation } from "@utils/auth";
+import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Card, Icon, Row, Col, Typography } from "antd";
+import { getLocalStorageValue } from "@utils/storageUtils";
+import { Card, Col, Icon, Row, Typography } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import React from "react";
-import { getLocalStorageValue } from "@utils/storageUtils";
 import styled from "styled-components";
-import { PaddedDiv } from "@sections/Header/styled";
-import { GreyColumn } from "@sections/Dashboard/userProjectMainPanel/TeamTab/styled";
-import { MaxHeightDiv } from "@sections/Dashboard/styled";
 
 const { Text, Title } = Typography;
 
@@ -47,7 +45,7 @@ const launchpadLocations = [
 
 const CapitalizedTitle = styled(Title)`
 	text-transform: capitalize;
-	margin-bottom: 0px;
+	margin-bottom: 0px !important;
 `;
 
 const GreyMaxHeightDiv = styled.div`
@@ -65,7 +63,10 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 			<GreyMaxHeightDiv>
 				<Row gutter={[0, 16]}>
 					<Col style={{ backgroundColor: "white", padding: "4rem 1.15rem" }}>
-						<CapitalizedTitle>Hey {getLocalStorageValue<User>("authVerification").name}</CapitalizedTitle>
+						<CapitalizedTitle>Hey {getLocalStorageValue<User>("authVerification").name},</CapitalizedTitle>
+						<Title style={{ margin: 0 }} level={3}>
+							Welcome to the Launchpad
+						</Title>
 					</Col>
 					<Col>
 						<PaddedDiv>

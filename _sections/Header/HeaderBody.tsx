@@ -3,6 +3,7 @@ import SVGIcon from "@components/SVGIcon";
 import React, { useState } from "react";
 import { Row, Col } from "antd";
 import User, { Role } from "@customTypes/userType";
+import { useRouter } from "next/router";
 import ActiveLink from "./ActiveLink";
 import {
 	HorizontalListStyled,
@@ -24,7 +25,7 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
 
 	const handleClick = () => updateMobileNavStatus(!mobileNavStatus);
-
+	const Router = useRouter();
 	return (
 		<PaddedDiv>
 			<Row>
@@ -35,8 +36,12 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 								<Logo md />
 							</a>
 						</Col>
-						<Col span={13}>{navCenter(authVerification)}</Col>
-						<Col span={3}> {navRight(authVerification)}</Col>
+						<Col span={16}>
+							<Row type="flex" justify="end" gutter={[32, 0]}>
+								<Col>{navCenter(authVerification, Router.pathname)}</Col>
+								<Col> {navRight(authVerification)}</Col>
+							</Row>
+						</Col>
 					</Row>
 				</MobileHiddenStyled>
 			</Row>
@@ -60,7 +65,7 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				<MobileNavVisibleStyled className={`${mobileNavStatus ? "active" : ""}`}>
 					<Row>
 						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
-							{navCenter(authVerification)}
+							{navCenter(authVerification, Router.pathname)}
 						</Col>
 						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
 							{navRight(authVerification)}

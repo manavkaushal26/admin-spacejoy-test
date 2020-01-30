@@ -5,7 +5,7 @@ import { Currency, MountTypes, MountTypesLabels } from "@customTypes/assetInfoTy
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { getBase64, getValueSafely, debounce } from "@utils/commonUtils";
+import { debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
@@ -89,7 +89,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const assetMountType = useRef(null);
 
 	const [assetNameValid, setAssetNameValid] = useState<boolean>(false);
-	const [assetDescriptionValid, setAssetDescriptionValid] = useState<boolean>(false);
 	const [assetPriceValid, setAssetPriceValid] = useState<boolean>(false);
 	const [assetRetailerValid, setAssetRetailerValid] = useState<boolean>(false);
 	const [assetUrlValid, setAssetUrlValid] = useState<boolean>(false);
@@ -104,16 +103,15 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	const checkValidity = (): void => {
 		setAssetNameValid(!!assetName.current.props.value);
-		setAssetDescriptionValid(!!assetDescription.current.state.value);
 		setAssetPriceValid(!!assetPrice.current.input.checkValidity());
 		setAssetRetailerValid(!!assetRetailer.current.props.value);
 		setAssetUrlValid(assetUrl.current.input.checkValidity());
 		setAssetCategoryValid(!!assetCategory.current.props.value);
 		setAssetSubCategoryValid(!!assetSubCategory.current.props.value);
 		setAssetVerticalValid(!!assetVertical.current.props.value);
-		setAssetWidthValid(!!assetWidth.current.input.checkValidity());
-		setAssetHeightValid(!!assetHeight.current.input.checkValidity());
-		setAssetDepthValid(!!assetDepth.current.input.checkValidity());
+		setAssetWidthValid(assetWidth.current.input.checkValidity() && !!parseInt(assetWidth.current.props.value, 10));
+		setAssetHeightValid(assetHeight.current.input.checkValidity() && !!parseInt(assetHeight.current.props.value, 10));
+		setAssetDepthValid(assetDepth.current.input.checkValidity() && !!parseInt(assetDepth.current.props.value, 10));
 		setAssetMountTypeValid(!!assetMountType.current.props.value);
 	};
 
@@ -306,18 +304,17 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetFile(null);
 			setImageFile(null);
 			setSourceFileList(null);
-			setAssetNameValid(true);
-			setAssetDescriptionValid(true);
-			setAssetPriceValid(true);
-			setAssetRetailerValid(true);
-			setAssetUrlValid(true);
-			setAssetCategoryValid(true);
-			setAssetSubCategoryValid(true);
-			setAssetVerticalValid(true);
-			setAssetWidthValid(true);
-			setAssetHeightValid(true);
-			setAssetDepthValid(true);
-			setAssetMountTypeValid(true);
+			setAssetNameValid(false);
+			setAssetPriceValid(false);
+			setAssetRetailerValid(false);
+			setAssetUrlValid(false);
+			setAssetCategoryValid(false);
+			setAssetSubCategoryValid(false);
+			setAssetVerticalValid(false);
+			setAssetWidthValid(false);
+			setAssetHeightValid(false);
+			setAssetDepthValid(false);
+			setAssetMountTypeValid(false);
 		};
 	}, [isOpen]);
 
@@ -376,7 +373,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					"meta.category": state.meta.category,
 					"meta.subcategory": state.meta.subcategory,
 					"meta.vertical": state.meta.vertical,
-					theme: state.meta.theme,
+					"meta.theme": state.meta.theme,
 					"spatialData.mountType": state.spatialData.mountType,
 					"spatialData.clampValue": state.spatialData.clampValue,
 					price: state.price,
@@ -398,19 +395,19 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: response.data });
 	};
 
-	const submitButtonDisabled =
-		!assetNameValid ||
-		!assetDescriptionValid ||
-		!assetPriceValid ||
-		!assetRetailerValid ||
-		!assetUrlValid ||
-		!assetCategoryValid ||
-		!assetSubCategoryValid ||
-		!assetVerticalValid ||
-		!assetWidthValid ||
-		!assetHeightValid ||
-		!assetDepthValid ||
-		!assetMountTypeValid;
+	const submitButtonDisabled = !(
+		assetNameValid &&
+		assetPriceValid &&
+		assetRetailerValid &&
+		assetUrlValid &&
+		assetCategoryValid &&
+		assetSubCategoryValid &&
+		assetVerticalValid &&
+		assetWidthValid &&
+		assetHeightValid &&
+		assetDepthValid &&
+		assetMountTypeValid
+	);
 
 	return (
 		<SizeAdjustedModal
@@ -460,7 +457,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									value={state.description}
 									placeholder="Description"
 								/>
-								{!assetDescriptionValid && submittedForm && <SmallErrorText>Enter a valid Description</SmallErrorText>}
 							</Col>
 						</Row>
 					</Col>

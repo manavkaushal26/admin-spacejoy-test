@@ -27,6 +27,7 @@ interface AssetDescriptionPanelProps {
 	verticalMap?: Record<string, string>;
 	categoryMap?: Record<string, string>;
 	subCategoryMap?: Record<string, string>;
+	themeIdToNameMap: Record<string, string>;
 }
 
 const SilentTitle = styled(Title)`
@@ -52,6 +53,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	categoryMap,
 	subCategoryMap,
 	editAsset,
+	themeIdToNameMap,
 }) => {
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -187,6 +189,26 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<Col>
 									<Row type="flex" gutter={[10, 0]}>
 										<Col>
+											<Icon type="align-left" />
+										</Col>
+										<Col>
+											<Text type="secondary">Description</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Text>{getValueSafely(() => selectedAssetData.description, "No Description provided")}</Text>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<SilentDivider />
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 10]}>
+								<Col>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
 											<Icon type="drag" />
 										</Col>
 										<Col>
@@ -263,6 +285,12 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											<Text strong>Vertical: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => verticalMap[selectedAssetData.meta.vertical], "Undefined")}
+											</CapitalizedText>
+										</Col>
+										<Col>
+											<Text strong>Vertical: </Text>
+											<CapitalizedText>
+												{getValueSafely(() => themeIdToNameMap[selectedAssetData.meta.theme], "Undefined")}
 											</CapitalizedText>
 										</Col>
 									</Row>

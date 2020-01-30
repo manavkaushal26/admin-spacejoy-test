@@ -16,22 +16,27 @@ const StyledText = styled(Text)`
 	}
 `;
 
-const navCenter = (authVerification: Partial<User>): JSX.Element => (
-	<nav>
-		{authVerification && allowedRoles.includes(authVerification.role) && (
-			<HorizontalListStyled align="left">
-				<li>
-					<ActiveLink href="/launchpad" as="/launchpad">
-						<Button raw>
-							<StyledText className="nav-item" strong>
-								Go to Launchpad
-							</StyledText>
-						</Button>
-					</ActiveLink>
-				</li>
-			</HorizontalListStyled>
-		)}
-	</nav>
-);
+const navCenter = (authVerification: Partial<User>, pathname: string): JSX.Element => {
+	const isLaunchpad = pathname.includes("/launchpad");
+	return (
+		<nav>
+			{authVerification && allowedRoles.includes(authVerification.role) && (
+				<HorizontalListStyled align="right">
+					{!isLaunchpad && (
+						<li>
+							<ActiveLink href="/launchpad" as="/launchpad">
+								<Button raw>
+									<StyledText className="nav-item" strong>
+										Go to Launchpad
+									</StyledText>
+								</Button>
+							</ActiveLink>
+						</li>
+					)}
+				</HorizontalListStyled>
+			)}
+		</nav>
+	);
+};
 
 export default navCenter;
