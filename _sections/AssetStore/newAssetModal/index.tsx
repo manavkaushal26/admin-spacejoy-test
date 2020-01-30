@@ -9,10 +9,9 @@ import { debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, Input, Radio, Row, Select, Typography, Upload } from "antd";
+import { Button, Col, Icon, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import styled from "styled-components";
 import { SizeAdjustedModal } from "../styled";
 import { initialState, NewAssetUploadReducer, NEW_ASSET_ACTION_TYPES, reducer } from "./reducer";
 
@@ -27,10 +26,6 @@ interface CategoryMap {
 	};
 	children?: CategoryMap[];
 }
-
-const SmallErrorText = styled.small`
-	color: red;
-`;
 
 interface NewAssetModal {
 	isOpen: boolean;
@@ -99,7 +94,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [assetHeightValid, setAssetHeightValid] = useState<boolean>(false);
 	const [assetDepthValid, setAssetDepthValid] = useState<boolean>(false);
 	const [assetMountTypeValid, setAssetMountTypeValid] = useState<boolean>(false);
-	const [submittedForm, setSubmittedForm] = useState<boolean>(false);
+	const [modifiedForm, setModifiedForm] = useState<boolean>(false);
 
 	const checkValidity = (): void => {
 		setAssetNameValid(!!assetName.current.props.value);
@@ -169,11 +164,13 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		} = e;
 
 		dispatch({ type: name, value });
+		setModifiedForm(true);
 		debouncedCheckValidity();
 	};
 
 	const handleSelect = (value, action): void => {
 		dispatch({ type: action, value });
+		setModifiedForm(true);
 		debouncedCheckValidity();
 	};
 
@@ -315,6 +312,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetHeightValid(false);
 			setAssetDepthValid(false);
 			setAssetMountTypeValid(false);
+			setModifiedForm(false);
 		};
 	}, [isOpen]);
 
@@ -328,6 +326,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		// 1. Limit the number of uploaded files
 		// Only to show one recent uploaded files, and old ones will be replaced by the new
 		if (info.file.status === "done") {
+			notification.success({ message: "Product Saved", description: "File has been uploaded" });
 			if (uploadFileType === "model") {
 				setAssetData({ ...state, ...info.file.response.data });
 			} else if (uploadFileType === "source") {
@@ -392,7 +391,11 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				data: requestBody,
 			},
 		});
-		dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: response.data });
+		if (response.statusCode <= 300) {
+			notification.success({ message: "Product Saved" });
+			dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: response.data });
+			setModifiedForm(false);
+		}
 	};
 
 	const submitButtonDisabled = !(
@@ -439,7 +442,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									value={state.name}
 									placeholder="Product Name"
 								/>
-								{!assetNameValid && submittedForm && <SmallErrorText>Enter a valid Name</SmallErrorText>}
 							</Col>
 						</Row>
 					</Col>
@@ -493,7 +495,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											}
 											type="number"
 										/>
-										{!assetPriceValid && submittedForm && <SmallErrorText>Enter a valid Price</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -518,7 +519,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 												</Option>
 											))}
 										</Select>
-										{!assetRetailerValid && submittedForm && <SmallErrorText>Select a Retailer</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -532,9 +532,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									placeholder="Link to product"
 									name={NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK}
 								/>
-								{!assetUrlValid && submittedForm && (
-									<SmallErrorText>Enter a valid URL. E.g http://wayfair.com/producturl</SmallErrorText>
-								)}
 							</Col>
 						</Row>
 					</Col>
@@ -559,7 +556,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 												</Option>
 											))}
 										</Select>
-										{!assetCategoryValid && submittedForm && <SmallErrorText>Select a valid Category</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -586,7 +582,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 														</Option>
 													))}
 										</Select>
-										{!assetSubCategoryValid && submittedForm && <SmallErrorText>Select a Subcategory</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -614,7 +609,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 														</Option>
 													))}
 										</Select>
-										{!assetVerticalValid && submittedForm && <SmallErrorText>Select a Vertical</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -690,7 +684,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											placeholder="Width(Feet)"
 											type="number"
 										/>
-										{!assetWidthValid && submittedForm && <SmallErrorText>Enter a Value</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -707,7 +700,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											placeholder="Height(Feet)"
 											type="number"
 										/>
-										{!assetHeightValid && submittedForm && <SmallErrorText>Enter a Value</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -724,7 +716,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											placeholder="Depth(Feet)"
 											type="number"
 										/>
-										{!assetDepthValid && submittedForm && <SmallErrorText>Enter a Value</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -753,7 +744,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 												</Option>
 											))}
 										</Select>
-										{!assetMountTypeValid && submittedForm && <SmallErrorText>Select a Mount type</SmallErrorText>}
 									</Col>
 								</Row>
 							</Col>
@@ -886,10 +876,9 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						</Col>
 						<Col>
 							<Button
-								disabled={submitButtonDisabled}
+								disabled={submitButtonDisabled || !modifiedForm}
 								type="primary"
 								onClick={(): void => {
-									setSubmittedForm(true);
 									saveAsset();
 								}}
 							>

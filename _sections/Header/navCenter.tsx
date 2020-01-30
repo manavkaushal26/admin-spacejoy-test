@@ -26,9 +26,7 @@ const navCenter = (authVerification: Partial<User>, pathname: string): JSX.Eleme
 						<li>
 							<ActiveLink href="/launchpad" as="/launchpad">
 								<Button raw>
-									<StyledText className="nav-item" strong>
-										Go to Launchpad
-									</StyledText>
+									<StyledText strong>Go to Launchpad</StyledText>
 								</Button>
 							</ActiveLink>
 						</li>

@@ -117,7 +117,7 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 		case NEW_ASSET_ACTION_TYPES.ASSET_DESCRIPTION:
 			return { ...state, description: action.value };
 		case NEW_ASSET_ACTION_TYPES.ASSET_PRICE:
-			return { ...state, price: action.value };
+			return { ...state, price: action.value < 0 ? 0 : action.value };
 		case NEW_ASSET_ACTION_TYPES.ASSET_PRICE_CURRENCY_TYPE:
 			return { ...state, currency: action.value };
 		case NEW_ASSET_ACTION_TYPES.ASSET_RETAILER:
@@ -169,7 +169,7 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 				...state,
 				dimension: {
 					...state.dimension,
-					width: action.value,
+					width: action.value < 0 ? 0 : action.value,
 				},
 			};
 		case NEW_ASSET_ACTION_TYPES.ASSET_HEIGHT:
@@ -177,7 +177,7 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 				...state,
 				dimension: {
 					...state.dimension,
-					height: action.value,
+					height: action.value < 0 ? 0 : action.value,
 				},
 			};
 		case NEW_ASSET_ACTION_TYPES.ASSET_DEPTH:
@@ -185,7 +185,7 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 				...state,
 				dimension: {
 					...state.dimension,
-					depth: action.value,
+					depth: action.value < 0 ? 0 : action.value,
 				},
 			};
 		case NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE:
