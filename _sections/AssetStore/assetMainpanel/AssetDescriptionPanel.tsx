@@ -288,7 +288,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											</CapitalizedText>
 										</Col>
 										<Col>
-											<Text strong>Vertical: </Text>
+											<Text strong>Theme: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => themeIdToNameMap[selectedAssetData.meta.theme], "Undefined")}
 											</CapitalizedText>

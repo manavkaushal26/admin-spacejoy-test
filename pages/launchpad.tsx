@@ -31,7 +31,7 @@ const launchpadLocations = [
 		title: "Projects",
 		description: "Customer Project Management Console",
 		url: "/dashboard",
-		icon: "project",
+		icon: "profile",
 		color: "#4d2aac",
 	},
 	{
@@ -65,7 +65,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 					<Col style={{ backgroundColor: "white", padding: "4rem 1.15rem" }}>
 						<CapitalizedTitle>Hey {getLocalStorageValue<User>("authVerification").name},</CapitalizedTitle>
 						<Title style={{ margin: 0 }} level={3}>
-							Welcome to the Launchpad
+							Welcome to the Spacejoy Launchpad
 						</Title>
 					</Col>
 					<Col>
@@ -94,9 +94,11 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 													<Col>
 														<Row>
 															<Col>
-																<Title level={4}>{location.title}</Title>
+																<Title style={{ textAlign: "center" }} level={4}>
+																	{location.title}
+																</Title>
 															</Col>
-															<Col>
+															<Col style={{ textAlign: "center" }}>
 																<Text type="secondary">{location.description}</Text>
 															</Col>
 														</Row>

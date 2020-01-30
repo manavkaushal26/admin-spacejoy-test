@@ -9,7 +9,7 @@ import { debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
+import { Button, Col, Icon, Input, notification, Radio, Row, Select, Tooltip, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { SizeAdjustedModal } from "../styled";
@@ -111,6 +111,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	};
 
 	const debouncedCheckValidity = debounce(checkValidity, 50);
+
+	const openInNewWindow = () => {
+		if (state.retailLink && assetUrl.current.input.checkValidity()) {
+			window.open(state.retailLink, "_blank", "noopener");
+		}
+	};
 
 	useEffect(() => {
 		if (assetData) {
@@ -529,6 +535,11 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									onChange={handleChange}
 									value={state.retailLink}
 									type="url"
+									addonAfter={
+										<Tooltip placement="top" title="Open URL">
+											<Icon onClick={openInNewWindow} type="link" />
+										</Tooltip>
+									}
 									placeholder="Link to product"
 									name={NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK}
 								/>
@@ -673,7 +684,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						<Row gutter={[4, 4]}>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
-									<Col span={24}>Width</Col>
+									<Col span={24}>Width (Feet)</Col>
 									<Col>
 										<Input
 											ref={assetWidth}
@@ -689,7 +700,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
-									<Col span={24}>Height</Col>
+									<Col span={24}>Height (Feet)</Col>
 									<Col>
 										<Input
 											ref={assetHeight}
@@ -705,7 +716,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
-									<Col span={24}>Depth</Col>
+									<Col span={24}>Depth (Feet)</Col>
 									<Col>
 										<Input
 											ref={assetDepth}
