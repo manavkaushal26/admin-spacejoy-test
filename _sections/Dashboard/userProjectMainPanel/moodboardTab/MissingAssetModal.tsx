@@ -1,6 +1,6 @@
 import { CustomDiv, AddOnAfterWithoutPadding } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
-import { Button, List, message, Modal, Typography, Row, Col, Icon, Spin } from "antd";
+import { Button, List, message, Modal, Typography, Row, Col, Icon, Spin, Popconfirm } from "antd";
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { MoodboardAsset } from "@customTypes/moodboardTypes";
@@ -56,7 +56,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			if (response.statusCode <= 300) {
 				setMoodboard(response.data.moodboard);
 				setAssetUrl("");
-				message.success("Product added successfully");
+				message.success("Product URL added successfully");
 			}
 			setLoading(false);
 		}
@@ -77,7 +77,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		});
 		if (response.statusCode <= 300) {
 			setMoodboard(response.data.moodboard);
-			message.success("Product deleted successfully");
+			message.success("Product URL deleted successfully");
 		}
 		setDeleteLoading(false);
 	};
@@ -120,7 +120,12 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 									</Col>
 									<Col span={1}>
 										<Row align="middle" justify="center" type="flex">
-											<Icon onClick={() => removeAsset(asset.externalUrl)} type="delete" />
+											<Popconfirm
+												title="Delete Missing Asset URL?"
+												onConfirm={(): Promise<void> => removeAsset(asset.externalUrl)}
+											>
+												<Icon type="delete" />
+											</Popconfirm>
 										</Row>
 									</Col>
 								</Row>

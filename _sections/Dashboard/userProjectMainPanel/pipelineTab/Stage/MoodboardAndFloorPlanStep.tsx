@@ -6,7 +6,7 @@ import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, message, Typography, Upload } from "antd";
+import { Button, Icon, message, Typography, Upload, Modal } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
 import ImageDisplayModal from "@components/ImageDisplayModal";
@@ -41,6 +41,15 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 			});
 			message.success("Image deleted successfully");
 		}
+	};
+
+	const confirmDelete = (file: UploadFile): boolean => {
+		Modal.confirm({
+			title: "Are you sure?",
+			content: "This action is irreversible",
+			onOk: () => deleteImage(file),
+		});
+		return false;
 	};
 
 	useEffect(() => {
@@ -114,7 +123,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 							listType="picture-card"
 							onPreview={handlePreview}
 							action={floorPlanUploadEndpoint}
-							onRemove={deleteImage}
+							onRemove={confirmDelete}
 							onChange={handleOnFileUploadChange}
 							headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 							accept="image/*"

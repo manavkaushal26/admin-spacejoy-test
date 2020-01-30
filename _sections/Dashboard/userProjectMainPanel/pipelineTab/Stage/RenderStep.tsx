@@ -6,7 +6,7 @@ import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, message, Select, Typography } from "antd";
+import { Button, Icon, message, Select, Typography, Modal } from "antd";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -42,6 +42,15 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 			});
 			message.success("Image deleted successfully");
 		}
+	};
+
+	const confirmDelete = (file: UploadFile): boolean => {
+		Modal.confirm({
+			title: "Are you sure?",
+			content: "This action is irreversible",
+			onOk: () => deleteImage(file),
+		});
+		return false;
 	};
 
 	useEffect(() => {
@@ -139,7 +148,7 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 								action={uploadRenderImage}
 								listType="picture-card"
 								onPreview={handlePreview}
-								onRemove={deleteImage}
+								onRemove={confirmDelete}
 								onChange={handleOnFileUploadChange}
 								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 								accept="image/*"
