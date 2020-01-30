@@ -25,17 +25,17 @@ function clearAllStorage() {
 	window.localStorage.clear();
 }
 
-function login({ token, role, redirectUrl = "/dashboard" }) {
+function login({ token, role, redirectUrl = "/launchpad" }) {
 	clearAllStorage();
 	cookie.set(cookieNames.authToken, token, { expires: 365 });
 	cookie.set(cookieNames.userRole, role, { expires: 365 });
 	if (redirectUrl !== null) {
-		const url = redirectUrl || "/dashboard";
+		const url = redirectUrl || "/launchpad";
 		redirectToLocation({ pathname: url, url });
 	}
 }
 
-async function oAuthLogin(data, redirectUrl = "/dashboard", cb) {
+async function oAuthLogin(data, redirectUrl = "/launchpad", cb) {
 	const response = await fetcher({
 		endPoint: endPointSocialSignup,
 		method: "POST",
@@ -62,8 +62,8 @@ function logout() {
 	window.localStorage.setItem("logout", Date.now());
 	redirectToLocation({
 		pathname: "/auth",
-		query: { flow: "login", redirectUrl: "/dashboard" },
-		url: "/auth/login?redirectUrl=/dashboard",
+		query: { flow: "login", redirectUrl: "/launchpad" },
+		url: "/auth/login?redirectUrl=/launchpad",
 	});
 }
 

@@ -201,11 +201,13 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	}, [state.metaData]);
 	return (
 		<Row>
-			<Col span={24}>
-				<TopMarginTitle level={3}>
-					{assetEntryId ? "Recommendation Selection" : "Primary product selection"}
-				</TopMarginTitle>
-			</Col>
+			{projectId && (
+				<Col span={24}>
+					<TopMarginTitle level={3}>
+						{assetEntryId ? "Recommendation Selection" : "Primary product selection"}
+					</TopMarginTitle>
+				</Col>
+			)}
 			<Col span={24}>
 				<SilentDivider />
 			</Col>

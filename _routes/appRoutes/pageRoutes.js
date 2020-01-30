@@ -1,4 +1,8 @@
 function pageRoute(app, router) {
+	router.get("/launchpad", (req, res) => {
+		const { params } = req;
+		app.render(req, res, "/launchpad", params);
+	});
 	router.get("/dashboard/pid/:projectId/did/:designId", (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/dashboard", { pid: params.projectId, designId: params.designId });
@@ -16,7 +20,7 @@ function pageRoute(app, router) {
 		app.render(req, res, "/assetstore", {
 			projectId: params.projectId,
 			designId: params.designId,
-			assetEntryId: params.assetEntryId
+			assetEntryId: params.assetEntryId,
 		});
 	});
 	router.get("/assetstore/pid/:projectId/did/:designId", (req, res) => {

@@ -31,7 +31,7 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				<MobileHiddenStyled>
 					<Row type="flex" justify="space-around" align="middle">
 						<Col span={8}>
-							<a href="/">
+							<a href="/launchpad">
 								<Logo md />
 							</a>
 						</Col>
@@ -44,7 +44,7 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				<MobileVisibleStyled>
 					<Row type="flex" justify="space-around">
 						<Col span={18}>
-							<ActiveLink href="/" as="/">
+							<ActiveLink href="/launchpad" as="/launchpad">
 								<Logo md />
 							</ActiveLink>
 						</Col>
@@ -59,6 +59,9 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				</MobileVisibleStyled>
 				<MobileNavVisibleStyled className={`${mobileNavStatus ? "active" : ""}`}>
 					<Row>
+						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
+							{navCenter(authVerification)}
+						</Col>
 						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
 							{navRight(authVerification)}
 						</Col>

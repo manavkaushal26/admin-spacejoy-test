@@ -1,5 +1,4 @@
 import SVGIcon from "@components/SVGIcon";
-import { PushEvent } from "@utils/analyticsLogger";
 import PropTypes from "prop-types";
 import React from "react";
 import styled from "styled-components";
@@ -120,19 +119,13 @@ const ButtonStyled = styled(ButtonNormalStyled)`
 `;
 
 function Button(props) {
-	const { children, onClick, raw, disabled, submitInProgress, action, label, value, event, data } = props;
-	const onClickWithGA = e => {
-		onClick(e);
-		PushEvent(action, label, value, event, data);
-	};
+	const { children, raw, disabled, submitInProgress } = props;
 	return (
 		<>
 			{raw ? (
-				<ButtonNormalStyled {...props} onClick={onClickWithGA}>
-					{children}
-				</ButtonNormalStyled>
+				<ButtonNormalStyled {...props}>{children}</ButtonNormalStyled>
 			) : (
-				<ButtonStyled {...props} onClick={onClickWithGA} disabled={submitInProgress || disabled}>
+				<ButtonStyled {...props} disabled={submitInProgress || disabled}>
 					<div className="true-center">
 						{submitInProgress ? (
 							<SVGIcon name="spinner" className="loading-spinner" height={17} width={17} />

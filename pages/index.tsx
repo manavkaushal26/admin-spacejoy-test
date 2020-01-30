@@ -35,7 +35,7 @@ function getHeadingText(flow): JSX.Element {
 function auth({ isServer, authVerification, flow = "login", redirectUrl, token }): JSX.Element {
 	useEffect(() => {
 		if (allowedRoles.includes(authVerification.role)) {
-			redirectToLocation({ pathname: "/dashboard", url: "/dashboard" });
+			redirectToLocation({ pathname: "/launchpad", url: "/launchpad" });
 		}
 	}, [authVerification]);
 
