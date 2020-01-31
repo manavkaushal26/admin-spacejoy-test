@@ -21,7 +21,7 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, pro
 	const [addMissingAssetModalVisible, setAddMissingAssetModalVisible] = useState<boolean>(false);
 	const goToStore = () => {
 		Router.push(
-			{ pathname: "/assetstore", query: { designId, projectId } },
+			{ pathname: "/assetstore", query: { designId, projectId, entryLocation: Router.pathname } },
 			`/assetstore/pid/${projectId}/did/${designId}`
 		);
 	};

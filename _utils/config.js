@@ -33,7 +33,7 @@ const cookieNames = {
 const company = {
 	logo:
 		process.env.NODE_ENV === "production"
-			? "v1577958957/shared/spacejoy-logo_rdqft7.svg"
+			? "v1578101355/shared/spacejoy-logo_ase39m.svg"
 			: "v1578482972/shared/spacejoy-logo_rdqft7.svg",
 	name: "Neo Design Labs Inc",
 	product: "Spacejoy-Dashboard",

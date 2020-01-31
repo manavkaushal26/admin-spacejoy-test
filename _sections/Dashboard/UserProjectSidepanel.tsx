@@ -127,6 +127,7 @@ const StyleCorrectedTab = styled(Tabs)`
 `;
 
 const GrayMaxHeightDiv = styled(MaxHeightDiv)`
+	border-right: 1px #eeeeee solid;
 	background: #f2f4f6;
 `;
 
@@ -304,6 +305,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 		setLoading(false);
 	};
 
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			fetchData();
+		}
+	}, []);
+
 	const scrollParentRef = useRef(null);
 
 	const handleTabChange = (key: string): void => {
@@ -327,7 +334,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 	return (
 		<GrayMaxHeightDiv>
-			<CustomDiv ref={scrollParentRef} overY="scroll" width="100%">
+			<CustomDiv ref={scrollParentRef} overY="scroll" width="100%" height="100%">
 				<StyleCorrectedTab onTabClick={handleTabChange}>
 					<Tabs.TabPane tab="Active" key="active">
 						{TabSearch()}

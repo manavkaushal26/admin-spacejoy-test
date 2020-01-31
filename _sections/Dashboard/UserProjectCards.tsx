@@ -1,7 +1,7 @@
-import { HumanizePhaseInternalNames, UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { HumanizePhaseInternalNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import ProgressBar from "@sections/Dashboard/ProgressBar";
-import { getValueSafely, getNumberOfDays, getColorsForPackages } from "@utils/commonUtils";
-import { Avatar, Card, Col, Row, Typography, Button } from "antd";
+import { getColorsForPackages, getNumberOfDays, getValueSafely } from "@utils/commonUtils";
+import { Avatar, Button, Card, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React from "react";
 import styled, { css } from "styled-components";
@@ -46,10 +46,11 @@ const UserProjectCard: React.FC<{
 		currentPhase: {
 			name: { internalName: phase },
 		},
-		order: { items },
 		status,
 		createdAt,
 	} = userProjectData;
+
+	const items = getValueSafely(() => userProjectData.order.items, []);
 
 	return (
 		<UserCard

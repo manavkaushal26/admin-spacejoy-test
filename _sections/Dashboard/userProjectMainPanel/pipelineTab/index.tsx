@@ -10,7 +10,7 @@ import { Status } from "@customTypes/userType";
 import { CustomDiv, ShadowDiv, StatusButton, StepsContainer } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Avatar, Button, message, Popconfirm, Typography } from "antd";
+import { Avatar, Button, message, Popconfirm, Typography, Row, Col } from "antd";
 import React, { useEffect, useState } from "react";
 import Stage from "./Stage";
 
@@ -145,58 +145,59 @@ export default function PipelineTab({ designData, setDesignData, setProjectPhase
 					return (
 						<div key={step.phaseName}>
 							<ShadowDiv active={step.phaseName === stage} onClick={(): void => onClick(step.phaseName)}>
-								<CustomDiv inline px="1.5rem" py="1.5rem">
-									<CustomDiv inline pr="0.5rem">
-										<Avatar>{step.stepNumber}</Avatar>
-									</CustomDiv>
-									<Text strong>{step.stepName}</Text>
-								</CustomDiv>
-								<CustomDiv
-									flexBasis="25ch"
-									type="flex"
-									flexDirection="row"
-									flexGrow={1}
-									justifyContent="flex-end"
-									inline
-									px="1.5rem"
-									py="1.5rem"
-								>
-									<CustomDiv flexBasis="25ch">
-										<StatusButton
-											block
-											loading={updationPhase === step.phaseName}
-											status={phaseStatus[step.phaseName]}
-											type="primary"
-											onClick={(e): Promise<void> => updateDesignState(step.phaseName, phaseStatus[step.phaseName], e)}
-											disabled={
-												phaseStatus[step.phaseName] === Status.completed ||
-												(step.prevPhase ? phaseStatus[step.prevPhase] !== Status.completed : false)
-											}
-											icon={phaseStatus[step.phaseName] === Status.completed ? "check" : null}
-										>
-											{getButtonText(phaseStatus[step.phaseName])}
-										</StatusButton>
-									</CustomDiv>
-									<CustomDiv pl="1rem">
-										<Popconfirm
-											title="Are you sure you want to send back to previous team?"
-											okText="Yes"
-											disabled={step.phaseName === DesignPhases.Concept}
-											onConfirm={(e): Promise<void> => updateDesignState(step.prevPhase, "reset", e)}
-										>
-											<Button
-												loading={updationPhase === step.phaseName}
-												type="danger"
-												disabled={
-													phaseStatus[step.phaseName] === Status.pending || step.phaseName === DesignPhases.Concept
-												}
-												icon="rollback"
-											>
-												Send back
-											</Button>
-										</Popconfirm>
-									</CustomDiv>
-								</CustomDiv>
+								<Row style={{ padding: "1rem 1rem" }} type="flex" justify="space-between" gutter={[16, 16]}>
+									<Col>
+										<Row type="flex" align="middle" gutter={[8, 0]}>
+											<Col>
+												<Avatar>{step.stepNumber}</Avatar>
+											</Col>
+											<Col>
+												<Text strong>{step.stepName}</Text>
+											</Col>
+										</Row>
+									</Col>
+									<Col>
+										<Row type="flex" gutter={[8, 0]}>
+											<Col>
+												<StatusButton
+													block
+													loading={updationPhase === step.phaseName}
+													status={phaseStatus[step.phaseName]}
+													type="primary"
+													onClick={(e): Promise<void> =>
+														updateDesignState(step.phaseName, phaseStatus[step.phaseName], e)
+													}
+													disabled={
+														phaseStatus[step.phaseName] === Status.completed ||
+														(step.prevPhase ? phaseStatus[step.prevPhase] !== Status.completed : false)
+													}
+													icon={phaseStatus[step.phaseName] === Status.completed ? "check" : null}
+												>
+													{getButtonText(phaseStatus[step.phaseName])}
+												</StatusButton>
+											</Col>
+											<Col>
+												<Popconfirm
+													title="Are you sure you want to send back to previous team?"
+													okText="Yes"
+													disabled={step.phaseName === DesignPhases.Concept}
+													onConfirm={(e): Promise<void> => updateDesignState(step.prevPhase, "reset", e)}
+												>
+													<Button
+														loading={updationPhase === step.phaseName}
+														type="danger"
+														disabled={
+															phaseStatus[step.phaseName] === Status.pending || step.phaseName === DesignPhases.Concept
+														}
+														icon="rollback"
+													>
+														Send back
+													</Button>
+												</Popconfirm>
+											</Col>
+										</Row>
+									</Col>
+								</Row>
 							</ShadowDiv>
 							{stage === step.phaseName && (
 								<Stage phaseData={phaseData} designData={designData} setDesignData={setDesignData} stage={stage} />

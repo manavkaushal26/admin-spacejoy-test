@@ -61,12 +61,15 @@ const userProjectMainPanel: React.FC<{
 	const onSelectDesign = (selectedDesignId?: string): void => {
 		if (selectedDesignId) {
 			Router.push(
-				{ pathname: "/dashboard", query: { user: userProjectId, designId: selectedDesignId } },
+				{
+					pathname: "/dashboard",
+					query: { pid: userProjectId, designId: selectedDesignId },
+				},
 				`/dashboard/pid/${userProjectId}/did/${selectedDesignId}`
 			);
 			return;
 		}
-		Router.push({ pathname: "/dashboard", query: { user: userProjectId } }, `/dashboard/pid/${userProjectId}`);
+		Router.push({ pathname: "/dashboard", query: { pid: userProjectId } }, `/dashboard/pid/${userProjectId}`);
 	};
 
 	useEffect(() => {

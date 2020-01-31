@@ -104,9 +104,9 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		setAssetCategoryValid(!!assetCategory.current.props.value);
 		setAssetSubCategoryValid(!!assetSubCategory.current.props.value);
 		setAssetVerticalValid(!!assetVertical.current.props.value);
-		setAssetWidthValid(assetWidth.current.input.checkValidity() && !!parseInt(assetWidth.current.props.value, 10));
-		setAssetHeightValid(assetHeight.current.input.checkValidity() && !!parseInt(assetHeight.current.props.value, 10));
-		setAssetDepthValid(assetDepth.current.input.checkValidity() && !!parseInt(assetDepth.current.props.value, 10));
+		setAssetWidthValid(assetWidth.current.input.checkValidity() && !!parseFloat(assetWidth.current.props.value));
+		setAssetHeightValid(assetHeight.current.input.checkValidity() && !!parseFloat(assetHeight.current.props.value));
+		setAssetDepthValid(assetDepth.current.input.checkValidity() && !!parseFloat(assetDepth.current.props.value));
 		setAssetMountTypeValid(!!assetMountType.current.props.value);
 	};
 
@@ -303,7 +303,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	useEffect(() => {
 		return (): void => {
 			dispatch({ type: NEW_ASSET_ACTION_TYPES.CLEAR, value: null });
-			setModel3dFiles(null);
+			setModel3dFiles(Model3DFiles.Glb);
 			setAssetFile(null);
 			setImageFile(null);
 			setSourceFileList(null);
@@ -334,11 +334,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		if (info.file.status === "done") {
 			notification.success({ message: "Product Saved", description: "File has been uploaded" });
 			if (uploadFileType === "model") {
-				setAssetData({ ...state, ...info.file.response.data });
+				dispatch({
+					type: NEW_ASSET_ACTION_TYPES.SET_ASSET,
+					value: { ...state, ...info.file.response.data },
+				});
 			} else if (uploadFileType === "source") {
-				setAssetData({ ...state, ...info.file.response.data });
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: { ...state, ...info.file.response.data } });
 			} else if (uploadFileType === "image") {
-				setAssetData({ ...state, ...info.file.response.data });
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: { ...state, ...info.file.response.data } });
 			}
 		}
 		if (uploadFileType === "model") {
@@ -390,17 +393,25 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					artist: state.artist,
 			  }
 			: state;
-		const response = await fetcher({
-			endPoint,
-			method: state._id ? "PUT" : "POST",
-			body: {
-				data: requestBody,
-			},
-		});
-		if (response.statusCode <= 300) {
-			notification.success({ message: "Product Saved" });
-			dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: response.data });
-			setModifiedForm(false);
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: state._id ? "PUT" : "POST",
+				body: {
+					data: requestBody,
+				},
+			});
+			if (response.statusCode <= 300) {
+				notification.success({ message: "Product Saved" });
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: response.data });
+				setModifiedForm(false);
+			}
+		} catch (e) {
+			if (e.message === "Failed to fetch") {
+				notification.error({ message: "Failed to save Product. Please check your internet connection and Retry" });
+			} else {
+				notification.error({ message: "Failed to save Product" });
+			}
 		}
 	};
 
@@ -423,7 +434,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			style={{ top: "2rem" }}
 			onCancel={toggleNewAssetModal}
 			visible={isOpen}
-			title={state._id ? "Update Asset" : "Create New Asset"}
+			title={state._id ? "Update Product" : "Create New Product"}
 			footer={null}
 		>
 			<Row gutter={[12, 12]}>
@@ -795,7 +806,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						<Col>
 							<Row gutter={[8, 12]}>
 								<Col span={24}>
-									<Text strong>Upload Asset File</Text>
+									<Text strong>Upload Product File</Text>
 								</Col>
 								<Col lg={8}>
 									<Row gutter={[8, 8]}>
@@ -855,7 +866,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Row>
 							<Row gutter={[0, 12]}>
 								<Col span={24}>
-									<Text strong>Upload Asset Image</Text>
+									<Text strong>Upload Product Image</Text>
 								</Col>
 								<Col span={24}>
 									<Upload
@@ -893,7 +904,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									saveAsset();
 								}}
 							>
-								Save Asset
+								Save Product
 							</Button>
 						</Col>
 					</Row>

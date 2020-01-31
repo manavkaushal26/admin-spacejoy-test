@@ -7,7 +7,7 @@ import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Col, Row, Spin } from "antd";
+import { Col, Row, Spin, Layout } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import Router from "next/router";
@@ -29,6 +29,9 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading] = useState<boolean>(false);
 	const [startDate, setStartDate] = useState<string>(null);
+
+	const [collapsed, setCollapsed] = useState<boolean>(false);
+
 	const handleSelectCard = (user: string): void => {
 		setSelectedUser(user);
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
@@ -47,6 +50,14 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 			setSelectedUser(projectId);
 		}
 	}, []);
+
+	useEffect(() => {
+		if (projectId) {
+			setCollapsed(true);
+		} else {
+			setCollapsed(false);
+		}
+	}, [projectId]);
 
 	/**
 	 * Function to cause main panel to update start date and hece the progress bar when the start button
@@ -81,8 +92,19 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 			</Head>
 			<GreyDiv>
 				<Spin spinning={loading}>
-					<Row type="flex" align="top">
-						<Col sm={24} md={10} lg={7} xl={6}>
+					<Layout hasSider>
+						<Layout.Sider
+							collapsed={collapsed}
+							onCollapse={(collapsedState): void => {
+								setCollapsed(collapsedState && !!projectId);
+							}}
+							zeroWidthTriggerStyle={{ top: "56px", borderRadius: "0 16px 16px 0" }}
+							breakpoint="lg"
+							width="360"
+							theme="dark"
+							collapsible
+							collapsedWidth={0}
+						>
 							<Sidebar
 								updateStartDateInMainPanel={updateStartDateInMainPanel}
 								selectedUser={selectedUser}
@@ -90,8 +112,8 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 								projectPhaseUpdateValue={projectPhaseUpdateValue}
 								setProjectPhaseUpdateValue={setProjectPhaseUpdateValue}
 							/>
-						</Col>
-						<Col sm={24} md={14} lg={17} xl={18}>
+						</Layout.Sider>
+						<Layout>
 							<MaxHeightDiv>
 								<PaddedDiv>
 									<UserProjectMainPanel
@@ -103,8 +125,8 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 									/>
 								</PaddedDiv>
 							</MaxHeightDiv>
-						</Col>
-					</Row>
+						</Layout>
+					</Layout>
 				</Spin>
 			</GreyDiv>
 		</PageLayout>

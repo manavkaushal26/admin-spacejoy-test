@@ -31,8 +31,7 @@ interface FetchAndPopulate {
 		pageCount: number,
 		setAssetData: React.Dispatch<React.SetStateAction<AssetType[]>>,
 		setTotalCount: React.Dispatch<React.SetStateAction<number>>,
-		dispatch: React.Dispatch<AssetAction>,
-		setHasMore: React.Dispatch<React.SetStateAction<boolean>>
+		dispatch: React.Dispatch<AssetAction>
 	): Promise<void>;
 }
 
@@ -63,19 +62,12 @@ const MainAssetPanel = styled.div`
 	}
 
 	/* Masonry on small screens */
-	@media only screen and (max-width: 767px) and (min-width: 540px) {
+	@media only screen and (max-width: 767px) {
 		column-count: 2;
 	}
 `;
 
-const fetchAndPopulate: FetchAndPopulate = async (
-	state,
-	pageCount,
-	setAssetData,
-	setTotalCount,
-	dispatch,
-	setHasMore
-) => {
+const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetApi();
 	const queryParams = `?skip=${(pageCount - 1) * 35}&limit=35`;
@@ -98,12 +90,8 @@ const fetchAndPopulate: FetchAndPopulate = async (
 	});
 	if (responseData.statusCode <= 300) {
 		if (responseData.data.data) {
-			if (responseData.data.data.length) {
-				setAssetData(responseData.data.data);
-				setTotalCount(responseData.data.count);
-			} else {
-				setHasMore(false);
-			}
+			setAssetData(responseData.data.data);
+			setTotalCount(responseData.data.count);
 		}
 	}
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });

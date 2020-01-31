@@ -197,20 +197,18 @@ export const SilentDivider = styled(Divider)`
 
 export const StepsContainer = styled(CustomDiv)`
 	> * + * {
-		margin-top: 1em;
+		margin-top: 2rem;
 	}
 	padding: 1rem;
 
 	> *:last-child {
-		margin-bottom: 1em;
+		margin-bottom: 2em;
 	}
 `;
 
 export const ShadowDiv = styled.div<{ active?: boolean }>`
 	box-shadow: 0px 2px 16px #999ba81f;
 	transition: all 0.3s;
-	display: flex;
-	justify-content: space-between;
 	${({ active }): FlattenSimpleInterpolation => {
 			return active
 				? css`

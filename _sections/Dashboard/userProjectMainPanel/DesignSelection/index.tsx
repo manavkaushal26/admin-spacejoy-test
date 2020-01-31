@@ -191,12 +191,12 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 	};
 
 	return (
-		<Row gutter={[0, 8]}>
-			<Col>
-				<Row type="flex" gutter={[8, 8]}>
+		<Row gutter={[0, 16]}>
+			<Col span={24}>
+				<Row type="flex" align="stretch" gutter={[8, 8]}>
 					{projectData.designs.map(design => {
 						return (
-							<Col md={12} lg={8} xl={6} key={design._id}>
+							<Col sm={24} md={12} lg={8} xl={6} key={design._id}>
 								<Card
 									hoverable
 									onClick={(): void => onSelectDesign(design.design._id)}
@@ -240,7 +240,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 							</Col>
 						);
 					})}
-					<Col md={12} lg={8} xl={6} onClick={toggleCopyDesignModal}>
+					<Col sm={24} md={12} lg={8} xl={6} onClick={toggleCopyDesignModal}>
 						<HoverCard>
 							<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
 								<Col span="24">
@@ -258,52 +258,59 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 					</Col>
 				</Row>
 			</Col>
-			<Col>
-				<Row type="flex" justify="end" style={{ width: "100%" }} gutter={1}>
-					<Col span={7}>
-						<Button
-							onClick={onSubmit}
-							disabled={
-								numberOfActiveProjects < numberOfDesigns ||
-								projectData.currentPhase.name.internalName === PhaseInternalNames.designReady
-							}
-							type="primary"
-						>
-							Submit Project
-						</Button>
+			<Col span={24}>
+				<Row gutter={[8, 8]}>
+					<Col sm={12} md={8}>
+						<Row type="flex" justify="center">
+							<Button
+								onClick={onSubmit}
+								disabled={
+									numberOfActiveProjects < numberOfDesigns ||
+									projectData.currentPhase.name.internalName === PhaseInternalNames.designReady
+								}
+								type="primary"
+							>
+								Submit Project
+							</Button>
+						</Row>
 					</Col>
-					<Col span={7}>
-						<Popconfirm
-							title="Are you sure?"
-							onConfirm={sendToRevision}
-							disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
-						>
-							<OrangeButton disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}>
-								Send to Revision
-							</OrangeButton>
-						</Popconfirm>
+					<Col sm={12} md={8}>
+						<Row type="flex" justify="center">
+							<Popconfirm
+								title="Are you sure?"
+								onConfirm={sendToRevision}
+								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
+							>
+								<OrangeButton disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}>
+									Send to Revision
+								</OrangeButton>
+							</Popconfirm>
+						</Row>
 					</Col>
-					<Col span={7}>
-						<CyanButton
-							disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
-							onClick={warnUser}
-						>
-							Email Customer
-						</CyanButton>
+					<Col sm={12} md={8}>
+						<Row type="flex" justify="center">
+							<CyanButton
+								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
+								onClick={warnUser}
+							>
+								Email Customer
+							</CyanButton>
+						</Row>
 					</Col>
 				</Row>
 			</Col>
-			<Col>
+			<Col span={24}>
 				{(numberOfActiveProjects !== numberOfDesigns ||
 					projectData.currentPhase.name.internalName === PhaseInternalNames.designReady) && (
 					<Row type="flex" justify="center">
 						<Text>
-							Disabled? The project is either already marked complete or the required number designs are not yet ready.
+							Submit Disabled? The project is either already marked complete or the required number designs are not yet
+							ready.
 						</Text>
 					</Row>
 				)}
 			</Col>
-			<Col>
+			<Col span={24}>
 				{(userRole === Role.Admin || userRole === Role.Owner) && (
 					<Row type="flex" justify="center">
 						<Select onChange={onStatusChange} style={{ width: 200 }} defaultValue={projectData.status}>

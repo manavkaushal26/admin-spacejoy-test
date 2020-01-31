@@ -1,5 +1,4 @@
 import User from "@customTypes/userType";
-import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -24,15 +23,17 @@ interface LaunchpadLocations {
 	url: string;
 	icon: string;
 	color: string;
+	backgroundColor: string;
 }
 
 const launchpadLocations = [
 	{
 		title: "Projects",
-		description: "Customer Project Management Console",
+		description: "Customer Project Management",
 		url: "/dashboard",
 		icon: "profile",
 		color: "#4d2aac",
+		backgroundColor: "#e3ddeb",
 	},
 	{
 		title: "Product Store",
@@ -40,8 +41,18 @@ const launchpadLocations = [
 		url: "/assetstore",
 		icon: "appstore",
 		color: "#e66b8b",
+		backgroundColor: "#fff0f1",
 	},
 ];
+
+const LoudPaddingDiv = styled.div`
+	padding: 2rem 1.15rem;
+	@media only screen and (max-width: 1200px) {
+		padding: 2rem 1.15rem;
+	}
+	max-width: 1200px;
+	margin: auto;
+`;
 
 const CapitalizedTitle = styled(Title)`
 	text-transform: capitalize;
@@ -53,6 +64,12 @@ const GreyMaxHeightDiv = styled.div`
 	background-image: linear-gradient(to bottom, white, #fafafa);
 `;
 
+const IconBackground = styled.div<{ color: string }>`
+	padding: 1rem;
+	background-color: ${({ color }): string => color};
+	border-radius: 50px;
+`;
+
 const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification }) => {
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
@@ -61,19 +78,17 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 				{IndexPageMeta}
 			</Head>
 			<GreyMaxHeightDiv>
-				<Row gutter={[0, 16]}>
-					<Col style={{ backgroundColor: "white", padding: "4rem 1.15rem" }}>
-						<CapitalizedTitle>Hey {getLocalStorageValue<User>("authVerification").name},</CapitalizedTitle>
-						<Title style={{ margin: 0 }} level={3}>
-							Welcome to the Spacejoy Launchpad
-						</Title>
-					</Col>
-					<Col>
-						<PaddedDiv>
+				<LoudPaddingDiv>
+					<Row gutter={[0, 16]}>
+						<Col style={{ backgroundColor: "white" }}>
+							<CapitalizedTitle level={2}>Hey {getLocalStorageValue<User>("authVerification").name},</CapitalizedTitle>
+							<h2 style={{ margin: 0 }}>Welcome to the Spacejoy Launchpad</h2>
+						</Col>
+						<Col>
 							<Row gutter={[12, 12]}>
 								{launchpadLocations.map(location => {
 									return (
-										<Col sm={12} md={8} lg={6} key={location.url}>
+										<Col sm={12} md={8} key={location.url}>
 											<Card
 												onClick={(): void =>
 													redirectToLocation({ pathname: location.url, query: {}, url: location.url })
@@ -83,12 +98,14 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 												<Row gutter={[0, 12]}>
 													<Col>
 														<Row type="flex" justify="center">
-															<Icon
-																style={{ fontSize: "6rem" }}
-																twoToneColor={location.color}
-																theme="twoTone"
-																type={location.icon}
-															/>
+															<IconBackground color={location.backgroundColor}>
+																<Icon
+																	style={{ fontSize: "3rem" }}
+																	twoToneColor={location.color}
+																	theme="twoTone"
+																	type={location.icon}
+																/>
+															</IconBackground>
 														</Row>
 													</Col>
 													<Col>
@@ -109,9 +126,9 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 									);
 								})}
 							</Row>
-						</PaddedDiv>
-					</Col>
-				</Row>
+						</Col>
+					</Row>
+				</LoudPaddingDiv>
 			</GreyMaxHeightDiv>
 		</PageLayout>
 	);
