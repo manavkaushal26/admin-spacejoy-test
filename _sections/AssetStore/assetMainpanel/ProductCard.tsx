@@ -5,7 +5,8 @@ import { getValueSafely } from "@utils/commonUtils";
 import { Typography, Icon, Row, Col } from "antd";
 import React from "react";
 import styled from "styled-components";
-import { AssetCard, CapitalizedText } from "../styled";
+import { CapitalizedText } from "@components/CommonStyledComponents";
+import { AssetCard } from "../styled";
 
 const { Text } = Typography;
 

@@ -1,14 +1,28 @@
+import User from "@customTypes/userType";
 import { cookieNames } from "@utils/config";
+import { ServerResponse } from "http";
 import cookie from "js-cookie";
+import { NextPage, NextPageContext } from "next";
 import Router from "next/router";
 import React, { Component } from "react";
+import { allowedRoles } from "./constants";
 import fetcher from "./fetcher";
 import getCookie from "./getCookie";
 
 const endPointAuthCheck = "/auth/check";
 const endPointSocialSignup = "/auth/login/oauth";
 
-function redirectToLocation({ pathname, query = {}, url, res = {} }) {
+function redirectToLocation({
+	pathname,
+	query = {},
+	url,
+	res,
+}: {
+	pathname: string;
+	query?: Record<string, string>;
+	url?: string;
+	res?: ServerResponse;
+}): void {
 	if (typeof window !== "undefined") {
 		Router.push({ pathname, query }, url);
 	} else {
@@ -19,23 +33,25 @@ function redirectToLocation({ pathname, query = {}, url, res = {} }) {
 	}
 }
 
-function clearAllStorage() {
+function clearAllStorage(): void {
 	cookie.remove(cookieNames.userRole);
 	cookie.remove(cookieNames.authToken);
 	window.localStorage.clear();
 }
 
-function login({ token, role, redirectUrl = "/launchpad" }) {
+function login({ token, role, redirectUrl = "/launchpad" }): void {
 	clearAllStorage();
-	cookie.set(cookieNames.authToken, token, { expires: 365 });
-	cookie.set(cookieNames.userRole, role, { expires: 365 });
-	if (redirectUrl !== null) {
-		const url = redirectUrl || "/launchpad";
-		redirectToLocation({ pathname: url, url });
+	if (allowedRoles.includes(role)) {
+		cookie.set(cookieNames.authToken, token, { expires: 365 });
+		cookie.set(cookieNames.userRole, role, { expires: 365 });
+		if (redirectUrl !== null) {
+			const url = redirectUrl || "/launchpad";
+			redirectToLocation({ pathname: url, url });
+		}
 	}
 }
 
-async function oAuthLogin(data, redirectUrl = "/launchpad", cb) {
+async function oAuthLogin(data, redirectUrl = "/launchpad", cb): Promise<void> {
 	const response = await fetcher({
 		endPoint: endPointSocialSignup,
 		method: "POST",
@@ -57,9 +73,9 @@ async function oAuthLogin(data, redirectUrl = "/launchpad", cb) {
 	}
 }
 
-function logout() {
+function logout(): void {
 	clearAllStorage();
-	window.localStorage.setItem("logout", Date.now());
+	window.localStorage.setItem("logout", Date.now().toString());
 	redirectToLocation({
 		pathname: "/auth",
 		query: { flow: "login", redirectUrl: "/launchpad" },
@@ -67,7 +83,7 @@ function logout() {
 	});
 }
 
-function auth(ctx) {
+function auth(ctx: NextPageContext): string | void {
 	const token = getCookie(ctx, cookieNames.authToken);
 	if (!token) {
 		const redirect = {
@@ -80,44 +96,44 @@ function auth(ctx) {
 	return token;
 }
 
-const getDisplayName = JSXComponent => JSXComponent.displayName || JSXComponent.name || "Component";
+const getDisplayName = (JSXComponent): string => JSXComponent.displayName || JSXComponent.name || "Component";
 
-function withAuthSync(WrappedComponent) {
+function withAuthSync(WrappedComponent: NextPage) {
 	return class extends Component {
 		static displayName = `withAuthSync(${getDisplayName(WrappedComponent)})`;
 
-		static async getInitialProps(ctx) {
+		static async getInitialProps(ctx): Promise<{ token: string | void }> {
 			const token = auth(ctx);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
 			return { ...componentProps, token };
 		}
 
-		componentDidMount() {
+		componentDidMount(): void {
 			window.addEventListener("storage", this.syncLogout);
 		}
 
-		componentWillUnmount() {
+		componentWillUnmount(): void {
 			window.removeEventListener("storage", this.syncLogout);
 			window.localStorage.removeItem("logout");
 		}
 
-		syncLogout = event => {
+		syncLogout = (event): void => {
 			if (event.key === "logout") {
 				redirectToLocation({ pathname: "/auth", query: { flow: "login" }, url: "/auth/login" });
 			}
 		};
 
-		render() {
+		render(): JSX.Element {
 			return <WrappedComponent {...this.props} />;
 		}
 	};
 }
 
-function withAuthVerification(WrappedComponent) {
+function withAuthVerification(WrappedComponent: NextPage) {
 	return class extends Component {
 		static displayName = `withAuthVerification(${getDisplayName(WrappedComponent)})`;
 
-		static async getInitialProps(ctx) {
+		static async getInitialProps(ctx): Promise<{ isServer: boolean; authVerification?: Partial<User> }> {
 			const isServer = !!ctx.req;
 			const token = getCookie(ctx, cookieNames.authToken);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
@@ -136,7 +152,7 @@ function withAuthVerification(WrappedComponent) {
 			return { ...componentProps, isServer };
 		}
 
-		render() {
+		render(): JSX.Element {
 			return <WrappedComponent {...this.props} />;
 		}
 	};

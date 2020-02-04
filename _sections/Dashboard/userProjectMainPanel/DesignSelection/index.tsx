@@ -18,7 +18,8 @@ import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { deleteDesignApi } from "@api/designApi";
 import getCookie from "@utils/getCookie";
-import { CapitalizedText } from "@sections/AssetStore/styled";
+
+import { CapitalizedText } from "@components/CommonStyledComponents";
 import CopyDesignModal from "./CopyDesignModal";
 
 const { Text } = Typography;

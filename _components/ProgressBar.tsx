@@ -2,9 +2,10 @@ import { Status } from "@customTypes/userType";
 import { projectConfig } from "@utils/config";
 import { Progress } from "antd";
 import moment, { Moment } from "moment";
+import React from "react";
 
 interface ProgressBarProps {
-	status: Status | "";
+	status: Status;
 	endTime: Moment;
 	width?: number;
 }
@@ -21,7 +22,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ status, endTime, width = 33 }
 	let progressStatus: "normal" | "exception" = "normal";
 	if (status === Status.completed) {
 		return <Progress percent={100} type="circle" width={width} />;
-	} else if (days < 0) {
+	}
+	if (days < 0) {
 		progressStatus = "exception";
 	}
 	return (

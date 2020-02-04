@@ -1,8 +1,23 @@
 function pageRoute(app, router) {
+	// ******************************************************* Launchpad *******************************************************
+
 	router.get("/launchpad", (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/launchpad", params);
 	});
+
+	// *************************************************************************************************************************
+
+	// **************************************************** Design Examples ****************************************************
+
+	router.get("/designexamples", (req, res) => {
+		const { params } = req;
+		app.render(req, res, "/designexamples", params);
+	});
+
+	// *************************************************************************************************************************
+
+	// ******************************************************* DASHBOARD *******************************************************
 	router.get("/dashboard/pid/:projectId/did/:designId", (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/dashboard", { pid: params.projectId, designId: params.designId });
@@ -15,6 +30,11 @@ function pageRoute(app, router) {
 		const { params } = req;
 		app.render(req, res, "/dashboard", params);
 	});
+
+	// *************************************************************************************************************************
+
+	// ****************************************************** Asset Store ******************************************************
+
 	router.get("/assetstore/pid/:projectId/did/:designId/aeid/:assetEntryId", (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/assetstore", {
@@ -31,6 +51,9 @@ function pageRoute(app, router) {
 		const { params } = req;
 		app.render(req, res, "/assetstore", params);
 	});
+
+	// *************************************************************************************************************************
+
 	return router;
 }
 

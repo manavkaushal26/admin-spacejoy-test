@@ -8,13 +8,15 @@ export enum Role {
 	Analyst = "analyst",
 	Customer = "customer",
 	ServiceAcc = "service",
-	Guest = "guest"
+	Guest = "guest",
+	"3d Artist Role" = "3d artist",
 }
 
 export enum ProjectRoles {
-	Designer = "designer",
-	"Account Manager" = "account manager",
-	Administrator = "admin"
+	Designer = Role.Designer,
+	"Account Manager" = Role["Account Manager"],
+	Administrator = Role.Admin,
+	"3d Artist Role" = Role["3d Artist Role"],
 }
 
 export enum Status {
@@ -23,7 +25,7 @@ export enum Status {
 	suspended = "suspended",
 	closed = "closed",
 	inactive = "inactive",
-	completed = "completed"
+	completed = "completed",
 }
 
 interface User {

@@ -21,14 +21,17 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		team,
 		customer,
 	} = projectData;
-	const designers = useMemo(
+	const assignedTeam = useMemo(
 		() =>
 			team
 				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
+					return (
+						getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer ||
+						getValueSafely(() => member.member.role, ProjectRoles["3d Artist Role"]) === ProjectRoles["3d Artist Role"]
+					);
 				})
-				.map(designer => {
-					return getValueSafely(() => designer.member.profile.name, designer.memberName);
+				.map(teamMember => {
+					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
 				})
 				.join(", "),
 		[projectData.team]
@@ -86,10 +89,10 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 					</CustomDiv>
 					<CustomDiv type="flex">
 						<Text strong>
-							<FontCorrectedPre>Assigned Designers: </FontCorrectedPre>
+							<FontCorrectedPre>Assigned Team: </FontCorrectedPre>
 						</Text>
 						<ModifiedText textTransform="capitalize" type="secondary">
-							{designers || "Not assigned"}
+							{assignedTeam || "Not assigned"}
 						</ModifiedText>
 					</CustomDiv>
 					<CustomDiv type="flex">

@@ -1,22 +1,22 @@
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
+import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import User from "@customTypes/userType";
 import AssetCartModal from "@sections/AssetStore/assetCart";
 import AssetMainPanel from "@sections/AssetStore/assetMainpanel";
 import Sidebar from "@sections/AssetStore/assetSidepanel";
+import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { CustomDiv, MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthSync, withAuthVerification } from "@utils/auth";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, message, Spin, Icon } from "antd";
-import { NextPageContext } from "next";
+import { Button, Icon, message, Spin } from "antd";
+import { NextPageContext, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useReducer, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import styled from "styled-components";
-import { MoodboardAsset, AssetType } from "@customTypes/moodboardTypes";
-import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
 
 interface AssetStoreProps {
@@ -77,13 +77,13 @@ const FAB = styled.button`
 	}
 `;
 
-const AssetStore = ({
+const AssetStore: NextPage<AssetStoreProps> = ({
 	isServer,
 	authVerification,
 	projectId,
 	designId,
 	assetEntryId,
-}: AssetStoreProps): JSX.Element => {
+}): JSX.Element => {
 	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
 	const [editAssetData, setEditAssetData] = useState<AssetType>(null);
@@ -327,4 +327,4 @@ AssetStore.getInitialProps = (
 	return { isServer, authVerification, projectId, designId, assetEntryId };
 };
 
-export default withAuthVerification(withAuthSync(AssetStore));
+export default withAuthVerification(AssetStore);

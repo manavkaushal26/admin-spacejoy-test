@@ -57,10 +57,6 @@ export const GreyDrawer = styled(Drawer)`
 	}
 `;
 
-export const CapitalizedText = styled(Text)`
-	text-transform: capitalize;
-`;
-
 export const StyledInput = styled.input<{ error: boolean }>`
 	::-webkit-inner-spin-button,
 	::-webkit-outer-spin-button {

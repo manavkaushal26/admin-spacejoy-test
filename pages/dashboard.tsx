@@ -1,3 +1,4 @@
+import { PhaseCustomerNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
@@ -7,13 +8,12 @@ import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Col, Row, Spin, Layout } from "antd";
+import { Layout, Spin } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { PhaseInternalNames, PhaseCustomerNames } from "@customTypes/dashboardTypes";
 
 const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};

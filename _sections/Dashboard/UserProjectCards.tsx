@@ -1,10 +1,12 @@
 import { HumanizePhaseInternalNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
-import ProgressBar from "@sections/Dashboard/ProgressBar";
+import ProgressBar from "@components/ProgressBar";
 import { getColorsForPackages, getNumberOfDays, getValueSafely } from "@utils/commonUtils";
 import { Avatar, Button, Card, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React from "react";
 import styled, { css } from "styled-components";
+
+import SidebarCard from "@components/SidebarCards";
 import { CustomDiv, getTagColor, StyledTag } from "./styled";
 
 const { Text } = Typography;
@@ -47,80 +49,26 @@ const UserProjectCard: React.FC<{
 			name: { internalName: phase },
 		},
 		status,
-		createdAt,
 	} = userProjectData;
 
 	const items = getValueSafely(() => userProjectData.order.items, []);
 
-	return (
-		<UserCard
-			size="small"
-			active={selectedUser === userProjectData._id}
-			hoverable
-			style={{ width: "100%" }}
-			onClick={e => {
-				e.preventDefault();
-				return handleSelectCard(userProjectData._id);
-			}}
-		>
-			<Row>
-				<CustomDiv>
-					<Row type="flex" align="middle">
-						<CustomDiv width="15%" overflow="visible">
-							<Avatar style={getColorsForPackages(items)}>
-								{getValueSafely<string>(() => {
-									return customerName[0];
-								}, "N/A").toUpperCase()}
-							</Avatar>
-						</CustomDiv>
-						<CustomDiv width="75%" type="flex" flexDirection="column">
-							<Text strong>
-								<CustomDiv width="100%" textTransform="capitalize">
-									{getValueSafely<string>(() => {
-										return customerName;
-									}, "N/A")}
-								</CustomDiv>
-							</Text>
-							<RoomNameText>{room}</RoomNameText>
-						</CustomDiv>
-						<CustomDiv width="10%" justifyContent="flex-end" type="flex" inline>
-							{initialPhases.includes(phase) && !startedAt ? (
-								<Button
-									onClick={e => {
-										e.stopPropagation();
-										onStartClick(projectId);
-									}}
-									style={{ padding: "0px 6px", height: "auto" }}
-									type="default"
-								>
-									<Text>Start</Text>
-								</Button>
-							) : (
-								<ProgressBar
-									status={status}
-									endTime={
-										startedAt
-											? moment(startedAt).add(getNumberOfDays(items), "days")
-											: moment(createdAt).add(getNumberOfDays(items), "days")
-									}
-									width={30}
-								/>
-							)}
-						</CustomDiv>
-					</Row>
-				</CustomDiv>
-				<Row type="flex" gutter={1}>
-					<Col span={24}>
-						<CustomDiv type="flex" flexWrap="no-wrap">
-							<CustomDiv width="15%" />
-							<StyledTag color={getTagColor(phase)}>Phase: {HumanizePhaseInternalNames[phase]}</StyledTag>
-							<StyledTag color={getTagColor(status)}>Status: {status}</StyledTag>
-						</CustomDiv>
-					</Col>
-				</Row>
-			</Row>
-		</UserCard>
-	);
+	const sidebarData = {
+		avatarText: getValueSafely(() => customerName[0], "N/A"),
+		title: getValueSafely(() => customerName, "N/A"),
+		subHeading: room,
+		uniqueId: projectId,
+		phase,
+		startedAt,
+		status,
+		avatarStyle: getColorsForPackages(items),
+		onClick: handleSelectCard,
+		selectedId: selectedUser,
+		onStartClick,
+		noOfDays: getNumberOfDays(items),
+	};
+
+	return <SidebarCard {...sidebarData} />;
 };
 
 export default UserProjectCard;

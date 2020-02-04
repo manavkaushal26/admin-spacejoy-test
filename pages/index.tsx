@@ -6,6 +6,8 @@ import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { allowedRoles } from "@utils/constants";
+import { NextPage } from "next";
+import User, { Role } from "@customTypes/userType";
 import { withAuthVerification, redirectToLocation } from "../_utils/auth";
 import { company } from "../_utils/config";
 
@@ -32,7 +34,15 @@ function getHeadingText(flow): JSX.Element {
 	}
 }
 
-function auth({ isServer, authVerification, flow = "login", redirectUrl, token }): JSX.Element {
+interface Auth {
+	isServer: boolean;
+	flow: string;
+	redirectUrl: string;
+	authVerification: Partial<User>;
+	token: string;
+}
+
+const auth: NextPage<Auth> = ({ isServer, authVerification, flow = "login", redirectUrl, token }) => {
 	useEffect(() => {
 		if (allowedRoles.includes(authVerification.role)) {
 			redirectToLocation({ pathname: "/launchpad", url: "/launchpad" });
@@ -81,27 +91,20 @@ function auth({ isServer, authVerification, flow = "login", redirectUrl, token }
 			</div>
 		</Layout>
 	);
-}
+};
 
-auth.getInitialProps = async ({
-	req,
-	query: { flow, redirectUrl, token },
-}): Promise<{
-	isServer: boolean;
-	flow: string | string[];
-	redirectUrl: string | string[];
-	authVerification: {
-		name: string;
-		role: string;
-	};
-	token: string | string[];
-}> => {
+auth.getInitialProps = async ({ req, query: { flow, redirectUrl, token } }): Promise<Auth> => {
 	const isServer = !!req;
 	const authVerification = {
 		name: "",
-		role: "",
+		role: Role.Guest,
 	};
-	return { isServer, flow, redirectUrl, authVerification, token };
+
+	const flowAsString = flow as string;
+	const redirectUrlAsString = redirectUrl as string;
+	const tokenAsString = token as string;
+
+	return { isServer, flow: flowAsString, redirectUrl: redirectUrlAsString, authVerification, token: tokenAsString };
 };
 
 export default withAuthVerification(auth);

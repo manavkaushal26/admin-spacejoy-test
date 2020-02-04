@@ -43,6 +43,14 @@ const launchpadLocations = [
 		color: "#e66b8b",
 		backgroundColor: "#fff0f1",
 	},
+	{
+		title: "Design Examples",
+		description: "Create Designs that excite you",
+		url: "/designexamples",
+		icon: "book",
+		color: "#1d39c4",
+		backgroundColor: "#f0f5ff",
+	},
 ];
 
 const LoudPaddingDiv = styled.div`

@@ -1,6 +1,6 @@
 import { DetailedProject, HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import ProgressBar from "@sections/Dashboard/ProgressBar";
+import ProgressBar from "@components/ProgressBar";
 import { getValueSafely, getNumberOfDays, getColorsForPackages } from "@utils/commonUtils";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment";
