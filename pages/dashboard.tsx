@@ -6,6 +6,7 @@ import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
+import { debounce } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Layout, Spin } from "antd";
@@ -25,12 +26,45 @@ interface DashboardProps {
 	designId: string;
 }
 
+const handleResize = (setIsDesktop): void => {
+	if (typeof window !== "undefined") {
+		if (window.innerWidth < 1024) {
+			setIsDesktop(false);
+		} else {
+			setIsDesktop(true);
+		}
+	}
+};
+
+const debouncedHandleResize = debounce(handleResize, 100);
+
 const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, projectId, designId }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading] = useState<boolean>(false);
 	const [startDate, setStartDate] = useState<string>(null);
 
 	const [collapsed, setCollapsed] = useState<boolean>(false);
+
+	const [isDesktop, setIsDesktop] = useState<boolean>(false);
+
+	const onResize = (): void => debouncedHandleResize(setIsDesktop);
+
+	useEffect(() => {
+		if (typeof window !== "undefined") {
+			if (window.innerWidth < 1024) {
+				setIsDesktop(false);
+			} else {
+				setIsDesktop(true);
+			}
+		}
+	});
+
+	useEffect(() => {
+		window.addEventListener("resize", onResize);
+		return (): void => {
+			window.removeEventListener("resize", onResize);
+		};
+	});
 
 	const handleSelectCard = (user: string): void => {
 		setSelectedUser(user);
@@ -52,7 +86,7 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 	}, []);
 
 	useEffect(() => {
-		if (projectId) {
+		if (projectId && !isDesktop) {
 			setCollapsed(true);
 		} else {
 			setCollapsed(false);
