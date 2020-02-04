@@ -98,6 +98,7 @@ export enum NEW_ASSET_ACTION_TYPES {
 	ASSET_MOUNT_TYPE = "ASSET_MOUNT_TYPE",
 	ASSET_CLAMP_VALUE = "ASSET_CLAMP_VALUE",
 	SET_ASSET = "SET_ASSET",
+	UPDATE_DIMENSION = "UPDATE_DIMENSION",
 	CLEAR = "CLEAR",
 }
 
@@ -124,6 +125,15 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 			return { ...state, retailer: action.value };
 		case NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK:
 			return { ...state, retailLink: action.value };
+		case NEW_ASSET_ACTION_TYPES.UPDATE_DIMENSION:
+			return {
+				...state,
+				dimension: {
+					width: action.value.width,
+					height: action.value.height,
+					depth: action.value.depth,
+				},
+			};
 		case NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE:
 			return {
 				...state,

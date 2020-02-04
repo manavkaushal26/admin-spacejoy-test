@@ -5,11 +5,11 @@ import { Currency, MountTypes, MountTypesLabels } from "@customTypes/assetInfoTy
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { debounce, getBase64, getValueSafely } from "@utils/commonUtils";
+import { convertToFeet, convertToInches, debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, Input, notification, Radio, Row, Select, Tooltip, Typography, Upload } from "antd";
+import { Button, Col, Icon, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { SizeAdjustedModal } from "../styled";
@@ -42,6 +42,20 @@ interface RoomTypeMeta {
 	label: string;
 }
 
+const formatDimensions: (
+	dimensions: { width: number; height: number; depth: number },
+	dimensionInInches: boolean
+) => { width: number; height: number; depth: number } = (dimensions, dimensionInInches) => {
+	if (dimensionInInches) {
+		return {
+			height: convertToFeet(dimensions.height),
+			width: convertToFeet(dimensions.width),
+			depth: convertToFeet(dimensions.depth),
+		};
+	}
+	return { ...dimensions };
+};
+
 const NewAssetModal: React.FC<NewAssetModal> = ({
 	isOpen,
 	toggleNewAssetModal,
@@ -54,6 +68,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 	const [imageFile, setImageFile] = useState<UploadFile<any>[]>([]);
+	const [dimensionInInches, setDimensionInInches] = useState<boolean>(false);
 
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 
@@ -110,9 +125,32 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		setAssetMountTypeValid(!!assetMountType.current.props.value);
 	};
 
+	const onSwitchChange = (checked: boolean): void => {
+		setDimensionInInches(!dimensionInInches);
+		if (checked) {
+			dispatch({
+				type: NEW_ASSET_ACTION_TYPES.UPDATE_DIMENSION,
+				value: {
+					height: convertToInches(state.dimension.height),
+					width: convertToInches(state.dimension.width),
+					depth: convertToInches(state.dimension.depth),
+				},
+			});
+		} else {
+			dispatch({
+				type: NEW_ASSET_ACTION_TYPES.UPDATE_DIMENSION,
+				value: {
+					height: convertToFeet(state.dimension.height),
+					width: convertToFeet(state.dimension.width),
+					depth: convertToFeet(state.dimension.depth),
+				},
+			});
+		}
+	};
+
 	const debouncedCheckValidity = debounce(checkValidity, 50);
 
-	const openInNewWindow = () => {
+	const openInNewWindow = (): void => {
 		if (state.retailLink && assetUrl.current.input.checkValidity()) {
 			window.open(state.retailLink, "_blank", "noopener");
 		}
@@ -311,6 +349,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetPriceValid(false);
 			setAssetRetailerValid(false);
 			setAssetUrlValid(false);
+			setDimensionInInches(false);
 			setAssetCategoryValid(false);
 			setAssetSubCategoryValid(false);
 			setAssetVerticalValid(false);
@@ -368,6 +407,9 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	const saveAsset = async (): Promise<void> => {
 		const endPoint = assetCreateOrUpdationApi(state._id);
+
+		const dimensionsToSend = formatDimensions(state.dimension, dimensionInInches);
+
 		const requestBody = state._id
 			? {
 					name: state.name,
@@ -386,7 +428,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					"spatialData.clampValue": state.spatialData.clampValue,
 					price: state.price,
 					currency: state.currency,
-					dimension: state.dimension,
+					dimension: dimensionsToSend,
 					imageUrl: state.imageUrl,
 					cdn: state.cdn,
 					tags: state.tags,
@@ -692,10 +734,23 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						<SilentDivider />
 					</Col>
 					<Col>
+						<Row type="flex" gutter={[4, 4]}>
+							<Col>Dimensions in Inches?</Col>
+							<Col>
+								<Switch
+									onChange={onSwitchChange}
+									checked={dimensionInInches}
+									checkedChildren="Yes"
+									unCheckedChildren="No"
+								/>
+							</Col>
+						</Row>
+					</Col>
+					<Col>
 						<Row gutter={[4, 4]}>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
-									<Col span={24}>Width (Feet)</Col>
+									<Col span={24}>Width</Col>
 									<Col>
 										<Input
 											ref={assetWidth}
@@ -703,7 +758,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											onChange={handleChange}
 											value={state.dimension.width}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_WIDTH}
-											placeholder="Width(Feet)"
+											placeholder="Width"
 											type="number"
 										/>
 									</Col>
@@ -711,7 +766,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
-									<Col span={24}>Height (Feet)</Col>
+									<Col span={24}>Height</Col>
 									<Col>
 										<Input
 											ref={assetHeight}
@@ -719,7 +774,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											onChange={handleChange}
 											value={state.dimension.height}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_HEIGHT}
-											placeholder="Height(Feet)"
+											placeholder="Height"
 											type="number"
 										/>
 									</Col>
@@ -727,7 +782,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
-									<Col span={24}>Depth (Feet)</Col>
+									<Col span={24}>Depth</Col>
 									<Col>
 										<Input
 											ref={assetDepth}
@@ -735,7 +790,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											onChange={handleChange}
 											value={state.dimension.depth}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_DEPTH}
-											placeholder="Depth(Feet)"
+											placeholder="Depth"
 											type="number"
 										/>
 									</Col>

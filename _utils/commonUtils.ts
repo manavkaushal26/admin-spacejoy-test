@@ -84,3 +84,11 @@ export const getColorsForPackages = (items: Packages[]): Record<string, string> 
 	}
 	return undefined;
 };
+
+export const convertToInches = (value: number, fix = 2): number => {
+	return parseFloat((value * 12).toFixed(fix));
+};
+
+export const convertToFeet = (value: number, fix = 2): number => {
+	return parseFloat((value / 12).toFixed(fix));
+};
