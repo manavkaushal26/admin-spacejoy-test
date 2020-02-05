@@ -8,7 +8,8 @@ import { Button, Col, Icon, message, Popconfirm, Row, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import { CapitalizedText, FullheightSpin, GreyDrawer } from "../styled";
+import { CapitalizedText } from "@components/CommonStyledComponents";
+import { FullheightSpin, GreyDrawer } from "../styled";
 
 const { Title, Text } = Typography;
 
