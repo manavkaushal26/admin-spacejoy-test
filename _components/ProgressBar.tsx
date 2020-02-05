@@ -3,9 +3,10 @@ import { projectConfig } from "@utils/config";
 import { Progress } from "antd";
 import moment, { Moment } from "moment";
 import React from "react";
+import { completedPhases, PhaseInternalNames } from "@customTypes/dashboardTypes";
 
 interface ProgressBarProps {
-	status: Status;
+	phase: PhaseInternalNames;
 	endTime: Moment;
 	width?: number;
 }
@@ -15,12 +16,12 @@ const getProgressBarText = (days: number): string => {
 	return `${displayDays}`;
 };
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ status, endTime, width = 33 }): JSX.Element => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ phase, endTime, width = 33 }): JSX.Element => {
 	const duration = moment.duration(endTime.diff(moment()));
 	const days = duration.get("days");
 	const progressPercentage = (days / projectConfig.lifetime) * 100;
 	let progressStatus: "normal" | "exception" = "normal";
-	if (status === Status.completed) {
+	if (completedPhases.includes(phase)) {
 		return <Progress percent={100} type="circle" width={width} />;
 	}
 	if (days < 0) {

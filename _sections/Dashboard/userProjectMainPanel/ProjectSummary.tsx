@@ -1,7 +1,11 @@
-import { DetailedProject, HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
-import { Status } from "@customTypes/userType";
 import ProgressBar from "@components/ProgressBar";
-import { getValueSafely, getNumberOfDays, getColorsForPackages } from "@utils/commonUtils";
+import {
+	DetailedProject,
+	HumanizePhaseInternalNames,
+	PhaseInternalNames,
+	completedPhases,
+} from "@customTypes/dashboardTypes";
+import { getColorsForPackages, getNumberOfDays, getValueSafely } from "@utils/commonUtils";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React from "react";
@@ -37,14 +41,17 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		startedAt,
 		currentPhase: {
 			name: { internalName: phase },
+			startTime: phaseStartedAt,
 		},
 		order: { items },
 	} = projectData;
 
-	const endTime = startedAt
-		? moment(startedAt).add(getNumberOfDays(items), "days")
-		: moment(createdAt).add(getNumberOfDays(items), "days");
+	const startTime = startedAt || createdAt;
 
+	const endTime =
+		phase === PhaseInternalNames.designsInRevision
+			? moment(phaseStartedAt).add(5, "days")
+			: moment(startTime).add(getNumberOfDays(items), "days");
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
 	}, room);
@@ -76,9 +83,9 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 					<Row align="middle" type="flex" justify="center">
 						<Col span={24}>
 							<CustomDiv px="12px" type="flex" inline>
-								<ProgressBar width={33} status={Status.active} endTime={endTime} />
+								<ProgressBar width={33} phase={phase} endTime={endTime} />
 							</CustomDiv>
-							<Text>{getLongTimeString(endTime.valueOf())}</Text>
+							{!completedPhases.includes(phase) && <Text>{getLongTimeString(endTime.valueOf())}</Text>}
 						</Col>
 					</Row>
 				</CustomDiv>

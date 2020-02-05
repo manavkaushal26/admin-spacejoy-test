@@ -61,3 +61,11 @@ export const getMoodboardApi: (designId: string, assetEntryId?: string) => strin
 export const getAddRemoveAssetApi: (designId: string, assetEntryId: string) => string = (designId, assetEntryId) => {
 	return `/admin/design/${designId}/config/asset${assetEntryId ? `/${assetEntryId}` : ""}`;
 };
+
+// ************************************************ Design Examples ************************************************
+
+export const getDesignList = () => {
+	return "/admin/designs";
+};
+
+// *****************************************************************************************************************

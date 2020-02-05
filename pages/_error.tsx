@@ -33,8 +33,8 @@ const errorImage =
 		: "q_80/v1576132598/shared/404_btqimw.svg";
 
 const routeParameters = {
-	pathname: "/dashboard",
-	url: "/dashboard"
+	pathname: "/launchpad",
+	url: "/launchpad",
 };
 
 class Error extends React.Component<{ authVerification: Partial<User>; status: number }> {
@@ -61,8 +61,8 @@ class Error extends React.Component<{ authVerification: Partial<User>; status: n
 						alt={status ? `An error ${status} occurred on server` : "An error occurred on client"}
 					/>
 					<ErrorText>{status ? `An error ${status} occurred on server` : "An error occurred on client"}</ErrorText>
-					<Button type="primary" onClick={redirectToLocation.bind(null, routeParameters)}>
-						Go to Dashboard
+					<Button type="primary" onClick={(): void => redirectToLocation(routeParameters)}>
+						Go to Launchpad
 					</Button>
 				</ErrorWrapper>
 			</Layout>

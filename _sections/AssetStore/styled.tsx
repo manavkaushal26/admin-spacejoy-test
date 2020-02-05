@@ -25,6 +25,7 @@ export const StyleCorrectedIcon = styled(Icon)`
 
 export const FilterCard = styled(Card)`
 	.ant-card-body {
+		padding: 24px 1rem;
 		> * + * {
 			margin-top: 10px;
 		}

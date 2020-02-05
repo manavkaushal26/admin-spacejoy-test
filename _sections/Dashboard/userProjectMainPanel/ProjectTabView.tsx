@@ -55,6 +55,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		setProjectData({
 			...projectData,
 			currentPhase: {
+				...projectData.currentPhase,
 				name: projectPhase,
 			},
 		});

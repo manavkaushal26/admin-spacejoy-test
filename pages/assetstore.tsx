@@ -237,22 +237,20 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 			<Spin spinning={state.loading}>
 				<ParentContainer>
 					<SidebarContainer>
-						<MaxHeightDiv>
-							<CustomDiv px="0.5rem" width="100%" overY="scroll">
+						<MaxHeightDiv style={{ flexDirection: "column" }}>
+							<CustomDiv py="0.5rem" width="100%">
+								<Button icon="rollback" onClick={goToButtonClick} block type="primary">
+									{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
+								</Button>
+							</CustomDiv>
+							{projectId && (
 								<CustomDiv py="0.5rem" width="100%">
-									<Button icon="rollback" onClick={goToButtonClick} block type="primary">
-										{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
+									<Button onClick={toggleCart} block type="default">
+										Open Cart
 									</Button>
 								</CustomDiv>
-								{projectId && (
-									<CustomDiv py="0.5rem" width="100%">
-										<Button onClick={toggleCart} block type="default">
-											Open Cart
-										</Button>
-									</CustomDiv>
-								)}
-								<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
-							</CustomDiv>
+							)}
+							<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
 						</MaxHeightDiv>
 					</SidebarContainer>
 					<MainContentContainer>

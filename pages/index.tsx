@@ -8,6 +8,7 @@ import React, { useEffect } from "react";
 import { allowedRoles } from "@utils/constants";
 import { NextPage } from "next";
 import User, { Role } from "@customTypes/userType";
+import { Row, Col } from "antd";
 import { withAuthVerification, redirectToLocation } from "../_utils/auth";
 import { company } from "../_utils/config";
 
@@ -66,29 +67,35 @@ const auth: NextPage<Auth> = ({ isServer, authVerification, flow = "login", redi
 					{flow} | {company.product}
 				</title>
 			</Head>
-			<div className="container">
-				<div className="grid text-center">
-					<div className="col-12 col-sm-8 col-md-6 col-lg-4">
-						<div className="col-12">{getHeadingText(flow)}</div>
-						{flow === "login" && (
-							<div className="col-12">
-								<LoginForm redirectUrl={redirectUrl} />
-							</div>
-						)}
-
-						{flow === "forgot-password" && (
-							<>
+			<Row style={{ paddingTop: "2rem" }} type="flex" justify="center">
+				<Col xs={24} sm={20} md={20}>
+					<Row type="flex" justify="center">
+						<Col span={12}>
+							<Row type="flex" justify="center">
+								{getHeadingText(flow)}
+							</Row>
+						</Col>
+						<Col span={24}>
+							{flow === "login" && (
 								<div className="col-12">
-									<ForgotPasswordForm />
+									<LoginForm redirectUrl={redirectUrl} />
 								</div>
-								<span>Already have an account? </span>
-								{renderLoginLink}
-							</>
-						)}
-						{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} token={token} />}
-					</div>
-				</div>
-			</div>
+							)}
+
+							{flow === "forgot-password" && (
+								<>
+									<div className="col-12">
+										<ForgotPasswordForm />
+									</div>
+									<span>Already have an account? </span>
+									{renderLoginLink}
+								</>
+							)}
+							{flow === "reset-password" && <ResetPasswordForm redirectUrl={redirectUrl} token={token} />}
+						</Col>
+					</Row>
+				</Col>
+			</Row>
 		</Layout>
 	);
 };

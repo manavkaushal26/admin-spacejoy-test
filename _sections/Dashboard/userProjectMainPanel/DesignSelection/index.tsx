@@ -1,25 +1,23 @@
-import { updateProjectPhase, notifyCustomerApi, editProjectApi } from "@api/projectApi";
-import Image from "@components/Image";
+import { deleteDesignApi } from "@api/designApi";
+import { editProjectApi, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
+import { CapitalizedText } from "@components/CommonStyledComponents";
+import DesignCard from "@components/DesignCard";
 import {
+	DesignImgTypes,
 	DesignInterface,
 	DetailedProject,
+	PackageDetails,
 	Packages,
 	PhaseInternalNames,
-	PackageDetails,
-	DesignImgTypes,
 } from "@customTypes/dashboardTypes";
-import { cookieNames } from "@utils/config";
-
-import { Status, Role } from "@customTypes/userType";
+import { Role, Status } from "@customTypes/userType";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
+import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, message, Row, Tag, Typography, Icon, Modal, Popconfirm, Select } from "antd";
+import getCookie from "@utils/getCookie";
+import { Button, Col, Icon, message, Modal, Popconfirm, Row, Select, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import { deleteDesignApi } from "@api/designApi";
-import getCookie from "@utils/getCookie";
-
-import { CapitalizedText } from "@components/CommonStyledComponents";
 import CopyDesignModal from "./CopyDesignModal";
 
 const { Text } = Typography;
@@ -197,51 +195,23 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 				<Row type="flex" align="stretch" gutter={[8, 8]}>
 					{projectData.designs.map(design => {
 						return (
-							<Col sm={24} md={12} lg={8} xl={6} key={design._id}>
-								<Card
-									hoverable
-									onClick={(): void => onSelectDesign(design.design._id)}
-									actions={[
-										<Icon
-											type="delete"
-											key="delete"
-											onClick={(e): void => {
-												e.stopPropagation();
-												confirmDelete(design.design._id);
-											}}
-										/>,
-									]}
-									cover={
-										<Row>
-											<Col span={24}>
-												<Image
-													width="100%"
-													src={`q_80/${getValueSafely(
-														() =>
-															design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0]
-																.cdn,
-														process.env.NODE_ENV === "production"
-															? "v1574869657/shared/Illustration_mffq52.svg"
-															: "v1578482972/shared/Illustration_mffq52.svg"
-													)}`}
-												/>
-											</Col>
-										</Row>
-									}
-								>
-									<Row type="flex" justify="space-between">
-										<Col>
-											<Text>{design.design.name}</Text>
-										</Col>
-										<Col>
-											<Tag>Status: {getHumanizedActivePhase(design.design.phases)}</Tag>
-										</Col>
-									</Row>
-								</Card>
-							</Col>
+							<DesignCard
+								key={design._id}
+								uniqueId={design.design._id}
+								onSelectCard={onSelectDesign}
+								coverImage={`q_80/${getValueSafely(
+									() => design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0].cdn,
+									process.env.NODE_ENV === "production"
+										? "v1574869657/shared/Illustration_mffq52.svg"
+										: "v1578482972/shared/Illustration_mffq52.svg"
+								)}`}
+								onDelete={confirmDelete}
+								designName={design.design.name}
+								phase={getHumanizedActivePhase(design.design.phases)}
+							/>
 						);
 					})}
-					<Col sm={24} md={12} lg={8} xl={6} onClick={toggleCopyDesignModal}>
+					<Col xs={24} sm={12} md={8} lg={8} xl={6} onClick={toggleCopyDesignModal}>
 						<HoverCard>
 							<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
 								<Col span="24">

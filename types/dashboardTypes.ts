@@ -46,11 +46,18 @@ export enum HumanizePhaseInternalNames {
 	rejected = "Rejected",
 }
 
+export const completedPhases = [
+	PhaseInternalNames.designReady,
+	PhaseInternalNames.shop,
+	PhaseInternalNames.designReady,
+];
+
 interface CurrentPhase {
 	name: {
 		internalName: PhaseInternalNames;
 		customerName: PhaseCustomerNames;
 	};
+	startTime: string;
 }
 
 export interface UserProjectType {
@@ -219,7 +226,7 @@ export interface DetailedProject {
 	_id: string;
 	name: string;
 	customer: Customer;
-	currentPhase: Phase;
+	currentPhase: CurrentPhase;
 	order: Order;
 	form: FormType[];
 	completedPhases: Phase[];

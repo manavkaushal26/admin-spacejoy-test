@@ -32,9 +32,9 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 				<MobileHiddenStyled>
 					<Row type="flex" justify="space-around" align="middle">
 						<Col span={8}>
-							<a href="/launchpad">
+							<ActiveLink href="/launchpad" as="/launchpad">
 								<Logo md />
-							</a>
+							</ActiveLink>
 						</Col>
 						<Col span={16}>
 							<Row type="flex" justify="end" gutter={[32, 0]}>

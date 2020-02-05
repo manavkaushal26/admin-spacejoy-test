@@ -1,5 +1,5 @@
 import ProgressBar from "@components/ProgressBar";
-import { HumanizePhaseInternalNames } from "@customTypes/dashboardTypes";
+import { HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { getTagColor } from "@sections/Dashboard/styled";
 import { Avatar, Button, Card, Col, Row, Typography } from "antd";
@@ -13,7 +13,7 @@ interface SidebarCard {
 	title: string;
 	subHeading: string;
 	uniqueId: string;
-	phase: string;
+	phase: PhaseInternalNames;
 	startedAt: string;
 	status: Status;
 	avatarStyle: Record<string, string>;
@@ -126,7 +126,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 								<Text>Start</Text>
 							</Button>
 						) : (
-							<ProgressBar status={status} endTime={moment(startedAt).add(noOfDays, "days")} width={30} />
+							<ProgressBar phase={phase} endTime={moment(startedAt).add(noOfDays, "days")} width={30} />
 						)}
 					</Row>
 				</Col>

@@ -3,11 +3,11 @@ import PageLayout from "@sections/Layout";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { getLocalStorageValue } from "@utils/storageUtils";
 import { Card, Col, Icon, Row, Typography } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 
 const { Text, Title } = Typography;
@@ -23,6 +23,7 @@ interface LaunchpadLocations {
 	url: string;
 	icon: string;
 	color: string;
+	notActive?: boolean;
 	backgroundColor: string;
 }
 
@@ -50,6 +51,7 @@ const launchpadLocations = [
 		icon: "book",
 		color: "#1d39c4",
 		backgroundColor: "#f0f5ff",
+		notActive: true,
 	},
 ];
 
@@ -79,58 +81,67 @@ const IconBackground = styled.div<{ color: string }>`
 `;
 
 const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification }) => {
+	const Router = useRouter();
+	useEffect(() => {
+		if (!authVerification.name) {
+			Router.push("/auth", "/auth/login");
+		}
+	}, [authVerification]);
+
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification}>
 			<Head>
-				<title>Dashboard | {company.product}</title>
+				<title>Launchpad | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
 			<GreyMaxHeightDiv>
 				<LoudPaddingDiv>
 					<Row gutter={[0, 16]}>
 						<Col style={{ backgroundColor: "white" }}>
-							<CapitalizedTitle level={2}>Hey {getLocalStorageValue<User>("authVerification").name},</CapitalizedTitle>
+							<CapitalizedTitle level={2}>Hey {authVerification.name},</CapitalizedTitle>
 							<h2 style={{ margin: 0 }}>Welcome to the Spacejoy Launchpad</h2>
 						</Col>
 						<Col>
 							<Row gutter={[12, 12]}>
 								{launchpadLocations.map(location => {
 									return (
-										<Col sm={12} md={8} key={location.url}>
-											<Card
-												onClick={(): void =>
-													redirectToLocation({ pathname: location.url, query: {}, url: location.url })
-												}
-												hoverable
-											>
-												<Row gutter={[0, 12]}>
-													<Col>
-														<Row type="flex" justify="center">
-															<IconBackground color={location.backgroundColor}>
-																<Icon
-																	style={{ fontSize: "3rem" }}
-																	twoToneColor={location.color}
-																	theme="twoTone"
-																	type={location.icon}
-																/>
-															</IconBackground>
-														</Row>
-													</Col>
-													<Col>
-														<Row>
-															<Col>
-																<Title style={{ textAlign: "center" }} level={4}>
-																	{location.title}
-																</Title>
-															</Col>
-															<Col style={{ textAlign: "center" }}>
-																<Text type="secondary">{location.description}</Text>
-															</Col>
-														</Row>
-													</Col>
-												</Row>
-											</Card>
-										</Col>
+										!(location.notActive && process.env.NODE_ENV === "production") && (
+											<Col sm={12} md={8} key={location.url}>
+												<Card
+													onClick={(): void =>
+														redirectToLocation({ pathname: location.url, query: {}, url: location.url })
+													}
+													hoverable
+												>
+													<Row gutter={[0, 12]}>
+														<Col>
+															<Row type="flex" justify="center">
+																<IconBackground color={location.backgroundColor}>
+																	<Icon
+																		style={{ fontSize: "3rem" }}
+																		twoToneColor={location.color}
+																		theme="twoTone"
+																		type={location.icon}
+																	/>
+																</IconBackground>
+															</Row>
+														</Col>
+														<Col>
+															<Row>
+																<Col>
+																	<Title style={{ textAlign: "center" }} level={4}>
+																		{location.title}
+																	</Title>
+																</Col>
+																<Col style={{ textAlign: "center" }}>
+																	<Text type="secondary">{location.description}</Text>
+																</Col>
+															</Row>
+														</Col>
+													</Row>
+												</Card>
+											</Col>
+										)
 									);
 								})}
 							</Row>
