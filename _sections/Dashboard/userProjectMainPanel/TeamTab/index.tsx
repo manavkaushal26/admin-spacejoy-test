@@ -167,13 +167,11 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 								value={state.role}
 								onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value })}
 							>
-								{Object.keys(ProjectRoles).map(key => {
-									return (
-										<Option key={key} value={ProjectRoles[key]}>
-											{key}
-										</Option>
-									);
-								})}
+								{Object.keys(ProjectRoles).map(key => (
+									<Option key={key} value={ProjectRoles[key]}>
+										{key}
+									</Option>
+								))}
 							</Select>
 						</CustomDiv>
 					</CustomDiv>

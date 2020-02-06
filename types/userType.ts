@@ -9,14 +9,14 @@ export enum Role {
 	Customer = "customer",
 	ServiceAcc = "service",
 	Guest = "guest",
-	"3d Artist Role" = "3d artist",
+	"3D Artist" = "3d artist",
 }
 
 export enum ProjectRoles {
-	Designer = Role.Designer,
-	"Account Manager" = Role["Account Manager"],
-	Administrator = Role.Admin,
-	"3d Artist Role" = Role["3d Artist Role"],
+	Designer = "designer",
+	"Account Manager" = "account manager",
+	Administrator = "admin",
+	"3D Artist" = "3d artist",
 }
 
 export enum Status {
