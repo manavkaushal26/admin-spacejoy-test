@@ -37,7 +37,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 		<AssetCard onClick={(): void => onCardClick(asset)} hoverable={hoverable}>
 			<Row gutter={[10, 0]}>
 				<Col span={24}>
-					<Image width={imageWidth} height={imageHeight} src={asset.cdn} nolazy />
+					<Image width={imageWidth} height={imageHeight} src={asset.cdn} />
 					<SilentDivider />
 				</Col>
 				<Col span={24}>

@@ -208,7 +208,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 					</CustomDiv>
 					<CustomDiv width="100%" py="1rem" type="flex">
 						<CustomDiv inline>
-							<Image height="100px" src={primaryAsset.cdn} nolazy />
+							<Image height="100px" src={primaryAsset.cdn} />
 						</CustomDiv>
 						<CustomDiv inline pl="1rem">
 							<CustomDiv type="flex">

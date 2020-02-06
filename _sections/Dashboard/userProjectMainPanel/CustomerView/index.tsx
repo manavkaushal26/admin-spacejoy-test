@@ -25,7 +25,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 						.filter(image => image.imgType === DesignImgTypes.Render)
 						.map(image => (
 							<div key={image._id}>
-								<Image width="100%" src={`${image.cdn}`} nolazy />
+								<Image width="100%" src={`${image.cdn}`} />
 							</div>
 						))}
 				</Carousel>

@@ -26,7 +26,7 @@ const ImageDisplayModal: React.FC<ImageDisplayModal> = ({
 	return (
 		<SizeAdjustedModal visible={previewVisible} footer={null} onCancel={handleCancel}>
 			{cdn ? (
-				<Image width="100%" alt={altText} src={`q_100/${previewImage}`} nolazy />
+				<Image width="100%" alt={altText} src={`q_100/${previewImage}`} />
 			) : (
 				<img alt={altText} style={{ width: "100%" }} src={previewImage} />
 			)}

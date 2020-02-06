@@ -1,53 +1,99 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import { cloudinary } from "@utils/config";
-import PropTypes from "prop-types";
-import React from "react";
-import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
+import React, { useEffect, useCallback, useState } from "react";
 
 interface ImageProps {
 	src: string;
-	height: string;
-	width: string;
-	alt: string;
-	shape: string;
-	noLazy: boolean;
+	height?: string;
+	width?: string;
+	alt?: string;
+	onClick?: (e: any) => void;
 }
 
-function Image({ src, height, width, alt, shape, nolazy, scrollPosition, ...props }) {
+function Image({ src, height = "auto", width = "auto", alt, onClick }: ImageProps): JSX.Element {
 	const source =
 		src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")
 			? src
 			: `${cloudinary.baseDeliveryURL}/image/upload/${src}`;
+	const lowQualitySource =
+		src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")
+			? src
+			: `${cloudinary.baseDeliveryURL}/image/upload/e_blur:828,q_10/${src}`;
+
+	const [selectedNode, setSelectedNode] = useState<HTMLImageElement>();
+	useEffect(() => {
+		const intersectionObserver = new IntersectionObserver(
+			(entries, observer) => {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						const target = entry.target as HTMLImageElement;
+						target.src = target.dataset.src;
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{
+				rootMargin: "0px 0px 0px 0px",
+				threshold: 0.2,
+			}
+		);
+		if (selectedNode) {
+			intersectionObserver.observe(selectedNode);
+
+			return (): void => {
+				intersectionObserver.unobserve(selectedNode);
+			};
+		}
+		return (): void => {};
+	}, [selectedNode]);
+
+	const callbackRef = useCallback(node => {
+		if (node) {
+			setSelectedNode(node);
+		}
+	}, []);
+
+	const onLoad = () => {
+		if (selectedNode) {
+			if (!selectedNode.complete) {
+				if (!height) {
+					selectedNode.style.height = "200px";
+				}
+			} else {
+				selectedNode.style.height = height;
+			}
+		}
+	};
+
 	return (
-		<LazyLoadImage
-			{...props}
-			src={source}
-			alt={alt}
-			width={width}
-			height={height}
-			scrollPosition={scrollPosition}
-			visibleByDefault={nolazy}
-			className={shape}
-		/>
+		<>
+			<img
+				onClick={onClick}
+				ref={callbackRef}
+				alt={alt}
+				onLoad={onLoad}
+				onKeyDown={(e): void => {
+					if (e.keyCode === 13) {
+						onClick(e);
+					}
+				}}
+				width={width}
+				height={height === "auto" ? "200px" : height}
+				src={lowQualitySource}
+				data-src={source}
+			/>
+			{/* <LazyLoadImage
+				{...props}
+				src={source}
+				alt={alt}
+				width={width}
+				height={height}
+				scrollPosition={scrollPosition}
+				visibleByDefault={nolazy}
+				className={shape}
+			/> */}
+		</>
 	);
 }
 
-Image.defaultProps = {
-	alt: "spacejoy",
-	width: "auto",
-	height: "auto",
-	shape: "",
-	nolazy: false,
-	scrollPosition: {},
-};
-
-Image.propTypes = {
-	src: PropTypes.string.isRequired,
-	alt: PropTypes.string,
-	width: PropTypes.string,
-	height: PropTypes.string,
-	shape: PropTypes.string,
-	nolazy: PropTypes.bool,
-	scrollPosition: PropTypes.shape({}),
-};
-
-export default React.memo(trackWindowScroll(Image));
+export default React.memo(Image);
