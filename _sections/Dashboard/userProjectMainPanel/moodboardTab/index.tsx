@@ -19,17 +19,17 @@ interface MoodboardTabProps {
 const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, projectId, setLoading }) => {
 	const [moodboard, setMoodboard] = useState<MoodboardAsset[]>(null);
 	const [addMissingAssetModalVisible, setAddMissingAssetModalVisible] = useState<boolean>(false);
-	const goToStore = () => {
+	const goToStore = (): void => {
 		Router.push(
 			{ pathname: "/assetstore", query: { designId, projectId, entryLocation: Router.pathname } },
 			`/assetstore/pid/${projectId}/did/${designId}`
 		);
 	};
-	const toggleAddMissingAssetModal = () => {
+	const toggleAddMissingAssetModal = (): void => {
 		setAddMissingAssetModalVisible(!addMissingAssetModalVisible);
 	};
 
-	const fetchMoodBoard = async () => {
+	const fetchMoodBoard = async (): Promise<void> => {
 		setLoading(true);
 		const endPoint = getMoodboardApi(designId);
 		const responseData = await fetcher({ endPoint, method: "GET" });
@@ -41,7 +41,7 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, pro
 
 	useEffect(() => {
 		fetchMoodBoard();
-		return () => {
+		return (): void => {
 			setMoodboard(null);
 		};
 	}, [designId]);

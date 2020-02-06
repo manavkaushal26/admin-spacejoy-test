@@ -44,7 +44,7 @@ export interface NewAssetUploadState {
 export const initialState = {
 	name: "",
 	description: "",
-	status: Status.pending,
+	status: Status.active,
 	shoppable: true,
 	retailer: null,
 	retailLink: "",
@@ -97,6 +97,7 @@ export enum NEW_ASSET_ACTION_TYPES {
 	ASSET_DEPTH = "ASSET_DEPTH",
 	ASSET_MOUNT_TYPE = "ASSET_MOUNT_TYPE",
 	ASSET_CLAMP_VALUE = "ASSET_CLAMP_VALUE",
+	ASSET_STATUS = "ASSET_STATUS",
 	SET_ASSET = "SET_ASSET",
 	UPDATE_DIMENSION = "UPDATE_DIMENSION",
 	CLEAR = "CLEAR",
@@ -197,6 +198,11 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 					...state.dimension,
 					depth: action.value < 0 ? 0 : action.value,
 				},
+			};
+		case NEW_ASSET_ACTION_TYPES.ASSET_STATUS:
+			return {
+				...state,
+				status: action.value,
 			};
 		case NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE:
 			return {

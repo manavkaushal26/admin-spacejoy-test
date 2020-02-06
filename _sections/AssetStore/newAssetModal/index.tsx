@@ -4,6 +4,7 @@ import ImageDisplayModal from "@components/ImageDisplayModal";
 import { Currency, MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
+import { AssetStatus } from "@customTypes/userType";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { convertToFeet, convertToInches, debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
@@ -698,6 +699,29 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											{themes.map(theme => (
 												<Option value={theme._id} key={theme._id}>
 													{theme.name}
+												</Option>
+											))}
+										</Select>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={12}>
+								<Row gutter={[4, 4]}>
+									<Col span={24}>
+										<Text>Status</Text>
+									</Col>
+									<Col span={24}>
+										<Select
+											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_STATUS)}
+											value={state.status}
+											showSearch
+											optionFilterProp="children"
+											placeholder="Select a Status"
+											style={{ width: "100%" }}
+										>
+											{Object.keys(AssetStatus).map(key => (
+												<Option value={AssetStatus[key]} key={key}>
+													{key}
 												</Option>
 											))}
 										</Select>

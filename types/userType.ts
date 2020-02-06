@@ -28,6 +28,13 @@ export enum Status {
 	completed = "completed",
 }
 
+export enum AssetStatus {
+	Active = "active",
+	Pending = "pending",
+	Suspended = "suspended",
+	Inactive = "inactive",
+}
+
 interface User {
 	id: string;
 	name: string;
