@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"dependencies": {
 		"@zeit/next-less": "^1.0.1",
-		"antd": "^3.25.1",
+		"antd": "^3.26.8",
 		"body-parser": "^1.19.0",
 		"clevertap-react": "^1.0.0",
 		"compression": "^1.7.4",
@@ -92,13 +92,11 @@
 		"dev": "node server.js",
 		"build": "next build",
 		"start": "NODE_ENV=production node server.js",
+		"start:staging": "node server.js",
 		"analyze": "cross-env ANALYZE=1 next build",
 		"precommit": "lint-staged",
 		"format": "prettier --write \"**/*.+(js|md|ts|css|sass|less|graphql|yml|yaml|scss|json|vue)\"",
 		"test": "bundlesize",
-		"docker-image": "docker build -t saurabhdsachan/spacejoyweb-react -f Dockerfile .",
-		"docker-run-old": "docker run -p 3000:3000  saurabhdsachan/spacejoyweb-react",
-		"docker-run": "docker run -d  --rm --name web  -p  3000:3000 -e VIRTUAL_HOST=web.spacejoy.com -e 'LETSENCRYPT_EMAIL=hello@ndllabs.com' -e 'LETSENCRYPT_HOST=web.spacejoy.com' saurabhdsachan/spacejoyweb-react",
 		"eslint-check": "eslint --print-config pages/_app.tsx | eslint-config-prettier-check"
 	},
 	"husky": {
