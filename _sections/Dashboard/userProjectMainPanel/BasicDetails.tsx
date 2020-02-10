@@ -1,4 +1,4 @@
-import { DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedProject, PaymentStatus } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import { Col, Row, Typography } from "antd";
@@ -17,7 +17,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 
 	const items = getValueSafely(() => projectData.order.items, []);
 
-	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, []);
+	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, PaymentStatus.pending);
 
 	const assignedTeam = useMemo(
 		() =>

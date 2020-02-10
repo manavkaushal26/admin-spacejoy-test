@@ -155,7 +155,7 @@ interface Customer {
 	id: string;
 }
 
-enum PaymentStatus {
+export enum PaymentStatus {
 	pending = "pending",
 	paid = "paid",
 	refunded = "refunded",
