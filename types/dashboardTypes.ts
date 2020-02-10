@@ -131,9 +131,9 @@ export interface DesignerImageComments {
 export interface DesignImagesInterface {
 	cdn: string;
 	_id: string;
-	comments: DesignerImageComments[];
+	comments?: DesignerImageComments[];
 	imgType: DesignImgTypes;
-	path: string;
+	path?: string;
 }
 
 interface Phone {

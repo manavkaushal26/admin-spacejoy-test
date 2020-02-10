@@ -1,4 +1,4 @@
-import User, { Status, AssetStatus } from "@customTypes/userType";
+import User, { AssetStatus } from "@customTypes/userType";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";

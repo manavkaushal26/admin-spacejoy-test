@@ -1,13 +1,14 @@
 import { Card, Col, Icon, Row, Typography, Tag } from "antd";
 import React from "react";
-import { DesignState } from "@customTypes/dashboardTypes";
+import { DesignState, DesignImagesInterface } from "@customTypes/dashboardTypes";
 import styled, { css } from "styled-components";
+import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import Image from "./Image";
 
 interface DesignCardProps {
 	uniqueId: string;
 	onSelectCard: (uniqueId: string) => void;
-	coverImage: string;
+	coverImage: DesignImagesInterface[];
 	onDelete?: (uniqueId: string) => void;
 	designName: string;
 	phase: string;
@@ -54,7 +55,6 @@ const DesignCard: React.FC<DesignCardProps> = ({
 				state={state}
 				style={{ width: "100%" }}
 				hoverable
-				onClick={(): void => onSelectCard(uniqueId)}
 				actions={
 					onDelete
 						? [
@@ -72,12 +72,18 @@ const DesignCard: React.FC<DesignCardProps> = ({
 				cover={
 					<Row>
 						<Col span={24}>
-							<Image width="100%" src={coverImage} />
+							<BiggerButtonCarousel autoplay>
+								{coverImage.map(image => (
+									<div key={image._id}>
+										<Image nolazy width="100%" src={`q_80,w_300/${image.cdn}`} />
+									</div>
+								))}
+							</BiggerButtonCarousel>
 						</Col>
 					</Row>
 				}
 			>
-				<Row>
+				<Row onClick={(): void => onSelectCard(uniqueId)}>
 					<Col span={24}>
 						<Text strong style={{ width: "100%" }} ellipsis>
 							{designName}

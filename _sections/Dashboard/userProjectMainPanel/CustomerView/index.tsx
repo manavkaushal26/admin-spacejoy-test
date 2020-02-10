@@ -2,12 +2,13 @@ import Card from "@components/Card";
 import Image from "@components/Image";
 import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
 import ProductCard from "@sections/Cards/ProductCard";
+import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
-import { Carousel, Col, Divider, Row, Empty } from "antd";
-import React from "react";
-import styled from "styled-components";
-import ReactPannellum from "react-pannellum";
 import { cloudinary } from "@utils/config";
+import { Col, Divider, Empty, Row } from "antd";
+import React from "react";
+import ReactPannellum from "react-pannellum";
+import styled from "styled-components";
 
 interface CustomerView {
 	designData: DetailedDesign;
@@ -33,18 +34,6 @@ const PannellumOptions = {
 		},
 	},
 };
-
-const BiggerButtonCarousel = styled(Carousel)`
-	> .slick-dots li button {
-		background: #ff7875;
-		height: 8px !important;
-		width: 20px;
-	}
-	> .slick-dots li.slick-active button {
-		background: #ff7875;
-		width: 28px;
-	}
-`;
 
 const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 	const pannelumImage = designData.designImages.find(image => image.imgType === DesignImgTypes.Panorama);

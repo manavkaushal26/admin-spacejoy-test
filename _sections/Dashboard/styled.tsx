@@ -1,4 +1,4 @@
-import { Divider, Tag, Typography, Col, Icon, Button, Input } from "antd";
+import { Divider, Tag, Typography, Col, Icon, Button, Input, Carousel } from "antd";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { Status } from "@customTypes/userType";
 import { PhaseInternalNames } from "@customTypes/dashboardTypes";
@@ -43,6 +43,21 @@ export const getTagColor = (text: string): string => {
 			return "#595959";
 	}
 };
+
+export const BiggerButtonCarousel = styled(Carousel)`
+	> .slick-dots li button {
+		background: #ff7875;
+		height: 8px !important;
+		width: 20px;
+	}
+	> .slick-dots {
+		bottom: 15px;
+	}
+	> .slick-dots li.slick-active button {
+		background: #ff7875;
+		width: 28px;
+	}
+`;
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;

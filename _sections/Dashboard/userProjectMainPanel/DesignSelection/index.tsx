@@ -197,12 +197,32 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 								key={design._id}
 								uniqueId={design.design._id}
 								onSelectCard={onSelectDesign}
-								coverImage={`q_60/${getValueSafely(
-									() => design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0].cdn,
+								coverImage={getValueSafely(
+									() => {
+										const renderImages = design.design.designImages.filter(
+											image => image.imgType === DesignImgTypes.Render
+										);
+										if (renderImages.length) {
+											return renderImages;
+										}
+										throw Error;
+									},
 									process.env.NODE_ENV === "production"
-										? "v1581057410/admin/designImagePlaceholder.jpg"
-										: "v1581057545/admin/designImagePlaceholder.jpg"
-								)}`}
+										? [
+												{
+													cdn: "/v1581057410/admin/designImagePlaceholder.jpg",
+													_id: "1",
+													imgType: DesignImgTypes.Render,
+												},
+										  ]
+										: [
+												{
+													cdn: "/v1581057545/admin/designImagePlaceholder.jpg",
+													_id: "1",
+													imgType: DesignImgTypes.Render,
+												},
+										  ]
+								)}
 								onDelete={confirmDelete}
 								designName={design.design.name}
 								state={design.state}

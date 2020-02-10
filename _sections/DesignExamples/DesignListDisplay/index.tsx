@@ -50,12 +50,30 @@ const DesignListDisplay: React.FC<DesignListDisplay> = ({ state, dispatch }) => 
 								key={design._id}
 								uniqueId={design._id}
 								onSelectCard={onCardSelect}
-								coverImage={`q_60/${getValueSafely(
-									() => design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0].cdn,
+								coverImage={getValueSafely(
+									() => {
+										const renderImages = design.designImages.filter(image => image.imgType === DesignImgTypes.Render);
+										if (renderImages.length) {
+											return renderImages;
+										}
+										throw Error;
+									},
 									process.env.NODE_ENV === "production"
-										? "v1581057410/admin/designImagePlaceholder.jpg"
-										: "v1581057545/admin/designImagePlaceholder.jpg"
-								)}`}
+										? [
+												{
+													cdn: "/v1581057410/admin/designImagePlaceholder.jpg",
+													_id: "1",
+													imgType: DesignImgTypes.Render,
+												},
+										  ]
+										: [
+												{
+													cdn: "/v1581057545/admin/designImagePlaceholder.jpg",
+													_id: "1",
+													imgType: DesignImgTypes.Render,
+												},
+										  ]
+								)}
 								designName={design.name}
 								phase={getHumanizedActivePhase(design.phases)}
 							/>
