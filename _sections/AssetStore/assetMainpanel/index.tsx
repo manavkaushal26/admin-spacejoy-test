@@ -70,7 +70,7 @@ const MainAssetPanel = styled.div`
 const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetApi();
-	const queryParams = `?skip=${(pageCount - 1) * 35}&limit=35`;
+	const queryParams = `?sort=-1&skip=${(pageCount - 1) * 35}&limit=35`;
 	const responseData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
@@ -85,6 +85,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 				"dimensions.depth": { search: "range", value: state.depthRange },
 				"dimensions.width": { search: "range", value: state.widthRange },
 				"dimensions.height": { search: "range", value: state.heightRange },
+				status: { search: "array", value: state.status },
 			},
 		},
 	});
@@ -148,6 +149,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.widthRange,
 		state.depthRange,
 		state.heightRange,
+		state.status.length,
 	]);
 
 	const scrollParentRef = useRef();
@@ -163,6 +165,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.priceRange,
 		state.widthRange,
 		state.depthRange,
+		state.status.length,
 		state.heightRange,
 		pageCount,
 	]);

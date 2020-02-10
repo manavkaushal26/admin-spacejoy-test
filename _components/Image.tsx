@@ -5,12 +5,13 @@ import React, { useEffect, useCallback, useState } from "react";
 interface ImageProps {
 	src: string;
 	height?: string;
+	preLoadHeight?: string;
 	width?: string;
 	alt?: string;
 	onClick?: (e: any) => void;
 }
 
-function Image({ src, height = "auto", width = "auto", alt, onClick }: ImageProps): JSX.Element {
+function Image({ src, height = "auto", width = "auto", alt, onClick, preLoadHeight }: ImageProps): JSX.Element {
 	const source =
 		src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")
 			? src
@@ -56,9 +57,7 @@ function Image({ src, height = "auto", width = "auto", alt, onClick }: ImageProp
 	const onLoad = () => {
 		if (selectedNode) {
 			if (!selectedNode.complete) {
-				if (!height) {
-					selectedNode.style.height = "200px";
-				}
+				selectedNode.style.height = preLoadHeight;
 			} else {
 				selectedNode.style.height = height;
 			}
@@ -78,7 +77,7 @@ function Image({ src, height = "auto", width = "auto", alt, onClick }: ImageProp
 					}
 				}}
 				width={width}
-				height={height === "auto" ? "200px" : height}
+				height={height === "auto" ? preLoadHeight : height}
 				src={lowQualitySource}
 				data-src={source}
 			/>

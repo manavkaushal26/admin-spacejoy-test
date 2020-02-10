@@ -301,7 +301,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<SilentDivider />
 						</Col>
-						{projectId && (
+						{designId && (
 							<Col span={24}>
 								<Row gutter={[0, 10]}>
 									{assetInMoodboard && (

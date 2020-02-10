@@ -29,9 +29,15 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 		setAuthVerification(getLocalStorageValue<User>("authVerification"));
 	}, []);
 
-	const saveNotes = async (notes = []) => {
+	const saveNotes: (notes: DesignerNotes[]) => Promise<void> = async (notes = []) => {
 		const endpoint = updateNotesApi(designData._id);
-		const body = notes;
+		const body = notes.map(note => {
+			return {
+				_id: note._id,
+				author: note.author.id,
+				text: note.text,
+			};
+		});
 		const response = await fetcher({ endPoint: endpoint, body: { data: { designerNotes: body } }, method: "PUT" });
 		if (response.statusCode <= 300) {
 			setDesignerNotes(response.data.designerNotes);
@@ -40,7 +46,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 
 	const onNewNote = e => {
 		const {
-			target: { value }
+			target: { value },
 		} = e;
 		setNewNote(value);
 	};
@@ -49,14 +55,19 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 		const body = [
 			...designerNotes.map(note => {
 				return note;
-			})
+			}),
 		];
 		const data: DesignerNotes[] = [
 			{
-				author: authVerification.id,
-				text: newNote
+				author: {
+					profile: {
+						name: authVerification.name,
+					},
+					id: authVerification.id,
+				},
+				text: newNote,
 			},
-			...body
+			...body,
 		];
 		try {
 			await saveNotes(data);
@@ -74,7 +85,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 				copyNote.text = value;
 			}
 			return {
-				...copyNote
+				...copyNote,
 			};
 		});
 		try {
@@ -142,7 +153,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 						<Row type="flex" align="stretch" justify="start">
 							<CustomDiv width="100%" inline type="flex" textOverflow="ellipsis" py="16px" align="center">
 								<CustomDiv textOverflow="ellipsis" inline type="flex" px="12px">
-									<Avatar>{getValueSafely(() => authVerification.name[0], "")}</Avatar>{" "}
+									<Avatar>{getValueSafely(() => note.author.profile.name, "")}</Avatar>{" "}
 								</CustomDiv>
 								<Text strong ellipsis>
 									{getValueSafely(() => authVerification.name, "")}
@@ -159,7 +170,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 									editable={{
 										onChange: (value: string) => {
 											editNote(note._id, value);
-										}
+										},
 									}}
 								>
 									{note.text}

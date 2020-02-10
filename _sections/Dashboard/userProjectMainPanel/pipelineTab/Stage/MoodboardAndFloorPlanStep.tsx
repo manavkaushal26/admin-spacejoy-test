@@ -1,4 +1,4 @@
-import { deleteUploadedImage } from "@api/designApi";
+import { deleteUploadedImageApi } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
 import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
 import { CustomDiv, Form, SilentDivider } from "@sections/Dashboard/styled";
@@ -27,7 +27,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 	});
 
 	const deleteImage = async (file: UploadFile): Promise<void> => {
-		const endPoint = deleteUploadedImage(designData._id, file.uid);
+		const endPoint = deleteUploadedImageApi(designData._id, file.uid);
 
 		const response: {
 			statusCode: number;

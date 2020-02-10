@@ -13,14 +13,12 @@ interface BasicDetailsProps {
 }
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
-	const {
-		_id,
-		name,
-		createdAt,
-		order: { paymentStatus, items },
-		team,
-		customer,
-	} = projectData;
+	const { _id, name, createdAt, team, customer } = projectData;
+
+	const items = getValueSafely(() => projectData.order.items, []);
+
+	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, []);
+
 	const assignedTeam = useMemo(
 		() =>
 			team

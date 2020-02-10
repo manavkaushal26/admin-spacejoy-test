@@ -37,7 +37,17 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 		<AssetCard onClick={(): void => onCardClick(asset)} hoverable={hoverable}>
 			<Row gutter={[10, 0]}>
 				<Col span={24}>
-					<Image width={imageWidth} height={imageHeight} src={asset.cdn} />
+					<Image
+						preLoadHeight="200px"
+						width={imageWidth}
+						height={imageHeight}
+						src={getValueSafely(
+							() => asset.cdn,
+							process.env.NODE_ENV === "production"
+								? "v1581080070/admin/productImagePlaceholder.jpg"
+								: "v1581080111/admin/productImagePlaceholder.jpg"
+						)}
+					/>
 					<SilentDivider />
 				</Col>
 				<Col span={24}>

@@ -96,9 +96,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		setCopyDesignModalVisible(!copyDesignModalVisible);
 	};
 
-	const {
-		order: { items },
-	} = projectData;
+	const items = getValueSafely(() => projectData.order.items, []);
 
 	const updateStatus = async (phase?: PhaseInternalNames): Promise<void> => {
 		const endpoint = updateProjectPhase(projectData._id, phase);
@@ -199,14 +197,15 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 								key={design._id}
 								uniqueId={design.design._id}
 								onSelectCard={onSelectDesign}
-								coverImage={`q_80/${getValueSafely(
+								coverImage={`q_60/${getValueSafely(
 									() => design.design.designImages.filter(image => image.imgType === DesignImgTypes.Render)[0].cdn,
 									process.env.NODE_ENV === "production"
-										? "v1574869657/shared/Illustration_mffq52.svg"
-										: "v1578482972/shared/Illustration_mffq52.svg"
+										? "v1581057410/admin/designImagePlaceholder.jpg"
+										: "v1581057545/admin/designImagePlaceholder.jpg"
 								)}`}
 								onDelete={confirmDelete}
 								designName={design.design.name}
+								state={design.state}
 								phase={getHumanizedActivePhase(design.design.phases)}
 							/>
 						);

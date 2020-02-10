@@ -4,6 +4,7 @@ import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/Asse
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { Input, Tree, Typography } from "antd";
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import { AssetStatus } from "@customTypes/userType";
 import { FilterCard, ModifiedDivider } from "../styled";
 import SliderFilter from "./filters/SliderFilter";
 
@@ -214,10 +215,19 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 						</Title>
 						<ModifiedDivider />
 						<Filter
+							value={state.retailerFilter}
 							name={{ categoryName: "Retailer", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
 							options={metaData.retailers.list.map(elem => {
 								return { label: elem.name, value: elem._id };
 							})}
+							dispatch={dispatch}
+						/>
+						<Filter
+							name={{ categoryName: "Status", dispatchName: ASSET_ACTION_TYPES.STATUS }}
+							options={Object.keys(AssetStatus).map(key => {
+								return { label: key, value: AssetStatus[key] };
+							})}
+							value={state.status}
 							dispatch={dispatch}
 						/>
 						<Title type="secondary" level={4}>

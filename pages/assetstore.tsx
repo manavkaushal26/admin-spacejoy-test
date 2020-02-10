@@ -158,10 +158,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 
 	const goToButtonClick = (): void => {
 		if (assetEntryId) {
-			Router.push(
-				{ pathname: "/assetstore", query: { designId, projectId } },
-				`/assetstore/pid/${projectId}/did/${designId}`
-			);
+			Router.back();
 			return;
 		}
 		if (!!projectId && !!designId) {
@@ -171,7 +168,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 			);
 			return;
 		}
-		Router.push({ pathname: "/dashboard" }, "/dashboard");
+		Router.back();
 	};
 
 	const toggleCart = (): void => {
@@ -240,10 +237,10 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 						<MaxHeightDiv style={{ flexDirection: "column" }}>
 							<CustomDiv py="0.5rem" width="100%">
 								<Button icon="rollback" onClick={goToButtonClick} block type="primary">
-									{assetEntryId ? "Go to Primary Asset Selection" : " Go to Dashboard"}
+									{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
 								</Button>
 							</CustomDiv>
-							{projectId && (
+							{designId && (
 								<CustomDiv py="0.5rem" width="100%">
 									<Button onClick={toggleCart} block type="default">
 										Open Cart

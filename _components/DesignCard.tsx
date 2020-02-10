@@ -1,5 +1,7 @@
 import { Card, Col, Icon, Row, Typography, Tag } from "antd";
 import React from "react";
+import { DesignState } from "@customTypes/dashboardTypes";
+import styled, { css } from "styled-components";
 import Image from "./Image";
 
 interface DesignCardProps {
@@ -9,14 +11,48 @@ interface DesignCardProps {
 	onDelete?: (uniqueId: string) => void;
 	designName: string;
 	phase: string;
+	state?: DesignState;
 }
+
+const topRightTick = css`
+	::after {
+		position: absolute;
+		top: 0;
+		right: 0px;
+		height: 40px;
+		width: 40px;
+		border-bottom-left-radius: 40px;
+		background: #52c41a;
+		content: "✓";
+		padding: 0 0 8px 8px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: white;
+		font-size: 1.25em;
+	}
+`;
+
+const StateAwareCards = styled(Card)<{ state: DesignState }>`
+	${({ state }) => (state === DesignState.Finalized ? topRightTick : null)}
+`;
 
 const { Text } = Typography;
 
-const DesignCard: React.FC<DesignCardProps> = ({ uniqueId, onSelectCard, onDelete, coverImage, designName, phase }) => {
+const DesignCard: React.FC<DesignCardProps> = ({
+	uniqueId,
+	onSelectCard,
+	onDelete,
+	coverImage,
+	designName,
+	phase,
+	state,
+}) => {
 	return (
 		<Col style={{ display: "flex" }} xs={24} sm={12} md={8} lg={8} xl={6} key={uniqueId}>
-			<Card
+			<StateAwareCards
+				state={state}
+				style={{ width: "100%" }}
 				hoverable
 				onClick={(): void => onSelectCard(uniqueId)}
 				actions={
@@ -41,15 +77,17 @@ const DesignCard: React.FC<DesignCardProps> = ({ uniqueId, onSelectCard, onDelet
 					</Row>
 				}
 			>
-				<Row type="flex" justify="space-between">
-					<Col>
-						<Text>{designName}</Text>
+				<Row>
+					<Col span={24}>
+						<Text strong style={{ width: "100%" }} ellipsis>
+							{designName}
+						</Text>
 					</Col>
-					<Col>
-						<Tag>Status: {phase}</Tag>
+					<Col span={24}>
+						<Tag>Phase: {phase}</Tag>
 					</Col>
 				</Row>
-			</Card>
+			</StateAwareCards>
 		</Col>
 	);
 };

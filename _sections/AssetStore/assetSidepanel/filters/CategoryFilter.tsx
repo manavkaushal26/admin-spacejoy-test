@@ -13,6 +13,7 @@ interface CategoryFilterProps {
 	};
 	options: { label: string; value: string }[];
 	dispatch: React.Dispatch<AssetAction>;
+	value: string[];
 }
 
 const BlockCheckboxGroup = styled(CheckboxGroup)`
@@ -26,12 +27,13 @@ const BlockCheckboxGroup = styled(CheckboxGroup)`
 	}
 `;
 
-const CategoryFilter: React.FC<CategoryFilterProps> = ({ name, options, dispatch }): JSX.Element => {
+const CategoryFilter: React.FC<CategoryFilterProps> = ({ name, options, dispatch, value }): JSX.Element => {
 	return (
 		<>
 			<Text strong>{name.categoryName}</Text>
 			<CustomDiv my="12px" maxHeight="150px" overY="scroll">
 				<BlockCheckboxGroup
+					value={value}
 					onChange={selectedValues => {
 						dispatch({ type: name.dispatchName, value: selectedValues });
 					}}

@@ -10,6 +10,11 @@ function pageRoute(app, router) {
 
 	// **************************************************** Design Examples ****************************************************
 
+	router.get("/designexamples/:designId", (req, res) => {
+		const { params } = req;
+		app.render(req, res, "/designexamples/designExampleView", { designId: params.designId });
+	});
+
 	router.get("/designexamples", (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/designexamples", params);

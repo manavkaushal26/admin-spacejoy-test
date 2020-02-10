@@ -9,6 +9,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import ActiveLink from "@sections/Header/ActiveLink";
+import Link from "next/link";
 
 const { Text, Title } = Typography;
 
@@ -107,39 +109,36 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 									return (
 										!(location.notActive && process.env.NODE_ENV === "production") && (
 											<Col sm={12} md={8} key={location.url}>
-												<Card
-													onClick={(): void =>
-														redirectToLocation({ pathname: location.url, query: {}, url: location.url })
-													}
-													hoverable
-												>
-													<Row gutter={[0, 12]}>
-														<Col>
-															<Row type="flex" justify="center">
-																<IconBackground color={location.backgroundColor}>
-																	<Icon
-																		style={{ fontSize: "3rem" }}
-																		twoToneColor={location.color}
-																		theme="twoTone"
-																		type={location.icon}
-																	/>
-																</IconBackground>
-															</Row>
-														</Col>
-														<Col>
-															<Row>
-																<Col>
-																	<Title style={{ textAlign: "center" }} level={4}>
-																		{location.title}
-																	</Title>
-																</Col>
-																<Col style={{ textAlign: "center" }}>
-																	<Text type="secondary">{location.description}</Text>
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-												</Card>
+												<Link href={location.url}>
+													<Card hoverable>
+														<Row gutter={[0, 12]}>
+															<Col>
+																<Row type="flex" justify="center">
+																	<IconBackground color={location.backgroundColor}>
+																		<Icon
+																			style={{ fontSize: "3rem" }}
+																			twoToneColor={location.color}
+																			theme="twoTone"
+																			type={location.icon}
+																		/>
+																	</IconBackground>
+																</Row>
+															</Col>
+															<Col>
+																<Row>
+																	<Col>
+																		<Title style={{ textAlign: "center" }} level={4}>
+																			{location.title}
+																		</Title>
+																	</Col>
+																	<Col style={{ textAlign: "center" }}>
+																		<Text type="secondary">{location.description}</Text>
+																	</Col>
+																</Row>
+															</Col>
+														</Row>
+													</Card>
+												</Link>
 											</Col>
 										)
 									);

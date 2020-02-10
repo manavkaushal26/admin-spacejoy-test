@@ -84,8 +84,15 @@ export interface UserProjectType {
 	};
 }
 
+export enum DesignState {
+	New = "new",
+	Finalized = "finalized",
+	Revised = "revised",
+	Original = "original",
+}
+
 export interface DesignInterface {
-	state: string;
+	state: DesignState;
 	_id?: string;
 	design: {
 		lock: false;
@@ -261,7 +268,12 @@ export interface Assets {
 
 export interface DesignerNotes {
 	_id?: string;
-	author: string;
+	author: {
+		profile: {
+			name: string;
+		};
+		id: string;
+	};
 	text: string;
 }
 
@@ -275,11 +287,14 @@ export interface RoomType {
 	};
 	status: Status;
 	_id: string;
+	coverImage: string;
+	coverImageCdn: string;
 	name: string;
+	scope: "template" | "customer";
+	description: string;
 	roomType: RoomTypes;
 	createdAt: string;
 	updatedAt: string;
-	id: string;
 }
 
 export interface PhaseDetails {
@@ -320,7 +335,9 @@ export interface DetailedDesign {
 	name: string;
 	description: string;
 	assets: Assets[];
+	status: Status;
 	room: RoomType;
+	team?: DetailedProjectTeamMember[];
 	phases: PhaseType;
 	designImages: DesignImagesInterface[];
 	createdAt: string;

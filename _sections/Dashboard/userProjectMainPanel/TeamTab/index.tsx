@@ -1,5 +1,5 @@
 import { teamAssignApi, userApi } from "@api/userApi";
-import { DetailedProject, TeamMember } from "@customTypes/dashboardTypes";
+import { DetailedProject, TeamMember, DetailedDesign } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
@@ -14,9 +14,11 @@ const { Option } = Select;
 
 interface DesignerTabInterface {
 	projectId: string;
+	designData: DetailedDesign;
 	assignedTeam: TeamMember[];
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 	projectData: DetailedProject;
 }
 
@@ -72,6 +74,8 @@ const debouncedFetchDesigners = debounce(fetchDesigners, 500);
 const TeamTab: React.FC<DesignerTabInterface> = ({
 	projectId,
 	assignedTeam,
+	designData,
+	setDesignData,
 	setLoading,
 	setProjectData,
 	projectData,
@@ -92,9 +96,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 	}, [state.assignedTeam]);
 
 	useEffect(() => {
-		if (projectId) {
-			debouncedFetchDesigners(setLoading, state, dispatch);
-		}
+		debouncedFetchDesigners(setLoading, state, dispatch);
 	}, [state.role, state.searchText]);
 
 	const onDesignerSelect = (id: string, checked: boolean): void => {
@@ -110,8 +112,12 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 
 	const assignDesigners = async () => {
 		setLoading(true);
-		const addMemberEndpoint = teamAssignApi(projectId, "add");
-		const removeMemberEndpoint = teamAssignApi(projectId, "remove");
+		const addMemberEndpoint = projectId
+			? teamAssignApi(projectId, "project", "add")
+			: teamAssignApi(designData._id, "design", "add");
+		const removeMemberEndpoint = projectId
+			? teamAssignApi(projectId, "project", "remove")
+			: teamAssignApi(designData._id, "design", "remove");
 
 		const addedMembers = state.assignedTeam
 			.filter(teamMember => !assignedTeam.map(member => member._id).includes(teamMember._id))
@@ -140,8 +146,11 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 			};
 			response = await fetcher({ endPoint: removeMemberEndpoint, method: "DELETE", body });
 		}
-
-		setProjectData({ ...projectData, team: response.data.team });
+		if (projectData) {
+			setProjectData({ ...projectData, team: response.data.team });
+		} else {
+			setDesignData({ ...designData, team: response.data.team });
+		}
 		setLoading(false);
 	};
 

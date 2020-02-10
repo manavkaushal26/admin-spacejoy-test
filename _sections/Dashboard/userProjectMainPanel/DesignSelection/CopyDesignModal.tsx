@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Select, Input, Button, Row, Col, Typography, message } from "antd";
-import { DesignInterface, DetailedProject, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { DesignInterface, DetailedProject, PhaseInternalNames, DesignState } from "@customTypes/dashboardTypes";
 import { designCopyApi, createDesignApi } from "@api/designApi";
 import fetcher from "@utils/fetcher";
 
@@ -78,7 +78,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 		if (response.statusCode <= 300) {
 			const designData = response.data;
 			const newDesign: DesignInterface = {
-				state: "new",
+				state: DesignState.New,
 				design: designData,
 			};
 			setProjectData({

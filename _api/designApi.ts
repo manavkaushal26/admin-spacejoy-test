@@ -29,7 +29,7 @@ export const getAssetApi: () => string = () => {
 	return "admin/assets/search";
 };
 
-export const uploadAssetModel: (assetId: string, filetype?: Model3DFiles | "source") => string = (
+export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "source") => string = (
 	assetId,
 	filetype = Model3DFiles.Glb
 ) => {
@@ -39,14 +39,14 @@ export const uploadAssetModel: (assetId: string, filetype?: Model3DFiles | "sour
 	return `${page.apiBaseUrl}/admin/asset/${assetId}/model?filetype=${filetype}`;
 };
 
-export const uploadAssetImage: (assetId: string) => string = assetId => {
+export const uploadAssetImageApi: (assetId: string) => string = assetId => {
 	if (process.env.NODE_ENV !== "production") {
 		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/image`;
 	}
 	return `${page.apiBaseUrl}/admin/asset/${assetId}/image`;
 };
 
-export const deleteUploadedImage = (designId: string, imageId: string) => {
+export const deleteUploadedImageApi = (designId: string, imageId: string) => {
 	return `/admin/design/${designId}/image/${imageId}`;
 };
 
@@ -64,8 +64,16 @@ export const getAddRemoveAssetApi: (designId: string, assetEntryId: string) => s
 
 // ************************************************ Design Examples ************************************************
 
-export const getDesignList = () => {
+export const getDesignListApi = (): string => {
 	return "/admin/designs";
+};
+
+export const getRoomsListApi = (roomscope, roomType): string => {
+	return `/rooms?keyword=scope:${roomscope},roomType:${roomType}`;
+};
+
+export const publishDesignApi = (designId): string => {
+	return `/design/${designId}/publish?status=active`;
 };
 
 // *****************************************************************************************************************

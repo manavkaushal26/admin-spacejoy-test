@@ -43,8 +43,9 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 			name: { internalName: phase },
 			startTime: phaseStartedAt,
 		},
-		order: { items },
 	} = projectData;
+
+	const items = getValueSafely(() => projectData.order.items, []);
 
 	const startTime = startedAt || createdAt;
 
