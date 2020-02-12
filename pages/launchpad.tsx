@@ -1,16 +1,15 @@
 import User from "@customTypes/userType";
 import PageLayout from "@sections/Layout";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Card, Col, Icon, Row, Typography } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import ActiveLink from "@sections/Header/ActiveLink";
-import Link from "next/link";
 
 const { Text, Title } = Typography;
 
@@ -53,7 +52,7 @@ const launchpadLocations = [
 		icon: "book",
 		color: "#1d39c4",
 		backgroundColor: "#f0f5ff",
-		notActive: true,
+		notActive: false,
 	},
 ];
 

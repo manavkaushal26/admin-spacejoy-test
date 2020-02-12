@@ -56,11 +56,11 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	pageCount: 0,
 	phase: [...phaseDefaultValues],
 	name: "",
-	sortBy: SortFields["End Date"],
+	sortBy: SortFields["Created At"],
 	hasMore: true,
 	currentTab: "active",
 	searchResults: [],
-	sortOrder: 1,
+	sortOrder: -1,
 };
 
 export const UserProjectSidePanelActionCreator = (
