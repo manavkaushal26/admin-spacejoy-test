@@ -156,7 +156,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 									<Avatar>{getValueSafely(() => note.author.profile.name, "")}</Avatar>{" "}
 								</CustomDiv>
 								<Text strong ellipsis>
-									{getValueSafely(() => authVerification.name, "")}
+									{getValueSafely(() => note.author.profile.name, "")}
 								</Text>
 								<CustomDiv px="8px">
 									<FitIcon onClick={() => deleteNote(note._id)} theme="twoTone" type="delete" />

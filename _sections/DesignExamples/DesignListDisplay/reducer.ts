@@ -1,4 +1,4 @@
-import { DetailedDesign, RoomTypes } from "@customTypes/dashboardTypes";
+import { DetailedDesign, RoomTypes, DesignPhases } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 
 export interface DesignListDisplayState {
@@ -6,7 +6,8 @@ export interface DesignListDisplayState {
 	count: number;
 	pageNo: number;
 	searchText: string;
-	roomTypeFilter: RoomTypes;
+	phaseFilter: DesignPhases[];
+	roomTypeFilter: RoomTypes[];
 	statusFilter: Status;
 }
 
@@ -14,9 +15,11 @@ export enum DesignListAction {
 	UPDATE_DESIGN_STATE = "UPDATE_DESIGN_STATE",
 	UPDATE_COUNT = "UPDATE_COUNT",
 	UPDATE_PAGE_NUMBER = "UPDATE_PAGE_NUMBER",
+	PHASE_FILTER = "PHASE_FILTER",
 	SEARCH_TEXT = "SEARCH_TEXT",
 	ROOM_TYPE_FILTER = "ROOM_TYPE_FILTER",
 	STATUS_FILTER = "STATUS_FILTER",
+	CLEAR = "CLEAR",
 }
 
 export interface DesignListActionType {
@@ -45,6 +48,11 @@ export const DesignListDisplayReducer = (
 				...state,
 				pageNo: action.value.pageNo,
 			};
+		case DesignListAction.PHASE_FILTER:
+			return {
+				...state,
+				phaseFilter: action.value.phaseFilter,
+			};
 		case DesignListAction.SEARCH_TEXT:
 			return {
 				...state,
@@ -60,6 +68,11 @@ export const DesignListDisplayReducer = (
 				...state,
 				roomTypeFilter: action.value.roomTypeFilter,
 			};
+		case DesignListAction.CLEAR:
+			return {
+				...state,
+				pageNo: 1,
+			};
 		default:
 			return state;
 	}
@@ -69,7 +82,14 @@ export const DesignListDisplayInitialState: DesignListDisplayState = {
 	designs: [],
 	count: 0,
 	pageNo: 1,
+	phaseFilter: [
+		DesignPhases.concept,
+		DesignPhases.modelling,
+		DesignPhases.design3D,
+		DesignPhases.render,
+		DesignPhases.revision,
+	],
 	searchText: "",
-	roomTypeFilter: null,
+	roomTypeFilter: [],
 	statusFilter: Status.active,
 };

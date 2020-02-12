@@ -11,8 +11,8 @@ function pageRoute(app, router) {
 	// **************************************************** Design Examples ****************************************************
 
 	router.get("/designexamples/:designId", (req, res) => {
-		const { params } = req;
-		app.render(req, res, "/designexamples/designExampleView", { designId: params.designId });
+		const { params, query } = req;
+		app.render(req, res, "/designexamples/designExampleView", { designId: params.designId, ...query });
 	});
 
 	router.get("/designexamples", (req, res) => {
@@ -24,8 +24,12 @@ function pageRoute(app, router) {
 
 	// ******************************************************* DASHBOARD *******************************************************
 	router.get("/dashboard/pid/:projectId/did/:designId", (req, res) => {
-		const { params } = req;
-		app.render(req, res, "/dashboard", { pid: params.projectId, designId: params.designId });
+		const { params, query } = req;
+		app.render(req, res, "/dashboard", {
+			pid: params.projectId,
+			designId: params.designId,
+			...query,
+		});
 	});
 	router.get("/dashboard/pid/:projectId", (req, res) => {
 		const { params } = req;

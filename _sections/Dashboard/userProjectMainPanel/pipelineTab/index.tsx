@@ -2,15 +2,15 @@ import { updateDesignPhase } from "@api/pipelineApi";
 import {
 	DesignPhases,
 	DetailedDesign,
-	PhaseType,
 	PhaseCustomerNames,
 	PhaseInternalNames,
+	PhaseType,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { CustomDiv, ShadowDiv, StatusButton, StepsContainer } from "@sections/Dashboard/styled";
+import { ShadowDiv, StatusButton, StepsContainer } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Avatar, Button, message, Popconfirm, Typography, Row, Col } from "antd";
+import { Avatar, Button, Col, message, Popconfirm, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import Stage from "./Stage";
 
@@ -19,6 +19,7 @@ const { Title, Text } = Typography;
 interface PipelineTab {
 	designData: DetailedDesign;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	projectId: string;
 	setProjectPhase: (phase: { internalName: PhaseInternalNames; customerName: PhaseCustomerNames }) => void;
 }
 
@@ -48,40 +49,45 @@ const steps: Steps[] = [
 		stepNumber: 1,
 		stepName: "Moodboard and Floorplan (Design Team)",
 		prevPhase: null,
-		phaseName: DesignPhases.Concept,
-		nextPhase: DesignPhases.Modelling,
+		phaseName: DesignPhases.concept,
+		nextPhase: DesignPhases.modelling,
 	},
 	{
 		stepNumber: 2,
 		stepName: "3D Room Upload (3D Team)",
-		prevPhase: DesignPhases.Concept,
-		phaseName: DesignPhases.Modelling,
-		nextPhase: DesignPhases.Design3D,
+		prevPhase: DesignPhases.concept,
+		phaseName: DesignPhases.modelling,
+		nextPhase: DesignPhases.design3D,
 	},
 	{
 		stepNumber: 3,
 		stepName: "Design in 3D App (Design Team)",
-		prevPhase: DesignPhases.Modelling,
-		phaseName: DesignPhases.Design3D,
-		nextPhase: DesignPhases.Render,
+		prevPhase: DesignPhases.modelling,
+		phaseName: DesignPhases.design3D,
+		nextPhase: DesignPhases.render,
 	},
 	{
 		stepNumber: 4,
 		stepName: "Upload Rendered Room Images (3D Team)",
-		prevPhase: DesignPhases.Design3D,
-		phaseName: DesignPhases.Render,
-		nextPhase: DesignPhases.Revision,
+		prevPhase: DesignPhases.design3D,
+		phaseName: DesignPhases.render,
+		nextPhase: DesignPhases.revision,
 	},
 	{
 		stepNumber: 5,
 		stepName: "Design Finalization (Design Team)",
-		prevPhase: DesignPhases.Render,
-		phaseName: DesignPhases.Revision,
+		prevPhase: DesignPhases.render,
+		phaseName: DesignPhases.revision,
 		nextPhase: null,
 	},
 ];
 
-export default function PipelineTab({ designData, setDesignData, setProjectPhase }: PipelineTab): JSX.Element {
+export default function PipelineTab({
+	designData,
+	setDesignData,
+	setProjectPhase,
+	projectId,
+}: PipelineTab): JSX.Element {
 	const [stage, setStage] = useState<string>(null);
 	const [updationPhase, setUpdationPhase] = useState<string>(null);
 	const [phaseData, setPhaseData] = useState<PhaseType>(null);
@@ -98,12 +104,12 @@ export default function PipelineTab({ designData, setDesignData, setProjectPhase
 	}, [designData.phases]);
 
 	const phaseStatus = {
-		[DesignPhases.Concept]: getValueSafely(() => phaseData.concept.status, Status.pending),
-		[DesignPhases.Modelling]: getValueSafely(() => phaseData.modelling.status, Status.pending),
-		[DesignPhases.Design3D]: getValueSafely(() => phaseData.design3D.status, Status.pending),
-		[DesignPhases.Render]: getValueSafely(() => phaseData.render.status, Status.pending),
-		[DesignPhases.Revision]: getValueSafely(() => phaseData.revision.status, Status.pending),
-		[DesignPhases.Ready]: getValueSafely(() => phaseData.ready.status, Status.pending),
+		[DesignPhases.concept]: getValueSafely(() => phaseData.concept.status, Status.pending),
+		[DesignPhases.modelling]: getValueSafely(() => phaseData.modelling.status, Status.pending),
+		[DesignPhases.design3D]: getValueSafely(() => phaseData.design3D.status, Status.pending),
+		[DesignPhases.render]: getValueSafely(() => phaseData.render.status, Status.pending),
+		[DesignPhases.revision]: getValueSafely(() => phaseData.revision.status, Status.pending),
+		[DesignPhases.ready]: getValueSafely(() => phaseData.ready.status, Status.pending),
 	};
 
 	const updateDesignState = async (currentStage, status: Status | "reset", e): Promise<void> => {
@@ -131,6 +137,10 @@ export default function PipelineTab({ designData, setDesignData, setProjectPhase
 		if (response.statusCode <= 300) {
 			setPhaseData(response.data.designPhase);
 			setProjectPhase(response.data.projectPhase);
+			setDesignData({
+				...designData,
+				phases: { ...response.data.designPhase },
+			});
 		} else {
 			message.error(response.message);
 		}
@@ -180,14 +190,14 @@ export default function PipelineTab({ designData, setDesignData, setProjectPhase
 												<Popconfirm
 													title="Are you sure you want to send back to previous team?"
 													okText="Yes"
-													disabled={step.phaseName === DesignPhases.Concept}
+													disabled={step.phaseName === DesignPhases.concept}
 													onConfirm={(e): Promise<void> => updateDesignState(step.prevPhase, "reset", e)}
 												>
 													<Button
 														loading={updationPhase === step.phaseName}
 														type="danger"
 														disabled={
-															phaseStatus[step.phaseName] === Status.pending || step.phaseName === DesignPhases.Concept
+															phaseStatus[step.phaseName] === Status.pending || step.phaseName === DesignPhases.concept
 														}
 														icon="rollback"
 													>
@@ -200,7 +210,13 @@ export default function PipelineTab({ designData, setDesignData, setProjectPhase
 								</Row>
 							</ShadowDiv>
 							{stage === step.phaseName && (
-								<Stage phaseData={phaseData} designData={designData} setDesignData={setDesignData} stage={stage} />
+								<Stage
+									projectId={projectId}
+									phaseData={phaseData}
+									designData={designData}
+									setDesignData={setDesignData}
+									stage={stage}
+								/>
 							)}
 						</div>
 					);

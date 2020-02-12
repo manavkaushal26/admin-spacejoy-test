@@ -80,7 +80,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 						: null
 				}
 				cover={
-					<Row style={{ cursor: "auto" }} onClick={e => e.stopPropagation()}>
+					<Row {...(coverImage.length !== 1 ? { style: { cursor: "auto" }, onClick: e => e.stopPropagation() } : {})}>
 						<Col span={24}>
 							<BiggerButtonCarousel autoplay>
 								{coverImage.map(image => (

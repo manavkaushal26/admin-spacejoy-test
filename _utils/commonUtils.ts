@@ -8,6 +8,9 @@ interface GetValueFunction {
 export const getValueSafely: GetValueFunction = (func, defaultValue) => {
 	try {
 		const value = func();
+		if (typeof value === "boolean") {
+			return value;
+		}
 		return value || defaultValue;
 	} catch (e) {
 		return defaultValue;
@@ -35,7 +38,7 @@ export const getHumanizedActivePhase = (phases: PhaseType) => {
 	return Object.keys(phases).reduce((acc, curr) => {
 		if (phases[curr].status === Status.active) return HumanizeDesignPhases[curr];
 		return acc;
-	}, HumanizeDesignPhases[DesignPhases.Concept]);
+	}, HumanizeDesignPhases[DesignPhases.concept]);
 };
 
 export const getNumberOfDesigns = (items: Packages[]): number => {

@@ -8,6 +8,7 @@ import { getValueSafely } from "@utils/commonUtils";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { RadioChangeEvent } from "antd/lib/radio";
 import styled from "styled-components";
+import { Status } from "@customTypes/userType";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -123,13 +124,14 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 					project: null,
 					room: selectedRoomId,
 					designScope,
+					status: Status.pending,
 				},
 			},
 		});
 		if (response.statusCode <= 300) {
 			const designData: DetailedDesign = response.data;
 			onCreate(designData);
-			message.success("Revision Design Created Succesfully");
+			message.success("Design Created Succesfully");
 			toggleModal();
 		} else {
 			message.error(response.message);

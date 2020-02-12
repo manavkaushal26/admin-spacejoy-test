@@ -30,7 +30,9 @@ interface ProjectTabViewProps {
 	onSelectDesign?: (designId?: string) => void;
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	refetchData?: () => void;
+	currentTab: string;
 	setProjectData?: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	onTabChangeCallback?: (activeKey: string, pid: string, designId: string) => void;
 }
 
 const ScrollableTabs = styled(Tabs)`
@@ -51,12 +53,16 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	onSelectDesign,
 	setLoading,
 	refetchData,
+	onTabChangeCallback,
 	setProjectData,
+	currentTab,
 }): JSX.Element => {
 	const formData = getValueSafely(() => projectData.form, null);
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
+
+	const [activeTab, setActiveTab] = useState<string>("pipeline");
 
 	const setProjectPhase = (projectPhase: {
 		internalName: PhaseInternalNames;
@@ -95,6 +101,12 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	};
 
 	useEffect(() => {
+		if (currentTab) {
+			setActiveTab(currentTab);
+		}
+	}, [currentTab]);
+
+	useEffect(() => {
 		if (designId) {
 			fetchDesignData();
 			return (): void => {};
@@ -106,11 +118,11 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		};
 	}, [designId]);
 
-	const publishButtonDisabled = getValueSafely(
-		() =>
-			getHumanizedActivePhase(designData.phases) !== HumanizeDesignPhases.ready || designData.status === Status.active,
-		true
-	);
+	const publishButtonDisabled = getValueSafely(() => {
+		return (
+			getHumanizedActivePhase(designData.phases) !== HumanizeDesignPhases.ready || designData.status === Status.active
+		);
+	}, true);
 
 	const publishButtonText = getValueSafely(() => {
 		return designData.status === Status.active ? "Published" : "Publish";
@@ -119,7 +131,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const onPublish = async (): Promise<void> => {
 		const endPoint = publishDesignApi(designData._id);
 		setDesignLoading(true);
-		const response = await fetcher({ endPoint, method: "POST" });
+		const response = await fetcher({ endPoint, method: "PUT" });
 
 		if (response.statusCode <= 300) {
 			setDesignData({
@@ -135,6 +147,14 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			});
 		}
 		setDesignLoading(false);
+	};
+
+	const onTabChange = (activeKey): void => {
+		setActiveTab(activeKey);
+		const projectId = getValueSafely(() => projectData._id, null);
+		if (onTabChangeCallback) {
+			onTabChangeCallback(activeKey, projectId, designId);
+		}
 	};
 
 	return (
@@ -157,13 +177,13 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					/>
 					<SilentDivider />
 
-					<ScrollableTabs defaultActiveKey="6">
+					<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey="pipeline">
 						{formData && (
-							<TabPane tab="Customer Responses" key="1">
+							<TabPane tab="Customer Responses" key="cust_resp">
 								<CustomerResponses formData={formData || []} />
 							</TabPane>
 						)}
-						<TabPane tab="Team" key="5">
+						<TabPane tab="Team" key="team">
 							<TeamTab
 								designData={designData}
 								projectData={projectData}
@@ -176,17 +196,22 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 								})}
 							/>
 						</TabPane>
-						<TabPane tab="Moodboard" key="3">
+						<TabPane tab="Moodboard" key="moodboard">
 							<MoodboardTab setDesignData={setDesignData} setLoading={setLoading} projectId={id} designId={designId} />
 						</TabPane>
-						<TabPane tab="Discussion" key="2">
+						<TabPane tab="Discussion" key="discussion">
 							<NotesTab designData={designData} />
 						</TabPane>
-						<TabPane tab="Pipeline" key="6">
-							<PipelineTab setProjectPhase={setProjectPhase} designData={designData} setDesignData={setDesignData} />
+						<TabPane tab="Pipeline" key="pipeline">
+							<PipelineTab
+								setProjectPhase={setProjectPhase}
+								designData={designData}
+								projectId={id}
+								setDesignData={setDesignData}
+							/>
 						</TabPane>
 						{projectData && (
-							<TabPane tab="Customer View" key="7">
+							<TabPane tab="Customer View" key="cust_view">
 								<CustomerView projectName={projectData.name} designData={designData} />
 							</TabPane>
 						)}

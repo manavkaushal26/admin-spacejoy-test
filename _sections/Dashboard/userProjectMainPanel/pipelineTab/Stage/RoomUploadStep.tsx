@@ -16,9 +16,10 @@ const { Option } = Select;
 interface Stage {
 	designData: DetailedDesign;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	projectId: string;
 }
 
-const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
+const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId }) => {
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [roomName, setRoomName] = useState<string>(null);
@@ -185,6 +186,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
 					<CustomDiv flexBasis="30ch" type="flex" width="100%">
 						<label>Room File</label>
 						<Upload
+							disabled={!projectId}
 							supportServerRender
 							name="file"
 							fileList={roomFileList}
@@ -195,7 +197,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
 							data={{ name: roomName, fileType: model3dFiles, roomType }}
 							accept={ModelToExtensionMap[model3dFiles]}
 						>
-							<Button disabled={!roomName}>
+							<Button disabled={!roomName || !projectId}>
 								<Icon type="upload" />
 								Click to Upload
 							</Button>
@@ -205,6 +207,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
 						<CustomDiv flexBasis="30ch" type="flex" width="100%">
 							<label>Source File</label>
 							<Upload
+								disabled={!projectId}
 								supportServerRender
 								name="file"
 								fileList={sourceFileList}
@@ -215,7 +218,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData }) => {
 								data={{ name: roomName, fileType: "source", roomType }}
 								accept=".blend"
 							>
-								<Button disabled={!roomName}>
+								<Button disabled={!roomName || !projectId}>
 									<Icon type="upload" />
 									Click to Upload
 								</Button>

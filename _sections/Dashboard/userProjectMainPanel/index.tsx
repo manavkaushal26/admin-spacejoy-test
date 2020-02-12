@@ -19,11 +19,12 @@ const userProjectMainPanel: React.FC<{
 			customerName: PhaseCustomerNames;
 		}
 	) => void;
+	currentTab: string;
 	userProjectId: string;
 	designId: string;
 	startDate: string;
 	setStartDate: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ updateProjectPhaseInSidepanel, userProjectId, designId, startDate, setStartDate }): JSX.Element => {
+}> = ({ updateProjectPhaseInSidepanel, userProjectId, designId, startDate, setStartDate, currentTab }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const Router = useRouter();
@@ -89,6 +90,17 @@ const userProjectMainPanel: React.FC<{
 		};
 	}, [userProjectId]);
 
+	const onTabChange = (activeKey, pid, did): void => {
+		Router.push(
+			{
+				pathname: `/dashboard`,
+				query: { pid, designId: did, activeKey },
+			},
+			`/dashboard/pid/${projectData._id}/did/${did}?activeKey=${activeKey}`,
+			{ shallow: true }
+		);
+	};
+
 	return (
 		<Spin spinning={loading}>
 			<CustomDiv width="100%" height="100%">
@@ -98,6 +110,8 @@ const userProjectMainPanel: React.FC<{
 						<SilentDivider />
 						<BasicDetails projectData={projectData} />
 						<ProjectTabView
+							onTabChangeCallback={onTabChange}
+							currentTab={currentTab}
 							refetchData={fetchAndPopulate}
 							setLoading={setLoading}
 							projectData={projectData}

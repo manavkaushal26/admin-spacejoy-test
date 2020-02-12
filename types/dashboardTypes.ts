@@ -33,14 +33,14 @@ export enum PhaseCustomerNames {
 
 export enum HumanizePhaseInternalNames {
 	requirement = "Requirement",
-	designConcept = "Design Concept",
+	designConcept = "Concept",
 	modelling = "Modelling",
 	design3D = "Design 3D",
-	designRender = "Design Render",
-	designReady = "Design Ready",
-	designsInRevision = "Design's in Revision",
+	designRender = "Render",
+	designReady = "Ready",
+	designsInRevision = "Revision",
 	shop = "Shop",
-	deliveryCompleted = "Delivery Completed",
+	deliveryCompleted = "Completed",
 	onHold = "On Hold",
 	suspended = "Suspended",
 	rejected = "Rejected",
@@ -304,12 +304,12 @@ export interface PhaseDetails {
 }
 
 export enum DesignPhases {
-	Concept = "concept",
-	Modelling = "modelling",
-	Design3D = "design3D",
-	Render = "render",
-	Revision = "revision",
-	Ready = "ready",
+	concept = "concept",
+	modelling = "modelling",
+	design3D = "design3D",
+	render = "render",
+	revision = "revision",
+	ready = "ready",
 }
 
 export enum HumanizeDesignPhases {
@@ -322,12 +322,12 @@ export enum HumanizeDesignPhases {
 }
 
 export interface PhaseType {
-	[DesignPhases.Concept]: PhaseDetails;
-	[DesignPhases.Modelling]: PhaseDetails;
-	[DesignPhases.Design3D]: PhaseDetails;
-	[DesignPhases.Render]: PhaseDetails;
-	[DesignPhases.Revision]: PhaseDetails;
-	[DesignPhases.Ready]: PhaseDetails;
+	[DesignPhases.concept]: PhaseDetails;
+	[DesignPhases.modelling]: PhaseDetails;
+	[DesignPhases.design3D]: PhaseDetails;
+	[DesignPhases.render]: PhaseDetails;
+	[DesignPhases.revision]: PhaseDetails;
+	[DesignPhases.ready]: PhaseDetails;
 }
 
 export interface DetailedDesign {
@@ -388,6 +388,17 @@ export enum RoomLabels {
 	House = "House",
 	OpenLivingDining = "Open Living and Dining Room",
 }
+
+export const RoomNameSearch = [
+	"Living Room",
+	"Entryway",
+	"Kid's Bedroom",
+	"Studio",
+	"Nursery",
+	"Dining Room",
+	"Home Office",
+	"Study Room",
+];
 
 export enum RenderImgUploadTypes {
 	Render = "render",

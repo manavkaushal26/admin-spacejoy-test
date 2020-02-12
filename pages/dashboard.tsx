@@ -24,6 +24,7 @@ interface DashboardProps {
 	authVerification: Partial<User>;
 	projectId: string;
 	designId: string;
+	currentTab: string;
 }
 
 const handleResize = (setIsDesktop): void => {
@@ -38,16 +39,28 @@ const handleResize = (setIsDesktop): void => {
 
 const debouncedHandleResize = debounce(handleResize, 100);
 
-const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, projectId, designId }): JSX.Element => {
+const dashboard: NextPage<DashboardProps> = ({
+	isServer,
+	authVerification,
+	projectId,
+	designId,
+	currentTab,
+}): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading] = useState<boolean>(false);
 	const [startDate, setStartDate] = useState<string>(null);
 
 	const [collapsed, setCollapsed] = useState<boolean>(false);
 
-	const [isDesktop, setIsDesktop] = useState<boolean>(false);
+	const [isDesktop, setIsDesktop] = useState<boolean>(true);
 
 	const onResize = (): void => debouncedHandleResize(setIsDesktop);
+
+	useEffect(() => {
+		if (!authVerification.name) {
+			Router.push("/auth", "/auth/login");
+		}
+	}, [authVerification]);
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -83,7 +96,7 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 		if (projectId) {
 			setSelectedUser(projectId);
 		}
-	}, []);
+	}, [projectId]);
 
 	useEffect(() => {
 		if (projectId && !isDesktop) {
@@ -91,7 +104,7 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 		} else {
 			setCollapsed(false);
 		}
-	}, [projectId]);
+	}, [projectId, isDesktop]);
 
 	/**
 	 * Function to cause main panel to update start date and hece the progress bar when the start button
@@ -140,6 +153,8 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 							collapsedWidth={0}
 						>
 							<Sidebar
+								collapsed={collapsed}
+								setCollapsed={setCollapsed}
 								updateStartDateInMainPanel={updateStartDateInMainPanel}
 								selectedUser={selectedUser}
 								handleSelectCard={handleSelectCard}
@@ -156,6 +171,7 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 										userProjectId={selectedUser}
 										startDate={startDate}
 										setStartDate={setStartDate}
+										currentTab={currentTab}
 									/>
 								</PaddedDiv>
 							</MaxHeightDiv>
@@ -170,16 +186,17 @@ const dashboard: NextPage<DashboardProps> = ({ isServer, authVerification, proje
 dashboard.getInitialProps = async (ctx: NextPageContext): Promise<DashboardProps> => {
 	const {
 		req,
-		query: { pid, designId: did },
+		query: { pid, designId: did, activeKey },
 	} = ctx;
 	const isServer = !!req;
 	const designId: string = did as string;
 	const projectId: string = pid as string;
+	const currentTab: string = activeKey as string;
 	const authVerification = {
 		name: "",
 		email: "",
 	};
-	return { isServer, authVerification, projectId, designId };
+	return { isServer, authVerification, projectId, designId, currentTab };
 };
 
 export default withAuthVerification(dashboard);

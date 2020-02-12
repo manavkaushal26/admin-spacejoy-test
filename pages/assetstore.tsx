@@ -95,6 +95,12 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 		}
 	};
 
+	useEffect(() => {
+		if (!authVerification.name) {
+			Router.push("/auth", "/auth/login");
+		}
+	}, [authVerification]);
+
 	const fetchMoodBoard = async (): Promise<void> => {
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 		const endPoint = getMoodboardApi(designId);

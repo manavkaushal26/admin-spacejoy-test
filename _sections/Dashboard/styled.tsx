@@ -46,7 +46,7 @@ export const getTagColor = (text: string): string => {
 
 export const BiggerButtonCarousel = styled(Carousel)`
 	> .slick-dots li button {
-		background: #ff7875;
+		background: #f5296e;
 		height: 8px !important;
 		width: 20px;
 	}
@@ -54,7 +54,7 @@ export const BiggerButtonCarousel = styled(Carousel)`
 		bottom: 15px;
 	}
 	> .slick-dots li.slick-active button {
-		background: #ff7875;
+		background: #f5296e;
 		width: 28px;
 	}
 `;
@@ -221,25 +221,6 @@ export const StepsContainer = styled(CustomDiv)`
 	}
 `;
 
-export const ShadowDiv = styled.div<{ active?: boolean }>`
-	box-shadow: 0px 2px 16px #999ba81f;
-	transition: all 0.3s;
-	${({ active }): FlattenSimpleInterpolation => {
-			return active
-				? css`
-						box-shadow: 0px 4px 32px #999ba85f;
-				  `
-				: null;
-		}}
-		:hover {
-		cursor: pointer;
-		box-shadow: 0px 4px 32px #999ba85f;
-	}
-	> * {
-		cursor: default;
-	}
-`;
-
 export const Form = styled.div`
 	> * + * {
 		margin-top: 1rem;
@@ -260,6 +241,7 @@ export const BorderedParagraph = styled(Paragraph)`
 	border-radius: 4px;
 	padding: 8px 8px;
 	background-color: white;
+	white-space: pre;
 	div[role="button"] {
 		display: inline-flex !important;
 	}
@@ -288,6 +270,11 @@ export const CustomUl = styled.ul`
 	}
 `;
 
+export const SilentButton = styled(Button)`
+	padding: 0px;
+	height: auto;
+`;
+
 export const StatusButton = styled(Button)<{ status: Status }>`
 	:disabled {
 		:hover {
@@ -312,5 +299,23 @@ export const StatusButton = styled(Button)<{ status: Status }>`
 			);
 		}};
 		color: rgba(0, 0, 0, 0.65);
+	}
+`;
+export const ShadowDiv = styled.div<{ active?: boolean }>`
+	box-shadow: 0px 2px 16px #999ba81f;
+	transition: all 0.3s;
+	${({ active }): FlattenSimpleInterpolation => {
+			return active
+				? css`
+						box-shadow: 0px 4px 32px #999ba85f;
+				  `
+				: null;
+		}}
+		:hover {
+		cursor: pointer;
+		box-shadow: 0px 4px 32px #999ba85f;
+	}
+	> * {
+		cursor: default;
 	}
 `;

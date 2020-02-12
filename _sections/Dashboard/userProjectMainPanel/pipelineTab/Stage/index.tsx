@@ -15,16 +15,17 @@ interface Stage {
 	phaseData: PhaseType;
 	stage: string;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	projectId: string;
 }
 
 export default function Stage(props: Stage): JSX.Element {
-	const { designData, phaseData, stage, setDesignData } = props;
+	const { designData, phaseData, stage, setDesignData, projectId } = props;
 
 	switch (stage) {
 		case "concept":
 			return <MoodboardAndFloorPlanStep designData={designData} setDesignData={setDesignData} />;
 		case "modelling":
-			return <RoomUploadStep designData={designData} setDesignData={setDesignData} />;
+			return <RoomUploadStep projectId={projectId} designData={designData} setDesignData={setDesignData} />;
 		case "design3D":
 			return <Design3D />;
 		case "render":

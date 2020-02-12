@@ -64,8 +64,8 @@ export const getAddRemoveAssetApi: (designId: string, assetEntryId: string) => s
 
 // ************************************************ Design Examples ************************************************
 
-export const getDesignListApi = (): string => {
-	return "/admin/designs";
+export const getDesignSearchApi = (): string => {
+	return "/designs/search";
 };
 
 export const getRoomsListApi = (roomscope, roomType): string => {

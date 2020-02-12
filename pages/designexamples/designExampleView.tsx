@@ -7,13 +7,15 @@ import IndexPageMeta from "@utils/meta";
 import { Row, Spin } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 interface DesignExampleViewProps {
 	isServer: boolean;
 	authVerification: Partial<User>;
 	designId: string;
+	currentTab: string;
 }
 
 const MaxWidthDesignPage = styled.div`
@@ -25,11 +27,30 @@ const Padding = styled.div`
 	padding: 1rem;
 `;
 
-const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerification, designId }) => {
+const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerification, designId, currentTab }) => {
 	const [loading, setLoading] = useState<boolean>(false);
+
+	const Router = useRouter();
 
 	const goBack = (): void => {
 		redirectToLocation({ pathname: "/designexamples", url: "/designexamples" });
+	};
+	useEffect(() => {
+		if (!authVerification.name) {
+			Router.push("/auth", "/auth/login");
+		}
+	}, [authVerification]);
+
+	const onTabChange = (activeKey, pid = null, did): void => {
+		if (!pid)
+			Router.push(
+				{
+					pathname: `/designexamples/designExampleView`,
+					query: { designId: did, activeKey },
+				},
+				`/designexamples/${did}?activeKey=${activeKey}`,
+				{ shallow: true }
+			);
 	};
 
 	return (
@@ -44,7 +65,13 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 				<Spin spinning={loading}>
 					<Padding>
 						<Row gutter={[16, 16]}>
-							<ProjectTabView onSelectDesign={goBack} designId={designId} setLoading={setLoading} />
+							<ProjectTabView
+								onTabChangeCallback={onTabChange}
+								currentTab={currentTab}
+								onSelectDesign={goBack}
+								designId={designId}
+								setLoading={setLoading}
+							/>
 						</Row>
 					</Padding>
 				</Spin>
@@ -56,7 +83,7 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 DesignExamples.getInitialProps = async (ctx: NextPageContext): Promise<DesignExampleViewProps> => {
 	const {
 		req,
-		query: { designId },
+		query: { designId, activeKey },
 	} = ctx;
 	const isServer = !!req;
 
@@ -65,7 +92,8 @@ DesignExamples.getInitialProps = async (ctx: NextPageContext): Promise<DesignExa
 		email: "",
 	};
 	const designIdAsString = designId as string;
-	return { isServer, authVerification, designId: designIdAsString };
+	const activeKeyAsString = activeKey as string;
+	return { isServer, authVerification, designId: designIdAsString, currentTab: activeKeyAsString };
 };
 
 export default withAuthVerification(DesignExamples);
