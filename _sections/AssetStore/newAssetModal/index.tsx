@@ -212,6 +212,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				artist: assetData.artist,
 			};
 			dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: newState });
+			debouncedCheckValidity();
 			setAssetData(null);
 		}
 	}, [assetData]);
@@ -424,33 +425,31 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 		const dimensionsToSend = formatDimensionsForSending(state.dimension, dimensionInInches);
 
-		const requestBody = state._id
-			? {
-					name: state.name,
-					description: state.description,
-					status: state.status,
-					shoppable: state.shoppable,
-					retailer: state.retailer,
-					retailLink: state.retailLink,
-					primaryColor: state.primaryColor,
-					secondaryColors: state.secondaryColors,
-					"meta.category": state.meta.category,
-					"meta.subcategory": state.meta.subcategory,
-					"meta.vertical": state.meta.vertical,
-					"meta.theme": state.meta.theme,
-					"spatialData.mountType": state.spatialData.mountType,
-					"spatialData.clampValue": state.spatialData.clampValue,
-					"dimension.width": dimensionsToSend.width,
-					"dimension.height": dimensionsToSend.height,
-					"dimension.depth": dimensionsToSend.depth,
-					price: state.price,
-					currency: state.currency,
-					imageUrl: state.imageUrl,
-					cdn: state.cdn,
-					tags: state.tags,
-					artist: state.artist,
-			  }
-			: state;
+		const requestBody = {
+			name: state.name,
+			description: state.description,
+			status: state.status,
+			shoppable: state.shoppable,
+			retailer: state.retailer,
+			retailLink: state.retailLink,
+			primaryColor: state.primaryColor,
+			secondaryColors: state.secondaryColors,
+			"meta.category": state.meta.category,
+			"meta.subcategory": state.meta.subcategory,
+			"meta.vertical": state.meta.vertical,
+			"meta.theme": state.meta.theme,
+			"spatialData.mountType": state.spatialData.mountType,
+			"spatialData.clampValue": state.spatialData.clampValue,
+			"dimension.width": dimensionsToSend.width,
+			"dimension.height": dimensionsToSend.height,
+			"dimension.depth": dimensionsToSend.depth,
+			price: state.price,
+			currency: state.currency,
+			imageUrl: state.imageUrl,
+			cdn: state.cdn,
+			tags: state.tags,
+			artist: state.artist,
+		};
 		try {
 			const response = await fetcher({
 				endPoint,
@@ -560,6 +559,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										<Input
 											ref={assetPrice}
 											required
+											type="number"
 											placeholder="Price"
 											onChange={handleChange}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_PRICE}
@@ -580,7 +580,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 													))}
 												</Select>
 											}
-											type="number"
 										/>
 									</Col>
 								</Row>

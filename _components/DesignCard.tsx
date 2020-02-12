@@ -50,11 +50,21 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	state,
 }) => {
 	return (
-		<Col style={{ display: "flex" }} xs={24} sm={12} md={8} lg={8} xl={6} key={uniqueId}>
+		<Col
+			style={{ display: "flex" }}
+			onClick={(): void => onSelectCard(uniqueId)}
+			xs={24}
+			sm={12}
+			md={8}
+			lg={8}
+			xl={6}
+			key={uniqueId}
+		>
 			<StateAwareCards
 				state={state}
 				style={{ width: "100%" }}
 				hoverable
+				onClick={(): void => onSelectCard(uniqueId)}
 				actions={
 					onDelete
 						? [
@@ -70,7 +80,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 						: null
 				}
 				cover={
-					<Row>
+					<Row style={{ cursor: "auto" }} onClick={e => e.stopPropagation()}>
 						<Col span={24}>
 							<BiggerButtonCarousel autoplay>
 								{coverImage.map(image => (
@@ -83,7 +93,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 					</Row>
 				}
 			>
-				<Row onClick={(): void => onSelectCard(uniqueId)}>
+				<Row>
 					<Col span={24}>
 						<Text strong style={{ width: "100%" }} ellipsis>
 							{designName}
