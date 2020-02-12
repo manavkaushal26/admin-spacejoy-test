@@ -54,7 +54,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	designerSearchText: "",
 	data: [],
 	pageCount: 0,
-	phase: [...phaseDefaultValues],
+	phase: [],
 	name: "",
 	sortBy: SortFields["Created At"],
 	hasMore: true,
