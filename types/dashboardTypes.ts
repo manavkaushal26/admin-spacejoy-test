@@ -62,6 +62,7 @@ interface CurrentPhase {
 
 export interface UserProjectType {
 	createdAt: string;
+	endedAt: string;
 	startedAt: string;
 	_id: string;
 	projectScope: ProjectScope;
@@ -240,6 +241,7 @@ export interface DetailedProject {
 	designs: DesignInterface[];
 	feedback: [];
 	createdAt: string;
+	endedAt: string;
 	updatedAt: string;
 	startedAt: string;
 }

@@ -11,3 +11,7 @@ export const editProjectApi = (projectId: string): string => {
 export const notifyCustomerApi = (projectId: string): string => {
 	return `/admin/project/${projectId}/notify`;
 };
+
+export const startProjectApi = (projectId: string): string => {
+	return `/admin/project/${projectId}/timeline`;
+};

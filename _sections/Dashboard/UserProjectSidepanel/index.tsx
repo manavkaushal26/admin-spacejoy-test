@@ -1,4 +1,4 @@
-import { editProjectApi } from "@api/projectApi";
+import { startProjectApi } from "@api/projectApi";
 import {
 	HumanizePhaseInternalNames,
 	PhaseCustomerNames,
@@ -15,16 +15,16 @@ import React, { useEffect, useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
 import styled from "styled-components";
 import LoadingCard from "../LoadingCard";
-import { CustomDiv, MaxHeightDiv, SilentDivider, SilentButton } from "../styled";
+import { CustomDiv, MaxHeightDiv, SilentButton, SilentDivider } from "../styled";
 import {
+	phaseDefaultValues,
+	SortFields,
 	UserProjectSidePanelAction,
 	UserProjectSidePanelActionCreator,
 	UserProjectSidePanelActionTypes,
+	UserProjectSidePanelInitialState,
 	UserProjectSidePanelReducer,
 	UserProjectSidePanelState,
-	UserProjectSidePanelInitialState,
-	SortFields,
-	phaseDefaultValues,
 } from "./reducer";
 
 const { Option } = Select;
@@ -459,16 +459,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 	};
 
 	const onStartClick = async (projectId): Promise<void> => {
-		const endpoint = editProjectApi(projectId);
+		const endpoint = startProjectApi(projectId);
 		const currentTime = new Date().toISOString();
 		await fetcher({
 			endPoint: endpoint,
-			body: {
-				data: {
-					startedAt: currentTime,
-				},
-			},
 			method: "PUT",
+			body: { data: {} },
 		});
 		updateStartDate(projectId, currentTime);
 	};
