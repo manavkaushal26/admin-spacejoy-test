@@ -254,6 +254,7 @@ interface Retailer {
 export interface Assets {
 	billable: boolean;
 	hidden: boolean;
+	_id: string;
 	asset: {
 		name: string;
 		price: number;

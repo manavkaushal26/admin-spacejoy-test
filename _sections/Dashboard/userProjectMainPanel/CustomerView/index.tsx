@@ -39,7 +39,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 	const pannelumImage = designData.designImages.find(image => image.imgType === DesignImgTypes.Panorama);
 
 	return (
-		<Row>
+		<Row gutter={[4, 8]}>
 			<Col sm={24} {...(pannelumImage ? { md: 18 } : {})} style={{ marginBottom: "1rem" }}>
 				<BiggerButtonCarousel slidesToShow={1} slidesToScroll={1} autoplay>
 					{designData.designImages

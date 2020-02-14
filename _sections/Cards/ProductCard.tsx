@@ -77,7 +77,7 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 		<ProductCardRow type="flex" justify="space-between">
 			{assets.map(item => {
 				return item.asset.shoppable && item.billable && !item.hidden ? (
-					<Col md={11} lg={7} key={item.asset._id}>
+					<Col md={11} lg={7} key={item._id}>
 						<Row>
 							<Row type="flex" justify="space-between">
 								<ProductImageWrapperStyled
