@@ -1,7 +1,7 @@
 import Button from "@components/Button";
 import { removeSpaces } from "@utils/helper";
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { Assets } from "@customTypes/dashboardTypes";
 import { Col, Row } from "antd";
@@ -71,11 +71,28 @@ interface ProductCard {
 	size: string;
 }
 
+const removeRepeatAssets = (assets: Assets[]) => {
+	const alreadyAdded: Record<string, boolean> = {};
+	return assets.filter(asset => {
+		if (!alreadyAdded[asset.asset._id]) {
+			alreadyAdded[asset.asset._id] = true;
+			return true;
+		}
+		return false;
+	});
+};
+
 const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, designId, showLoadMore, size }) => {
 	const designNameClean = removeSpaces(designName);
+
+	const uniqueAssets = useMemo(
+		() => removeRepeatAssets(assets.filter(asset => asset.asset.shoppable && asset.billable && !asset.hidden)),
+		[assets]
+	);
+
 	return (
 		<ProductCardRow type="flex" justify="space-between">
-			{assets.map(item => {
+			{uniqueAssets.map(item => {
 				return item.asset.shoppable && item.billable && !item.hidden ? (
 					<Col md={11} lg={7} key={item._id}>
 						<Row>
