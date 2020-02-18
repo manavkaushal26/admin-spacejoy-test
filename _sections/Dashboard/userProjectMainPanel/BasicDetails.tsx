@@ -4,7 +4,7 @@ import { getValueSafely } from "@utils/commonUtils";
 import { Col, Row, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
-import { CustomDiv, FontCorrectedPre, ModifiedText } from "../styled";
+import { ModifiedText } from "../styled";
 
 const { Text } = Typography;
 
@@ -13,7 +13,7 @@ interface BasicDetailsProps {
 }
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
-	const { _id, name, createdAt, team, customer } = projectData;
+	const { _id, name, createdAt, team, customer, startedAt } = projectData;
 
 	const items = getValueSafely(() => projectData.order.items, []);
 
@@ -48,79 +48,100 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		[projectData.team]
 	);
 	return (
-		<CustomDiv py="10px" px="10px">
-			<Row>
-				<Col xs={24} sm={12} lg={9}>
-					<CustomDiv type="flex">
-						<Text strong>
-							<FontCorrectedPre>Concept Id: </FontCorrectedPre>
-						</Text>
-						<ModifiedText textTransform="uppercase" ellipsis type="secondary">
+		<Row type="flex" justify="space-between" gutter={[16, 16]}>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Concept Id:</Text>
+					</Col>
+					<Col>
+						<ModifiedText textTransform="uppercase" type="secondary">
 							{_id}
 						</ModifiedText>
-					</CustomDiv>
-					<CustomDiv type="flex">
-						<Text strong>
-							<FontCorrectedPre>Account Manager: </FontCorrectedPre>
-						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Account Manager:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{accountManagers || "Not Assigned"}
 						</ModifiedText>
-					</CustomDiv>
-					<CustomDiv type="flex">
-						<Text strong>
-							<FontCorrectedPre>Created on: </FontCorrectedPre>
-						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Created on:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="capitalize" type="secondary">
-							{moment(createdAt).format("YYYY-MM-DD")}
+							{moment(createdAt).format("MM-DD-YYYY")}
 						</ModifiedText>
-					</CustomDiv>
-				</Col>
-				<Col xs={24} sm={12} lg={9}>
-					<CustomDiv type="flex">
-						<Text strong>
-							<FontCorrectedPre>Payment Status: </FontCorrectedPre>
-						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Payment Status:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{paymentStatus}
 						</ModifiedText>
-					</CustomDiv>
-					<CustomDiv type="flex">
-						<Text strong>
-							<FontCorrectedPre>Assigned Team: </FontCorrectedPre>
-						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Assigned Team:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							{assignedTeam || "Not assigned"}
 						</ModifiedText>
-					</CustomDiv>
-					<CustomDiv type="flex">
-						<Text strong>
-							<FontCorrectedPre>Package: </FontCorrectedPre>
-						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Started on:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="capitalize" type="secondary">
-							{getValueSafely(() => items.join(", "), "N/A")}
+							{startedAt ? moment(startedAt).format("MM-DD-YYYY") : "Not yet started"}
 						</ModifiedText>
-					</CustomDiv>
-				</Col>
-				<Col xs={24} sm={12} lg={6}>
-					<CustomDiv type="flex">
-						<CustomDiv type="flex" inline>
-							<Text strong>
-								<FontCorrectedPre>Phone: </FontCorrectedPre>
-							</Text>
-						</CustomDiv>
+					</Col>
+				</Row>
+			</Col>
+
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Phone:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="capitalize" type="secondary">
 							<a href={`tel:${getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}`}>
 								{getValueSafely(() => customer.contact.phone.find(phone => phone.primary).phone, "N/A")}
 							</a>
 						</ModifiedText>
-					</CustomDiv>
-					<CustomDiv type="flex">
-						<CustomDiv type="flex" inline>
-							<Text strong>
-								<FontCorrectedPre>Email: </FontCorrectedPre>
-							</Text>
-						</CustomDiv>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Email:</Text>
+					</Col>
+					<Col>
 						<ModifiedText textTransform="lowercase" type="secondary">
 							<a
 								href={`mailto:${getValueSafely(
@@ -131,10 +152,22 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								{getValueSafely(() => customer.email, "N/A")}
 							</a>
 						</ModifiedText>
-					</CustomDiv>
-				</Col>
-			</Row>
-		</CustomDiv>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={12} md={12} lg={8} xl={8}>
+				<Row type="flex" gutter={[4, 8]}>
+					<Col>
+						<Text strong>Package:</Text>
+					</Col>
+					<Col>
+						<ModifiedText textTransform="capitalize" type="secondary">
+							{getValueSafely(() => items.join(", "), "N/A")}
+						</ModifiedText>
+					</Col>
+				</Row>
+			</Col>
+		</Row>
 	);
 };
 

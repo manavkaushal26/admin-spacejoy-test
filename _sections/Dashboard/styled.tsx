@@ -61,11 +61,7 @@ export const BiggerButtonCarousel = styled(Carousel)`
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
-	height: calc(100vh - 60px);
-	display: flex;
-	flex-direction: row;
-	justify-content: stretch;
-	align-content: stretch;
+	height: calc(100vh - 62px);
 	overflow-y: scroll !important;
 `;
 
@@ -75,11 +71,11 @@ export const StyledTag = styled(Tag)`
 `;
 
 export const VerticalPaddedDiv = styled.div`
-	padding: 15px 0;
+	padding: 1rem 0;
 `;
 
 export const BottomPaddedDiv = styled.div`
-	padding-bottom: 15px;
+	padding-bottom: 1rem;
 `;
 
 interface ModifiedTextProps {
@@ -207,7 +203,7 @@ export const CustomDiv = styled.div<CustomDivProps>`
 `;
 
 export const SilentDivider = styled(Divider)`
-	margin: 0 0;
+	margin: 0 0 !important;
 `;
 
 export const StepsContainer = styled(CustomDiv)`

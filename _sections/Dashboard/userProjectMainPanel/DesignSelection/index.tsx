@@ -233,12 +233,12 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 					<Col xs={24} sm={12} md={8} lg={8} xl={6} onClick={toggleCopyDesignModal}>
 						<HoverCard>
 							<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
-								<Col span="24">
+								<Col span={24}>
 									<Row type="flex" justify="center" align="middle">
 										<Icon style={{ fontSize: "36px" }} type="file-add" />
 									</Row>
 								</Col>
-								<Col span="24">
+								<Col span={24}>
 									<Row style={{ padding: "15px" }} type="flex" justify="center" align="middle">
 										<Text>{cardText}</Text>
 									</Row>

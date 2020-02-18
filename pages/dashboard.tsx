@@ -145,7 +145,7 @@ const dashboard: NextPage<DashboardProps> = ({
 							onCollapse={(collapsedState): void => {
 								setCollapsed(collapsedState && !!projectId);
 							}}
-							zeroWidthTriggerStyle={{ top: "56px", borderRadius: "0 16px 16px 0" }}
+							zeroWidthTriggerStyle={{ top: "1.8rem", borderRadius: "0 2px 2px 0" }}
 							breakpoint="lg"
 							width="360"
 							theme="dark"

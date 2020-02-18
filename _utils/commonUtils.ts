@@ -92,6 +92,6 @@ export const convertToInches = (value: number, fix = 2): number => {
 	return parseFloat((value * 12).toFixed(fix));
 };
 
-export const convertToFeet = (value: number, fix = 2): number => {
+export const convertToFeet = (value: number, fix = 8): number => {
 	return parseFloat((value / 12).toFixed(fix));
 };

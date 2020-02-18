@@ -1,16 +1,16 @@
 import ProgressBar from "@components/ProgressBar";
 import {
+	completedPhases,
 	DetailedProject,
 	HumanizePhaseInternalNames,
 	PhaseInternalNames,
-	completedPhases,
 } from "@customTypes/dashboardTypes";
 import { getColorsForPackages, getNumberOfDays, getValueSafely } from "@utils/commonUtils";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React from "react";
 import styled from "styled-components";
-import { CustomDiv, getTagColor, StyledTag } from "../styled";
+import { getTagColor, StyledTag } from "../styled";
 
 const { Title, Text } = Typography;
 
@@ -21,6 +21,10 @@ interface ProjectSummaryProps {
 const SilentTitle = styled(Title)`
 	text-transform: capitalize;
 	margin-bottom: 0 !important;
+`;
+
+const VerticallyPaddedDiv = styled.div`
+	padding: 1.5rem 0 0 0;
 `;
 
 const getLongTimeString = (endTime: number): string => {
@@ -57,41 +61,49 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		return customer.profile.name;
 	}, room);
 	return (
-		<Row type="flex" align="middle" gutter={1}>
-			<Col sm={24} md={24} lg={24} xl={10}>
-				<CustomDiv width="100%" inline type="flex" textOverflow="ellipsis" py="16px" align="center">
-					<CustomDiv textOverflow="ellipsis" inline type="flex" px="12px">
-						<Avatar size={48} style={getColorsForPackages(items)}>
-							{displayName[0].toUpperCase()}
-						</Avatar>{" "}
-					</CustomDiv>
-					<CustomDiv type="flex" inline flexDirection="column">
-						<SilentTitle ellipsis level={3}>
-							{displayName}
-						</SilentTitle>
-						<Text>{room}</Text>
-					</CustomDiv>
-				</CustomDiv>
-			</Col>
-			<Col sm={24} md={12} lg={12} xl={6}>
-				<CustomDiv width="100%" py="16px">
-					<StyledTag color={getTagColor(phase)}>Phase: {HumanizePhaseInternalNames[phase]}</StyledTag>
-					<StyledTag color={getTagColor(status)}>Status: {status}</StyledTag>
-				</CustomDiv>
-			</Col>
-			<Col sm={24} md={12} lg={12} xl={8}>
-				<CustomDiv width="100%" py="16px">
-					<Row align="middle" type="flex" justify="center">
-						<Col span={24}>
-							<CustomDiv px="12px" type="flex" inline>
-								<ProgressBar width={33} phase={phase} endTime={endTime} />
-							</CustomDiv>
-							{!completedPhases.includes(phase) && <Text>{getLongTimeString(endTime.valueOf())}</Text>}
+		<VerticallyPaddedDiv>
+			<Row type="flex" justify="space-between" align="middle" gutter={[8, 8]}>
+				<Col offset={1}>
+					<Row type="flex" gutter={[16, 8]}>
+						<Col>
+							<Avatar size={48} style={getColorsForPackages(items)}>
+								{displayName[0].toUpperCase()}
+							</Avatar>
+						</Col>
+						<Col>
+							<Row>
+								<Col span={24}>
+									<SilentTitle ellipsis level={3}>
+										{displayName}
+									</SilentTitle>
+								</Col>
+								<Col span={24}>
+									<Text>{room}</Text>
+								</Col>
+							</Row>
 						</Col>
 					</Row>
-				</CustomDiv>
-			</Col>
-		</Row>
+				</Col>
+				<Col>
+					<Row type="flex" gutter={[4, 4]}>
+						<Col>
+							<StyledTag color={getTagColor(phase)}>Phase: {HumanizePhaseInternalNames[phase]}</StyledTag>
+						</Col>
+						<Col>
+							<StyledTag color={getTagColor(status)}>Status: {status}</StyledTag>
+						</Col>
+					</Row>
+				</Col>
+				<Col>
+					<Row align="middle" type="flex" gutter={[16, 8]}>
+						<Col>
+							<ProgressBar width={33} phase={phase} endTime={endTime} />
+						</Col>
+						<Col>{!completedPhases.includes(phase) && <Text>{getLongTimeString(endTime.valueOf())}</Text>}</Col>
+					</Row>
+				</Col>
+			</Row>
+		</VerticallyPaddedDiv>
 	);
 };
 

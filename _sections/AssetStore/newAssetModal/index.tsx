@@ -11,10 +11,12 @@ import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import { Button, Col, Icon, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
-import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import { UploadChangeParam, UploadFile, RcFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import AddRetailerModal from "../addRetailerModal";
+import { AssetAction } from "../reducer";
 import { SizeAdjustedModal } from "../styled";
-import { initialState, NewAssetUploadReducer, NEW_ASSET_ACTION_TYPES, reducer, NewAssetUploadState } from "./reducer";
+import { initialState, NewAssetUploadReducer, NewAssetUploadState, NEW_ASSET_ACTION_TYPES, reducer } from "./reducer";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -34,6 +36,7 @@ interface NewAssetModal {
 	categoryMap: CategoryMap[];
 	metadata: MetaDataType;
 	assetData?: AssetType;
+	dispatchAssetStore: React.Dispatch<AssetAction>;
 	setAssetData?: React.Dispatch<React.SetStateAction<AssetType>>;
 }
 
@@ -77,6 +80,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	categoryMap,
 	metadata,
 	assetData,
+	dispatchAssetStore,
 	setAssetData,
 }) => {
 	const [state, dispatch] = useReducer<NewAssetUploadReducer>(reducer, initialState);
@@ -84,7 +88,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 	const [imageFile, setImageFile] = useState<UploadFile<any>[]>([]);
 	const [dimensionInInches, setDimensionInInches] = useState<boolean>(true);
-
+	const [addRetailerModalVisible, setAddRetailerModalVisible] = useState(false);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 
 	const themes = useMemo(() => getValueSafely(() => metadata.themes.list, []), [metadata]);
@@ -134,9 +138,15 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		setAssetCategoryValid(!!assetCategory.current.props.value);
 		setAssetSubCategoryValid(!!assetSubCategory.current.props.value);
 		setAssetVerticalValid(!!assetVertical.current.props.value);
-		setAssetWidthValid(parseFloat(assetWidth.current.props.value) !== 0);
-		setAssetHeightValid(parseFloat(assetHeight.current.props.value) !== 0);
-		setAssetDepthValid(parseFloat(assetDepth.current.props.value) !== 0);
+		setAssetWidthValid(
+			parseFloat(assetWidth.current.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current.props.value))
+		);
+		setAssetHeightValid(
+			parseFloat(assetHeight.current.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current.props.value))
+		);
+		setAssetDepthValid(
+			parseFloat(assetDepth.current.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current.props.value))
+		);
 		setAssetMountTypeValid(!!assetMountType.current.props.value);
 	};
 
@@ -418,6 +428,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			previewVisible: true,
 		});
 	};
+
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	const saveAsset = async (): Promise<void> => {
@@ -496,6 +507,30 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		}
 		return "Foot";
 	}, [dimensionInInches]);
+
+	const toggleAddRetailerModal = () => {
+		setAddRetailerModalVisible(!addRetailerModalVisible);
+	};
+
+	const checkFileExtension = (uploadFileType: "model" | "source", info: RcFile): boolean => {
+		const fileList = [];
+
+		if (uploadFileType === "model") {
+			if (!info.name.endsWith(ModelToExtensionMap[model3dFiles])) {
+				notification.error({ message: "Please Upload the correct file type" });
+				setAssetFile(fileList);
+				return false;
+			}
+		}
+		if (uploadFileType === "source") {
+			if (!info.name.endsWith(".blend")) {
+				notification.error({ message: "Please Upload '.blend' file" });
+				setAssetFile(fileList);
+				return false;
+			}
+		}
+		return true;
+	};
 
 	return (
 		<SizeAdjustedModal
@@ -595,6 +630,25 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											ref={assetRetailer}
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_RETAILER)}
 											value={state.retailer}
+											dropdownRender={(menu): JSX.Element => (
+												<Row gutter={[0, 4]}>
+													<Col>{menu}</Col>
+													<Col>
+														<SilentDivider />
+													</Col>
+													<Col>
+														<Button
+															onClick={toggleAddRetailerModal}
+															style={{ width: "100%" }}
+															type="ghost"
+															size="default"
+															icon="plus"
+														>
+															Add Item
+														</Button>
+													</Col>
+												</Row>
+											)}
 											showSearch
 											optionFilterProp="children"
 											style={{ width: "100%" }}
@@ -931,6 +985,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 								</Col>
 								<Col lg={16}>
 									<Upload
+										beforeUpload={(info): boolean => checkFileExtension("model", info)}
 										supportServerRender
 										name="file"
 										fileList={assetFile}
@@ -953,6 +1008,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 								</Col>
 								<Col lg={12}>
 									<Upload
+										beforeUpload={(info): boolean => checkFileExtension("source", info)}
 										supportServerRender
 										name="file"
 										fileList={sourceFileList}
@@ -1020,6 +1076,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				previewImage={preview.previewImage}
 				previewVisible={preview.previewVisible}
 				altText="previewImages"
+			/>
+			<AddRetailerModal
+				metadata={metadata}
+				toggleAddRetailerModal={toggleAddRetailerModal}
+				dispatch={dispatchAssetStore}
+				addRetailerModalVisible={addRetailerModalVisible}
 			/>
 		</SizeAdjustedModal>
 	);

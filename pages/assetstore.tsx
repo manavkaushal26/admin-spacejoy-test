@@ -280,6 +280,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 			</Spin>
 
 			<NewAssetModal
+				dispatchAssetStore={dispatch}
 				assetData={editAssetData}
 				setAssetData={setEditAssetData}
 				metadata={state.metaData}

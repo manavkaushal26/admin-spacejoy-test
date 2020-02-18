@@ -1,11 +1,11 @@
-import { DetailedProject, PhaseInternalNames, PhaseCustomerNames } from "@customTypes/dashboardTypes";
+import { DetailedProject, PhaseCustomerNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
+import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Empty, Spin, Typography } from "antd";
+import { Divider, Empty, Row, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { getValueSafely } from "@utils/commonUtils";
-import { CustomDiv, MaxHeightDiv, SilentDivider } from "../styled";
+import { MaxHeightDiv, VerticalPaddedDiv } from "../styled";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
 
@@ -103,12 +103,12 @@ const userProjectMainPanel: React.FC<{
 
 	return (
 		<Spin spinning={loading}>
-			<CustomDiv width="100%" height="100%">
+			<Row>
 				{projectData ? (
 					<>
 						<ProjectSummary projectData={projectData} />
-						<SilentDivider />
-						<BasicDetails projectData={projectData} />
+						<Divider /> <BasicDetails projectData={projectData} />
+						<Divider />
 						<ProjectTabView
 							onTabChangeCallback={onTabChange}
 							currentTab={currentTab}
@@ -122,12 +122,14 @@ const userProjectMainPanel: React.FC<{
 					</>
 				) : (
 					<MaxHeightDiv>
-						<CustomDiv width="100%" height="100%" type="flex" justifyContent="space-around" align="center">
-							<Empty description={<Text>Select a Project to work on!</Text>} />
-						</CustomDiv>
+						<VerticalPaddedDiv>
+							<Row type="flex" justify="center">
+								<Empty description={<Text>Select a Project to work on!</Text>} />
+							</Row>
+						</VerticalPaddedDiv>
 					</MaxHeightDiv>
 				)}
-			</CustomDiv>
+			</Row>
 		</Spin>
 	);
 };
