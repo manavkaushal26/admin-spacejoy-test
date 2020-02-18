@@ -143,7 +143,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 										</Col>
 										<Col sm={12} md={6}>
 											<Row>
-												<Col>Search by Room Type</Col>
+												<Col>Filter by Room Type</Col>
 												<Col>
 													<Select
 														mode="multiple"
@@ -165,7 +165,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 										</Col>
 										<Col sm={12} md={6}>
 											<Row>
-												<Col>Search by Status</Col>
+												<Col>Filter by Status</Col>
 												<Col>
 													<Select
 														onChange={(value): void => handleSelect(value, DesignListAction.STATUS_FILTER)}
@@ -184,7 +184,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 										</Col>
 										<Col sm={24} md={12}>
 											<Row>
-												<Col>Phase Filter</Col>
+												<Col>Filter by Phase</Col>
 												<Col>
 													<Select
 														mode="multiple"

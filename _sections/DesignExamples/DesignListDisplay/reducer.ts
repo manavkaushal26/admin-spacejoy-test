@@ -8,7 +8,7 @@ export interface DesignListDisplayState {
 	searchText: string;
 	phaseFilter: DesignPhases[];
 	roomTypeFilter: RoomTypes[];
-	statusFilter: Status;
+	statusFilter: Status | "";
 }
 
 export enum DesignListAction {
@@ -85,5 +85,5 @@ export const DesignListDisplayInitialState: DesignListDisplayState = {
 	phaseFilter: [],
 	searchText: "",
 	roomTypeFilter: [],
-	statusFilter: Status.active,
+	statusFilter: "",
 };
