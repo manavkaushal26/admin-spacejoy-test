@@ -9,8 +9,9 @@ services:
       - "3000:3000"
     environment:
       - LETSENCRYPT_EMAIL=hello@ndllabs.com
-      - LETSENCRYPT_HOST=spacejoy.com,www.spacejoy.com
-      - VIRTUAL_HOST=spacejoy.com,www.spacejoy.com
+      - LETSENCRYPT_HOST=admin.spacejoy.com
+      - VIRTUAL_HOST=admin.spacejoy.com
+      - NODE_ENV=production
   nginx:
     image: nginx:1.15-alpine
     container_name: nginx

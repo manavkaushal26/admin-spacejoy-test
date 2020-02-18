@@ -8,7 +8,7 @@ const EventName = {
 	click: "Click",
 	landingPage: "LandingPage",
 	routeChange: "RouteChange",
-	PWAInstalled: "PWAInstalled"
+	PWAInstalled: "PWAInstalled",
 };
 
 const dataToPush = (data, type) => {
@@ -43,7 +43,7 @@ const cleverTapPush = (category, action, value, label, event, data) => {
 			Action: action,
 			Value: value,
 			Label: label,
-			Date: new Date()
+			Date: new Date(),
 		});
 	}
 };

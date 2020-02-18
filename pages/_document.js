@@ -1,21 +1,6 @@
-import { page } from "@utils/config";
 import Document, { Head, Main, NextScript } from "next/document";
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
-
-const prod = process.env.NODE_ENV === "production";
-
-const gtm = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-								new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-								j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-								'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-						})(window,document,'script','dataLayer','${page.gtm}');`;
-
-const stopFlicker = `(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date;
-						h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
-						(a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c;
-						})(window,document.documentElement,'async-hide','dataLayer',4000,
-						{'${page.optimize}':true});`;
 
 class MyDocument extends Document {
 	static async getInitialProps(ctx) {
@@ -45,38 +30,14 @@ class MyDocument extends Document {
 		return (
 			<html lang="en-US">
 				<Head>
-					{prod && <script dangerouslySetInnerHTML={{ __html: stopFlicker }} />}
-					<link rel="dns-prefetch" href="//cdnjs.cloudflare.com" />
-					<link rel="dns-prefetch" href="//res.cloudinary.com" />
-					<link rel="dns-prefetch" href="//www.google-analytics.com" />
 					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
 					<link rel="preconnect" href="//res.cloudinary.com" />
-					<link rel="preconnect" href="//www.google-analytics.com" />
-					<link rel="prefetch" href="//js.stripe.com/v3/" />
-					<link rel="prefetch" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-					<link rel="preload" href="/static/styles/reflex.min.css?v1.0.3" as="style" />
-					<link rel="preload" href="/static/styles/style.css?v1.0.3" as="style" />
-					<link rel="preload" href="/static/styles/sanitize.css?v1.0.3" as="style" />
-					<link rel="manifest" href="/static/manifest.json" />
-					<link href="/static/styles/reflex.min.css?v1.0.3" rel="stylesheet" />
-					<link href="/static/styles/style.css?v1.0.3" rel="stylesheet" />
-					<link href="/static/styles/sanitize.css?v1.0.3" rel="stylesheet" />
-					<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
-					<script src="//js.stripe.com/v3/" defer />
+					<link rel="preload" href="/static/styles/style.css?v1.0.4" as="style" />
+					<link rel="manifest" href="/manifest.json" />
+					<link href="/static/styles/style.css?v1.0.4" rel="stylesheet" />
 					{/* <script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} async/> */}
-					{prod && <script dangerouslySetInnerHTML={{ __html: gtm }} />}
 				</Head>
 				<body>
-					{prod && (
-						<noscript>
-							<iframe
-								title="GTM"
-								src={`https://www.googletagmanager.com/ns.html?id=${page.gtm}`}
-								height="0"
-								width="0"
-							/>
-						</noscript>
-					)}
 					<Main />
 					<NextScript />
 				</body>

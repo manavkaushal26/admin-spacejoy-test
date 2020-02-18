@@ -1,16 +1,18 @@
 @font-face {
-	font-family: "Airbnb Cereal App Book";
+	font-family: "AirbnbCerealBook";
 	font-style: normal;
 	font-weight: normal;
-	src: local("Airbnb Cereal App Book"), url("/static/fonts/AirbnbCerealBook.woff") format("woff");
+	src: local("AirbnbCerealBook"), url("/static/fonts/AirbnbCerealBook.woff") format("woff"),
+		url("/static/fonts/AirbnbCerealBook.ttf") format("truetype");
 	font-display: swap;
 }
 
 @font-face {
-	font-family: "Airbnb Cereal App Medium";
+	font-family: "AirbnbCerealBold";
+	src: local("AirbnbCerealBold"), url("/static/fonts/AirbnbCerealBold.woff") format("woff"),
+		url("/static/fonts/AirbnbCerealBold.ttf") format("truetype");
 	font-style: normal;
 	font-weight: normal;
-	src: local("Airbnb Cereal App Medium"), url("/static/fonts/AirbnbCerealMedium.woff") format("woff");
 	font-display: swap;
 }
 
@@ -20,26 +22,21 @@
 	box-sizing: border-box;
 }
 
-body,
 html {
-	font-family: "Airbnb Cereal App Book", arial, sans-serif;
+	font-style: normal;
+	font-variant-ligatures: normal;
+	font-variant-caps: normal;
+	font-variant-numeric: normal;
+	font-variant-east-asian: normal;
+	font-weight: 400;
+	font-stretch: normal;
 	font-size: 14px;
-	line-height: 1.58;
+	line-height: 1.7;
+	font-family: "AirbnbCerealBook", sans-serif, Arial;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-}
-
-.text-center {
-	text-align: center;
-	justify-content: center;
-}
-
-.text-left {
-	text-align: left;
-}
-
-.text-right {
-	text-align: right;
 }
 
 .hidden {
@@ -73,15 +70,15 @@ html {
 
 @media (min-width: 1600px) {
 	.container {
-		max-width: 1300px;
+		max-width: 1400px;
 	}
 }
 
 /* Stripe CSS */
 .StripeElement {
-	padding: 10px 12px;
+	padding: 1rem;
 	border: 1px solid #ddd;
-	border-radius: 5px;
+	border-radius: 2px;
 }
 
 .StripeElement--focus {
@@ -89,9 +86,14 @@ html {
 }
 
 .StripeElement--invalid {
-	border-color: #fa755a;
+	border-color: #e74c3c;
 }
 
 .StripeElement--webkit-autofill {
 	background-color: #fefde5 !important;
+}
+
+/* hide */
+.pnlm-about-msg {
+	display: none !important;
 }

@@ -49,12 +49,12 @@ function ToggleButton({ children, className }) {
 }
 ToggleButton.defaultProps = {
 	children: null,
-	className: ""
+	className: "",
 };
 
 ToggleButton.propTypes = {
 	children: PropTypes.node,
-	className: PropTypes.string
+	className: PropTypes.string,
 };
 
 export default ToggleButton;

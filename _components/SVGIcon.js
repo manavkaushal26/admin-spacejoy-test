@@ -225,7 +225,10 @@ const SVGIcon = ({ name, style, fill, viewBox, width, className, height }) => (
 		viewBox={viewBox || getViewBox(name)}
 		xmlnsXlink="http://www.w3.org/1999/xlink"
 	>
-		<title>spacejoy {name}</title>
+		<title>
+			spacejoy
+			{name}
+		</title>
 		{getPath(name, { fill })}
 	</svg>
 );
@@ -237,7 +240,7 @@ SVGIcon.defaultProps = {
 	viewBox: "",
 	width: 14,
 	className: "",
-	height: 14
+	height: 14,
 };
 
 SVGIcon.propTypes = {
@@ -247,7 +250,7 @@ SVGIcon.propTypes = {
 	viewBox: PropTypes.string,
 	width: PropTypes.number,
 	className: PropTypes.string,
-	height: PropTypes.number
+	height: PropTypes.number,
 };
 
 export default SVGIcon;

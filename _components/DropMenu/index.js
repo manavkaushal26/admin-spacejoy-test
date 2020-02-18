@@ -8,23 +8,19 @@ const ExpandStyled = styled.div`
 	position: absolute;
 	right: 0rem;
 	top: 3rem;
-	padding: 0 0.75rem;
 	background: white;
 	border-radius: 5px;
-	width: 150px;
-	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	box-shadow: 0 0px 10px 0px ${({ theme }) => theme.colors.mild.black};
+	max-width: 300px;
+	box-shadow: 0 -3px 6px 2px ${({ theme }) => theme.colors.mild.black};
 	&:before {
 		content: "";
 		position: absolute;
-		top: -0.4rem;
+		top: -0.5rem;
 		right: 1.5rem;
-		height: 0.75rem;
-		width: 0.75rem;
-		background: white;
+		height: 1rem;
+		width: 1rem;
+		background: ${({ theme }) => theme.colors.bg.light2};
 		transform: rotate(45deg);
-		border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-		border-left: 1px solid ${({ theme }) => theme.colors.bg.dark2};
 	}
 	&:after {
 		content: "";
@@ -39,11 +35,20 @@ const ExpandStyled = styled.div`
 		padding: 0;
 		li {
 			display: block;
-			padding: 0.75rem 0rem;
+			padding: 0.85rem 1.15rem;
 			margin: 0;
-			border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+			&:first-child {
+				color: ${({ theme }) => theme.colors.fc.dark2};
+				border-radius: 5px 5px 0 0;
+				background: ${({ theme }) => theme.colors.bg.light2};
+			}
 			&:last-child {
-				border-bottom: none;
+				border-radius: 0 0 5px 5px;
+				text-transform: uppercase;
+				background: ${({ theme }) => theme.colors.bg.light2};
+				button {
+					color: ${({ theme }) => theme.colors.red};
+				}
 			}
 		}
 	}
@@ -59,29 +64,26 @@ const DropMenuStyled = styled.div`
 `;
 
 class DropMenu extends PureComponent {
-	static Header = ({ children }) => <div>{children}</div>;
+	static Header = ({ children }) => <>{children}</>;
 
 	static Body = ({ children }) => (
-		<ul>
-			{React.Children.map(children, child => (
-				<li>{child}</li>
-			))}
-		</ul>
+		<ExpandStyled>
+			<ul>
+				{React.Children.map(children, child => (
+					<li>{child}</li>
+				))}
+			</ul>
+		</ExpandStyled>
 	);
 
 	render() {
 		const { children } = this.props;
-		return (
-			<DropMenuStyled>
-				{children[0]}
-				<ExpandStyled>{children[1]}</ExpandStyled>
-			</DropMenuStyled>
-		);
+		return <DropMenuStyled>{children}</DropMenuStyled>;
 	}
 }
 
 DropMenu.propTypes = {
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 };
 
 export default DropMenu;

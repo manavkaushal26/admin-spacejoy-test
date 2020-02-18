@@ -25,7 +25,7 @@ const ActiveLink = props => {
 		children,
 		router: { pathname },
 		href,
-		as
+		as,
 	} = props;
 	const orgProps = { ...props };
 	delete orgProps.router;
@@ -43,14 +43,14 @@ const ActiveLink = props => {
 ActiveLink.propTypes = {
 	children: PropTypes.node.isRequired,
 	router: PropTypes.shape({
-		pathname: PropTypes.string
+		pathname: PropTypes.string,
 	}).isRequired,
 	href: PropTypes.oneOfType([PropTypes.string, PropTypes.shape({})]).isRequired,
-	as: PropTypes.string
+	as: PropTypes.string,
 };
 
 ActiveLink.defaultProps = {
-	as: ""
+	as: "",
 };
 
 export default withRouter(ActiveLink);

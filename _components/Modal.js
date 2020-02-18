@@ -72,14 +72,14 @@ class Modal extends PureComponent {
 
 Modal.defaultProps = {
 	close: () => {},
-	size: "50"
+	size: "50",
 };
 
 Modal.propTypes = {
 	isModalOpen: PropTypes.bool.isRequired,
 	close: PropTypes.func,
 	children: PropTypes.node.isRequired,
-	size: PropTypes.string
+	size: PropTypes.string,
 };
 
 export default Modal;

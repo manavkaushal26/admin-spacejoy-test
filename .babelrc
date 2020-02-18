@@ -1,19 +1,22 @@
 {
 	"presets": [["next/babel"]],
 	"plugins": [
+		["import", { "libraryName": "antd", "style": false }],
 		["styled-components", { "ssr": true }],
 		[
 			"module-resolver",
 			{
-				"extensions": [".js", ".jsx", ".es", ".es6", ".mjs"],
+				"extensions": [".js", ".jsx", ".es", ".es6", ".mjs", ".ts", ".tsx"],
 				"root": ["."],
 				"alias": {
 					"@components": "./_components",
 					"@utils": "./_utils",
-					"@mocks": "./_utils/Mocks",
 					"@theme": "./_theme",
 					"@sections": "./_sections",
-					"@static": "./public/static"
+					"@static": "./public/static",
+					"@customTypes": "./types",
+					"@mocks": "./_utils/Mocks",
+					"@api": "./_api"
 				}
 			}
 		]

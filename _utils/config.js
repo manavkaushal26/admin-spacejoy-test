@@ -1,6 +1,7 @@
 const page = {
 	appName: "SpaceJoyWeb",
 	apiBaseUrl: "https://api.spacejoy.com/api",
+	stageApiBaseUrl: "https://server.staging.spacejoy.com/api",
 	placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 	googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
@@ -17,26 +18,33 @@ const page = {
 	facebookPageId: "652491341906462",
 	facebookAppId: "652491341906462",
 	pinterestAppId: "78963155e9328e543f3c8741e7afb48c",
-	whatsAppShareBaseUrl: "https://api.whatsapp.com/send"
+	whatsAppShareBaseUrl: "https://api.whatsapp.com/send",
+};
+
+const projectConfig = {
+	lifetime: 7,
 };
 
 const cookieNames = {
 	authToken: "token",
-	userRole: "role"
+	userRole: "role",
 };
 
 const company = {
-	logo: "https://res.cloudinary.com/spacejoy/image/upload/v1568650421/shared/spacejoy_hgqxoa.svg",
+	logo:
+		process.env.NODE_ENV === "production"
+			? "v1578101355/shared/spacejoy-logo_ase39m.svg"
+			: "v1578482972/shared/spacejoy-logo_rdqft7.svg",
 	name: "Neo Design Labs Inc",
-	product: "Spacejoy",
+	product: "Spacejoy-Dashboard",
 	tagLine: "Designing your imagination",
-	url: "//spacejoy.com",
+	url: "//admin.spacejoy.com",
 	country: "us",
-	subject: "Smart Online Interior Design & Decorating in 3D",
-	description: "Experience the joy of designing your home in 3D using products from brands you can buy immediately",
+	subject: "Dashboard to manage customer projects",
+	description: "Dashboard for managing customer projects by Spacejoy employees",
 	email: {
 		support: "hello@spacejoy.com",
-		connect: ""
+		connect: "",
 	},
 	address: [
 		{
@@ -48,20 +56,20 @@ const company = {
 			pin: "90401",
 			latitude: "",
 			longitude: "",
-			plusCode: "2G73+GH Santa Monica, California, USA"
-		}
+			plusCode: "2G73+GH Santa Monica, California, USA",
+		},
 	],
 	social: {
 		facebook: "https://www.facebook.com/spacejoyapp/",
 		linkedin: "https://www.linkedin.com/company/spacejoy/",
 		twitter: "https://twitter.com/spacejoyapp/",
 		instagram: "https://www.instagram.com/spacejoyapp/",
-		pinterest: "https://in.pinterest.com/spacejoyapp/"
+		pinterest: "https://in.pinterest.com/spacejoyapp/",
 	},
 	app: {
 		android: "https://play.google.com/store/apps/details?id=com.homefuly.idsuite.retail",
-		ios: "https://apps.apple.com/us/app/spacejoy-home-design-makeover/id1484078338"
-	}
+		ios: "https://apps.apple.com/us/app/spacejoy-home-design-makeover/id1484078338",
+	},
 };
 
 // ${secureDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg
@@ -71,12 +79,22 @@ const cloudinary = {
 	apiSecret: "dhn4tENhmmFqoefnjWXtcjlkfUw",
 	environmentVariable: "CLOUDINARY_URL=cloudinary://432541925957862:dhn4tENhmmFqoefnjWXtcjlkfUw@spacejoy",
 	baseDeliveryURL: "//res.cloudinary.com/spacejoy",
-	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy"
+	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy",
+};
+
+const stagingCloudinary = {
+	cloudName: "spacejoy-staging",
+	apiKey: "549421365942597",
+	apiSecret: "wzZmzPhV05-eCkbTC0xI2HNKg9Q",
+	environmentVariable: "CLOUDINARY_URL=cloudinary://549421365942597:wzZmzPhV05-eCkbTC0xI2HNKg9Q@spacejoy-staging",
+	baseDeliveryURL: "//res.cloudinary.com/spacejoy-staging",
+	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy-staging",
 };
 
 module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary
+	cloudinary: process.env.NODE_ENV === "production" ? cloudinary : stagingCloudinary,
+	projectConfig,
 };

@@ -26,12 +26,12 @@ function List({ direction, children }) {
 }
 
 List.defaultProps = {
-	direction: ""
+	direction: "",
 };
 
 List.propTypes = {
 	direction: PropTypes.string,
-	children: PropTypes.node.isRequired
+	children: PropTypes.node.isRequired,
 };
 
 export default List;

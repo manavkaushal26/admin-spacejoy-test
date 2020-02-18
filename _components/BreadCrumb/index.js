@@ -37,7 +37,7 @@ const BreadCrumbStyled = styled.div`
 
 const DMS = () => (
 	<li key="dms">
-		<Link href={{ pathname: "/designMySpace", query: {} }} as="/designMySpace">
+		<Link href="/designMySpace" as="/designMySpace">
 			<a href="/designMySpace">Design My Space</a>
 		</Link>
 	</li>
@@ -114,7 +114,7 @@ function index({ router }) {
 					<BreadCrumbStyled>
 						<ul>
 							<li>
-								<Link href={{ pathname: "/", query: {} }} as="/">
+								<Link href="/" as="/">
 									<a href="/">
 										<SVGIcon name="logo" height={15} width={14} />
 									</a>
@@ -133,9 +133,9 @@ index.propTypes = {
 	router: PropTypes.shape({
 		pathname: PropTypes.string,
 		query: PropTypes.shape({
-			quiz: PropTypes.string
-		})
-	}).isRequired
+			quiz: PropTypes.string,
+		}),
+	}).isRequired,
 };
 
 export default withRouter(index);
