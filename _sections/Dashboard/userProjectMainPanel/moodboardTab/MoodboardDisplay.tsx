@@ -49,7 +49,7 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 									<CustomDiv inline minWidth="30ch" maxWidth="30ch">
 										<ProductCard
 											height="200px"
-											width="auto"
+											width="100%"
 											asset={assetEntry.asset}
 											onCardClick={() => {
 												onPrimaryAssetClick(assetEntry.asset._id);
@@ -64,13 +64,7 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 											assetEntry.recommendations.map(asset => {
 												return (
 													<CustomDiv minWidth="30ch" key={assetEntry._id} inline>
-														<ProductCard
-															height="200px"
-															hoverable={false}
-															width="auto"
-															asset={asset}
-															onCardClick={() => {}}
-														/>
+														<ProductCard height="200px" hoverable={false} asset={asset} onCardClick={() => {}} />
 													</CustomDiv>
 												);
 											})

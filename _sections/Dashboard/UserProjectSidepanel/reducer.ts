@@ -12,6 +12,7 @@ export interface UserProjectSidePanelState {
 	phase: PhaseInternalNames[];
 	name: string;
 	searchResults: UserProjectType[];
+	count: number;
 }
 
 export enum SortFields {
@@ -61,6 +62,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	currentTab: "active",
 	searchResults: [],
 	sortOrder: -1,
+	count: 0,
 };
 
 export const UserProjectSidePanelActionCreator = (
@@ -128,6 +130,7 @@ export const UserProjectSidePanelReducer = (
 				data: [...dataToUpdate],
 				pageCount: action.value.pageCount,
 				hasMore: action.value.hasMore,
+				count: action.value.count,
 			};
 		}
 		case UserProjectSidePanelActionTypes.UPDATE_PROJECT_START_DATE:
