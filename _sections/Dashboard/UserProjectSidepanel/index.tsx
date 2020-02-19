@@ -226,7 +226,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 	const TabSearch = (): JSX.Element => {
 		return (
 			<Collapse activeKey={activePanel} onChange={(keys): void => setActivePanel(keys[0])}>
-				<Collapse.Panel key="filterandsort" header="Sort &amp; Filters">
+				<Collapse.Panel key="filterandsort" header={`Sort & Filters (${state.count} Projects)`}>
 					<Row type="flex" justify="end">
 						<Col>
 							<SilentButton
@@ -435,6 +435,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 						data: responseData,
 						pageCount: state.pageCount + 1,
 						hasMore: true,
+						count: resData.data.count,
 					})
 				);
 			} else {
