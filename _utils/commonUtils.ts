@@ -81,7 +81,7 @@ export const getColorsForPackages = (items: Packages[]): Record<string, string> 
 	}
 	if (items.includes(Packages.delight)) {
 		return {
-			backgroundColor: "#cd2d82",
+			backgroundColor: "#ff75be",
 			color: "white",
 		};
 	}
