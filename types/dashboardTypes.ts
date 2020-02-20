@@ -176,8 +176,8 @@ export enum PackageDesignValue {
 }
 
 export enum PackageTimeline {
-	delight = 12,
-	bliss = 10,
+	delight = 15,
+	bliss = 12,
 	euphoria = 7,
 }
 

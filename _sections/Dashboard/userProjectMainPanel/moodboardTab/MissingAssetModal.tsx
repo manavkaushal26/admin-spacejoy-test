@@ -114,7 +114,12 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 							<List.Item>
 								<Row type="flex" style={{ width: "100%" }}>
 									<Col span={22}>
-										<a style={{ width: "100%" }} href={`${asset.externalUrl}`}>
+										<a
+											style={{ width: "100%" }}
+											target="_blank"
+											rel="noopener noreferrer"
+											href={`${asset.externalUrl}`}
+										>
 											{asset.externalUrl}
 										</a>
 									</Col>

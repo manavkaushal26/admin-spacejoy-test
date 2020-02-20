@@ -26,7 +26,7 @@ const UserProjectCard: React.FC<{
 	const startedTime = phase === PhaseInternalNames.designsInRevision ? phaseStartTime : startedAt;
 	const noOfDays = phase === PhaseInternalNames.designsInRevision ? 5 : getNumberOfDays(items);
 	const sidebarData = {
-		avatarText: getValueSafely(() => customerName[0], "N/A"),
+		avatarText: getValueSafely(() => items[0][0], "N/A"),
 		title: getValueSafely(() => customerName, "N/A"),
 		subHeading: room,
 		uniqueId: projectId,
