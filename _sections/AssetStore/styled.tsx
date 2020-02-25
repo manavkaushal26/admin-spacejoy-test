@@ -1,5 +1,5 @@
 import { Card, Divider, Drawer, Icon, Spin, Slider, Typography, Modal } from "antd";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const { Text } = Typography;
 
@@ -78,4 +78,9 @@ export const SizeAdjustedModal = styled(Modal)`
 	height: 80% !important;
 	min-width: 360px;
 	width: 75% !important;
+`;
+
+export const activeShadows = css`
+	transform: translateY(-2px);
+	box-shadow: 20px 20px 60px #d9d9d9, -20px -20px 60px #ffffff;
 `;

@@ -218,7 +218,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				},
 				imageUrl: assetData.imageUrl,
 				cdn: assetData.cdn,
-				tags: [], // TO BE ADDED LATER
+				tags: assetData.tags, // TO BE ADDED LATER
 				artist: assetData.artist,
 			};
 			dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: newState });
@@ -811,21 +811,43 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						</Row>
 					</Col>
 					<Col>
-						<Row type="flex" gutter={[4, 4]}>
+						<Row type="flex" gutter={[4, 8]}>
 							<Col span={12}>
 								<Row>
-									<Col>Is the Item Shoppable?</Col>
+									<Col span={24}>
+										<Row>
+											<Col>Is the Item Shoppable?</Col>
+										</Row>
+									</Col>
+									<Col span={24}>
+										<Radio.Group
+											onChange={handleChange}
+											value={state.shoppable}
+											name={NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE}
+										>
+											<Radio value>Yes</Radio>
+											<Radio value={false}>No</Radio>
+										</Radio.Group>
+									</Col>
 								</Row>
 							</Col>
 							<Col span={12}>
-								<Radio.Group
-									onChange={handleChange}
-									value={state.shoppable}
-									name={NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE}
-								>
-									<Radio value>Yes</Radio>
-									<Radio value={false}>No</Radio>
-								</Radio.Group>
+								<Row gutter={[4, 4]}>
+									<Col span={24}>
+										<Text>Tags</Text>
+									</Col>
+									<Col span={24}>
+										<Select
+											mode="tags"
+											tokenSeparators={[",", " "]}
+											open={false}
+											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_TAGS)}
+											value={state.tags}
+											placeholder="Tag products"
+											style={{ width: "100%" }}
+										/>
+									</Col>
+								</Row>
 							</Col>
 						</Row>
 					</Col>

@@ -6,10 +6,11 @@ import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import { Button, Col, Icon, message, Popconfirm, Row, Typography } from "antd";
 import { useRouter } from "next/router";
-import React, { useMemo, useState } from "react";
+import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { FullheightSpin, GreyDrawer } from "../styled";
+import { isAssetInMoodboard } from "./utils";
 
 const { Title, Text } = Typography;
 
@@ -56,43 +57,22 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	editAsset,
 	themeIdToNameMap,
 }) => {
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(false);
 
 	const assetId = getValueSafely(() => selectedAssetData._id, "");
 
 	const [imagePreviewVisible, setImagePreviewVisible] = useState<boolean>(false);
 
-	const moodboardAssetIdMap = useMemo(() => {
-		setLoading(true);
-		if (moodboard) {
-			if (assetEntryId) {
-				setLoading(false);
-				return moodboard
-					.filter(asset => asset.isExistingAsset)
-					.find(elem => {
-						return elem.asset._id === assetEntryId;
-					})
-					.recommendations.reduce((acc, currRecommendation) => {
-						return { ...acc, [currRecommendation._id]: currRecommendation._id };
-					}, {});
-			}
-			setLoading(false);
-			return moodboard
-				.filter(asset => asset.isExistingAsset)
-				.reduce((acc, currAsset) => {
-					return { ...acc, [currAsset.asset._id]: currAsset.asset._id };
-				}, {});
-		}
-		setLoading(false);
-		return {};
-	}, [moodboard, assetEntryId]);
-
 	const Router = useRouter();
-	const assetInMoodboard = !!moodboardAssetIdMap[assetId];
+	const assetInMoodboard = useMemo(() => isAssetInMoodboard(moodboard, assetId, assetEntryId), [
+		assetId,
+		moodboard,
+		assetEntryId,
+	]);
 	const onButtonClick = async (): Promise<void> => {
 		setLoading(true);
 		if (assetInMoodboard && !assetEntryId) {
-			const primaryAssetId = moodboardAssetIdMap[assetId];
+			const primaryAssetId = assetId;
 			Router.push(
 				{ pathname: "/assetstore", query: { designId, assetEntryId: primaryAssetId, projectId } },
 				`/assetstore/pid/${projectId}/did/${designId}/aeid/${primaryAssetId}`
@@ -107,7 +87,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 
 	const onRemoveClick = async (): Promise<void> => {
 		setLoading(true);
-		await addRemoveAsset("DELETE", moodboardAssetIdMap[assetId], assetEntryId);
+		await addRemoveAsset("DELETE", assetId, assetEntryId);
 		message.success(assetEntryId ? "Removed Recommendation" : "Removed Primary Asset");
 		setLoading(false);
 	};
@@ -135,7 +115,15 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<Row type="flex" justify="center">
 								<ClickDiv onClick={toggleImagePreviewModal}>
-									<Image width="100%" src={`${selectedAssetData.cdn}`} />
+									<Image
+										width="100%"
+										src={getValueSafely(
+											() => selectedAssetData.cdn,
+											process.env.NODE_ENV === "production"
+												? "v1581080070/admin/productImagePlaceholder.jpg"
+												: "v1581080111/admin/productImagePlaceholder.jpg"
+										)}
+									/>
 								</ClickDiv>
 							</Row>
 						</Col>

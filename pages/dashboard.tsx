@@ -132,7 +132,7 @@ const dashboard: NextPage<DashboardProps> = ({
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName="Dashboard" isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Dashboard | {company.product}</title>
 				{IndexPageMeta}

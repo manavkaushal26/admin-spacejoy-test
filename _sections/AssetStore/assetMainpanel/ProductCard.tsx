@@ -3,7 +3,7 @@ import { AssetType } from "@customTypes/moodboardTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import { Typography, Icon, Row, Col } from "antd";
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { AssetCard } from "../styled";
@@ -17,6 +17,7 @@ interface AssetCards {
 	height?: string;
 	width?: string;
 	verticalMap?: Record<string, string>;
+	actions?: ReactNode[];
 }
 
 const CardPadding = styled.div`
@@ -29,12 +30,13 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 	hoverable = true,
 	height,
 	width,
+	actions,
 	verticalMap,
 }) => {
 	const imageHeight = height || "auto";
 	const imageWidth = width || "100%";
 	return (
-		<AssetCard onClick={(): void => onCardClick(asset)} hoverable={hoverable}>
+		<AssetCard actions={actions || []} onClick={(): void => onCardClick(asset)} hoverable={hoverable}>
 			<Row gutter={[10, 0]}>
 				<Col span={24}>
 					<Image

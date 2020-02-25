@@ -1,12 +1,11 @@
 import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
-import { CustomDiv } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Button, Icon, message, Popconfirm, Typography } from "antd";
+import { Button, Icon, message, Popconfirm, Typography, Row, Col, Card } from "antd";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import styled from "styled-components";
-import { AssetCard } from "../styled";
+import styled, { FlattenSimpleInterpolation } from "styled-components";
+import { activeShadows } from "../styled";
 
 const { Text } = Typography;
 
@@ -21,9 +20,19 @@ interface CartAssetCard {
 	currentlySelectingRecommendation?: boolean;
 }
 
-const BorderlessAssetCard = styled(AssetCard)`
+const BorderlessAssetCard = styled(Card)<{ active?: boolean }>`
 	border: none;
 	background: transparent;
+	:hover {
+		${activeShadows}
+	}
+
+	${({ active }): FlattenSimpleInterpolation => (active ? activeShadows : null)};
+
+	> .ant-card-body {
+		padding: 0px;
+		margin: 1rem 0;
+	}
 `;
 
 const StyledButton = styled(Button)`
@@ -69,82 +78,88 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 	};
 
 	return (
-		<CustomDiv py="8px">
-			<BorderlessAssetCard id="cartCard" hoverable={type === "primary"} onClick={e => redirect(e, type)}>
-				<CustomDiv type="flex">
-					<CustomDiv overflow="hidden" width="30%" justifyContent="center" type="flex" align="center">
-						<Image height="115px" src={`q_80,h_100/${asset.cdn}`} />
-					</CustomDiv>
-					<CustomDiv
-						width="70%"
-						px="8px"
-						py="8px"
-						type="flex"
-						flexWrap="wrap"
-						justifyContent="space-evenly"
-						align="center"
-					>
-						<CustomDiv width="100%">
-							<Text style={{ width: "100%" }} strong ellipsis>
-								{getValueSafely(() => asset.name, "N/A")}
-							</Text>
-						</CustomDiv>
-						<CustomDiv pb="0.2rem" width="100%" type="flex" justifyContent="baseline" align="baseline">
-							<CustomDiv type="flex" pr="5px">
-								<Icon type="link" />
-							</CustomDiv>
-							<CustomDiv>
-								<Text type="secondary">
-									<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
-										{getValueSafely(() => asset.retailer.name, "N/A")}
-									</a>
+		<Col onClick={(e): void => redirect(e, type)}>
+			<BorderlessAssetCard id="cartCard" hoverable={type === "primary"} active={currentlySelectingRecommendation}>
+				<Row gutter={[8, 4]} type="flex" align="middle">
+					<Col span={8}>
+						<Image
+							width="100%"
+							src={`q_80,h_185/${getValueSafely(
+								() => asset.cdn,
+								process.env.NODE_ENV === "production"
+									? "v1581080070/admin/productImagePlaceholder.jpg"
+									: "v1581080111/admin/productImagePlaceholder.jpg"
+							)}`}
+						/>
+					</Col>
+					<Col span={16} style={{ padding: "1rem 0px" }}>
+						<Row gutter={[8, 4]}>
+							<Col span={24}>
+								<Text style={{ width: "100%" }} strong ellipsis>
+									{getValueSafely(() => asset.name, "N/A")}
 								</Text>
-							</CustomDiv>
-						</CustomDiv>
-						<CustomDiv width="100%" type="flex" justifyContent="baseline" pb="0.5rem" align="center">
-							<CustomDiv type="flex" pr="5px">
-								<Icon type="dollar-circle" theme="filled" />
-							</CustomDiv>
-							<CustomDiv>
-								<Text strong>{asset.price}</Text>
-							</CustomDiv>
-						</CustomDiv>
-						<CustomDiv type="flex" width="80%" pr="4px">
-							{type === "primary" && (
-								<Button
-									block
-									onClick={(e): void => {
-										e.stopPropagation();
-										onRecommendationClick(entryId);
-									}}
-								>
-									Recommendations
-								</Button>
-							)}
-						</CustomDiv>
-						<CustomDiv type="flex" width="20%" px="4px">
-							<Popconfirm
-								placement="left"
-								onConfirm={onClick}
-								title="Are you sure?"
-								okText="Yes"
-								disabled={currentlySelectingRecommendation}
-								cancelText="Cancel"
-							>
-								<StyledButton
+							</Col>
+							<Col span={24}>
+								<Row type="flex" gutter={[4, 4]}>
+									<Col>
+										<Icon type="link" />
+									</Col>
+									<Col>
+										<Text type="secondary">
+											<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
+												{getValueSafely(() => asset.retailer.name, "N/A")}
+											</a>
+										</Text>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={24}>
+								<Row type="flex" gutter={[4, 4]}>
+									<Col>
+										<Icon type="dollar-circle" theme="filled" />
+									</Col>
+									<Col>
+										<Text strong>{asset.price}</Text>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={18}>
+								{type === "primary" && (
+									<Button
+										block
+										onClick={(e): void => {
+											e.stopPropagation();
+											onRecommendationClick(entryId);
+										}}
+									>
+										Recommendations
+									</Button>
+								)}
+							</Col>
+							<Col span={5}>
+								<Popconfirm
+									placement="left"
+									onConfirm={onClick}
+									title="Are you sure?"
+									okText="Yes"
 									disabled={currentlySelectingRecommendation}
-									loading={loading}
-									icon="delete"
-									onClick={(e): void => e.stopPropagation()}
-									type="danger"
-									block
-								/>
-							</Popconfirm>
-						</CustomDiv>
-					</CustomDiv>
-				</CustomDiv>
+									cancelText="Cancel"
+								>
+									<StyledButton
+										disabled={currentlySelectingRecommendation}
+										loading={loading}
+										icon="delete"
+										onClick={(e): void => e.stopPropagation()}
+										type="danger"
+										block
+									/>
+								</Popconfirm>
+							</Col>
+						</Row>
+					</Col>
+				</Row>
 			</BorderlessAssetCard>
-		</CustomDiv>
+		</Col>
 	);
 };
 export default CartAssetCard;

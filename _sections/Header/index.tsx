@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import styled from "styled-components";
+import User from "@customTypes/userType";
 import HeaderBody from "./HeaderBody";
 
 const HeaderStyled = styled.div`
@@ -12,7 +13,7 @@ const HeaderStyled = styled.div`
 	z-index: 10;
 `;
 
-class Header extends PureComponent {
+class Header extends PureComponent<{ pageName: string; authVerification: Partial<User> }> {
 	state = {
 		isRaised: false,
 	};
