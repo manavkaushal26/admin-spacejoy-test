@@ -1,7 +1,7 @@
 import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
 import React, { useState } from "react";
-import { Row, Col } from "antd";
+import { Row, Col, Typography } from "antd";
 import User, { Role } from "@customTypes/userType";
 import { useRouter } from "next/router";
 import ActiveLink from "./ActiveLink";
@@ -17,11 +17,14 @@ import {
 import navRight from "./navRight";
 import navCenter from "./navCenter";
 
+const { Text } = Typography;
+
 interface HeaderBody {
 	authVerification: Partial<User>;
+	pageName?: string;
 }
 
-const HeaderBody = ({ authVerification }: HeaderBody) => {
+const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
 
 	const handleClick = () => updateMobileNavStatus(!mobileNavStatus);
@@ -33,7 +36,21 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 					<Row type="flex" justify="space-around" align="middle">
 						<Col span={8}>
 							<ActiveLink href="/launchpad" as="/launchpad">
-								<Logo md />
+								<Row type="flex" align="middle" gutter={[4, 0]}>
+									<Col>
+										<Logo md />
+									</Col>
+									{pageName && (
+										<>
+											<Col>
+												<Text type="secondary">|</Text>
+											</Col>
+											<Col>
+												<Text type="secondary">{pageName}</Text>
+											</Col>
+										</>
+									)}
+								</Row>
 							</ActiveLink>
 						</Col>
 						<Col span={16}>
@@ -50,7 +67,21 @@ const HeaderBody = ({ authVerification }: HeaderBody) => {
 					<Row type="flex" justify="space-around">
 						<Col span={18}>
 							<ActiveLink href="/launchpad" as="/launchpad">
-								<Logo md />
+								<Row type="flex" align="middle" gutter={[4, 0]}>
+									<Col>
+										<Logo md />
+									</Col>
+									{pageName && (
+										<>
+											<Col>
+												<Text type="secondary">|</Text>
+											</Col>
+											<Col>
+												<Text type="secondary">{pageName}</Text>
+											</Col>
+										</>
+									)}
+								</Row>
 							</ActiveLink>
 						</Col>
 						<Col span={6}>

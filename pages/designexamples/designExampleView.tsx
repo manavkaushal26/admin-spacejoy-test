@@ -54,7 +54,7 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName="Design Example View" isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>
 					Design Examples | {designId} | {company.product}

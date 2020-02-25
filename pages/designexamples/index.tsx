@@ -106,7 +106,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 	const debouncedHandleSearch = debounce(handleSearchInput, 500);
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName="Design Examples" isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Design Examples | {company.product}</title>
 				{IndexPageMeta}

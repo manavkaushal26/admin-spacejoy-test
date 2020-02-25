@@ -98,6 +98,7 @@ export enum NEW_ASSET_ACTION_TYPES {
 	ASSET_MOUNT_TYPE = "ASSET_MOUNT_TYPE",
 	ASSET_CLAMP_VALUE = "ASSET_CLAMP_VALUE",
 	ASSET_STATUS = "ASSET_STATUS",
+	ASSET_TAGS = "ASSET_TAGS",
 	SET_ASSET = "SET_ASSET",
 	UPDATE_DIMENSION = "UPDATE_DIMENSION",
 	CLEAR = "CLEAR",
@@ -219,6 +220,11 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 					...state.spatialData,
 					clampValue: action.value,
 				},
+			};
+		case NEW_ASSET_ACTION_TYPES.ASSET_TAGS:
+			return {
+				...state,
+				tags: action.value,
 			};
 		case NEW_ASSET_ACTION_TYPES.SET_ASSET:
 			return {

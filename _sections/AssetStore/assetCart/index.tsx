@@ -1,9 +1,8 @@
 import Image from "@components/Image";
 import { MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
-import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Empty, Icon, Spin, Statistic, Typography } from "antd";
+import { Empty, Icon, Spin, Statistic, Typography, Row, Col } from "antd";
 import React, { useMemo, useState } from "react";
 import { GreyDrawer } from "../styled";
 import CartAssetCard from "./CartAssetCard";
@@ -29,7 +28,7 @@ const AssetCartModal = ({
 	moodboard,
 	addRemoveAsset,
 	dataLoading,
-	selectedAssetId
+	selectedAssetId,
 }: AssetCartModalProps): JSX.Element => {
 	const [selectedEntry, setSelectedEntry] = useState<string>(null);
 
@@ -70,10 +69,14 @@ const AssetCartModal = ({
 	return (
 		<GreyDrawer
 			title={
-				<CustomDiv>
-					<Text>Primary Assets</Text>
-					<Statistic value={costOfMoodboard} prefix={<Icon type="dollar-circle" theme="filled" />} />
-				</CustomDiv>
+				<Row>
+					<Col span={24}>
+						<Text>Primary Assets</Text>
+					</Col>
+					<Col span={24}>
+						<Statistic value={costOfMoodboard} prefix={<Icon type="dollar-circle" theme="filled" />} />
+					</Col>
+				</Row>
 			}
 			width={360}
 			onClose={handlePrimaryMoodboardClose}
@@ -81,67 +84,77 @@ const AssetCartModal = ({
 			visible={cartOpen}
 		>
 			<Spin spinning={dataLoading}>
-				{getValueSafely<boolean>(() => moodboard.length > 0, false) ? (
-					moodboard
-						.filter(assetEntry => assetEntry.isExistingAsset)
-						.map(assetEntry => {
-							return (
+				<Row>
+					{getValueSafely<boolean>(() => moodboard.length > 0, false) ? (
+						moodboard
+							.filter(assetEntry => assetEntry.isExistingAsset)
+							.map(assetEntry => {
+								return (
+									<>
+										<CartAssetCard
+											projectId={projectId}
+											designId={designId}
+											addRemoveAsset={addRemoveAsset}
+											onRecommendationClick={onRecomendationClick}
+											type="primary"
+											currentlySelectingRecommendation={selectedAssetId === assetEntry.asset._id}
+											asset={assetEntry.asset}
+											entryId={assetEntry.asset._id}
+										/>
+									</>
+								);
+							})
+					) : (
+						<Empty description="Add some products to design" />
+					)}
+					{selectedEntry && (
+						<GreyDrawer
+							title={
 								<>
-									<CartAssetCard
-										projectId={projectId}
-										designId={designId}
-										addRemoveAsset={addRemoveAsset}
-										onRecommendationClick={onRecomendationClick}
-										type="primary"
-										currentlySelectingRecommendation={selectedAssetId === assetEntry.asset._id}
-										asset={assetEntry.asset}
-										entryId={assetEntry.asset._id}
-									/>
-									<SilentDivider />
+									<Row type="flex" justify="center" align="middle">
+										<Col span={24}>
+											<Row type="flex" justify="center" align="middle">
+												<Image width="40%" src={`/q_80/${selectedAsset.asset.cdn}`} />
+											</Row>
+										</Col>
+										<Col span={24}>
+											<Row type="flex" justify="center" align="middle">
+												{getValueSafely(() => `${selectedAsset.asset.name} Recommendation`, "Recommendations")}
+											</Row>
+										</Col>
+									</Row>
 								</>
-							);
-						})
-				) : (
-					<Empty description="Add some products to design" />
-				)}
-				{selectedEntry && (
-					<GreyDrawer
-						title={
-							<>
-								<CustomDiv type="flex" flexDirection="column" justifyContent="center" align="center">
-									<Image width="40%" src={`/q_80/${selectedAsset.asset.cdn}`} />
-									{getValueSafely(() => `${selectedAsset.asset.name} Recommendation`, "Recommendations")}
-								</CustomDiv>
-							</>
-						}
-						width={360}
-						onClose={onSecondaryClose}
-						closable
-						visible={selectedEntry !== null}
-					>
-						<Spin spinning={dataLoading}>
-							{selectedAsset && selectedAsset.recommendations.length ? (
-								selectedAsset.recommendations.map(asset => {
-									return (
-										<>
-											<CartAssetCard
-												projectId={projectId}
-												designId={designId}
-												entryId={selectedAsset.asset._id}
-												addRemoveAsset={addRemoveAsset}
-												type="recommendation"
-												asset={asset}
-											/>
-											<SilentDivider />
-										</>
-									);
-								})
-							) : (
-								<Empty description="Add some products as recommendation" />
-							)}
-						</Spin>
-					</GreyDrawer>
-				)}
+							}
+							width={360}
+							onClose={onSecondaryClose}
+							closable
+							visible={selectedEntry !== null}
+						>
+							<Spin spinning={dataLoading}>
+								<Row>
+									{selectedAsset && selectedAsset.recommendations.length ? (
+										selectedAsset.recommendations.map(asset => {
+											return (
+												<>
+													<CartAssetCard
+														projectId={projectId}
+														designId={designId}
+														entryId={selectedAsset.asset._id}
+														addRemoveAsset={addRemoveAsset}
+														type="recommendation"
+														asset={asset}
+													/>
+												</>
+											);
+										})
+									) : (
+										<Empty description="Add some products as recommendation" />
+									)}
+								</Row>
+							</Spin>
+						</GreyDrawer>
+					)}
+				</Row>
 			</Spin>
 		</GreyDrawer>
 	);

@@ -164,7 +164,10 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 
 	const goToButtonClick = (): void => {
 		if (assetEntryId) {
-			Router.back();
+			Router.push(
+				{ pathname: "/assetstore", query: { designId, projectId } },
+				`/dashboard/pid/${projectId}/did/${designId}`
+			);
 			return;
 		}
 		if (!!projectId && !!designId) {
@@ -232,7 +235,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 	}, [state.metaData]);
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName="Asset Store" isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Asset Store | {company.product}</title>
 				{IndexPageMeta}

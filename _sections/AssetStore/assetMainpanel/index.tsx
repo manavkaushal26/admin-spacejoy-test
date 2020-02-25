@@ -2,14 +2,16 @@ import { getAssetApi } from "@api/designApi";
 import Image from "@components/Image";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
-import { CustomDiv, FontCorrectedPre, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
-import { debounce } from "@utils/commonUtils";
+import { ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
+import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Icon, Pagination, Row, Typography } from "antd";
-import React, { useEffect, useRef, useState, useMemo } from "react";
+import { Col, Icon, Pagination, Row, Typography, Popconfirm, message, Tooltip } from "antd";
+import React, { useEffect, useRef, useState, useMemo, ReactNode } from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
+import { categoryIdNameMapper, subCategoryIdNameMapper, verticalIdNameMapper, isAssetInMoodboard } from "./utils";
 
 const { Title, Text } = Typography;
 
@@ -135,7 +137,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 			setPrimaryAsset(null);
 			dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: null });
 		};
-	}, [assetEntryId]);
+	}, [assetEntryId, moodboard]);
 
 	useEffect(() => {
 		setPageCount(1);
@@ -169,31 +171,94 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.heightRange,
 		pageCount,
 	]);
+	const Router = useRouter();
 
 	const categoryMap = useMemo(() => {
-		if (state.metaData) {
-			return state.metaData.categories.list.reduce((acc, category) => ({ ...acc, [category._id]: category.name }), {});
-		}
-		return {};
+		return categoryIdNameMapper(state.metaData);
 	}, [state.metaData]);
 
 	const subCategoryMap = useMemo(() => {
-		if (state.metaData) {
-			return state.metaData.subcategories.list.reduce(
-				(acc, subCategory) => ({ ...acc, [subCategory._id]: subCategory.name }),
-				{}
-			);
-		}
-		return {};
+		return subCategoryIdNameMapper(state.metaData);
 	}, [state.metaData]);
 	const verticalMap = useMemo(() => {
-		if (state.metaData) {
-			return state.metaData.verticals.list.reduce((acc, vertical) => ({ ...acc, [vertical._id]: vertical.name }), {});
-		}
-		return {};
+		return verticalIdNameMapper(state.metaData);
 	}, [state.metaData]);
+
+	const onButtonClick = async (assetId: string, assetInMoodboard: boolean): Promise<void> => {
+		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
+		if (assetInMoodboard && !assetEntryId) {
+			const primaryAssetId = assetId;
+			Router.push(
+				{ pathname: "/assetstore", query: { designId, assetEntryId: primaryAssetId, projectId } },
+				`/assetstore/pid/${projectId}/did/${designId}/aeid/${primaryAssetId}`
+			);
+			await dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
+		} else {
+			await addRemoveAsset("ADD", assetId, assetEntryId);
+			message.success(assetEntryId ? "Added Recommendation" : "Added Primary Asset");
+		}
+		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
+	};
+
+	const onRemoveClick = async (assetId: string): Promise<void> => {
+		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
+
+		await addRemoveAsset("DELETE", assetId, assetEntryId);
+		message.success(assetEntryId ? "Removed Recommendation" : "Removed Primary Asset");
+		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
+	};
+
+	const getActions = (assetId: string, assetInMoodboard: boolean): ReactNode[] => {
+		const actionButtons: ReactNode[] = [];
+		if (assetInMoodboard) {
+			actionButtons.push(
+				<Popconfirm
+					title="Are you sure?"
+					onConfirm={(e): void => {
+						e.stopPropagation();
+						onRemoveClick(assetId);
+					}}
+					okText="Yes"
+					cancelText="Cancel"
+				>
+					<Icon onClick={(e): void => e.stopPropagation()} type="delete" />
+				</Popconfirm>
+			);
+		}
+
+		if (!assetInMoodboard) {
+			actionButtons.push(
+				<Tooltip title="Add">
+					<Icon
+						onClick={(e): void => {
+							e.stopPropagation();
+							onButtonClick(assetId, assetInMoodboard);
+						}}
+						type="plus"
+					/>
+				</Tooltip>
+			);
+		}
+
+		if (assetInMoodboard && !assetEntryId) {
+			actionButtons.push(
+				<Tooltip title="Add Recommendations">
+					<Icon
+						type="cluster"
+						onClick={(e): void => {
+							e.stopPropagation();
+							onButtonClick(assetId, assetInMoodboard);
+						}}
+					/>
+				</Tooltip>
+			);
+		}
+
+		return actionButtons;
+	};
+
 	return (
-		<Row>
+		<Row gutter={[12, 12]}>
 			{projectId && (
 				<Col span={24}>
 					<TopMarginTitle level={3}>
@@ -206,39 +271,80 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 			</Col>
 			{primaryAsset && (
 				<Col span={24}>
-					<CustomDiv pt="0.5rem">
-						<Text strong>For Primary Asset</Text>
-					</CustomDiv>
-					<CustomDiv width="100%" py="1rem" type="flex">
-						<CustomDiv inline>
-							<Image height="100px" src={primaryAsset.cdn} />
-						</CustomDiv>
-						<CustomDiv inline pl="1rem">
-							<CustomDiv type="flex">
-								<Text strong>
-									<FontCorrectedPre>Name: </FontCorrectedPre>
-								</Text>
-								<ModifiedText textTransform="capitalize" type="secondary">
-									{primaryAsset.name}
-								</ModifiedText>
-							</CustomDiv>
-							<CustomDiv py="0.5em" type="flex" justifyContent="baseline" align="center">
-								<CustomDiv type="flex" pr="5px">
-									<Icon type="dollar-circle" theme="filled" />
-								</CustomDiv>
-								<CustomDiv>
-									<Text strong>{primaryAsset.price}</Text>
-								</CustomDiv>
-							</CustomDiv>
-						</CustomDiv>
-					</CustomDiv>
-					<SilentDivider />
+					<Row>
+						<Col>
+							<Title level={4}>Primary Asset</Title>
+						</Col>
+						<Col>
+							<Row type="flex" gutter={[12, 12]}>
+								<Col>
+									<Image height="200px" src={primaryAsset.cdn} />
+								</Col>
+								<Col>
+									<Row>
+										<Col>
+											<Row type="flex" gutter={[8, 0]}>
+												<Col>
+													<Text strong>Name:</Text>
+												</Col>
+												<Col>
+													<ModifiedText textTransform="capitalize" type="secondary">
+														{primaryAsset.name}
+													</ModifiedText>
+												</Col>
+											</Row>
+										</Col>
+										<Col>
+											<Row type="flex" gutter={[8, 0]}>
+												<Col>
+													<Icon type="dollar-circle" theme="filled" />
+												</Col>
+												<Col>
+													<Text strong>{primaryAsset.price}</Text>
+												</Col>
+											</Row>
+										</Col>
+										<Col>
+											<Row type="flex" gutter={[8, 0]}>
+												<Col>
+													<Icon type="link" />
+												</Col>
+												<Col>
+													<Text type="secondary">
+														<a
+															target="_blank"
+															rel="noopener noreferrer"
+															href={getValueSafely(() => primaryAsset.retailLink, "#")}
+														>
+															{getValueSafely(() => primaryAsset.retailer.name, "N/A")}
+														</a>
+													</Text>
+												</Col>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
 				</Col>
 			)}
 			<Col span={24}>
+				<SilentDivider />
+			</Col>
+			<Col span={24}>
 				<MainAssetPanel ref={scrollParentRef}>
 					{assetData.map(asset => {
-						return <ProductCard verticalMap={verticalMap} key={asset._id} asset={asset} onCardClick={onCardClick} />;
+						const assetInMoodboard = isAssetInMoodboard(moodboard, asset._id, assetEntryId);
+						return (
+							<ProductCard
+								actions={getActions(asset._id, assetInMoodboard)}
+								verticalMap={verticalMap}
+								key={asset._id}
+								asset={asset}
+								onCardClick={onCardClick}
+							/>
+						);
 					})}
 				</MainAssetPanel>
 			</Col>

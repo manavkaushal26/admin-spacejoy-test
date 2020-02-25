@@ -28,13 +28,14 @@ interface LayoutProps {
 	isServer?: boolean | undefined;
 	authVerification?: Partial<User>;
 	children: ReactNode;
+	pageName?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ isServer, authVerification, children }) => {
+const Layout: React.FC<LayoutProps> = ({ isServer, authVerification, children, pageName }) => {
 	return (
 		<>
 			<GlobalStyle />
-			<Header authVerification={authVerification} />
+			<Header authVerification={authVerification} pageName={pageName} />
 			<MainStyled isServer={isServer} className={dev ? "client-server-identifier" : ""}>
 				{children}
 			</MainStyled>
@@ -46,8 +47,8 @@ Layout.defaultProps = {
 	isServer: undefined,
 	authVerification: {
 		role: Role.Guest,
-		name: ""
-	}
+		name: "",
+	},
 };
 
 export default Layout;

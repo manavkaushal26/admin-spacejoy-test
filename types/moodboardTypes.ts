@@ -114,6 +114,7 @@ export interface AssetType {
 		_id: string;
 		name: string;
 	};
+	tags: string[];
 }
 
 export interface MoodboardAsset {

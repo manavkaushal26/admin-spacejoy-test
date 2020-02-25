@@ -90,7 +90,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 	}, [authVerification]);
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName="Launchpad" isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Launchpad | {company.product}</title>
 				{IndexPageMeta}
