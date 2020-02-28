@@ -124,18 +124,24 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	};
 
 	useEffect(() => {
-		if (moodboard && assetEntryId) {
+		const aeid = assetEntryId;
+		if (moodboard && aeid) {
 			const asset = moodboard
 				.filter(moodboardAsset => moodboardAsset.isExistingAsset)
 				.find(moodboardAsset => {
-					return moodboardAsset.asset._id === assetEntryId;
+					return moodboardAsset.asset._id === aeid;
 				});
 			setPrimaryAsset(asset.asset);
 			dispatch({ type: ASSET_ACTION_TYPES.SUB_CATEGORY, value: asset.asset });
 		}
 		return (): void => {
-			setPrimaryAsset(null);
-			dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: null });
+			if (aeid === null) {
+				setPrimaryAsset(null);
+			}
+
+			if (aeid !== assetEntryId) {
+				dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: null });
+			}
 		};
 	}, [assetEntryId, moodboard]);
 
@@ -338,7 +344,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 						const assetInMoodboard = isAssetInMoodboard(moodboard, asset._id, assetEntryId);
 						return (
 							<ProductCard
-								actions={getActions(asset._id, assetInMoodboard)}
+								actions={projectId ? getActions(asset._id, assetInMoodboard) : []}
 								verticalMap={verticalMap}
 								key={asset._id}
 								asset={asset}
