@@ -217,9 +217,19 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 						<Filter
 							value={state.retailerFilter}
 							name={{ categoryName: "Retailer", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
-							options={metaData.retailers.list.map(elem => {
-								return { label: elem.name, value: elem._id };
-							})}
+							options={metaData.retailers.list
+								.sort((a, b) => {
+									if (a.name.toLowerCase() > b.name.toLowerCase()) {
+										return 1;
+									}
+									if (b.name.toLowerCase() > a.name.toLowerCase()) {
+										return -1;
+									}
+									return 0;
+								})
+								.map(elem => {
+									return { label: elem.name, value: elem._id };
+								})}
 							dispatch={dispatch}
 						/>
 						<Filter
