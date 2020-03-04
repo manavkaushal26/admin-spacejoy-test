@@ -1,7 +1,8 @@
-import React from "react";
-import { QuizUserResponse, QuizContext, QuizAnswerFieldType } from "@customTypes/dashboardTypes";
 import Image from "@components/Image";
+import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes/dashboardTypes";
+import { cloudinary } from "@utils/config";
 import { Icon, Typography } from "antd";
+import React from "react";
 
 const { Text } = Typography;
 
@@ -39,7 +40,12 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 								file.cdn.endsWith("png") ||
 								file.cdn.endsWith("gif");
 							return (
-								<a key={file._id} href={file.cdn} rel="noopener noreferrer" target="_blank">
+								<a
+									key={file._id}
+									href={`${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`}
+									rel="noopener noreferrer"
+									target="_blank"
+								>
 									{isImage ? <Image src={file.cdn} width="150px" /> : file.cdn}
 								</a>
 							);
