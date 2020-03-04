@@ -34,10 +34,13 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 					<>
 						{response.files.map(file => {
 							const isImage =
-								file.endsWith("jpg") || file.endsWith("jpeg") || file.endsWith("png") || file.endsWith("gif");
+								file.cdn.endsWith("jpg") ||
+								file.cdn.endsWith("jpeg") ||
+								file.cdn.endsWith("png") ||
+								file.cdn.endsWith("gif");
 							return (
-								<a key={file} href={file} rel="noopener noreferrer" target="_blank">
-									{isImage ? <Image src={file} width="150px" /> : file}
+								<a key={file._id} href={file.cdn} rel="noopener noreferrer" target="_blank">
+									{isImage ? <Image src={file.cdn} width="150px" /> : file.cdn}
 								</a>
 							);
 						})}

@@ -409,10 +409,16 @@ export enum RenderImgUploadTypes {
 	Panorama = "panorama",
 }
 
+export interface QuizResponseFileType {
+	_id: string;
+	gcs: string;
+	cdn: string;
+}
+
 export interface QuizUserResponse {
 	value: number | "NaN";
 	text: string;
-	files: string[];
+	files: QuizResponseFileType[];
 	select: true;
 }
 
