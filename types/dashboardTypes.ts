@@ -1,4 +1,5 @@
 import { Status, Role, ProjectRoles } from "./userType";
+import { string, number } from "prop-types";
 
 export enum ProjectScope {
 	customer = Role.Customer,
@@ -406,4 +407,85 @@ export const RoomNameSearch = [
 export enum RenderImgUploadTypes {
 	Render = "render",
 	Panorama = "panorama",
+}
+
+export interface QuizUserResponse {
+	value: number | "NaN";
+	text: string;
+	files: string[];
+	select: true;
+}
+
+export interface QuizQuestionsOptions {
+	secondaryImages: {
+		imageList: string[];
+	};
+	_id: string;
+	label: string;
+	image: string;
+	imageCdn: string;
+	userResponse?: QuizUserResponse;
+}
+
+export enum QuizAnswerFieldType {
+	Select = "select",
+	Text = "text",
+	Value = "value",
+	Stepper = "stepper",
+	Image = "image",
+	Range = "range",
+	File = "file",
+}
+
+export interface QuizContext {
+	hasOptions: boolean;
+	hasOtherAnswer: boolean;
+	multiple: boolean;
+	fieldType: QuizAnswerFieldType;
+}
+
+export interface QuizAnswers {
+	context: QuizContext;
+	validation: {
+		required: boolean;
+		maxCount: number;
+		minCount: number;
+	};
+	options: QuizQuestionsOptions[];
+	userResponse: QuizUserResponse;
+}
+
+export enum QuizStatus {
+	Accepted = "accepted",
+	Rejected = "rejected",
+	Pending = "pending",
+}
+
+export interface QuizQuestions {
+	answer: QuizAnswers;
+	status: Status;
+	responseStatus: QuizStatus;
+	designerComment: string;
+	instructions: string[];
+	mandatory: boolean;
+	_id: string;
+	section: string;
+	title: string;
+	description: string;
+	sequence: number;
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface QuizSectionInterface {
+	instructions: string[];
+	sequence: number;
+	quiz: QuizQuestions[];
+	_id: string;
+	title: string;
+	description: string;
+	timeToCover: string;
+	slug: string;
+	createdAt: string;
+	updatedAt: string;
 }

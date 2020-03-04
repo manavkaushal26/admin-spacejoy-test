@@ -16,11 +16,10 @@ import { getValueSafely, getHumanizedActivePhase } from "@utils/commonUtils";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { Status } from "@customTypes/userType";
 import { SilentDivider } from "../styled";
-import CustomerResponses from "./CustomerResponses";
-import DesignSelection from "./DesignSelection";
 import NotesTab from "./NotesTab";
 import TeamTab from "./TeamTab";
 import CustomerView from "./CustomerView";
+import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
 
 const { TabPane } = Tabs;
 
@@ -57,7 +56,6 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	setProjectData,
 	currentTab,
 }): JSX.Element => {
-	const formData = getValueSafely(() => projectData.form, null);
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
@@ -178,11 +176,6 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					<SilentDivider />
 
 					<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey="pipeline">
-						{formData && (
-							<TabPane tab="Customer Responses" key="cust_resp">
-								<CustomerResponses formData={formData || []} />
-							</TabPane>
-						)}
 						<TabPane tab="Team" key="team">
 							<TeamTab
 								designData={designData}
@@ -220,7 +213,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			) : (
 				<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
 					{!!projectData && (
-						<DesignSelection
+						<ProjectDesignInteractionPanel
 							refetchData={refetchData}
 							setProjectData={setProjectData}
 							projectData={projectData}
