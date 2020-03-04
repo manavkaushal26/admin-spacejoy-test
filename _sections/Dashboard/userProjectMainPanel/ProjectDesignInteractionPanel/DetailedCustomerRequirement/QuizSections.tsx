@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { QuizSectionInterface, QuizAnswerFieldType, QuizStatus } from "@customTypes/dashboardTypes";
-import { Card, Col, Row, Button, notification, Popover, Input } from "antd";
+import { Card, Col, Row, Button, notification, Popover, Input, Typography, Alert } from "antd";
 import { setQuizReviewApi } from "@api/quizApi";
 import fetcher from "@utils/fetcher";
 import QuizResponse from "./QuizResponse";
 
+const { Text } = Typography;
 interface QuizSection {
 	section: QuizSectionInterface;
 	setQuizResponse: React.Dispatch<React.SetStateAction<QuizSectionInterface[]>>;
@@ -79,60 +80,83 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 					<Col key={_id}>
 						<Card
 							key={_id}
-							extra={
-								<Row type="flex" gutter={[8, 8]}>
+							title={
+								<Row type="flex" justify="space-between">
 									<Col>
-										<Button
-											onClick={(): Promise<void> => onReviewButtonClick(quizQuestion._id, QuizStatus.Accepted)}
-											disabled={quizQuestion.responseStatus === QuizStatus.Accepted}
-											type="primary"
-											icon="check"
-										>
-											Accept
-										</Button>
+										<Row gutter={[8, 8]}>
+											<Col>
+												<Text strong>{`${title} ${mandatory ? "*" : ""}`}</Text>
+											</Col>
+											{!!quizQuestion.designerComment && (
+												<Col>
+													<Alert
+														type="error"
+														message="Reason for Rejection"
+														description={quizQuestion.designerComment}
+													/>
+												</Col>
+											)}
+										</Row>
 									</Col>
 									<Col>
-										<Popover
-											content={
-												<Row gutter={[8, 8]}>
-													<Col span={24}>
-														<Input.TextArea value={rejectMessage} onChange={handleMessageChange} />
-													</Col>
-													<Col span={24}>
-														<Row type="flex" justify="end" gutter={[8, 8]}>
-															<Col>
-																<Button
-																	type="danger"
-																	onClick={(): Promise<void> =>
-																		onReviewButtonClick(quizQuestion._id, QuizStatus.Rejected)
-																	}
-																>
-																	Submit
-																</Button>
+										<Row type="flex" gutter={[8, 8]}>
+											<Col>
+												<Button
+													onClick={(): Promise<void> => onReviewButtonClick(quizQuestion._id, QuizStatus.Accepted)}
+													disabled={quizQuestion.responseStatus === QuizStatus.Accepted}
+													type="primary"
+													icon="check"
+												>
+													Accept
+												</Button>
+											</Col>
+											<Col>
+												<Popover
+													content={
+														<Row gutter={[8, 8]}>
+															<Col span={24}>
+																<Input.TextArea value={rejectMessage} onChange={handleMessageChange} />
 															</Col>
-															<Col>
-																<Button onClick={(): void => handleVisibilityChange(false, "")}>Cancel</Button>
+															<Col span={24}>
+																<Row type="flex" justify="end" gutter={[8, 8]}>
+																	<Col>
+																		<Button
+																			type="danger"
+																			onClick={(): Promise<void> =>
+																				onReviewButtonClick(quizQuestion._id, QuizStatus.Rejected)
+																			}
+																		>
+																			Submit
+																		</Button>
+																	</Col>
+																	<Col>
+																		<Button onClick={(): void => handleVisibilityChange(false, "")}>Cancel</Button>
+																	</Col>
+																</Row>
 															</Col>
 														</Row>
-													</Col>
-												</Row>
-											}
-											trigger="click"
-											title="Reason for Rejection"
-											visible={currentQuizId === quizQuestion._id}
-											onVisibleChange={(visible): void => {
-												if (quizQuestion.responseStatus !== QuizStatus.Rejected)
-													handleVisibilityChange(visible, quizQuestion._id);
-											}}
-										>
-											<Button disabled={quizQuestion.responseStatus === QuizStatus.Rejected} type="danger" icon="close">
-												Reject
-											</Button>
-										</Popover>
+													}
+													trigger="click"
+													title="Reason for Rejection"
+													visible={currentQuizId === quizQuestion._id}
+													onVisibleChange={(visible): void => {
+														if (quizQuestion.responseStatus !== QuizStatus.Rejected)
+															handleVisibilityChange(visible, quizQuestion._id);
+													}}
+												>
+													<Button
+														disabled={quizQuestion.responseStatus === QuizStatus.Rejected}
+														type="danger"
+														icon="close"
+													>
+														Reject
+													</Button>
+												</Popover>
+											</Col>
+										</Row>
 									</Col>
 								</Row>
 							}
-							title={`${title} ${mandatory ? "*" : ""}`}
 						>
 							{hasOptions ? (
 								answer.options.map(option => {

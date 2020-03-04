@@ -1,6 +1,7 @@
 import "antd/lib/affix/style";
 import "antd/lib/button/style";
 import "antd/lib/card/style";
+import "antd/lib/alert/style";
 import "antd/lib/carousel/style";
 import "antd/lib/checkbox/style";
 import "antd/lib/col/style";
