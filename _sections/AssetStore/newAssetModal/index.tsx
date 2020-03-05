@@ -13,7 +13,7 @@ import getCookie from "@utils/getCookie";
 import { Button, Col, Icon, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile, RcFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { ClampValuesForVerticals } from "@utils/constants";
+import { MountAndClampValuesForVerticals } from "@utils/constants";
 import AddRetailerModal from "../addRetailerModal";
 import { AssetAction } from "../reducer";
 import { SizeAdjustedModal } from "../styled";
@@ -389,12 +389,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	useEffect(() => {
 		if (state.meta.vertical) {
-			const mountValue = ClampValuesForVerticals[state.meta.vertical];
-			if (mountValue) {
-				if (mountValue >= 0) {
+			const mountAndClampValue = MountAndClampValuesForVerticals[state.meta.vertical];
+			if (mountAndClampValue) {
+				if (mountAndClampValue.clampValue >= 0) {
 					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: 0 });
+				} else {
+					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: -1 });
 				}
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: -1 });
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE, value: mountAndClampValue.mountValue });
 			} else {
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: 0 });
 			}
