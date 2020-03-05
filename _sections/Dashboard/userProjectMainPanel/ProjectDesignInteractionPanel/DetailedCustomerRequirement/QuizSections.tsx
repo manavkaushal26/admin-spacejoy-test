@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { QuizSectionInterface, QuizAnswerFieldType, QuizStatus } from "@customTypes/dashboardTypes";
+import { QuizSectionInterface, QuizStatus } from "@customTypes/dashboardTypes";
 import { Card, Col, Row, Button, notification, Popover, Input, Typography, Alert } from "antd";
 import { setQuizReviewApi } from "@api/quizApi";
 import fetcher from "@utils/fetcher";
