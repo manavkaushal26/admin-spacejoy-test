@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { getValueSafely } from "@utils/commonUtils";
 import { DetailedProject } from "@customTypes/dashboardTypes";
 import CustomerResponses from "@sections/Dashboard/userProjectMainPanel/CustomerResponses";
-import { Tabs, Radio, Row, Col } from "antd";
+import { Radio, Row, Col } from "antd";
 import DetailedCustomerRequirement from "../DetailedCustomerRequirement";
 
 interface CustomerResponsesTab {
@@ -13,33 +13,31 @@ const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData }) =
 	const formData = getValueSafely(() => projectData.form, null);
 	const [currentTab, setCurrentTab] = useState<"quiz1" | "quiz2">("quiz1");
 	return (
-		formData && (
-			<Row gutter={[8, 8]}>
+		<Row gutter={[8, 8]}>
+			<Col>
+				<Row type="flex" justify="center">
+					<Radio.Group
+						value={currentTab}
+						onChange={(e): void => {
+							setCurrentTab(e.target.value);
+						}}
+					>
+						{formData && <Radio.Button value="quiz1">Initial Quiz</Radio.Button>}
+						<Radio.Button value="quiz2">Requirement Quiz</Radio.Button>
+					</Radio.Group>
+				</Row>
+			</Col>
+			{currentTab === "quiz1" && !!formData && (
 				<Col>
-					<Row type="flex" justify="center">
-						<Radio.Group
-							value={currentTab}
-							onChange={(e): void => {
-								setCurrentTab(e.target.value);
-							}}
-						>
-							<Radio.Button value="quiz1">Initial Quiz</Radio.Button>
-							<Radio.Button value="quiz2">Requirement Quiz</Radio.Button>
-						</Radio.Group>
-					</Row>
+					<CustomerResponses formData={formData} />
 				</Col>
-				{currentTab === "quiz1" && (
-					<Col>
-						<CustomerResponses formData={formData} />
-					</Col>
-				)}
-				{currentTab === "quiz2" && (
-					<Col>
-						<DetailedCustomerRequirement projectId={projectData._id} />
-					</Col>
-				)}
-			</Row>
-		)
+			)}
+			{currentTab === "quiz2" && (
+				<Col>
+					<DetailedCustomerRequirement projectId={projectData._id} />
+				</Col>
+			)}
+		</Row>
 	);
 };
 
