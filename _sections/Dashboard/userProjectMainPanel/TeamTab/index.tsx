@@ -1,11 +1,11 @@
 import { teamAssignApi, userApi } from "@api/userApi";
-import { DetailedProject, TeamMember, DetailedDesign } from "@customTypes/dashboardTypes";
+import { DetailedDesign, DetailedProject, TeamMember } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Avatar, Card, Checkbox, Col, Empty, Input, Row, Select, Typography } from "antd";
+import { Avatar, Card, Checkbox, Col, Empty, Input, Pagination, Row, Select, Typography } from "antd";
 import React, { useEffect, useMemo, useReducer } from "react";
-import { CustomDiv, Form } from "../../styled";
+import { CustomDiv } from "../../styled";
 import TeamSidebar from "./TeamSidebar";
 import { DesignerTabActionType, DesignerTabReducer, designerTabReducer, DesignerTabState } from "./teamTabReducer";
 
@@ -27,13 +27,14 @@ const intialState: DesignerTabState = {
 	assignedTeam: [],
 	loading: false,
 	searchText: "",
-	pageCount: 0,
+	totalCount: 0,
 	role: ProjectRoles.Designer,
+	currentPage: 1,
 };
 
 const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Promise<void> => {
 	setLoading(true);
-	const endpoint = userApi();
+	const endpoint = `${userApi()}?skip=${(state.currentPage - 1) * 6}&limit=6`;
 	const responseData = await fetcher({
 		endPoint: endpoint,
 		method: "POST",
@@ -53,7 +54,7 @@ const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Pr
 				type: DesignerTabActionType.UPDATE_DATA,
 				value: {
 					data: responseData.data.data,
-					pageCount: state.pageCount + 1,
+					totalCount: responseData.data.count,
 				},
 			});
 		}
@@ -97,7 +98,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 
 	useEffect(() => {
 		debouncedFetchDesigners(setLoading, state, dispatch);
-	}, [state.role, state.searchText]);
+	}, [state.role, state.searchText, state.currentPage]);
 
 	const onDesignerSelect = (id: string, checked: boolean): void => {
 		if (checked) {
@@ -161,36 +162,53 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 		dispatch({ type: DesignerTabActionType.UPDATE_SEARCH_TEXT, value });
 	};
 
+	const onPageChange = (page): void => {
+		dispatch({ type: DesignerTabActionType.PAGE_CHANGE, value: page });
+	};
+
 	return (
 		<CustomDiv py="10px" px="10px">
-			<Row>
-				<Form>
-					<CustomDiv py="1rem" type="flex">
-						<CustomDiv flexBasis="30ch" align="baseline" type="flex" inline flexDirection="row">
-							<label style={{ flexBasis: "26ch" }}>Search by Name</label>
-							<Input onChange={onSearchTextChange} />
-						</CustomDiv>
-						<CustomDiv pl="0.5rem" flexBasis="30ch" align="baseline" type="flex" inline flexDirection="row">
-							<label style={{ flexBasis: "4ch" }}>Role</label>
-							<Select
-								value={state.role}
-								onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value })}
-							>
-								{Object.keys(ProjectRoles).map(key => (
-									<Option key={key} value={ProjectRoles[key]}>
-										{key}
-									</Option>
-								))}
-							</Select>
-						</CustomDiv>
-					</CustomDiv>
-				</Form>
+			<Row gutter={[16, 8]}>
+				<Col span={24}>
+					<Row type="flex" gutter={[8, 8]}>
+						<Col>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<Text>Search by Name</Text>
+								</Col>
+								<Col span={24}>
+									<Input onChange={onSearchTextChange} />
+								</Col>
+							</Row>
+						</Col>
+						<Col>
+							<Row type="flex" gutter={[8, 8]}>
+								<Col span={24}>
+									<Text>Role</Text>
+								</Col>
+								<Col span={24}>
+									<Select
+										style={{ flexBasis: "30ch" }}
+										value={state.role}
+										onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value })}
+									>
+										{Object.keys(ProjectRoles).map(key => (
+											<Option key={key} value={ProjectRoles[key]}>
+												{key}
+											</Option>
+										))}
+									</Select>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
+				</Col>
 				<Col md={16}>
-					<CustomDiv type="flex" flexWrap="wrap">
+					<Row type="flex" gutter={[8, 8]}>
 						{state.team.length ? (
 							state.team.map(teamMember => {
 								return (
-									<CustomDiv key={teamMember._id} flexBasis="25ch" px="8px" py="8px">
+									<Col key={teamMember._id} span={8}>
 										<Card
 											size="small"
 											title={
@@ -215,7 +233,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 											}
 											extra={
 												<Checkbox
-													checked={selectedDesignersId.map(teamMember => teamMember._id).includes(teamMember._id)}
+													checked={selectedDesignersId.map(member => member._id).includes(teamMember._id)}
 													onChange={e => {
 														onDesignerSelect(teamMember._id, e.target.checked);
 													}}
@@ -225,22 +243,34 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 										>
 											Current Projects: N/A
 										</Card>
-									</CustomDiv>
+									</Col>
 								);
 							})
 						) : (
-							<CustomDiv width="100%" height="100%">
+							<Col span={24}>
 								<Empty description="No Users found" />
-							</CustomDiv>
+							</Col>
 						)}
-					</CustomDiv>
+						<Col span={24}>
+							<Row justify="center" type="flex">
+								<Pagination
+									hideOnSinglePage
+									current={state.currentPage}
+									onChange={onPageChange}
+									total={state.totalCount}
+								/>
+							</Row>
+						</Col>
+					</Row>
 				</Col>
-				<TeamSidebar
-					state={state}
-					onDesignerSelect={onDesignerSelect}
-					selectedDesignersId={selectedDesignersId}
-					assignDesigners={assignDesigners}
-				/>
+				<Col md={8}>
+					<TeamSidebar
+						state={state}
+						onDesignerSelect={onDesignerSelect}
+						selectedDesignersId={selectedDesignersId}
+						assignDesigners={assignDesigners}
+					/>
+				</Col>
 			</Row>
 		</CustomDiv>
 	);

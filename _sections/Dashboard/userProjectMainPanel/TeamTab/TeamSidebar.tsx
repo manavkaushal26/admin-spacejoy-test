@@ -6,6 +6,7 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { GreyColumn, NoBodyCard, StyledButton } from "./styled";
 import { DesignerTabState } from "./teamTabReducer";
+
 const { Text, Title } = Typography;
 
 interface TeamSidebarProps {
@@ -29,7 +30,7 @@ export default function TeamSidebar({
 	state,
 	onDesignerSelect,
 	selectedDesignersId,
-	assignDesigners
+	assignDesigners,
 }: TeamSidebarProps): JSX.Element {
 	const assignedAccountManagers = useMemo(
 		() =>
@@ -46,7 +47,7 @@ export default function TeamSidebar({
 	}, [state.assignedTeam]);
 
 	return (
-		<GreyColumn md={8}>
+		<GreyColumn>
 			<CustomDiv width="100%" type="flex" pt="0.5rem" justifyContent="space-around">
 				<Title level={4}>Team</Title>
 			</CustomDiv>
@@ -61,6 +62,7 @@ export default function TeamSidebar({
 					{assignedAccountManagers.length ? (
 						assignedAccountManagers.map(teamMember => (
 							<NoBodyCard
+								key={teamMember._id}
 								size="small"
 								title={
 									<>
@@ -86,13 +88,13 @@ export default function TeamSidebar({
 											onDesignerSelect(teamMember._id, e.target.checked);
 										}}
 										checked={selectedDesignersId
-											.map(teamMember => {
-												return teamMember._id;
+											.map(member => {
+												return member._id;
 											})
 											.includes(teamMember._id)}
 									/>
 								}
-							></NoBodyCard>
+							/>
 						))
 					) : (
 						<CustomDiv py="1rem" width="100%">
@@ -137,13 +139,13 @@ export default function TeamSidebar({
 											onDesignerSelect(teamMember._id, e.target.checked);
 										}}
 										checked={selectedDesignersId
-											.map(teamMember => {
-												return teamMember._id;
+											.map(member => {
+												return member._id;
 											})
 											.includes(teamMember._id)}
 									/>
 								}
-							></NoBodyCard>
+							/>
 						))
 					) : (
 						<CustomDiv width="100%">

@@ -8,7 +8,8 @@ export enum DesignerTabActionType {
 	ASSIGN_DESIGNER,
 	UNASSIGN_DESIGNER,
 	ROLE_CHANGE,
-	UPDATE_ASSIGNED_DESIGNERS
+	UPDATE_ASSIGNED_DESIGNERS,
+	PAGE_CHANGE,
 }
 
 export interface DesignerTabAction {
@@ -21,8 +22,9 @@ export interface DesignerTabState {
 	assignedTeam: TeamMember[];
 	loading: boolean;
 	searchText: string;
-	pageCount: number;
 	role: ProjectRoles;
+	totalCount: number;
+	currentPage: number;
 }
 
 export interface DesignerTabReducer {
@@ -33,38 +35,43 @@ export const designerTabReducer: DesignerTabReducer = (state, action): DesignerT
 		case DesignerTabActionType.UPDATE_ASSIGNED_DESIGNERS:
 			return {
 				...state,
-				assignedTeam: action.value
+				assignedTeam: action.value,
 			};
 		case DesignerTabActionType.ROLE_CHANGE:
 			return {
 				...state,
-				role: action.value
+				role: action.value,
 			};
 		case DesignerTabActionType.TOGGLE_LOADING:
 			return {
 				...state,
-				loading: !state.loading
+				loading: !state.loading,
 			};
 		case DesignerTabActionType.UPDATE_SEARCH_TEXT:
 			return {
 				...state,
-				searchText: action.value
+				searchText: action.value,
 			};
 		case DesignerTabActionType.UPDATE_DATA:
 			return {
 				...state,
 				team: [...action.value.data],
-				pageCount: action.value.pageCount
+				totalCount: action.value.totalCount,
 			};
 		case DesignerTabActionType.ASSIGN_DESIGNER:
 			return {
 				...state,
-				assignedTeam: [...state.assignedTeam, action.value]
+				assignedTeam: [...state.assignedTeam, action.value],
 			};
 		case DesignerTabActionType.UNASSIGN_DESIGNER:
 			return {
 				...state,
-				assignedTeam: [...state.assignedTeam.filter(member => member._id !== action.value)]
+				assignedTeam: [...state.assignedTeam.filter(member => member._id !== action.value)],
+			};
+		case DesignerTabActionType.PAGE_CHANGE:
+			return {
+				...state,
+				currentPage: action.value,
 			};
 		default:
 			return state;
