@@ -419,7 +419,7 @@ export interface QuizUserResponse {
 	value: number | "NaN";
 	text: string;
 	files: QuizResponseFileType[];
-	select: true;
+	select: boolean;
 }
 
 export interface QuizQuestionsOptions {

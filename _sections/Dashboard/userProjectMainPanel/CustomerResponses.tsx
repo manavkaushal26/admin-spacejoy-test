@@ -1,5 +1,5 @@
 import { FormType } from "@customTypes/dashboardTypes";
-import { Card } from "antd";
+import { Card, Row, Col, Empty } from "antd";
 import React from "react";
 import { CustomDiv, ModifiedText } from "../styled";
 
@@ -9,19 +9,25 @@ interface CustomerResponsesProps {
 
 const CustomerResponses: React.FC<CustomerResponsesProps> = ({ formData }): JSX.Element => {
 	return (
-		<>
-			<CustomDiv py="16px" flexWrap="wrap" type="flex" justifyContent="flex-start">
-				{formData.map(question => {
+		<Row gutter={[8, 8]}>
+			{formData ? (
+				formData.map(question => {
 					return (
-						<CustomDiv key={question.entry} mx="8px" my="8px">
-							<Card title={<ModifiedText>{question.question}</ModifiedText>} size="small">
+						<Col key={question.entry} md={6} sm={12}>
+							<Card title={<ModifiedText textTransform="capitalize">{question.question}</ModifiedText>} size="small">
 								<ModifiedText textTransform="capitalize">{question.answer}</ModifiedText>
 							</Card>
-						</CustomDiv>
+						</Col>
 					);
-				})}
-			</CustomDiv>
-		</>
+				})
+			) : (
+				<Col span={24}>
+					<Row type="flex" justify="center">
+						<Empty description="Customer hasn't provided responses for this section" />
+					</Row>
+				</Col>
+			)}
+		</Row>
 	);
 };
 

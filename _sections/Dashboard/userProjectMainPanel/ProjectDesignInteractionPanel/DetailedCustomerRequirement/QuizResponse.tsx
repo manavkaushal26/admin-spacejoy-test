@@ -3,6 +3,7 @@ import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes
 import { cloudinary } from "@utils/config";
 import { Icon, Typography } from "antd";
 import React from "react";
+import { getValueSafely } from "@utils/commonUtils";
 
 const { Text } = Typography;
 
@@ -12,28 +13,38 @@ interface QuizResponse {
 }
 
 const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
+	const { files, text, select, value } = getValueSafely(
+		() => ({ value: response.value, files: response.files, text: response.text, select: response.select }),
+		{
+			files: [],
+			text: "",
+			select: false,
+			value: 0,
+		}
+	);
+
 	switch (context.fieldType) {
 		case QuizAnswerFieldType.Stepper:
-			if (!response.select) {
+			if (!select) {
 				return <Text>No Answer Provided</Text>;
 			}
-			return <Text>{response.value}</Text>;
+			return <Text>{value}</Text>;
 		case QuizAnswerFieldType.Select:
-			if (response.select) {
+			if (select) {
 				return <Icon type="check-square" theme="twoTone" twoToneColor="#52c41a" />;
 			}
 			return <Icon type="close-square" theme="twoTone" twoToneColor="#f5222d" />;
 		case QuizAnswerFieldType.Text:
-			if (response.text) {
-				return <Text>{response.text}</Text>;
+			if (text) {
+				return <Text>{text}</Text>;
 			}
 			return <Text>No Answer Provided</Text>;
 		case QuizAnswerFieldType.Image:
 		case QuizAnswerFieldType.File: {
-			if (response.files.length !== 0) {
+			if (files.length !== 0) {
 				return (
 					<>
-						{response.files.map(file => {
+						{files.map(file => {
 							const isImage =
 								file.cdn.endsWith("jpg") ||
 								file.cdn.endsWith("jpeg") ||

@@ -22,12 +22,12 @@ const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData }) =
 							setCurrentTab(e.target.value);
 						}}
 					>
-						{formData && <Radio.Button value="quiz1">Initial Quiz</Radio.Button>}
+						<Radio.Button value="quiz1">Initial Quiz</Radio.Button>
 						<Radio.Button value="quiz2">Requirement Quiz</Radio.Button>
 					</Radio.Group>
 				</Row>
 			</Col>
-			{currentTab === "quiz1" && !!formData && (
+			{currentTab === "quiz1" && (
 				<Col>
 					<CustomerResponses formData={formData} />
 				</Col>
