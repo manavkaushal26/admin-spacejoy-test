@@ -39,6 +39,8 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 				return <Text>{text}</Text>;
 			}
 			return <Text>No Answer Provided</Text>;
+		case QuizAnswerFieldType.Value:
+			return <Text>{text}</Text>;
 		case QuizAnswerFieldType.Image:
 		case QuizAnswerFieldType.File: {
 			if (files.length !== 0) {
@@ -71,7 +73,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 			);
 		}
 		default:
-			return <Text>Clueless</Text>;
+			return <Text>Unknown Error</Text>;
 	}
 };
 
