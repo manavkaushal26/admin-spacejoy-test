@@ -254,6 +254,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 						<Col span={24}>
 							<Row justify="center" type="flex">
 								<Pagination
+									pageSize={6}
 									hideOnSinglePage
 									current={state.currentPage}
 									onChange={onPageChange}
