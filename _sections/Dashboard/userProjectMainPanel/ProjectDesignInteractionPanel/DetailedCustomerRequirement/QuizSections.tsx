@@ -162,7 +162,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 								answer.options.map(option => {
 									return (
 										<Row type="flex" gutter={[8, 8]} key={option._id}>
-											<Col>{option.label}: </Col>
+											<Col>{option.label || "Answer"}: </Col>
 											<Col>
 												<QuizResponse context={context} response={option.userResponse} />
 											</Col>
