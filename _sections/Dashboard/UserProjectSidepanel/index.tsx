@@ -9,7 +9,7 @@ import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Collapse, Empty, Icon, Input, Row, Select, Tabs, Typography } from "antd";
+import { Col, Collapse, Empty, Icon, Input, Row, Select, Tabs, Typography, notification } from "antd";
 import hotkeys from "hotkeys-js";
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -462,12 +462,18 @@ const Sidebar: React.FC<SidebarProps> = ({
 	const onStartClick = async (projectId): Promise<void> => {
 		const endpoint = startProjectApi(projectId);
 		const currentTime = new Date().toISOString();
-		await fetcher({
+
+		const response = await fetcher({
 			endPoint: endpoint,
 			method: "PUT",
 			body: { data: {} },
 		});
-		updateStartDate(projectId, currentTime);
+		if (response.statusCode <= 300) {
+			updateStartDate(projectId, currentTime);
+			notification.success({ message: "Project Started Successfully" });
+		} else {
+			notification.error({ message: response.message });
+		}
 	};
 
 	return (
