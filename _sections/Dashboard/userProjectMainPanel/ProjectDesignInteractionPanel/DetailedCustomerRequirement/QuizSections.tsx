@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { QuizSectionInterface, QuizStatus } from "@customTypes/dashboardTypes";
 import { Card, Col, Row, Button, notification, Popover, Input, Typography, Alert } from "antd";
-import { setQuizReviewApi } from "@api/quizApi";
-import fetcher from "@utils/fetcher";
+// import { setQuizReviewApi } from "@api/quizApi";
+// import fetcher from "@utils/fetcher";
 import QuizResponse from "./QuizResponse";
 
 const { Text } = Typography;
@@ -14,56 +14,56 @@ interface QuizSection {
 }
 
 const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizResponse }) => {
-	const [rejectMessage, setRejectMessage] = useState<string>("");
-	const [currentQuizId, setCurrentQuizId] = useState<string>("");
+	// const [rejectMessage, setRejectMessage] = useState<string>("");
+	// const [currentQuizId, setCurrentQuizId] = useState<string>("");
 
-	const onReviewButtonClick = async (quizId: string, status: QuizStatus): Promise<void> => {
-		const endPoint = setQuizReviewApi(projectId);
-		if (status === QuizStatus.Accepted) {
-			const response = await fetcher({
-				endPoint,
-				method: "PUT",
-				body: {
-					data: {
-						[quizId]: {
-							status,
-							comment: "",
-						},
-					},
-				},
-			});
-			setQuizResponse(response.data);
-		} else if (rejectMessage === "") {
-			notification.error({ message: "Please type in the reason why the response is being rejected" });
-		} else {
-			const response = await fetcher({
-				endPoint,
-				method: "PUT",
-				body: {
-					data: {
-						[quizId]: {
-							status,
-							comment: rejectMessage,
-						},
-					},
-				},
-			});
-			setQuizResponse(response.data);
-			setCurrentQuizId("");
-		}
-	};
+	// const onReviewButtonClick = async (quizId: string, status: QuizStatus): Promise<void> => {
+	// 	const endPoint = setQuizReviewApi(projectId);
+	// 	if (status === QuizStatus.Accepted) {
+	// 		const response = await fetcher({
+	// 			endPoint,
+	// 			method: "PUT",
+	// 			body: {
+	// 				data: {
+	// 					[quizId]: {
+	// 						status,
+	// 						comment: "",
+	// 					},
+	// 				},
+	// 			},
+	// 		});
+	// 		setQuizResponse(response.data);
+	// 	} else if (rejectMessage === "") {
+	// 		notification.error({ message: "Please type in the reason why the response is being rejected" });
+	// 	} else {
+	// 		const response = await fetcher({
+	// 			endPoint,
+	// 			method: "PUT",
+	// 			body: {
+	// 				data: {
+	// 					[quizId]: {
+	// 						status,
+	// 						comment: rejectMessage,
+	// 					},
+	// 				},
+	// 			},
+	// 		});
+	// 		setQuizResponse(response.data);
+	// 		setCurrentQuizId("");
+	// 	}
+	// };
 
-	const handleVisibilityChange = (visible: boolean, quizId: string): void => {
-		setRejectMessage("");
-		setCurrentQuizId(quizId);
-	};
+	// const handleVisibilityChange = (visible: boolean, quizId: string): void => {
+	// 	setRejectMessage("");
+	// 	setCurrentQuizId(quizId);
+	// };
 
-	const handleMessageChange = (e): void => {
-		const {
-			target: { value },
-		} = e;
-		setRejectMessage(value);
-	};
+	// const handleMessageChange = (e): void => {
+	// 	const {
+	// 		target: { value },
+	// 	} = e;
+	// 	setRejectMessage(value);
+	// };
 
 	return (
 		<Row gutter={[16, 16]}>
@@ -87,7 +87,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 											<Col>
 												<Text strong>{`${title} ${mandatory ? "*" : ""}`}</Text>
 											</Col>
-											{!!quizQuestion.designerComment && (
+											{/* {!!quizQuestion.designerComment && (
 												<Col>
 													<Alert
 														type="error"
@@ -95,10 +95,10 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 														description={quizQuestion.designerComment}
 													/>
 												</Col>
-											)}
+											)} */}
 										</Row>
 									</Col>
-									<Col>
+									{/* <Col>
 										<Row type="flex" gutter={[8, 8]}>
 											<Col>
 												<Button
@@ -154,7 +154,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 												</Popover>
 											</Col>
 										</Row>
-									</Col>
+									</Col> */}
 								</Row>
 							}
 						>
