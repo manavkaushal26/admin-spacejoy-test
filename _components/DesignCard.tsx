@@ -1,7 +1,7 @@
 import { Card, Col, Icon, Row, Typography, Tag } from "antd";
 import React from "react";
 import { DesignState, DesignImagesInterface } from "@customTypes/dashboardTypes";
-import styled, { css } from "styled-components";
+import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import Image from "./Image";
 
@@ -13,6 +13,7 @@ interface DesignCardProps {
 	designName: string;
 	phase: string;
 	state?: DesignState;
+	feedbackPresent: boolean;
 }
 
 const topRightTick = css`
@@ -35,7 +36,7 @@ const topRightTick = css`
 `;
 
 const StateAwareCards = styled(Card)<{ state: DesignState }>`
-	${({ state }) => (state === DesignState.Finalized ? topRightTick : null)}
+	${({ state }): FlattenSimpleInterpolation | null => (state === DesignState.Finalized ? topRightTick : null)}
 `;
 
 const { Text } = Typography;
@@ -48,6 +49,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	designName,
 	phase,
 	state,
+	feedbackPresent,
 }) => {
 	return (
 		<Col
@@ -80,7 +82,11 @@ const DesignCard: React.FC<DesignCardProps> = ({
 						: null
 				}
 				cover={
-					<Row {...(coverImage.length !== 1 ? { style: { cursor: "auto" }, onClick: e => e.stopPropagation() } : {})}>
+					<Row
+						{...(coverImage.length !== 1
+							? { style: { cursor: "auto" }, onClick: (e): void => e.stopPropagation() }
+							: {})}
+					>
 						<Col span={24}>
 							<BiggerButtonCarousel autoplay>
 								{coverImage.map(image => (
@@ -99,9 +105,10 @@ const DesignCard: React.FC<DesignCardProps> = ({
 							{designName}
 						</Text>
 					</Col>
-					<Col span={24}>
+					<Col span={12}>
 						<Tag>Phase: {phase}</Tag>
 					</Col>
+					<Col span={12}>{feedbackPresent && <Tag color="orange">Feedback</Tag>}</Col>
 				</Row>
 			</StateAwareCards>
 		</Col>

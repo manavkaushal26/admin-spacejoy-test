@@ -192,11 +192,17 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 			<Col span={24}>
 				<Row type="flex" align="stretch" gutter={[8, 8]}>
 					{projectData.designs.map(design => {
+						const feedback = projectData.feedback.filter(designFeedback => {
+							if (design) return designFeedback.reference === design.design._id;
+							return false;
+						});
+
 						return (
 							<DesignCard
 								key={design._id}
 								uniqueId={design.design._id}
 								onSelectCard={onSelectDesign}
+								feedbackPresent={!!feedback.length}
 								coverImage={getValueSafely(
 									() => {
 										const renderImages = design.design.designImages.filter(

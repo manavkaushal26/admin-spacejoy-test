@@ -3,6 +3,7 @@ import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSele
 import { DetailedProject } from "@customTypes/dashboardTypes";
 import { Tabs } from "antd";
 import CustomerResponsesTab from "./CustomerResponesTab";
+import CustomerFeedbackTab from "./CustomerFeedbackTab";
 
 interface ProjectDesignInteractionPanel {
 	projectData: DetailedProject;
@@ -30,6 +31,11 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 			<Tabs.TabPane tab="Customer Responses" key="customerResponses">
 				<CustomerResponsesTab projectData={projectData} />
 			</Tabs.TabPane>
+			{projectData.feedback.length && (
+				<Tabs.TabPane tab="Customer Feedback" key="customerFeedback">
+					<CustomerFeedbackTab projectData={projectData} />
+				</Tabs.TabPane>
+			)}
 		</Tabs>
 	);
 };

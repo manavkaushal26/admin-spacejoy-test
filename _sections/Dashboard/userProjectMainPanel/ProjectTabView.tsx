@@ -20,6 +20,7 @@ import NotesTab from "./NotesTab";
 import TeamTab from "./TeamTab";
 import CustomerView from "./CustomerView";
 import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
+import CustomerFeedbackTab from "./ProjectDesignInteractionPanel/CustomerFeedbackTab";
 
 const { TabPane } = Tabs;
 
@@ -155,6 +156,11 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		}
 	};
 
+	const feedback = projectData.feedback.filter(designFeedback => {
+		if (designData) return designFeedback.reference === designData._id;
+		return false;
+	});
+
 	return (
 		<>
 			{designData !== null ? (
@@ -203,9 +209,19 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 								setDesignData={setDesignData}
 							/>
 						</TabPane>
-						{projectData && (
+						{designData.assets.length && (
 							<TabPane tab="Customer View" key="cust_view">
 								<CustomerView projectName={projectData.name} designData={designData} />
+							</TabPane>
+						)}
+						{feedback.length && (
+							<TabPane tab="Customer Feedback" key="customer_feedback">
+								<CustomerFeedbackTab
+									projectData={{
+										feedback,
+										designs: [...projectData.designs],
+									}}
+								/>
 							</TabPane>
 						)}
 					</ScrollableTabs>

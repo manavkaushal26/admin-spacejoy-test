@@ -226,6 +226,17 @@ export interface DetailedProjectTeamMember {
 	member: TeamMember;
 }
 
+export interface ProjectFeedback {
+	scope: string;
+	_id: string;
+	image: string;
+	author: string;
+	comment: string;
+	reference: string;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export interface DetailedProject {
 	projectScope: ProjectScope;
 	team: DetailedProjectTeamMember[];
@@ -240,7 +251,7 @@ export interface DetailedProject {
 	form: FormType[];
 	completedPhases: Phase[];
 	designs: DesignInterface[];
-	feedback: [];
+	feedback: ProjectFeedback[];
 	createdAt: string;
 	endedAt: string;
 	updatedAt: string;
