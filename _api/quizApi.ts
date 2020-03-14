@@ -3,5 +3,5 @@ export const setQuizReviewApi = (projectId: string): string => {
 };
 
 export const getQuizSectionsApi = (projectId: string, sort = 1): string => {
-	return `/quizsections?sort=${sort}&projectId=${projectId}`;
+	return `/admin/quizsections?sort=${sort}&projectId=${projectId}`;
 };
