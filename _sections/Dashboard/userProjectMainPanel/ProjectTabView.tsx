@@ -1,26 +1,27 @@
-import { designApi, publishDesignApi } from "@api/designApi";
+import { designApi, editDesignApi, publishDesignApi } from "@api/designApi";
+import { CapitalizedText } from "@components/CommonStyledComponents";
+import EditDesignModal from "@components/EditDesignModal";
 import {
 	DetailedDesign,
 	DetailedProject,
-	PhaseInternalNames,
-	PhaseCustomerNames,
 	HumanizeDesignPhases,
+	PhaseCustomerNames,
+	PhaseInternalNames,
 } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
+import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { PageHeader, Spin, Tabs, Button, notification } from "antd";
-import React, { useEffect, useState, useMemo } from "react";
+import { Button, notification, PageHeader, Spin, Tabs } from "antd";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { getValueSafely, getHumanizedActivePhase } from "@utils/commonUtils";
-import { CapitalizedText } from "@components/CommonStyledComponents";
-import { Status } from "@customTypes/userType";
 import { SilentDivider } from "../styled";
-import NotesTab from "./NotesTab";
-import TeamTab from "./TeamTab";
 import CustomerView from "./CustomerView";
+import NotesTab from "./NotesTab";
 import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
 import CustomerFeedbackTab from "./ProjectDesignInteractionPanel/CustomerFeedbackTab";
+import TeamTab from "./TeamTab";
 
 const { TabPane } = Tabs;
 
@@ -60,7 +61,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
-
+	const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
 	const [activeTab, setActiveTab] = useState<string>("pipeline");
 
 	const setProjectPhase = (projectPhase: {
@@ -127,8 +128,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		return designData.status === Status.active ? "Published" : "Publish";
 	}, "Publish");
 
-	const onPublish = async (): Promise<void> => {
-		const endPoint = publishDesignApi(designData._id);
+	const onPublish = async (status?: Status): Promise<void> => {
+		const endPoint = publishDesignApi(designData._id, status);
 		setDesignLoading(true);
 		const response = await fetcher({ endPoint, method: "PUT" });
 
@@ -140,12 +141,17 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			notification.success({
 				message: "Design successfully published",
 			});
+			setEditModalVisible(false);
 		} else {
 			notification.error({
 				message: "Failed to Publish Design",
 			});
 		}
 		setDesignLoading(false);
+	};
+
+	const toggleEditDesignModal = (): void => {
+		setEditModalVisible(prevValue => !prevValue);
 	};
 
 	const onTabChange = (activeKey): void => {
@@ -156,10 +162,31 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		}
 	};
 
-	const feedback = projectData.feedback.filter(designFeedback => {
-		if (designData) return designFeedback.reference === designData._id;
-		return false;
-	});
+	const onClickOk = useCallback(
+		async (dataToUpdate: Partial<DetailedDesign>): Promise<void> => {
+			setDesignLoading(true);
+			const endPoint = editDesignApi(designData._id);
+			const response = await fetcher({ endPoint, method: "PUT", body: { data: dataToUpdate } });
+			if (response.statusCode <= 300) {
+				setDesignData(response.data);
+				notification.success({ message: "Updated Design Successfully" });
+				await onPublish();
+			} else {
+				notification.error({ message: response.message });
+				setDesignLoading(false);
+			}
+		},
+		[designData]
+	);
+
+	const feedback = getValueSafely(
+		() =>
+			projectData.feedback.filter(designFeedback => {
+				if (designData) return designFeedback.reference === designData._id;
+				return false;
+			}),
+		[]
+	);
 
 	return (
 		<>
@@ -172,9 +199,20 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							? null
 							: {
 									extra: [
-										<Button key="publish" onClick={onPublish} type="primary" disabled={publishButtonDisabled}>
-											{publishButtonText}
-										</Button>,
+										publishButtonText !== "Published" ? (
+											<Button
+												key="publish"
+												onClick={toggleEditDesignModal}
+												type="primary"
+												disabled={publishButtonDisabled}
+											>
+												{publishButtonText}
+											</Button>
+										) : (
+											<Button key="unPublish" onClick={(): Promise<void> => onPublish(Status.pending)} type="danger">
+												Unpublish
+											</Button>
+										),
 									],
 							  })}
 						onBack={(): void => onSelectDesign()}
@@ -211,7 +249,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						</TabPane>
 						{designData.assets.length && (
 							<TabPane tab="Customer View" key="cust_view">
-								<CustomerView projectName={projectData.name} designData={designData} />
+								<CustomerView projectName={getValueSafely(() => projectData.name, "")} designData={designData} />
 							</TabPane>
 						)}
 						{feedback.length && (
@@ -225,6 +263,14 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							</TabPane>
 						)}
 					</ScrollableTabs>
+					<EditDesignModal
+						confirmLoading={designLoading}
+						publish={!!projectData}
+						onOk={onClickOk}
+						onCancel={toggleEditDesignModal}
+						designData={designData}
+						visible={editModalVisible}
+					/>
 				</>
 			) : (
 				<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>

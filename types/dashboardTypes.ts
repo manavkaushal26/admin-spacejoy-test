@@ -21,6 +21,13 @@ export enum PhaseInternalNames {
 	suspended = "suspended",
 	rejected = "rejected",
 }
+
+export interface ThemeInterface {
+	_id: string;
+	name: string;
+	description: string;
+}
+
 export enum PhaseCustomerNames {
 	requirement = "requirement",
 	brief = "brief",
@@ -177,8 +184,8 @@ export enum PackageDesignValue {
 }
 
 export enum PackageTimeline {
-	delight = 15,
-	bliss = 12,
+	delight = 12,
+	bliss = 9,
 	euphoria = 7,
 }
 
@@ -352,6 +359,7 @@ export interface DetailedDesign {
 	assets: Assets[];
 	status: Status;
 	room: RoomType;
+
 	team?: DetailedProjectTeamMember[];
 	phases: PhaseType;
 	designImages: DesignImagesInterface[];

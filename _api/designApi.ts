@@ -1,5 +1,6 @@
 import { page } from "@utils/config";
 import { Model3DFiles } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
 
 export const designApi: (designId: string | string[]) => string = designId => {
 	return `/admin/design/${designId}`;
@@ -72,8 +73,16 @@ export const getRoomsListApi = (roomscope, roomType): string => {
 	return `/rooms?keyword=scope:${roomscope},roomType:${roomType}`;
 };
 
-export const publishDesignApi = (designId): string => {
-	return `/design/${designId}/publish?status=active`;
+export const publishDesignApi = (designId, status = Status.active): string => {
+	return `/design/${designId}/publish?status=${status}`;
+};
+
+export const editDesignApi = (designId): string => {
+	return `/design/${designId}`;
 };
 
 // *****************************************************************************************************************
+
+export const getThemes = (): string => {
+	return `/themes`;
+};

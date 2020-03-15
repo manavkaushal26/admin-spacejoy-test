@@ -13,7 +13,7 @@ interface DesignCardProps {
 	designName: string;
 	phase: string;
 	state?: DesignState;
-	feedbackPresent: boolean;
+	feedbackPresent?: boolean;
 }
 
 const topRightTick = css`
