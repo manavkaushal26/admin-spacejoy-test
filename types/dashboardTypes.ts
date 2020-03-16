@@ -103,16 +103,7 @@ export enum DesignState {
 export interface DesignInterface {
 	state: DesignState;
 	_id?: string;
-	design: {
-		lock: false;
-		phases: PhaseType;
-		status: string;
-		_id: string;
-		name: string;
-		description: string;
-		designImages: DesignImagesInterface[];
-		id: string;
-	};
+	design: Partial<DetailedDesign>;
 }
 
 export interface Phase {
@@ -359,7 +350,8 @@ export interface DetailedDesign {
 	assets: Assets[];
 	status: Status;
 	room: RoomType;
-
+	theme: string;
+	tags: string[];
 	team?: DetailedProjectTeamMember[];
 	phases: PhaseType;
 	designImages: DesignImagesInterface[];

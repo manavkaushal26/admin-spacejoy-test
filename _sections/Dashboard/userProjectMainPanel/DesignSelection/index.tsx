@@ -1,10 +1,12 @@
-import { deleteDesignApi } from "@api/designApi";
+import { deleteDesignApi, designCopyApi } from "@api/designApi";
 import { editProjectApi, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import DesignCard from "@components/DesignCard";
+import EditDesignModal from "@components/EditDesignModal";
 import {
 	DesignImgTypes,
 	DesignInterface,
+	DetailedDesign,
 	DetailedProject,
 	PackageDetails,
 	Packages,
@@ -15,7 +17,7 @@ import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, message, Modal, Popconfirm, Row, Select, Typography } from "antd";
+import { Button, Col, Icon, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CopyDesignModal from "./CopyDesignModal";
@@ -91,6 +93,9 @@ const getNumberOfActiveProjects = (designs: DesignInterface[]): number => {
 
 const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesign, setProjectData }) => {
 	const [copyDesignModalVisible, setCopyDesignModalVisible] = useState<boolean>(false);
+	const [editDesignModalVisible, setEditDesignModalVisible] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [designToBeCopied, setDesignToBeCopied] = useState<Partial<DetailedDesign>>(null);
 
 	const toggleCopyDesignModal = (): void => {
 		setCopyDesignModalVisible(!copyDesignModalVisible);
@@ -168,7 +173,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		});
 	};
 
-	const userRole = getCookie(null, cookieNames.userRole);
+	const userRole: Role = getCookie(null, cookieNames.userRole) as Role;
 
 	const onStatusChange = async (value): Promise<void> => {
 		const endpoint = editProjectApi(projectData._id);
@@ -187,6 +192,32 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		});
 	};
 
+	const onCopyAsDesignExampleClick = (data?: string): void => {
+		if (data) {
+			const designData = projectData.designs.find(design => {
+				return design.design._id === data;
+			}).design;
+			setDesignToBeCopied(designData);
+			setEditDesignModalVisible(true);
+		} else {
+			setDesignToBeCopied(null);
+			setEditDesignModalVisible(false);
+		}
+	};
+
+	const onOkClickInCopyDesignModal = async (data): Promise<void> => {
+		setLoading(true);
+		const endPoint = `${designCopyApi(designToBeCopied._id)}?designScope=portfolio`;
+		const response = await fetcher({ endPoint, method: "POST", body: { data: { ...data } } });
+		if (response.statusCode <= 300) {
+			notification.success({ message: "Design has been copied as Design Example" });
+		} else {
+			notification.error({ message: "Failed to copy" });
+		}
+		setLoading(false);
+		onCopyAsDesignExampleClick();
+	};
+
 	return (
 		<Row gutter={[0, 16]}>
 			<Col span={24}>
@@ -203,6 +234,8 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 								uniqueId={design.design._id}
 								onSelectCard={onSelectDesign}
 								feedbackPresent={!!feedback.length}
+								role={userRole}
+								onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
 								coverImage={getValueSafely(
 									() => {
 										const renderImages = design.design.designImages.filter(
@@ -321,6 +354,13 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 					</Row>
 				)}
 			</Col>
+			<EditDesignModal
+				onOk={onOkClickInCopyDesignModal}
+				visible={editDesignModalVisible}
+				onCancel={onCopyAsDesignExampleClick}
+				confirmLoading={loading}
+				designData={designToBeCopied}
+			/>
 			<CopyDesignModal
 				projectData={projectData}
 				toggleModal={toggleCopyDesignModal}

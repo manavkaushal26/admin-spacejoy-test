@@ -45,7 +45,8 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 		if (designData) {
 			setTitle(designData.name);
 			setDescription(designData.description);
-			// setThemes(designData.)
+			setSelectedTheme(designData.theme);
+			setTags(designData.tags);
 		}
 	}, [designData]);
 
@@ -64,7 +65,6 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 	};
 
 	const handleSelect = (value): void => {
-		console.log(value);
 		if (typeof value === "object") setTags(value);
 		else {
 			setSelectedTheme(value);
@@ -123,7 +123,13 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 							<Text>Theme</Text>
 						</Col>
 						<Col span={24}>
-							<Select showSearch optionFilterProp="children" style={{ width: "100%" }}>
+							<Select
+								showSearch
+								optionFilterProp="children"
+								value={selectedTheme}
+								onChange={handleSelect}
+								style={{ width: "100%" }}
+							>
 								{themes.map(theme => {
 									return (
 										<Select.Option key={theme._id} value={theme._id}>

@@ -1,8 +1,9 @@
-import { Card, Col, Icon, Row, Typography, Tag } from "antd";
-import React from "react";
-import { DesignState, DesignImagesInterface } from "@customTypes/dashboardTypes";
-import styled, { css, FlattenSimpleInterpolation } from "styled-components";
+import { DesignImagesInterface, DesignState } from "@customTypes/dashboardTypes";
+import { Role } from "@customTypes/userType";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
+import { Card, Col, Icon, Row, Tag, Typography } from "antd";
+import React, { useState, ReactNode, useEffect } from "react";
+import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import Image from "./Image";
 
 interface DesignCardProps {
@@ -13,7 +14,9 @@ interface DesignCardProps {
 	designName: string;
 	phase: string;
 	state?: DesignState;
+	role?: Role;
 	feedbackPresent?: boolean;
+	onCopyAsDesignExampleClick?: (data: string) => void;
 }
 
 const topRightTick = css`
@@ -41,6 +44,8 @@ const StateAwareCards = styled(Card)<{ state: DesignState }>`
 
 const { Text } = Typography;
 
+const CopyDesignAsDesignExampleRoles = [Role.Admin, Role.Owner];
+
 const DesignCard: React.FC<DesignCardProps> = ({
 	uniqueId,
 	onSelectCard,
@@ -50,7 +55,44 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	phase,
 	state,
 	feedbackPresent,
+	onCopyAsDesignExampleClick,
+	role,
 }) => {
+	const [actions, setActions] = useState<ReactNode[]>([]);
+
+	useEffect(() => {
+		const listOfActions = [];
+
+		if (onDelete) {
+			listOfActions.push(
+				<Icon
+					type="delete"
+					key="delete"
+					onClick={(e): void => {
+						e.stopPropagation();
+						onDelete(uniqueId);
+					}}
+				/>
+			);
+		}
+		if (onCopyAsDesignExampleClick && CopyDesignAsDesignExampleRoles.includes(role)) {
+			listOfActions.push(
+				<Icon
+					type="copy"
+					key="copy"
+					onClick={(e): void => {
+						e.stopPropagation();
+						onCopyAsDesignExampleClick(uniqueId);
+					}}
+				/>
+			);
+		}
+		setActions(listOfActions);
+		return () => {
+			setActions([]);
+		};
+	}, [onDelete, onCopyAsDesignExampleClick, role]);
+
 	return (
 		<Col
 			style={{ display: "flex" }}
@@ -67,20 +109,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 				style={{ width: "100%" }}
 				hoverable
 				onClick={(): void => onSelectCard(uniqueId)}
-				actions={
-					onDelete
-						? [
-								<Icon
-									type="delete"
-									key="delete"
-									onClick={(e): void => {
-										e.stopPropagation();
-										onDelete(uniqueId);
-									}}
-								/>,
-						  ]
-						: null
-				}
+				actions={actions}
 				cover={
 					<Row
 						{...(coverImage.length !== 1
