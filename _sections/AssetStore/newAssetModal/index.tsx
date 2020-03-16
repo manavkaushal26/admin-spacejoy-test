@@ -85,6 +85,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	setAssetData,
 }) => {
 	const [state, dispatch] = useReducer<NewAssetUploadReducer>(reducer, initialState);
+	const [firstLoad, setFirstLoad] = useState<boolean>(true);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 	const [imageFile, setImageFile] = useState<UploadFile<any>[]>([]);
@@ -384,11 +385,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetDepthValid(false);
 			setAssetMountTypeValid(false);
 			setModifiedForm(false);
+			setFirstLoad(true);
 		};
 	}, [isOpen]);
 
 	useEffect(() => {
-		if (state.meta.vertical) {
+		if (state.meta.vertical && !firstLoad) {
 			const mountAndClampValue = MountAndClampValuesForVerticals[state.meta.vertical];
 			if (mountAndClampValue) {
 				if (mountAndClampValue.clampValue >= 0) {
@@ -401,6 +403,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: 0 });
 			}
 		}
+		setFirstLoad(false);
 	}, [state.meta.vertical]);
 
 	const handleOnFileUploadChange = (
@@ -525,7 +528,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		return "Foot";
 	}, [dimensionInInches]);
 
-	const toggleAddRetailerModal = () => {
+	const toggleAddRetailerModal = (): void => {
 		setAddRetailerModalVisible(!addRetailerModalVisible);
 	};
 
