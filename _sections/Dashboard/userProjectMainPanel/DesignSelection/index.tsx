@@ -194,15 +194,25 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 
 	const onCopyAsDesignExampleClick = (data?: string): void => {
 		if (data) {
-			const designData = projectData.designs.find(design => {
-				return design.design._id === data;
-			}).design;
+			const designData = getValueSafely(
+				() =>
+					projectData.designs.find(design => {
+						return design.design._id === data;
+					}).design,
+				null
+			);
 			setDesignToBeCopied(designData);
 			setEditDesignModalVisible(true);
 		} else {
 			setDesignToBeCopied(null);
 			setEditDesignModalVisible(false);
 		}
+	};
+
+	const onClose = () => {
+		setCopyDesignModalVisible(false);
+		setDesignToBeCopied(null);
+		setEditDesignModalVisible(false);
 	};
 
 	const onOkClickInCopyDesignModal = async (data): Promise<void> => {
@@ -357,13 +367,13 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 			<EditDesignModal
 				onOk={onOkClickInCopyDesignModal}
 				visible={editDesignModalVisible}
-				onCancel={onCopyAsDesignExampleClick}
+				onCancel={onClose}
 				confirmLoading={loading}
 				designData={designToBeCopied}
 			/>
 			<CopyDesignModal
 				projectData={projectData}
-				toggleModal={toggleCopyDesignModal}
+				toggleModal={onClose}
 				copyDesignModalVisible={copyDesignModalVisible}
 				setProjectData={setProjectData}
 			/>
