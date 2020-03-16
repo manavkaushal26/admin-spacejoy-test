@@ -25,6 +25,8 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 }) => {
 	const [title, setTitle] = useState<string>();
 	const [description, setDescription] = useState<string>();
+	const [longDescription, setLongDescription] = useState<string>();
+
 	const [tags, setTags] = useState<string[]>([]);
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState<string>("");
@@ -47,6 +49,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 			setDescription(designData.description);
 			setSelectedTheme(designData.theme);
 			setTags(designData.tags);
+			setLongDescription(designData.longDescription);
 		}
 	}, [designData]);
 
@@ -54,7 +57,10 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 		const {
 			target: { name, value },
 		} = e;
-
+		if (name === "longDescription") {
+			setLongDescription(value);
+			return;
+		}
 		if (name === "description") {
 			setDescription(value);
 			return;
@@ -86,6 +92,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 					description,
 					tags,
 					theme: selectedTheme,
+					longDescription,
 				});
 			}}
 			onCancel={onCancel}
@@ -98,22 +105,6 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						</Col>
 						<Col span={24}>
 							<Input onChange={handleChange} placeholder="Title" value={title} name="title" />
-						</Col>
-					</Row>
-				</Col>
-
-				<Col span={24}>
-					<Row>
-						<Col span={24}>
-							<Text>Description</Text>
-						</Col>
-						<Col span={24}>
-							<Input.TextArea
-								onChange={handleChange}
-								placeholder="Description"
-								value={description}
-								name="description"
-							/>
 						</Col>
 					</Row>
 				</Col>
@@ -154,6 +145,37 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 								onChange={handleSelect}
 								tokenSeparators={[","]}
 								mode="tags"
+							/>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
+					<Row>
+						<Col span={24}>
+							<Text>Designer Description</Text>
+						</Col>
+						<Col span={24}>
+							<Input.TextArea
+								onChange={handleChange}
+								placeholder="Description"
+								value={description}
+								name="description"
+							/>
+						</Col>
+					</Row>
+				</Col>
+
+				<Col span={24}>
+					<Row>
+						<Col span={24}>
+							<Text>Long Description</Text>
+						</Col>
+						<Col span={24}>
+							<Input.TextArea
+								onChange={handleChange}
+								placeholder="Long Description"
+								value={longDescription}
+								name="longDescription"
 							/>
 						</Col>
 					</Row>

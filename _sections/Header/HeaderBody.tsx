@@ -1,21 +1,23 @@
 import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
-import React, { useState } from "react";
-import { Row, Col, Typography } from "antd";
 import User, { Role } from "@customTypes/userType";
+import { logout } from "@utils/auth";
+import { Col, Row, Typography } from "antd";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
+import Button from "@components/Button";
 import ActiveLink from "./ActiveLink";
+import navCenter from "./navCenter";
+import navRight from "./navRight";
 import {
 	HorizontalListStyled,
-	PaddedDiv,
 	MobileHiddenStyled,
 	MobileNavVisibleStyled,
+	MobileVisibleStyled,
 	OverlayStyled,
 	PaddedButton,
-	MobileVisibleStyled,
+	PaddedDiv,
 } from "./styled";
-import navRight from "./navRight";
-import navCenter from "./navCenter";
 
 const { Text } = Typography;
 

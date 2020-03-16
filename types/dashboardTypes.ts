@@ -352,6 +352,7 @@ export interface DetailedDesign {
 	room: RoomType;
 	theme: string;
 	tags: string[];
+	longDescription: string;
 	team?: DetailedProjectTeamMember[];
 	phases: PhaseType;
 	designImages: DesignImagesInterface[];
