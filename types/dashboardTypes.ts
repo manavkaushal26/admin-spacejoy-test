@@ -347,6 +347,10 @@ export interface DetailedDesign {
 	_id: string;
 	name: string;
 	description: string;
+	searchKey: {
+		retailers: string[];
+		roomType: RoomTypes;
+	};
 	assets: Assets[];
 	status: Status;
 	room: RoomType;

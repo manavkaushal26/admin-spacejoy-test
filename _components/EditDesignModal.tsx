@@ -1,8 +1,9 @@
-import { DetailedDesign, ThemeInterface } from "@customTypes/dashboardTypes";
+import { DetailedDesign, ThemeInterface, RoomTypes, RoomLabels } from "@customTypes/dashboardTypes";
 import { Col, Input, Modal, Row, Select, Typography, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import { getThemes } from "@api/designApi";
 import fetcher from "@utils/fetcher";
+import { getValueSafely } from "@utils/commonUtils";
 
 const { Text } = Typography;
 
@@ -30,9 +31,10 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 	const [tags, setTags] = useState<string[]>([]);
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState<string>("");
+	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 
 	const fetchThemes = async (): Promise<void> => {
-		const endPoint = getThemes();
+		const endPoint = `${getThemes()}?limit=all`;
 
 		const response = await fetcher({ endPoint, method: "GET" });
 
@@ -50,6 +52,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 			setSelectedTheme(designData.theme);
 			setTags(designData.tags);
 			setLongDescription(designData.longDescription);
+			setRoomType(getValueSafely(() => designData.searchKey.roomType, RoomTypes.LivingRoom));
 		}
 	}, [designData]);
 
@@ -93,6 +96,9 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 					tags,
 					theme: selectedTheme,
 					longDescription,
+					searchKey: {
+						roomType,
+					},
 				});
 			}}
 			onCancel={onCancel}
@@ -133,6 +139,24 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 					</Row>
 				</Col>
 				<Col span={12}>
+					<Row>
+						<Col>
+							<Text>Room Type</Text>
+						</Col>
+						<Col>
+							<Select style={{ width: "100%" }} onChange={setRoomType} value={roomType}>
+								{Object.keys(RoomTypes).map(key => {
+									return (
+										<Select.Option key={key} value={RoomTypes[key]}>
+											{RoomLabels[key]}
+										</Select.Option>
+									);
+								})}
+							</Select>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
 					<Row>
 						<Col span={24}>
 							<Text>Tags</Text>
