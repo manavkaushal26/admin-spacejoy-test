@@ -18,6 +18,7 @@ const UserProjectCard: React.FC<{
 			name: { internalName: phase },
 			startTime: phaseStartTime,
 		},
+		endedAt,
 		status,
 	} = userProjectData;
 
@@ -33,6 +34,7 @@ const UserProjectCard: React.FC<{
 		phase,
 		startedAt: startedTime,
 		status,
+		endedAt,
 		avatarStyle: getColorsForPackages(items),
 		onClick: handleSelectCard,
 		selectedId: selectedUser,

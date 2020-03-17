@@ -209,7 +209,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 		}
 	};
 
-	const onClose = () => {
+	const onClose = (): void => {
 		setCopyDesignModalVisible(false);
 		setDesignToBeCopied(null);
 		setEditDesignModalVisible(false);

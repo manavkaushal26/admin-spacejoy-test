@@ -15,6 +15,7 @@ interface SidebarCard {
 	uniqueId: string;
 	phase: PhaseInternalNames;
 	startedAt: string;
+	endedAt: string;
 	status: Status;
 	avatarStyle: Record<string, string>;
 	onClick: (uniqueId: string) => void;
@@ -57,6 +58,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	avatarStyle,
 	onClick,
 	selectedId,
+	endedAt,
 	onStartClick,
 	startedAt,
 	status,
@@ -126,7 +128,11 @@ const SidebarCard: React.FC<SidebarCard> = ({
 								<Text>Start</Text>
 							</Button>
 						) : (
-							<ProgressBar phase={phase} endTime={moment(startedAt).add(noOfDays, "days")} width={30} />
+							<ProgressBar
+								phase={phase}
+								endTime={endedAt ? moment(endedAt) : moment(startedAt).add(noOfDays, "days")}
+								width={30}
+							/>
 						)}
 					</Row>
 				</Col>

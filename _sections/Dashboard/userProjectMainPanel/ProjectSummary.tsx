@@ -43,6 +43,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		customer,
 		createdAt,
 		startedAt,
+		endedAt,
 		currentPhase: {
 			name: { internalName: phase },
 			startTime: phaseStartedAt,
@@ -56,6 +57,8 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 	const endTime =
 		phase === PhaseInternalNames.designsInRevision
 			? moment(phaseStartedAt).add(5, "days")
+			: endedAt
+			? moment(endedAt)
 			: moment(startTime).add(getNumberOfDays(items), "days");
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;

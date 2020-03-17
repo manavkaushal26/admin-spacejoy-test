@@ -1,4 +1,4 @@
-import { PhaseCustomerNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
@@ -48,7 +48,7 @@ const dashboard: NextPage<DashboardProps> = ({
 }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading] = useState<boolean>(false);
-	const [startDate, setStartDate] = useState<string>(null);
+	const [dates, setDates] = useState<Partial<UserProjectType>>(null);
 
 	const [collapsed, setCollapsed] = useState<boolean>(false);
 
@@ -112,9 +112,12 @@ const dashboard: NextPage<DashboardProps> = ({
 	 * @param pid ProjectID
 	 * @param startDate Time when the start button is clicked in the sidepanel
 	 */
-	const updateStartDateInMainPanel = (pid, date): void => {
+	const updateStartDateInMainPanel = (pid, data: Partial<UserProjectType>): void => {
 		if (pid === projectId) {
-			setStartDate(date);
+			setDates({
+				startedAt: data.startedAt,
+				endedAt: data.endedAt,
+			});
 		}
 	};
 
@@ -169,8 +172,8 @@ const dashboard: NextPage<DashboardProps> = ({
 										updateProjectPhaseInSidepanel={updateProjectPhaseInSidepanel}
 										designId={designId}
 										userProjectId={selectedUser}
-										startDate={startDate}
-										setStartDate={setStartDate}
+										dates={dates}
+										setDates={setDates}
 										currentTab={currentTab}
 									/>
 								</PaddedDiv>

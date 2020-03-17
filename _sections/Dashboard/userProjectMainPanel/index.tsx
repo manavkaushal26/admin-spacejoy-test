@@ -1,4 +1,4 @@
-import { DetailedProject, PhaseCustomerNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { DetailedProject, PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
@@ -22,9 +22,9 @@ const userProjectMainPanel: React.FC<{
 	currentTab: string;
 	userProjectId: string;
 	designId: string;
-	startDate: string;
-	setStartDate: React.Dispatch<React.SetStateAction<string>>;
-}> = ({ updateProjectPhaseInSidepanel, userProjectId, designId, startDate, setStartDate, currentTab }): JSX.Element => {
+	dates: Partial<UserProjectType>;
+	setDates: React.Dispatch<React.SetStateAction<Partial<DetailedProject>>>;
+}> = ({ updateProjectPhaseInSidepanel, userProjectId, designId, dates, setDates, currentTab }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const Router = useRouter();
@@ -50,14 +50,15 @@ const userProjectMainPanel: React.FC<{
 	]);
 
 	useEffect(() => {
-		if (startDate) {
+		if (dates) {
 			setProjectData({
 				...projectData,
-				startedAt: startDate,
+				endedAt: dates.endedAt,
+				startedAt: dates.startedAt,
 			});
-			setStartDate(null);
+			setDates(null);
 		}
-	}, [startDate]);
+	}, [dates]);
 
 	const onSelectDesign = (selectedDesignId?: string): void => {
 		if (selectedDesignId) {

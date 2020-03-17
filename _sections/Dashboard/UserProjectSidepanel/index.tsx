@@ -4,6 +4,7 @@ import {
 	PhaseCustomerNames,
 	PhaseInternalNames,
 	RoomNameSearch,
+	UserProjectType,
 } from "@customTypes/dashboardTypes";
 import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
@@ -44,7 +45,7 @@ const GrayMaxHeightDiv = styled(MaxHeightDiv)`
 `;
 
 interface SidebarProps {
-	updateStartDateInMainPanel: (pid: string, date: string) => void;
+	updateStartDateInMainPanel: (pid: string, date: Partial<UserProjectType>) => void;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
 	projectPhaseUpdateValue: {
@@ -385,23 +386,24 @@ const Sidebar: React.FC<SidebarProps> = ({
 		);
 	};
 
-	const updateStartDate = (projectId, startDate): void => {
+	const updateEndDate = (projectId, endDate, startedAt): void => {
 		const newData = state.data.map(project => {
 			if (project._id === projectId) {
 				return {
 					...project,
-					startedAt: startDate,
+					startedAt,
+					endedAt: endDate,
 				};
 			}
 
 			return { ...project };
 		});
 		dispatch(
-			UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_PROJECT_START_DATE, {
+			UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_PROJECT_END_DATE, {
 				data: newData,
 			})
 		);
-		updateStartDateInMainPanel(projectId, startDate);
+		updateStartDateInMainPanel(projectId, { startedAt, endedAt: endDate });
 	};
 
 	const fetchData = async (): Promise<void> => {
@@ -461,7 +463,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 	const onStartClick = async (projectId): Promise<void> => {
 		const endpoint = startProjectApi(projectId);
-		const currentTime = new Date().toISOString();
 
 		const response = await fetcher({
 			endPoint: endpoint,
@@ -469,7 +470,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 			body: { data: {} },
 		});
 		if (response.statusCode <= 300) {
-			updateStartDate(projectId, currentTime);
+			updateEndDate(projectId, response.data.endedAt, response.data.startedAt);
 			notification.success({ message: "Project Started Successfully" });
 		} else {
 			notification.error({ message: response.message });

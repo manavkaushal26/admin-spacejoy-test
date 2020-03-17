@@ -34,6 +34,7 @@ export enum UserProjectSidePanelActionTypes {
 	SORT_BY,
 	CLEAR_DATA,
 	UPDATE_PROJECT_START_DATE,
+	UPDATE_PROJECT_END_DATE,
 }
 
 export interface UserProjectSidePanelAction {
@@ -133,7 +134,7 @@ export const UserProjectSidePanelReducer = (
 				count: action.value.count,
 			};
 		}
-		case UserProjectSidePanelActionTypes.UPDATE_PROJECT_START_DATE:
+		case UserProjectSidePanelActionTypes.UPDATE_PROJECT_END_DATE:
 			return {
 				...state,
 				data: [...action.value.data],
