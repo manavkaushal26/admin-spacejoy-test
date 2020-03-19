@@ -8,7 +8,7 @@ import {
 import { getColorsForPackages, getNumberOfDays, getValueSafely } from "@utils/commonUtils";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { getTagColor, StyledTag } from "../styled";
 
@@ -46,20 +46,21 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		endedAt,
 		currentPhase: {
 			name: { internalName: phase },
-			startTime: phaseStartedAt,
+			startTime: phaseStartTime,
 		},
 	} = projectData;
 
 	const items = getValueSafely(() => projectData.order.items, []);
 
-	const startTime = startedAt || createdAt;
-
-	const endTime =
-		phase === PhaseInternalNames.designsInRevision
-			? moment(phaseStartedAt).add(5, "days")
-			: endedAt
-			? moment(endedAt)
-			: moment(startTime).add(getNumberOfDays(items), "days");
+	const endTime = useMemo(() => {
+		if (phase === PhaseInternalNames.designsInRevision) {
+			return moment(phaseStartTime).add(5, "days");
+		}
+		if (endedAt) {
+			return moment(endedAt);
+		}
+		return moment(createdAt).add(getNumberOfDays(items), "days");
+	}, [endedAt, startedAt]);
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
 	}, room);

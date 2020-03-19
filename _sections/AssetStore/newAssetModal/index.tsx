@@ -664,7 +664,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 															size="default"
 															icon="plus"
 														>
-															Add Item
+															Add Retailer
 														</Button>
 													</Col>
 												</Row>

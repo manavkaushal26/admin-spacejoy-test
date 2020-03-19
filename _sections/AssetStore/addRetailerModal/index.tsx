@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, Input, Typography, Row, Col } from "antd";
+import { Modal, Input, Typography, Row, Col, notification } from "antd";
 import { addRetailerApi } from "@api/assetApi";
 import fetcher from "@utils/fetcher";
 import { MetaDataType } from "@customTypes/moodboardTypes";
@@ -28,6 +28,9 @@ const AddRetailerModal: React.FC<AddRetailerModal> = ({
 	const [name, setName] = useState("");
 	const [url, setUrl] = useState("");
 	const [urlError, setUrlError] = useState<boolean>(true);
+
+	const [loading, setLoading] = useState<boolean>(false);
+
 	const onChange = (e): void => {
 		e.persist();
 		const {
@@ -54,6 +57,7 @@ const AddRetailerModal: React.FC<AddRetailerModal> = ({
 	};
 
 	const addRetailer = async (): Promise<void> => {
+		setLoading(true);
 		const endPoint = addRetailerApi();
 		const response = await fetcher({
 			endPoint,
@@ -67,19 +71,23 @@ const AddRetailerModal: React.FC<AddRetailerModal> = ({
 				},
 			},
 		});
-		if (response.statusCode <= 300) {
+		if (response.status === "success") {
 			const retailers = { ...metadata.retailers };
 			retailers.list.push(response.data);
 			retailers.count += 1;
 			dispatch({ type: ASSET_ACTION_TYPES.METADATA, value: { ...metadata, retailers } });
+			notification.success({ message: "Retailer Added" });
 			toggleAddRetailerModal();
+		} else {
+			notification.error({ message: "Failed to add Retailer" });
 		}
+		setLoading(false);
 	};
 
 	return (
 		<Modal
 			okText="Add"
-			okButtonProps={{ disabled: urlError || !name.length }}
+			okButtonProps={{ disabled: urlError || !name.length, loading }}
 			visible={addRetailerModalVisible}
 			title="Add Retailer"
 			onOk={addRetailer}

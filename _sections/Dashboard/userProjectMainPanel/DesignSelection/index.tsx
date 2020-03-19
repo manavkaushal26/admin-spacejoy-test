@@ -126,7 +126,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 	const numberOfActiveProjects = getNumberOfActiveProjects(projectData.designs);
 
 	const onSubmit = (): void => {
-		updateStatus();
+		updateStatus(PhaseInternalNames.designReady);
 	};
 
 	const sendToRevision = (): void => {

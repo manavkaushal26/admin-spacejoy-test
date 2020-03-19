@@ -4,7 +4,7 @@ import { Status } from "@customTypes/userType";
 import { getTagColor } from "@sections/Dashboard/styled";
 import { Avatar, Button, Card, Col, Row, Typography } from "antd";
 import moment from "moment";
-import React from "react";
+import React, { useMemo } from "react";
 import styled, { css } from "styled-components";
 import { CapitalizedText, StyledTag } from "./CommonStyledComponents";
 
@@ -15,6 +15,7 @@ interface SidebarCard {
 	uniqueId: string;
 	phase: PhaseInternalNames;
 	startedAt: string;
+	phaseStartTime: string;
 	endedAt: string;
 	status: Status;
 	avatarStyle: Record<string, string>;
@@ -54,6 +55,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	title,
 	phase,
 	noOfDays,
+	phaseStartTime,
 	uniqueId,
 	avatarStyle,
 	onClick,
@@ -63,6 +65,15 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	startedAt,
 	status,
 }) => {
+	const endTime = useMemo(() => {
+		if (phase === PhaseInternalNames.designsInRevision) {
+			return moment(phaseStartTime).add(5, "days");
+		}
+		if (endedAt) {
+			return moment(endedAt);
+		}
+		return moment(startedAt).add(noOfDays, "days");
+	}, [endedAt, startedAt]);
 	return (
 		<SidebarCards
 			size="small"
@@ -116,7 +127,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 				</Col>
 				<Col span={4}>
 					<Row type="flex" justify="end">
-						{!startedAt ? (
+						{!endedAt ? (
 							<Button
 								onClick={e => {
 									e.stopPropagation();
@@ -128,11 +139,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 								<Text>Start</Text>
 							</Button>
 						) : (
-							<ProgressBar
-								phase={phase}
-								endTime={endedAt ? moment(endedAt) : moment(startedAt).add(noOfDays, "days")}
-								width={30}
-							/>
+							<ProgressBar phase={phase} endTime={endTime} width={30} />
 						)}
 					</Row>
 				</Col>

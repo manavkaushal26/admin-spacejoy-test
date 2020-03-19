@@ -19,12 +19,13 @@ const UserProjectCard: React.FC<{
 			startTime: phaseStartTime,
 		},
 		endedAt,
+		createdAt,
 		status,
 	} = userProjectData;
 
 	const items = getValueSafely(() => userProjectData.order.items, []);
 
-	const startedTime = phase === PhaseInternalNames.designsInRevision ? phaseStartTime : startedAt;
+	const startedTime = startedAt;
 	const noOfDays = phase === PhaseInternalNames.designsInRevision ? 5 : getNumberOfDays(items);
 	const sidebarData = {
 		avatarText: getValueSafely(() => items[0][0], "N/A"),
@@ -32,7 +33,8 @@ const UserProjectCard: React.FC<{
 		subHeading: room,
 		uniqueId: projectId,
 		phase,
-		startedAt: startedTime,
+		startedAt: startedTime || createdAt,
+		phaseStartTime,
 		status,
 		endedAt,
 		avatarStyle: getColorsForPackages(items),
