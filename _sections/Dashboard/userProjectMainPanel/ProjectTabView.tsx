@@ -134,9 +134,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		const response = await fetcher({ endPoint, method: "PUT" });
 
 		if (response.statusCode <= 300) {
-			setDesignData({
-				...designData,
-				status: response.data.status,
+			setDesignData(prevState => {
+				return { ...prevState, status: response.data.status };
 			});
 			notification.success({
 				message: "Design successfully published",
@@ -194,7 +193,11 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 				<>
 					<SilentPageHeader
 						title={designData.name}
-						subTitle={<CapitalizedText>{getValueSafely<string>(() => designData.room.roomType, "")}</CapitalizedText>}
+						subTitle={
+							<CapitalizedText>
+								{getValueSafely<string>(() => designData.searchKey.roomType || designData.room.roomType, "")}
+							</CapitalizedText>
+						}
 						{...(projectData
 							? null
 							: {

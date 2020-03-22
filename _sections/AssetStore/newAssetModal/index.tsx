@@ -529,7 +529,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	}, [dimensionInInches]);
 
 	const toggleAddRetailerModal = (): void => {
-		setAddRetailerModalVisible(!addRetailerModalVisible);
+		setAddRetailerModalVisible(prevState => !prevState);
 	};
 
 	const checkFileExtension = (uploadFileType: "model" | "source", info: RcFile): boolean => {
@@ -658,10 +658,11 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 													</Col>
 													<Col>
 														<Button
+															onMouseDown={(e): void => e.preventDefault()}
 															onClick={toggleAddRetailerModal}
-															style={{ width: "100%" }}
+															block
 															type="ghost"
-															size="default"
+															size="large"
 															icon="plus"
 														>
 															Add Retailer
