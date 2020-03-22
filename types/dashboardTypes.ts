@@ -128,11 +128,16 @@ export interface DesignerImageComments {
 	text: string;
 	status: string;
 }
-export interface DesignImagesInterface {
+
+export interface ImageInterface {
+	_id?: string;
 	cdn: string;
+	img?: string;
+	imgType: DesignImgTypes;
+}
+export interface DesignImagesInterface extends ImageInterface {
 	_id: string;
 	comments?: DesignerImageComments[];
-	imgType: DesignImgTypes;
 	path?: string;
 }
 
@@ -141,7 +146,7 @@ interface Phone {
 	phone: string;
 }
 
-interface Customer {
+export interface UserData {
 	profile: {
 		firstName: string;
 		lastName: string;
@@ -243,7 +248,7 @@ export interface DetailedProject {
 	chat: [];
 	_id: string;
 	name: string;
-	customer: Customer;
+	customer: UserData;
 	currentPhase: CurrentPhase;
 	order: Order;
 	form: FormType[];

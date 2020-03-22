@@ -54,6 +54,15 @@ const launchpadLocations = [
 		backgroundColor: "#f0f5ff",
 		notActive: false,
 	},
+	{
+		title: "Blog Platform",
+		description: "Write your heart out",
+		url: "/author",
+		icon: "edit",
+		color: "#FA8C16",
+		backgroundColor: "#FFF7E6",
+		notActive: true,
+	},
 ];
 
 const LoudPaddingDiv = styled.div`
@@ -71,7 +80,7 @@ const CapitalizedTitle = styled(Title)`
 `;
 
 const GreyMaxHeightDiv = styled.div`
-	height: calc(100vh - 60px);
+	height: calc(100vh - 62px);
 	background-image: linear-gradient(to bottom, white, #fafafa);
 `;
 

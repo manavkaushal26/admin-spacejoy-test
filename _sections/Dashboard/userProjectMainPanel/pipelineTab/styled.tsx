@@ -5,4 +5,6 @@ export const StepDiv = styled.div`
 	display: flex;
 	justify-content: space-around;
 	padding: 1rem 0px;
+	background: #f7f7f7;
+	z-index: -1;
 `;

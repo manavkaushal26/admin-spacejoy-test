@@ -2,6 +2,7 @@ const page = {
 	appName: "SpaceJoyWeb",
 	apiBaseUrl: "https://api.spacejoy.com/api",
 	stageApiBaseUrl: "https://server.staging.spacejoy.com/api",
+	localApiBaseUrl: "172.20.10.111:3000",
 	placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 	googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",

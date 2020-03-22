@@ -1,5 +1,6 @@
-{
-  "eslint.autoFixOnSave": true,
+{ 
+  "workbench.editor.limit.enabled": true,
+  "workbench.editor.limit.value": 7,
   "eslint.validate": [
     "javascript",
     "javascriptreact"
@@ -7,5 +8,7 @@
   "eslint.enable": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  }
+  },
+  "typescript.suggest.completeFunctionCalls": true
+
 }

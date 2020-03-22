@@ -299,6 +299,7 @@ export const StatusButton = styled(Button)<{ status: Status }>`
 `;
 export const ShadowDiv = styled.div<{ active?: boolean }>`
 	box-shadow: 0px 2px 16px #999ba81f;
+	background: #fafafa;
 	transition: all 0.3s;
 	${({ active }): FlattenSimpleInterpolation => {
 			return active
