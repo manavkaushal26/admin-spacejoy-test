@@ -423,6 +423,7 @@ export const RoomNameSearch = [
 	"Dining Room",
 	"Home Office",
 	"Study Room",
+	"Bedroom",
 ];
 
 export enum RenderImgUploadTypes {

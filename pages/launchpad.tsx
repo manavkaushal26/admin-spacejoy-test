@@ -1,4 +1,4 @@
-import User from "@customTypes/userType";
+import User, { Role } from "@customTypes/userType";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -36,6 +36,7 @@ const launchpadLocations = [
 		icon: "profile",
 		color: "#4d2aac",
 		backgroundColor: "#e3ddeb",
+		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
 	},
 	{
 		title: "Product Store",
@@ -44,6 +45,7 @@ const launchpadLocations = [
 		icon: "appstore",
 		color: "#e66b8b",
 		backgroundColor: "#fff0f1",
+		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
 	},
 	{
 		title: "Design Examples",
@@ -53,6 +55,7 @@ const launchpadLocations = [
 		color: "#1d39c4",
 		backgroundColor: "#f0f5ff",
 		notActive: false,
+		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
 	},
 	{
 		title: "Blog Platform",
@@ -61,7 +64,8 @@ const launchpadLocations = [
 		icon: "edit",
 		color: "#FA8C16",
 		backgroundColor: "#FFF7E6",
-		notActive: true,
+		notActive: false,
+		allowedRoles: [Role.Admin, Role.Owner, Role.Author],
 	},
 ];
 
@@ -115,7 +119,8 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 							<Row gutter={[12, 12]}>
 								{launchpadLocations.map(location => {
 									return (
-										!(location.notActive && process.env.NODE_ENV === "production") && (
+										!(location.notActive && process.env.NODE_ENV === "production") &&
+										location.allowedRoles.includes(authVerification.role) && (
 											<Col sm={12} md={8} key={location.url}>
 												<Link href={location.url}>
 													<Card hoverable>
