@@ -5,14 +5,15 @@ import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Collapse, Input, notification, Row, Select, Spin, Typography } from "antd";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import styled from "styled-components";
 import { Status, Role } from "@customTypes/userType";
 import { cookieNames } from "@utils/config";
 import getCookie from "@utils/getCookie";
 import { useRouter } from "next/router";
+import hotkeys from "hotkeys-js";
 import { AuthorPlatformProps } from "..";
-import { AUTHOR_ACTIONS } from "../reducer";
+import { AUTHOR_ACTIONS, AuthorActionType, AuthorState } from "../reducer";
 import ImageManagementConsole from "./ImageManagementConsole";
 import AddCategoryModal, { AddCategoryModalState } from "./AddCategoryModal";
 import { getQueryObject, getQueryString } from "../utils";
@@ -51,6 +52,53 @@ const fetchCategories = async (
 
 const debouncedFetchCategories = debounce(fetchCategories, 300);
 
+const onSaveBlog = async (state: AuthorState, dispatch: React.Dispatch<AuthorActionType>, Router): Promise<void> => {
+	const endPoint = blogApi(state.activeBlogId);
+	const method = state.activeBlogId ? "PUT" : "POST";
+	if (state.activeBlog.title === "New Blog") {
+		notification.warning({ message: "Please change the title" });
+		return;
+	}
+	try {
+		const response = await fetcher({
+			endPoint,
+			method,
+			body: {
+				data: state.activeBlog,
+			},
+		});
+		if (response.status === "success") {
+			notification.success({ message: "Saved Article" });
+			if (method === "POST") {
+				Router.push(
+					{
+						pathname: "/author",
+						query: { ...getQueryObject({ ...state, activeBlogId: response.data._id }) },
+					},
+					`/author${getQueryString({ ...state, activeBlogId: response.data._id })}`
+				);
+				if (state.activeKey === getValueSafely(() => response.data.status, Status.inactive)) {
+					dispatch({
+						type: AUTHOR_ACTIONS.SET_BLOGS_DATA,
+						value: {
+							...state,
+							blogs: [response.data, ...state.blogs],
+						},
+					});
+				}
+
+				return;
+			}
+		} else {
+			notification.error({ message: response.message });
+		}
+	} catch (e) {
+		notification.error({ message: "Error Saving Article" });
+	}
+};
+
+const debouncedSaveBlog = debounce(onSaveBlog, 5000);
+
 const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	const [imageConsoleVisible, setImageConsoleVisible] = useState<boolean>(false);
 	const [categories, setCategories] = useState<Category[]>([]);
@@ -78,7 +126,36 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		});
 	};
 
+	const [activeKey, setActiveKey] = useState<string | string[]>([]);
+
+	const titleRef = useRef(null);
+
+	useEffect(() => {
+		if (state.activeBlog.title === "New Blog") {
+			if (titleRef.current) {
+				setActiveKey(["1"]);
+				titleRef.current.focus();
+			}
+		}
+	}, [state.activeBlog.title, titleRef.current]);
+
 	const role = getCookie(null, cookieNames.userRole);
+	const [firstLoad, setFirstLoad] = useState(true);
+	useEffect(() => {
+		if (!firstLoad) {
+			debouncedSaveBlog(state, dispatch, Router);
+		} else {
+			setFirstLoad(false);
+			hotkeys("ctrl+s, command+s", event => {
+				event.stopPropagation();
+				event.preventDefault();
+				onSaveBlog(state, dispatch, Router);
+			});
+			return (): void => {
+				hotkeys.unbind("ctrl+s, command+s");
+			};
+		}
+	}, [state.activeBlog]);
 
 	const onPublish = async (): Promise<void> => {
 		const publish = !(state.activeBlog.status === Status.active);
@@ -122,6 +199,10 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		}
 	};
 
+	const saveBlogButtonClicked = (): void => {
+		onSaveBlog(state, dispatch, Router);
+	};
+
 	const handleSelect = (value, type: "category" | "tags"): void => {
 		let valueToSave = value;
 		if (type === "category") {
@@ -136,46 +217,6 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 				[type]: valueToSave,
 			},
 		});
-	};
-	const onSaveBlog = async (): Promise<void> => {
-		const endPoint = blogApi(state.activeBlogId);
-		const method = state.activeBlogId ? "PUT" : "POST";
-		try {
-			const response = await fetcher({
-				endPoint,
-				method,
-				body: {
-					data: state.activeBlog,
-				},
-			});
-			if (response.statusCode <= 300) {
-				notification.success({ message: "Saved Article" });
-				if (method === "POST") {
-					Router.push(
-						{
-							pathname: "/author",
-							query: { ...getQueryObject({ ...state, activeBlogId: response.data._id }) },
-						},
-						`/author${getQueryString({ ...state, activeBlogId: response.data._id })}`
-					);
-					if (state.activeKey === getValueSafely(() => response.data.status, Status.inactive)) {
-						dispatch({
-							type: AUTHOR_ACTIONS.SET_BLOGS_DATA,
-							value: {
-								...state,
-								blogs: [response.data, ...state.blogs],
-							},
-						});
-					}
-
-					return;
-				}
-			} else {
-				notification.error({ message: response.message });
-			}
-		} catch (e) {
-			notification.error({ message: "Error Saving Article" });
-		}
 	};
 
 	const onSearch = (searchText: string): void => {
@@ -228,7 +269,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 			<MaxHeightDiv>
 				<Col>
 					<Button
-						onClick={onSaveBlog}
+						onClick={saveBlogButtonClicked}
 						disabled={!!state.activeBlog.publishDate || state.activeBlog.status === Status.active}
 						type="primary"
 						block
@@ -237,7 +278,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 					</Button>
 				</Col>
 				<Col>
-					<Collapse defaultActiveKey={[""]}>
+					<Collapse onChange={(key): void => setActiveKey(key)} activeKey={activeKey}>
 						<Panel key="1" header="General">
 							<Row gutter={[8, 8]}>
 								<Col>
@@ -246,7 +287,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 											<Text>Title</Text>
 										</Col>
 										<Col>
-											<Input onChange={handleChange} name="title" value={state.activeBlog.title} />
+											<Input ref={titleRef} onChange={handleChange} name="title" value={state.activeBlog.title} />
 										</Col>
 									</Row>
 								</Col>
