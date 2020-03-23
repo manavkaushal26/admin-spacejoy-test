@@ -1,7 +1,7 @@
-import { blogApi, getBlogCategories, publishBlog } from "@api/blogApi";
+import { blogApi, getBlogCategories, publishBlog, createBlogCategoryApi } from "@api/blogApi";
 import Image from "@components/Image";
 import { Category } from "@customTypes/blogTypes";
-import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Collapse, Input, notification, Row, Select, Spin, Typography } from "antd";
@@ -10,9 +10,12 @@ import styled from "styled-components";
 import { Status, Role } from "@customTypes/userType";
 import { cookieNames } from "@utils/config";
 import getCookie from "@utils/getCookie";
+import { useRouter } from "next/router";
 import { AuthorPlatformProps } from "..";
 import { AUTHOR_ACTIONS } from "../reducer";
 import ImageManagementConsole from "./ImageManagementConsole";
+import AddCategoryModal, { AddCategoryModalState } from "./AddCategoryModal";
+import { getQueryObject, getQueryString } from "../utils";
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -52,6 +55,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	const [imageConsoleVisible, setImageConsoleVisible] = useState<boolean>(false);
 	const [categories, setCategories] = useState<Category[]>([]);
 	const [fetching, setFetching] = useState<boolean>(false);
+	const Router = useRouter();
 
 	useEffect(() => {
 		fetchCategories("", setFetching, setCategories);
@@ -80,7 +84,6 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		const publish = !(state.activeBlog.status === Status.active);
 
 		const endPoint = publishBlog(state.activeBlog._id);
-
 		const body = role === Role.Author ? { data: { publish: false } } : { data: { publish } };
 
 		const response = await fetcher({ endPoint, method: "PUT", body });
@@ -148,12 +151,13 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 			if (response.statusCode <= 300) {
 				notification.success({ message: "Saved Article" });
 				if (method === "POST") {
-					dispatch({
-						type: AUTHOR_ACTIONS.SET_ACTIVE_BLOG_ID,
-						value: {
-							activeBlogId: response.data._id,
+					Router.push(
+						{
+							pathname: "/author",
+							query: { ...getQueryObject({ ...state, activeBlogId: response.data._id }) },
 						},
-					});
+						`/author${getQueryString({ ...state, activeBlogId: response.data._id })}`
+					);
 					if (state.activeKey === Status.inactive) {
 						dispatch({
 							type: AUTHOR_ACTIONS.SET_BLOGS_DATA,
@@ -182,6 +186,40 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		}
 		return role === Role.Author ? "Ready to Publish" : "Publish";
 	}, [role, state.activeBlog.publishDate, state.activeBlog.status]);
+
+	const [addingCategoryLoading, setAddingCategoryLoading] = useState<boolean>(false);
+	const [addCategoryModalVisible, setAddCategoryModalVisible] = useState<boolean>(false);
+
+	const toggleAddCategoryModal = (): void => {
+		setAddCategoryModalVisible(prevState => !prevState);
+	};
+
+	const onAddCategoryOk = async (data: AddCategoryModalState): Promise<void> => {
+		setAddingCategoryLoading(true);
+		const endPoint = createBlogCategoryApi();
+		if (data.title.length) {
+			try {
+				const response = await fetcher({
+					endPoint,
+					method: "POST",
+					body: {
+						data,
+					},
+				});
+
+				if (response.status === "success") {
+					notification.success({ message: "Successfully added Category" });
+				} else {
+					notification.error({ message: "Failed to add Category. Try again" });
+				}
+			} catch (e) {
+				notification.error({ message: "Problem with Internet connectivity" });
+			}
+		} else {
+			notification.error({ message: "Please enter a Title for the category" });
+		}
+		setAddingCategoryLoading(false);
+	};
 
 	return (
 		<Row gutter={[0, 12]} style={{ padding: "0 0.5rem 0 0" }}>
@@ -262,6 +300,26 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 														{fetching ? <Spin spinning /> : "No Category Found"}
 													</Row>
 												}
+												dropdownRender={(menu): React.ReactNode => {
+													return (
+														<Row gutter={[4, 4]}>
+															<Col>{menu}</Col>
+															<Col>
+																<SilentDivider />
+															</Col>
+															<Col>
+																<Button
+																	type="ghost"
+																	block
+																	onMouseDown={(e): void => e.preventDefault()}
+																	onClick={toggleAddCategoryModal}
+																>
+																	Add Category
+																</Button>
+															</Col>
+														</Row>
+													);
+												}}
 												onSelect={(value): void => handleSelect(value, "category")}
 												filterOption={false}
 											>
@@ -310,7 +368,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 				</Col>
 				<Col>
 					<StyledButton
-						disabled={state.activeBlog.status === Status.active && role === Role.Author}
+						disabled={(state.activeBlog.status === Status.active && role === Role.Author) || !state.activeBlogId}
 						onClick={onPublish}
 						block
 						type="danger"
@@ -319,6 +377,12 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 					</StyledButton>
 				</Col>
 			</MaxHeightDiv>
+			<AddCategoryModal
+				visible={addCategoryModalVisible}
+				loading={addingCategoryLoading}
+				onCancel={toggleAddCategoryModal}
+				onOk={onAddCategoryOk}
+			/>
 			<ImageManagementConsole
 				state={state}
 				dispatch={dispatch}
