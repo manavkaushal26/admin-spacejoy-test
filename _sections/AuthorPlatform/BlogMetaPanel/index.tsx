@@ -158,7 +158,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						},
 						`/author${getQueryString({ ...state, activeBlogId: response.data._id })}`
 					);
-					if (state.activeKey === Status.inactive) {
+					if (state.activeKey === getValueSafely(() => response.data.status, Status.inactive)) {
 						dispatch({
 							type: AUTHOR_ACTIONS.SET_BLOGS_DATA,
 							value: {
@@ -170,6 +170,8 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 
 					return;
 				}
+			} else {
+				notification.error({ message: response.message });
 			}
 		} catch (e) {
 			notification.error({ message: "Error Saving Article" });
