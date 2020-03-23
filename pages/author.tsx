@@ -91,6 +91,8 @@ const author: NextPage<AuthorProps> = ({
 		}
 	}, [blogId]);
 
+	useEffect(() => {}, [blogType]);
+
 	useEffect(() => {
 		if (!authVerification.name) {
 			Router.push("/auth", "/auth/login");

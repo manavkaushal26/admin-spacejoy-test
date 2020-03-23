@@ -18,6 +18,10 @@ export const getBlogCategories = (categoryId?: string): string => {
 	return "/v1/blogcategorys";
 };
 
+export const createBlogCategoryApi = (): string => {
+	return "/v1/blogcategory";
+};
+
 export const uploadBlogImage = (blogId: string, type: "cover" | "body"): string => {
 	const baseUrl = process.env.NODE_ENV !== "production" ? page.stageApiBaseUrl : page.apiBaseUrl;
 
