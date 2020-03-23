@@ -44,7 +44,7 @@ const StateAwareCards = styled(Card)<{ state: DesignState }>`
 
 const { Text } = Typography;
 
-const CopyDesignAsDesignExampleRoles = [Role.Admin, Role.Owner];
+const CopyDesignAsDesignExampleRoles = [Role.Admin, Role.Owner, Role.Designer, Role["Account Manager"]];
 
 const DesignCard: React.FC<DesignCardProps> = ({
 	uniqueId,
