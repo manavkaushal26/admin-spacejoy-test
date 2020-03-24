@@ -143,7 +143,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	const [firstLoad, setFirstLoad] = useState(true);
 	useEffect(() => {
 		if (!firstLoad) {
-			debouncedSaveBlog(state, dispatch, Router);
+			if (state.activeBlog.status !== Status.active) debouncedSaveBlog(state, dispatch, Router);
 		} else {
 			setFirstLoad(false);
 			hotkeys("ctrl+s, command+s", event => {
@@ -214,7 +214,9 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		dispatch({
 			type: AUTHOR_ACTIONS.UPDATE_BLOG_DATA,
 			value: {
-				[type]: valueToSave,
+				activeBlog: {
+					[type]: valueToSave,
+				},
 			},
 		});
 	};
@@ -379,7 +381,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 								</Col>
 								<Col>
 									<Row gutter={[8, 8]}>
-										<Col>Tag</Col>
+										<Col>Tags</Col>
 										<Col>
 											<Select
 												open={false}
