@@ -26,9 +26,10 @@ interface LaunchpadLocations {
 	color: string;
 	notActive?: boolean;
 	backgroundColor: string;
+	allowedRoles: Role[];
 }
 
-const launchpadLocations = [
+const launchpadLocations: LaunchpadLocations[] = [
 	{
 		title: "Projects",
 		description: "Customer Project Management",
