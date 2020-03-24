@@ -168,7 +168,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		if (publish) {
 			notificationResponse = role === Role.Author ? "Marked as Ready to Publish" : "Published Article";
 		} else {
-			notificationResponse = role === Role.Author ? "Marked as Draft" : "UnPublished";
+			notificationResponse = role === Role.Author ? "Marked as Draft" : "Unpublished";
 		}
 		if (response.statusCode <= 300) {
 			if (publish) {
@@ -181,6 +181,12 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						},
 					},
 				});
+				dispatch({
+					type: AUTHOR_ACTIONS.ACTIVE_KEY,
+					value: {
+						activeKey: Status.active,
+					},
+				});
 			} else {
 				dispatch({
 					type: AUTHOR_ACTIONS.UPDATE_BLOG_DATA,
@@ -191,8 +197,13 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						},
 					},
 				});
+				dispatch({
+					type: AUTHOR_ACTIONS.ACTIVE_KEY,
+					value: {
+						activeKey: Status.pending,
+					},
+				});
 			}
-
 			notification.success({ message: notificationResponse });
 		} else {
 			notification.error({ message: "Action failed", description: response.message });
@@ -227,7 +238,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 
 	const publishButtonText = useMemo(() => {
 		if (state.activeBlog.status === Status.active) {
-			return role === Role.Author ? "Mark as Draft" : "UnPublish";
+			return role === Role.Author ? "Mark as Draft" : "Unpublish";
 		}
 		return role === Role.Author ? "Ready to Publish" : "Publish";
 	}, [role, state.activeBlog.publishDate, state.activeBlog.status]);

@@ -169,10 +169,7 @@ export const authorReducer = (state: AuthorState, action: AuthorActionType): Aut
 				},
 			};
 		case AUTHOR_ACTIONS.SET_BLOGS_DATA: {
-			const dataToUpdate =
-				action.value.pageNo === state.pageNo && action.value.pageNo !== 1
-					? state.blogs
-					: [...state.blogs, ...action.value.blogs];
+			const dataToUpdate = action.value.pageNo === state.pageNo ? state.blogs : [...state.blogs, ...action.value.blogs];
 
 			return {
 				...state,

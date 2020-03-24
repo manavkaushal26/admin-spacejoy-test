@@ -69,7 +69,11 @@ const BlogLeftPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 
 	useEffect(() => {
 		debouncedFetchAllBlogs(state, dispatch, setLoading);
-	}, [state.activeKey, state.searchText]);
+	}, [state.searchText]);
+
+	useEffect(() => {
+		dispatch({ type: AUTHOR_ACTIONS.CLEAR_BLOGS, value: { blogs: [] } });
+	}, [state.activeKey]);
 
 	const onCardClick = (blogId: string): void => {
 		Router.push(
