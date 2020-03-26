@@ -11,8 +11,8 @@ export interface Category {
 }
 
 export enum BlogTypes {
-	SHORT = "short",
-	FULL = "full",
+	Short = "short",
+	Full = "full",
 }
 
 export interface Blog {
@@ -34,6 +34,7 @@ export interface Blog {
 	images: ImageInterface[];
 	author: UserData;
 	body: string;
+	renderbody: string[];
 	createdAt?: string;
 	updatedAt?: string;
 }

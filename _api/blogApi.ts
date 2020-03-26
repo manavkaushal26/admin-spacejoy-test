@@ -36,3 +36,7 @@ export const deleteUploadedBlogImage = (blogId: string, imageId: string): string
 export const publishBlog = (blogId: string): string => {
 	return `/v1/blog/${blogId}/publish`;
 };
+
+export const slugCheckApi = (slug: string): string => {
+	return `/v1/blog/slug/check/${slug}`;
+};

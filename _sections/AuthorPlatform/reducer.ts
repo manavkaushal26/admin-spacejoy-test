@@ -30,7 +30,7 @@ export const authorInitialState: AuthorState = {
 		title: "New Blog",
 		description: "",
 		excerpt: "",
-		blogType: BlogTypes.FULL,
+		blogType: BlogTypes.Full,
 		slug: `new-blog-${Math.random()
 			.toString(36)
 			.substring(7)}`,

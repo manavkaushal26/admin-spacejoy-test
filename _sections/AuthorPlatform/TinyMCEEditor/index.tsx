@@ -36,14 +36,14 @@ const TinyMCEEditor: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 										type: "menuitem",
 										text: "New Short Blog",
 										onAction: (): void => {
-											dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: { blogType: BlogTypes.SHORT } } });
+											dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: { blogType: BlogTypes.Short } } });
 
 											Router.push(
 												{
 													pathname: "/author",
-													query: { ...getQueryObject({ ...state, activeBlogId: "" }), blogType: BlogTypes.SHORT },
+													query: { ...getQueryObject({ ...state, activeBlogId: "" }), blogType: BlogTypes.Short },
 												},
-												`/author${getQueryString({ ...state, activeBlogId: "" })}&blogType=${BlogTypes.SHORT}`
+												`/author${getQueryString({ ...state, activeBlogId: "" })}&blogType=${BlogTypes.Short}`
 											);
 										},
 									},
@@ -51,13 +51,13 @@ const TinyMCEEditor: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 										type: "menuitem",
 										text: "New Long Blog",
 										onAction: (): void => {
-											dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: { blogType: BlogTypes.FULL } } });
+											dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: { blogType: BlogTypes.Full } } });
 											Router.push(
 												{
 													pathname: "/author",
-													query: { ...getQueryObject({ ...state, activeBlogId: "" }), blogType: BlogTypes.FULL },
+													query: { ...getQueryObject({ ...state, activeBlogId: "" }), blogType: BlogTypes.Full },
 												},
-												`/author${getQueryString({ ...state, activeBlogId: "" })}&blogType=${BlogTypes.FULL}`
+												`/author${getQueryString({ ...state, activeBlogId: "" })}&blogType=${BlogTypes.Full}`
 											);
 										},
 									},
