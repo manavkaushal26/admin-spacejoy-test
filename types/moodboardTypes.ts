@@ -121,6 +121,7 @@ export interface MoodboardAsset {
 	recommendations: Partial<AssetType>[];
 	_id: string;
 	isExistingAsset: boolean;
+	modellingStatus: Status;
 	asset: Partial<AssetType>;
 	externalUrl?: string;
 }

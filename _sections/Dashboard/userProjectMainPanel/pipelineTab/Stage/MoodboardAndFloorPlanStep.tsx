@@ -1,15 +1,17 @@
-import { deleteUploadedImageApi } from "@api/designApi";
+import { deleteUploadedImageApi, updateSubtasks } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
-import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
-import { CustomDiv, Form, SilentDivider } from "@sections/Dashboard/styled";
-import { getBase64 } from "@utils/commonUtils";
+import ImageDisplayModal from "@components/ImageDisplayModal";
+import { DesignImgTypes, DesignPhases, DetailedDesign } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
+import { SilentDivider } from "@sections/Dashboard/styled";
+import { PaddedDiv } from "@sections/Header/styled";
+import { getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, message, Typography, Upload, Modal } from "antd";
+import { Button, Col, Icon, message, Modal, notification, Row, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
-import ImageDisplayModal from "@components/ImageDisplayModal";
 import { StepDiv } from "../styled";
 
 const { Text } = Typography;
@@ -96,52 +98,135 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 	const floorPlanUploadEndpoint = useMemo(() => uploadRenderImages(designData._id, "floorplan"), [designData._id]);
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
+	const markSubtaskComplete = async (e, status: Status): Promise<void> => {
+		const {
+			target: { name },
+		} = e;
+		const endPoint = updateSubtasks(designData._id);
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: "PUT",
+				body: {
+					data: {
+						currentPhase: DesignPhases.concept,
+						requirement: name,
+						status,
+					},
+				},
+			});
+			if (response.status === "success" && response.statusCode <= 300) {
+				setDesignData({
+					...designData,
+					phases: response.data.phases,
+				});
+				notification.success({ message: "Action successful" });
+			} else {
+				throw Error();
+			}
+		} catch {
+			notification.error({ message: "Action unsuccessful" });
+		}
+	};
+
+	const floorPlanStatus = getValueSafely(() => designData.phases.concept.floorplanCreation, Status.pending);
+
+	const moodboardStatus = getValueSafely(() => designData.phases.concept.moodboardCreation, Status.pending);
+
 	return (
 		<StepDiv>
-			<CustomDiv px="1rem" py="1rem" pt="1.5rem" width="100%">
-				<CustomDiv pb="1rem">
-					<CustomDiv>
-						<Text strong>Description</Text>
-					</CustomDiv>
-					<CustomDiv>
-						<Text>
-							This step involves the creation of <b>Moodboard</b> and the upload of <b>Floorplans</b>(if any) to the
-							design. Mark this step as complete once these tasks are done.
-						</Text>
-					</CustomDiv>
-				</CustomDiv>
-				<Form>
-					<Text strong>Upload Floor Plan (Optional)</Text>
-					<SilentDivider />
-					<CustomDiv flexBasis="30ch" type="flex" width="100%">
-						<label>Floorplan</label>
-						<Upload
-							multiple
-							supportServerRender
-							name="files"
-							fileList={floorPlanList}
-							listType="picture-card"
-							onPreview={handlePreview}
-							action={floorPlanUploadEndpoint}
-							onRemove={confirmDelete}
-							onChange={handleOnFileUploadChange}
-							headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-							accept="image/*"
-						>
-							<Button>
-								<Icon type="upload" />
-								Click to Upload
-							</Button>
-						</Upload>
-					</CustomDiv>
-					<ImageDisplayModal
-						previewImage={preview.previewImage}
-						previewVisible={preview.previewVisible}
-						altText="floorplan"
-						handleCancel={handleCancel}
-					/>
-				</Form>
-			</CustomDiv>
+			<PaddedDiv>
+				<Row gutter={[0, 12]}>
+					<Col>
+						<Row gutter={[8, 8]}>
+							<Col span={24}>
+								<Text strong>Description</Text>
+							</Col>
+							<Col span={24}>
+								<Text>
+									This step involves the creation of <b>Moodboard</b> and the upload of <b>Floorplans</b>(if any) to the
+									design. Mark this step as complete once these tasks are done.
+								</Text>
+							</Col>
+						</Row>
+					</Col>
+					<Col>
+						<Row gutter={[8, 8]}>
+							<Col>
+								<Text strong>Upload Floor Plan (Optional)</Text>
+							</Col>
+							<Col>
+								<SilentDivider />
+							</Col>
+							<Col>
+								<Row gutter={[4, 4]}>
+									<Col>
+										<Text>Floorplan</Text>
+									</Col>
+									<Col>
+										<Upload
+											multiple
+											supportServerRender
+											name="files"
+											fileList={floorPlanList}
+											listType="picture-card"
+											onPreview={handlePreview}
+											action={floorPlanUploadEndpoint}
+											onRemove={confirmDelete}
+											onChange={handleOnFileUploadChange}
+											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+											accept="image/*"
+										>
+											<Button>
+												<Icon type="upload" />
+												Click to Upload
+											</Button>
+										</Upload>
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+						<ImageDisplayModal
+							previewImage={preview.previewImage}
+							previewVisible={preview.previewVisible}
+							altText="floorplan"
+							handleCancel={handleCancel}
+						/>
+					</Col>
+					<Col>
+						<Row type="flex" gutter={[4, 8]}>
+							<Col xs={24} md={12}>
+								<Button
+									name="floorplanCreation"
+									onClick={(e): Promise<void> =>
+										markSubtaskComplete(e, floorPlanStatus === Status.completed ? Status.pending : Status.completed)
+									}
+									block
+									type={floorPlanStatus === Status.completed ? "danger" : "primary"}
+								>
+									{floorPlanStatus === Status.completed
+										? "Mark Floorplan as not Complete"
+										: "Mark Floorplan as Complete"}
+								</Button>
+							</Col>
+							<Col xs={24} md={12}>
+								<Button
+									onClick={(e): Promise<void> =>
+										markSubtaskComplete(e, moodboardStatus === Status.completed ? Status.pending : Status.completed)
+									}
+									name="moodboardCreation"
+									type={moodboardStatus === Status.completed ? "danger" : "primary"}
+									block
+								>
+									{moodboardStatus === Status.completed
+										? "Mark Moodboard as not Complete"
+										: "Mark Moodboard as Complete"}
+								</Button>
+							</Col>
+						</Row>
+					</Col>
+				</Row>
+			</PaddedDiv>
 		</StepDiv>
 	);
 };

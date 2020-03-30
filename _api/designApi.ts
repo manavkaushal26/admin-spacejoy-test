@@ -86,3 +86,9 @@ export const editDesignApi = (designId): string => {
 export const getThemes = (): string => {
 	return `/themes`;
 };
+
+// *****************************************************************************************************************
+
+export const updateSubtasks = (designId): string => {
+	return `/admin/design/${designId}/requirement`;
+};

@@ -321,6 +321,21 @@ export interface PhaseDetails {
 	endTime: Date;
 }
 
+export interface ConceptPhaseDetails extends PhaseDetails {
+	floorplanCreation: Status;
+	moodboardCreation: Status;
+}
+
+export interface ModellingPhaseDetails extends PhaseDetails {
+	assetModelling: Status;
+	roomModelling: Status;
+}
+export interface PhaseDetails {
+	status: Status;
+	startTime: Date;
+	endTime: Date;
+}
+
 export enum DesignPhases {
 	concept = "concept",
 	modelling = "modelling",
@@ -340,8 +355,8 @@ export enum HumanizeDesignPhases {
 }
 
 export interface PhaseType {
-	[DesignPhases.concept]: PhaseDetails;
-	[DesignPhases.modelling]: PhaseDetails;
+	[DesignPhases.concept]: ConceptPhaseDetails;
+	[DesignPhases.modelling]: ModellingPhaseDetails;
 	[DesignPhases.design3D]: PhaseDetails;
 	[DesignPhases.render]: PhaseDetails;
 	[DesignPhases.revision]: PhaseDetails;
@@ -352,7 +367,7 @@ export interface DetailedDesign {
 	_id: string;
 	name: string;
 	description: string;
-	searchKey: {
+	searchKey?: {
 		retailers: string[];
 		roomType: RoomTypes;
 	};

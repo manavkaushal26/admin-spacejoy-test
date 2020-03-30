@@ -9,3 +9,7 @@ export const assetCreateOrUpdationApi = (assetId?: string): string => {
 export const addRetailerApi = (): string => {
 	return "/retailer";
 };
+
+export const markMissingAssetAsComplete = (designId, assetId): string => {
+	return `/admin/design/${designId}/moodboard/${assetId}`;
+};

@@ -4,7 +4,7 @@ import ImageDisplayModal from "@components/ImageDisplayModal";
 import { Currency, MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
-import { AssetStatus } from "@customTypes/userType";
+import { AssetStatus, Status } from "@customTypes/userType";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { convertToFeet, convertToInches, debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
@@ -36,9 +36,11 @@ interface NewAssetModal {
 	toggleNewAssetModal: () => void;
 	categoryMap: CategoryMap[];
 	metadata: MetaDataType;
-	assetData?: AssetType;
-	dispatchAssetStore: React.Dispatch<AssetAction>;
+	assetData?: Partial<AssetType>;
+	dispatchAssetStore?: React.Dispatch<AssetAction>;
 	setAssetData?: React.Dispatch<React.SetStateAction<AssetType>>;
+	onOkComplete?: (data: Partial<AssetType>, missingAssetId?: string, status?: Status) => Promise<void>;
+	location?: "MISSING_ASSETS";
 }
 
 interface RoomTypeMeta {
@@ -82,7 +84,9 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	metadata,
 	assetData,
 	dispatchAssetStore,
+	onOkComplete,
 	setAssetData,
+	location,
 }) => {
 	const [state, dispatch] = useReducer<NewAssetUploadReducer>(reducer, initialState);
 	const [firstLoad, setFirstLoad] = useState<boolean>(true);
@@ -190,33 +194,33 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				name: assetData.name,
 				description: assetData.description,
 				status: assetData.status,
-				shoppable: assetData.shoppable,
+				shoppable: assetData.shoppable || true,
 				retailer: getValueSafely(() => assetData.retailer._id, ""),
 				retailLink: assetData.retailLink,
 				meta: {
-					category: assetData.meta.category,
-					subcategory: assetData.meta.subcategory,
-					vertical: assetData.meta.vertical,
-					theme: assetData.meta.theme,
+					category: getValueSafely(() => assetData.meta.category, ""),
+					subcategory: getValueSafely(() => assetData.meta.subcategory, ""),
+					vertical: getValueSafely(() => assetData.meta.vertical, ""),
+					theme: getValueSafely(() => assetData.meta.theme, ""),
 				},
 				primaryColor: "", // TO BE ADDED LATER
 				secondaryColors: [], // TO BE ADDED LATER
 				spatialData: {
-					mountType: assetData.spatialData.mountType,
-					clampValue: assetData.spatialData.clampValue === -1 ? -1 : 0,
+					mountType: getValueSafely(() => assetData.spatialData.mountType, MountTypes.attached),
+					clampValue: getValueSafely(() => (assetData.spatialData.clampValue === -1 ? -1 : 0), -1),
 					fileUrls: {
-						glb: assetData.spatialData.fileUrls.glb,
-						source: assetData.spatialData.fileUrls.source,
+						glb: getValueSafely(() => assetData.spatialData.fileUrls.glb, ""),
+						source: getValueSafely(() => assetData.spatialData.fileUrls.source, ""),
 						// eslint-disable-next-line @typescript-eslint/camelcase
-						legacy_obj: assetData.spatialData.fileUrls.legacy_obj,
+						legacy_obj: getValueSafely(() => assetData.spatialData.fileUrls.legacy_obj, ""),
 					},
 				},
 				price: assetData.price,
-				currency: assetData.currency,
+				currency: assetData.currency || "usd",
 				dimension: {
-					width: convertToInches(assetData.dimension.width),
-					depth: convertToInches(assetData.dimension.depth),
-					height: convertToInches(assetData.dimension.height),
+					width: getValueSafely(() => convertToInches(assetData.dimension.width), 0),
+					depth: getValueSafely(() => convertToInches(assetData.dimension.depth), 0),
+					height: getValueSafely(() => convertToInches(assetData.dimension.height), 0),
 				},
 				imageUrl: assetData.imageUrl,
 				cdn: assetData.cdn,
@@ -459,7 +463,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		const requestBody = {
 			name: state.name,
 			description: state.description,
-			status: state.status,
+			status: state.status || Status.pending,
 			shoppable: state.shoppable,
 			retailer: state.retailer,
 			retailLink: state.retailLink,
@@ -495,7 +499,11 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				if (dimensionInInches) {
 					responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension, dimensionInInches);
 				}
+				if (onOkComplete && !state._id) {
+					onOkComplete({ _id: responseAssetData._id }, null, Status.pending);
+				}
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: responseAssetData });
+
 				setModifiedForm(false);
 			}
 		} catch (e) {
@@ -509,16 +517,17 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	const submitButtonDisabled = !(
 		assetNameValid &&
-		assetPriceValid &&
-		assetRetailerValid &&
 		assetUrlValid &&
 		assetCategoryValid &&
 		assetSubCategoryValid &&
 		assetVerticalValid &&
-		assetWidthValid &&
-		assetHeightValid &&
-		assetDepthValid &&
-		assetMountTypeValid
+		((assetPriceValid &&
+			assetRetailerValid &&
+			assetWidthValid &&
+			assetHeightValid &&
+			assetDepthValid &&
+			assetMountTypeValid) ||
+			location === "MISSING_ASSETS")
 	);
 
 	const dimensionText = useMemo(() => {
