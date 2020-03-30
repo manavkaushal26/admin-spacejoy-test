@@ -54,7 +54,6 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	subHeading,
 	title,
 	phase,
-	noOfDays,
 	phaseStartTime,
 	uniqueId,
 	avatarStyle,
@@ -72,7 +71,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 		if (endedAt) {
 			return moment(endedAt);
 		}
-		return moment(startedAt).add(noOfDays, "days");
+		return null;
 	}, [endedAt, startedAt]);
 	return (
 		<SidebarCards
@@ -129,7 +128,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 					<Row type="flex" justify="end">
 						{!endedAt ? (
 							<Button
-								onClick={e => {
+								onClick={(e): void => {
 									e.stopPropagation();
 									onStartClick(uniqueId);
 								}}

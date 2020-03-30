@@ -70,13 +70,14 @@ interface DesignSelection {
 }
 
 const getNumberOfDesigns = (items: Packages[]): number => {
-	if (items.includes(Packages.euphoria)) {
+	const packageNames = getValueSafely(() => items.map(item => item.name), []);
+	if (packageNames.includes(PackageDetails.euphoria.name)) {
 		return PackageDetails.euphoria.designs;
 	}
-	if (items.includes(Packages.bliss)) {
+	if (packageNames.includes(PackageDetails.bliss.name)) {
 		return PackageDetails.bliss.designs;
 	}
-	if (items.includes(Packages.delight)) {
+	if (packageNames.includes(PackageDetails.delight.name)) {
 		return PackageDetails.delight.designs;
 	}
 	return 1;

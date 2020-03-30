@@ -1,4 +1,4 @@
-import { DesignPhases, HumanizeDesignPhases, PhaseType, Packages, PackageDetails } from "@customTypes/dashboardTypes";
+import { DesignPhases, HumanizeDesignPhases, PackageDetails, Packages, PhaseType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import moment from "moment";
 
@@ -43,44 +43,49 @@ export const getHumanizedActivePhase = (phases: PhaseType) => {
 };
 
 export const getNumberOfDesigns = (items: Packages[]): number => {
-	if (items.includes(Packages.euphoria)) {
+	const packageNames = getValueSafely(() => items.map(item => item.name), []);
+	if (packageNames.includes(PackageDetails.euphoria.name)) {
 		return PackageDetails.euphoria.designs;
 	}
-	if (items.includes(Packages.bliss)) {
+	if (packageNames.includes(PackageDetails.bliss.name)) {
 		return PackageDetails.bliss.designs;
 	}
-	if (items.includes(Packages.delight)) {
+	if (packageNames.includes(PackageDetails.delight.name)) {
 		return PackageDetails.delight.designs;
 	}
 	return 1;
 };
 
 export const getNumberOfDays = (items: Packages[]): number => {
-	if (items.includes(Packages.euphoria)) {
+	const packageNames = getValueSafely(() => items.map(item => item.name), []);
+
+	if (packageNames.includes(PackageDetails.euphoria.name)) {
 		return PackageDetails.euphoria.days;
 	}
-	if (items.includes(Packages.bliss)) {
+	if (packageNames.includes(PackageDetails.bliss.name)) {
 		return PackageDetails.bliss.days;
 	}
-	if (items.includes(Packages.delight)) {
+	if (packageNames.includes(PackageDetails.delight.name)) {
 		return PackageDetails.delight.days;
 	}
 	return 1;
 };
 
 export const getColorsForPackages = (items: Packages[]): Record<string, string> => {
-	if (items.includes(Packages.euphoria)) {
+	const packageNames = getValueSafely(() => items.map(item => item.name), []);
+
+	if (packageNames.includes(PackageDetails.euphoria.name)) {
 		return {
 			backgroundColor: "#da98f6",
 		};
 	}
-	if (items.includes(Packages.bliss)) {
+	if (packageNames.includes(PackageDetails.bliss.name)) {
 		return {
 			backgroundColor: "#ffc53d",
 			color: "#314659",
 		};
 	}
-	if (items.includes(Packages.delight)) {
+	if (packageNames.includes(PackageDetails.delight.name)) {
 		return {
 			backgroundColor: "#ff75be",
 			color: "white",

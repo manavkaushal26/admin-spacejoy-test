@@ -1,5 +1,4 @@
-import { Status, Role, ProjectRoles } from "./userType";
-import { string, number } from "prop-types";
+import { ProjectRoles, Role, Status } from "./userType";
 
 export enum ProjectScope {
 	customer = Role.Customer,
@@ -167,10 +166,11 @@ export enum PaymentStatus {
 	fail = "fail",
 }
 
-export enum Packages {
-	delight = "delight",
-	bliss = "bliss",
-	euphoria = "euphoria",
+export interface Packages {
+	_id: string;
+	name: string;
+	turnAroundTime: number;
+	id: string;
 }
 
 export enum PackageDesignValue {
@@ -187,14 +187,17 @@ export enum PackageTimeline {
 
 export const PackageDetails = {
 	delight: {
+		name: "delight",
 		designs: PackageDesignValue.delight,
 		days: PackageTimeline.delight,
 	},
 	bliss: {
+		name: "bliss",
 		designs: PackageDesignValue.bliss,
 		days: PackageTimeline.bliss,
 	},
 	euphoria: {
+		name: "euphoria",
 		designs: PackageDesignValue.euphoria,
 		days: PackageTimeline.euphoria,
 	},

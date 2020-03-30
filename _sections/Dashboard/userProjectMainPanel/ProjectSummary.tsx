@@ -5,7 +5,7 @@ import {
 	HumanizePhaseInternalNames,
 	PhaseInternalNames,
 } from "@customTypes/dashboardTypes";
-import { getColorsForPackages, getNumberOfDays, getValueSafely } from "@utils/commonUtils";
+import { getColorsForPackages, getValueSafely } from "@utils/commonUtils";
 import { Avatar, Col, Row, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
@@ -41,7 +41,6 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		name: room,
 		status,
 		customer,
-		createdAt,
 		startedAt,
 		endedAt,
 		currentPhase: {
@@ -59,7 +58,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 		if (endedAt) {
 			return moment(endedAt);
 		}
-		return moment(createdAt).add(getNumberOfDays(items), "days");
+		return null;
 	}, [endedAt, startedAt]);
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
@@ -99,12 +98,14 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 					</Row>
 				</Col>
 				<Col>
-					<Row align="middle" type="flex" gutter={[16, 8]}>
-						<Col>
-							<ProgressBar width={33} phase={phase} endTime={endTime} />
-						</Col>
-						<Col>{!completedPhases.includes(phase) && <Text>{getLongTimeString(endTime.valueOf())}</Text>}</Col>
-					</Row>
+					{endTime && (
+						<Row align="middle" type="flex" gutter={[16, 8]}>
+							<Col>
+								<ProgressBar width={33} phase={phase} endTime={endTime} />
+							</Col>
+							<Col>{!completedPhases.includes(phase) && <Text>{getLongTimeString(endTime.valueOf())}</Text>}</Col>
+						</Row>
+					)}
 				</Col>
 			</Row>
 		</VerticallyPaddedDiv>

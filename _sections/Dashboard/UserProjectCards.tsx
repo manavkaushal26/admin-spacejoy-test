@@ -19,7 +19,6 @@ const UserProjectCard: React.FC<{
 			startTime: phaseStartTime,
 		},
 		endedAt,
-		createdAt,
 		status,
 	} = userProjectData;
 
@@ -28,12 +27,12 @@ const UserProjectCard: React.FC<{
 	const startedTime = startedAt;
 	const noOfDays = phase === PhaseInternalNames.designsInRevision ? 5 : getNumberOfDays(items);
 	const sidebarData = {
-		avatarText: getValueSafely(() => items[0][0], "N/A"),
+		avatarText: getValueSafely(() => items.map(item => item.name)[0][0], "N/A"),
 		title: getValueSafely(() => customerName, "N/A"),
 		subHeading: room,
 		uniqueId: projectId,
 		phase,
-		startedAt: startedTime || createdAt,
+		startedAt: startedTime,
 		phaseStartTime,
 		status,
 		endedAt,

@@ -15,7 +15,13 @@ interface BasicDetailsProps {
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	const { _id, name, createdAt, team, customer, startedAt } = projectData;
 
-	const items = getValueSafely(() => projectData.order.items, []);
+	const items = getValueSafely(
+		() =>
+			projectData.order.items.map(item => {
+				return item.name;
+			}),
+		[]
+	);
 
 	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, PaymentStatus.pending);
 
