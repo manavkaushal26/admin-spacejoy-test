@@ -191,7 +191,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 					message: "Successful",
 					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
-					description: "Asset status is being updated",
+					description: "Asset Status has been updated",
 				});
 			} else {
 				notification.open({

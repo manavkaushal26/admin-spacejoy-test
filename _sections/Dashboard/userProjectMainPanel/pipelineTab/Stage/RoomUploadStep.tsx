@@ -9,7 +9,7 @@ import {
 	RoomTypes,
 	DesignPhases,
 } from "@customTypes/dashboardTypes";
-import { SilentDivider } from "@sections/Dashboard/styled";
+import { SilentDivider, StatusButton } from "@sections/Dashboard/styled";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
@@ -153,6 +153,12 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 		const {
 			target: { name },
 		} = e;
+		notification.open({
+			key: name,
+			message: "Please Wait",
+			icon: <Icon type="loading" />,
+			description: "Status being Updated",
+		});
 		const endPoint = updateSubtasks(designData._id);
 		try {
 			const response = await fetcher({
@@ -171,12 +177,22 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 					...designData,
 					phases: response.data.phases,
 				});
-				notification.success({ message: "Action successful" });
+				notification.open({
+					key: name,
+					message: "Successful",
+					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+					description: "Status is successfully updated",
+				});
 			} else {
-				throw Error();
+				throw Error(response.message);
 			}
-		} catch {
-			notification.error({ message: "Action unsuccessful" });
+		} catch (error) {
+			notification.open({
+				key: name,
+				message: "Successful",
+				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				description: error.message,
+			});
 		}
 	};
 
@@ -312,32 +328,64 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 					</Row>
 				</Col>
 				<Col>
-					<Row type="flex" gutter={[4, 8]}>
+					<Row type="flex" gutter={[8, 8]}>
 						<Col xs={24} md={12}>
-							<Button
-								name="assetModelling"
-								onClick={(e): Promise<void> =>
-									markSubtaskComplete(e, assetModelling === Status.completed ? Status.pending : Status.completed)
-								}
-								block
-								type={assetModelling === Status.completed ? "danger" : "primary"}
-							>
-								{assetModelling === Status.completed
-									? "Mark Asset creation not Complete"
-									: "Mark Asset creation Complete"}
-							</Button>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>Asset Creation</Col>
+								<Col span={12}>
+									<StatusButton
+										block
+										status={assetModelling}
+										disabled={assetModelling === Status.completed}
+										name="assetModelling"
+										type="primary"
+										icon={assetModelling === Status.completed ? "check" : null}
+										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
+									>
+										{assetModelling === Status.completed ? "Completed" : "Mark as Complete"}
+									</StatusButton>
+								</Col>
+								<Col span={12}>
+									<Button
+										name="assetModelling"
+										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
+										block
+										disabled={assetModelling !== Status.completed}
+										type="danger"
+									>
+										{assetModelling === Status.completed ? "Mark as Incomplete" : "Not yet Complete"}
+									</Button>
+								</Col>
+							</Row>
 						</Col>
 						<Col xs={24} md={12}>
-							<Button
-								onClick={(e): Promise<void> =>
-									markSubtaskComplete(e, roomModelling === Status.completed ? Status.pending : Status.completed)
-								}
-								name="roomModelling"
-								type={roomModelling === Status.completed ? "danger" : "primary"}
-								block
-							>
-								{roomModelling === Status.completed ? "Mark Room Upload not Complete" : "Mark Room Upload Complete"}
-							</Button>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>Room Modelling</Col>
+								<Col span={12}>
+									<StatusButton
+										block
+										status={roomModelling}
+										disabled={roomModelling === Status.completed}
+										name="roomModelling"
+										icon={roomModelling === Status.completed ? "check" : null}
+										type="primary"
+										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
+									>
+										{roomModelling === Status.completed ? "Completed" : "Mark as Complete"}
+									</StatusButton>
+								</Col>
+								<Col span={12}>
+									<Button
+										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
+										name="roomModelling"
+										disabled={roomModelling !== Status.completed}
+										type="danger"
+										block
+									>
+										{roomModelling === Status.completed ? "Mark as Incomplete" : "Not yet Complete"}
+									</Button>
+								</Col>
+							</Row>
 						</Col>
 					</Row>
 				</Col>
