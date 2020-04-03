@@ -9,6 +9,7 @@ import fetcher from "@utils/fetcher";
 import { Button, Col, Icon, List, message, Popconfirm, Row, Spin, Tooltip, Typography, notification } from "antd";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
+import { getValueSafely } from "@utils/commonUtils";
 
 const { Text } = Typography;
 
@@ -159,10 +160,11 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	};
 
 	const markAssetAsComplete = async (
-		{ _id }: Partial<AssetType>,
+		createdAsset: Partial<AssetType>,
 		missingAssetId?: string,
 		status?: Status
 	): Promise<void> => {
+		const _id = getValueSafely(() => createdAsset._id, "");
 		notification.open({
 			key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 			message: "Please Wait",
@@ -171,32 +173,40 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		});
 
 		const endPoint = markMissingAssetAsComplete(designId, missingAssetId || editAssetId);
-
-		setEditAsseId(null);
-		const response = await fetcher({
-			endPoint,
-			method: "PUT",
-			body: {
-				data: {
-					status: status || Status.completed,
-					assetId: _id,
+		if (_id !== "") {
+			setEditAsseId(null);
+			const response = await fetcher({
+				endPoint,
+				method: "PUT",
+				body: {
+					data: {
+						status: status || Status.completed,
+						assetId: _id,
+					},
 				},
-			},
-		});
-		if (response.status === "success" && response.statusCode <= 300) {
-			setMoodboard(response.data.moodboard);
-			notification.open({
-				key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
-				message: "Successful",
-				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
-				description: "Asset status is being updated",
 			});
+			if (response.status === "success" && response.statusCode <= 300) {
+				setMoodboard(response.data.moodboard);
+				notification.open({
+					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
+					message: "Successful",
+					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+					description: "Asset status is being updated",
+				});
+			} else {
+				notification.open({
+					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
+					message: "Error",
+					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+					description: "There was a problem marking this asset.",
+				});
+			}
 		} else {
 			notification.open({
 				key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 				message: "Error",
 				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
-				description: "There was a problem marking this asset.",
+				description: "No asset has been uploaded for this link",
 			});
 		}
 	};
@@ -263,7 +273,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 																markAssetAsComplete(asset.asset, asset._id, Status.pending)
 															}
 														>
-															<Tooltip title="Mark as not complete">
+															<Tooltip placement="bottom" title="Mark as not complete">
 																<Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
 															</Tooltip>
 														</Popconfirm>
@@ -275,10 +285,10 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 														<Tooltip title="Mark as complete">
 															<Icon
 																type="check-circle"
-																twoToneColor="#52c41a"
 																onClick={(): Promise<void> =>
 																	markAssetAsComplete(asset.asset, asset._id, Status.completed)
 																}
+																twoToneColor="#52c41a"
 																theme="twoTone"
 															/>
 														</Tooltip>

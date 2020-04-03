@@ -54,7 +54,7 @@ const steps: Steps[] = [
 	},
 	{
 		stepNumber: 2,
-		stepName: "3D Room Upload (3D Team)",
+		stepName: "3D Asset and Room Upload (3D Team)",
 		prevPhase: DesignPhases.concept,
 		phaseName: DesignPhases.modelling,
 		nextPhase: DesignPhases.design3D,
