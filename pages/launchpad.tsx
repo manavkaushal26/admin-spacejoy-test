@@ -66,7 +66,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		color: "#FA8C16",
 		backgroundColor: "#FFF7E6",
 		notActive: false,
-		allowedRoles: [Role.Admin, Role.Owner, Role.Author],
+		allowedRoles: [Role.Admin, Role.Owner, Role.Author, Role.BlogAdmin],
 	},
 ];
 

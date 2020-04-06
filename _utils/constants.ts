@@ -1,7 +1,15 @@
 import { Role } from "@customTypes/userType";
 import { MountTypes } from "@customTypes/assetInfoTypes";
 
-export const allowedRoles = [Role.Admin, Role["Account Manager"], Role.Designer, Role.Owner, Role["3D Artist"]];
+export const allowedRoles = [
+	Role.Admin,
+	Role["Account Manager"],
+	Role.Designer,
+	Role.Owner,
+	Role["3D Artist"],
+	Role.Author,
+	Role.BlogAdmin,
+];
 
 export const MountAndClampValuesForVerticals = {
 	"5d9b10ee40295b004dde4ccc": { mountValue: MountTypes.floor, clampValue: 1 },

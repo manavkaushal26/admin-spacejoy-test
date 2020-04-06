@@ -11,6 +11,7 @@ export enum Role {
 	Guest = "guest",
 	"3D Artist" = "3d artist",
 	"Author" = "author",
+	BlogAdmin = "blogAdmin",
 }
 
 export enum ProjectRoles {
