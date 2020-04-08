@@ -1,9 +1,9 @@
-import { DetailedDesign, ThemeInterface, RoomTypes, RoomLabels } from "@customTypes/dashboardTypes";
-import { Col, Input, Modal, Row, Select, Typography, notification } from "antd";
-import React, { useEffect, useState } from "react";
 import { getThemes } from "@api/designApi";
-import fetcher from "@utils/fetcher";
+import { DetailedDesign, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { Col, Input, Modal, notification, Row, Select, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -32,7 +32,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
 	const [selectedTheme, setSelectedTheme] = useState<string>("");
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
-
+	const [attributeList, setAttributeList] = useState<string[]>([]);
 	const fetchThemes = async (): Promise<void> => {
 		const endPoint = `${getThemes()}?limit=all`;
 
@@ -51,6 +51,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 			setDescription(designData.description);
 			setSelectedTheme(designData.theme);
 			setTags(designData.tags);
+			setAttributeList(designData.attributeList.map(elem => elem.text));
 			setLongDescription(designData.longDescription);
 			setRoomType(getValueSafely(() => designData.searchKey.roomType, RoomTypes.LivingRoom));
 		}
@@ -73,9 +74,12 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 		}
 	};
 
-	const handleSelect = (value): void => {
-		if (typeof value === "object") setTags(value);
-		else {
+	const handleSelect = (value, type): void => {
+		if (type === "tags") {
+			setTags(value);
+		} else if (type === "attributeList") {
+			setAttributeList(value);
+		} else {
 			setSelectedTheme(value);
 		}
 	};
@@ -99,6 +103,9 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 					searchKey: {
 						roomType,
 					},
+					attributeList: attributeList.map(elem => ({
+						text: elem,
+					})),
 				});
 			}}
 			onCancel={onCancel}
@@ -156,7 +163,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						</Col>
 					</Row>
 				</Col>
-				<Col span={24}>
+				<Col sm={24} md={12}>
 					<Row>
 						<Col span={24}>
 							<Text>Tags</Text>
@@ -166,8 +173,25 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 								open={false}
 								style={{ width: "100%" }}
 								value={tags}
-								onChange={handleSelect}
+								onChange={(value): void => handleSelect(value, "tags")}
 								tokenSeparators={[","]}
+								mode="tags"
+							/>
+						</Col>
+					</Row>
+				</Col>
+				<Col sm={24} md={12}>
+					<Row>
+						<Col span={24}>
+							<Text>Attribute List</Text>
+						</Col>
+						<Col span={24}>
+							<Select
+								open={false}
+								style={{ width: "100%" }}
+								value={attributeList}
+								onChange={(value: string[]): void => handleSelect(value, "attributeList")}
+								tokenSeparators={["."]}
 								mode="tags"
 							/>
 						</Col>
