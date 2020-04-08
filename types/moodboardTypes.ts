@@ -112,9 +112,15 @@ export interface AssetType {
 	imageUrl: string;
 	artist: {
 		_id: string;
+		profile: {
+			firstName: string;
+			lastName: string;
+		};
 		name: string;
 	};
 	tags: string[];
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface MoodboardAsset {

@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { CapitalizedText } from "@components/CommonStyledComponents";
+import moment, { Moment } from "moment";
 import { FullheightSpin, GreyDrawer } from "../styled";
 import { isAssetInMoodboard } from "./utils";
 
@@ -286,6 +287,57 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								</Col>
 							</Row>
 						</Col>
+						<Col span={24}>
+							<SilentDivider />
+						</Col>
+
+						<Col span={24}>
+							<Row gutter={[0, 10]}>
+								<Col>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
+											<Icon type="user" />
+										</Col>
+										<Col>
+											<Text type="secondary">Metadata</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Row gutter={[0, 10]}>
+										<Col>
+											<Text strong>Created by: </Text>
+											<CapitalizedText>
+												{getValueSafely(
+													() =>
+														`${selectedAssetData.artist.profile.firstName} ${selectedAssetData.artist.profile.lastName}`,
+													"Undefined"
+												)}
+											</CapitalizedText>
+										</Col>
+										<Col>
+											<Text strong>Created At: </Text>
+											<CapitalizedText>
+												{getValueSafely<string>(
+													() => moment(selectedAssetData.createdAt).format("D-MMM-YYYY"),
+													"Undefined"
+												)}
+											</CapitalizedText>
+										</Col>
+										<Col>
+											<Text strong>Updated At: </Text>
+											<CapitalizedText>
+												{getValueSafely<string>(
+													() => moment(selectedAssetData.updatedAt).format("D-MMM-YYYY"),
+													"Undefined"
+												)}
+											</CapitalizedText>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Col>
+
 						<Col span={24}>
 							<SilentDivider />
 						</Col>

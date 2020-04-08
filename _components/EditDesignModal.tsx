@@ -191,7 +191,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 								style={{ width: "100%" }}
 								value={attributeList}
 								onChange={(value: string[]): void => handleSelect(value, "attributeList")}
-								tokenSeparators={["."]}
+								tokenSeparators={["["]}
 								mode="tags"
 							/>
 						</Col>

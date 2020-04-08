@@ -1,25 +1,25 @@
 /* eslint-disable jsx-a11y/label-has-for */
 /* eslint-disable jsx-a11y/label-has-associated-control */
+import { updateSubtasks } from "@api/designApi";
 import { uploadRoomApi } from "@api/pipelineApi";
 import {
+	DesignPhases,
 	DetailedDesign,
 	Model3DFiles,
 	ModelToExtensionMap,
 	RoomLabels,
 	RoomTypes,
-	DesignPhases,
 } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
 import { SilentDivider, StatusButton } from "@sections/Dashboard/styled";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, Input, Row, Select, Typography, Upload, notification } from "antd";
+import { Button, Col, Icon, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
-import { Status } from "@customTypes/userType";
-import fetcher from "@utils/fetcher";
-import { updateSubtasks } from "@api/designApi";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -29,12 +29,21 @@ interface Stage {
 	projectId: string;
 }
 
+const radioStyle = {
+	display: "flex",
+	minHeight: "30px",
+	alignItems: "center",
+	margin: "5px 0px",
+};
+
 const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId }) => {
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [roomName, setRoomName] = useState<string>(null);
 	const [roomFileList, setRoomFileList] = useState<UploadFile<any>[]>([]);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
+	const [isGlobal, setIsGlobal] = useState<boolean>(false);
+	const [isNewRoom, setIsNewRoom] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (designData) {
@@ -104,18 +113,24 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 
 	const uploadRoomUrl = useMemo(
 		() =>
-			uploadRoomApi(
+			`${uploadRoomApi(
 				designData._id,
-				getValueSafely(() => designData.room._id, undefined)
-			),
-		[designData._id, designData.room]
+				getValueSafely(() => (!isNewRoom ? designData.room._id : undefined), undefined)
+			)}${isGlobal ? "?isGlobal=true" : ""}`,
+		[designData._id, designData.room, isGlobal, isNewRoom]
 	);
 
-	const handleNameChange = e => {
+	const onChange = (e): void => {
 		const {
-			target: { value },
+			target: { name, value },
 		} = e;
-		setRoomName(value);
+		if (name === "roomName") {
+			setRoomName(value);
+		} else if (name === "isNewRoom") {
+			setIsNewRoom(value);
+		} else if (name === "isGlobal") {
+			setIsGlobal(value);
+		}
 	};
 
 	const handleOnFileUploadChange = (uploadFileType: "room" | "source", info: UploadChangeParam<UploadFile>): void => {
@@ -137,7 +152,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 		}
 	};
 
-	const room = useMemo(() => designData.room, []);
+	const room = useMemo(() => designData.room, [designData.room]);
 	useEffect(() => {
 		if (designData.room) {
 			setRoomName(getValueSafely(() => designData.room.name, ""));
@@ -199,7 +214,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 	return (
 		<StepDiv>
 			<Row gutter={[16, 16]}>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[8, 8]}>
 						<Col>
 							<Text strong>Description</Text>
@@ -212,31 +227,31 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 						</Col>
 					</Row>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[8, 8]}>
-						<Col>
+						<Col sm={24}>
 							<Text strong>Rooms</Text>
 						</Col>
-						<Col>
+						<Col sm={24}>
 							<SilentDivider />
 						</Col>
-						<Col>
+						<Col sm={24} md={12}>
 							<Row gutter={[4, 4]}>
-								<Col>
+								<Col span={24}>
 									<Text>Room Name</Text>
 								</Col>
-								<Col>
-									<Input value={roomName} onChange={handleNameChange} />
+								<Col span={24}>
+									<Input value={roomName} name="roomName" onChange={onChange} />
 								</Col>
 							</Row>
 						</Col>
-						<Col>
+						<Col sm={24} md={12}>
 							<Row gutter={[4, 4]}>
-								<Col>
+								<Col span={24}>
 									<Text>Room type</Text>
 								</Col>
-								<Col>
-									<Select value={`roomType:${roomType}`} onSelect={onSelect}>
+								<Col span={24}>
+									<Select style={{ width: "100%" }} value={`roomType:${roomType}`} onSelect={onSelect}>
 										{Object.keys(RoomTypes).map(key => {
 											return (
 												<Option key={key} value={`roomType:${RoomTypes[key]}`}>
@@ -248,30 +263,69 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 								</Col>
 							</Row>
 						</Col>
-						<Col>
+						<Col sm={24} md={12}>
 							<Row gutter={[4, 4]}>
-								<Col>
-									<Row gutter={[4, 4]}>
-										<Col>
-											<Text>Room File type</Text>
-										</Col>
-										<Col>
-											<Select value={`fileType:${model3dFiles}`} onSelect={onSelect}>
-												{Object.keys(Model3DFiles).map(key => {
-													return (
-														<Option key={key} value={`fileType:${Model3DFiles[key]}`}>
-															{key}
-														</Option>
-													);
-												})}
-											</Select>
-										</Col>
-									</Row>
+								<Col span={24}>
+									<Text>Room File type</Text>
+								</Col>
+								<Col span={24}>
+									<Select style={{ width: "100%" }} value={`fileType:${model3dFiles}`} onSelect={onSelect}>
+										{Object.keys(Model3DFiles).map(key => {
+											return (
+												<Option key={key} value={`fileType:${Model3DFiles[key]}`}>
+													{key}
+												</Option>
+											);
+										})}
+									</Select>
 								</Col>
 							</Row>
 						</Col>
+						<Col sm={24}>
+							<SilentDivider />
+						</Col>
+						{!(designData.room && designData.room._id) ? (
+							<Col sm={24}>
+								<Row>
+									<Col>
+										<Text>Upload Room to all Designs?</Text>
+									</Col>
+									<Col>
+										<Radio.Group name="isGlobal" onChange={onChange} value={isGlobal}>
+											<Radio value>Yes</Radio>
+											<Radio value={false}>No</Radio>
+										</Radio.Group>
+									</Col>
+								</Row>
+							</Col>
+						) : (
+							<Col sm={24}>
+								<Row>
+									<Col>
+										<Text>Upload type?</Text>
+									</Col>
+									<Col>
+										<Radio.Group name="isNewRoom" onChange={onChange} value={isNewRoom}>
+											<Radio style={radioStyle} value>
+												<Row>Create New Room</Row>
+											</Radio>
+											<Radio style={radioStyle} value={false}>
+												<Row>
+													<Col>
+														<Text>Update Current Room</Text>
+													</Col>
+													<Col>
+														<small>Note:- All Designs with the same room will be affected</small>
+													</Col>
+												</Row>
+											</Radio>
+										</Radio.Group>
+									</Col>
+								</Row>
+							</Col>
+						)}
 
-						<Col>
+						<Col md={24}>
 							<Row gutter={[4, 4]}>
 								<Col>
 									<Text>Room File</Text>
@@ -298,7 +352,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 							</Row>
 						</Col>
 						{room && (
-							<Col>
+							<Col md={24}>
 								<Row gutter={[4, 4]}>
 									<Col>
 										<Text>Source File</Text>
@@ -327,7 +381,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 						)}
 					</Row>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Row type="flex" gutter={[8, 8]}>
 						<Col xs={24} md={12}>
 							<Row gutter={[8, 8]}>
