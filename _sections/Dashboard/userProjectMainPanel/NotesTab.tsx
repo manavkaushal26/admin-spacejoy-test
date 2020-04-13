@@ -2,11 +2,13 @@ import { updateNotesApi } from "@api/designApi";
 import Image from "@components/Image";
 import { DesignerNotes, DetailedDesign } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
-import { getValueSafely } from "@utils/commonUtils";
+import { getValueSafely, stringToUrl } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { getLocalStorageValue } from "@utils/storageUtils";
 import { Avatar, Button, Card, Col, Input, message, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
+import parse from "html-react-parser";
+import TextArea from "antd/lib/input/TextArea";
 import { BorderedParagraph, CustomDiv, CustomUl, EndCol, FitIcon } from "../styled";
 
 const { Text } = Typography;
@@ -135,7 +137,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 						</CustomDiv>
 					</Col>
 					<Col sm={22} md={22} lg={18} xl={14}>
-						<Input.TextArea value={newNote} onChange={onNewNote} autosize={{ minRows: 2 }} />
+						<TextArea value={newNote} onChange={onNewNote} autosize={{ minRows: 2 }} />
 					</Col>
 				</Row>
 				<CustomDiv py="10px">
@@ -166,15 +168,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 						<Row>
 							<Col span={2} />
 							<Col md={22} lg={18} xl={14}>
-								<BorderedParagraph
-									editable={{
-										onChange: (value: string) => {
-											editNote(note._id, value);
-										},
-									}}
-								>
-									{note.text}
-								</BorderedParagraph>
+								<BorderedParagraph>{parse(stringToUrl(note.text))}</BorderedParagraph>
 							</Col>
 						</Row>
 					</CustomDiv>

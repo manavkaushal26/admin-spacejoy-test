@@ -3,7 +3,8 @@ import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes
 import { cloudinary } from "@utils/config";
 import { Icon, Typography } from "antd";
 import React from "react";
-import { getValueSafely } from "@utils/commonUtils";
+import { getValueSafely, stringToUrl } from "@utils/commonUtils";
+import parse from "html-react-parser";
 
 const { Text } = Typography;
 
@@ -36,7 +37,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 			return <Icon type="close-square" theme="twoTone" twoToneColor="#f5222d" />;
 		case QuizAnswerFieldType.Text:
 			if (text) {
-				return <Text>{text}</Text>;
+				return <Text>{parse(stringToUrl(text))}</Text>;
 			}
 			return <Text>No Answer Provided</Text>;
 		case QuizAnswerFieldType.Value:

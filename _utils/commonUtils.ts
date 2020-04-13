@@ -18,7 +18,7 @@ export const getValueSafely: GetValueFunction = (func, defaultValue) => {
 	}
 };
 
-export const debounce = (func, wait) => {
+export const debounce = (func, wait): Function => {
 	let timeout;
 	return function(...args) {
 		clearTimeout(timeout);
@@ -26,16 +26,16 @@ export const debounce = (func, wait) => {
 	};
 };
 
-export function getBase64(file) {
+export function getBase64(file): Promise<string | ArrayBuffer> {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader();
 		reader.readAsDataURL(file);
-		reader.onload = () => resolve(reader.result);
-		reader.onerror = error => reject(error);
+		reader.onload = (): void => resolve(reader.result);
+		reader.onerror = (error): void => reject(error);
 	});
 }
 
-export const getHumanizedActivePhase = (phases: PhaseType) => {
+export const getHumanizedActivePhase = (phases: PhaseType): HumanizeDesignPhases => {
 	return Object.keys(phases).reduce((acc, curr) => {
 		if (phases[curr].status === Status.active) return HumanizeDesignPhases[curr];
 		return acc;
@@ -151,4 +151,23 @@ export const getTimeSince = (value): string => {
 		return `${seconds} Seconds`;
 	}
 	return "N/A";
+};
+
+// /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+
+export const urlRegex = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+/gi;
+
+export const matchUrl = (url: string): boolean => {
+	const urlRegexObj = new RegExp(urlRegex);
+	return urlRegexObj.test(url);
+};
+
+export const stringToUrl = (text: string): string => {
+	const matchedText = text.match(urlRegex);
+	if (matchedText === null) {
+		return text;
+	}
+	return matchedText.reduce((acc, matchedUrl) => {
+		return acc.replace(matchedUrl, `<a href={matchedUrl} rel="noopener noreferrer">${matchedUrl}</a>`);
+	}, `${text}`);
 };
