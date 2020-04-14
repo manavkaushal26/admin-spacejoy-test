@@ -112,7 +112,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 		>
 			<Row gutter={[8, 8]}>
 				<Col span={24}>
-					<Row>
+					<Row gutter={[4, 4]}>
 						<Col span={24}>
 							<Text>Title</Text>
 						</Col>
@@ -122,7 +122,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 					</Row>
 				</Col>
 				<Col span={12}>
-					<Row>
+					<Row gutter={[4, 4]}>
 						<Col span={24}>
 							<Text>Theme</Text>
 						</Col>
@@ -146,7 +146,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 					</Row>
 				</Col>
 				<Col span={12}>
-					<Row>
+					<Row gutter={[4, 4]}>
 						<Col>
 							<Text>Room Type</Text>
 						</Col>
@@ -163,8 +163,8 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						</Col>
 					</Row>
 				</Col>
-				<Col sm={24} md={12}>
-					<Row>
+				<Col sm={24} md={24}>
+					<Row gutter={[4, 4]}>
 						<Col span={24}>
 							<Text>Tags</Text>
 						</Col>
@@ -180,23 +180,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						</Col>
 					</Row>
 				</Col>
-				<Col sm={24} md={12}>
-					<Row>
-						<Col span={24}>
-							<Text>Attribute List</Text>
-						</Col>
-						<Col span={24}>
-							<Select
-								open={false}
-								style={{ width: "100%" }}
-								value={attributeList}
-								onChange={(value: string[]): void => handleSelect(value, "attributeList")}
-								tokenSeparators={["["]}
-								mode="tags"
-							/>
-						</Col>
-					</Row>
-				</Col>
+
 				<Col span={24}>
 					<Row>
 						<Col span={24}>
@@ -224,6 +208,23 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 								placeholder="Long Description"
 								value={longDescription}
 								name="longDescription"
+							/>
+						</Col>
+					</Row>
+				</Col>
+				<Col sm={24} md={24}>
+					<Row>
+						<Col span={24}>
+							<Text>Bullet points</Text>
+						</Col>
+						<Col span={24}>
+							<Select
+								open={false}
+								style={{ width: "100%" }}
+								value={attributeList}
+								onChange={(value: string[]): void => handleSelect(value, "attributeList")}
+								tokenSeparators={["["]}
+								mode="tags"
 							/>
 						</Col>
 					</Row>
