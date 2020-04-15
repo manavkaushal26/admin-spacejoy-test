@@ -9,7 +9,8 @@ import { useRouter } from "next/router";
 import React, { useState, useMemo } from "react";
 import styled from "styled-components";
 import { CapitalizedText } from "@components/CommonStyledComponents";
-import moment, { Moment } from "moment";
+import moment from "moment";
+import ModelViewer from "@components/ModelViewer";
 import { FullheightSpin, GreyDrawer } from "../styled";
 import { isAssetInMoodboard } from "./utils";
 
@@ -103,6 +104,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		setImagePreviewVisible(!imagePreviewVisible);
 	};
 
+	const pathToFile = getValueSafely(() => selectedAssetData.spatialData.fileUrls.glb, null);
+	const typeOfFile = "glb";
 	return (
 		<GreyDrawer
 			onClose={closeDrawer}
@@ -113,19 +116,51 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 			<FullheightSpin spinning={loading || dataLoading}>
 				{selectedAssetData && (
 					<Row gutter={[0, 10]}>
+						{pathToFile && (
+							<Col span={24}>
+								<Row type="flex" justify="center" gutter={[0, 10]}>
+									<Col span={24}>
+										<Row type="flex" gutter={[10, 0]}>
+											<Col>
+												<Icon type="code-sandbox" />
+											</Col>
+											<Col>
+												<Text type="secondary">Model</Text>
+											</Col>
+										</Row>
+									</Col>
+									<Col>
+										<ModelViewer type={typeOfFile} pathToFile={pathToFile} />
+									</Col>
+								</Row>
+							</Col>
+						)}
+
 						<Col span={24}>
-							<Row type="flex" justify="center">
-								<ClickDiv onClick={toggleImagePreviewModal}>
-									<Image
-										width="100%"
-										src={getValueSafely(
-											() => selectedAssetData.cdn,
-											process.env.NODE_ENV === "production"
-												? "v1581080070/admin/productImagePlaceholder.jpg"
-												: "v1581080111/admin/productImagePlaceholder.jpg"
-										)}
-									/>
-								</ClickDiv>
+							<Row type="flex" justify="center" gutter={[0, 10]}>
+								<Col span={24}>
+									<Row type="flex" gutter={[10, 0]}>
+										<Col>
+											<Icon type="file-image" />
+										</Col>
+										<Col>
+											<Text type="secondary">Image</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<ClickDiv onClick={toggleImagePreviewModal}>
+										<Image
+											width="100%"
+											src={getValueSafely(
+												() => selectedAssetData.cdn,
+												process.env.NODE_ENV === "production"
+													? "v1581080070/admin/productImagePlaceholder.jpg"
+													: "v1581080111/admin/productImagePlaceholder.jpg"
+											)}
+										/>
+									</ClickDiv>
+								</Col>
 							</Row>
 						</Col>
 						<Col span={24}>

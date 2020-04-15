@@ -26,7 +26,7 @@ export const assetStoreInitialState: AssetStoreState = {
 	metaData: null,
 	moodboard: null,
 	loading: true,
-	status: [AssetStatus.Active, AssetStatus.Pending],
+	status: [AssetStatus.Active],
 	retailerFilter: [],
 	priceRange: [0, 10000],
 	heightRange: [0, 30],

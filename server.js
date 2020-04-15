@@ -23,7 +23,7 @@ const getMaxAge = () => {
 
 const serve = (pathName, cache) =>
 	express.static(pathName, {
-		maxAge: cache && !dev ? getMaxAge() : 0
+		maxAge: cache && !dev ? getMaxAge() : 0,
 	});
 
 function getCacheKey(req) {
@@ -32,7 +32,7 @@ function getCacheKey(req) {
 
 const ssrCache = new LRUCache({
 	max: 100,
-	maxAge: 1000 * 60 * 60
+	maxAge: 1000 * 60 * 60,
 });
 
 async function renderAndCache(req, res, pagePath, queryParams) {
@@ -66,7 +66,7 @@ app.prepare().then(() => {
 				console.log(message);
 			});
 		}
-		cluster.on("online", worker => {
+		cluster.on("listening", worker => {
 			console.log(`Worker ${worker.process.pid} is listening`);
 		});
 		cluster.on("exit", (worker, code, signal) => {
@@ -75,6 +75,9 @@ app.prepare().then(() => {
 			workers.push(cluster.fork());
 			workers[workers.length - 1].on("message", function(message) {
 				console.log(message);
+			});
+			workers[workers.length - 1].on("listening", function(message) {
+				console.log(`Worker ${workers[workers.length - 1].process.pid} is listening`);
 			});
 		});
 	} else {

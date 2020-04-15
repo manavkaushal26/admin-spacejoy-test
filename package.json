@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"dependencies": {
 		"@tinymce/tinymce-react": "^3.5.0",
+		"@types/three": "^0.103.2",
 		"@zeit/next-less": "^1.0.1",
 		"antd": "^3.26.8",
 		"body-parser": "^1.19.0",
@@ -40,6 +41,8 @@
 		"react-text-loop": "^2.2.0",
 		"reactjs-places-autocomplete": "^7.2.1",
 		"styled-components": "^5.0.1",
+		"three": "^0.115.0",
+		"three-gltf-loader": "^1.111.0",
 		"webpack-bundle-analyzer": "^3.6.0"
 	},
 	"devDependencies": {
