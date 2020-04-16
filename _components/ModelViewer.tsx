@@ -1,8 +1,27 @@
+/* eslint-disable no-param-reassign */
 import { OrbitControls } from "@utils/OrbitControls";
 import { Icon } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { AmbientLight, Box3, DirectionalLight, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from "three";
+import {
+	Box3,
+	PerspectiveCamera,
+	Scene,
+	Vector3,
+	WebGLRenderer,
+	PlaneGeometry,
+	sRGBEncoding,
+	PointLight,
+	MeshStandardMaterial,
+	Fog,
+	Mesh,
+	HemisphereLight,
+	PCFSoftShadowMap,
+	PCFShadowMap,
+	FrontSide,
+	Vector2,
+	Color,
+} from "three";
 import GLTFLoader from "three-gltf-loader";
 
 interface ModelViewer {
@@ -27,6 +46,19 @@ const ModelLoaderProgress = styled.span`
 	align-content: center;
 `;
 
+const addMeshShadow = (children): void => {
+	children.map((child): void => {
+		if (child.type === "Group") {
+			if (child.children && child.children.length !== 0) {
+				addMeshShadow(child.children);
+			}
+		}
+		if (child.type === "Mesh") {
+			child.castShadow = true;
+		}
+	});
+};
+
 const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile }) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
@@ -35,22 +67,39 @@ const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile }) => {
 	const scene = new Scene();
 	const renderer = new WebGLRenderer({ antialias: true });
 	const controls = new OrbitControls(camera, renderer.domElement);
-	const directionalLight = new DirectionalLight(0xffffff, 0.7);
+	const hemisphereLight = new HemisphereLight(0xffffff, 0x9d9b8c, 0.8);
+	const pointLight = new PointLight(0xffffff, 0.8);
+	const pointLight2 = new PointLight(0xffffff, 0.8);
 
-	directionalLight.position.set(5, 10, 7.5);
-	const directionalLight2 = new DirectionalLight(0xffffff, 0.7);
-	const directionalLightFront = new DirectionalLight(0xffffff, 0.7);
-	directionalLightFront.position.set(-5, 0, 20);
-	directionalLight2.position.set(-5, -10, -7.5);
-	const ambientLight = new AmbientLight(0xffffff, 1);
+	const floorGeometry = new PlaneGeometry(50, 50, 32);
+	floorGeometry.lookAt(new Vector3(0, 10, 0));
+	const floorMaterial = new MeshStandardMaterial({ color: 0x9d9b8c, side: FrontSide, shadowSide: FrontSide });
+	const floorMesh = new Mesh(floorGeometry, floorMaterial);
+	const fog = new Fog(0x9d9b8c, 2, 10);
+
+	floorMesh.receiveShadow = true;
+
+	pointLight.position.set(5, 20, 7.5);
+	pointLight.castShadow = true;
+	pointLight.shadow.radius = 4;
+	pointLight.shadow.mapSize = new Vector2(2048, 2048);
+	pointLight.decay = 2;
+	pointLight2.position.set(-5, -10, -7.5);
+	pointLight2.decay = 2;
+
 	const render = (): void => {
+		if (camera.position.z > 20) {
+			camera.position.set(camera.position.x, camera.position.y, 20);
+		}
 		renderer.render(scene, camera);
 	};
 
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(312, 312);
-	renderer.setClearColor(0xf2f3f5, 0.5);
-
+	renderer.setClearColor(0x9d9b8c, 1);
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type = PCFShadowMap;
+	renderer.outputEncoding = sRGBEncoding;
 	camera.position.set(0, 1, 1);
 	controls.update();
 
@@ -64,11 +113,14 @@ const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile }) => {
 	controls.maxZoom = 2;
 	controls.minZoom = 1;
 	// Scene Setup
-	scene.add(directionalLight);
-	scene.add(directionalLight2);
-	scene.add(directionalLightFront);
+	// scene.add(directionalLight);
 	scene.add(camera);
-	scene.add(ambientLight);
+	scene.add(pointLight);
+	scene.add(floorMesh);
+	scene.add(hemisphereLight);
+	scene.add(pointLight2);
+	scene.fog = fog;
+	scene.background = new Color(0x9d9b8c);
 
 	useEffect(() => {
 		if (canvasRef.current) {
@@ -83,20 +135,22 @@ const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile }) => {
 
 				loader.load(
 					pathToFile,
-					gltf => {
+					readGltf => {
+						const gltf = { ...readGltf };
 						setLoading(false);
 						const objectBound = new Box3().setFromObject(gltf.scene);
+						addMeshShadow(gltf.scene.children);
 						gltf.scene.position.set(0, 0, 0);
+						gltf.scene.scale.set(1, 1, 1);
 						const center = new Vector3();
 						const size = new Vector3();
+						gltf.scene.castShadow = true;
 						objectBound.getSize(size);
 						objectBound.getCenter(center);
 						const cameraDistance = size.x * 1.6 > size.y * 1.2 ? size.x * 1.6 : size.y * 1.2;
 						camera.position.set(0, center.y, cameraDistance);
 						camera.lookAt(center);
-
 						controls.target = center;
-
 						scene.add(gltf.scene);
 						renderer.render(scene, camera);
 					},
