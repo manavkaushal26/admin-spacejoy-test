@@ -13,7 +13,7 @@ import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab"
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, notification, PageHeader, Spin, Tabs } from "antd";
+import { Button, notification, PageHeader, Spin, Tabs, Popconfirm } from "antd";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { SilentDivider } from "../styled";
@@ -22,6 +22,7 @@ import NotesTab from "./NotesTab";
 import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
 import CustomerFeedbackTab from "./ProjectDesignInteractionPanel/CustomerFeedbackTab";
 import TeamTab from "./TeamTab";
+import DesignDetails from "./DesignDetails";
 
 const { TabPane } = Tabs;
 
@@ -131,15 +132,27 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const onPublish = async (status?: Status): Promise<void> => {
 		const endPoint = publishDesignApi(designData._id, status);
 		setDesignLoading(true);
-		const response = await fetcher({ endPoint, method: "PUT" });
+		const response = await fetcher({
+			endPoint,
+			method: "PUT",
+			body: {
+				status,
+			},
+		});
 
 		if (response.statusCode <= 300) {
 			setDesignData(prevState => {
 				return { ...prevState, status: response.data.status };
 			});
-			notification.success({
-				message: "Design successfully published",
-			});
+			if (status === Status.active) {
+				notification.success({
+					message: "Design successfully published",
+				});
+			} else {
+				notification.success({
+					message: "Design successfully unpublished",
+				});
+			}
 			setEditModalVisible(false);
 		} else {
 			notification.error({
@@ -149,8 +162,14 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		setDesignLoading(false);
 	};
 
-	const toggleEditDesignModal = (): void => {
-		setEditModalVisible(prevValue => !prevValue);
+	const toggleEditDesignModal = async (): Promise<void> => {
+		if (activeTab === "design_details") {
+			setDesignLoading(true);
+			await onPublish(Status.active);
+			setDesignLoading(false);
+		} else {
+			setEditModalVisible(prevValue => !prevValue);
+		}
 	};
 
 	const onTabChange = (activeKey): void => {
@@ -169,7 +188,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			if (response.statusCode <= 300) {
 				setDesignData(response.data);
 				notification.success({ message: "Updated Design Successfully" });
-				await onPublish();
+				await onPublish(Status.active);
 			} else {
 				notification.error({ message: response.message });
 				setDesignLoading(false);
@@ -212,9 +231,15 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 												{publishButtonText}
 											</Button>
 										) : (
-											<Button key="unPublish" onClick={(): Promise<void> => onPublish(Status.pending)} type="danger">
-												Unpublish
-											</Button>
+											<Popconfirm
+												title="Are you sure?"
+												key="popConfirm"
+												onConfirm={(): Promise<void> => onPublish(Status.pending)}
+											>
+												<Button key="unPublish" type="danger">
+													Unpublish
+												</Button>
+											</Popconfirm>
 										),
 									],
 							  })}
@@ -262,6 +287,15 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 										feedback,
 										designs: [...projectData.designs],
 									}}
+								/>
+							</TabPane>
+						)}
+						{!projectData && (
+							<TabPane tab="Design Details" key="design_details">
+								<DesignDetails
+									designData={designData}
+									setDesignData={setDesignData}
+									setDesignLoading={setDesignLoading}
 								/>
 							</TabPane>
 						)}

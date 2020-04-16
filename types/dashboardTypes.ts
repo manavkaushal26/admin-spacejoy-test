@@ -374,6 +374,7 @@ export interface DetailedDesign {
 		retailers: string[];
 		roomType: RoomTypes;
 	};
+	slug: string;
 	assets: Assets[];
 	status: Status;
 	room: RoomType;
