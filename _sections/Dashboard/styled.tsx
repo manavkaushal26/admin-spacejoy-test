@@ -237,7 +237,7 @@ export const BorderedParagraph = styled(Paragraph)`
 	border-radius: 4px;
 	padding: 8px 8px;
 	background-color: white;
-	white-space: pre;
+	white-space: break-spaces;
 	div[role="button"] {
 		display: inline-flex !important;
 	}
