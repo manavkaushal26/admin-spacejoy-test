@@ -168,6 +168,9 @@ export const stringToUrl = (text: string): string => {
 		return text;
 	}
 	return matchedText.reduce((acc, matchedUrl) => {
-		return acc.replace(matchedUrl, `<a href={matchedUrl} rel="noopener noreferrer">${matchedUrl}</a>`);
+		return acc.replace(
+			matchedUrl,
+			`<a href=${matchedUrl} target="_blank" rel="noopener noreferrer">${matchedUrl}</a><br>`
+		);
 	}, `${text}`);
 };

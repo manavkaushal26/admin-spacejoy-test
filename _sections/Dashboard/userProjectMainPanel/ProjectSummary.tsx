@@ -103,7 +103,11 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 							<Col>
 								<ProgressBar width={33} phase={phase} endTime={endTime} />
 							</Col>
-							<Col>{!completedPhases.includes(phase) && <Text>{getLongTimeString(endTime.valueOf())}</Text>}</Col>
+							<Col>
+								<Text>
+									Ends on: {moment(endTime).format("MM-DD-YYYY")} at {moment(endTime).format("HH:mm")}
+								</Text>
+							</Col>
 						</Row>
 					)}
 				</Col>
