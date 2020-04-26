@@ -29,6 +29,8 @@ export interface Blog {
 	category?: Partial<Category>;
 	tags?: string[];
 	backlinks?: string[];
+	seoTitle: string;
+	seoDescription: string;
 	publishDate: string;
 	status: Status;
 	images: ImageInterface[];

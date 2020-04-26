@@ -3,7 +3,6 @@ import { Role } from "@customTypes/userType";
 import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { getLocalStorageValue } from "@utils/storageUtils";
 import { Empty, notification } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Router from "next/router";
@@ -11,6 +10,7 @@ import { debounce } from "@utils/commonUtils";
 import { getQueryString, getQueryObject } from "@sections/AuthorPlatform/utils";
 import InfiniteScroll from "react-infinite-scroller";
 import LoadingCard from "@sections/Dashboard/LoadingCard";
+import getCookie from "@utils/getCookie";
 import { AuthorPlatformProps } from "..";
 import { AUTHOR_ACTIONS } from "../reducer";
 import BlogListCard from "./BlogListCard";
@@ -22,7 +22,7 @@ const fetchAllBlogs = async (
 ): Promise<void> => {
 	setLoading(true);
 
-	const role: Role = getLocalStorageValue(cookieNames.userRole);
+	const role: Role = getCookie(null, cookieNames.userRole) as Role;
 
 	const endPoint = `${getBlogs(role)}?skip=${state.pageNo * 10}&search=title:${state.searchText}&status=${
 		state.activeKey

@@ -16,9 +16,8 @@ import fetcher from "@utils/fetcher";
 import { Blog, BlogTypes } from "@customTypes/blogTypes";
 import { notification } from "antd";
 
-const MaxWidthDiv = styled.div`
+const BackgroundDiv = styled.div`
 	background-color: #fff;
-	max-width: 1200px;
 	margin: auto;
 	padding: 1.5rem 0px;
 `;
@@ -144,9 +143,9 @@ const author: NextPage<AuthorProps> = ({
 				<title>Author | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
-			<MaxWidthDiv>
+			<BackgroundDiv>
 				<AuthorPlatform state={state} dispatch={dispatch} />
-			</MaxWidthDiv>
+			</BackgroundDiv>
 		</PageLayout>
 	);
 };

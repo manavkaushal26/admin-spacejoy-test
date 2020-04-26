@@ -187,7 +187,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	}, [state.activeBlog]);
 
 	const onPublish = async (): Promise<void> => {
-		const publish = !(state.activeBlog.status === Status.active);
+		const publish = !(state.activeBlog.status === Status.active) && Role.BlogAuthor !== role;
 
 		const endPoint = publishBlog(state.activeBlog._id);
 		const body = role === Role.BlogAuthor ? { data: { publish: false } } : { data: { publish } };
@@ -266,10 +266,11 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	};
 
 	const publishButtonText = useMemo(() => {
-		if (state.activeBlog.status === Status.active) {
-			return role === Role.BlogAuthor ? "Mark as Draft" : "Unpublish";
+		if (role === Role.BlogAuthor) {
+			return state.activeBlog.status === Status.active ? "Mark as draft" : "Ready to publish";
 		}
-		return role === Role.BlogAuthor ? "Ready to Publish" : "Publish";
+
+		return state.activeBlog.status === Status.active ? "Unpublish" : "Publish";
 	}, [role, state.activeBlog.publishDate, state.activeBlog.status]);
 
 	const [addingCategoryLoading, setAddingCategoryLoading] = useState<boolean>(false);
@@ -462,6 +463,22 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						</Panel>
 						<Panel key="3" header="SEO">
 							<Row>
+								<Col>
+									<Row gutter={[8, 8]}>
+										<Col>SEO Title</Col>
+										<Col>
+											<Input onChange={handleChange} name="seoTitle" value={state.activeBlog.seoTitle} />
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Row gutter={[8, 8]}>
+										<Col>SEO Description</Col>
+										<Col>
+											<Input onChange={handleChange} name="seoDescription" value={state.activeBlog.seoDescription} />
+										</Col>
+									</Row>
+								</Col>
 								<Col>
 									<Row gutter={[8, 8]}>
 										<Col>What&apos;s the blog URL?</Col>
