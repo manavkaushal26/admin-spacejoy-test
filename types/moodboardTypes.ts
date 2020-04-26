@@ -91,6 +91,7 @@ export interface AssetType {
 			source: string;
 			glb: string;
 			legacy_obj: string;
+			sourceHighPoly: string;
 		};
 		mountType: MountTypes;
 		clampValue: -1 | 0;

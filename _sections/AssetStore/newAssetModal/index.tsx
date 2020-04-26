@@ -96,6 +96,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [dimensionInInches, setDimensionInInches] = useState<boolean>(true);
 	const [addRetailerModalVisible, setAddRetailerModalVisible] = useState(false);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
+	const [sourceHighPolyFileList, setSourceHighPolyFileList] = useState<UploadFile<any>[]>([]);
 
 	const themes = useMemo(() => getValueSafely(() => metadata.themes.list, []), [metadata]);
 	const retailers = useMemo(() => getValueSafely(() => metadata.retailers.list, []), [metadata]);
@@ -103,6 +104,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const uploadModelEndpoint = useMemo(() => uploadAssetModelApi(state._id, model3dFiles), [state._id, model3dFiles]);
 	const uploadModelSourceEndpoint = useMemo(() => uploadAssetModelApi(state._id, "source"), [state._id]);
 	const uploadAssetImageEndpoint = useMemo(() => uploadAssetImageApi(state._id), [state._id]);
+	const uploadModelHighPolySouceEndpoint = useMemo(() => uploadAssetModelApi(state._id, "sourceHighPoly"), [state._id]);
 
 	const [preview, setPreview] = useState<{ previewImage: string; previewVisible: boolean }>({
 		previewImage: "",
@@ -270,7 +272,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			if (state.spatialData) {
 				const {
 					spatialData: {
-						fileUrls: { glb, legacy_obj: legacyObj, source },
+						fileUrls: { glb, legacy_obj: legacyObj, source, sourceHighPoly },
 					},
 				} = state;
 
@@ -315,6 +317,19 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							name: fileName,
 							status: "done",
 							url: source,
+							size: 0,
+							type: "application/octet-stream",
+						},
+					]);
+				}
+				if (sourceHighPoly) {
+					const fileName = source.split("/").pop();
+					setSourceHighPolyFileList([
+						{
+							uid: "-1",
+							name: fileName,
+							status: "done",
+							url: sourceHighPoly,
 							size: 0,
 							type: "application/octet-stream",
 						},
@@ -411,7 +426,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	}, [state.meta.vertical]);
 
 	const handleOnFileUploadChange = (
-		uploadFileType: "model" | "source" | "image",
+		uploadFileType: "model" | "source" | "image" | "sourceHighPoly",
 		info: UploadChangeParam<UploadFile>
 	): void => {
 		let fileList = [...info.fileList];
@@ -436,6 +451,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetFile(fileList);
 		} else if (uploadFileType === "source") {
 			setSourceFileList(fileList);
+		} else if (uploadFileType === "sourceHighPoly") {
+			setSourceHighPolyFileList(fileList);
 		} else if (uploadFileType === "image") {
 			setImageFile(fileList);
 		}
@@ -1056,7 +1073,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Row>
 							<Row gutter={[0, 12]}>
 								<Col span={24}>
-									<Text strong>Upload Source File</Text>
+									<Text strong>Upload Low/Medium Poly File</Text>
 								</Col>
 								<Col lg={12}>
 									<Upload
@@ -1067,6 +1084,29 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										action={uploadModelSourceEndpoint}
 										onRemove={(): false => false}
 										onChange={(info): void => handleOnFileUploadChange("source", info)}
+										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+										accept=".blend"
+									>
+										<Button>
+											<Icon type="upload" />
+											Click to Upload
+										</Button>
+									</Upload>
+								</Col>
+							</Row>
+							<Row gutter={[0, 12]}>
+								<Col span={24}>
+									<Text strong>Upload High Poly File(Optional)</Text>
+								</Col>
+								<Col lg={12}>
+									<Upload
+										beforeUpload={(info): boolean => checkFileExtension("source", info)}
+										supportServerRender
+										name="file"
+										fileList={sourceHighPolyFileList}
+										action={uploadModelHighPolySouceEndpoint}
+										onRemove={(): false => false}
+										onChange={(info): void => handleOnFileUploadChange("sourceHighPoly", info)}
 										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 										accept=".blend"
 									>

@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import { getValueSafely } from "@utils/commonUtils";
 
 const { Text, Title } = Typography;
 
@@ -97,6 +98,7 @@ const IconBackground = styled.div<{ color: string }>`
 
 const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification }) => {
 	const Router = useRouter();
+
 	useEffect(() => {
 		if (!authVerification.name) {
 			Router.push("/auth", "/auth/login");
@@ -113,7 +115,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 				<LoudPaddingDiv>
 					<Row gutter={[0, 16]}>
 						<Col style={{ backgroundColor: "white" }}>
-							<CapitalizedTitle level={2}>Hey {authVerification.name},</CapitalizedTitle>
+							<CapitalizedTitle level={2}>Hey {getValueSafely(() => authVerification.name, "")},</CapitalizedTitle>
 							<h2 style={{ margin: 0 }}>Welcome to the Spacejoy Launchpad</h2>
 						</Col>
 						<Col>

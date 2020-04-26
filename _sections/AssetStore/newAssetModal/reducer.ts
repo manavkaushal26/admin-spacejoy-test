@@ -25,6 +25,7 @@ export interface NewAssetUploadState {
 			glb: string;
 			source: string;
 			legacy_obj: string;
+			sourceHighPoly: string;
 		};
 	};
 	price: number;
@@ -64,6 +65,7 @@ export const initialState = {
 			source: "",
 			// eslint-disable-next-line @typescript-eslint/camelcase
 			legacy_obj: "",
+			sourceHighPoly: "",
 		},
 	},
 	price: null,

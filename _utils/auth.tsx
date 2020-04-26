@@ -8,6 +8,7 @@ import React, { Component } from "react";
 import { allowedRoles } from "./constants";
 import fetcher from "./fetcher";
 import getCookie from "./getCookie";
+import { setLocalStorageValue } from "./storageUtils";
 
 const endPointAuthCheck = "/auth/check";
 const endPointSocialSignup = "/auth/login/oauth";
@@ -39,11 +40,12 @@ function clearAllStorage(): void {
 	window.localStorage.clear();
 }
 
-function login({ token, role, redirectUrl = "/launchpad" }): void {
+function login({ token, user, redirectUrl = "/launchpad" }): void {
 	clearAllStorage();
-	if (allowedRoles.includes(role)) {
+	if (allowedRoles.includes(user.role)) {
 		cookie.set(cookieNames.authToken, token, { expires: 365 });
-		cookie.set(cookieNames.userRole, role, { expires: 365 });
+		cookie.set(cookieNames.userRole, user.role, { expires: 365 });
+		setLocalStorageValue("authVerification", user);
 		if (redirectUrl !== null) {
 			const url = redirectUrl || "/launchpad";
 			redirectToLocation({ pathname: url, url });
@@ -63,11 +65,8 @@ async function oAuthLogin(data, redirectUrl = "/launchpad", cb): Promise<void> {
 		},
 	});
 	if (response.statusCode <= 300) {
-		const {
-			token,
-			user: { role },
-		} = response.data;
-		login({ token, role, redirectUrl });
+		const { token, user } = response.data;
+		login({ token, user, redirectUrl });
 	} else {
 		cb("Error");
 	}

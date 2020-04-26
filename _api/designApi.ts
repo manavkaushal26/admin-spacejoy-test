@@ -30,7 +30,7 @@ export const getAssetApi: () => string = () => {
 	return "admin/assets/search";
 };
 
-export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "source") => string = (
+export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "source" | "sourceHighPoly") => string = (
 	assetId,
 	filetype = Model3DFiles.Glb
 ) => {
