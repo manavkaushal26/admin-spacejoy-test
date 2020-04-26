@@ -190,14 +190,14 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		const publish = !(state.activeBlog.status === Status.active);
 
 		const endPoint = publishBlog(state.activeBlog._id);
-		const body = role === Role.Author ? { data: { publish: false } } : { data: { publish } };
+		const body = role === Role.BlogAuthor ? { data: { publish: false } } : { data: { publish } };
 
 		const response = await fetcher({ endPoint, method: "PUT", body });
 		let notificationResponse = "";
 		if (publish) {
-			notificationResponse = role === Role.Author ? "Marked as Ready to Publish" : "Published Article";
+			notificationResponse = role === Role.BlogAuthor ? "Marked as Ready to Publish" : "Published Article";
 		} else {
-			notificationResponse = role === Role.Author ? "Marked as Draft" : "Unpublished";
+			notificationResponse = role === Role.BlogAuthor ? "Marked as Draft" : "Unpublished";
 		}
 		if (response.statusCode <= 300) {
 			if (publish) {
@@ -267,9 +267,9 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 
 	const publishButtonText = useMemo(() => {
 		if (state.activeBlog.status === Status.active) {
-			return role === Role.Author ? "Mark as Draft" : "Unpublish";
+			return role === Role.BlogAuthor ? "Mark as Draft" : "Unpublish";
 		}
-		return role === Role.Author ? "Ready to Publish" : "Publish";
+		return role === Role.BlogAuthor ? "Ready to Publish" : "Publish";
 	}, [role, state.activeBlog.publishDate, state.activeBlog.status]);
 
 	const [addingCategoryLoading, setAddingCategoryLoading] = useState<boolean>(false);
@@ -476,7 +476,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 				</Col>
 				<Col>
 					<StyledButton
-						disabled={(state.activeBlog.status === Status.active && role === Role.Author) || !state.activeBlogId}
+						disabled={(state.activeBlog.status === Status.active && role === Role.BlogAuthor) || !state.activeBlogId}
 						onClick={onPublish}
 						block
 						type="danger"

@@ -7,7 +7,7 @@ export const allowedRoles = [
 	Role.Designer,
 	Role.Owner,
 	Role["3D Artist"],
-	Role.Author,
+	Role.BlogAuthor,
 	Role.BlogAdmin,
 ];
 

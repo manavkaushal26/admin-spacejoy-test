@@ -2,7 +2,7 @@ import { Role } from "@customTypes/userType";
 import { page } from "@utils/config";
 
 export const getBlogs = (role: Role): string => {
-	if (role === Role.Author) {
+	if (role === Role.BlogAuthor) {
 		return `/v1/blogs/author`;
 	}
 	return `/v1/blogs/admin`;

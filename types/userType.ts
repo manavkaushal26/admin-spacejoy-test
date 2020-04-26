@@ -10,7 +10,7 @@ export enum Role {
 	ServiceAcc = "service",
 	Guest = "guest",
 	"3D Artist" = "3d artist",
-	"Author" = "author",
+	BlogAuthor = "blogAuthor",
 	BlogAdmin = "blogAdmin",
 }
 
