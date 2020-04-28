@@ -405,6 +405,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetMountTypeValid(false);
 			setModifiedForm(false);
 			setFirstLoad(true);
+			setSourceHighPolyFileList(null);
 		};
 	}, [isOpen]);
 
