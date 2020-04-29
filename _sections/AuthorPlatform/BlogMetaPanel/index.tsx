@@ -465,17 +465,17 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 							<Row>
 								<Col>
 									<Row gutter={[8, 8]}>
-										<Col>SEO Title</Col>
+										<Col>Meta Title</Col>
 										<Col>
-											<Input onChange={handleChange} name="seoTitle" value={state.activeBlog.seoTitle} />
+											<Input onChange={handleChange} name="metaTitle" value={state.activeBlog.metaTitle} />
 										</Col>
 									</Row>
 								</Col>
 								<Col>
 									<Row gutter={[8, 8]}>
-										<Col>SEO Description</Col>
+										<Col>Meta Description</Col>
 										<Col>
-											<Input onChange={handleChange} name="seoDescription" value={state.activeBlog.seoDescription} />
+											<Input onChange={handleChange} name="metaDescription" value={state.activeBlog.metaDescription} />
 										</Col>
 									</Row>
 								</Col>
