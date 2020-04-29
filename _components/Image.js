@@ -103,10 +103,14 @@ import React from "react";
 import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 
 function Image({ src, height, width, alt, nolazy, className, caption, scrollPosition, ...props }) {
-	const source =
-		src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")
-			? src
-			: `${cloudinary.baseDeliveryURL}/image/upload/${src}`;
+	let source = "";
+
+	if (src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")) {
+		source = src;
+	} else {
+		source = `${cloudinary.baseDeliveryURL}/image/upload/${src}`;
+	}
+
 	const renderLazyImage = (
 		<LazyLoadImage
 			{...props}

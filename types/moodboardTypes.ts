@@ -123,6 +123,131 @@ export interface AssetType {
 	createdAt: string;
 	updatedAt: string;
 }
+export interface AssetType {
+	name: string;
+	price: number;
+	currency: string;
+	description: string;
+	retailer: {
+		_id: string;
+		name: string;
+	};
+	status: Status;
+	shoppable: boolean;
+	spatialData: {
+		fileUrls: {
+			source: string;
+			glb: string;
+			legacy_obj: string;
+			sourceHighPoly: string;
+		};
+		mountType: MountTypes;
+		clampValue: -1 | 0;
+	};
+	dimension: {
+		depth: number;
+		width: number;
+		height: number;
+	};
+	meta: {
+		category: string;
+		subcategory: string;
+		vertical: string;
+		theme: string;
+	};
+	retailLink: string;
+	cdn: string;
+	_id: string;
+	imageUrl: string;
+	artist: {
+		_id: string;
+		profile: {
+			firstName: string;
+			lastName: string;
+		};
+		name: string;
+	};
+	tags: string[];
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface AssetType {
+	name: string;
+	price: number;
+	currency: string;
+	description: string;
+	retailer: {
+		_id: string;
+		name: string;
+	};
+	status: Status;
+	shoppable: boolean;
+	spatialData: {
+		fileUrls: {
+			source: string;
+			glb: string;
+			legacy_obj: string;
+			sourceHighPoly: string;
+		};
+		mountType: MountTypes;
+		clampValue: -1 | 0;
+	};
+	dimension: {
+		depth: number;
+		width: number;
+		height: number;
+	};
+	meta: {
+		category: string;
+		subcategory: string;
+		vertical: string;
+		theme: string;
+	};
+	retailLink: string;
+	cdn: string;
+	_id: string;
+	imageUrl: string;
+	artist: {
+		_id: string;
+		profile: {
+			firstName: string;
+			lastName: string;
+		};
+		name: string;
+	};
+	tags: string[];
+	createdAt: string;
+	updatedAt: string;
+}
+
+export interface AssetStoreSearchResponse {
+	artist: string;
+	category: string;
+	cdn: string;
+	clampValue: number;
+	colors: string[];
+	createdAt: string;
+	currency: string;
+	depth: number;
+	description: string;
+	height: number;
+	imageUrl: string;
+	mountType: string;
+	name: string;
+	price: number;
+	retailLink: string;
+	retailer: string;
+	shoppable: true;
+	status: string;
+	subcategory: string;
+	tags: string[];
+	theme: string;
+	updatedAt: string;
+	vertical: string;
+	width: number;
+	_id: string;
+}
 
 export interface MoodboardAsset {
 	recommendations: Partial<AssetType>[];

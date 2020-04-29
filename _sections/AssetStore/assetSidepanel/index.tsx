@@ -182,12 +182,12 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		return options.map(item => {
 			if (item.children) {
 				return (
-					<TreeNode title={item.title.name} key={`${item.key}-${item.title.level}`} dataRef={item}>
+					<TreeNode title={item.title.name} key={`${item.title.name}-${item.title.level}`} dataRef={item}>
 						{renderTreeNodes(item.children)}
 					</TreeNode>
 				);
 			}
-			return <TreeNode title={item.title.name} key={`${item.key}-${item.title.level}`} />;
+			return <TreeNode title={item.title.name} key={`${item.title.name}-${item.title.level}`} />;
 		});
 	};
 
@@ -228,7 +228,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 									return 0;
 								})
 								.map(elem => {
-									return { label: elem.name, value: elem._id };
+									return { label: elem.name, value: elem.name };
 								})}
 							dispatch={dispatch}
 						/>

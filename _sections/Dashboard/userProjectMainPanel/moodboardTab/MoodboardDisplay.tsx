@@ -14,7 +14,7 @@ interface MoodboardDisplayProps {
 
 const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodboard, projectId, designId }) => {
 	const Router = useRouter();
-	const onPrimaryAssetClick = assetEntryId => {
+	const onPrimaryAssetClick = (assetEntryId): void => {
 		Router.push(
 			{ pathname: "/assetstore", query: { designId, assetEntryId, projectId } },
 			`/assetstore/pid/${projectId}/did/${designId}/aeid/${assetEntryId}`
@@ -48,10 +48,9 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 								<CustomDiv type="flex" width="100%">
 									<CustomDiv inline minWidth="30ch" maxWidth="30ch">
 										<ProductCard
-											height="200px"
-											width="300px"
+											noVertical
 											asset={assetEntry.asset}
-											onCardClick={() => {
+											onCardClick={(): void => {
 												onPrimaryAssetClick(assetEntry.asset._id);
 											}}
 										/>
@@ -64,13 +63,7 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 											assetEntry.recommendations.map(asset => {
 												return (
 													<CustomDiv width="30ch" key={assetEntry._id} inline>
-														<ProductCard
-															height="200px"
-															width="300px"
-															hoverable={false}
-															asset={asset}
-															onCardClick={() => {}}
-														/>
+														<ProductCard noVertical hoverable={false} asset={asset} />
 													</CustomDiv>
 												);
 											})

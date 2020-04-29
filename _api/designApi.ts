@@ -27,7 +27,11 @@ export const updateNotesApi: (designId: string) => string = designId => {
 };
 
 export const getAssetApi: () => string = () => {
-	return "admin/assets/search";
+	return "/admin/assets/search";
+};
+
+export const getAssetElasticSearchApi: () => string = () => {
+	return "v1/assets/search";
 };
 
 export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "source" | "sourceHighPoly") => string = (

@@ -1,17 +1,17 @@
-import { getAssetApi } from "@api/designApi";
+import { getAssetElasticSearchApi } from "@api/designApi";
 import Image from "@components/Image";
-import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
+import { AssetStoreSearchResponse, AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Icon, Pagination, Row, Typography, Popconfirm, message, Tooltip } from "antd";
-import React, { useEffect, useRef, useState, useMemo, ReactNode } from "react";
-import styled from "styled-components";
+import { Col, Icon, message, Pagination, Popconfirm, Row, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import styled from "styled-components";
 import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
-import { categoryIdNameMapper, subCategoryIdNameMapper, verticalIdNameMapper, isAssetInMoodboard } from "./utils";
+import { categoryIdNameMapper, isAssetInMoodboard, subCategoryIdNameMapper, verticalIdNameMapper } from "./utils";
 
 const { Title, Text } = Typography;
 
@@ -71,30 +71,75 @@ const MainAssetPanel = styled.div`
 
 const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
-	const endPoint = getAssetApi();
-	const queryParams = `?sort=-1&skip=${(pageCount - 1) * 35}&limit=35`;
+	const endPoint = getAssetElasticSearchApi();
+	const queryParams = `?skip=${(pageCount - 1) * 35}&limit=35`;
 	const responseData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
 		body: {
-			data: {
-				retailer: { search: "array", value: state.retailerFilter },
-				name: { search: "single", value: state.searchText },
-				"meta.category": { search: "array", value: state.checkedKeys.category },
-				"meta.subcategory": { search: "array", value: state.checkedKeys.subCategory },
-				"meta.vertical": { search: "array", value: state.checkedKeys.verticals },
-				price: { search: "range", value: state.priceRange },
-				"dimensions.depth": { search: "range", value: state.depthRange },
-				"dimensions.width": { search: "range", value: state.widthRange },
-				"dimensions.height": { search: "range", value: state.heightRange },
-				status: { search: "array", value: state.status },
+			searchText: state.searchText,
+			sort: "createdAt",
+			filters: {
+				retailer: state.retailerFilter,
+				category: state.checkedKeys.category,
+				subcategory: state.checkedKeys.subCategory,
+				vertical: state.checkedKeys.verticals,
+				price: state.priceRange,
+				depth: state.depthRange,
+				width: state.widthRange,
+				height: state.heightRange,
+				status: state.status,
 			},
 		},
 	});
-	if (responseData.statusCode <= 300) {
-		if (responseData.data.data) {
-			setAssetData(responseData.data.data);
-			setTotalCount(responseData.data.count);
+	if (responseData) {
+		if (responseData.hits) {
+			const assetData: AssetType[] = responseData.hits.map((asset: AssetStoreSearchResponse) => {
+				return {
+					name: asset.name,
+					price: asset.price,
+					currency: asset.currency,
+					description: asset.description,
+					retailer: {
+						_id: "",
+						name: asset.retailer,
+					},
+					status: asset.status,
+					shoppable: asset.shoppable,
+					spatialData: {
+						mountType: asset.mountType,
+						clampValue: asset.clampValue,
+					},
+					dimension: {
+						depth: asset.depth,
+						width: asset.width,
+						height: asset.height,
+					},
+					meta: {
+						category: asset.category,
+						subcategory: asset.subcategory,
+						vertical: asset.vertical,
+						theme: asset.theme,
+					},
+					retailLink: asset.retailLink,
+					cdn: asset.cdn,
+					_id: asset._id,
+					imageUrl: asset.imageUrl,
+					artist: {
+						_id: "",
+						profile: {
+							firstName: getValueSafely(() => asset.artist.split(" ")[0], ""),
+							lastName: getValueSafely(() => asset.artist.split(" ")[1], ""),
+						},
+						name: asset.artist,
+					},
+					tags: asset.tags,
+					createdAt: asset.createdAt,
+					updatedAt: asset.updatedAt,
+				};
+			});
+			setAssetData(assetData);
+			setTotalCount(responseData.total);
 		}
 	}
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
@@ -114,13 +159,13 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	themeIdToNameMap,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
-	const [selectedAssetData, setSelectedAssetData] = useState<AssetType>(null);
+	const [selectedAssetId, setSelectedAssetId] = useState<string>(null);
 	const [pageCount, setPageCount] = useState<number>(1);
 	const [totalCount, setTotalCount] = useState<number>(0);
 	const [primaryAsset, setPrimaryAsset] = useState<Partial<AssetType>>(null);
 
-	const onCardClick = (selectedProduct): void => {
-		setSelectedAssetData(selectedProduct);
+	const onCardClick = (selectedId): void => {
+		setSelectedAssetId(selectedId);
 	};
 
 	useEffect(() => {
@@ -367,6 +412,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 					</Col>
 				</Row>
 			</Col>
+
 			<AssetDescriptionPanel
 				themeIdToNameMap={themeIdToNameMap}
 				editAsset={editAsset}
@@ -374,8 +420,8 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				dispatch={dispatch}
 				projectId={projectId}
 				assetEntryId={assetEntryId}
-				selectedAssetData={selectedAssetData}
-				setSelectedAssetData={setSelectedAssetData}
+				selectedAssetId={selectedAssetId}
+				setSelectedAssetId={setSelectedAssetId}
 				categoryMap={categoryMap}
 				verticalMap={verticalMap}
 				subCategoryMap={subCategoryMap}

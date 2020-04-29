@@ -12,9 +12,10 @@ const { Text } = Typography;
 
 interface AssetCards {
 	asset: Partial<AssetType>;
-	onCardClick: (assetData: Partial<AssetType>) => void;
+	onCardClick?: (assetData: string) => void;
 	hoverable?: boolean;
 	height?: string;
+	noVertical?: boolean;
 	width?: string;
 	verticalMap?: Record<string, string>;
 	actions?: ReactNode[];
@@ -28,19 +29,19 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 	asset,
 	onCardClick,
 	hoverable = true,
+	noVertical,
 	height,
 	width,
 	actions,
-	verticalMap,
 }) => {
 	const imageHeight = height || "auto";
 	const imageWidth = width || "100%";
 	return (
-		<AssetCard actions={actions || []} onClick={(): void => onCardClick(asset)} hoverable={hoverable}>
+		<AssetCard actions={actions || []} onClick={(): void => onCardClick(asset._id)} hoverable={hoverable}>
 			<Row gutter={[10, 0]}>
 				<Col span={24}>
 					<Image
-						preLoadHeight="200px"
+						preLoadHeight="250px"
 						width={imageWidth}
 						height={imageHeight}
 						src={getValueSafely(
@@ -72,17 +73,19 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 							</Col>
 						</Row>
 
-						<Row type="flex" gutter={[5, 0]}>
-							<Col>
-								<Text strong>Vertical: </Text>
-							</Col>
-							<Col>
-								<CapitalizedText>{` ${getValueSafely<string>(
-									() => verticalMap[asset.meta.vertical],
-									"Undefined"
-								)}`}</CapitalizedText>
-							</Col>
-						</Row>
+						{!noVertical && (
+							<Row type="flex" gutter={[5, 0]}>
+								<Col>
+									<Text strong>Vertical: </Text>
+								</Col>
+								<Col>
+									<CapitalizedText>{` ${getValueSafely<string>(
+										() => asset.meta.vertical,
+										"Undefined"
+									)}`}</CapitalizedText>
+								</Col>
+							</Row>
+						)}
 						<Row type="flex" gutter={[5, 0]}>
 							<Col>
 								<Text strong>W:</Text>

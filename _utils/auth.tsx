@@ -139,7 +139,12 @@ function withAuthVerification(WrappedComponent: NextPage) {
 			if (token) {
 				if (!isServer && window.localStorage.getItem("authVerification")) {
 					const authVerification = JSON.parse(window.localStorage.getItem("authVerification"));
-					return { ...componentProps, authVerification, isServer };
+					if (authVerification) return { ...componentProps, authVerification, isServer };
+					redirectToLocation({
+						pathname: "/auth",
+						query: { flow: "login", redirecUrl: window.location.pathname },
+						url: "/auth/login",
+					});
 				}
 				const res = await fetcher({ ctx, endPoint: endPointAuthCheck, method: "GET" });
 				if (res.statusCode <= 300) {

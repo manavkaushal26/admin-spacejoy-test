@@ -34,6 +34,7 @@ import "antd/lib/tag/style";
 import "antd/lib/tooltip/style";
 import "antd/lib/tree/style";
 import "antd/lib/typography/style";
+import "antd/lib/result/style";
 import "antd/lib/upload/style";
 import App from "next/app";
 import Router from "next/router";

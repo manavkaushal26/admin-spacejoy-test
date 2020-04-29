@@ -1,20 +1,22 @@
+import { getSingleAssetApi } from "@api/designApi";
+import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
 import ImageDisplayModal from "@components/ImageDisplayModal";
+import ModelViewer from "@components/ModelViewer";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Button, Col, Icon, message, Popconfirm, Row, Typography } from "antd";
-import { useRouter } from "next/router";
-import React, { useState, useMemo } from "react";
-import styled from "styled-components";
-import { CapitalizedText } from "@components/CommonStyledComponents";
+import fetcher from "@utils/fetcher";
+import { Button, Col, Icon, message, notification, Popconfirm, Result, Row, Typography } from "antd";
 import moment from "moment";
-import ModelViewer from "@components/ModelViewer";
+import { useRouter } from "next/router";
+import React, { useEffect, useMemo, useState } from "react";
+import styled from "styled-components";
 import { FullheightSpin, GreyDrawer } from "../styled";
 import { isAssetInMoodboard } from "./utils";
 
-const { Title, Text } = Typography;
+const { Title, Text, Paragraph } = Typography;
 
 interface AssetDescriptionPanelProps {
 	editAsset: (assetData: AssetType) => void;
@@ -23,8 +25,8 @@ interface AssetDescriptionPanelProps {
 	moodboard: MoodboardAsset[];
 	designId: string;
 	assetEntryId: string;
-	selectedAssetData: AssetType;
-	setSelectedAssetData: React.Dispatch<React.SetStateAction<AssetType>>;
+	selectedAssetId: string;
+	setSelectedAssetId: React.Dispatch<React.SetStateAction<string>>;
 	projectId: string;
 	dispatch: React.Dispatch<AssetAction>;
 	dataLoading: boolean;
@@ -48,8 +50,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	moodboard,
 	designId,
 	assetEntryId,
-	selectedAssetData,
-	setSelectedAssetData,
+	selectedAssetId,
+	setSelectedAssetId,
 	projectId,
 	dispatch,
 	dataLoading,
@@ -60,28 +62,74 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	themeIdToNameMap,
 }) => {
 	const [loading, setLoading] = useState<boolean>(false);
-
-	const assetId = getValueSafely(() => selectedAssetData._id, "");
-
+	const [error, setError] = useState<boolean>(false);
+	const [errorData, setErrorData] = useState<{
+		status: string;
+		group: string;
+		data: string;
+	}>(null);
+	const [selectedAssetData, setSelectedAssetData] = useState<AssetType>(null);
 	const [imagePreviewVisible, setImagePreviewVisible] = useState<boolean>(false);
-
 	const Router = useRouter();
-	const assetInMoodboard = useMemo(() => isAssetInMoodboard(moodboard, assetId, assetEntryId), [
-		assetId,
+	const assetInMoodboard = useMemo(() => isAssetInMoodboard(moodboard, selectedAssetId, assetEntryId), [
+		selectedAssetId,
 		moodboard,
 		assetEntryId,
 	]);
+
+	const fetchAssetData = async (): Promise<void> => {
+		setLoading(true);
+		const endPoint = getSingleAssetApi(selectedAssetId);
+		const response = await fetcher({ endPoint, method: "GET" });
+		console.log("Here");
+		if (response.statusCode <= 300) {
+			console.log();
+			const { category, subcategory, vertical, theme } = getValueSafely(() => response.data.meta, {
+				category: { _id: "", name: "Undefined" },
+				subcategory: { _id: "", name: "Undefined" },
+				vertical: { _id: "", name: "Undefined" },
+				theme: { _id: "", name: "Undefined" },
+			});
+
+			setSelectedAssetData({
+				...response.data,
+				meta: {
+					category: getValueSafely(() => category._id, "Undefined"),
+					subcategory: getValueSafely(() => subcategory._id, "Undefined"),
+					vertical: getValueSafely(() => vertical._id, "Undefined"),
+					theme: getValueSafely(() => theme._id, "Undefined"),
+				},
+			});
+		} else {
+			setError(true);
+			setErrorData(response);
+			notification.error({ message: "Failed to load asset data" });
+		}
+		setLoading(false);
+	};
+
+	useEffect(() => {
+		if (selectedAssetId) {
+			fetchAssetData();
+		}
+		return (): void => {
+			setSelectedAssetData(null);
+			setError(false);
+			setLoading(true);
+		};
+	}, [selectedAssetId]);
+
 	const onButtonClick = async (): Promise<void> => {
 		setLoading(true);
 		if (assetInMoodboard && !assetEntryId) {
-			const primaryAssetId = assetId;
+			const primaryAssetId = selectedAssetId;
 			Router.push(
 				{ pathname: "/assetstore", query: { designId, assetEntryId: primaryAssetId, projectId } },
 				`/assetstore/pid/${projectId}/did/${designId}/aeid/${primaryAssetId}`
 			);
 			await dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
 		} else {
-			await addRemoveAsset("ADD", assetId, assetEntryId);
+			await addRemoveAsset("ADD", selectedAssetId, assetEntryId);
 			message.success(assetEntryId ? "Added Recommendation" : "Added Primary Asset");
 		}
 		setLoading(false);
@@ -89,12 +137,13 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 
 	const onRemoveClick = async (): Promise<void> => {
 		setLoading(true);
-		await addRemoveAsset("DELETE", assetId, assetEntryId);
+		await addRemoveAsset("DELETE", selectedAssetId, assetEntryId);
 		message.success(assetEntryId ? "Removed Recommendation" : "Removed Primary Asset");
 		setLoading(false);
 	};
 
 	const closeDrawer = (): void => {
+		setSelectedAssetId(null);
 		setSelectedAssetData(null);
 	};
 
@@ -110,10 +159,32 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		<GreyDrawer
 			onClose={closeDrawer}
 			width={360}
-			visible={!!selectedAssetData}
+			visible={!!selectedAssetId}
 			title={<SilentTitle level={4}>{getValueSafely<string>(() => selectedAssetData.name, "")}</SilentTitle>}
 		>
 			<FullheightSpin spinning={loading || dataLoading}>
+				{error && (
+					<Result
+						status="500"
+						title="Error"
+						subTitle="Something went wrong"
+						extra={
+							<Row type="flex" justify="center">
+								<Col span={24}>
+									<Button type="primary" onClick={closeDrawer}>
+										Close
+									</Button>
+								</Col>
+								<Col span={24}>Error Response</Col>
+								<Col span={24}>
+									<Paragraph copyable ellipsis={{ rows: 1, expandable: true }} code>
+										{JSON.stringify(errorData)}
+									</Paragraph>
+								</Col>
+							</Row>
+						}
+					/>
+				)}
 				{selectedAssetData && (
 					<Row gutter={[0, 10]}>
 						{pathToFile && (
@@ -200,7 +271,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										icon="edit"
 										onClick={(): void => {
 											editAsset(selectedAssetData);
-											setSelectedAssetData(null);
+											setSelectedAssetId(null);
 										}}
 									/>
 								</Col>

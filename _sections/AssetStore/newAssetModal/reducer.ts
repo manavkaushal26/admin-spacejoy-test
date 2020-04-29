@@ -1,6 +1,7 @@
 import { Currency, MountTypes } from "@customTypes/assetInfoTypes";
 import User, { Status } from "@customTypes/userType";
 import { getLocalStorageValue } from "@utils/storageUtils";
+import { getValueSafely } from "@utils/commonUtils";
 
 export interface NewAssetUploadState {
 	_id?: string;
@@ -79,7 +80,7 @@ export const initialState = {
 	imageUrl: "",
 	cdn: "",
 	tags: [],
-	artist: getLocalStorageValue<User>("authVerification").id,
+	artist: getValueSafely(() => getLocalStorageValue<User>("authVerification").id, ""),
 };
 
 export enum NEW_ASSET_ACTION_TYPES {
