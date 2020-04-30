@@ -7,7 +7,6 @@ import Header from "../Header";
 const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled.main<{ isServer: boolean }>`
-	background-color: #f2f4f6;
 	padding-top: 62px;
 	min-height: calc(100vh - 62px);
 	position: relative;

@@ -74,6 +74,24 @@ function pageRoute(app, router) {
 
 	// *************************************************************************************************************************
 
+	// ****************************************************** platformanager ***********************************************************
+
+	router.get("/platformanager/collectionsmeta", (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager/collectionsmeta", {
+			...query,
+		});
+	});
+
+	router.get("/platformanager", (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager", {
+			...query,
+		});
+	});
+
+	// *************************************************************************************************************************
+
 	return router;
 }
 

@@ -412,9 +412,8 @@ export enum RoomTypes {
 	Studio = "studio",
 	Nursery = "nursery",
 	HomeOffice = "home office",
-	Window = "window",
-	Door = "door",
-	House = "house",
+	FamilyRoom = "family room",
+	Playroom = "playroom",
 	OpenLivingDining = "open living and dining room",
 }
 

@@ -24,9 +24,9 @@ interface LaunchpadLocations {
 	description: string;
 	url: string;
 	icon: string;
-	color: string;
+	color?: string;
 	notActive?: boolean;
-	backgroundColor: string;
+	backgroundColor?: string;
 	allowedRoles: Role[];
 }
 
@@ -68,6 +68,14 @@ const launchpadLocations: LaunchpadLocations[] = [
 		backgroundColor: "#FFF7E6",
 		notActive: false,
 		allowedRoles: [Role.Admin, Role.Owner, Role.BlogAuthor, Role.BlogAdmin],
+	},
+	{
+		title: "Platform Manager",
+		description: "Functions that apply across platform",
+		url: "/platformanager",
+		icon: "database",
+		notActive: false,
+		allowedRoles: [Role.Admin, Role.Owner, Role.seoTeam, Role.Team],
 	},
 ];
 

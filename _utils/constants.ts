@@ -9,6 +9,7 @@ export const allowedRoles = [
 	Role["3D Artist"],
 	Role.BlogAuthor,
 	Role.BlogAdmin,
+	Role.seoTeam,
 ];
 
 export const MountAndClampValuesForVerticals = {
