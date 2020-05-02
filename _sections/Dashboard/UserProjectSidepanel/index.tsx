@@ -10,7 +10,7 @@ import UserProjectCard from "@sections/Dashboard/UserProjectCards";
 import { PaddedDiv } from "@sections/Header/styled";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Collapse, Empty, Icon, Input, Row, Select, Tabs, Typography, notification } from "antd";
+import { Col, Collapse, Empty, Icon, Input, Row, Select, Tabs, Typography, notification, Spin } from "antd";
 import hotkeys from "hotkeys-js";
 import React, { useEffect, useReducer, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroller";
@@ -119,6 +119,51 @@ const getRequestBody = (
 	return body;
 };
 
+const fetchData = async (state, dispatch, setLoading): Promise<void> => {
+	const { pageCount } = state;
+	const dataFeed = `skip=${pageCount * 10}&limit=30`;
+	const url = `/admin/projects/search?sort=${state.sortOrder}&${dataFeed}`;
+
+	setLoading(true);
+	const body = getRequestBody(
+		state.nameSearchText,
+		state.designerSearchText,
+		state.phase,
+		state.currentTab,
+		state.name,
+		state.sortBy,
+		state.sortOrder
+	);
+
+	const resData = await fetcher({
+		endPoint: url,
+		method: "POST",
+		body: {
+			data: body,
+		},
+	});
+	if (resData.statusCode <= 300) {
+		const responseData = resData.data.data;
+		if (responseData.length > 0) {
+			dispatch(
+				UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.LOAD_USER_DATA, {
+					data: responseData,
+					pageCount: state.pageCount + 1,
+					hasMore: false,
+					count: resData.data.count,
+				})
+			);
+		} else {
+			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false }));
+		}
+	} else if (resData.statusCode === 401) {
+		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false }));
+	}
+	setLoading(false);
+};
+
+const debouncedFetchData = debounce(fetchData, 50);
+
 const Sidebar: React.FC<SidebarProps> = ({
 	handleSelectCard,
 	selectedUser,
@@ -134,6 +179,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 			data: [],
 		};
 	};
+
 	const [state, dispatch] = useReducer(UserProjectSidePanelReducer, UserProjectSidePanelInitialState, init);
 	const [loading, setLoading] = useState(false);
 	const displayUsers = state.data;
@@ -406,52 +452,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 		updateStartDateInMainPanel(projectId, { startedAt, endedAt: endDate });
 	};
 
-	const fetchData = async (): Promise<void> => {
-		const { pageCount } = state;
-		const dataFeed = `skip=${pageCount * 10}&limit=10`;
-		const url = `/admin/projects/search?sort=${state.sortOrder}&${dataFeed}`;
-
-		setLoading(true);
-		const body = getRequestBody(
-			state.nameSearchText,
-			state.designerSearchText,
-			state.phase,
-			state.currentTab,
-			state.name,
-			state.sortBy,
-			state.sortOrder
-		);
-
-		const resData = await fetcher({
-			endPoint: url,
-			method: "POST",
-			body: {
-				data: body,
-			},
-		});
-		if (resData.statusCode <= 300) {
-			const responseData = resData.data.data;
-			if (responseData.length > 0) {
-				dispatch(
-					UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.LOAD_USER_DATA, {
-						data: responseData,
-						pageCount: state.pageCount + 1,
-						hasMore: true,
-						count: resData.data.count,
-					})
-				);
-			} else {
-				dispatch(
-					UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false })
-				);
-			}
-		}
-		setLoading(false);
-	};
+	useEffect(() => {
+		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: true }));
+	}, [state.data]);
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			fetchData();
+			fetchData(state, dispatch, setLoading);
 		}
 	}, []);
 
@@ -459,6 +466,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 	const handleTabChange = (key: string): void => {
 		dispatch({ type: UserProjectSidePanelActionTypes.TAB_CHANGE, value: { currentTab: key } });
+	};
+
+	const infinteFetchData = (): void => {
+		setLoading(true);
+		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false }));
+		debouncedFetchData(state, dispatch, setLoading);
 	};
 
 	const onStartClick = async (projectId): Promise<void> => {
@@ -486,30 +499,39 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 						{state.currentTab === "active" && (
 							<InfiniteScroll
+								threshold={500}
+								initialLoad={false}
 								loader={<LoadingCard key="loadingCard" />}
-								loadMore={fetchData}
+								loadMore={infinteFetchData}
 								hasMore={state.hasMore}
 								useWindow={false}
 								getScrollParent={() => scrollParentRef.current}
 							>
-								{displayUsers.length
-									? displayUsers.map(userProjectData => {
-											return (
-												<>
-													<UserProjectCard
-														onStartClick={onStartClick}
-														selectedUser={selectedUser}
-														key={userProjectData._id}
-														handleSelectCard={handleSelectCard}
-														userProjectData={userProjectData}
-													/>
-													<PaddedDiv>
-														<SilentDivider />
-													</PaddedDiv>
-												</>
-											);
-									  })
-									: !loading && <Empty description="No Projects found" />}
+								<>
+									{displayUsers.length
+										? displayUsers.map(userProjectData => {
+												return (
+													<>
+														<UserProjectCard
+															onStartClick={onStartClick}
+															selectedUser={selectedUser}
+															key={userProjectData._id}
+															handleSelectCard={handleSelectCard}
+															userProjectData={userProjectData}
+														/>
+														<PaddedDiv>
+															<SilentDivider />
+														</PaddedDiv>
+													</>
+												);
+										  })
+										: !loading && <Empty description="No Projects found" />}
+									{loading && (
+										<Spin spinning>
+											<LoadingCard key="loadingCard" />
+										</Spin>
+									)}
+								</>
 							</InfiniteScroll>
 						)}
 					</Tabs.TabPane>
@@ -518,8 +540,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 						{state.currentTab === "suspended" && (
 							<InfiniteScroll
+								threshold={500}
+								initialLoad={false}
 								loader={<LoadingCard key="loadingCard" />}
-								loadMore={fetchData}
+								loadMore={infinteFetchData}
 								hasMore={state.hasMore}
 								useWindow={false}
 								getScrollParent={() => scrollParentRef.current}
@@ -550,8 +574,10 @@ const Sidebar: React.FC<SidebarProps> = ({
 
 						{state.currentTab === "all" && (
 							<InfiniteScroll
+								threshold={1000}
+								initialLoad={false}
 								loader={<LoadingCard key="loadingCard" />}
-								loadMore={fetchData}
+								loadMore={infinteFetchData}
 								hasMore={state.hasMore}
 								useWindow={false}
 								getScrollParent={() => scrollParentRef.current}

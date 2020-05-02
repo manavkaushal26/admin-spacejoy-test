@@ -162,4 +162,4 @@ function withAuthVerification(WrappedComponent: NextPage) {
 	};
 }
 
-export { login, oAuthLogin, logout, withAuthSync, withAuthVerification, auth, redirectToLocation };
+export { login, oAuthLogin, logout, withAuthSync, withAuthVerification, auth, redirectToLocation, clearAllStorage };
