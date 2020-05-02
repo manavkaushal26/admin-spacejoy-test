@@ -107,7 +107,7 @@ const userProjectMainPanel: React.FC<{
 			<Row>
 				{projectData ? (
 					<>
-						<ProjectSummary projectData={projectData} />
+						<ProjectSummary projectData={projectData} setProjectData={setProjectData} />
 						<Divider /> <BasicDetails projectData={projectData} />
 						<Divider />
 						<ProjectTabView

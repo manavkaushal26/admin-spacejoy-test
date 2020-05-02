@@ -76,6 +76,13 @@ export interface UserProjectType {
 	status: Status;
 	name: string;
 	customerName: string;
+	delay: {
+		isDelayed: boolean;
+		minDurationInMs: number;
+		maxDurationInMs: number;
+		title: string;
+		message: string;
+	};
 	customer: {
 		_id: string;
 		email: string;
@@ -244,7 +251,7 @@ export interface ProjectFeedback {
 }
 
 export interface DetailedProject {
-	projectScope: ProjectScope;
+	projectScope?: ProjectScope;
 	team: DetailedProjectTeamMember[];
 	status: Status;
 	onTrial: boolean;
@@ -262,6 +269,13 @@ export interface DetailedProject {
 	endedAt: string;
 	updatedAt: string;
 	startedAt: string;
+	delay: {
+		isDelayed: boolean;
+		minDurationInMs: number;
+		maxDurationInMs: number;
+		title: string;
+		message: string;
+	};
 }
 
 interface Retailer {

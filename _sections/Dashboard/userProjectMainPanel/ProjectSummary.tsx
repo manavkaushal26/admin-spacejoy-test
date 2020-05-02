@@ -1,21 +1,24 @@
 import ProgressBar from "@components/ProgressBar";
+import { DetailedProject, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import {
-	completedPhases,
-	DetailedProject,
-	HumanizePhaseInternalNames,
-	PhaseInternalNames,
-} from "@customTypes/dashboardTypes";
-import { getColorsForPackages, getValueSafely } from "@utils/commonUtils";
-import { Avatar, Col, Row, Typography } from "antd";
+	getColorsForPackages,
+	getValueSafely,
+	convertDaysToMilliseconds,
+	convertMillisecondsToDays,
+} from "@utils/commonUtils";
+import { Avatar, Col, Row, Typography, Button, Popconfirm, Input, notification, Icon, Radio, Tag } from "antd";
 import moment from "moment";
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
+import { delayProjectApi } from "@api/projectApi";
+import fetcher from "@utils/fetcher";
 import { getTagColor, StyledTag } from "../styled";
 
 const { Title, Text } = Typography;
 
 interface ProjectSummaryProps {
-	projectData?: Partial<DetailedProject>;
+	projectData?: DetailedProject;
+	setProjectData?: React.Dispatch<React.SetStateAction<DetailedProject>>;
 }
 
 const SilentTitle = styled(Title)`
@@ -27,15 +30,11 @@ const VerticallyPaddedDiv = styled.div`
 	padding: 1.5rem 0 0 0;
 `;
 
-const getLongTimeString = (endTime: number): string => {
-	const duration = moment.duration(moment(endTime).diff(moment()));
-	const days = duration.get("days") >= 0 ? duration.get("days") : 0;
-	const hours = duration.get("hours") >= 0 ? duration.get("hours") : 0;
+const TITLE_TEXT = "Important Notice";
+const MESSAGE_TEXT =
+	"Due to an overwhelming surge in orders, please expect a delay in your design delivery. We sincerely apologize for the inconvenience. All orders are processed in sequence and our team is putting in extra hours to make sure to minimize the delay.";
 
-	return `${days} Days, ${hours} Hours left`;
-};
-
-const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Element => {
+const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProjectData }): JSX.Element => {
 	// const { phase, task, status, avatar, name } = userProjectData;
 	const {
 		name: room,
@@ -48,6 +47,18 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 			startTime: phaseStartTime,
 		},
 	} = projectData;
+
+	const [delayValue, setDelayValue] = useState<{
+		min: number;
+		max: number;
+		notifyCustomer: boolean;
+		message: string;
+	}>({
+		min: 0,
+		max: 0,
+		notifyCustomer: false,
+		message: MESSAGE_TEXT,
+	});
 
 	const items = getValueSafely(() => projectData.order.items, []);
 
@@ -63,6 +74,82 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
 	}, room);
+
+	const onDelayValueChange = (e): void => {
+		const {
+			target: { name, value },
+		} = e;
+		if (name !== "notifyCustomer") {
+			setDelayValue(prevValue => ({
+				...prevValue,
+				[name]: parseFloat(value),
+			}));
+			return;
+		}
+		setDelayValue(prevValue => ({
+			...prevValue,
+			[name]: value,
+		}));
+	};
+
+	useEffect(() => {
+		setDelayValue({
+			min: convertMillisecondsToDays(projectData.delay.minDurationInMs),
+			max: convertMillisecondsToDays(projectData.delay.maxDurationInMs),
+			notifyCustomer: true,
+			message: projectData.delay.message || TITLE_TEXT,
+		});
+	}, [projectData]);
+
+	const onDelayConfirm = async (): Promise<void> => {
+		notification.open({
+			key: "Delay",
+			message: "Please Wait",
+			icon: <Icon type="loading" />,
+			description: "Setting Delay",
+		});
+		if (delayValue.min < delayValue.max) {
+			const endPoint = delayProjectApi(projectData._id);
+			const body = {
+				minDurationInMs: convertDaysToMilliseconds(delayValue.min),
+				maxDurationInMs: convertDaysToMilliseconds(delayValue.max),
+				shouldNotify: delayValue.notifyCustomer,
+			};
+			const response: DetailedProject = await fetcher({ endPoint, method: "PUT", body: { data: body } });
+			try {
+				if (response.delay) {
+					setProjectData({
+						...projectData,
+						delay: {
+							...response.delay,
+						},
+					});
+					notification.open({
+						key: "Delay",
+						message: "Successful",
+						icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+						description: "Asset Status has been updated",
+					});
+				}
+			} catch (e) {
+				notification.open({
+					key: "Delay",
+					message: "Error",
+					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+					description: "There was a problem setting delay",
+				});
+			}
+		} else {
+			notification.open({
+				key: "Delay",
+				message: "Error",
+				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				description: "There was a problem setting delay",
+			});
+		}
+	};
+
+	const isDelayed = getValueSafely(() => projectData.delay.isDelayed, false);
 	return (
 		<VerticallyPaddedDiv>
 			<Row type="flex" justify="space-between" align="middle" gutter={[8, 8]}>
@@ -105,12 +192,87 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData }): JSX.Ele
 							</Col>
 							<Col>
 								<Text>
-									Ends on: {moment(endTime).format("MM-DD-YYYY")} at {moment(endTime).format("HH:mm")}
+									Ends on:{" "}
+									{moment(endTime)
+										.add(delayValue.max, "days")
+										.format("MM-DD-YYYY")}{" "}
+									at {moment(endTime).format("HH:mm")}
 								</Text>
 							</Col>
 						</Row>
 					)}
 				</Col>
+				{endTime && (
+					<Col>
+						{!isDelayed ? (
+							<Popconfirm
+								onConfirm={onDelayConfirm}
+								title={
+									<Row gutter={[16, 16]}>
+										<Col>Set delay details</Col>
+										<Col>
+											<Row gutter={[8, 8]}>
+												<Col span={24}>
+													<Row gutter={[4, 4]}>
+														<Col>
+															<Text>Message</Text>
+														</Col>
+														<Col>
+															<Input.TextArea onChange={onDelayValueChange} value={delayValue.message} name="message" />
+														</Col>
+													</Row>
+												</Col>
+												<Col span={12}>
+													<Row gutter={[4, 4]}>
+														<Col>
+															<Text>Min</Text>
+														</Col>
+														<Col>
+															<Input type="number" onChange={onDelayValueChange} value={delayValue.min} name="min" />
+														</Col>
+													</Row>
+												</Col>
+												<Col span={12}>
+													<Row gutter={[4, 4]}>
+														<Col>
+															<Text>Max</Text>
+														</Col>
+														<Col>
+															<Input type="number" onChange={onDelayValueChange} value={delayValue.max} name="max" />
+														</Col>
+													</Row>
+												</Col>
+												<Col span={24}>
+													<Row gutter={[4, 4]}>
+														<Col>
+															<Text>Notify Customer</Text>
+														</Col>
+														<Col>
+															<Radio.Group
+																value={delayValue.notifyCustomer}
+																onChange={onDelayValueChange}
+																name="notifyCustomer"
+															>
+																<Radio value>Yes</Radio>
+																<Radio value={false}>No</Radio>
+															</Radio.Group>
+														</Col>
+													</Row>
+												</Col>
+											</Row>
+										</Col>
+									</Row>
+								}
+							>
+								<Button type="primary">Delay Project</Button>
+							</Popconfirm>
+						) : (
+							<Tag color="red">
+								Delayed by {delayValue.min} - {delayValue.max} days
+							</Tag>
+						)}
+					</Col>
+				)}
 			</Row>
 		</VerticallyPaddedDiv>
 	);

@@ -9,6 +9,8 @@ import styled, { css } from "styled-components";
 import { CapitalizedText, StyledTag } from "./CommonStyledComponents";
 
 interface SidebarCard {
+	isDelayed: boolean;
+	delayText: string;
 	avatarText: string;
 	title: string;
 	subHeading: string;
@@ -63,6 +65,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	onStartClick,
 	startedAt,
 	status,
+	delayText,
+	isDelayed,
 }) => {
 	const endTime = useMemo(() => {
 		if (phase === PhaseInternalNames.designsInRevision) {
@@ -120,6 +124,13 @@ const SidebarCard: React.FC<SidebarCard> = ({
 										Status: {status}
 									</StyledTag>
 								</Col>
+								{isDelayed && (
+									<Col span={12}>
+										<StyledTag style={{ width: "100%", textOverflow: "ellipses", overflow: "hidden" }} color="red">
+											{delayText}
+										</StyledTag>
+									</Col>
+								)}
 							</Row>
 						</Col>
 					</Row>

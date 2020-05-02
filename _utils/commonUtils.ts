@@ -174,3 +174,19 @@ export const stringToUrl = (text: string): string => {
 		);
 	}, `${text}`);
 };
+
+export const convertDaysToMilliseconds = (days: string | number): number => {
+	if (!days) return 0;
+	if (typeof days === "string") {
+		return parseFloat(days) * 24 * 60 * 60 * 1000;
+	}
+	return days * 24 * 60 * 60 * 1000;
+};
+
+export const convertMillisecondsToDays = (milliseconds: string | number): number => {
+	if (!milliseconds) return 0;
+	if (typeof milliseconds === "string") {
+		return parseFloat(milliseconds) / (24 * 60 * 60 * 1000);
+	}
+	return milliseconds / (24 * 60 * 60 * 1000);
+};

@@ -15,3 +15,7 @@ export const notifyCustomerApi = (projectId: string): string => {
 export const startProjectApi = (projectId: string): string => {
 	return `/admin/project/${projectId}/timeline`;
 };
+
+export const delayProjectApi = (projectId: string): string => {
+	return `/project/${projectId}/delay`;
+};
