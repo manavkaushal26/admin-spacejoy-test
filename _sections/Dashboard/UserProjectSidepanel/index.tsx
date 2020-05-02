@@ -197,6 +197,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 		if (type === "sortBy") {
 			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.SORT_BY, { sortBy: value }));
 		}
+
 		debouncedClear(dispatch);
 	};
 
@@ -453,6 +454,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 	};
 
 	useEffect(() => {
+		if (state.data) {
+			if (state.data.length === 0) {
+				fetchData(state, dispatch, setLoading);
+			}
+		}
 		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: true }));
 	}, [state.data]);
 
@@ -501,7 +507,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 							<InfiniteScroll
 								threshold={500}
 								initialLoad={false}
-								loader={<LoadingCard key="loadingCard" />}
 								loadMore={infinteFetchData}
 								hasMore={state.hasMore}
 								useWindow={false}
@@ -542,30 +547,36 @@ const Sidebar: React.FC<SidebarProps> = ({
 							<InfiniteScroll
 								threshold={500}
 								initialLoad={false}
-								loader={<LoadingCard key="loadingCard" />}
 								loadMore={infinteFetchData}
 								hasMore={state.hasMore}
 								useWindow={false}
 								getScrollParent={() => scrollParentRef.current}
 							>
-								{displayUsers.length
-									? displayUsers.map(userProjectData => {
-											return (
-												<>
-													<UserProjectCard
-														onStartClick={onStartClick}
-														selectedUser={selectedUser}
-														key={userProjectData._id}
-														handleSelectCard={handleSelectCard}
-														userProjectData={userProjectData}
-													/>
-													<PaddedDiv>
-														<SilentDivider />
-													</PaddedDiv>
-												</>
-											);
-									  })
-									: !loading && <Empty description="No Completed Projects found" />}
+								<>
+									{displayUsers.length
+										? displayUsers.map(userProjectData => {
+												return (
+													<>
+														<UserProjectCard
+															onStartClick={onStartClick}
+															selectedUser={selectedUser}
+															key={userProjectData._id}
+															handleSelectCard={handleSelectCard}
+															userProjectData={userProjectData}
+														/>
+														<PaddedDiv>
+															<SilentDivider />
+														</PaddedDiv>
+													</>
+												);
+										  })
+										: !loading && <Empty description="No Completed Projects found" />}
+									{loading && (
+										<Spin spinning>
+											<LoadingCard key="loadingCard" />
+										</Spin>
+									)}
+								</>
 							</InfiniteScroll>
 						)}
 					</Tabs.TabPane>
@@ -576,30 +587,36 @@ const Sidebar: React.FC<SidebarProps> = ({
 							<InfiniteScroll
 								threshold={1000}
 								initialLoad={false}
-								loader={<LoadingCard key="loadingCard" />}
 								loadMore={infinteFetchData}
 								hasMore={state.hasMore}
 								useWindow={false}
 								getScrollParent={() => scrollParentRef.current}
 							>
-								{displayUsers.length
-									? displayUsers.map(userProjectData => {
-											return (
-												<>
-													<UserProjectCard
-														selectedUser={selectedUser}
-														onStartClick={onStartClick}
-														key={userProjectData._id}
-														handleSelectCard={handleSelectCard}
-														userProjectData={userProjectData}
-													/>
-													<PaddedDiv>
-														<SilentDivider />
-													</PaddedDiv>
-												</>
-											);
-									  })
-									: !loading && <Empty description="No Projects found" />}
+								<>
+									{displayUsers.length
+										? displayUsers.map(userProjectData => {
+												return (
+													<>
+														<UserProjectCard
+															selectedUser={selectedUser}
+															onStartClick={onStartClick}
+															key={userProjectData._id}
+															handleSelectCard={handleSelectCard}
+															userProjectData={userProjectData}
+														/>
+														<PaddedDiv>
+															<SilentDivider />
+														</PaddedDiv>
+													</>
+												);
+										  })
+										: !loading && <Empty description="No Projects found" />}
+									{loading && (
+										<Spin spinning>
+											<LoadingCard key="loadingCard" />
+										</Spin>
+									)}
+								</>
 							</InfiniteScroll>
 						)}
 					</Tabs.TabPane>
