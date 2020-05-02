@@ -30,10 +30,6 @@ const VerticallyPaddedDiv = styled.div`
 	padding: 1.5rem 0 0 0;
 `;
 
-const TITLE_TEXT = "Important Notice";
-const MESSAGE_TEXT =
-	"Due to an overwhelming surge in orders, please expect a delay in your design delivery. We sincerely apologize for the inconvenience. All orders are processed in sequence and our team is putting in extra hours to make sure to minimize the delay.";
-
 const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProjectData }): JSX.Element => {
 	// const { phase, task, status, avatar, name } = userProjectData;
 	const {
@@ -52,12 +48,10 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		min: number;
 		max: number;
 		notifyCustomer: boolean;
-		message: string;
 	}>({
 		min: 0,
 		max: 0,
 		notifyCustomer: false,
-		message: MESSAGE_TEXT,
 	});
 
 	const items = getValueSafely(() => projectData.order.items, []);
@@ -97,7 +91,6 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 			min: convertMillisecondsToDays(projectData.delay.minDurationInMs),
 			max: convertMillisecondsToDays(projectData.delay.maxDurationInMs),
 			notifyCustomer: true,
-			message: projectData.delay.message || TITLE_TEXT,
 		});
 	}, [projectData]);
 
@@ -128,7 +121,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 						key: "Delay",
 						message: "Successful",
 						icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
-						description: "Asset Status has been updated",
+						description: "Delay has been set Successfully",
 					});
 				}
 			} catch (e) {
@@ -212,16 +205,6 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 										<Col>Set delay details</Col>
 										<Col>
 											<Row gutter={[8, 8]}>
-												<Col span={24}>
-													<Row gutter={[4, 4]}>
-														<Col>
-															<Text>Message</Text>
-														</Col>
-														<Col>
-															<Input.TextArea onChange={onDelayValueChange} value={delayValue.message} name="message" />
-														</Col>
-													</Row>
-												</Col>
 												<Col span={12}>
 													<Row gutter={[4, 4]}>
 														<Col>
