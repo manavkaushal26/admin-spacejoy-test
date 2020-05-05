@@ -1,6 +1,5 @@
 import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
-import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import { Typography, Icon, Row, Col } from "antd";
 import React, { ReactNode } from "react";
@@ -25,34 +24,41 @@ const CardPadding = styled.div`
 	padding: 0.5rem;
 `;
 
+const ImageContainer = styled.div`
+	text-align: center;
+	> img {
+		max-width: 100%;
+	}
+`;
+
 const ProductCard: (props: AssetCards) => JSX.Element = ({
 	asset,
 	onCardClick,
 	hoverable = true,
 	noVertical,
-	height,
-	width,
 	actions,
 }) => {
-	const imageHeight = height || "auto";
-	const imageWidth = width || "100%";
 	return (
-		<AssetCard actions={actions || []} onClick={(): void => onCardClick(asset._id)} hoverable={hoverable}>
-			<Row gutter={[10, 0]}>
-				<Col span={24}>
+		<AssetCard
+			cover={
+				<ImageContainer>
 					<Image
-						preLoadHeight="250px"
-						width={imageWidth}
-						height={imageHeight}
+						width="auto"
+						height="250px"
 						src={getValueSafely(
 							() => asset.cdn,
-							process.env.NODE_ENV === "production"
+							process.env.NODE_ENV !== "production"
 								? "v1581080070/admin/productImagePlaceholder.jpg"
 								: "v1581080111/admin/productImagePlaceholder.jpg"
 						)}
 					/>
-					<SilentDivider />
-				</Col>
+				</ImageContainer>
+			}
+			actions={actions || []}
+			onClick={(): void => onCardClick(asset._id)}
+			hoverable={hoverable}
+		>
+			<Row gutter={[10, 0]}>
 				<Col span={24}>
 					<CardPadding>
 						<Row type="flex" gutter={[5, 0]}>
@@ -60,7 +66,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 								<Icon type="link" />
 							</Col>
 							<Col>
-								<Text type="secondary">
+								<Text style={{ width: "100%" }} ellipsis type="secondary">
 									<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
 										{getValueSafely(() => asset.retailer.name, "N/A")}
 									</a>
@@ -69,7 +75,9 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Row>
 						<Row>
 							<Col>
-								<Text strong>{getValueSafely(() => asset.name, "N/A")}</Text>
+								<Text style={{ width: "100%" }} ellipsis strong>
+									{getValueSafely(() => asset.name, "N/A")}
+								</Text>
 							</Col>
 						</Row>
 

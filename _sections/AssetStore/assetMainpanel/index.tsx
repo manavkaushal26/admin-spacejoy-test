@@ -41,38 +41,10 @@ const TopMarginTitle = styled(Title)<{ level: number }>`
 	margin-top: 0.5em;
 `;
 
-const MainAssetPanel = styled.div`
-	margin: 1rem auto;
-	column-gap: 1rem;
-	column-count: 4;
-
-	/* The Masonry Brick */
-	> * {
-		display: inline-block;
-		margin: 0 0 1rem;
-		width: 100%;
-	}
-
-	/* Masonry on large screens */
-	@media only screen and (min-width: 1024px) {
-		column-count: 4;
-	}
-
-	/* Masonry on medium-sized screens */
-	@media only screen and (max-width: 1023px) and (min-width: 768px) {
-		column-count: 3;
-	}
-
-	/* Masonry on small screens */
-	@media only screen and (max-width: 767px) {
-		column-count: 2;
-	}
-`;
-
 const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetElasticSearchApi();
-	const queryParams = `?skip=${(pageCount - 1) * 35}&limit=35`;
+	const queryParams = `?skip=${(pageCount - 1) * 36}&limit=36`;
 	const responseData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
@@ -384,20 +356,21 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				<SilentDivider />
 			</Col>
 			<Col span={24}>
-				<MainAssetPanel ref={scrollParentRef}>
+				<Row ref={scrollParentRef} gutter={[8, 8]}>
 					{assetData.map(asset => {
 						const assetInMoodboard = isAssetInMoodboard(moodboard, asset._id, assetEntryId);
 						return (
-							<ProductCard
-								actions={projectId ? getActions(asset._id, assetInMoodboard) : []}
-								verticalMap={verticalMap}
-								key={asset._id}
-								asset={asset}
-								onCardClick={onCardClick}
-							/>
+							<Col sm={12} key={asset._id} md={8} lg={6}>
+								<ProductCard
+									actions={projectId ? getActions(asset._id, assetInMoodboard) : []}
+									verticalMap={verticalMap}
+									asset={asset}
+									onCardClick={onCardClick}
+								/>
+							</Col>
 						);
 					})}
-				</MainAssetPanel>
+				</Row>
 			</Col>
 			<Col span={24}>
 				<Row type="flex" gutter={[10, 10]} justify="center">

@@ -10,9 +10,7 @@ export const ModifiedDivider = styled(Divider)`
 export const AssetCard = styled(Card)`
 	.ant-card-body {
 		padding: 0px 0px;
-		height: 100%;
 	}
-	min-height: 150px;
 `;
 
 export const StyleCorrectedIcon = styled(Icon)`
