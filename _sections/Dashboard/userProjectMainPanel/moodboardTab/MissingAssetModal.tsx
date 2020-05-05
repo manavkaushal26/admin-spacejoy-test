@@ -162,7 +162,8 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	const markAssetAsComplete = async (
 		createdAsset: Partial<AssetType>,
 		missingAssetId?: string,
-		status?: Status
+		status?: Status,
+		force?: boolean
 	): Promise<void> => {
 		const _id = getValueSafely(() => createdAsset._id, "");
 		notification.open({
@@ -173,7 +174,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		});
 
 		const endPoint = markMissingAssetAsComplete(designId, missingAssetId || editAssetId);
-		if (_id !== "") {
+		if (_id !== "" || force || status === Status.pending) {
 			setEditAsseId(null);
 			const response = await fetcher({
 				endPoint,
@@ -211,6 +212,20 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		}
 	};
 
+	const whatArethePopoverOptions = (asset): { title: string; force: boolean; okText } => {
+		const options = {
+			title: "Have you verified the asset status has been marked active?",
+			force: false,
+			okText: "Yes, I have",
+		};
+		if (!asset) {
+			options.title = "Asset not yet uploaded. Are you sure you want to mark it as complete?";
+			options.force = true;
+			options.okText = "Yes, I want to";
+		}
+		return options;
+	};
+
 	return (
 		<SizeAdjustedModal
 			title="Add Missing Product"
@@ -240,78 +255,98 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 						header={<Text strong>Added Product URL&apos;s</Text>}
 						bordered
 						dataSource={missingAssets}
-						renderItem={(asset): JSX.Element => (
-							<List.Item>
-								<Row type="flex" gutter={[4, 4]} style={{ width: "100%" }} justify="space-between">
-									<Col span={21}>
-										<a
-											style={{ width: "100%", textOverflow: "ellipsis" }}
-											target="_blank"
-											rel="noopener noreferrer"
-											href={`${asset.externalUrl}`}
-										>
-											{asset.externalUrl}
-										</a>
-									</Col>
-									<Col span={3}>
-										<Row type="flex" justify="end">
-											{asset.modellingStatus !== Status.completed && (
-												<Col span={8}>
-													<Row align="middle" justify="center" type="flex">
-														<Tooltip title="Upload Asset">
-															<Icon onClick={(): void => onClick(asset)} type="upload" />
-														</Tooltip>
-													</Row>
-												</Col>
-											)}
-											{asset.modellingStatus === Status.completed ? (
-												<Col span={8}>
-													<Row align="middle" justify="center" type="flex">
-														<Popconfirm
-															title="Are you sure?"
-															onConfirm={(): Promise<void> =>
-																markAssetAsComplete(asset.asset, asset._id, Status.pending)
-															}
-														>
-															<Tooltip placement="bottom" title="Mark as not complete">
-																<Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
+						renderItem={(asset): JSX.Element => {
+							const popoverOptions = whatArethePopoverOptions(asset.asset);
+							return (
+								<List.Item>
+									<Row type="flex" gutter={[4, 4]} style={{ width: "100%" }} justify="space-between">
+										<Col span={21}>
+											<a
+												style={{ width: "100%", textOverflow: "ellipsis" }}
+												target="_blank"
+												rel="noopener noreferrer"
+												href={`${asset.externalUrl}`}
+											>
+												{asset.externalUrl}
+											</a>
+										</Col>
+										<Col span={3}>
+											<Row type="flex" justify="end">
+												{asset.modellingStatus !== Status.completed && (
+													<Col span={8}>
+														<Row align="middle" justify="center" type="flex">
+															<Tooltip title="Upload Asset">
+																<Icon onClick={(): void => onClick(asset)} type="upload" />
 															</Tooltip>
-														</Popconfirm>
-													</Row>
-												</Col>
-											) : (
+														</Row>
+													</Col>
+												)}
+												{asset.modellingStatus === Status.completed ? (
+													<Col span={8}>
+														<Row align="middle" justify="center" type="flex">
+															<Popconfirm
+																title="Are you sure?"
+																onConfirm={(): Promise<void> =>
+																	markAssetAsComplete(asset.asset, asset._id, Status.pending)
+																}
+															>
+																<Tooltip placement="bottom" title="Mark as not complete">
+																	<Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
+																</Tooltip>
+															</Popconfirm>
+														</Row>
+													</Col>
+												) : (
+													<Col span={8}>
+														<Row align="middle" justify="center" type="flex">
+															<Popconfirm
+																title={popoverOptions.title}
+																okText={popoverOptions.okText}
+																disabled={!popoverOptions.force}
+																cancelText="No, Cancel"
+																onConfirm={(): Promise<void> =>
+																	markAssetAsComplete(asset.asset, asset._id, Status.completed, popoverOptions.force)
+																}
+															>
+																<Tooltip title="Mark as complete">
+																	<Icon
+																		type="check-circle"
+																		{...(!popoverOptions.force
+																			? {
+																					onClick: (): Promise<void> =>
+																						markAssetAsComplete(
+																							asset.asset,
+																							asset._id,
+																							Status.completed,
+																							popoverOptions.force
+																						),
+																			  }
+																			: {})}
+																		theme="twoTone"
+																	/>
+																</Tooltip>
+															</Popconfirm>
+														</Row>
+													</Col>
+												)}
 												<Col span={8}>
 													<Row align="middle" justify="center" type="flex">
-														<Tooltip title="Mark as complete">
-															<Icon
-																type="check-circle"
-																onClick={(): Promise<void> =>
-																	markAssetAsComplete(asset.asset, asset._id, Status.completed)
-																}
-																twoToneColor="#52c41a"
-																theme="twoTone"
-															/>
+														<Tooltip title="Delete">
+															<Popconfirm
+																title="Delete Missing Asset URL?"
+																onConfirm={(): Promise<void> => removeAsset(asset.externalUrl)}
+															>
+																<Icon type="delete" />
+															</Popconfirm>
 														</Tooltip>
 													</Row>
 												</Col>
-											)}
-											<Col span={8}>
-												<Row align="middle" justify="center" type="flex">
-													<Tooltip title="Delete">
-														<Popconfirm
-															title="Delete Missing Asset URL?"
-															onConfirm={(): Promise<void> => removeAsset(asset.externalUrl)}
-														>
-															<Icon type="delete" />
-														</Popconfirm>
-													</Tooltip>
-												</Row>
-											</Col>
-										</Row>
-									</Col>
-								</Row>
-							</List.Item>
-						)}
+											</Row>
+										</Col>
+									</Row>
+								</List.Item>
+							);
+						}}
 					/>
 				</Spin>
 				<NewAssetModal

@@ -11,7 +11,6 @@ import getCookie from "./getCookie";
 import { setLocalStorageValue } from "./storageUtils";
 
 const endPointAuthCheck = "/auth/check";
-const endPointSocialSignup = "/auth/login/oauth";
 
 function redirectToLocation({
 	pathname,
@@ -50,25 +49,6 @@ function login({ token, user, redirectUrl = "/launchpad" }): void {
 			const url = redirectUrl || "/launchpad";
 			redirectToLocation({ pathname: url, url });
 		}
-	}
-}
-
-async function oAuthLogin(data, redirectUrl = "/launchpad", cb): Promise<void> {
-	const response = await fetcher({
-		endPoint: endPointSocialSignup,
-		method: "POST",
-		body: {
-			data: {
-				provider: data._provider,
-				token: data._token.idToken || data._token.accessToken,
-			},
-		},
-	});
-	if (response.statusCode <= 300) {
-		const { token, user } = response.data;
-		login({ token, user, redirectUrl });
-	} else {
-		cb("Error");
 	}
 }
 
@@ -117,6 +97,7 @@ function withAuthSync(WrappedComponent: NextPage) {
 		}
 
 		syncLogout = (event): void => {
+			clearAllStorage();
 			if (event.key === "logout") {
 				redirectToLocation({ pathname: "/auth", query: { flow: "login" }, url: "/auth/login" });
 			}
@@ -132,7 +113,9 @@ function withAuthVerification(WrappedComponent: NextPage) {
 	return class extends Component {
 		static displayName = `withAuthVerification(${getDisplayName(WrappedComponent)})`;
 
-		static async getInitialProps(ctx): Promise<{ isServer: boolean; authVerification?: Partial<User> }> {
+		static async getInitialProps(
+			ctx: NextPageContext
+		): Promise<{ isServer: boolean; authVerification?: Partial<User> }> {
 			const isServer = !!ctx.req;
 			const token = getCookie(ctx, cookieNames.authToken);
 			const componentProps = WrappedComponent.getInitialProps && (await WrappedComponent.getInitialProps(ctx));
@@ -152,6 +135,14 @@ function withAuthVerification(WrappedComponent: NextPage) {
 					if (!isServer && window) window.localStorage.setItem("authVerification", JSON.stringify(authVerification));
 					return { ...componentProps, authVerification, isServer };
 				}
+				if (res.statusCode === 401) {
+					redirectToLocation({
+						pathname: "/auth",
+						query: { flow: "login", redirecUrl: window.location.pathname },
+						url: "/auth/login",
+						res: ctx.res,
+					});
+				}
 			}
 			return { ...componentProps, isServer };
 		}
@@ -162,4 +153,4 @@ function withAuthVerification(WrappedComponent: NextPage) {
 	};
 }
 
-export { login, oAuthLogin, logout, withAuthSync, withAuthVerification, auth, redirectToLocation, clearAllStorage };
+export { login, logout, withAuthSync, withAuthVerification, auth, redirectToLocation, clearAllStorage };

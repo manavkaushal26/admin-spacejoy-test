@@ -5,3 +5,7 @@ export const getAllCollections = (): string => {
 export const getSingleCollection = (id: string): string => {
 	return `/designcollection/${id}`;
 };
+
+export const getAllCollectionsMeta = (): string => {
+	return `/designcollections/meta`;
+};

@@ -5,9 +5,9 @@ import Head from "next/head";
 import { NextPage } from "next";
 import User, { Role } from "@customTypes/userType";
 import IndexPageMeta from "@utils/meta";
-import { Row, Typography, Col, notification, Card, Button } from "antd";
+import { Row, Typography, Col, notification, Card, Button, Pagination } from "antd";
 import { CollectionBase } from "@customTypes/collectionTypes";
-import { getAllCollections } from "@api/metaApi";
+import { getAllCollections, getAllCollectionsMeta } from "@api/metaApi";
 import fetcher from "@utils/fetcher";
 import Image from "@components/Image";
 import styled from "styled-components";
@@ -21,6 +21,7 @@ const LoudPaddingDiv = styled.div`
 	}
 	max-width: 1200px;
 	margin: auto;
+	width: 100%;
 `;
 
 const CollectionsMeta: NextPage<{
@@ -30,6 +31,9 @@ const CollectionsMeta: NextPage<{
 	const [collections, setCollections] = useState<CollectionBase[]>([]);
 	const [createEditModalVisible, setCreateEditModalVisible] = useState<boolean>(false);
 	const [editCollectionId, setEditCollectionId] = useState<string>(null);
+	const [pageSize, setPageSize] = useState<number>(10);
+	const [pageNo, setPageNo] = useState<number>(1);
+	const [collectionMeta, setCollectionMeta] = useState<{ count: number }>({ count: 0 });
 
 	const onClick: (id?: string, type?: "open" | "close") => void = (id = null, type = "open") => {
 		if (type === "open") {
@@ -41,11 +45,22 @@ const CollectionsMeta: NextPage<{
 		}
 	};
 
+	const fetchCollectionMeta = async (): Promise<void> => {
+		const endPoint = getAllCollectionsMeta();
+		const response = await fetcher({ endPoint, method: "GET" });
+		if (response.status === "success") {
+			setCollectionMeta(response.data);
+		} else {
+			notification.error({ message: "Failed to fetch collections metadata" });
+		}
+	};
+
 	const fetchCollection = async (): Promise<void> => {
-		const endPoint = getAllCollections();
+		const endPoint = `${getAllCollections()}?skip=${pageSize * (pageNo - 1)}&limit=${pageSize}`;
 		const response = await fetcher({ endPoint, method: "GET" });
 		if (response.status === "success") {
 			setCollections(response.data);
+			fetchCollectionMeta();
 		} else {
 			notification.error({ message: "Failed to fetch collections" });
 		}
@@ -66,9 +81,14 @@ const CollectionsMeta: NextPage<{
 		}
 	};
 
+	const onPageSizeChange = (current, size): void => {
+		setPageNo(1);
+		setPageSize(size);
+	};
+
 	useEffect(() => {
 		fetchCollection();
-	}, []);
+	}, [pageNo, pageSize]);
 
 	return (
 		<PageLayout pageName="Metamanger" isServer={isServer} authVerification={authVerification}>
@@ -106,6 +126,20 @@ const CollectionsMeta: NextPage<{
 									</Col>
 								);
 							})}
+						</Row>
+					</Col>
+					<Col span={24}>
+						<Row type="flex" justify="center">
+							<Pagination
+								current={pageNo}
+								total={collectionMeta.count}
+								onChange={setPageNo}
+								hideOnSinglePage
+								pageSize={pageSize}
+								showSizeChanger
+								pageSizeOptions={["10", "20", "30", "40"]}
+								onShowSizeChange={onPageSizeChange}
+							/>
 						</Row>
 					</Col>
 				</Row>

@@ -1,7 +1,9 @@
+const TokenCheckMiddleware = require("../../_utils/tokenCheckPoint");
+
 function pageRoute(app, router) {
 	// ******************************************************* Launchpad *******************************************************
 
-	router.get("/launchpad", (req, res) => {
+	router.get("/launchpad", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/launchpad", params);
 	});
@@ -10,12 +12,12 @@ function pageRoute(app, router) {
 
 	// **************************************************** Design Examples ****************************************************
 
-	router.get("/designexamples/:designId", (req, res) => {
+	router.get("/designexamples/:designId", TokenCheckMiddleware, (req, res) => {
 		const { params, query } = req;
 		app.render(req, res, "/designexamples/designExampleView", { designId: params.designId, ...query });
 	});
 
-	router.get("/designexamples", (req, res) => {
+	router.get("/designexamples", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/designexamples", params);
 	});
@@ -23,7 +25,7 @@ function pageRoute(app, router) {
 	// *************************************************************************************************************************
 
 	// ******************************************************* DASHBOARD *******************************************************
-	router.get("/dashboard/pid/:projectId/did/:designId", (req, res) => {
+	router.get("/dashboard/pid/:projectId/did/:designId", TokenCheckMiddleware, (req, res) => {
 		const { params, query } = req;
 		app.render(req, res, "/dashboard", {
 			pid: params.projectId,
@@ -31,11 +33,11 @@ function pageRoute(app, router) {
 			...query,
 		});
 	});
-	router.get("/dashboard/pid/:projectId", (req, res) => {
+	router.get("/dashboard/pid/:projectId", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/dashboard", { pid: params.projectId });
 	});
-	router.get("/dashboard", (req, res) => {
+	router.get("/dashboard", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/dashboard", params);
 	});
@@ -44,7 +46,7 @@ function pageRoute(app, router) {
 
 	// ****************************************************** Asset Store ******************************************************
 
-	router.get("/assetstore/pid/:projectId/did/:designId/aeid/:assetEntryId", (req, res) => {
+	router.get("/assetstore/pid/:projectId/did/:designId/aeid/:assetEntryId", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/assetstore", {
 			projectId: params.projectId,
@@ -52,11 +54,11 @@ function pageRoute(app, router) {
 			assetEntryId: params.assetEntryId,
 		});
 	});
-	router.get("/assetstore/pid/:projectId/did/:designId", (req, res) => {
+	router.get("/assetstore/pid/:projectId/did/:designId", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/assetstore", { projectId: params.projectId, designId: params.designId });
 	});
-	router.get("/assetstore", (req, res) => {
+	router.get("/assetstore", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/assetstore", params);
 	});
@@ -65,7 +67,7 @@ function pageRoute(app, router) {
 
 	// ****************************************************** Author ***********************************************************
 
-	router.get("/author", (req, res) => {
+	router.get("/author", TokenCheckMiddleware, (req, res) => {
 		const { params, query } = req;
 		app.render(req, res, "/author", {
 			...query,
@@ -76,14 +78,14 @@ function pageRoute(app, router) {
 
 	// ****************************************************** platformanager ***********************************************************
 
-	router.get("/platformanager/collectionsmeta", (req, res) => {
+	router.get("/platformanager/collectionsmeta", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager/collectionsmeta", {
 			...query,
 		});
 	});
 
-	router.get("/platformanager", (req, res) => {
+	router.get("/platformanager", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager", {
 			...query,
