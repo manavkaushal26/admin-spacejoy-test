@@ -32,15 +32,6 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.seoTeam, Role.Admin, Role.Owner],
 	},
-	{
-		name: "Manage Retailers",
-		description: "Add/Delete Retailers",
-		action: "redirect",
-		to: "/platformanager/collectionsmeta",
-		url: "/platformanager/collectionsmeta",
-		query: {},
-		allowedRoles: [Role.seoTeam, Role.Admin, Role.Owner],
-	},
 ];
 
 const platformanager: NextPage<{ isServer: boolean; authVerification: Partial<User> }> = ({
