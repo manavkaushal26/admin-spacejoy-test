@@ -161,7 +161,7 @@ export const reducer: AssetReducerType = (state, action) => {
 		case ASSET_ACTION_TYPES.CHECKED_ITEMS:
 			return {
 				...state,
-				checkedKeys: action.value
+				checkedKeys: action.value.checked
 					.map(key => {
 						return key.split("-");
 					})

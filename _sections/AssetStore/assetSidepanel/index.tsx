@@ -204,7 +204,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 							<Text strong>Search by Name</Text>
 							<Input allowClear value={state.searchText} onChange={onSearchInput} />
 							<Text strong>Category</Text>
-							<Tree onCheck={onCheck} checkedKeys={mergedArray} checkable>
+							<Tree checkStrictly onCheck={onCheck} checkedKeys={mergedArray} checkable>
 								{renderTreeNodes(categoryMap)}
 							</Tree>
 						</FilterCard>
