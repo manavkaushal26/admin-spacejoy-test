@@ -26,8 +26,13 @@ const CardPadding = styled.div`
 
 const ImageContainer = styled.div`
 	text-align: center;
+	min-height: 250px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	> img {
 		max-width: 100%;
+		max-height: 250px;
 	}
 `;
 
@@ -45,6 +50,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 					<Image
 						width="auto"
 						height="250px"
+						autoAdjust
 						src={getValueSafely(
 							() => asset.cdn,
 							process.env.NODE_ENV !== "production"

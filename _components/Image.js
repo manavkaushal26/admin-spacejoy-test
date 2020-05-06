@@ -99,11 +99,14 @@
 
 import { cloudinary } from "@utils/config";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 
-function Image({ src, height, width, alt, nolazy, className, caption, scrollPosition, ...props }) {
+function Image({ src, height, width, alt, nolazy, className, caption, scrollPosition, autoAdjust, ...props }) {
 	let source = "";
+
+	const [imgHeight, setImageHeight] = useState(height);
+	const [imgWidth, setImageWidth] = useState(width);
 
 	if (src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")) {
 		source = src;
@@ -111,13 +114,29 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 		source = `${cloudinary.baseDeliveryURL}/image/upload/${src}`;
 	}
 
+	const setDimensions = e => {
+		e.persist();
+		const {
+			target: { naturalHeight, naturalWeight },
+		} = e;
+
+		if (naturalHeight > naturalWeight) {
+			setImageHeight("250px");
+			setImageWidth("auto");
+		} else {
+			setImageHeight("auto");
+			setImageWidth("100%");
+		}
+	};
+
 	const renderLazyImage = (
 		<LazyLoadImage
 			{...props}
 			src={source}
 			alt={alt}
-			width={width}
-			height={height}
+			{...(autoAdjust ? { onLoad: setDimensions } : {})}
+			width={imgWidth}
+			height={imgHeight}
 			scrollPosition={scrollPosition}
 			visibleByDefault={nolazy}
 			className={className}
@@ -141,6 +160,7 @@ Image.defaultProps = {
 	nolazy: false,
 	className: "",
 	caption: "",
+	autoAdjust: false,
 	scrollPosition: {},
 };
 
@@ -152,6 +172,7 @@ Image.propTypes = {
 	className: PropTypes.string,
 	caption: PropTypes.string,
 	nolazy: PropTypes.bool,
+	autoAdjust: PropTypes.bool,
 	scrollPosition: PropTypes.shape({}),
 };
 
