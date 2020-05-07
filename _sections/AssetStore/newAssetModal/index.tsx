@@ -216,6 +216,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						source: getValueSafely(() => assetData.spatialData.fileUrls.source, ""),
 						// eslint-disable-next-line @typescript-eslint/camelcase
 						legacy_obj: getValueSafely(() => assetData.spatialData.fileUrls.legacy_obj, ""),
+						sourceHighPoly: getValueSafely(() => assetData.spatialData.fileUrls.sourceHighPoly, ""),
 					},
 				},
 				price: assetData.price,
