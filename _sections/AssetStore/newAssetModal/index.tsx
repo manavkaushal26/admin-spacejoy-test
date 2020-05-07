@@ -8,12 +8,12 @@ import { AssetStatus, Status } from "@customTypes/userType";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { convertToFeet, convertToInches, debounce, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
+import { MountAndClampValuesForVerticals } from "@utils/constants";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import { Button, Col, Icon, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
-import { UploadChangeParam, UploadFile, RcFile } from "antd/lib/upload/interface";
+import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { MountAndClampValuesForVerticals } from "@utils/constants";
 import AddRetailerModal from "../addRetailerModal";
 import { AssetAction } from "../reducer";
 import { SizeAdjustedModal } from "../styled";
@@ -97,6 +97,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [addRetailerModalVisible, setAddRetailerModalVisible] = useState(false);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 	const [sourceHighPolyFileList, setSourceHighPolyFileList] = useState<UploadFile<any>[]>([]);
+	const [immediateUpdate, setImmediateUpdate] = useState<boolean>(false);
 
 	const themes = useMemo(() => getValueSafely(() => metadata.themes.list, []), [metadata]);
 	const retailers = useMemo(() => getValueSafely(() => metadata.retailers.list, []), [metadata]);
@@ -253,6 +254,68 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	const onSelect = (selectedValue): void => {
 		setModel3dFiles(selectedValue as Model3DFiles);
+	};
+
+	const saveAsset = async (): Promise<number> => {
+		const endPoint = assetCreateOrUpdationApi(state._id);
+
+		const dimensionsToSend = formatDimensionsForSending(state.dimension, dimensionInInches);
+
+		const requestBody = {
+			name: state.name,
+			description: state.description,
+			status: state.status || Status.pending,
+			shoppable: state.shoppable,
+			retailer: state.retailer,
+			retailLink: state.retailLink,
+			primaryColor: state.primaryColor,
+			secondaryColors: state.secondaryColors,
+			"meta.category": state.meta.category,
+			"meta.subcategory": state.meta.subcategory,
+			"meta.vertical": state.meta.vertical,
+			"meta.theme": state.meta.theme,
+			"spatialData.mountType": state.spatialData.mountType,
+			"spatialData.clampValue": state.spatialData.clampValue,
+			"dimension.width": dimensionsToSend.width,
+			"dimension.height": dimensionsToSend.height,
+			"dimension.depth": dimensionsToSend.depth,
+			price: state.price,
+			currency: state.currency,
+			imageUrl: state.imageUrl,
+			cdn: state.cdn,
+			tags: state.tags,
+			artist: state.artist,
+		};
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: state._id ? "PUT" : "POST",
+				body: {
+					data: requestBody,
+				},
+			});
+			if (response.statusCode <= 300) {
+				notification.success({ message: "Product Saved" });
+				const responseAssetData: NewAssetUploadState = response.data;
+				if (dimensionInInches) {
+					responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension, dimensionInInches);
+				}
+				if (onOkComplete && !state._id) {
+					onOkComplete({ _id: responseAssetData._id }, null, Status.pending);
+				}
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: responseAssetData });
+
+				setModifiedForm(false);
+			}
+			return 1;
+		} catch (e) {
+			if (e.message === "Failed to fetch") {
+				notification.error({ message: "Failed to save Product. Please check your internet connection and Retry" });
+			} else {
+				notification.error({ message: "Failed to save Product" });
+			}
+		}
+		return 0;
 	};
 
 	useEffect(() => {
@@ -422,14 +485,71 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			} else {
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: 0 });
 			}
+			notification.info({ message: "Mount type has changed since the vertical was changed" });
 		}
 		setFirstLoad(false);
 	}, [state.meta.vertical]);
 
-	const handleOnFileUploadChange = (
+	useEffect(() => {
+		if ((state.price === 0 || Number.isNaN(state.price)) && !assetData) {
+			if (state.shoppable !== false) {
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE, value: false });
+				notification.info({ message: "Item has been marked as not shoppable" });
+			}
+		}
+		setFirstLoad(false);
+	}, [state.price]);
+
+	const updateStatus = async (): Promise<void> => {
+		notification.open({
+			key: "saveStatus",
+			message: "Updating Asset",
+			icon: <Icon type="loading" />,
+			description: "Trying to set asset as Active since 3D Model has been uploaded",
+		});
+
+		const saveStatus = await saveAsset();
+		if (saveStatus === 1) {
+			notification.open({
+				key: "saveStatus",
+				message: "Successful",
+				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				description: "Status is successfully updated",
+			});
+		} else {
+			notification.open({
+				key: "saveStatus",
+				message: "Error",
+				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				description: "Please try saving asset manually",
+			});
+		}
+	};
+
+	useEffect(() => {
+		if (state.status === Status.active && immediateUpdate) {
+			updateStatus();
+		}
+	}, [state.status, immediateUpdate]);
+
+	const handlePreview = async (file): Promise<void> => {
+		const fileCopy = { ...file };
+		if (!fileCopy.url && !fileCopy.preview) {
+			fileCopy.preview = await getBase64(fileCopy.originFileObj);
+		}
+
+		setPreview({
+			previewImage: fileCopy.url || fileCopy.preview,
+			previewVisible: true,
+		});
+	};
+
+	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
+
+	const handleOnFileUploadChange = async (
 		uploadFileType: "model" | "source" | "image" | "sourceHighPoly",
 		info: UploadChangeParam<UploadFile>
-	): void => {
+	): Promise<void> => {
 		let fileList = [...info.fileList];
 
 		fileList = fileList.slice(-1);
@@ -442,6 +562,13 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					type: NEW_ASSET_ACTION_TYPES.SET_ASSET,
 					value: { ...state, ...info.file.response.data },
 				});
+				if (state.status !== Status.active) {
+					dispatch({
+						type: NEW_ASSET_ACTION_TYPES.ASSET_STATUS,
+						value: Status.active,
+					});
+					setImmediateUpdate(true);
+				}
 			} else if (uploadFileType === "source") {
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: { ...state, ...info.file.response.data } });
 			} else if (uploadFileType === "image") {
@@ -459,80 +586,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		}
 	};
 
-	const handlePreview = async (file): Promise<void> => {
-		const fileCopy = { ...file };
-		if (!fileCopy.url && !fileCopy.preview) {
-			fileCopy.preview = await getBase64(fileCopy.originFileObj);
-		}
-
-		setPreview({
-			previewImage: fileCopy.url || fileCopy.preview,
-			previewVisible: true,
-		});
-	};
-
-	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
-
-	const saveAsset = async (): Promise<void> => {
-		const endPoint = assetCreateOrUpdationApi(state._id);
-
-		const dimensionsToSend = formatDimensionsForSending(state.dimension, dimensionInInches);
-
-		const requestBody = {
-			name: state.name,
-			description: state.description,
-			status: state.status || Status.pending,
-			shoppable: state.shoppable,
-			retailer: state.retailer,
-			retailLink: state.retailLink,
-			primaryColor: state.primaryColor,
-			secondaryColors: state.secondaryColors,
-			"meta.category": state.meta.category,
-			"meta.subcategory": state.meta.subcategory,
-			"meta.vertical": state.meta.vertical,
-			"meta.theme": state.meta.theme,
-			"spatialData.mountType": state.spatialData.mountType,
-			"spatialData.clampValue": state.spatialData.clampValue,
-			"dimension.width": dimensionsToSend.width,
-			"dimension.height": dimensionsToSend.height,
-			"dimension.depth": dimensionsToSend.depth,
-			price: state.price,
-			currency: state.currency,
-			imageUrl: state.imageUrl,
-			cdn: state.cdn,
-			tags: state.tags,
-			artist: state.artist,
-		};
-		try {
-			const response = await fetcher({
-				endPoint,
-				method: state._id ? "PUT" : "POST",
-				body: {
-					data: requestBody,
-				},
-			});
-			if (response.statusCode <= 300) {
-				notification.success({ message: "Product Saved" });
-				const responseAssetData: NewAssetUploadState = response.data;
-				if (dimensionInInches) {
-					responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension, dimensionInInches);
-				}
-				if (onOkComplete && !state._id) {
-					onOkComplete({ _id: responseAssetData._id }, null, Status.pending);
-				}
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: responseAssetData });
-
-				setModifiedForm(false);
-			}
-		} catch (e) {
-			if (e.message === "Failed to fetch") {
-				notification.error({ message: "Failed to save Product. Please check your internet connection and Retry" });
-			} else {
-				notification.error({ message: "Failed to save Product" });
-			}
-		}
-	};
-
 	const submitButtonDisabled = !(
 		assetNameValid &&
 		assetUrlValid &&
@@ -545,7 +598,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			assetHeightValid &&
 			assetDepthValid &&
 			assetMountTypeValid) ||
-			location === "MISSING_ASSETS")
+			location === "MISSING_ASSETS" ||
+			!!assetData)
 	);
 
 	const dimensionText = useMemo(() => {
@@ -1061,7 +1115,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										fileList={assetFile}
 										action={uploadModelEndpoint}
 										onRemove={(): false => false}
-										onChange={(info): void => handleOnFileUploadChange("model", info)}
+										onChange={(info): Promise<void> => handleOnFileUploadChange("model", info)}
 										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 										accept={ModelToExtensionMap[model3dFiles]}
 									>
@@ -1084,7 +1138,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										fileList={sourceFileList}
 										action={uploadModelSourceEndpoint}
 										onRemove={(): false => false}
-										onChange={(info): void => handleOnFileUploadChange("source", info)}
+										onChange={(info): Promise<void> => handleOnFileUploadChange("source", info)}
 										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 										accept=".blend"
 									>
@@ -1107,7 +1161,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										fileList={sourceHighPolyFileList}
 										action={uploadModelHighPolySouceEndpoint}
 										onRemove={(): false => false}
-										onChange={(info): void => handleOnFileUploadChange("sourceHighPoly", info)}
+										onChange={(info): Promise<void> => handleOnFileUploadChange("sourceHighPoly", info)}
 										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 										accept=".blend"
 									>
@@ -1131,7 +1185,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										onPreview={handlePreview}
 										action={uploadAssetImageEndpoint}
 										onRemove={(): false => false}
-										onChange={(info): void => handleOnFileUploadChange("image", info)}
+										onChange={(info): Promise<void> => handleOnFileUploadChange("image", info)}
 										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 										accept="image/*"
 									>

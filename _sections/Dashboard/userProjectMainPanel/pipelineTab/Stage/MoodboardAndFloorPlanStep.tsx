@@ -136,8 +136,8 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 		} catch (error) {
 			notification.open({
 				key: name,
-				message: "Successful",
-				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				message: "Error",
+				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
 				description: error.message,
 			});
 		}

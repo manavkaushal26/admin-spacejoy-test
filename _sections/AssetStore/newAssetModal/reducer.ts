@@ -123,7 +123,7 @@ export const reducer = (state: NewAssetUploadState, action: ActionType): NewAsse
 		case NEW_ASSET_ACTION_TYPES.ASSET_DESCRIPTION:
 			return { ...state, description: action.value };
 		case NEW_ASSET_ACTION_TYPES.ASSET_PRICE:
-			return { ...state, price: action.value < 0 ? 0 : action.value };
+			return { ...state, price: action.value < 0 ? 0 : parseInt(action.value, 10) };
 		case NEW_ASSET_ACTION_TYPES.ASSET_PRICE_CURRENCY_TYPE:
 			return { ...state, currency: action.value };
 		case NEW_ASSET_ACTION_TYPES.ASSET_RETAILER:
