@@ -58,12 +58,10 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 			<Col sm={12} md={12} lg={8} xl={8}>
 				<Row type="flex" gutter={[4, 8]}>
 					<Col>
-						<Text strong>Concept Id:</Text>
+						<Text strong>Project Id:</Text>
 					</Col>
 					<Col>
-						<ModifiedText textTransform="uppercase" type="secondary">
-							{_id}
-						</ModifiedText>
+						<ModifiedText type="secondary">{_id}</ModifiedText>
 					</Col>
 				</Row>
 			</Col>

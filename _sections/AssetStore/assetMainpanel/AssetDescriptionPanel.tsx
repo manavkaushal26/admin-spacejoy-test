@@ -414,11 +414,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										<Col>
 											<Text strong>Created by: </Text>
 											<CapitalizedText>
-												{getValueSafely(
-													() =>
-														`${selectedAssetData.artist.profile.firstName} ${selectedAssetData.artist.profile.lastName}`,
-													"Undefined"
-												)}
+												{getValueSafely(() => `${selectedAssetData.artist.profile.name}`, "Undefined")}
 											</CapitalizedText>
 										</Col>
 										<Col>
