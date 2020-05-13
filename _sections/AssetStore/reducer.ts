@@ -99,7 +99,7 @@ export const reducer: AssetReducerType = (state, action) => {
 				checkedKeys: {
 					category: [],
 					verticals: [],
-					subCategory: [action.value.meta.subcategory],
+					subCategory: [action.value],
 				},
 			};
 		case ASSET_ACTION_TYPES.SEARCH_TEXT:

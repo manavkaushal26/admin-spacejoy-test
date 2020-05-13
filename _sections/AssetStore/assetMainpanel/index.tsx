@@ -140,6 +140,10 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		setSelectedAssetId(selectedId);
 	};
 
+	const subCategoryMap = useMemo(() => {
+		return subCategoryIdNameMapper(state.metaData);
+	}, [state.metaData]);
+
 	useEffect(() => {
 		const aeid = assetEntryId;
 		if (moodboard && aeid) {
@@ -149,7 +153,10 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 					return moodboardAsset.asset._id === aeid;
 				});
 			setPrimaryAsset(asset.asset);
-			dispatch({ type: ASSET_ACTION_TYPES.SUB_CATEGORY, value: asset.asset });
+			dispatch({
+				type: ASSET_ACTION_TYPES.SUB_CATEGORY,
+				value: subCategoryMap[getValueSafely(() => asset.asset.meta.subcategory, "")],
+			});
 		}
 		return (): void => {
 			if (aeid === null) {
@@ -160,7 +167,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: null });
 			}
 		};
-	}, [assetEntryId, moodboard]);
+	}, [assetEntryId, moodboard, state.metaData]);
 
 	useEffect(() => {
 		setPageCount(1);
@@ -200,9 +207,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		return categoryIdNameMapper(state.metaData);
 	}, [state.metaData]);
 
-	const subCategoryMap = useMemo(() => {
-		return subCategoryIdNameMapper(state.metaData);
-	}, [state.metaData]);
 	const verticalMap = useMemo(() => {
 		return verticalIdNameMapper(state.metaData);
 	}, [state.metaData]);
