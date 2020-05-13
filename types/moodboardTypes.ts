@@ -116,6 +116,7 @@ export interface AssetType {
 		profile: {
 			firstName: string;
 			lastName: string;
+			name: string;
 		};
 		name: string;
 	};
