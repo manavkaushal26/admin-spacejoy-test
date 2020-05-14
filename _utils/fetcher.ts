@@ -1,7 +1,7 @@
+import { clearAllStorage, redirectToLocation } from "@utils/auth";
 import { cookieNames, page } from "@utils/config";
 import fetch from "isomorphic-unfetch";
 import { NextPageContext } from "next";
-import { clearAllStorage, redirectToLocation } from "@utils/auth";
 import getCookie from "./getCookie";
 
 interface FetcherParams {
@@ -9,18 +9,22 @@ interface FetcherParams {
 	endPoint: string;
 	method: "GET" | "POST" | "PUT" | "DELETE";
 	body?: any;
+	hasBaseURL?: boolean;
 }
 
-async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<any> {
+async function fetcher({ ctx, endPoint, method, body, hasBaseURL }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
 	const isServer = ctx && ctx.req && !!ctx.req;
-	let apiURL = page.stageApiBaseUrl;
-	if (process.env.NODE_ENV === "production") {
-		apiURL = page.apiBaseUrl;
-	} else if (process.env.NODE_ENV === "staging") {
-		apiURL = page.localApiBaseUrl;
-	}
+	let apiURL = endPoint;
+	if (!hasBaseURL) {
+		apiURL = `${page.stageApiBaseUrl}${endPoint}`;
 
+		if (process.env.NODE_ENV === "production") {
+			apiURL = `${page.apiBaseUrl}${endPoint}`;
+		} else if (process.env.NODE_ENV === "staging") {
+			apiURL = `${page.localApiBaseUrl}${endPoint}`;
+		}
+	}
 	const headers = JWT
 		? { "Content-Type": "application/json", Authorization: JWT }
 		: { "Content-Type": "application/json" };
@@ -35,7 +39,7 @@ async function fetcher({ ctx, endPoint, method, body }: FetcherParams): Promise<
 					headers,
 					body: JSON.stringify(body),
 			  };
-	const response = await fetch(`${apiURL}${endPoint}`, options);
+	const response = await fetch(apiURL, options);
 	if (response.status === 401) {
 		if (!isServer && typeof window !== "undefined") {
 			if (window.location.pathname.split("/")[1] !== "auth") {

@@ -68,7 +68,7 @@ function pageRoute(app, router) {
 	// ****************************************************** Author ***********************************************************
 
 	router.get("/author", TokenCheckMiddleware, (req, res) => {
-		const { params, query } = req;
+		const { query } = req;
 		app.render(req, res, "/author", {
 			...query,
 		});
@@ -76,7 +76,23 @@ function pageRoute(app, router) {
 
 	// *************************************************************************************************************************
 
-	// ****************************************************** platformanager ***********************************************************
+	// **************************************************** Render Engine ******************************************************
+
+	router.get("/renderengine/src/:srcId", TokenCheckMiddleware, (req, res) => {
+		const { params, query } = req;
+		app.render(req, res, "/renderengine/sourcepage", { ...params, ...query });
+	});
+
+	router.get("/renderengine", TokenCheckMiddleware, (req, res) => {
+		const { query } = res;
+		app.render(req, res, "/renderengine", {
+			...query,
+		});
+	});
+
+	// *************************************************************************************************************************
+
+	// ************************************************** platformanager *******************************************************
 
 	router.get("/platformanager/collectionsmeta", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;

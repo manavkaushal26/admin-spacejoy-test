@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 
 const { Title, Text } = Typography;
 
-const LoudPaddingDiv = styled.div`
+export const LoudPaddingDiv = styled.div`
 	padding: 2rem 1.15rem;
 	@media only screen and (max-width: 1200px) {
 		padding: 2rem 1.15rem;

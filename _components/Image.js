@@ -108,7 +108,11 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 	const [imgHeight, setImageHeight] = useState(height);
 	const [imgWidth, setImageWidth] = useState(width);
 
-	if (src.includes("storage.googleapis.com") || src.includes("api.homefuly.com")) {
+	if (
+		src.includes("storage.googleapis.com") ||
+		src.includes("api.homefuly.com") ||
+		src.includes("kakarender.s3.ap-south-1.amazonaws.com")
+	) {
 		source = src;
 	} else {
 		source = `${cloudinary.baseDeliveryURL}/image/upload/${src}`;
