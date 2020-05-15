@@ -30,6 +30,7 @@ const CreateNewSource: React.FC<CreateNewSource> = ({ onCreate, isOpen, toggleMo
 			okText="Create"
 			okButtonProps={{
 				loading,
+				disabled: state.name === "",
 			}}
 			onOk={(): void => onCreate(state)}
 			visible={isOpen}

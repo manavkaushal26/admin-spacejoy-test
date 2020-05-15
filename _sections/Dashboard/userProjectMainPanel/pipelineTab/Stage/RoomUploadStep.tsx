@@ -20,6 +20,7 @@ import getCookie from "@utils/getCookie";
 import { Button, Col, Icon, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
+import ModelViewer from "@components/ModelViewer";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -227,6 +228,18 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 						</Col>
 					</Row>
 				</Col>
+				{roomFileList.length !== 0 && designData.room.spatialData.fileUrls.glb && (
+					<Col>
+						<Row gutter={[8, 8]}>
+							<Col sm={24}>
+								<Text strong>Room Model View</Text>
+							</Col>
+							<Col>
+								<ModelViewer centerCamera type="glb" pathToFile={designData.room.spatialData.fileUrls.glb} />
+							</Col>
+						</Row>
+					</Col>
+				)}
 				<Col span={24}>
 					<Row gutter={[8, 8]}>
 						<Col sm={24}>

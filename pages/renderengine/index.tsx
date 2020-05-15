@@ -153,7 +153,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 								/>
 							</Col>
 							<Col>
-								<Row>
+								<Row gutter={[16, 16]}>
 									{sources.length !== 0 ? (
 										sources.map(source => {
 											const renders = getValueSafely(
@@ -177,10 +177,16 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 														actions={[
 															<Popconfirm
 																title="Are you sure?"
-																onConfirm={(): Promise<void> => deleteSource(source._id)}
+																onCancel={(e): void => {
+																	e.stopPropagation();
+																}}
+																onConfirm={(e): void => {
+																	e.stopPropagation();
+																	deleteSource(source._id);
+																}}
 																key="delete"
 															>
-																<Icon type="delete" />
+																<Icon type="delete" onClick={(e): void => e.stopPropagation()} />
 															</Popconfirm>,
 														]}
 														cover={
@@ -190,7 +196,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 																		{renders.map(render => (
 																			<div key={render}>
 																				<Image
-																					onClick={e => {
+																					onClick={(e): void => {
 																						e.stopPropagation();
 																						handleImageClick(renders);
 																					}}
@@ -210,7 +216,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 															description={
 																<Row>
 																	<Col span={24}>
-																		<Text>{source.description}</Text>
+																		<Text>{source.description || "No Description"}</Text>
 																	</Col>
 																	<Col span={24}>
 																		<Text strong>Created at: </Text>

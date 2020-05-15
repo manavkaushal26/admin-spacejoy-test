@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
 import { OrbitControls } from "@utils/OrbitControls";
 import { Icon } from "antd";
@@ -16,7 +17,6 @@ import {
 	Fog,
 	Mesh,
 	HemisphereLight,
-	PCFSoftShadowMap,
 	PCFShadowMap,
 	FrontSide,
 	Vector2,
@@ -27,6 +27,7 @@ import GLTFLoader from "three-gltf-loader";
 interface ModelViewer {
 	type: "obj" | "glb";
 	pathToFile: string;
+	centerCamera?: boolean;
 }
 
 const ModelViewerParentStyled = styled.div`
@@ -59,7 +60,7 @@ const addMeshShadow = (children): void => {
 	});
 };
 
-const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile }) => {
+const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile, centerCamera }) => {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
 	const canvasRef = useRef(null);
@@ -148,9 +149,15 @@ const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile }) => {
 						objectBound.getSize(size);
 						objectBound.getCenter(center);
 						const cameraDistance = size.x * 1.6 > size.y * 1.2 ? size.x * 1.6 : size.y * 1.2;
-						camera.position.set(0, center.y, cameraDistance);
+						camera.position.set(0, center.y, 0);
 						camera.lookAt(center);
 						controls.target = center;
+
+						if (!centerCamera) {
+							camera.position.set(0, center.y, cameraDistance);
+							camera.lookAt(center);
+							controls.target = center;
+						}
 						scene.add(gltf.scene);
 						renderer.render(scene, camera);
 					},

@@ -2,7 +2,7 @@ import { MetaDataType } from "@customTypes/moodboardTypes";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { CustomDiv } from "@sections/Dashboard/styled";
-import { Input, Tree, Typography } from "antd";
+import { Input, Tree, Typography, Radio } from "antd";
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
 import { AssetStatus } from "@customTypes/userType";
 import { FilterCard, ModifiedDivider } from "../styled";
@@ -161,6 +161,13 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		setDepthRange(range);
 	};
 
+	const onStatusChange = (e): void => {
+		const {
+			target: { value },
+		} = e;
+		dispatch({ type: ASSET_ACTION_TYPES.STATUS, value });
+	};
+
 	const onDepthSliderValueEntry = (e, type): void => {
 		const {
 			target: { value },
@@ -232,14 +239,25 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 								})}
 							dispatch={dispatch}
 						/>
-						<Filter
-							name={{ categoryName: "Status", dispatchName: ASSET_ACTION_TYPES.STATUS }}
-							options={Object.keys(AssetStatus).map(key => {
-								return { label: key, value: AssetStatus[key] };
+						<Text strong>Status</Text>
+						<Radio.Group name="status" onChange={onStatusChange} value={state.status}>
+							{Object.entries(AssetStatus).map(([name, value]) => {
+								return (
+									<Radio
+										key={value}
+										style={{
+											display: "block",
+											height: "30px",
+											lineHeight: "30px",
+										}}
+										value={value}
+									>
+										{name}
+									</Radio>
+								);
 							})}
-							value={state.status}
-							dispatch={dispatch}
-						/>
+							<Radio value="">All</Radio>
+						</Radio.Group>
 						<Title type="secondary" level={4}>
 							Range Filters
 						</Title>

@@ -1,7 +1,8 @@
+const isProduction = process.env.NODE_ENV === "production";
+
 const page = {
 	appName: "SpaceJoyWeb",
-	apiBaseUrl: "https://api.spacejoy.com/api",
-	stageApiBaseUrl: "https://server.staging.spacejoy.com/api",
+	apiBaseUrl: isProduction ? "https://api.spacejoy.com/api" : "https://server.staging.spacejoy.com/api",
 	localApiBaseUrl: "172.20.10.111:3000",
 	placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
@@ -32,14 +33,12 @@ const cookieNames = {
 };
 
 const company = {
-	logo:
-		process.env.NODE_ENV === "production"
-			? "v1578101355/shared/spacejoy-logo_ase39m.svg"
-			: "v1578482972/shared/spacejoy-logo_rdqft7.svg",
+	logo: isProduction ? "v1578101355/shared/spacejoy-logo_ase39m.svg" : "v1578482972/shared/spacejoy-logo_rdqft7.svg",
 	name: "Neo Design Labs Inc",
 	product: "Spacejoy-Dashboard",
 	tagLine: "Designing your imagination",
-	url: "//admin.spacejoy.com",
+	url: isProduction ? "//admin.spacejoy.com" : "//staging-admin.spacejoy.com",
+	customerPortalLink: isProduction ? "//spacejoy.com" : "//web.staging.spacejoy.com",
 	country: "us",
 	subject: "Dashboard to manage customer projects",
 	description: "Dashboard for managing customer projects by Spacejoy employees",
@@ -96,6 +95,6 @@ module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary: process.env.NODE_ENV === "production" ? cloudinary : stagingCloudinary,
+	cloudinary: isProduction ? cloudinary : stagingCloudinary,
 	projectConfig,
 };

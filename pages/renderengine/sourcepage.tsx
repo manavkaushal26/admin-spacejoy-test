@@ -187,9 +187,23 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 									onBack={(): void => Router.back()}
 									title="Source Details"
 									extra={[
-										<Button key="create" onClick={toggleJobCreationModal} type="primary">
-											Create new Job
-										</Button>,
+										sourceData.storage ? (
+											<Button key="create" onClick={toggleJobCreationModal} type="primary">
+												Create new Job
+											</Button>
+										) : (
+											<Upload
+												accept=".blend"
+												fileList={uploadedFile}
+												onChange={handleFileChange}
+												action={sourceUploadFileApi(sourceData._id)}
+											>
+												<Button type="primary">
+													<Icon type="upload" />
+													Click to upload
+												</Button>
+											</Upload>
+										),
 									]}
 								/>
 							</Col>
@@ -199,65 +213,73 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 									<DetailText name="Name" value={sourceData.name} />
 									<DetailText name="Created At" value={moment(sourceData.createdAt).format("D-MMM-YYYY")} />
 									<DetailText name="Source Id" value={sourceData._id} />
-									<Col sm={12} md={8} lg={6}>
-										<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }}>
-											<Text strong>File uploaded: </Text>
-											{sourceData.storage ? (
+									{!!sourceData.storage && (
+										<Col sm={12} md={8} lg={6}>
+											<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }}>
+												<Text strong>File uploaded: </Text>
+
 												<Text ellipsis>
 													{getValueSafely(() => sourceData.storage.key.split("/").pop(), "No file uploaded")}
 												</Text>
-											) : (
-												<Upload
-													accept=".blend"
-													fileList={uploadedFile}
-													onChange={handleFileChange}
-													action={sourceUploadFileApi(sourceData._id)}
-												>
-													<Button style={{ padding: 0, height: "auto" }} type="link">
-														<Icon type="upload" />
-														Click to upload
-													</Button>
-												</Upload>
-											)}
-										</Row>
-									</Col>
+											</Row>
+										</Col>
+									)}
 									<Col span={24}>
 										<Text strong>Description</Text>
 										<Paragraph ellipsis={{ rows: 3, expandable: true }}>{sourceData.description}</Paragraph>
 									</Col>
 								</Row>
 							</Col>
+							{jobs.length !== 0 && (
+								<Col>
+									<Row gutter={[8, 8]}>
+										<Col span={24}>
+											<Text strong>Search</Text>
+										</Col>
+										<Col span={24}>
+											<Input name="search" placeholder="Search nbby name" onChange={handleSearch} />
+										</Col>
+									</Row>
+								</Col>
+							)}
 							<Col>
 								<Row gutter={[8, 8]}>
-									<Col span={24}>
-										<Text strong>Search</Text>
-									</Col>
-									<Col span={24}>
-										<Input name="search" placeholder="Search nbby name" onChange={handleSearch} />
-									</Col>
-								</Row>
-							</Col>
-							<Col>
-								<Row gutter={[8, 8]}>
-									{jobs.length !== 0 ? (
-										jobs
-											.filter(job => {
-												return job.name.toLowerCase().includes(searchText);
-											})
-											.map(job => {
-												return (
-													<JobCard
-														key={`${job._id}-${job.status}`}
-														job={job}
-														onDelete={deleteJob}
-														onClick={toggleJobDetails}
-														startJob={onStartJobClick}
-														socket={socket}
-													/>
-												);
-											})
-									) : (
-										<Result status="404" title="No Jobs" subTitle="Create a new Job to see it here" />
+									{jobs.length !== 0
+										? jobs
+												.filter(job => {
+													return job.name.toLowerCase().includes(searchText);
+												})
+												.map(job => {
+													return (
+														<JobCard
+															key={`${job._id}-${job.status}`}
+															job={job}
+															onDelete={deleteJob}
+															onClick={toggleJobDetails}
+															startJob={onStartJobClick}
+															socket={socket}
+														/>
+													);
+												})
+										: !!sourceData.storage && (
+												<Result status="404" title="No Jobs" subTitle="Create a new Job to see it here" />
+										  )}
+									{!sourceData.storage && (
+										<Row type="flex" justify="space-around">
+											<Upload
+												accept=".blend"
+												fileList={uploadedFile}
+												onChange={handleFileChange}
+												action={sourceUploadFileApi(sourceData._id)}
+											>
+												<Result
+													style={{ cursor: "pointer" }}
+													status="500"
+													title="Click to upload source"
+													subTitle="No file has been uploaded"
+												/>
+											</Upload>
+										</Row>
 									)}
 								</Row>
 							</Col>

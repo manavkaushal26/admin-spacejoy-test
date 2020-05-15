@@ -17,11 +17,8 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL }: FetcherParam
 	const isServer = ctx && ctx.req && !!ctx.req;
 	let apiURL = endPoint;
 	if (!hasBaseURL) {
-		apiURL = `${page.stageApiBaseUrl}${endPoint}`;
-
-		if (process.env.NODE_ENV === "production") {
-			apiURL = `${page.apiBaseUrl}${endPoint}`;
-		} else if (process.env.NODE_ENV === "staging") {
+		apiURL = `${page.apiBaseUrl}${endPoint}`;
+		if (process.env.NODE_ENV === "staging") {
 			apiURL = `${page.localApiBaseUrl}${endPoint}`;
 		}
 	}

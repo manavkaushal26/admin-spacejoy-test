@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Input, Row, Col, notification, Spin, Select, Icon, Button, Upload, Typography } from "antd";
+import { Input, Row, Col, notification, Spin, Select, Icon, Button, Upload, Typography, Tooltip } from "antd";
 import { DetailedCollection } from "@customTypes/collectionTypes";
 import { Status, AssetStatus } from "@customTypes/userType";
 import { getSingleCollection } from "@api/metaApi";
@@ -9,7 +9,7 @@ import { getMetaDataApi } from "@api/designApi";
 import { getValueSafely, getBase64 } from "@utils/commonUtils";
 import { RoomTypes } from "@customTypes/dashboardTypes";
 import getCookie from "@utils/getCookie";
-import { cloudinary, cookieNames, page } from "@utils/config";
+import { cloudinary, cookieNames, page, company } from "@utils/config";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
@@ -244,6 +244,11 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 		onClose(null, "close");
 	};
 
+	const openInNewWindow = (): void => {
+		if (collectionData.slug) {
+			window.open(`${company.customerPortalLink}/interior-designs/${collectionData.slug}`, "_blank", "noopener");
+		}
+	};
 	const onRegenerateClick = async (): Promise<void> => {
 		notification.open({ key: "Regenerate", message: "Regenerating Collection" });
 
@@ -343,7 +348,16 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						<Row gutter={[4, 4]}>
 							<Col>Slug</Col>
 							<Col>
-								<Input onChange={onChange} name="slug" value={collectionData.slug} />
+								<Input
+									onChange={onChange}
+									name="slug"
+									value={collectionData.slug}
+									addonAfter={
+										<Tooltip placement="top" title="Open URL">
+											<Icon onClick={openInNewWindow} type="link" />
+										</Tooltip>
+									}
+								/>
 							</Col>
 						</Row>
 					</Col>

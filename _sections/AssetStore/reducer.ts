@@ -3,7 +3,7 @@ import { AssetStatus } from "@customTypes/userType";
 
 export interface AssetStoreState {
 	loading: boolean;
-	status: AssetStatus[];
+	status: AssetStatus;
 	metaData: MetaDataType;
 	moodboard: MoodboardAsset[];
 	retailerFilter: string[];
@@ -26,7 +26,7 @@ export const assetStoreInitialState: AssetStoreState = {
 	metaData: null,
 	moodboard: null,
 	loading: true,
-	status: [AssetStatus.Active],
+	status: AssetStatus.Active,
 	retailerFilter: [],
 	priceRange: [0, 10000],
 	heightRange: [0, 30],

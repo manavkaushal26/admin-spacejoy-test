@@ -39,10 +39,26 @@ import "antd/lib/upload/style";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
-import { ThemeProvider } from "styled-components";
-import SVGIcon from "../_components/SVGIcon";
+import styled, { ThemeProvider } from "styled-components";
 import theme from "../_theme";
 
+const StyledLoaderIcon = styled.div`
+	border: 15px double #e84393;
+	content: "";
+	border-top: 15px double #eee;
+	border-bottom: 15px double #eee;
+	border-right: 15px double #eee;
+	animation: rotate 1s linear infinite;
+	border-radius: 15px;
+	@keyframes rotate {
+		from {
+			transform: rotate(0deg);
+		}
+		to {
+			transform: rotate(360deg);
+		}
+	}
+`;
 export default class MyApp extends App {
 	state = {
 		loading: false,
@@ -61,7 +77,7 @@ export default class MyApp extends App {
 				<div className={`${loading ? "loading" : ""}`}>
 					<Component {...pageProps} />
 					<div className="loader-ring">
-						<SVGIcon name="spinner" className="loading-spinner" height={20} width={20} />
+						<StyledLoaderIcon />
 					</div>
 				</div>
 			</ThemeProvider>

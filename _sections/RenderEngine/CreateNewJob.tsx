@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect, ReactNode, useRef } from "react";
 import { Modal, Row, Typography, Col, Input, Select } from "antd";
 
 const { Text } = Typography;
@@ -18,6 +18,8 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 		cameraType: "all",
 		cameraSpecific: "",
 	});
+
+	const [renderTypeSelected, setRenderTypeSelected] = useState(true);
 
 	useEffect(() => {
 		setState({
@@ -53,10 +55,21 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 			[name]: valueToStore,
 		}));
 	};
+	const sampleRef = useRef();
+	const renderTypeChange = (value: number): void => {
+		setState(prevState => ({
+			...prevState,
+			samples: value,
+		}));
+		if (value === 0) {
+			setRenderTypeSelected(false);
+		} else {
+			setRenderTypeSelected(true);
+		}
+	};
 
 	const createButtonDisabled =
 		state.name.length === 0 ||
-		state.description.length === 0 ||
 		state.samples === 0 ||
 		(state.cameraType === "specific" && state.cameraSpecific.length === 0);
 
@@ -96,21 +109,37 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 				<Col span={12}>
 					<Row gutter={[4, 4]}>
 						<Col>
+							<Text>Render Type</Text>
+						</Col>
+						<Col>
+							<Select style={{ width: "100%" }} onChange={renderTypeChange} defaultValue={500}>
+								<Select.Option value={5}>Quick</Select.Option>
+								<Select.Option value={500}>HD</Select.Option>
+								<Select.Option value={1200}>Full HD</Select.Option>
+								<Select.Option value={0}>Specify Sample Count</Select.Option>
+							</Select>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={12}>
+					<Row gutter={[4, 4]}>
+						<Col>
 							<Text>Sample Count</Text>
 						</Col>
 						<Col>
 							<Input
-								disabled={state.cameraType === "quick"}
+								ref={sampleRef}
 								type="number"
 								name="samples"
 								value={state.samples}
 								onChange={onChange}
+								disabled={renderTypeSelected}
 								placeholder="Samples"
 							/>
 						</Col>
 					</Row>
 				</Col>
-				<Col span={12}>
+				<Col span={24}>
 					<Row gutter={[4, 4]}>
 						<Col>
 							<Text>Camera Type</Text>
@@ -121,7 +150,6 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 								value={state.cameraType}
 								onChange={(value): void => onChange({ target: { name: "cameraType", value } })}
 							>
-								<Select.Option value="quick">First Camera(Quick/Draft)</Select.Option>
 								<Select.Option value="first">First Camera</Select.Option>
 								<Select.Option value="specific">Specific Cameras</Select.Option>
 								<Select.Option value="all">All Cameras</Select.Option>

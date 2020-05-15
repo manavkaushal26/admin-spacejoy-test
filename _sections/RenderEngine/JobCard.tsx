@@ -16,6 +16,16 @@ interface JobWithProgress extends AllJobs {
 	progress: number;
 }
 
+const HumanizeRenderStatus = {
+	[RenderEngineStatus.active]: "Rendering",
+	[RenderEngineStatus.pending]: "Job Created",
+	[RenderEngineStatus.completed]: "Completed",
+	[RenderEngineStatus.failed]: "Failed",
+	[RenderEngineStatus.cancelled]: "Cancelled",
+	[RenderEngineStatus.waiting]: "In Render Queue",
+	[RenderEngineStatus.suspended]: "Suspended",
+};
+
 const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, onDelete, socket }) => {
 	const [job, setJob] = useState<JobWithProgress>({
 		...jobInitialData,
@@ -42,9 +52,16 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				setSocketConnected(true);
 				socket.on("Job.Progress", ({ id, progress }) => {
 					if (job.qid === id) {
+						const status = {
+							status: job.status,
+						};
+						if (job.status === RenderEngineStatus.waiting) {
+							status.status = RenderEngineStatus.active;
+						}
 						setJob({
 							...job,
 							progress,
+							...status,
 						});
 					}
 				});
@@ -55,11 +72,13 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 							status: RenderEngineStatus.completed,
 							progress: 100,
 						});
+						socket.removeAllListeners();
 					}
 				});
-				socket.on("Job.Failed", (id, err) => {
+				socket.on("Job.Failed", id => {
 					if (job._id === id) {
 						setProgressError(true);
+						socket.removeAllListeners();
 					}
 				});
 			}
@@ -68,6 +87,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 			socket.removeAllListeners();
 		};
 	}, [job.status]);
+
 	const progressStatus = useMemo(() => {
 		if (progressError) {
 			return "exception";
@@ -80,28 +100,57 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 		}
 		return null;
 	}, [job.status]);
+
 	return (
 		<Col sm={12} md={8} lg={6} onClick={(): void => onClick(job)}>
 			<Card
 				hoverable
 				actions={[
-					<Icon
-						type="experiment"
-						key="render"
-						onClick={(e): void => {
-							e.stopPropagation();
-							startJob(job._id);
-						}}
-					/>,
+					...(job.status !== RenderEngineStatus.active && job.status !== RenderEngineStatus.waiting
+						? [
+								<Popconfirm
+									title="Are you Sure?"
+									onCancel={(e): void => {
+										e.stopPropagation();
+									}}
+									onConfirm={(e): void => {
+										e.stopPropagation();
+										startJob(job._id);
+									}}
+									disabled={job.status === RenderEngineStatus.pending}
+									key="delete"
+								>
+									<Icon
+										type="experiment"
+										key="render"
+										{...(job.status === RenderEngineStatus.completed
+											? {
+													onClick: (e): void => {
+														e.stopPropagation();
+													},
+											  }
+											: {
+													onClick: (e): void => {
+														e.stopPropagation();
+														startJob(job._id);
+													},
+											  })}
+									/>
+								</Popconfirm>,
+						  ]
+						: []),
 					<Popconfirm
 						title="Are you Sure?"
+						onCancel={(e): void => {
+							e.stopPropagation();
+						}}
 						onConfirm={(e): void => {
 							e.stopPropagation();
 							onDelete(job._id);
 						}}
 						key="delete"
 					>
-						<Icon onClick={e => e.stopPropagation()} type="delete" />
+						<Icon onClick={(e): void => e.stopPropagation()} type="delete" />
 					</Popconfirm>,
 				]}
 			>
@@ -142,7 +191,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 
 									<Col>
 										<Text>
-											<small>{job.status}</small>
+											<small>{HumanizeRenderStatus[job.status]}</small>
 										</Text>
 									</Col>
 								</Row>
