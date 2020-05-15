@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Modal, Input, Row, Col, notification, Spin, Select, Icon, Button, Upload, Typography } from "antd";
+import { Input, Row, Col, notification, Spin, Select, Icon, Button, Upload, Typography } from "antd";
 import { DetailedCollection } from "@customTypes/collectionTypes";
 import { Status, AssetStatus } from "@customTypes/userType";
 import { getSingleCollection } from "@api/metaApi";
@@ -12,6 +12,7 @@ import getCookie from "@utils/getCookie";
 import { cloudinary, cookieNames, page } from "@utils/config";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
+import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 
 const { Text } = Typography;
 
@@ -284,7 +285,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 	};
 
 	return (
-		<Modal
+		<SizeAdjustedModal
 			visible={isOpen}
 			onCancel={onCloseModal}
 			onOk={onSaveClick}
@@ -342,12 +343,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						<Row gutter={[4, 4]}>
 							<Col>Slug</Col>
 							<Col>
-								<Input
-									onChange={onChange}
-									name="slug"
-									value={collectionData.slug}
-									disabled={getValueSafely(() => !collectionData.slug, true)}
-								/>
+								<Input onChange={onChange} name="slug" value={collectionData.slug} />
 							</Col>
 						</Row>
 					</Col>
@@ -525,7 +521,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				previewVisible={preview.previewVisible}
 				altText="previewImages"
 			/>
-		</Modal>
+		</SizeAdjustedModal>
 	);
 };
 

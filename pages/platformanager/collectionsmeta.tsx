@@ -31,7 +31,7 @@ const CollectionsMeta: NextPage<{
 	const [collections, setCollections] = useState<CollectionBase[]>([]);
 	const [createEditModalVisible, setCreateEditModalVisible] = useState<boolean>(false);
 	const [editCollectionId, setEditCollectionId] = useState<string>(null);
-	const [pageSize, setPageSize] = useState<number>(10);
+	const [pageSize, setPageSize] = useState<number>(12);
 	const [pageNo, setPageNo] = useState<number>(1);
 	const [collectionMeta, setCollectionMeta] = useState<{ count: number }>({ count: 0 });
 
@@ -116,7 +116,7 @@ const CollectionsMeta: NextPage<{
 								return (
 									<Col key={collection._id} sm={12} md={8} lg={6}>
 										<Card
-											style={{ background: collection.bg }}
+											style={{ background: collection.bg || "white" }}
 											hoverable
 											onClick={(): void => onClick(collection._id, "open")}
 											cover={<Image nolazy src={collection.cdnThumbnail} />}
@@ -137,7 +137,7 @@ const CollectionsMeta: NextPage<{
 								hideOnSinglePage
 								pageSize={pageSize}
 								showSizeChanger
-								pageSizeOptions={["10", "20", "30", "40"]}
+								pageSizeOptions={["12", "24", "36", "48"]}
 								onShowSizeChange={onPageSizeChange}
 							/>
 						</Row>
