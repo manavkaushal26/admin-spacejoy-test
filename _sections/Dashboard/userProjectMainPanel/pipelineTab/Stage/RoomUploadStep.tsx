@@ -228,7 +228,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 						</Col>
 					</Row>
 				</Col>
-				{roomFileList.length !== 0 && designData.room.spatialData.fileUrls.glb && (
+				{roomFileList.length !== 0 && designData?.room?.spatialData?.fileUrls?.glb && (
 					<Col>
 						<Row gutter={[8, 8]}>
 							<Col sm={24}>

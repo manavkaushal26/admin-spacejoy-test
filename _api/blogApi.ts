@@ -23,10 +23,8 @@ export const createBlogCategoryApi = (): string => {
 };
 
 export const uploadBlogImage = (blogId: string, type: "cover" | "body"): string => {
-	const baseUrl = process.env.NODE_ENV !== "production" ? page.stageApiBaseUrl : page.apiBaseUrl;
-
-	if (type === "cover") return `${baseUrl}/v1/blog/${blogId}/cover`;
-	return `${baseUrl}/v1/blog/${blogId}/image`;
+	if (type === "cover") return `${page.apiBaseUrl}/v1/blog/${blogId}/cover`;
+	return `${page.apiBaseUrl}/v1/blog/${blogId}/image`;
 };
 
 export const deleteUploadedBlogImage = (blogId: string, imageId: string): string => {

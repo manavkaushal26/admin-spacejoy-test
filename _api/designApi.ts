@@ -38,16 +38,10 @@ export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "s
 	assetId,
 	filetype = Model3DFiles.Glb
 ) => {
-	if (process.env.NODE_ENV !== "production") {
-		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/model?filetype=${filetype}`;
-	}
 	return `${page.apiBaseUrl}/admin/asset/${assetId}/model?filetype=${filetype}`;
 };
 
 export const uploadAssetImageApi: (assetId: string) => string = assetId => {
-	if (process.env.NODE_ENV !== "production") {
-		return `${page.stageApiBaseUrl}/admin/asset/${assetId}/image`;
-	}
 	return `${page.apiBaseUrl}/admin/asset/${assetId}/image`;
 };
 

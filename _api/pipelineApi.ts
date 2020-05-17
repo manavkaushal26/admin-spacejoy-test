@@ -2,27 +2,21 @@ import { page } from "@utils/config";
 import { RenderImgUploadTypes } from "@customTypes/dashboardTypes";
 
 export const uploadRoomApi: (designId: string, roomId?: string) => string = (designId, roomId) => {
-	if (process.env.NODE_ENV !== "production") {
-		return `${page.stageApiBaseUrl}/admin/design/${designId}/config/room${roomId ? `/${roomId}` : ""}`;
-	}
 	return `${page.apiBaseUrl}/admin/design/${designId}/config/room${roomId ? `/${roomId}` : ""}`;
 };
 
-export const uploadRenderImages = (designId: string, imageType: RenderImgUploadTypes | "floorplan") => {
-	if (process.env.NODE_ENV !== "production") {
-		return `${page.stageApiBaseUrl}/admin/design/${designId}/image/${imageType}`;
-	}
+export const uploadRenderImages = (designId: string, imageType: RenderImgUploadTypes | "floorplan"): string => {
 	return `${page.apiBaseUrl}/admin/design/${designId}/image/${imageType}`;
 };
 
-export const addRenderImageComment = (designId: string, imageId: string) => {
+export const addRenderImageComment = (designId: string, imageId: string): string => {
 	return `/admin/design/${designId}/config/image/${imageId}/comment`;
 };
 
-export const updateDesignPhase = (designId: string) => {
+export const updateDesignPhase = (designId: string): string => {
 	return `/admin/design/${designId}/phase`;
 };
 
-export const editDesignApi = (designId: string) => {
+export const editDesignApi = (designId: string): string => {
 	return `/design/${designId}`;
 };
