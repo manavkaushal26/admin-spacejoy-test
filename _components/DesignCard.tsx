@@ -15,6 +15,7 @@ interface DesignCardProps {
 	phase: string;
 	state?: DesignState;
 	role?: Role;
+	creatorRole?: Role;
 	feedbackPresent?: boolean;
 	onCopyAsDesignExampleClick?: (data: string) => void;
 }
@@ -53,6 +54,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	coverImage,
 	designName,
 	phase,
+	creatorRole,
 	state,
 	feedbackPresent,
 	onCopyAsDesignExampleClick,
@@ -128,7 +130,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 					</Row>
 				}
 			>
-				<Row>
+				<Row gutter={[4, 4]}>
 					<Col span={24}>
 						<Text strong style={{ width: "100%" }} ellipsis>
 							{designName}
@@ -137,7 +139,16 @@ const DesignCard: React.FC<DesignCardProps> = ({
 					<Col span={12}>
 						<Tag>Phase: {phase}</Tag>
 					</Col>
-					<Col span={12}>{feedbackPresent && <Tag color="orange">Feedback</Tag>}</Col>
+					{feedbackPresent && (
+						<Col span={12}>
+							<Tag color="orange">Feedback</Tag>
+						</Col>
+					)}
+					{creatorRole && (
+						<Col span={12}>
+							<Tag color="blue">Owner: {creatorRole}</Tag>
+						</Col>
+					)}
 				</Row>
 			</StateAwareCards>
 		</Col>

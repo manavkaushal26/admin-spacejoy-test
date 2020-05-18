@@ -388,6 +388,14 @@ export interface DetailedDesign {
 		retailers: string[];
 		roomType: RoomTypes;
 	};
+	owner: {
+		_id: string;
+		email: string;
+		profile: {
+			name: string;
+		};
+		role: Role;
+	};
 	slug: string;
 	assets: Assets[];
 	status: Status;

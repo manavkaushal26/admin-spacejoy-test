@@ -130,7 +130,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout isServer={isServer} authVerification={authVerification} pageName="Render Engine">
 			<Head>
 				<title>Render Engine | {company.product}</title>
 				{IndexPageMeta}

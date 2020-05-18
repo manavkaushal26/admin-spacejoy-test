@@ -246,6 +246,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 								onSelectCard={onSelectDesign}
 								feedbackPresent={!!feedback.length}
 								role={userRole}
+								creatorRole={design.design?.owner?.role}
 								onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
 								coverImage={getValueSafely(
 									() => {

@@ -169,7 +169,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setSearchText(value.toLowerCase());
 	};
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout isServer={isServer} authVerification={authVerification} pageName="Render Engine">
 			<Head>
 				<title>Render Engine | {company.product}</title>
 				{IndexPageMeta}
@@ -179,7 +179,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 					<LoudPaddingDiv>
 						<Row gutter={[0, 16]}>
 							<Col>
-								<Title>Render Engine</Title>
+								<Title level={4}>Render Engine</Title>
 							</Col>
 							<Col>
 								<PageHeader
