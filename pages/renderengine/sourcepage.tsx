@@ -29,7 +29,7 @@ import JobDetailsModal from "@sections/RenderEngine/JobDetailsModal";
 import { useRouter } from "next/router";
 import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
 
-const { Text, Title, Paragraph } = Typography;
+const { Text, Paragraph } = Typography;
 
 interface SourcePageProps {
 	isServer: boolean;
@@ -178,9 +178,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
 						<Row gutter={[0, 16]}>
-							<Col>
-								<Title level={4}>Render Engine</Title>
-							</Col>
 							<Col>
 								<PageHeader
 									style={{ paddingLeft: "0px", paddingRight: "0px" }}

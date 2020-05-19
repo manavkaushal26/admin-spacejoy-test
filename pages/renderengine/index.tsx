@@ -33,7 +33,7 @@ import CreateNewSource from "@sections/RenderEngine/CreateNewSource";
 import ImageSlideshowModal from "@components/ImageSlideshowModal";
 import { LoudPaddingDiv } from "../platformanager/index";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 interface RenderEngineProps {
 	isServer: boolean;
@@ -140,7 +140,6 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 					<LoudPaddingDiv>
 						<Row gutter={[0, 16]}>
 							<Col style={{ backgroundColor: "white" }}>
-								<Title>Render Engine</Title>
 								<PageHeader
 									onBack={(): void => router.back()}
 									style={{ paddingLeft: "0px", paddingRight: "0px" }}
