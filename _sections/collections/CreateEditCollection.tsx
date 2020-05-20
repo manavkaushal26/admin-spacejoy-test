@@ -160,6 +160,46 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 		}
 	};
 
+	const onRegenerateClick = async (): Promise<void> => {
+		notification.open({ key: "Regenerate", message: "Regenerating Collection" });
+
+		const endPoint = `/designcollection/${collectionData._id}/regenerate`;
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: "POST",
+				body: {
+					data: {
+						keepNonMatching: true,
+					},
+				},
+			});
+
+			if (response.status === "success") {
+				setCollectionData({ ...collectionData, ...response.data });
+				onSave({ ...collectionData, ...response.data }, false);
+				notification.open({
+					key: "Regenerate",
+					message: "Saved Collection",
+					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				});
+			} else {
+				notification.open({
+					key: "Regenerate",
+					message: "Error Saving Collection",
+					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				});
+			}
+		} catch (e) {
+			notification.open({
+				key: "Regenerate",
+				message: "Error Saving Collection",
+				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+			});
+		}
+		setLoading(false);
+	};
+
 	const onSaveClick = async (): Promise<void> => {
 		notification.open({ key: "save", message: "Saving Collection" });
 		const endPoint = getSingleCollection(collectionData._id);
@@ -187,6 +227,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
 			});
 			setCollectionData(response.data);
+			await onRegenerateClick();
 			if (onSave) {
 				onSave(response.data, newEntry);
 			}
@@ -248,45 +289,6 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 		if (collectionData.slug) {
 			window.open(`${company.customerPortalLink}/interior-designs/${collectionData.slug}`, "_blank", "noopener");
 		}
-	};
-	const onRegenerateClick = async (): Promise<void> => {
-		notification.open({ key: "Regenerate", message: "Regenerating Collection" });
-
-		const endPoint = `/designcollection/${collectionData._id}/regenerate`;
-		try {
-			const response = await fetcher({
-				endPoint,
-				method: "POST",
-				body: {
-					data: {
-						keepNonMatching: true,
-					},
-				},
-			});
-
-			if (response.status === "success") {
-				setCollectionData({ ...collectionData, ...response.data });
-				onSave({ ...collectionData, ...response.data }, false);
-				notification.open({
-					key: "Regenerate",
-					message: "Saved Collection",
-					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
-				});
-			} else {
-				notification.open({
-					key: "Regenerate",
-					message: "Error Saving Collection",
-					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
-				});
-			}
-		} catch (e) {
-			notification.open({
-				key: "Regenerate",
-				message: "Error Saving Collection",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
-			});
-		}
-		setLoading(false);
 	};
 
 	return (
