@@ -27,7 +27,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 		}
 	};
 
-	const quizResp: (resp: QuizResponse) => any = ({ context, response }) => {
+	const quizResp: (resp: QuizResponse) => string | number = ({ context, response }) => {
 		const { files, text, select, value } = getValueSafely(
 			() => ({ value: response.value, files: response.files, text: response.text, select: response.select }),
 			{
@@ -43,7 +43,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 				if (!select) {
 					return "No Answer Provided";
 				}
-				return { value };
+				return value;
 			case QuizAnswerFieldType.Select:
 				if (select) {
 					return "Selected";
@@ -55,7 +55,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 				}
 				return "No Answer Provided";
 			case QuizAnswerFieldType.Value:
-				return { value };
+				return value;
 			case QuizAnswerFieldType.Image:
 			case QuizAnswerFieldType.File: {
 				if (files.length !== 0) {
@@ -90,7 +90,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 							value: hasOptions
 								? answer.options.map(option => {
 										return {
-											optionName: title,
+											optionName: option.label,
 											value: quizResp({ context, response: option.userResponse }),
 										};
 								  })
@@ -128,7 +128,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 								<Col>
 									<Row type="flex" justify="end">
 										<Button type="primary" onClick={downloadCSV}>
-											Download formatted JSON
+											Download as JSON
 										</Button>
 									</Row>
 								</Col>
