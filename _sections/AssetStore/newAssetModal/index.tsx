@@ -197,7 +197,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				name: assetData.name,
 				description: assetData.description,
 				status: assetData.status,
-				shoppable: assetData.shoppable || true,
+				shoppable: assetData.shoppable,
 				retailer: getValueSafely(() => assetData.retailer._id, ""),
 				retailLink: assetData.retailLink,
 				meta: {
