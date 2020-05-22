@@ -17,7 +17,7 @@ import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import AddRetailerModal from "../addRetailerModal";
 import { AssetAction } from "../reducer";
 import { SizeAdjustedModal } from "../styled";
-import { initialState, NewAssetUploadReducer, NewAssetUploadState, NEW_ASSET_ACTION_TYPES, reducer } from "./reducer";
+import { initialState, NewAssetUploadReducer, NEW_ASSET_ACTION_TYPES, reducer } from "./reducer";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -299,7 +299,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			});
 			if (response.statusCode <= 300) {
 				notification.success({ message: "Product Saved" });
-				const responseAssetData: NewAssetUploadState = response.data;
+				const responseAssetData = response.data;
 				responseAssetData.spatialData.clampValue = responseAssetData.spatialData.clampValue !== -1;
 				if (dimensionInInches) {
 					responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension, dimensionInInches);
