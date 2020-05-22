@@ -210,7 +210,9 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				secondaryColors: [], // TO BE ADDED LATER
 				spatialData: {
 					mountType: getValueSafely(() => assetData.spatialData.mountType, MountTypes.attached),
-					clampValue: getValueSafely(() => (assetData.spatialData.clampValue === -1 ? -1 : 0), -1),
+					clampValue: getValueSafely(() => {
+						return assetData.spatialData.clampValue !== -1;
+					}, false),
 					fileUrls: {
 						glb: getValueSafely(() => assetData.spatialData.fileUrls.glb, ""),
 						source: getValueSafely(() => assetData.spatialData.fileUrls.source, ""),
@@ -276,7 +278,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			"meta.vertical": state.meta.vertical,
 			"meta.theme": state.meta.theme,
 			"spatialData.mountType": state.spatialData.mountType,
-			"spatialData.clampValue": state.spatialData.clampValue,
+			"spatialData.clampValue": state.spatialData.clampValue ? 0 : -1,
 			"dimension.width": dimensionsToSend.width,
 			"dimension.height": dimensionsToSend.height,
 			"dimension.depth": dimensionsToSend.depth,
@@ -298,6 +300,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			if (response.statusCode <= 300) {
 				notification.success({ message: "Product Saved" });
 				const responseAssetData: NewAssetUploadState = response.data;
+				responseAssetData.spatialData.clampValue = responseAssetData.spatialData.clampValue !== -1;
 				if (dimensionInInches) {
 					responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension, dimensionInInches);
 				}
@@ -478,13 +481,13 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			const mountAndClampValue = MountAndClampValuesForVerticals[state.meta.vertical];
 			if (mountAndClampValue) {
 				if (mountAndClampValue.clampValue >= 0) {
-					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: 0 });
+					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: true });
 				} else {
-					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: -1 });
+					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: false });
 				}
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE, value: mountAndClampValue.mountValue });
 			} else {
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: 0 });
+				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: true });
 			}
 			notification.info({ message: "Mount type has changed since the vertical was changed" });
 		}
@@ -1072,8 +1075,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									value={state.spatialData.clampValue}
 									name={NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE}
 								>
-									<Radio value={0}>Yes</Radio>
-									<Radio value={-1}>No</Radio>
+									<Radio value>Yes</Radio>
+									<Radio value={false}>No</Radio>
 								</Radio.Group>
 							</Col>
 						</Row>

@@ -21,7 +21,7 @@ export interface NewAssetUploadState {
 	secondaryColors: string[];
 	spatialData: {
 		mountType: MountTypes;
-		clampValue: number;
+		clampValue: boolean;
 		fileUrls: {
 			glb: string;
 			source: string;
@@ -60,7 +60,7 @@ export const initialState = {
 	secondaryColors: [], // TO BE ADDED LATER
 	spatialData: {
 		mountType: MountTypes.floor,
-		clampValue: 0,
+		clampValue: true,
 		fileUrls: {
 			glb: "",
 			source: "",
