@@ -1130,50 +1130,62 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									</Upload>
 								</Col>
 							</Row>
+							{false && (
+								<>
+									<Row gutter={[0, 12]}>
+										<Col span={24}>
+											<Text strong>Upload Low/Medium Poly File</Text>
+										</Col>
+										<Col lg={12}>
+											<Upload
+												beforeUpload={(info): boolean => checkFileExtension("source", info)}
+												supportServerRender
+												name="file"
+												fileList={sourceFileList}
+												action={uploadModelSourceEndpoint}
+												onRemove={(): false => false}
+												onChange={(info): Promise<void> => handleOnFileUploadChange("source", info)}
+												headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+												accept=".blend"
+											>
+												<Button>
+													<Icon type="upload" />
+													Click to Upload
+												</Button>
+											</Upload>
+										</Col>
+									</Row>
+									<Row gutter={[0, 12]}>
+										<Col span={24}>
+											<Text strong>Upload High Poly File(Optional)</Text>
+										</Col>
+										<Col lg={12}>
+											<Upload
+												beforeUpload={(info): boolean => checkFileExtension("source", info)}
+												supportServerRender
+												name="file"
+												fileList={sourceHighPolyFileList}
+												action={uploadModelHighPolySouceEndpoint}
+												onRemove={(): false => false}
+												onChange={(info): Promise<void> => handleOnFileUploadChange("sourceHighPoly", info)}
+												headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+												accept=".blend"
+											>
+												<Button>
+													<Icon type="upload" />
+													Click to Upload
+												</Button>
+											</Upload>
+										</Col>
+									</Row>
+								</>
+							)}
 							<Row gutter={[0, 12]}>
 								<Col span={24}>
-									<Text strong>Upload Low/Medium Poly File</Text>
+									<Text strong>Source File Upload</Text>
 								</Col>
-								<Col lg={12}>
-									<Upload
-										beforeUpload={(info): boolean => checkFileExtension("source", info)}
-										supportServerRender
-										name="file"
-										fileList={sourceFileList}
-										action={uploadModelSourceEndpoint}
-										onRemove={(): false => false}
-										onChange={(info): Promise<void> => handleOnFileUploadChange("source", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept=".blend"
-									>
-										<Button>
-											<Icon type="upload" />
-											Click to Upload
-										</Button>
-									</Upload>
-								</Col>
-							</Row>
-							<Row gutter={[0, 12]}>
-								<Col span={24}>
-									<Text strong>Upload High Poly File(Optional)</Text>
-								</Col>
-								<Col lg={12}>
-									<Upload
-										beforeUpload={(info): boolean => checkFileExtension("source", info)}
-										supportServerRender
-										name="file"
-										fileList={sourceHighPolyFileList}
-										action={uploadModelHighPolySouceEndpoint}
-										onRemove={(): false => false}
-										onChange={(info): Promise<void> => handleOnFileUploadChange("sourceHighPoly", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept=".blend"
-									>
-										<Button>
-											<Icon type="upload" />
-											Click to Upload
-										</Button>
-									</Upload>
+								<Col>
+									<Text type="danger">Source file upload is disabled for maintenance</Text>
 								</Col>
 							</Row>
 							<Row gutter={[0, 12]}>
