@@ -1,4 +1,5 @@
 import { UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
 
 export interface UserProjectSidePanelState {
 	nameSearchText: string;
@@ -9,6 +10,7 @@ export interface UserProjectSidePanelState {
 	sortOrder: 1 | -1;
 	sortBy: SortFields;
 	currentTab: string;
+	status: Status;
 	phase: PhaseInternalNames[];
 	name: string;
 	searchResults: UserProjectType[];
@@ -32,6 +34,7 @@ export enum UserProjectSidePanelActionTypes {
 	NAME_FILTER,
 	SORT_ORDER,
 	SORT_BY,
+	STATUS,
 	CLEAR_DATA,
 	UPDATE_PROJECT_START_DATE,
 	UPDATE_PROJECT_END_DATE,
@@ -61,6 +64,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	sortBy: SortFields["Created At"],
 	hasMore: true,
 	currentTab: "active",
+	status: Status.active,
 	searchResults: [],
 	sortOrder: -1,
 	count: 0,
@@ -87,13 +91,10 @@ export const UserProjectSidePanelReducer = (
 				phase: action.value.phase,
 				hasMore: true,
 			};
-		case UserProjectSidePanelActionTypes.TAB_CHANGE:
+		case UserProjectSidePanelActionTypes.STATUS:
 			return {
 				...state,
-				currentTab: action.value.currentTab,
-				data: [],
-				pageCount: 0,
-				hasMore: true,
+				status: action.value.status,
 			};
 
 		case UserProjectSidePanelActionTypes.CLEAR_DATA:
@@ -125,10 +126,15 @@ export const UserProjectSidePanelReducer = (
 			};
 		case UserProjectSidePanelActionTypes.LOAD_USER_DATA: {
 			const dataToUpdate =
-				action.value.pageCount === state.pageCount ? state.data : [...state.data, ...action.value.data];
+				action.value.pageCount === state.pageCount
+					? state.data
+					: action.value.data.reduce((acc, next) => {
+							acc.push(next);
+							return acc;
+					  }, state.data);
 			return {
 				...state,
-				data: [...dataToUpdate],
+				data: dataToUpdate,
 				pageCount: action.value.pageCount,
 				hasMore: action.value.hasMore,
 				count: action.value.count,

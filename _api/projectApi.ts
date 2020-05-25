@@ -19,3 +19,7 @@ export const startProjectApi = (projectId: string): string => {
 export const delayProjectApi = (projectId: string): string => {
 	return `/project/${projectId}/delay`;
 };
+
+export const searchProjectsApi = (): string => {
+	return `/admin/projects/search`;
+};

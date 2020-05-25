@@ -10,7 +10,7 @@ import { Avatar, Col, Row, Typography, Button, Popconfirm, Input, notification, 
 import moment from "moment";
 import React, { useMemo, useState, useEffect } from "react";
 import styled from "styled-components";
-import { delayProjectApi } from "@api/projectApi";
+import { delayProjectApi, startProjectApi } from "@api/projectApi";
 import fetcher from "@utils/fetcher";
 import { getTagColor, StyledTag } from "../styled";
 
@@ -142,6 +142,22 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		}
 	};
 
+	const onStartClick = async (): Promise<void> => {
+		const endpoint = startProjectApi(projectData._id);
+
+		const response = await fetcher({
+			endPoint: endpoint,
+			method: "PUT",
+			body: { data: {} },
+		});
+		if (response.statusCode <= 300) {
+			setProjectData({ ...projectData, endedAt: response.data.endedAt, startedAt: response.data.startedAt });
+			notification.success({ message: "Project Started Successfully" });
+		} else {
+			notification.error({ message: response.message });
+		}
+	};
+
 	const isDelayed = getValueSafely(() => projectData.delay.isDelayed, false);
 	return (
 		<VerticallyPaddedDiv>
@@ -178,7 +194,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					</Row>
 				</Col>
 				<Col>
-					{endTime && (
+					{endTime ? (
 						<Row align="middle" type="flex" gutter={[16, 8]}>
 							<Col>
 								<ProgressBar width={33} phase={phase} endTime={endTime} />
@@ -193,6 +209,10 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 								</Text>
 							</Col>
 						</Row>
+					) : (
+						<Button type="primary" onClick={onStartClick}>
+							Start Project
+						</Button>
 					)}
 				</Col>
 				{endTime && (

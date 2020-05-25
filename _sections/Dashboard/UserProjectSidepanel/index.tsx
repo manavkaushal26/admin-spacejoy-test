@@ -1,4 +1,4 @@
-import { startProjectApi } from "@api/projectApi";
+import { searchProjectsApi } from "@api/projectApi";
 import {
 	HumanizePhaseInternalNames,
 	PhaseCustomerNames,
@@ -6,92 +6,20 @@ import {
 	RoomNameSearch,
 	UserProjectType,
 } from "@customTypes/dashboardTypes";
-import UserProjectCard from "@sections/Dashboard/UserProjectCards";
+import { Status } from "@customTypes/userType";
 import { PaddedDiv } from "@sections/Header/styled";
-import { debounce } from "@utils/commonUtils";
+import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Collapse, Empty, Icon, Input, Row, Select, Tabs, Typography, notification, Spin } from "antd";
-import hotkeys from "hotkeys-js";
-import React, { useEffect, useReducer, useRef, useState } from "react";
-import InfiniteScroll from "react-infinite-scroller";
-import styled from "styled-components";
+import { Col, Collapse, Icon, Input, Row, Select, Typography } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import LoadingCard from "../LoadingCard";
-import { CustomDiv, MaxHeightDiv, SilentButton, SilentDivider } from "../styled";
-import {
-	phaseDefaultValues,
-	SortFields,
-	UserProjectSidePanelAction,
-	UserProjectSidePanelActionCreator,
-	UserProjectSidePanelActionTypes,
-	UserProjectSidePanelInitialState,
-	UserProjectSidePanelReducer,
-	UserProjectSidePanelState,
-} from "./reducer";
-
-const { Option } = Select;
+import { MaxHeightDiv, SilentButton, SilentDivider } from "../styled";
+import UserProjectCard from "../UserProjectCards";
+import ProjectInfiniteLoaderWrapper from "./ProjectInfiniteLoaderWrapper";
+import { phaseDefaultValues, SortFields, UserProjectSidePanelInitialState, UserProjectSidePanelState } from "./reducer";
 
 const { Text } = Typography;
-
-const StyleCorrectedTab = styled(Tabs)`
-	.ant-tabs-bar.ant-tabs-top-bar {
-		padding: 0px 12px;
-		margin: 0;
-	}
-`;
-
-const GrayMaxHeightDiv = styled(MaxHeightDiv)`
-	border-right: 1px #eeeeee solid;
-	background: #f2f4f6;
-`;
-
-interface SidebarProps {
-	updateStartDateInMainPanel: (pid: string, date: Partial<UserProjectType>) => void;
-	handleSelectCard: (user: string) => void;
-	selectedUser: string;
-	projectPhaseUpdateValue: {
-		pid: string;
-		projectPhase: {
-			internalName: PhaseInternalNames;
-			customerName: PhaseCustomerNames;
-		};
-	};
-	collapsed: boolean;
-	setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
-	setProjectPhaseUpdateValue: React.Dispatch<
-		React.SetStateAction<{
-			pid: string;
-			projectPhase: {
-				internalName: PhaseInternalNames;
-				customerName: PhaseCustomerNames;
-			};
-		}>
-	>;
-}
-
-const clearData = (dispatch: React.Dispatch<UserProjectSidePanelAction>): void => {
-	dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.CLEAR_DATA, { data: [] }));
-};
-
-const debouncedClear = debounce(clearData, 1000);
-
-const handleSearch = (
-	value: string,
-	dispatch: React.Dispatch<UserProjectSidePanelAction>,
-	type: "customer" | "designer"
-): void => {
-	if (type === "customer") {
-		dispatch(
-			UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.NAME_SEARCH_TEXT, { nameSearchText: value })
-		);
-	} else if (type === "designer") {
-		dispatch(
-			UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.DESIGN_SEARCH_TEXT, {
-				designerSearchText: value,
-			})
-		);
-	}
-	debouncedClear(dispatch);
-};
+const { Option } = Select;
 
 const getRequestBody = (
 	nameSearchText: string,
@@ -119,167 +47,64 @@ const getRequestBody = (
 	return body;
 };
 
-const fetchData = async (state, dispatch, setLoading): Promise<void> => {
-	const { pageCount } = state;
-	const dataFeed = `skip=${pageCount * 10}&limit=30`;
-	const url = `/admin/projects/search?sort=${state.sortOrder}&${dataFeed}`;
-
-	setLoading(true);
-	const body = getRequestBody(
-		state.nameSearchText,
-		state.designerSearchText,
-		state.phase,
-		state.currentTab,
-		state.name,
-		state.sortBy,
-		state.sortOrder
-	);
-
-	const resData = await fetcher({
-		endPoint: url,
-		method: "POST",
-		body: {
-			data: body,
-		},
-	});
-	if (resData.statusCode <= 300) {
-		const responseData = resData.data.data;
-		if (responseData.length > 0) {
-			dispatch(
-				UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.LOAD_USER_DATA, {
-					data: responseData,
-					pageCount: state.pageCount + 1,
-					hasMore: false,
-					count: resData.data.count,
-				})
-			);
-		} else {
-			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false }));
-		}
-	} else if (resData.statusCode === 401) {
-		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false }));
-	}
-	setLoading(false);
-};
-
-const debouncedFetchData = debounce(fetchData, 50);
-
-const Sidebar: React.FC<SidebarProps> = ({
-	handleSelectCard,
-	selectedUser,
-	collapsed,
-	setCollapsed,
-	updateStartDateInMainPanel,
-	projectPhaseUpdateValue,
-	setProjectPhaseUpdateValue,
-}): JSX.Element => {
-	const init = (initialState): UserProjectSidePanelState => {
-		return {
-			...initialState,
-			data: [],
+interface SidebarProps {
+	updateStartDateInMainPanel: (pid: string, date: Partial<UserProjectType>) => void;
+	handleSelectCard: (user: string) => void;
+	selectedUser: string;
+	projectPhaseUpdateValue: {
+		pid: string;
+		projectPhase: {
+			internalName: PhaseInternalNames;
+			customerName: PhaseCustomerNames;
 		};
 	};
-
-	const [state, dispatch] = useReducer(UserProjectSidePanelReducer, UserProjectSidePanelInitialState, init);
-	const [loading, setLoading] = useState(false);
-	const displayUsers = state.data;
-	const [activePanel, setActivePanel] = useState<string>(null);
-	const handleSelectFilter = (value, type: "phase" | "name" | "sortOrder" | "sortBy"): void => {
-		if (type === "phase") {
-			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.PHASE_FILTER, { phase: value }));
-		}
-		if (type === "name") {
-			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.NAME_FILTER, { name: value }));
-		}
-		if (type === "sortOrder") {
-			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.SORT_ORDER, { sortOrder: value }));
-		}
-		if (type === "sortBy") {
-			dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.SORT_BY, { sortBy: value }));
-		}
-
-		debouncedClear(dispatch);
-	};
-
-	const searchRef = useRef(null);
-
-	useEffect(() => {
-		if (searchRef.current) {
-			searchRef.current.handleKeyDown = (event): void => {
-				event.persist();
-				if (event.key === "Escape") {
-					event.target.blur();
-				}
+	collapsed: boolean;
+	setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+	setProjectPhaseUpdateValue: React.Dispatch<
+		React.SetStateAction<{
+			pid: string;
+			projectPhase: {
+				internalName: PhaseInternalNames;
+				customerName: PhaseCustomerNames;
 			};
+		}>
+	>;
+}
+
+const TabSearch = ({ activePanel, setActivePanel, count, setState: updateState, state: initialState }): JSX.Element => {
+	const [state, setState] = useState<UserProjectSidePanelState>(initialState);
+
+	const handleSearch = (value: string, type: "customer" | "designer"): void => {
+		if (type === "customer") {
+			setState({
+				...state,
+				nameSearchText: value,
+			});
+		} else if (type === "designer") {
+			setState({
+				...state,
+				designerSearchText: value,
+			});
 		}
+	};
 
-		hotkeys("ctrl+k, command+k, ctrl+space, ctrl+f, command+f", event => {
-			event.stopPropagation();
-			event.preventDefault();
-
-			if (collapsed) {
-				setCollapsed(false);
-				if (activePanel !== "filterandsort") {
-					setActivePanel("filterandsort");
-				}
-				searchRef.current.focus();
-			} else if (activePanel === "filterandsort" && !collapsed) {
-				setActivePanel(undefined);
-			} else {
-				setCollapsed(false);
-				setActivePanel("filterandsort");
-				searchRef.current.focus();
-			}
-		});
-
-		hotkeys("esc", event => {
-			event.stopPropagation();
-			event.preventDefault();
-			setCollapsed(false);
-
-			if (activePanel === "filterandsort") {
-				setActivePanel(undefined);
-			}
-		});
-		return (): void => {
-			hotkeys.unbind("ctrl+k, command+k, ctrl+space, ctrl+f, command+f");
-			hotkeys.unbind("esc");
-		};
-	}, [searchRef, activePanel, collapsed]);
+	const handleSelectFilter = (value, type: "phase" | "name" | "sortOrder" | "sortBy" | "status"): void => {
+		setState({ ...state, [type]: value });
+	};
 
 	useEffect(() => {
-		if (projectPhaseUpdateValue) {
-			const newData = state.data.map(project => {
-				if (project._id === projectPhaseUpdateValue.pid) {
-					return {
-						...project,
-						currentPhase: {
-							...project.currentPhase,
-							name: projectPhaseUpdateValue.projectPhase,
-						},
-					};
-				}
-				return { ...project };
-			});
-			dispatch(
-				UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_PROJECT_START_DATE, {
-					data: newData,
-				})
-			);
-		}
+		updateState(state);
+	}, [state.nameSearchText, state.designerSearchText, state.phase, state.sortBy, state.sortOrder, state.status]);
 
-		setProjectPhaseUpdateValue(null);
-	}, [projectPhaseUpdateValue]);
-
-	const TabSearch = (): JSX.Element => {
-		return (
+	return (
+		<div style={{ position: "absolute", zIndex: 1, width: "100%" }}>
 			<Collapse activeKey={activePanel} onChange={(keys): void => setActivePanel(keys[0])}>
-				<Collapse.Panel key="filterandsort" header={`Sort & Filters (${state.count} Projects)`}>
+				<Collapse.Panel key="filterandsort" header={`Sort & Filters (${count} Projects)`}>
 					<Row type="flex" justify="end">
 						<Col>
 							<SilentButton
 								onClick={(): void => {
-									dispatch({ type: UserProjectSidePanelActionTypes.CLEAR, value: {} });
+									setState({ ...UserProjectSidePanelInitialState });
 								}}
 								type="link"
 							>
@@ -295,15 +120,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 								</Col>
 								<Col>
 									<Input
-										ref={searchRef}
 										value={state.nameSearchText}
 										style={{ width: "100%" }}
 										onChange={(e): void => {
-											e.persist();
 											const {
 												target: { value },
 											} = e;
-											handleSearch(value, dispatch, "customer");
+											handleSearch(value, "customer");
 										}}
 										placeholder="Customer Name"
 										allowClear
@@ -326,7 +149,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 											const {
 												target: { value },
 											} = e;
-											handleSearch(value, dispatch, "designer");
+											handleSearch(value, "designer");
 										}}
 										placeholder="Designer Name"
 										allowClear
@@ -386,6 +209,32 @@ const Sidebar: React.FC<SidebarProps> = ({
 							</Row>
 						</Col>
 
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col>
+									<Text>Status</Text>
+								</Col>
+								<Col>
+									<Select
+										value={state.status}
+										style={{ width: "100%" }}
+										defaultValue={Status.active}
+										maxTagCount={2}
+										placeholder="All Status Shown"
+										onChange={(value): void => handleSelectFilter(value, "status")}
+									>
+										{Object.keys(Status).map(key => {
+											return (
+												<Option key={key} value={Status[key]}>
+													{key}
+												</Option>
+											);
+										})}
+									</Select>
+								</Col>
+							</Row>
+						</Col>
+
 						<Col span={12}>
 							<Row gutter={[0, 4]}>
 								<Col>
@@ -430,200 +279,164 @@ const Sidebar: React.FC<SidebarProps> = ({
 					</Row>
 				</Collapse.Panel>
 			</Collapse>
-		);
+		</div>
+	);
+};
+TabSearch.displayName = "TabSearch";
+
+const UserProjectSidePanel: React.FC<SidebarProps> = ({
+	handleSelectCard,
+	selectedUser,
+	projectPhaseUpdateValue,
+	setProjectPhaseUpdateValue,
+}) => {
+	const [data, setData] = useState<UserProjectType[]>([]);
+	const [count, setCount] = useState(1000);
+	const [activePanel, setActivePanel] = useState<string>(null);
+	const [state, setState] = useState(UserProjectSidePanelInitialState);
+	const [loading, setLoading] = useState(false);
+	const [intervalId, setIntervalId] = useState<number>(0);
+	const [hasNextPage, setHasNextPage] = useState<boolean>(true);
+
+	const scrollRef = useRef(null);
+	const isItemLoaded = (index): boolean => {
+		return !!data[index];
 	};
 
-	const updateEndDate = (projectId, endDate, startedAt): void => {
-		const newData = state.data.map(project => {
-			if (project._id === projectId) {
-				return {
-					...project,
-					startedAt,
-					endedAt: endDate,
-				};
-			}
-
-			return { ...project };
-		});
-		dispatch(
-			UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_PROJECT_END_DATE, {
-				data: newData,
-			})
-		);
-		updateStartDateInMainPanel(projectId, { startedAt, endedAt: endDate });
-	};
-
-	useEffect(() => {
-		if (state.data) {
-			if (state.data.length === 0) {
-				fetchData(state, dispatch, setLoading);
-			}
-		}
-		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: true }));
-	}, [state.data]);
-
-	useEffect(() => {
-		if (typeof window !== "undefined") {
-			fetchData(state, dispatch, setLoading);
-		}
-	}, []);
-
-	const scrollParentRef = useRef(null);
-
-	const handleTabChange = (key: string): void => {
-		dispatch({ type: UserProjectSidePanelActionTypes.TAB_CHANGE, value: { currentTab: key } });
-	};
-
-	const infinteFetchData = (): void => {
+	const loadMoreItems = async (startIndex, endIndex): Promise<void> => {
 		setLoading(true);
-		dispatch(UserProjectSidePanelActionCreator(UserProjectSidePanelActionTypes.UPDATE_HAS_MORE, { hasMore: false }));
-		debouncedFetchData(state, dispatch, setLoading);
+		const endPoint = `${searchProjectsApi()}?skip=${startIndex}&limit=${endIndex - startIndex + 1}`;
+		const body = getRequestBody(
+			state.nameSearchText,
+			state.designerSearchText,
+			state.phase,
+			state.currentTab,
+			state.name,
+			state.sortBy,
+			state.sortOrder
+		);
+		const resData = await fetcher({
+			endPoint,
+			method: "POST",
+			body: {
+				data: body,
+			},
+		});
+		const copyData = [...data];
+		if (resData.statusCode <= 300) {
+			const responseData = resData.data.data;
+			setCount(resData.data.count);
+
+			for (let i = startIndex, j = 0; i <= endIndex; i += 1, j += 1) {
+				copyData[i] = responseData[j];
+				if (!(i + 1 <= endIndex)) {
+					setData(
+						copyData.filter(copy => {
+							return copy;
+						})
+					);
+				}
+			}
+		}
+		setLoading(false);
 	};
 
-	const onStartClick = async (projectId): Promise<void> => {
-		const endpoint = startProjectApi(projectId);
+	const infiniteLoaderRef = useRef(null);
 
-		const response = await fetcher({
-			endPoint: endpoint,
-			method: "PUT",
-			body: { data: {} },
-		});
-		if (response.statusCode <= 300) {
-			updateEndDate(projectId, response.data.endedAt, response.data.startedAt);
-			notification.success({ message: "Project Started Successfully" });
-		} else {
-			notification.error({ message: response.message });
+	useEffect(() => {
+		if (infiniteLoaderRef.current) {
+			setIntervalId(
+				setTimeout(() => {
+					setCount(0);
+					setData([]);
+					infiniteLoaderRef.current.resetloadMoreItemsCache();
+					loadMoreItems(0, 299);
+				}, 750)
+			);
 		}
+		return (): void => {
+			clearInterval(intervalId);
+		};
+	}, [
+		state.name,
+		state.nameSearchText,
+		state.designerSearchText,
+		state.phase,
+		state.sortBy,
+		state.sortOrder,
+		state.status,
+	]);
+
+	useEffect(() => {
+		if (projectPhaseUpdateValue) {
+			if (infiniteLoaderRef.current) {
+				infiniteLoaderRef.current.resetloadMoreItemsCache();
+			}
+		}
+
+		setProjectPhaseUpdateValue(null);
+	}, [projectPhaseUpdateValue]);
+
+	useEffect(() => {
+		if (data.length < count) {
+			setHasNextPage(true);
+		} else {
+			setHasNextPage(false);
+		}
+	}, [data]);
+
+	const CardRow = ({ index, style }): JSX.Element => {
+		if (isItemLoaded(index)) {
+			return (
+				<div style={style}>
+					<UserProjectCard
+						selectedUser={selectedUser}
+						key={data[index]._id}
+						index={index}
+						handleSelectCard={handleSelectCard}
+						userProjectData={data[index]}
+					/>
+					<PaddedDiv>
+						<SilentDivider />
+					</PaddedDiv>
+				</div>
+			);
+		}
+		return (
+			<div style={style}>
+				<LoadingCard />
+			</div>
+		);
 	};
 
 	return (
-		<GrayMaxHeightDiv>
-			<CustomDiv ref={scrollParentRef} overY="scroll" width="100%" height="100%">
-				<StyleCorrectedTab onTabClick={handleTabChange}>
-					<Tabs.TabPane tab="Active" key="active">
-						{TabSearch()}
-
-						{state.currentTab === "active" && (
-							<InfiniteScroll
-								threshold={500}
-								initialLoad={false}
-								loadMore={infinteFetchData}
-								hasMore={state.hasMore}
-								useWindow={false}
-								getScrollParent={() => scrollParentRef.current}
-							>
-								<>
-									{displayUsers.length
-										? displayUsers.map(userProjectData => {
-												return (
-													<>
-														<UserProjectCard
-															onStartClick={onStartClick}
-															selectedUser={selectedUser}
-															key={userProjectData._id}
-															handleSelectCard={handleSelectCard}
-															userProjectData={userProjectData}
-														/>
-														<PaddedDiv>
-															<SilentDivider />
-														</PaddedDiv>
-													</>
-												);
-										  })
-										: !loading && <Empty description="No Projects found" />}
-									{loading && (
-										<Spin spinning>
-											<LoadingCard key="loadingCard" />
-										</Spin>
-									)}
-								</>
-							</InfiniteScroll>
-						)}
-					</Tabs.TabPane>
-					<Tabs.TabPane tab="Suspended" key="suspended">
-						{TabSearch()}
-
-						{state.currentTab === "suspended" && (
-							<InfiniteScroll
-								threshold={500}
-								initialLoad={false}
-								loadMore={infinteFetchData}
-								hasMore={state.hasMore}
-								useWindow={false}
-								getScrollParent={() => scrollParentRef.current}
-							>
-								<>
-									{displayUsers.length
-										? displayUsers.map(userProjectData => {
-												return (
-													<>
-														<UserProjectCard
-															onStartClick={onStartClick}
-															selectedUser={selectedUser}
-															key={userProjectData._id}
-															handleSelectCard={handleSelectCard}
-															userProjectData={userProjectData}
-														/>
-														<PaddedDiv>
-															<SilentDivider />
-														</PaddedDiv>
-													</>
-												);
-										  })
-										: !loading && <Empty description="No Completed Projects found" />}
-									{loading && (
-										<Spin spinning>
-											<LoadingCard key="loadingCard" />
-										</Spin>
-									)}
-								</>
-							</InfiniteScroll>
-						)}
-					</Tabs.TabPane>
-					<Tabs.TabPane tab="All" key="all">
-						{TabSearch()}
-
-						{state.currentTab === "all" && (
-							<InfiniteScroll
-								threshold={1000}
-								initialLoad={false}
-								loadMore={infinteFetchData}
-								hasMore={state.hasMore}
-								useWindow={false}
-								getScrollParent={() => scrollParentRef.current}
-							>
-								<>
-									{displayUsers.length
-										? displayUsers.map(userProjectData => {
-												return (
-													<>
-														<UserProjectCard
-															selectedUser={selectedUser}
-															onStartClick={onStartClick}
-															key={userProjectData._id}
-															handleSelectCard={handleSelectCard}
-															userProjectData={userProjectData}
-														/>
-														<PaddedDiv>
-															<SilentDivider />
-														</PaddedDiv>
-													</>
-												);
-										  })
-										: !loading && <Empty description="No Projects found" />}
-									{loading && (
-										<Spin spinning>
-											<LoadingCard key="loadingCard" />
-										</Spin>
-									)}
-								</>
-							</InfiniteScroll>
-						)}
-					</Tabs.TabPane>
-				</StyleCorrectedTab>
-			</CustomDiv>
-		</GrayMaxHeightDiv>
+		<MaxHeightDiv style={{ backgroundColor: "#f2f4f6" }} ref={scrollRef}>
+			<TabSearch
+				activePanel={activePanel}
+				setActivePanel={setActivePanel}
+				count={count}
+				setState={setState}
+				state={state}
+			/>
+			{loading && (
+				<div style={{ paddingTop: "46px" }}>
+					<LoadingCard />
+				</div>
+			)}
+			<div style={{ paddingTop: "46px" }}>
+				<ProjectInfiniteLoaderWrapper
+					infiniteLoaderRef={infiniteLoaderRef}
+					hasNextPage={hasNextPage}
+					items={data}
+					count={count}
+					Row={CardRow}
+					loadNextPage={loadMoreItems}
+					isNextPageLoading={loading}
+					height={getValueSafely(() => scrollRef.current.offsetHeight - 46, 700)}
+				/>
+			</div>
+		</MaxHeightDiv>
 	);
 };
 
-export default Sidebar;
+export default UserProjectSidePanel;

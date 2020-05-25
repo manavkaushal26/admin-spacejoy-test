@@ -7,8 +7,8 @@ const UserProjectCard: React.FC<{
 	userProjectData: UserProjectType;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
-	onStartClick: (projectId: string) => void;
-}> = ({ userProjectData, handleSelectCard, selectedUser, onStartClick }) => {
+	index: number;
+}> = ({ userProjectData, handleSelectCard, index, selectedUser }) => {
 	const {
 		_id: projectId,
 		name: room,
@@ -42,11 +42,11 @@ const UserProjectCard: React.FC<{
 		startedAt: startedTime,
 		phaseStartTime,
 		status,
+		index,
 		endedAt,
 		avatarStyle: getColorsForPackages(items),
 		onClick: handleSelectCard,
 		selectedId: selectedUser,
-		onStartClick,
 		noOfDays,
 	};
 

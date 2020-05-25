@@ -2,7 +2,7 @@ import ProgressBar from "@components/ProgressBar";
 import { HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { getTagColor } from "@sections/Dashboard/styled";
-import { Avatar, Button, Card, Col, Row, Typography } from "antd";
+import { Avatar, Card, Col, Row, Tooltip, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
 import styled, { css } from "styled-components";
@@ -23,7 +23,6 @@ interface SidebarCard {
 	avatarStyle: Record<string, string>;
 	onClick: (uniqueId: string) => void;
 	selectedId: string;
-	onStartClick: (projectId: string) => void;
 	noOfDays: number;
 }
 
@@ -62,9 +61,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	onClick,
 	selectedId,
 	endedAt,
-	onStartClick,
 	startedAt,
-	status,
 	delayText,
 	isDelayed,
 }) => {
@@ -77,6 +74,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 		}
 		return null;
 	}, [endedAt, startedAt]);
+
 	return (
 		<SidebarCards
 			size="small"
@@ -108,7 +106,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 						</Col>
 						<Col span={24}>
 							<Row type="flex" gutter={[4, 4]}>
-								<Col span={13}>
+								<Col span={12}>
 									<StyledTag
 										style={{ width: "100%", textOverflow: "ellipses", overflow: "hidden" }}
 										color={getTagColor(phase)}
@@ -116,14 +114,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 										Phase: {HumanizePhaseInternalNames[phase]}
 									</StyledTag>
 								</Col>
-								<Col span={11}>
-									<StyledTag
-										style={{ width: "100%", textOverflow: "ellipses", overflow: "hidden" }}
-										color={getTagColor(status)}
-									>
-										Status: {status}
-									</StyledTag>
-								</Col>
+
 								{isDelayed && (
 									<Col span={12}>
 										<StyledTag style={{ width: "100%", textOverflow: "ellipses", overflow: "hidden" }} color="red">
@@ -138,16 +129,11 @@ const SidebarCard: React.FC<SidebarCard> = ({
 				<Col span={4}>
 					<Row type="flex" justify="end">
 						{!endedAt ? (
-							<Button
-								onClick={(e): void => {
-									e.stopPropagation();
-									onStartClick(uniqueId);
-								}}
-								style={{ padding: "0px 6px", height: "auto" }}
-								type="default"
-							>
-								<Text>Start</Text>
-							</Button>
+							<Text>
+								<Tooltip title="Not started">
+									<small>N/S</small>
+								</Tooltip>
+							</Text>
 						) : (
 							<ProgressBar phase={phase} endTime={endTime} width={30} />
 						)}

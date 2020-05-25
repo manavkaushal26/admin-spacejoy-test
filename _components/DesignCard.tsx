@@ -41,6 +41,15 @@ const topRightTick = css`
 
 const StateAwareCards = styled(Card)<{ state: DesignState }>`
 	${({ state }): FlattenSimpleInterpolation | null => (state === DesignState.Finalized ? topRightTick : null)}
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	> .ant-card-cover {
+		width: 100%;
+	}
+	> .ant-card-body {
+		flex-grow: 1;
+	}
 `;
 
 const { Text } = Typography;

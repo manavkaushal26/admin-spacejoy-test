@@ -106,7 +106,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 		const url = window.URL || window.webkitURL;
 		const link = url.createObjectURL(jsonBlob);
 		const a = document.createElement("a");
-		a.download = "Customers.txt";
+		a.download = `${projectId}-quizResponse.jsode`;
 		a.href = link;
 		document.body.appendChild(a);
 		a.click();
