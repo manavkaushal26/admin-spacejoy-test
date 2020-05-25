@@ -67,6 +67,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 		const endPoint = `${getAllSources()}&skip=${countPerPage * (pageNumber - 1)}&limit=${countPerPage}`;
 		const response = await fetcher({ endPoint, hasBaseURL: true, method: "GET" });
 		if (!response.err) {
+			console.log("Sources", response.data);
 			setSources(response.data);
 		} else {
 			notification.error({ message: "Failed to fetch sources" });

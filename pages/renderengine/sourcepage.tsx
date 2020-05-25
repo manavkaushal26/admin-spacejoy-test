@@ -57,6 +57,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
 
 		if (!response.err) {
+			console.log("Jobs", response.data);
 			setJobs(response.data);
 		} else {
 			notification.error({ message: "Failed to fetch jobs" });
@@ -105,6 +106,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		});
 		if (!response.err) {
 			notification.success({ message: "Created Job Successfully" });
+			console.log("Create Job Resoponse", response.data);
 			setJobs(prevState => [response.data, ...prevState]);
 			toggleJobCreationModal();
 		} else {
@@ -119,6 +121,8 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setUploadedFile(prunedFileList);
 		if (info.file.status === "done") {
 			notification.success({ message: "File upload Complete" });
+			console.log("File Upload Response", info.file.response.data);
+
 			setSourceData(info.file.response.data);
 		}
 	};
@@ -152,6 +156,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 				const remainingJobs = jobs.filter(job => {
 					return job._id !== jobID;
 				});
+
 				setJobs(remainingJobs);
 				notification.success({ message: "Deleted job Successfully" });
 			} else {

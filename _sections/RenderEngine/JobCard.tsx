@@ -61,6 +61,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				socket.emit("subscribe", job.qid);
 				setSocketConnected(true);
 				socket.on("Job.Progress", progressInfo => {
+					console.log("Job.Progress", progressInfo);
 					if (job.qid === progressInfo.id) {
 						const status = {
 							status: job.status,
@@ -77,8 +78,9 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						});
 					}
 				});
-				socket.on("Job.Complete", ({ id }) => {
-					if (job.qid === id) {
+				socket.on("Job.Complete", message => {
+					console.log("Job.Complete", message);
+					if (job.qid === message.id) {
 						setProgressData({
 							sample: {
 								done: "100",
@@ -94,6 +96,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 					}
 				});
 				socket.on("Job.Failed", id => {
+					console.log("Job.Failed", id);
 					if (job._id === id) {
 						setProgressError(true);
 						socket.removeAllListeners();
@@ -103,6 +106,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 		}
 		return (): void => {
 			socket.removeAllListeners();
+			setSocketConnected(false);
 		};
 	}, [job.status]);
 

@@ -33,9 +33,7 @@ const ProjectInfiniteLoaderWrapper: React.FC<ProjectInfiniteLoaderWrapper> = ({
 }) => {
 	// If there are more items to be loaded then add an extra row to hold a loading indicator.
 	const itemCount = useMemo(() => {
-		console.log(hasNextPage, items.length);
 		if (hasNextPage) {
-			console.log(items.length + 300, count, items.length + 300 < count);
 			return items.length + 300 < count ? items.length + 300 : count;
 		}
 		return items.length;
