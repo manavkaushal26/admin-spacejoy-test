@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Col, Card, Row, Typography, Icon, Popconfirm, Progress } from "antd";
 import { AllJobs, RenderEngineStatus } from "@customTypes/renderEngineTypes";
+import { Card, Col, Icon, Popconfirm, Progress, Row, Typography } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
 
 const { Text } = Typography;
 
@@ -12,8 +12,19 @@ interface JobCard {
 	socket: SocketIOClient.Socket;
 }
 
-interface JobWithProgress extends AllJobs {
-	progress: number;
+interface ProgressData {
+	id: string;
+	completion: number;
+	action: "fetch" | "download" | "pre-render" | "render";
+	sample: {
+		done: string;
+		total: string;
+		percent: string;
+	};
+	time: {
+		elapsed: string;
+		remaining: string;
+	};
 }
 
 const HumanizeRenderStatus = {
@@ -27,12 +38,11 @@ const HumanizeRenderStatus = {
 };
 
 const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, onDelete, socket }) => {
-	const [job, setJob] = useState<JobWithProgress>({
+	const [job, setJob] = useState<AllJobs>({
 		...jobInitialData,
-		progress: jobInitialData.status === "completed" ? 100 : 0,
 	});
 	const [progressError, setProgressError] = useState<boolean>(false);
-
+	const [progressData, setProgressData] = useState<Partial<ProgressData>>(null);
 	const [socketConnected, setSocketConnected] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -50,27 +60,35 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 			if (job.qid) {
 				socket.emit("subscribe", job.qid);
 				setSocketConnected(true);
-				socket.on("Job.Progress", ({ id, progress }) => {
-					if (job.qid === id) {
+				socket.on("Job.Progress", progressInfo => {
+					if (job.qid === progressInfo.id) {
 						const status = {
 							status: job.status,
 						};
 						if (job.status === RenderEngineStatus.waiting) {
 							status.status = RenderEngineStatus.active;
 						}
-						setJob({
-							...job,
-							progress,
-							...status,
+						setProgressData({
+							sample: {
+								...progressData?.sample,
+								done: progressInfo?.sample.done || progressInfo?.sample.done,
+								total: progressInfo?.sample.total || progressInfo?.sample.total,
+							},
 						});
 					}
 				});
 				socket.on("Job.Complete", ({ id }) => {
 					if (job.qid === id) {
+						setProgressData({
+							sample: {
+								done: "100",
+								total: "100",
+								percent: "100",
+							},
+						});
 						setJob({
 							...job,
 							status: RenderEngineStatus.completed,
-							progress: 100,
 						});
 						socket.removeAllListeners();
 					}
@@ -157,7 +175,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				<Card.Meta
 					title={job.name}
 					description={
-						<Row>
+						<Row gutter={[8, 8]}>
 							<Col>
 								<Row style={{ flexFlow: "row", whiteSpace: "pre", overflow: "hidden" }} gutter={[4, 4]} type="flex">
 									<Col>
@@ -165,37 +183,82 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									</Col>
 									<Col>
 										<Text style={{ width: "100%" }} ellipsis>
-											{job.description}
+											{job.description || "No Description"}
 										</Text>
 									</Col>
 								</Row>
 							</Col>
-							{job.status !== RenderEngineStatus.pending && (
+							{job.status !== RenderEngineStatus.pending ? (
 								<Col>
-									<Row style={{ flexFlow: "row", whiteSpace: "pre", overflow: "hidden" }} gutter={[4, 4]} type="flex">
-										<Progress
-											percent={job.progress}
-											size="small"
-											{...(progressStatus ? { status: progressStatus } : {})}
-										/>
+									<Progress
+										percent={
+											job.status === RenderEngineStatus.completed
+												? 100
+												: parseFloat(progressData?.sample?.total) || progressData?.completion || 0
+										}
+										size="small"
+										{...(progressStatus ? { status: progressStatus } : {})}
+									/>
+								</Col>
+							) : (
+								<Col>
+									<Text>
+										<small>Not yet Started</small>
+									</Text>
+								</Col>
+							)}
+							{job.status === RenderEngineStatus.pending || job.status === RenderEngineStatus.completed ? (
+								<Col>
+									<Row type="flex" gutter={[4, 4]}>
+										<Col>
+											<Text>
+												<small>Status: </small>
+											</Text>
+										</Col>
+
+										<Col>
+											<Text>
+												<small>{HumanizeRenderStatus[job.status]}</small>
+											</Text>
+										</Col>
+									</Row>
+								</Col>
+							) : (
+								<Col>
+									<Row type="flex" justify="space-between">
+										<Col>
+											<Row type="flex" gutter={[4, 4]}>
+												<Col>
+													<Text>
+														<small>Time Elapsed: </small>
+													</Text>
+												</Col>
+
+												<Col>
+													<Text>
+														<small>{progressData?.time.elapsed || 0}</small>
+													</Text>
+												</Col>
+											</Row>
+										</Col>
+										<Col>
+											<Row type="flex" gutter={[4, 4]}>
+												<Col>
+													<Text>
+														<small>Time Remaining: </small>
+													</Text>
+												</Col>
+
+												<Col>
+													<Text>
+														<small>{progressData?.time.remaining || 0}</small>
+													</Text>
+												</Col>
+											</Row>
+										</Col>
 									</Row>
 								</Col>
 							)}
-							<Col>
-								<Row type="flex" gutter={[4, 4]}>
-									<Col>
-										<Text>
-											<small>Status: </small>
-										</Text>
-									</Col>
-
-									<Col>
-										<Text>
-											<small>{HumanizeRenderStatus[job.status]}</small>
-										</Text>
-									</Col>
-								</Row>
-							</Col>
 							<Col>
 								<Row type="flex" gutter={[4, 4]}>
 									<Col>

@@ -59,6 +59,14 @@ export interface DetailedJob extends AllJobs {
 		dateAdded: string;
 	};
 	renders: JobRenders[];
-	source: string;
+	source: {
+		name: string;
+		storage: {
+			bucket: string;
+			key: string;
+			url: string;
+		};
+		_id: string;
+	};
 	updatedAt: string;
 }

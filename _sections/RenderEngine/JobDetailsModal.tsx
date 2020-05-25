@@ -49,7 +49,7 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 					<DetailText name="Status" value={jobDetails?.status} />
 					<DetailText name="Camera Type" value={jobDetails?.options?.cameraType} />
 					<DetailText name="Samples" value={jobDetails?.options?.samples} />
-					<DetailText name="Source ID" value={jobDetails?.source} />
+					<DetailText name="Source ID" value={jobDetails?.source.name} />
 					<DetailText name="CPU" value={jobDetails?.process?.cpu} />
 					<DetailText name="GPU" value={jobDetails?.process?.gpu} />
 					<DetailText name="Cloud" value={jobDetails?.process?.cloud} />
@@ -83,6 +83,11 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 																	<Text strong>Created At: </Text>
 																	<Text ellipsis>{moment(image?.meta?.createdAt).format("D-MMM-YYYY")}</Text>
 																</Row>
+															</Col>
+															<Col>
+																<a download={`${image._id} - ${jobDetails.name}`} href={image.url}>
+																	Download Image
+																</a>
 															</Col>
 														</Row>
 													</Col>

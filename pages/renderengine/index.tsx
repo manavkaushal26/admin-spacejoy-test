@@ -191,21 +191,15 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 														cover={
 															<Row>
 																<Col span={24}>
-																	<BiggerButtonCarousel autoplay>
-																		{renders.map(render => (
-																			<div key={render}>
-																				<Image
-																					onClick={(e): void => {
-																						e.stopPropagation();
-																						handleImageClick(renders);
-																					}}
-																					nolazy
-																					width="100%"
-																					src={render}
-																				/>
-																			</div>
-																		))}
-																	</BiggerButtonCarousel>
+																	<Image
+																		onClick={(e): void => {
+																			e.stopPropagation();
+																			handleImageClick(renders);
+																		}}
+																		nolazy
+																		width="100%"
+																		src={renders[0]}
+																	/>
 																</Col>
 															</Row>
 														}
@@ -213,10 +207,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 														<Card.Meta
 															title={source.name}
 															description={
-																<Row>
-																	<Col span={24}>
-																		<Text>{source.description || "No Description"}</Text>
-																	</Col>
+																<Row style={{ flexFlow: "row", whiteSpace: "pre", overflow: "hidden" }} gutter={[4, 4]}>
 																	<Col span={24}>
 																		<Text strong>Created at: </Text>
 																		<Text> {moment(source.createdAt).format("D-MMM-YYYY")}</Text>
