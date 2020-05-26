@@ -4,6 +4,7 @@ import { PaddedDiv } from "@sections/Header/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import React, { useEffect, useRef, useState } from "react";
+import { Status } from "@customTypes/userType";
 import LoadingCard from "../LoadingCard";
 import { MaxHeightDiv, SilentDivider } from "../styled";
 import UserProjectCard from "../UserProjectCards";
@@ -18,13 +19,14 @@ const getRequestBody = (
 	currentTab: string,
 	roomName: string,
 	by: SortFields,
-	order: -1 | 1
+	order: -1 | 1,
+	status: Status
 ): Record<string, Record<string, string | PhaseInternalNames[]>> => {
 	const body = {
 		customerName: { search: "single", value: nameSearchText },
 		"team.memberName": { search: "single", value: designerSearchText },
 		"currentPhase.name.internalName": { search: "array", value: phase },
-		status: { search: "single", value: currentTab === "all" ? "" : currentTab },
+		status: { search: "single", value: status },
 		name: {
 			search: "single",
 			value: roomName,
@@ -90,7 +92,8 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			state.currentTab,
 			state.name,
 			state.sortBy,
-			state.sortOrder
+			state.sortOrder,
+			state.status
 		);
 		const resData = await fetcher({
 			endPoint,
