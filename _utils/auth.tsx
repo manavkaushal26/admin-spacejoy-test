@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import { allowedRoles } from "./constants";
 import fetcher from "./fetcher";
 import getCookie from "./getCookie";
-import { setLocalStorageValue } from "./storageUtils";
+import { setLocalStorageValue, getLocalStorageValue } from "./storageUtils";
 
 const endPointAuthCheck = "/auth/check";
 
@@ -145,6 +145,20 @@ function withAuthVerification(WrappedComponent: NextPage) {
 				}
 			}
 			return { ...componentProps, isServer };
+		}
+
+		componentDidMount() {
+			window.addEventListener("storage", () => {
+				const logoutData = getLocalStorageValue("logout");
+				if (logoutData && !window.location.pathname.includes("auth")) {
+					window.location.replace(`/auth/login?redirectUrl=${window.location.pathname}`);
+				} else {
+					const authDetails = getLocalStorageValue("authVerification");
+					if (authDetails && window.location.pathname.includes("auth")) {
+						window.location.reload();
+					}
+				}
+			});
 		}
 
 		render(): JSX.Element {
