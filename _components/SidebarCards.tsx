@@ -87,20 +87,46 @@ const SidebarCard: React.FC<SidebarCard> = ({
 			}}
 		>
 			<Row type="flex" gutter={[8, 8]}>
-				<Col span={3}>
+				<Col>
 					<Avatar style={avatarStyle}>
 						<CapitalizedText>{avatarText}</CapitalizedText>
 					</Avatar>
 				</Col>
-				<Col span={17}>
+				<Col span={21}>
 					<Row type="flex" gutter={[4, 4]}>
 						<Col span={24}>
-							<Row>
-								<Col span={24}>
-									<CapitalizedText strong>{title}</CapitalizedText>
+							<Row type="flex" justify="space-between" align="middle" gutter={[4, 4]}>
+								<Col span={22} style={{ overflow: "hidden" }}>
+									<Row gutter={[4, 4]}>
+										<Col>
+											<CapitalizedText strong>{title}</CapitalizedText>
+										</Col>
+										<Col>
+											<SubText>{subHeading}</SubText>
+										</Col>
+									</Row>
 								</Col>
-								<Col span={24}>
-									<SubText>{subHeading}</SubText>
+								<Col span={2}>
+									{!endedAt ? (
+										<Text>
+											<Tooltip title="Not started">
+												<small>N/S</small>
+											</Tooltip>
+										</Text>
+									) : (
+										<ProgressBar phase={phase} endTime={endTime} width={30} />
+									)}
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row type="flex" gutter={[4, 4]}>
+								<Col>
+									{endedAt && (
+										<Text>
+											<small>Ends on: {endTime.format("MM-DD-YYYY")}</small>
+										</Text>
+									)}
 								</Col>
 							</Row>
 						</Col>
@@ -124,19 +150,6 @@ const SidebarCard: React.FC<SidebarCard> = ({
 								)}
 							</Row>
 						</Col>
-					</Row>
-				</Col>
-				<Col span={4}>
-					<Row type="flex" justify="end">
-						{!endedAt ? (
-							<Text>
-								<Tooltip title="Not started">
-									<small>N/S</small>
-								</Tooltip>
-							</Text>
-						) : (
-							<ProgressBar phase={phase} endTime={endTime} width={30} />
-						)}
 					</Row>
 				</Col>
 			</Row>

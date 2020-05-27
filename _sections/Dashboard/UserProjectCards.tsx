@@ -27,7 +27,7 @@ const UserProjectCard: React.FC<{
 
 	const delayText = `Delayed by ${convertMillisecondsToDays(minDurationInMs)} - ${convertMillisecondsToDays(
 		maxDurationInMs
-	)}`;
+	)} days`;
 
 	const startedTime = startedAt;
 	const noOfDays = phase === PhaseInternalNames.designsInRevision ? 5 : getNumberOfDays(items);

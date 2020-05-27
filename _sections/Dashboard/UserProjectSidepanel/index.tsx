@@ -4,7 +4,7 @@ import { PaddedDiv } from "@sections/Header/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import React, { useEffect, useRef, useState } from "react";
-import { Status } from "@customTypes/userType";
+import { Drawer, Row, Col, Button } from "antd";
 import LoadingCard from "../LoadingCard";
 import { MaxHeightDiv, SilentDivider } from "../styled";
 import UserProjectCard from "../UserProjectCards";
@@ -19,14 +19,13 @@ const getRequestBody = (
 	currentTab: string,
 	roomName: string,
 	by: SortFields,
-	order: -1 | 1,
-	status: Status
+	order: -1 | 1
 ): Record<string, Record<string, string | PhaseInternalNames[]>> => {
 	const body = {
 		customerName: { search: "single", value: nameSearchText },
 		"team.memberName": { search: "single", value: designerSearchText },
 		"currentPhase.name.internalName": { search: "array", value: phase },
-		status: { search: "single", value: status },
+		status: { search: "single", value: currentTab === "all" ? "" : currentTab },
 		name: {
 			search: "single",
 			value: roomName,
@@ -74,9 +73,8 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	const [activePanel, setActivePanel] = useState<string>(null);
 	const [state, setState] = useState(UserProjectSidePanelInitialState);
 	const [loading, setLoading] = useState(false);
-	const [intervalId, setIntervalId] = useState<number>(0);
 	const [hasNextPage, setHasNextPage] = useState<boolean>(true);
-
+	const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 	const scrollRef = useRef(null);
 	const isItemLoaded = (index): boolean => {
 		return !!data[index];
@@ -92,8 +90,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			state.currentTab,
 			state.name,
 			state.sortBy,
-			state.sortOrder,
-			state.status
+			state.sortOrder
 		);
 		const resData = await fetcher({
 			endPoint,
@@ -123,29 +120,19 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 
 	const infiniteLoaderRef = useRef(null);
 
-	useEffect(() => {
-		if (infiniteLoaderRef.current) {
-			setIntervalId(
-				setTimeout(() => {
-					setCount(0);
-					setData([]);
-					infiniteLoaderRef.current.resetloadMoreItemsCache();
-					loadMoreItems(0, 299);
-				}, 750)
-			);
-		}
-		return (): void => {
-			clearInterval(intervalId);
-		};
-	}, [
-		state.name,
-		state.nameSearchText,
-		state.designerSearchText,
-		state.phase,
-		state.sortBy,
-		state.sortOrder,
-		state.status,
-	]);
+	const toggleDrawer = (): void => {
+		setDrawerOpen(prevState => {
+			return !prevState;
+		});
+	};
+
+	const onSearchSubmit = (): void => {
+		console.log("search Submit");
+		setCount(0);
+		setData([]);
+		loadMoreItems(0, 299);
+		toggleDrawer();
+	};
 
 	useEffect(() => {
 		if (projectPhaseUpdateValue) {
@@ -190,37 +177,69 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	};
 
 	return (
-		<MaxHeightDiv style={{ backgroundColor: "#f2f4f6" }} ref={scrollRef}>
-			<TabSearch
-				activePanel={activePanel}
-				setActivePanel={setActivePanel}
-				count={count}
-				setState={setState}
-				state={state}
-			/>
-			{loading && (
-				<div>
-					<LoadingCard />
-				</div>
-			)}
-			<div>
-				<ProjectInfiniteLoaderWrapper
-					infiniteLoaderRef={infiniteLoaderRef}
-					hasNextPage={hasNextPage}
-					items={data}
-					count={count}
-					Row={CardRow}
-					loadNextPage={loadMoreItems}
-					isNextPageLoading={loading}
-					height={getValueSafely(
-						() =>
-							activePanel === "filterandsort"
-								? scrollRef.current.offsetHeight - 417
-								: scrollRef.current.offsetHeight - 46,
-						700
-					)}
-				/>
-			</div>
+		<MaxHeightDiv style={{ backgroundColor: "#f2f4f6", position: "relative" }} ref={scrollRef}>
+			<Row gutter={[8, 8]}>
+				<Col>
+					<Button block type="primary" onClick={toggleDrawer}>
+						Sort &amp; filter ({loading ? 0 : count} Results)
+					</Button>
+				</Col>
+				<Drawer
+					title="Sort &amp; Filters"
+					getContainer={false}
+					style={{ position: "absolute" }}
+					onClose={toggleDrawer}
+					visible={drawerOpen}
+					width="100%"
+				>
+					<Row gutter={[16, 16]}>
+						<Col span={24}>
+							<TabSearch
+								activePanel={activePanel}
+								setActivePanel={setActivePanel}
+								count={count}
+								setState={setState}
+								state={state}
+							/>
+						</Col>
+						<Col span={24}>
+							<Row type="flex" gutter={[8, 8]} justify="end">
+								<Col>
+									<Button onClick={toggleDrawer}>Cancel</Button>
+								</Col>
+								<Col>
+									<Button type="primary" onClick={onSearchSubmit}>
+										Submit
+									</Button>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
+				</Drawer>
+				{loading && (
+					<Col>
+						<LoadingCard />
+					</Col>
+				)}
+				<Col>
+					<ProjectInfiniteLoaderWrapper
+						infiniteLoaderRef={infiniteLoaderRef}
+						hasNextPage={hasNextPage}
+						items={data}
+						count={count}
+						Row={CardRow}
+						loadNextPage={loadMoreItems}
+						isNextPageLoading={loading}
+						height={getValueSafely(
+							() =>
+								activePanel === "filterandsort"
+									? scrollRef.current.offsetHeight - 417
+									: scrollRef.current.offsetHeight - 46,
+							700
+						)}
+					/>
+				</Col>
+			</Row>
 		</MaxHeightDiv>
 	);
 };

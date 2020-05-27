@@ -47,187 +47,183 @@ const TabSearch = ({ activePanel, setActivePanel, count, setState: updateState, 
 
 	return (
 		<div style={{ zIndex: 1, width: "100%" }}>
-			<Collapse activeKey={activePanel} onChange={(keys): void => setActivePanel(keys[0])}>
-				<Collapse.Panel key="filterandsort" header={`Sort & Filters (${count} Projects)`}>
-					<Row type="flex" justify="end">
+			<Row type="flex" justify="end">
+				<Col>
+					<SilentButton
+						onClick={(): void => {
+							setState({ ...UserProjectSidePanelInitialState });
+						}}
+						type="link"
+					>
+						<small>Reset Filters</small>
+					</SilentButton>
+				</Col>
+			</Row>
+			<Row gutter={[4, 8]}>
+				<Col span={24}>
+					<Row gutter={[0, 4]}>
 						<Col>
-							<SilentButton
-								onClick={(): void => {
-									setState({ ...UserProjectSidePanelInitialState });
+							<Text>Customer</Text>
+						</Col>
+						<Col>
+							<Input
+								value={state.nameSearchText}
+								style={{ width: "100%" }}
+								onChange={(e): void => {
+									const {
+										target: { value },
+									} = e;
+									handleSearch(value, "customer");
 								}}
-								type="link"
+								placeholder="Customer Name"
+								allowClear
+								prefix={<Icon type="search" />}
+							/>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={12}>
+					<Row gutter={[0, 4]}>
+						<Col>
+							<Text>Designer</Text>
+						</Col>
+						<Col>
+							<Input
+								value={state.designerSearchText}
+								style={{ width: "100%" }}
+								onChange={(e): void => {
+									e.persist();
+									const {
+										target: { value },
+									} = e;
+									handleSearch(value, "designer");
+								}}
+								placeholder="Designer Name"
+								allowClear
+								prefix={<Icon type="search" />}
+							/>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={12}>
+					<Row gutter={[0, 4]}>
+						<Col>
+							<Text>Room Name</Text>
+						</Col>
+						<Col>
+							<Select
+								value={state.name}
+								style={{ width: "100%" }}
+								defaultValue={null}
+								onChange={(value): void => handleSelectFilter(value, "name")}
 							>
-								<small>Reset Filters</small>
-							</SilentButton>
+								<Option value="">Filter by Room Name</Option>
+								{RoomNameSearch.map(roomName => {
+									return (
+										<Option key={roomName} value={roomName}>
+											{roomName}
+										</Option>
+									);
+								})}
+							</Select>
 						</Col>
 					</Row>
-					<Row gutter={[4, 8]}>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Customer</Text>
-								</Col>
-								<Col>
-									<Input
-										value={state.nameSearchText}
-										style={{ width: "100%" }}
-										onChange={(e): void => {
-											const {
-												target: { value },
-											} = e;
-											handleSearch(value, "customer");
-										}}
-										placeholder="Customer Name"
-										allowClear
-										prefix={<Icon type="search" />}
-									/>
-								</Col>
-							</Row>
+				</Col>
+				<Col span={24}>
+					<Row gutter={[0, 4]}>
+						<Col>
+							<Text>Phase</Text>
 						</Col>
-						<Col span={12}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Designer</Text>
-								</Col>
-								<Col>
-									<Input
-										value={state.designerSearchText}
-										style={{ width: "100%" }}
-										onChange={(e): void => {
-											e.persist();
-											const {
-												target: { value },
-											} = e;
-											handleSearch(value, "designer");
-										}}
-										placeholder="Designer Name"
-										allowClear
-										prefix={<Icon type="search" />}
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={12}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Room Name</Text>
-								</Col>
-								<Col>
-									<Select
-										value={state.name}
-										style={{ width: "100%" }}
-										defaultValue={null}
-										onChange={(value): void => handleSelectFilter(value, "name")}
-									>
-										<Option value="">Filter by Room Name</Option>
-										{RoomNameSearch.map(roomName => {
-											return (
-												<Option key={roomName} value={roomName}>
-													{roomName}
-												</Option>
-											);
-										})}
-									</Select>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Phase</Text>
-								</Col>
-								<Col>
-									<Select
-										value={state.phase}
-										style={{ width: "100%" }}
-										defaultValue={phaseDefaultValues}
-										mode="multiple"
-										maxTagCount={2}
-										placeholder="All Phases Shown"
-										onChange={(value): void => handleSelectFilter(value, "phase")}
-									>
-										{Object.keys(HumanizePhaseInternalNames).map(key => {
-											return (
-												<Option key={key} value={key}>
-													{HumanizePhaseInternalNames[key]}
-												</Option>
-											);
-										})}
-									</Select>
-								</Col>
-							</Row>
-						</Col>
-
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Status</Text>
-								</Col>
-								<Col>
-									<Select
-										value={state.status}
-										style={{ width: "100%" }}
-										defaultValue={Status.active}
-										maxTagCount={2}
-										placeholder="All Status Shown"
-										onChange={(value): void => handleSelectFilter(value, "status")}
-									>
-										{Object.keys(Status).map(key => {
-											return (
-												<Option key={key} value={Status[key]}>
-													{key}
-												</Option>
-											);
-										})}
-									</Select>
-								</Col>
-							</Row>
-						</Col>
-
-						<Col span={12}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Sort by</Text>
-								</Col>
-								<Col>
-									<Select
-										value={state.sortBy}
-										style={{ width: "100%" }}
-										defaultValue={SortFields["End Date"]}
-										onChange={(value): void => handleSelectFilter(value, "sortBy")}
-									>
-										{Object.keys(SortFields).map(key => {
-											return (
-												<Option key={key} value={SortFields[key]}>
-													{key}
-												</Option>
-											);
-										})}
-									</Select>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={12}>
-							<Row gutter={[0, 4]}>
-								<Col>
-									<Text>Sort order</Text>
-								</Col>
-								<Col>
-									<Select
-										value={state.sortOrder}
-										style={{ width: "100%" }}
-										onChange={(value): void => handleSelectFilter(value, "sortOrder")}
-										defaultValue={1}
-									>
-										<Option value={-1}>Descending</Option>
-										<Option value={1}>Ascending</Option>
-									</Select>
-								</Col>
-							</Row>
+						<Col>
+							<Select
+								value={state.phase}
+								style={{ width: "100%" }}
+								defaultValue={phaseDefaultValues}
+								mode="multiple"
+								maxTagCount={2}
+								placeholder="All Phases Shown"
+								onChange={(value): void => handleSelectFilter(value, "phase")}
+							>
+								{Object.keys(HumanizePhaseInternalNames).map(key => {
+									return (
+										<Option key={key} value={key}>
+											{HumanizePhaseInternalNames[key]}
+										</Option>
+									);
+								})}
+							</Select>
 						</Col>
 					</Row>
-				</Collapse.Panel>
-			</Collapse>
+				</Col>
+
+				<Col span={24}>
+					<Row gutter={[0, 4]}>
+						<Col>
+							<Text>Status</Text>
+						</Col>
+						<Col>
+							<Select
+								value={state.status}
+								style={{ width: "100%" }}
+								defaultValue={Status.active}
+								maxTagCount={2}
+								placeholder="All Status Shown"
+								onChange={(value): void => handleSelectFilter(value, "status")}
+							>
+								{Object.keys(Status).map(key => {
+									return (
+										<Option key={key} value={Status[key]}>
+											{key}
+										</Option>
+									);
+								})}
+							</Select>
+						</Col>
+					</Row>
+				</Col>
+
+				<Col span={12}>
+					<Row gutter={[0, 4]}>
+						<Col>
+							<Text>Sort by</Text>
+						</Col>
+						<Col>
+							<Select
+								value={state.sortBy}
+								style={{ width: "100%" }}
+								defaultValue={SortFields["End Date"]}
+								onChange={(value): void => handleSelectFilter(value, "sortBy")}
+							>
+								{Object.keys(SortFields).map(key => {
+									return (
+										<Option key={key} value={SortFields[key]}>
+											{key}
+										</Option>
+									);
+								})}
+							</Select>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={12}>
+					<Row gutter={[0, 4]}>
+						<Col>
+							<Text>Sort order</Text>
+						</Col>
+						<Col>
+							<Select
+								value={state.sortOrder}
+								style={{ width: "100%" }}
+								onChange={(value): void => handleSelectFilter(value, "sortOrder")}
+								defaultValue={1}
+							>
+								<Option value={-1}>Descending</Option>
+								<Option value={1}>Ascending</Option>
+							</Select>
+						</Col>
+					</Row>
+				</Col>
+			</Row>
 		</div>
 	);
 };
