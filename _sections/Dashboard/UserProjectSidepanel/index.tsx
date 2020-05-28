@@ -177,7 +177,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	};
 
 	return (
-		<MaxHeightDiv style={{ backgroundColor: "#f2f4f6", position: "relative" }} ref={scrollRef}>
+		<MaxHeightDiv style={{ backgroundColor: "#f2f4f6", position: "relative", overflow: "hidden" }} ref={scrollRef}>
 			<Row gutter={[8, 8]}>
 				<Col>
 					<Button block type="primary" onClick={toggleDrawer}>
@@ -230,13 +230,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 						Row={CardRow}
 						loadNextPage={loadMoreItems}
 						isNextPageLoading={loading}
-						height={getValueSafely(
-							() =>
-								activePanel === "filterandsort"
-									? scrollRef.current.offsetHeight - 417
-									: scrollRef.current.offsetHeight - 46,
-							700
-						)}
+						height={getValueSafely(() => scrollRef.current.offsetHeight - 62, 700)}
 					/>
 				</Col>
 			</Row>

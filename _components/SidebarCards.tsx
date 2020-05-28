@@ -87,7 +87,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 			}}
 		>
 			<Row type="flex" gutter={[8, 8]}>
-				<Col>
+				<Col span={3}>
 					<Avatar style={avatarStyle}>
 						<CapitalizedText>{avatarText}</CapitalizedText>
 					</Avatar>

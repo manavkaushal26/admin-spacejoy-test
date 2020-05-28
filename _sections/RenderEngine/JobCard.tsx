@@ -98,6 +98,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				socket.on("Job.Failed", id => {
 					console.log("Job.Failed", id);
 					if (job._id === id) {
+						setProgressData(previousState => ({ ...previousState, completion: 100 }));
 						setProgressError(true);
 						socket.removeAllListeners();
 					}
@@ -121,7 +122,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 			return "exception";
 		}
 		return null;
-	}, [job.status]);
+	}, [job.status, progressData?.completion]);
 
 	return (
 		<Col sm={12} md={8} lg={6} onClick={(): void => onClick(job)}>
@@ -240,7 +241,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 
 												<Col>
 													<Text>
-														<small>{progressData?.time.elapsed || 0}</small>
+														<small>{progressData?.time?.elapsed || 0}</small>
 													</Text>
 												</Col>
 											</Row>
@@ -255,7 +256,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 
 												<Col>
 													<Text>
-														<small>{progressData?.time.remaining || 0}</small>
+														<small>{progressData?.time?.remaining || 0}</small>
 													</Text>
 												</Col>
 											</Row>

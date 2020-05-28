@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Row, Col, notification, Typography, Input, Select, Button } from "antd";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { Row, Col, notification, Typography, Input, Select, Button, Tooltip, Icon } from "antd";
 import { getThemes, editDesignApi } from "@api/designApi";
 import fetcher from "@utils/fetcher";
 import { ThemeInterface, RoomTypes, DetailedDesign, RoomLabels } from "@customTypes/dashboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
 import { Status } from "@customTypes/userType";
+import { company } from "@utils/config";
 
 const { Text } = Typography;
 
@@ -110,16 +111,32 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 		}
 	};
 
+	const openInNewWindow = (): void => {
+		const roomName = designData.room.roomType
+			.toLowerCase()
+			.split(" ")
+			.join("-");
+		const url = `${company.customerPortalLink}/interior-designs/${roomName}-ideas/${designData.slug}`;
+		window.open(url, "_blank", "noopener");
+	};
+
 	return (
 		<Row gutter={[8, 8]}>
 			{designData.slug && (
 				<Col span={24}>
-					<Row type="flex" gutter={[4, 4]}>
+					<Row gutter={[4, 4]}>
+						<Col>Slug</Col>
 						<Col>
-							<Text>Slug: </Text>
-						</Col>
-						<Col>
-							<Text copyable>{designData.slug}</Text>
+							<Input
+								name="slug"
+								disabled
+								value={designData.slug}
+								addonAfter={
+									<Tooltip placement="top" title="Open URL">
+										<Icon onClick={openInNewWindow} type="link" />
+									</Tooltip>
+								}
+							/>
 						</Col>
 					</Row>
 				</Col>
