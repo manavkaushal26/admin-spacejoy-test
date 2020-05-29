@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import User, { Role } from "@customTypes/userType";
 import { DetailedSource, AllJobs } from "@customTypes/renderEngineTypes";
-import io from "socket.io-client";
 import PageLayout from "@sections/Layout";
 import { company } from "@utils/config";
 import { NextPage, NextPageContext } from "next";
@@ -9,6 +8,8 @@ import Head from "next/head";
 import IndexPageMeta from "@utils/meta";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import fetcher from "@utils/fetcher";
+import io from "socket.io-client";
+
 import {
 	getSingleSource,
 	getAllJobs,
@@ -47,8 +48,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 
 	const [searchText, setSearchText] = useState<string>("");
 
-	const socket = useMemo(() => io("https://krmasternode.spacejoy.com"), []);
-
 	const Router = useRouter();
 
 	const fetchJobs = async (): Promise<void> => {
@@ -57,7 +56,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
 
 		if (!response.err) {
-			console.log("Jobs", response.data);
+			// console.log("Jobs", response.data);
 			setJobs(response.data);
 		} else {
 			notification.error({ message: "Failed to fetch jobs" });
@@ -65,7 +64,14 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setLoading(false);
 	};
 
-	useEffect(() => {}, []);
+	const socket = useMemo(() => io("https://krmasternode.spacejoy.com"), []);
+
+	useEffect(() => {
+		return (): void => {
+			socket.removeAllListeners();
+			socket.disconnect();
+		};
+	}, []);
 
 	const toggleJobCreationModal = (): void => {
 		setJobCreationModalVisible(prevState => !prevState);
@@ -106,7 +112,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		});
 		if (!response.err) {
 			notification.success({ message: "Created Job Successfully" });
-			console.log("Create Job Resoponse", response.data);
+			// console.log("Create Job Resoponse", response.data);
 			setJobs(prevState => [response.data, ...prevState]);
 			toggleJobCreationModal();
 		} else {
@@ -121,7 +127,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setUploadedFile(prunedFileList);
 		if (info.file.status === "done") {
 			notification.success({ message: "File upload Complete" });
-			console.log("File Upload Response", info.file.response.data);
+			// console.log("File Upload Response", info.file.response.data);
 
 			setSourceData(info.file.response.data);
 		}

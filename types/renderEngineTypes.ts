@@ -30,6 +30,9 @@ export interface AllJobs {
 	status: RenderEngineStatus;
 	_id: string;
 	name: string;
+	options: {
+		samples: number;
+	};
 	description: string;
 	createdAt: string;
 	qid?: number;

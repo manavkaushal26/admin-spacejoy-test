@@ -53,7 +53,7 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 					<DetailText name="CPU" value={jobDetails?.process?.cpu} />
 					<DetailText name="GPU" value={jobDetails?.process?.gpu} />
 					<DetailText name="Cloud" value={jobDetails?.process?.cloud} />
-					<DetailText name="Created At" value={jobDetails?.process?.dateAdded.split("T")[0]} />
+					<DetailText name="Created At" value={moment(jobDetails?.createdAt).format("DD-MM-YYYY hh:mm a")} />
 
 					{jobDetails?.renders.length !== 0 && (
 						<Col span={24}>
@@ -81,7 +81,7 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 															<Col>
 																<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
 																	<Text strong>Created At: </Text>
-																	<Text ellipsis>{moment(image?.meta?.createdAt).format("D-MMM-YYYY")}</Text>
+																	<Text ellipsis>{moment(image?.meta?.createdAt).format("DD-MM-YYYY hh:mm a")}</Text>
 																</Row>
 															</Col>
 															<Col>

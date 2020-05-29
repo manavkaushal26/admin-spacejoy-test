@@ -6,7 +6,7 @@ import { company } from "@utils/config";
 import { NextPageContext, NextPage } from "next";
 import IndexPageMeta from "@utils/meta";
 import Head from "next/head";
-import { MaxHeightDiv, BiggerButtonCarousel } from "@sections/Dashboard/styled";
+import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import {
 	Row,
 	Col,
@@ -67,7 +67,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 		const endPoint = `${getAllSources()}&skip=${countPerPage * (pageNumber - 1)}&limit=${countPerPage}`;
 		const response = await fetcher({ endPoint, hasBaseURL: true, method: "GET" });
 		if (!response.err) {
-			console.log("Sources", response.data);
+			// console.log("Sources", response.data);
 			setSources(response.data);
 		} else {
 			notification.error({ message: "Failed to fetch sources" });
