@@ -127,7 +127,6 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	};
 
 	const onSearchSubmit = (): void => {
-		console.log("search Submit");
 		setCount(0);
 		setData([]);
 		loadMoreItems(0, 299);
@@ -159,13 +158,9 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 					<UserProjectCard
 						selectedUser={selectedUser}
 						key={data[index]._id}
-						index={index}
 						handleSelectCard={handleSelectCard}
 						userProjectData={data[index]}
 					/>
-					<PaddedDiv>
-						<SilentDivider />
-					</PaddedDiv>
 				</div>
 			);
 		}
@@ -177,7 +172,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	};
 
 	return (
-		<MaxHeightDiv style={{ backgroundColor: "#f2f4f6", position: "relative", overflow: "hidden" }} ref={scrollRef}>
+		<MaxHeightDiv style={{ position: "relative", overflow: "hidden" }} ref={scrollRef}>
 			<Row gutter={[8, 8]}>
 				<Col>
 					<Button block type="primary" onClick={toggleDrawer}>
@@ -185,6 +180,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 					</Button>
 				</Col>
 				<Drawer
+					placement="left"
 					title="Sort &amp; Filters"
 					getContainer={false}
 					style={{ position: "absolute" }}
@@ -230,7 +226,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 						Row={CardRow}
 						loadNextPage={loadMoreItems}
 						isNextPageLoading={loading}
-						height={getValueSafely(() => scrollRef.current.offsetHeight - 62, 700)}
+						height={getValueSafely(() => scrollRef.current.offsetHeight - 43, 700)}
 					/>
 				</Col>
 			</Row>

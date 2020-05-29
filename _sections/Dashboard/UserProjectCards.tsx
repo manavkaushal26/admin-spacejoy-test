@@ -1,14 +1,14 @@
 import SidebarCard from "@components/SidebarCards";
 import { UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
-import { getColorsForPackages, getNumberOfDays, getValueSafely, convertMillisecondsToDays } from "@utils/commonUtils";
-import React from "react";
+import { getColorsForPackages, getValueSafely, convertMillisecondsToDays } from "@utils/commonUtils";
+import React, { useMemo } from "react";
+import moment from "moment";
 
 const UserProjectCard: React.FC<{
 	userProjectData: UserProjectType;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
-	index: number;
-}> = ({ userProjectData, handleSelectCard, index, selectedUser }) => {
+}> = ({ userProjectData, handleSelectCard, selectedUser }) => {
 	const {
 		_id: projectId,
 		name: room,
@@ -24,33 +24,46 @@ const UserProjectCard: React.FC<{
 	} = userProjectData;
 
 	const items = getValueSafely(() => userProjectData.order.items, []);
+	const minDelay = convertMillisecondsToDays(minDurationInMs);
+	const maxDelay = convertMillisecondsToDays(maxDurationInMs);
 
-	const delayText = `Delayed by ${convertMillisecondsToDays(minDurationInMs)} - ${convertMillisecondsToDays(
-		maxDurationInMs
-	)} days`;
+	const delayText = `${minDelay} - ${maxDelay}`;
+	const subHeading = room.replace(" Design", "");
 
-	const startedTime = startedAt;
-	const noOfDays = phase === PhaseInternalNames.designsInRevision ? 5 : getNumberOfDays(items);
-	const sidebarData = {
-		isDelayed,
-		delayText,
-		avatarText: getValueSafely(() => items.map(item => item.name)[0][0], "N/A"),
-		title: getValueSafely(() => customerName, "N/A"),
-		subHeading: room,
-		uniqueId: projectId,
-		phase,
-		startedAt: startedTime,
-		phaseStartTime,
-		status,
-		index,
-		endedAt,
-		avatarStyle: getColorsForPackages(items),
-		onClick: handleSelectCard,
-		selectedId: selectedUser,
-		noOfDays,
-	};
+	// --------------------endTime Calculation--------------------------
 
-	return <SidebarCard {...sidebarData} />;
+	const endTime = useMemo(() => {
+		if (phase === PhaseInternalNames.designsInRevision) {
+			return moment(phaseStartTime).add(5 + maxDelay, "days");
+		}
+		if (endedAt) {
+			return moment(endedAt).add(maxDelay, "days");
+		}
+		return null;
+	}, [endedAt, startedAt]);
+
+	const duration = moment.duration((endTime || moment()).diff(moment()));
+	const daysLeft = duration.get("days");
+
+	// --------------------endTime Calculation--------------------------
+
+	return (
+		<SidebarCard
+			isDelayed={isDelayed}
+			delayText={delayText}
+			avatarText={getValueSafely(() => items.map(item => item.name)[0][0], "N/A")}
+			title={getValueSafely(() => customerName, "N/A")}
+			subHeading={subHeading}
+			phase={phase}
+			endTime={endTime}
+			avatarStyle={getColorsForPackages(items)}
+			uniqueId={projectId}
+			daysLeft={daysLeft}
+			status={status}
+			onClick={handleSelectCard}
+			selectedId={selectedUser}
+		/>
+	);
 };
 
 export default UserProjectCard;

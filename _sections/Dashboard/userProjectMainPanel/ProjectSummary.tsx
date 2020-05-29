@@ -58,13 +58,17 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 
 	const endTime = useMemo(() => {
 		if (phase === PhaseInternalNames.designsInRevision) {
-			return moment(phaseStartTime).add(5, "days");
+			return moment(phaseStartTime).add(5 + delayValue.max, "days");
 		}
 		if (endedAt) {
-			return moment(endedAt);
+			return moment(endedAt).add(delayValue.max, "days");
 		}
 		return null;
 	}, [endedAt, startedAt]);
+
+	const duration = moment.duration((endTime || moment()).diff(moment()));
+	const daysLeft = duration.get("days");
+
 	const displayName = getValueSafely(() => {
 		return customer.profile.name;
 	}, room);
@@ -197,7 +201,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					{endTime ? (
 						<Row align="middle" type="flex" gutter={[16, 8]}>
 							<Col>
-								<ProgressBar width={33} phase={phase} endTime={endTime} />
+								<ProgressBar phase={phase} size={22} days={daysLeft} />
 							</Col>
 							<Col>
 								<Text>

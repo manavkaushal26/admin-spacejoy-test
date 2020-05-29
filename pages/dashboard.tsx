@@ -27,6 +27,10 @@ interface DashboardProps {
 	currentTab: string;
 }
 
+const WhiteBorderMaxHeightDiv = styled(MaxHeightDiv)`
+	border-left: 1px solid white;
+`;
+
 const handleResize = (setIsDesktop): void => {
 	if (typeof window !== "undefined") {
 		if (window.innerWidth < 1024) {
@@ -144,6 +148,7 @@ const dashboard: NextPage<DashboardProps> = ({
 				<Spin spinning={loading}>
 					<Layout hasSider>
 						<Layout.Sider
+							style={{ backgroundColor: "white" }}
 							collapsed={collapsed}
 							onCollapse={(collapsedState): void => {
 								setCollapsed(collapsedState && !!projectId);
@@ -166,7 +171,7 @@ const dashboard: NextPage<DashboardProps> = ({
 							/>
 						</Layout.Sider>
 						<Layout>
-							<MaxHeightDiv>
+							<WhiteBorderMaxHeightDiv>
 								<PaddedDiv>
 									<UserProjectMainPanel
 										updateProjectPhaseInSidepanel={updateProjectPhaseInSidepanel}
@@ -177,7 +182,7 @@ const dashboard: NextPage<DashboardProps> = ({
 										currentTab={currentTab}
 									/>
 								</PaddedDiv>
-							</MaxHeightDiv>
+							</WhiteBorderMaxHeightDiv>
 						</Layout>
 					</Layout>
 				</Spin>

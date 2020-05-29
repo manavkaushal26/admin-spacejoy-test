@@ -1,12 +1,12 @@
 import ProgressBar from "@components/ProgressBar";
 import { HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { getTagColor } from "@sections/Dashboard/styled";
+import { getTagColor, SilentDivider } from "@sections/Dashboard/styled";
 import { Avatar, Card, Col, Row, Tooltip, Typography } from "antd";
-import moment from "moment";
-import React, { useMemo } from "react";
+import { Moment } from "moment";
+import React from "react";
 import styled, { css } from "styled-components";
-import { CapitalizedText, StyledTag } from "./CommonStyledComponents";
+import { CapitalizedText } from "./CommonStyledComponents";
 
 interface SidebarCard {
 	isDelayed: boolean;
@@ -16,38 +16,66 @@ interface SidebarCard {
 	subHeading: string;
 	uniqueId: string;
 	phase: PhaseInternalNames;
-	startedAt: string;
-	phaseStartTime: string;
-	endedAt: string;
 	status: Status;
+	endTime: Moment;
 	avatarStyle: Record<string, string>;
 	onClick: (uniqueId: string) => void;
 	selectedId: string;
-	noOfDays: number;
+	daysLeft: number;
 }
+
+const HighlightedSpan = styled.span<{ type: string }>`
+	background-color: ${({ type, theme }): string => {
+		if (type === "danger") {
+			return theme.colors.mild.red;
+		}
+		if (type === "success") {
+			return theme.colors.mild.green;
+		}
+		return "transparent";
+	}};
+	border: 1px solid red 3px;
+	padding: 5px;
+`;
+
+const getSafetyColor = (daysLeft, transparent = false): string => {
+	if (transparent) {
+		return "transparent";
+	}
+	if (daysLeft < 3) {
+		return "red";
+	}
+	if (daysLeft < 6) {
+		return "orange";
+	}
+	return "green";
+};
+
+const HighlightSpan = ({ children, type }) => {
+	return <HighlightedSpan type={type}>{children}</HighlightedSpan>;
+};
 
 const { Text } = Typography;
 
-const SidebarCards = styled(Card)<{ active: boolean }>`
-	background: transparent;
+const SidebarCards = styled(Card)<{ active: boolean; leftBorder: string }>`
 	border: none;
+	border-radius: 0px;
+	border-left: 5px solid ${({ leftBorder }) => leftBorder};
 	${({ active }) =>
 		active &&
 		css`
 			background: ${({ theme }) => theme.colors.mild.antblue};
 			border-right: 3px solid ${({ theme }) => theme.colors.antblue};
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+			:hover {
+				border-right: 5px solid ${({ theme }) => theme.colors.antblue};
+			}
 		`};
 	:hover {
 		background: ${({ theme }) => theme.colors.mild.antblue};
-		border-right: 3px solid ${({ theme }) => theme.colors.antblue};
+		border-left: 5px solid ${({ leftBorder }) => leftBorder};
+		border-right: 5px solid ${({ theme }) => theme.colors.antblue};
 	}
-`;
-
-const SubText = styled(Text)`
-	position: relative;
-	font-size: 0.8em;
-	top: -3px;
 `;
 
 const SidebarCard: React.FC<SidebarCard> = ({
@@ -55,105 +83,116 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	subHeading,
 	title,
 	phase,
-	phaseStartTime,
 	uniqueId,
 	avatarStyle,
+	status,
 	onClick,
 	selectedId,
-	endedAt,
-	startedAt,
+	endTime,
+	daysLeft,
 	delayText,
 	isDelayed,
 }) => {
-	const endTime = useMemo(() => {
-		if (phase === PhaseInternalNames.designsInRevision) {
-			return moment(phaseStartTime).add(5, "days");
-		}
-		if (endedAt) {
-			return moment(endedAt);
-		}
-		return null;
-	}, [endedAt, startedAt]);
-
 	return (
-		<SidebarCards
-			size="small"
-			active={selectedId === uniqueId}
-			hoverable
-			style={{ width: "100%" }}
-			onClick={(e): void => {
-				e.preventDefault();
-				onClick(uniqueId);
-			}}
-		>
-			<Row type="flex" gutter={[8, 8]}>
-				<Col span={3}>
-					<Avatar style={avatarStyle}>
-						<CapitalizedText>{avatarText}</CapitalizedText>
-					</Avatar>
-				</Col>
-				<Col span={21}>
-					<Row type="flex" gutter={[4, 4]}>
-						<Col span={24}>
-							<Row type="flex" justify="space-between" align="middle" gutter={[4, 4]}>
-								<Col span={22} style={{ overflow: "hidden" }}>
-									<Row gutter={[4, 4]}>
-										<Col>
-											<CapitalizedText strong>{title}</CapitalizedText>
-										</Col>
-										<Col>
-											<SubText>{subHeading}</SubText>
-										</Col>
-									</Row>
-								</Col>
-								<Col span={2}>
-									{!endedAt ? (
+		<>
+			<SidebarCards
+				leftBorder={getSafetyColor(daysLeft, !endTime)}
+				size="small"
+				active={selectedId === uniqueId}
+				hoverable
+				style={{ width: "100%", backgroundColor: "#F2F4F6" }}
+				onClick={(e): void => {
+					e.preventDefault();
+					onClick(uniqueId);
+				}}
+			>
+				<Row type="flex" gutter={[8, 8]}>
+					<Col span={24}>
+						<Row type="flex" gutter={[4, 4]} align="middle">
+							<Col span={3}>
+								<Avatar style={avatarStyle}>
+									<CapitalizedText>{avatarText}</CapitalizedText>
+								</Avatar>
+							</Col>
+							<Col span={17}>
+								<Row type="flex" justify="space-between" align="middle" gutter={[4, 4]}>
+									<Col span={24}>
+										<CapitalizedText strong>{title}</CapitalizedText>
+									</Col>
+									<Col span={24}>
+										<small>
+											<Text>{subHeading}</Text>
+											{endTime && (
+												<>
+													<Text> / Deliver by : </Text>
+													<Text strong>{endTime.format("MM-DD-YYYY")}</Text>
+												</>
+											)}
+										</small>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={4}>
+								{!endTime ? (
+									<Row type="flex" justify="center" align="middle">
 										<Text>
 											<Tooltip title="Not started">
 												<small>N/S</small>
 											</Tooltip>
 										</Text>
-									) : (
-										<ProgressBar phase={phase} endTime={endTime} width={30} />
-									)}
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row type="flex" gutter={[4, 4]}>
-								<Col>
-									{endedAt && (
-										<Text>
-											<small>Ends on: {endTime.format("MM-DD-YYYY")}</small>
-										</Text>
-									)}
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row type="flex" gutter={[4, 4]}>
-								<Col span={12}>
-									<StyledTag
-										style={{ width: "100%", textOverflow: "ellipses", overflow: "hidden" }}
-										color={getTagColor(phase)}
-									>
-										Phase: {HumanizePhaseInternalNames[phase]}
-									</StyledTag>
-								</Col>
-
-								{isDelayed && (
-									<Col span={12}>
-										<StyledTag style={{ width: "100%", textOverflow: "ellipses", overflow: "hidden" }} color="red">
-											{delayText}
-										</StyledTag>
-									</Col>
+									</Row>
+								) : (
+									<ProgressBar phase={phase} days={daysLeft} size={14} />
 								)}
-							</Row>
-						</Col>
-					</Row>
-				</Col>
-			</Row>
-		</SidebarCards>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<Row>
+							<Col span={20}>
+								<Row type="flex" gutter={[4, 4]}>
+									<Col span={24}>
+										<Text strong>Phase: </Text>
+										<Text>{HumanizePhaseInternalNames[phase]}</Text>
+									</Col>
+									<Col span={24}>
+										<Text strong>Status: </Text>
+										<Text>{status}</Text>
+									</Col>
+								</Row>
+							</Col>
+							{isDelayed && (
+								<Col span={4}>
+									<Row>
+										<Col>
+											<Row type="flex" justify="center">
+												<Text>
+													<small>
+														<small>Delay</small>
+													</small>
+												</Text>
+											</Row>
+										</Col>
+										<Col>
+											<Row type="flex" justify="center">
+												<HighlightSpan type="danger">
+													<Text strong>
+														<small>{delayText}</small>
+													</Text>
+												</HighlightSpan>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+							)}
+						</Row>
+					</Col>
+				</Row>
+			</SidebarCards>
+		</>
 	);
 };
 

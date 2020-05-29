@@ -1,41 +1,61 @@
-import { Status } from "@customTypes/userType";
-import { projectConfig } from "@utils/config";
-import { Progress } from "antd";
-import moment, { Moment } from "moment";
-import React from "react";
 import { completedPhases, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { Col, Progress, Row, Typography } from "antd";
+import React from "react";
+
+const { Text } = Typography;
 
 interface ProgressBarProps {
 	phase: PhaseInternalNames;
-	endTime: Moment;
-	width?: number;
+	days: number;
+	size: number;
 }
+
+const getTextColor = days => {
+	if (days < 3) {
+		return { color: "red" };
+	}
+	if (days < 6) {
+		return { color: "orange" };
+	}
+
+	return {};
+};
 
 const getProgressBarText = (days: number): string => {
 	const displayDays = days < 0 ? 0 : days;
 	return `${displayDays}`;
 };
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ phase, endTime, width = 33 }): JSX.Element => {
-	const duration = moment.duration(endTime.diff(moment()));
-	const days = duration.get("days");
-	const progressPercentage = (days / projectConfig.lifetime) * 100;
-	let progressStatus: "normal" | "exception" = "normal";
+const ProgressBar: React.FC<ProgressBarProps> = ({ phase, size = 14, days }): JSX.Element => {
+	const smallSize = size * 0.8;
 	if (completedPhases.includes(phase)) {
-		return <Progress percent={100} type="circle" width={width} />;
-	}
-	if (days < 0) {
-		progressStatus = "exception";
+		return (
+			<Col span={24}>
+				<Row type="flex" justify="center">
+					<Progress percent={100} type="circle" width={30} />
+				</Row>
+			</Col>
+		);
 	}
 	return (
-		<Progress
-			trailColor={progressStatus === "exception" ? `#f30000` : ""}
-			percent={progressStatus === "exception" ? 100 : progressPercentage}
-			status={progressStatus}
-			format={() => getProgressBarText(days)}
-			type="circle"
-			width={width}
-		/>
+		<Row type="flex" justify="center" gutter={[0, 0]} style={getTextColor(days)}>
+			<Col span={24}>
+				<Row type="flex" justify="center">
+					<Text strong style={{ ...getTextColor(days), fontSize: `${size}px` }}>
+						{getProgressBarText(days)}
+					</Text>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row type="flex" justify="center">
+					<Text style={{ ...getTextColor(days), fontSize: `${smallSize}px` }}>
+						<small>
+							<small>{days === 1 ? "day" : "days"} left</small>
+						</small>
+					</Text>
+				</Row>
+			</Col>
+		</Row>
 	);
 };
 

@@ -113,7 +113,7 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 						</Col>
 						<Col>
 							<Select style={{ width: "100%" }} onChange={renderTypeChange} defaultValue={500}>
-								<Select.Option value={5}>Quick</Select.Option>
+								<Select.Option value={300}>Quick</Select.Option>
 								<Select.Option value={500}>HD</Select.Option>
 								<Select.Option value={1200}>Full HD</Select.Option>
 								<Select.Option value={0}>Specify Sample Count</Select.Option>
