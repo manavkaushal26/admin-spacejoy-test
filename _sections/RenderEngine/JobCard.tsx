@@ -72,8 +72,12 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						setProgressData({
 							sample: {
 								...progressData?.sample,
-								done: progressInfo?.sample.done || progressInfo?.sample.done,
-								total: progressInfo?.sample.total || progressInfo?.sample.total,
+								done: progressInfo?.sample.done || progressData?.sample.done,
+								total: progressInfo?.sample.total || progressData?.sample.total,
+							},
+							time: {
+								elapsed: progressInfo.time.elapsed || progressData.time.elapsed,
+								remaining: progressInfo.time.remaining || progressData.time.remaining,
 							},
 						});
 					}
@@ -144,7 +148,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									key="delete"
 								>
 									<Icon
-										type="experiment"
+										type="video-camera"
 										key="render"
 										{...(job.status === RenderEngineStatus.completed
 											? {
@@ -199,7 +203,10 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 										percent={
 											job.status === RenderEngineStatus.completed
 												? 100
-												: parseFloat(progressData?.sample?.total) || progressData?.completion || 0
+												: (parseInt(progressData?.sample?.done, 10) / parseInt(progressData?.sample?.total, 10)) *
+														100 ||
+												  progressData?.completion ||
+												  0
 										}
 										size="small"
 										{...(progressStatus ? { status: progressStatus } : {})}
@@ -229,56 +236,56 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									</Row>
 								</Col>
 							) : (
+								<>
+									<Col>
+										<Row type="flex" gutter={[4, 4]}>
+											<Col>
+												<Text>
+													<small>Time Elapsed:</small>
+												</Text>
+											</Col>
+
+											<Col>
+												<Text>
+													<small>{progressData?.time?.elapsed || 0}</small>
+												</Text>
+											</Col>
+										</Row>
+									</Col>
+									<Col>
+										<Row type="flex" gutter={[4, 4]}>
+											<Col>
+												<Text>
+													<small>Time Remaining:</small>
+												</Text>
+											</Col>
+
+											<Col>
+												<Text>
+													<small>{progressData?.time?.remaining || 0}</small>
+												</Text>
+											</Col>
+										</Row>
+									</Col>
+								</>
+							)}
+							{(job.status === RenderEngineStatus.pending || job.status === RenderEngineStatus.completed) && (
 								<Col>
-									<Row type="flex" justify="space-between">
+									<Row type="flex" gutter={[4, 4]}>
 										<Col>
-											<Row type="flex" gutter={[4, 4]}>
-												<Col>
-													<Text>
-														<small>Time Elapsed: </small>
-													</Text>
-												</Col>
-
-												<Col>
-													<Text>
-														<small>{progressData?.time?.elapsed || 0}</small>
-													</Text>
-												</Col>
-											</Row>
+											<Text>
+												<small>Created at: </small>
+											</Text>
 										</Col>
-										<Col>
-											<Row type="flex" gutter={[4, 4]}>
-												<Col>
-													<Text>
-														<small>Time Remaining: </small>
-													</Text>
-												</Col>
 
-												<Col>
-													<Text>
-														<small>{progressData?.time?.remaining || 0}</small>
-													</Text>
-												</Col>
-											</Row>
+										<Col>
+											<Text>
+												<small>{job.createdAt.split("T")[0]}</small>
+											</Text>
 										</Col>
 									</Row>
 								</Col>
 							)}
-							<Col>
-								<Row type="flex" gutter={[4, 4]}>
-									<Col>
-										<Text>
-											<small>Created at: </small>
-										</Text>
-									</Col>
-
-									<Col>
-										<Text>
-											<small>{job.createdAt.split("T")[0]}</small>
-										</Text>
-									</Col>
-								</Row>
-							</Col>
 						</Row>
 					}
 				/>
