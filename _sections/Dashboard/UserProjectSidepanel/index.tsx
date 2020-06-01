@@ -23,10 +23,11 @@ const getRequestBody = (
 	endedAt: [string, string]
 ): Record<string, Record<string, string | PhaseInternalNames[] | string[]>> => {
 	const startedAtMap = startedAt.map(value => {
-		if (value !== null) {
+		if (value !== "") {
 			const date = new Date(value);
 			return date.toISOString();
 		}
+		return null;
 	});
 
 	const endedAtMap = endedAt.map(value => {
