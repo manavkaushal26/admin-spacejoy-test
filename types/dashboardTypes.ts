@@ -67,6 +67,20 @@ interface CurrentPhase {
 	startTime: string;
 }
 
+export enum QuizState {
+	open = "open",
+	closed = "closed",
+	inProgress = "inProgress",
+	underReview = "underReview",
+}
+
+export enum QuizStateLabels {
+	open = "Not Started",
+	closed = "Completed",
+	inProgress = "In Progress",
+	underReview = "Under Review",
+}
+
 export interface UserProjectType {
 	createdAt: string;
 	endedAt: string;
@@ -76,6 +90,9 @@ export interface UserProjectType {
 	status: Status;
 	name: string;
 	customerName: string;
+	quizStatus: {
+		currentState: QuizState;
+	};
 	delay: {
 		isDelayed: boolean;
 		minDurationInMs: number;

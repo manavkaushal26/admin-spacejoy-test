@@ -1,7 +1,12 @@
 import ProgressBar from "@components/ProgressBar";
-import { HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import {
+	HumanizePhaseInternalNames,
+	PhaseInternalNames,
+	QuizState,
+	QuizStateLabels,
+} from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { getTagColor, SilentDivider } from "@sections/Dashboard/styled";
+import { SilentDivider } from "@sections/Dashboard/styled";
 import { Avatar, Card, Col, Row, Tooltip, Typography } from "antd";
 import { Moment } from "moment";
 import React from "react";
@@ -22,6 +27,7 @@ interface SidebarCard {
 	onClick: (uniqueId: string) => void;
 	selectedId: string;
 	daysLeft: number;
+	quizCompletionStatus: QuizState;
 }
 
 const HighlightedSpan = styled.span<{ type: string }>`
@@ -35,7 +41,7 @@ const HighlightedSpan = styled.span<{ type: string }>`
 		return "transparent";
 	}};
 	border: 1px solid red 3px;
-	padding: 5px;
+	padding: 0px 5px;
 `;
 
 const getSafetyColor = (daysLeft, transparent = false): string => {
@@ -85,12 +91,12 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	phase,
 	uniqueId,
 	avatarStyle,
-	status,
 	onClick,
 	selectedId,
 	endTime,
 	daysLeft,
 	delayText,
+	quizCompletionStatus,
 	isDelayed,
 }) => {
 	return (
@@ -159,8 +165,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 										<Text>{HumanizePhaseInternalNames[phase]}</Text>
 									</Col>
 									<Col span={24}>
-										<Text strong>Status: </Text>
-										<Text>{status}</Text>
+										<Text strong>Quiz Status: </Text>
+										<Text>{QuizStateLabels[quizCompletionStatus]}</Text>
 									</Col>
 								</Row>
 							</Col>

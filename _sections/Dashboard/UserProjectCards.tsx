@@ -18,6 +18,7 @@ const UserProjectCard: React.FC<{
 			name: { internalName: phase },
 			startTime: phaseStartTime,
 		},
+		quizStatus,
 		delay: { isDelayed, minDurationInMs, maxDurationInMs },
 		endedAt,
 		status,
@@ -47,6 +48,8 @@ const UserProjectCard: React.FC<{
 
 	// --------------------endTime Calculation--------------------------
 
+	const quizCompletionStatus = quizStatus?.currentState;
+
 	return (
 		<SidebarCard
 			isDelayed={isDelayed}
@@ -62,6 +65,7 @@ const UserProjectCard: React.FC<{
 			status={status}
 			onClick={handleSelectCard}
 			selectedId={selectedUser}
+			quizCompletionStatus={quizCompletionStatus}
 		/>
 	);
 };

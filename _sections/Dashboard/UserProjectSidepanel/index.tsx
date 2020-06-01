@@ -1,12 +1,11 @@
 import { searchProjectsApi } from "@api/projectApi";
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
-import { PaddedDiv } from "@sections/Header/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
+import { Button, Col, Drawer, Row } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import { Drawer, Row, Col, Button } from "antd";
 import LoadingCard from "../LoadingCard";
-import { MaxHeightDiv, SilentDivider } from "../styled";
+import { MaxHeightDiv } from "../styled";
 import UserProjectCard from "../UserProjectCards";
 import ProjectInfiniteLoaderWrapper from "./ProjectInfiniteLoaderWrapper";
 import { SortFields, UserProjectSidePanelInitialState } from "./reducer";
@@ -19,8 +18,25 @@ const getRequestBody = (
 	currentTab: string,
 	roomName: string,
 	by: SortFields,
-	order: -1 | 1
-): Record<string, Record<string, string | PhaseInternalNames[]>> => {
+	order: -1 | 1,
+	startedAt: [string, string],
+	endedAt: [string, string]
+): Record<string, Record<string, string | PhaseInternalNames[] | string[]>> => {
+	const startedAtMap = startedAt.map(value => {
+		if (value !== null) {
+			const date = new Date(value);
+			return date.toISOString();
+		}
+	});
+
+	const endedAtMap = endedAt.map(value => {
+		if (value !== "") {
+			const date = new Date(value);
+			return date.toISOString();
+		}
+		return null;
+	});
+
 	const body = {
 		customerName: { search: "single", value: nameSearchText },
 		"team.memberName": { search: "single", value: designerSearchText },
@@ -33,6 +49,14 @@ const getRequestBody = (
 		sort: {
 			by,
 			order: order.toString(),
+		},
+		startedAt: {
+			search: "range",
+			value: startedAtMap,
+		},
+		endedAt: {
+			search: "range",
+			value: endedAtMap,
 		},
 	};
 	return body;
@@ -70,7 +94,6 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 }) => {
 	const [data, setData] = useState<UserProjectType[]>([]);
 	const [count, setCount] = useState(1000);
-	const [activePanel, setActivePanel] = useState<string>(null);
 	const [state, setState] = useState(UserProjectSidePanelInitialState);
 	const [loading, setLoading] = useState(false);
 	const [hasNextPage, setHasNextPage] = useState<boolean>(true);
@@ -90,7 +113,9 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			state.currentTab,
 			state.name,
 			state.sortBy,
-			state.sortOrder
+			state.sortOrder,
+			state.startedAt,
+			state.endedAt
 		);
 		const resData = await fetcher({
 			endPoint,
@@ -190,13 +215,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 				>
 					<Row gutter={[16, 16]}>
 						<Col span={24}>
-							<TabSearch
-								activePanel={activePanel}
-								setActivePanel={setActivePanel}
-								count={count}
-								setState={setState}
-								state={state}
-							/>
+							<TabSearch setState={setState} state={state} />
 						</Col>
 						<Col span={24}>
 							<Row type="flex" gutter={[8, 8]} justify="end">
@@ -226,7 +245,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 						Row={CardRow}
 						loadNextPage={loadMoreItems}
 						isNextPageLoading={loading}
-						height={getValueSafely(() => scrollRef.current.offsetHeight - 43, 700)}
+						height={getValueSafely(() => scrollRef.current.offsetHeight - 44, 700)}
 					/>
 				</Col>
 			</Row>

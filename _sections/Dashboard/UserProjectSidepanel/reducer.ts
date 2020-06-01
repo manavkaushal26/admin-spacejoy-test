@@ -15,6 +15,8 @@ export interface UserProjectSidePanelState {
 	name: string;
 	searchResults: UserProjectType[];
 	count: number;
+	startedAt: [string, string];
+	endedAt: [string, string];
 }
 
 export enum SortFields {
@@ -68,6 +70,8 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	searchResults: [],
 	sortOrder: -1,
 	count: 0,
+	startedAt: ["", ""],
+	endedAt: ["", ""],
 };
 
 export const UserProjectSidePanelActionCreator = (
