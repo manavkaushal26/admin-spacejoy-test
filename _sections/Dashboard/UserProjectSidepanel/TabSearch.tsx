@@ -84,7 +84,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 	};
 
 	const downloadCSV = (): void => {
-		const jsonBlob = new Blob([JSON.stringify(state, null, 1)], { type: "text/plain;charset=utf-8" });
+		const jsonBlob = new Blob([JSON.stringify({ ...state, minMax }, null, 1)], { type: "text/plain;charset=utf-8" });
 
 		const url = window.URL || window.webkitURL;
 		const link = url.createObjectURL(jsonBlob);
