@@ -1,16 +1,14 @@
 import { HumanizePhaseInternalNames, RoomNameSearch } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { Button, Col, Icon, Input, Row, Select, Typography, DatePicker, Divider, InputNumber } from "antd";
-import React, { useEffect, useState } from "react";
+import { Button, Col, DatePicker, Icon, Input, InputNumber, Row, Select, Typography } from "antd";
 import moment from "moment";
-import { PaddedDiv } from "@sections/Header/styled";
+import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
 import {
 	phaseDefaultValues,
-	SortFields,
+	SortOptions,
 	UserProjectSidePanelInitialState,
 	UserProjectSidePanelState,
-	SortOptions,
 } from "./reducer";
 
 const { RangePicker } = DatePicker;
@@ -85,6 +83,19 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 		}
 	};
 
+	const downloadCSV = (): void => {
+		const jsonBlob = new Blob([JSON.stringify(state, null, 1)], { type: "text/plain;charset=utf-8" });
+
+		const url = window.URL || window.webkitURL;
+		const link = url.createObjectURL(jsonBlob);
+		const a = document.createElement("a");
+		a.download = `preset-data.jsode`;
+		a.href = link;
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	};
+
 	const handleSelectFilter = (value, type: "phase" | "name" | "sort" | "status"): void => {
 		if (type === "sort") {
 			setSelectedSort(JSON.parse(value));
@@ -129,8 +140,8 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 			<Col>
 				<Row type="flex" justify="space-between">
 					<Col>
-						<Button disabled size="small" type="primary">
-							<small>Presets</small>
+						<Button size="small" type="primary" onClick={downloadCSV}>
+							<small>Download as JSON</small>
 						</Button>
 					</Col>
 					<Col>
