@@ -1,5 +1,6 @@
 import { UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
+import { Moment } from "moment";
 
 export interface UserProjectSidePanelState {
 	nameSearchText: string;
@@ -15,14 +16,8 @@ export interface UserProjectSidePanelState {
 	name: string;
 	searchResults: UserProjectType[];
 	count: number;
-	startedAt: [string, string];
-	endedAt: [string, string];
-}
-
-export enum SortFields {
-	"Customer Name" = "customerName",
-	"End Date" = "endedAt",
-	"Created At" = "createdAt",
+	startedAt: [Moment, Moment];
+	endedAt: [Moment, Moment];
 }
 
 export enum UserProjectSidePanelActionTypes {
@@ -56,6 +51,12 @@ export const phaseDefaultValues: PhaseInternalNames[] = [
 	PhaseInternalNames.designsInRevision,
 ];
 
+export enum SortFields {
+	"Customer Name" = "customerName",
+	"Delivery Date" = "endedAt",
+	"Create Date" = "createdAt",
+}
+
 export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	nameSearchText: "",
 	designerSearchText: "",
@@ -70,8 +71,8 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	searchResults: [],
 	sortOrder: -1,
 	count: 0,
-	startedAt: ["", ""],
-	endedAt: ["", ""],
+	startedAt: [null, null],
+	endedAt: [null, null],
 };
 
 export const UserProjectSidePanelActionCreator = (
@@ -164,4 +165,36 @@ export const UserProjectSidePanelReducer = (
 		default:
 			return state;
 	}
+};
+
+export enum SortOrder {
+	Ascending = 1,
+	Descending = -1,
+}
+
+export const SortOptions = {
+	"Created At - Newest First": {
+		sortBy: SortFields["Create Date"],
+		sortOrder: SortOrder.Descending,
+	},
+	"Created At - Oldest First": {
+		sortBy: SortFields["Create Date"],
+		sortOrder: SortOrder.Ascending,
+	},
+	"Remaining days - Least First": {
+		sortBy: SortFields["Delivery Date"],
+		sortOrder: SortOrder.Ascending,
+	},
+	"Remaining Days - Most First": {
+		sortBy: SortFields["Delivery Date"],
+		sortOrder: SortOrder.Descending,
+	},
+	"Customer Name - Ascending": {
+		sortBy: SortFields["Customer Name"],
+		sortOrder: SortOrder.Ascending,
+	},
+	"Customer Name - Decending": {
+		sortBy: SortFields["Customer Name"],
+		sortOrder: SortOrder.Descending,
+	},
 };

@@ -1,46 +1,113 @@
 import { HumanizePhaseInternalNames, RoomNameSearch } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { Button, Col, Icon, Input, Row, Select, Typography } from "antd";
+import { Button, Col, Icon, Input, Row, Select, Typography, DatePicker, Divider, InputNumber } from "antd";
 import React, { useEffect, useState } from "react";
-import { SilentButton } from "../styled";
-import { phaseDefaultValues, SortFields, UserProjectSidePanelInitialState, UserProjectSidePanelState } from "./reducer";
+import moment from "moment";
+import { PaddedDiv } from "@sections/Header/styled";
+import { SilentButton, SilentDivider } from "../styled";
+import {
+	phaseDefaultValues,
+	SortFields,
+	UserProjectSidePanelInitialState,
+	UserProjectSidePanelState,
+	SortOptions,
+} from "./reducer";
+
+const { RangePicker } = DatePicker;
 
 const { Text } = Typography;
 const { Option } = Select;
 
+const dateFormat = "MM-DD-YYYY";
+
 const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element => {
 	const [state, setState] = useState<UserProjectSidePanelState>(UserProjectSidePanelInitialState);
+	const [selectedSort, setSelectedSort] = useState(SortOptions["Created At - Newest First"]);
+	const [minMax, setMinMax] = useState<number[]>([]);
 
 	useEffect(() => {
 		setState(initialState);
 	}, []);
 
-	const handleSearch = (value: string, type: string): void => {
+	const handleSearch = (value: string | number, type: string): void => {
+		if (type === "min") {
+			let copyValue = value as number;
+			if (minMax[1]) {
+				if (copyValue > minMax[1]) {
+					copyValue = minMax[1] - 1;
+				}
+			}
+			const currentTime = moment({ hour: 0, minute: 0, seconds: 0, milliseconds: 0 });
+			setState({
+				...state,
+				endedAt: [copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null, state.endedAt[1]],
+			});
+			setMinMax(prevState => {
+				const newState = [...prevState];
+				newState[0] = copyValue;
+				return newState;
+			});
+			return;
+		}
+		if (type === "max") {
+			let copyValue = value as number;
+
+			if (minMax[0]) {
+				if (copyValue < minMax[0]) {
+					copyValue = minMax[0] + 1;
+				}
+			}
+
+			const currentTime = moment({ hour: 0, minute: 0, seconds: 0, milliseconds: 0 });
+			setState({
+				...state,
+				endedAt: [state.endedAt[0], copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null],
+			});
+
+			setMinMax(prevState => {
+				const newState = [...prevState];
+				newState[1] = copyValue;
+				return newState;
+			});
+			return;
+		}
+
 		if (type === "customer") {
 			setState({
 				...state,
-				nameSearchText: value,
+				nameSearchText: value as string,
 			});
 		} else if (type === "designer") {
 			setState({
 				...state,
-				designerSearchText: value,
-			});
-		} else if (type.split("-").length === 2) {
-			const name = type.split("-")[0];
-			const position = type.split("-")[1];
-			const modifiedValue = state[name];
-			modifiedValue[position] = value;
-
-			setState({
-				...state,
-				[name]: [...modifiedValue],
+				designerSearchText: value as string,
 			});
 		}
 	};
 
-	const handleSelectFilter = (value, type: "phase" | "name" | "sortOrder" | "sortBy" | "status"): void => {
+	const handleSelectFilter = (value, type: "phase" | "name" | "sort" | "status"): void => {
+		if (type === "sort") {
+			setSelectedSort(JSON.parse(value));
+			setState({
+				...state,
+				...JSON.parse(value),
+			});
+			return;
+		}
 		setState({ ...state, [type]: value });
+	};
+
+	const onDateChange = (field, value): void => {
+		if (field === "endedAt") {
+			const currentTime = moment({ hour: 0, minute: 0, seconds: 0, milliseconds: 0 });
+			const minDuration = value[0] ? moment.duration(value[0].diff(currentTime)).days() : null;
+			const maxDuration = value[1] ? moment.duration(value[1].diff(currentTime)).days() : null;
+			setMinMax([minDuration, maxDuration]);
+		}
+		setState({
+			...state,
+			[field]: value,
+		});
 	};
 
 	useEffect(() => {
@@ -70,6 +137,8 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 						<SilentButton
 							onClick={(): void => {
 								setState({ ...UserProjectSidePanelInitialState });
+								setMinMax([]);
+								setSelectedSort(SortOptions["Created At - Newest First"]);
 							}}
 							type="link"
 						>
@@ -79,11 +148,11 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 				</Row>
 			</Col>
 			<Col>
-				<Row gutter={[4, 8]}>
+				<Row gutter={[4, 16]}>
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col>
-								<Text strong>Customer</Text>
+								<Text strong>Customer Name</Text>
 							</Col>
 							<Col>
 								<Input
@@ -105,7 +174,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					<Col span={12}>
 						<Row gutter={[0, 4]}>
 							<Col>
-								<Text strong>Designer</Text>
+								<Text strong>Designer Name</Text>
 							</Col>
 							<Col>
 								<Input
@@ -152,7 +221,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col>
-								<Text strong>Phase</Text>
+								<Text strong>Phases</Text>
 							</Col>
 							<Col>
 								<Select
@@ -175,29 +244,19 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 							</Col>
 						</Row>
 					</Col>
-
 					<Col span={24}>
-						<Row gutter={[0, 4]}>
-							<Col>
-								<Text strong>Status</Text>
+						<Row gutter={[8, 0]}>
+							<Col span={24}>
+								<Text strong>Start Date</Text>
 							</Col>
-							<Col>
-								<Select
-									value={state.status}
-									style={{ width: "100%" }}
-									defaultValue={Status.active}
-									maxTagCount={2}
-									placeholder="All Status Shown"
-									onChange={(value): void => handleSelectFilter(value, "status")}
-								>
-									{Object.keys(Status).map(key => {
-										return (
-											<Option key={key} value={Status[key]}>
-												{key}
-											</Option>
-										);
-									})}
-								</Select>
+							<Col span={24}>
+								<RangePicker
+									format={dateFormat}
+									value={state.startedAt}
+									mode="date"
+									onChange={(value): void => onDateChange("startedAt", value)}
+									placeholder={["From", "To"]}
+								/>
 							</Col>
 						</Row>
 					</Col>
@@ -205,50 +264,52 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					<Col span={24}>
 						<Row gutter={[8, 0]}>
 							<Col span={24}>
-								<Text strong>Started</Text>
+								<Text strong>
+									Remaining Days for Delivery <small>(Can be negative)</small>
+								</Text>
 							</Col>
-							<Col span={12}>
-								<Row>
-									<Col>
-										<Text>
-											<small>From</small>
-										</Text>
-									</Col>
-									<Col>
-										<Input
-											value={state.startedAt[0]}
-											name="startedAt-0"
-											onChange={(e): void => {
-												const {
-													target: { value },
-												} = e;
-												handleSearch(value, "startedAt-0");
-											}}
-											type="date"
-										/>
-									</Col>
-								</Row>
-							</Col>
-							<Col span={12}>
-								<Row>
-									<Col>
-										<Text>
-											<small>To</small>
-										</Text>
-									</Col>
-									<Col>
-										<Input
-											value={state.startedAt[1]}
-											name="startedAt-1"
-											onChange={(e): void => {
-												const {
-													target: { value },
-												} = e;
-												handleSearch(value, "startedAt-1");
-											}}
-											type="date"
-										/>
-									</Col>
+							<Col span={24}>
+								<Row type="flex">
+									<InputNumber
+										style={{
+											width: "45%",
+											textAlign: "center",
+											borderRadius: "0px",
+											borderRight: 0,
+										}}
+										onChange={(value): void => {
+											handleSearch(value, "min");
+										}}
+										value={minMax[0]}
+										placeholder="Min(Optional)"
+									/>
+									<Input
+										style={{
+											width: "10%",
+											borderLeft: 0,
+											borderRight: 0,
+											borderRadius: "0px",
+
+											pointerEvents: "none",
+											backgroundColor: "#fff",
+										}}
+										placeholder="~"
+										disabled
+									/>
+									<InputNumber
+										style={{
+											width: "45%",
+											textAlign: "center",
+											borderLeft: 0,
+
+											borderRadius: "0px",
+										}}
+										value={minMax[1]}
+										onChange={(value): void => {
+											handleSearch(value, "max");
+										}}
+										placeholder="Max(Optional)"
+									/>
 								</Row>
 							</Col>
 						</Row>
@@ -256,51 +317,18 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					<Col span={24}>
 						<Row gutter={[8, 0]}>
 							<Col span={24}>
-								<Text strong>Ends</Text>
+								<Text strong>
+									Delivery Date <small>(Delay not included)</small>
+								</Text>
 							</Col>
-							<Col span={12}>
-								<Row>
-									<Col>
-										<Text>
-											<small>From</small>
-										</Text>
-									</Col>
-									<Col>
-										<Input
-											name="endedAt-0"
-											value={state.endedAt[0]}
-											onChange={(e): void => {
-												const {
-													target: { value },
-												} = e;
-												handleSearch(value, "endedAt-0");
-											}}
-											type="date"
-										/>
-									</Col>
-								</Row>
-							</Col>
-							<Col span={12}>
-								<Row>
-									<Col>
-										<Text>
-											<small>To</small>
-										</Text>
-									</Col>
-									<Col>
-										<Input
-											name="endedAt-1"
-											value={state.startedAt[1]}
-											onChange={(e): void => {
-												const {
-													target: { value },
-												} = e;
-												handleSearch(value, "endedAt-1");
-											}}
-											type="date"
-										/>
-									</Col>
-								</Row>
+							<Col span={24}>
+								<RangePicker
+									format={dateFormat}
+									value={state.endedAt}
+									mode="date"
+									onChange={(value): void => onDateChange("endedAt", value)}
+									placeholder={["From", "To"]}
+								/>
 							</Col>
 						</Row>
 					</Col>
@@ -330,44 +358,29 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 							</Col>
 						</Row>
 					</Col>
-
-					<Col span={12}>
+					<Col span={24}>
+						<div style={{ padding: "1rem 0" }}>
+							<SilentDivider />
+						</div>
+					</Col>
+					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col>
-								<Text strong>Sort by</Text>
+								<Text strong>Sort Option</Text>
 							</Col>
 							<Col>
 								<Select
-									value={state.sortBy}
+									value={JSON.stringify(selectedSort)}
 									style={{ width: "100%" }}
-									defaultValue={SortFields["End Date"]}
-									onChange={(value): void => handleSelectFilter(value, "sortBy")}
+									onChange={(value): void => handleSelectFilter(value, "sort")}
 								>
-									{Object.keys(SortFields).map(key => {
+									{Object.keys(SortOptions).map(key => {
 										return (
-											<Option key={key} value={SortFields[key]}>
+											<Option key={key} value={JSON.stringify(SortOptions[key])}>
 												{key}
 											</Option>
 										);
 									})}
-								</Select>
-							</Col>
-						</Row>
-					</Col>
-					<Col span={12}>
-						<Row gutter={[0, 4]}>
-							<Col>
-								<Text strong>Sort order</Text>
-							</Col>
-							<Col>
-								<Select
-									value={state.sortOrder}
-									style={{ width: "100%" }}
-									onChange={(value): void => handleSelectFilter(value, "sortOrder")}
-									defaultValue={1}
-								>
-									<Option value={-1}>Descending</Option>
-									<Option value={1}>Ascending</Option>
 								</Select>
 							</Col>
 						</Row>
