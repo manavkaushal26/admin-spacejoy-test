@@ -265,8 +265,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		const dimensionsToSend = formatDimensionsForSending(state.dimension, dimensionInInches);
 
 		const requestBody = {
-			name: state.name,
-			description: state.description,
+			name: state.name.trim(),
+			description: state.description.trim(),
 			status: state.status || Status.pending,
 			shoppable: state.shoppable,
 			retailer: state.retailer,
@@ -535,6 +535,19 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			updateStatus();
 		}
 	}, [state.status, immediateUpdate]);
+
+	useEffect(() => {
+		if (state.retailer) {
+			const spacejoyRetailer = retailers.find(retailer => {
+				return retailer.name.toLowerCase() === "spacejoy";
+			});
+			if (spacejoyRetailer) {
+				if (spacejoyRetailer._id === state.retailer) {
+					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK, value: "http://www.spacejoy.com" });
+				}
+			}
+		}
+	}, [state.retailer]);
 
 	const handlePreview = async (file): Promise<void> => {
 		const fileCopy = { ...file };
