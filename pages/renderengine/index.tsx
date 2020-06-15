@@ -213,6 +213,10 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 																		<Text strong>Created at: </Text>
 																		<Text> {moment(source.createdAt).format("D-MMM-YYYY")}</Text>
 																	</Col>
+																	<Col span={24}>
+																		<Text strong>No of jobs: </Text>
+																		<Text>{source.jobs?.length || 0}</Text>
+																	</Col>
 																</Row>
 															}
 														/>

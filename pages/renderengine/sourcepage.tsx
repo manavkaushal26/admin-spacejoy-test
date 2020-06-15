@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
-import User, { Role } from "@customTypes/userType";
-import { DetailedSource, AllJobs } from "@customTypes/renderEngineTypes";
+import User, { Role, Status } from "@customTypes/userType";
+import { DetailedSource, AllJobs, RenderEngineStatus } from "@customTypes/renderEngineTypes";
 import PageLayout from "@sections/Layout";
 import { company } from "@utils/config";
 import { NextPage, NextPageContext } from "next";
@@ -92,13 +92,14 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 	const createJob = async (state: Record<string, string | number>): Promise<void> => {
 		setLoading(true);
 		const endPoint = createJobApi(sourceData._id);
+
 		const data = {
 			name: state.name,
 			description: state.description,
 			options: {
 				samples: state.samples,
 				cameraType: state.cameraType,
-				...(state.cameraType === "specific" ? { cameraSpecific: state.caneraSpecific } : {}),
+				...(state.cameraType === "specific" ? { cameraSpecific: state.cameraSpecific } : {}),
 			},
 		};
 
@@ -145,6 +146,27 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 			const modifiedJobs = jobs.map(job => {
 				if (job._id === jobID) {
 					return { ...response.data };
+				}
+				return job;
+			});
+			setJobs(modifiedJobs);
+		} else {
+			notification.error({ message: "Failed to start render" });
+		}
+	};
+
+	const cancelJob = async (jobID: string): Promise<void> => {
+		const endPoint = startRenderJob(sourceData._id, jobID);
+
+		const response = await fetcher({
+			endPoint,
+			method: "DELETE",
+			hasBaseURL: true,
+		});
+		if (!response.err) {
+			const modifiedJobs = jobs.map(job => {
+				if (job._id === jobID) {
+					return { ...job, status: RenderEngineStatus.pending };
 				}
 				return job;
 			});
@@ -252,7 +274,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 							)}
 							<Col>
 								<Row gutter={[8, 8]}>
-									{jobs.length !== 0
+									{jobs.length !== 0 && sourceData.cameras.length !== 0
 										? jobs
 												.filter(job => {
 													return job.name.toLowerCase().includes(searchText);
@@ -266,13 +288,14 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 															onClick={toggleJobDetails}
 															startJob={onStartJobClick}
 															socket={socket}
+															cancelJob={cancelJob}
 														/>
 													);
 												})
 										: !!sourceData.storage && (
 												<Result status="404" title="No Jobs" subTitle="Create a new Job to see it here" />
 										  )}
-									{!sourceData.storage && (
+									{(!sourceData.storage || sourceData.cameras.length === 0) && (
 										<Row type="flex" justify="space-around">
 											<Upload
 												accept=".blend"
@@ -284,7 +307,11 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 													style={{ cursor: "pointer" }}
 													status="500"
 													title="Click to upload source"
-													subTitle="No file has been uploaded"
+													subTitle={
+														sourceData.cameras.length === 0
+															? "Uploaded file has no Cameras"
+															: "No file has been uploaded"
+													}
 												/>
 											</Upload>
 										</Row>
@@ -298,6 +325,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 						isOpen={jobCreationModalVisible}
 						closeModal={toggleJobCreationModal}
 						loading={loading}
+						cameras={sourceData.cameras}
 					/>
 					<JobDetailsModal sourceId={sourceData._id} jobId={jobId} closeModal={toggleJobDetails} />
 				</MaxHeightDiv>

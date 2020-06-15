@@ -49,6 +49,11 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL }: FetcherParam
 			}
 		}
 	}
+	if (response.status === 204) {
+		return {
+			statusCode: response.status,
+		};
+	}
 	if (response.status) {
 		const resData = await response.json();
 		return resData;

@@ -12,6 +12,7 @@ export interface AllSources {
 	status: RenderEngineStatus;
 	_id: string;
 	name: string;
+	jobs: Partial<DetailedJob>[];
 	description: string;
 	createdAt: string;
 	renders: string[];
@@ -19,6 +20,7 @@ export interface AllSources {
 
 export interface DetailedSource extends AllSources {
 	jobs: DetailedJob[];
+	cameras: string[];
 	storage: {
 		url: string;
 		key: string;

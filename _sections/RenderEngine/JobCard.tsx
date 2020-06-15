@@ -1,5 +1,5 @@
 import { AllJobs, RenderEngineStatus } from "@customTypes/renderEngineTypes";
-import { Card, Col, Icon, Popconfirm, Progress, Row, Typography, notification } from "antd";
+import { Card, Col, Icon, notification, Popconfirm, Progress, Row, Typography } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 
 const { Text } = Typography;
@@ -10,6 +10,7 @@ interface JobCard {
 	startJob: (jobId: string) => void;
 	onDelete: (jobId: string) => void;
 	socket: SocketIOClient.Socket;
+	cancelJob: (jobId: string) => void;
 }
 
 interface ProgressData {
@@ -37,29 +38,17 @@ const HumanizeRenderStatus = {
 	[RenderEngineStatus.suspended]: "Suspended",
 };
 
-const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, onDelete, socket }) => {
+const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, onDelete, socket, cancelJob }) => {
 	const [job, setJob] = useState<AllJobs>({
 		...jobInitialData,
 	});
 	const [progressError, setProgressError] = useState<boolean>(false);
 	const [progressData, setProgressData] = useState<Partial<ProgressData>>(null);
-	// const [socketConnected, setSocketConnected] = useState<boolean>(false);
-
-	// useEffect(() => {
-	// 	if (socketConnected) {
-	// 		// eslint-disable-next-line no-console
-	// 		console.log("Socket Connected!!!");
-	// 	} else {
-	// 		// eslint-disable-next-line no-console
-	// 		console.log("Socket Disconnected!!!");
-	// 	}
-	// }, [socketConnected]);
 
 	useEffect(() => {
 		if (job.status === RenderEngineStatus.waiting || job.status === RenderEngineStatus.active) {
 			if (job.qid) {
 				socket.emit("subscribe", job.qid);
-				// setSocketConnected(true);
 
 				socket.on("Job.Start", data => {
 					if (job.qid === data.id) {
@@ -69,7 +58,6 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 
 				socket.on("Job.Progress", progressInfo => {
 					if (job.qid === progressInfo.id) {
-						// console.log("Job.Progress", progressInfo);
 						const status = {
 							status: job.status,
 						};
@@ -114,7 +102,6 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				});
 				socket.on("Job.Failed", id => {
 					if (job._id === id) {
-						// console.log("Job.Failed", id);
 						if (job.qid === id) {
 							notification.error({ message: `Job ${job.qid} has failed.` });
 						}
@@ -129,7 +116,6 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				});
 				socket.on("Job.Complete", id => {
 					if (job._id === id) {
-						// console.log("Job.Complete", id);
 						setJob({
 							...job,
 							status: RenderEngineStatus.completed,
@@ -146,7 +132,6 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 		}
 		return (): void => {
 			socket.emit("unsubscribe", job.qid);
-			// setSocketConnected(false);
 		};
 	}, [job.status]);
 
@@ -177,9 +162,10 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									}}
 									onConfirm={(e): void => {
 										e.stopPropagation();
+										setProgressData(null);
 										startJob(job._id);
 									}}
-									key="delete"
+									key="render"
 								>
 									<Icon type="video-camera" onClick={(e): void => e.stopPropagation()} key="render" />
 								</Popconfirm>,
@@ -195,6 +181,23 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									key="delete"
 								>
 									<Icon onClick={(e): void => e.stopPropagation()} type="delete" />
+								</Popconfirm>,
+						  ]
+						: []),
+					...(job.status === RenderEngineStatus.active || job.status === RenderEngineStatus.waiting
+						? [
+								<Popconfirm
+									title="Are you Sure?"
+									onCancel={(e): void => {
+										e.stopPropagation();
+									}}
+									onConfirm={(e): void => {
+										e.stopPropagation();
+										cancelJob(job._id);
+									}}
+									key="delete"
+								>
+									<Icon type="close" onClick={(e): void => e.stopPropagation()} key="render" />
 								</Popconfirm>,
 						  ]
 						: []),

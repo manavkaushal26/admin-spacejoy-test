@@ -1,5 +1,5 @@
-import React, { useState, useEffect, ReactNode, useRef } from "react";
-import { Modal, Row, Typography, Col, Input, Select } from "antd";
+import { Col, Input, Modal, Row, Select, Typography } from "antd";
+import React, { useEffect, useRef, useState } from "react";
 
 const { Text } = Typography;
 
@@ -8,9 +8,10 @@ interface CreateNewJob {
 	closeModal: () => void;
 	createJob: (state: Record<string, string | number>) => void;
 	loading: boolean;
+	cameras: string[];
 }
 
-const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, loading }) => {
+const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, loading, cameras }) => {
 	const [state, setState] = useState({
 		name: "",
 		description: "",
@@ -165,14 +166,21 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 							</Col>
 							<Col>
 								<Select
-									dropdownRender={(): ReactNode => <></>}
 									style={{ width: "100%" }}
-									mode="tags"
+									mode="multiple"
 									tokenSeparators={[","]}
 									value={state.cameraSpecific === "" ? [] : state.cameraSpecific.split(",")}
 									onChange={(value): void => onChange({ target: { name: "cameraSpecific", value: value.join(",") } })}
 									placeholder="Camera Name"
-								/>
+								>
+									{cameras.map(camera => {
+										return (
+											<Select.Option key={camera} value={camera}>
+												{camera}
+											</Select.Option>
+										);
+									})}
+								</Select>
 							</Col>
 						</Row>
 					</Col>
