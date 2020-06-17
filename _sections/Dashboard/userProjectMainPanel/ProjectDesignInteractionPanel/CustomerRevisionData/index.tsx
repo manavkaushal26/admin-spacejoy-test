@@ -1,15 +1,15 @@
-import { editRevisionFormAPI } from "@api/projectApi";
-import { RevisionForm, HumanizeMode, DisplayDIYStatus, DisplayDARStatus } from "@customTypes/dashboardTypes";
+import { editRevisionFormAPI, getRevisionFormForProjectId } from "@api/projectApi";
+import { RevisionForm } from "@customTypes/dashboardTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
-import { Button, Col, notification, Radio, Row, Typography, Empty } from "antd";
-import React, { useMemo, useState } from "react";
+import { Button, Col, Empty, notification, Radio, Row, Typography } from "antd";
+import React, { useState } from "react";
+import CommentsDrawer from "./CommentsDrawer";
 import DesignWiseSelectedProductCards from "./DesignWiseSelectedProductCards";
 import EditRevisionDataDrawer from "./EditRevisionDataDrawer";
 import RequestProductCard from "./RequestProductCard";
-import CommentsDrawer from "./CommentsDrawer";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 interface CustomerRevisionData {
 	revisionData: RevisionForm;
@@ -17,10 +17,12 @@ interface CustomerRevisionData {
 }
 
 const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, updateRevisionData }) => {
-	const [designId, setSelectedDesignId] = useState<string>(revisionData.fullDesignList[0]._id);
+	const [designId, setSelectedDesignId] = useState<string>(
+		revisionData.revisionVersion === 0 ? revisionData.fullDesignList[0]._id : revisionData.revisedDesign._id
+	);
 	const [editRevison, setEditRevision] = useState<boolean>(false);
 	const [commentsDrawerOpen, setCommentsDrawerOpen] = useState<boolean>(false);
-
+	const [refreshing, setRefreshing] = useState<boolean>(false);
 	const handleChange = (e): void => {
 		const {
 			target: { value },
@@ -28,6 +30,19 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 		setSelectedDesignId(value);
 	};
 
+	const onRefresh = async (): Promise<void> => {
+		setRefreshing(true);
+		const endPoint = getRevisionFormForProjectId(revisionData.project);
+		const response = await fetcher({ endPoint, method: "GET" });
+		try {
+			if (response.statusCode <= 300) {
+				updateRevisionData(response.data);
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to load revision form" });
+		}
+		setRefreshing(false);
+	};
 	const toggleEditRevision = (): void => {
 		setEditRevision(prevState => !prevState);
 	};
@@ -82,6 +97,11 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 								Open Chat
 							</Button>
 						</Col>
+						<Col>
+							<Button onClick={onRefresh} block type="primary" icon="reload" loading={refreshing}>
+								Refresh Data
+							</Button>
+						</Col>
 					</Row>
 				</Col>
 				<Col span={24}>
@@ -97,13 +117,19 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 								<Col span={24}>
 									<Row type="flex" justify="center">
 										<Radio.Group value={designId} onChange={handleChange}>
-											{revisionData.fullDesignList.map(design => {
-												return (
-													<Radio.Button key={design._id} value={design._id}>
-														{design.name}
-													</Radio.Button>
-												);
-											})}
+											{revisionData.revisionVersion === 0 ? (
+												revisionData.fullDesignList.map(design => {
+													return (
+														<Radio.Button key={design._id} value={design._id}>
+															{design.name}
+														</Radio.Button>
+													);
+												})
+											) : (
+												<Radio.Button key={revisionData.revisedDesign._id} value={revisionData.revisedDesign._id}>
+													{revisionData.revisedDesign.name}
+												</Radio.Button>
+											)}
 										</Radio.Group>
 									</Row>
 								</Col>

@@ -21,7 +21,6 @@ const dataFormatter = (data: PriceData[]) => {
 				_id: packageData._id,
 				key: packageData._id,
 				slug: packageData.slug,
-				versionNumber: packageData.versionNumber,
 				price: packageData.price,
 				salePrice: packageData.salePrice,
 				savings: packageData.savings,
@@ -35,7 +34,6 @@ const dataFormatter = (data: PriceData[]) => {
 					{
 						_id: packageData._id,
 						slug: packageData.slug,
-						versionNumber: packageData.versionNumber,
 						price: packageData.price,
 						salePrice: packageData.salePrice,
 						savings: packageData.savings,
@@ -278,7 +276,12 @@ const PriceManager: NextPage<{
 							<Title>Package Manager</Title>
 						</Col>
 						<Col span={24}>
-							<Table dataSource={allPrices} columns={columns} rowKey={(record): string => record._id} />
+							<Table
+								loading={loading}
+								dataSource={allPrices}
+								columns={columns}
+								rowKey={(record): string => record._id}
+							/>
 						</Col>
 					</LoudPaddingDiv>
 				</MaxHeightDiv>

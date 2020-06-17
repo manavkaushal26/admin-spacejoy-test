@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { Drawer, Row, Col, Typography, Button, notification, Switch } from "antd";
-import { RevisionForm, Mode } from "@customTypes/dashboardTypes";
-import SelectField from "@components/Inputs/SelectField";
-import InputField from "@components/Inputs/InputField";
-import { SilentDivider } from "@sections/Dashboard/styled";
 import { editRevisionFormAPI } from "@api/projectApi";
+import InputField from "@components/Inputs/InputField";
+import SelectField from "@components/Inputs/SelectField";
+import { RevisionForm } from "@customTypes/dashboardTypes";
+import { SilentDivider } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
+import { Button, Col, Drawer, Icon, notification, Row, Switch, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -128,24 +128,26 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 	return (
 		<Drawer visible={open} width={360} onClose={toggleDrawer} title="Edit Revision Details">
 			<Row gutter={[16, 16]}>
-				<Col>
-					<SelectField
-						name="revisionType"
-						label="Revision Type"
-						value={state.revisionType}
-						options={[
-							{
-								_id: "dar",
-								name: "Designer Assisted Revision(D.A.R)",
-							},
-							{
-								_id: "diy",
-								name: "Do It Yourself(D.I.Y)",
-							},
-						]}
-						onChange={handleChange}
-					/>
-				</Col>
+				{false && (
+					<Col>
+						<SelectField
+							name="revisionType"
+							label="Revision Type"
+							value={state.revisionType}
+							options={[
+								{
+									_id: "dar",
+									name: "Designer Assisted Revision(D.A.R)",
+								},
+								{
+									_id: "diy",
+									name: "Do It Yourself(D.I.Y)",
+								},
+							]}
+							onChange={handleChange}
+						/>
+					</Col>
+				)}
 				<Col>
 					<Row gutter={[8, 8]}>
 						<Col span={24}>
@@ -155,7 +157,12 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
-							<Switch checked={state.isLocked} onChange={(value): void => handleChange("isLocked", value)} />
+							<Switch
+								checkedChildren={<Icon type="lock" />}
+								unCheckedChildren={<Icon type="unlock" />}
+								checked={state.isLocked}
+								onChange={(value): void => handleChange("isLocked", value)}
+							/>
 						</Col>
 					</Row>
 				</Col>

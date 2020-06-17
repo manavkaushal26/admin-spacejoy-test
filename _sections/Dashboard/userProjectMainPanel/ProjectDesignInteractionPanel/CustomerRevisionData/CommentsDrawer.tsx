@@ -40,22 +40,33 @@ const CommentList = ({ comments, authors }: CommentList): React.ReactElement => 
 		<List
 			dataSource={comments}
 			itemLayout="vertical"
-			renderItem={(comment: RevisionComments): React.ReactNode => (
-				<Comment
-					author={comment.authorName}
-					datetime={
-						<Tooltip title={moment(comment.submittedOn).format("MM-DD-YYYY hh:mm a")}>
-							{moment(comment.submittedOn).fromNow()}
-						</Tooltip>
-					}
-					avatar={
-						<Avatar style={{ backgroundColor: AvatarColorsList[authors.indexOf(comment.authorName) % authors.length] }}>
-							{comment.authorName[0]}
-						</Avatar>
-					}
-					content={comment.text}
-				/>
-			)}
+			renderItem={(comment: RevisionComments): React.ReactNode => {
+				console.log(
+					authors.indexOf(comment.authorName) % authors.length,
+					AvatarColorsList[authors.indexOf(comment.authorName) % authors.length]
+				);
+
+				return comment?.text ? (
+					<Comment
+						author={comment.authorName}
+						datetime={
+							<Tooltip title={moment(comment.submittedOn).format("MM-DD-YYYY hh:mm a")}>
+								{moment(comment.submittedOn).fromNow()}
+							</Tooltip>
+						}
+						avatar={
+							<Avatar
+								style={{ backgroundColor: AvatarColorsList[authors.indexOf(comment.authorName) % authors.length] }}
+							>
+								{comment.authorName[0]}
+							</Avatar>
+						}
+						content={comment.text}
+					/>
+				) : (
+					<></>
+				);
+			}}
 		/>
 	);
 };
