@@ -89,7 +89,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 		const url = window.URL || window.webkitURL;
 		const link = url.createObjectURL(jsonBlob);
 		const a = document.createElement("a");
-		a.download = `preset-data.jsode`;
+		a.download = `preset-data.json`;
 		a.href = link;
 		document.body.appendChild(a);
 		a.click();

@@ -14,6 +14,10 @@ export const getAllPricePackages = (): string => {
 	return `/packages/search`;
 };
 
+export const getCurrentVersions = (): string => {
+	return `/vconfig/options/package`;
+};
+
 export const getPackageVersionInfo = (): string => {
 	return `/vconfig/options/package`;
 };
