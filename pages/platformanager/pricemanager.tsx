@@ -105,7 +105,7 @@ const PriceManager: NextPage<{
 			});
 		});
 
-		await Promise.allSettled(copyPromiseArray);
+		await Promise.all(copyPromiseArray);
 
 		fetchPriceData();
 	};

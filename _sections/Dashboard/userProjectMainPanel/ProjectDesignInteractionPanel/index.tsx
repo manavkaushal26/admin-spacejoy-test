@@ -42,7 +42,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 					<CustomerFeedbackTab projectData={projectData} />
 				</Tabs.TabPane>
 			)}
-			{revisionFormData && revisionFormData._id && (
+			{revisionFormData?._id && (
 				<Tabs.TabPane tab="Revision Form" key="customerFeedback">
 					<CustomerRevisionData revisionData={revisionFormData} updateRevisionData={updateRevisionData} />
 				</Tabs.TabPane>

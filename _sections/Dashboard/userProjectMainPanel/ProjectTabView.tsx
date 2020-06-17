@@ -34,10 +34,10 @@ interface ProjectTabViewProps {
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	refetchData?: () => void;
 	currentTab: string;
-	revisionFormData: RevisionForm;
+	revisionFormData?: RevisionForm;
 	setProjectData?: React.Dispatch<React.SetStateAction<DetailedProject>>;
 	onTabChangeCallback?: (activeKey: string, pid: string, designId: string) => void;
-	updateRevisionData: (revisionData: RevisionForm) => void;
+	updateRevisionData?: (revisionData: RevisionForm) => void;
 }
 
 const ScrollableTabs = styled(Tabs)`
