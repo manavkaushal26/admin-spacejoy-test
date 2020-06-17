@@ -8,7 +8,6 @@ const GlobalStyle = createGlobalStyle`
 		}
 		a {
 			text-decoration: none;
-			color: ${({ theme }) => theme.colors.primary1};
 		}
 		.text-normal{
 			font-weight:normal;

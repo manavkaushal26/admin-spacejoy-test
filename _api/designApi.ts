@@ -90,3 +90,9 @@ export const getThemes = (): string => {
 export const updateSubtasks = (designId): string => {
 	return `/admin/design/${designId}/requirement`;
 };
+
+// *****************************************************************************************************************
+
+export const getAssetsInDesignApi = (designId): string => {
+	return `/v1/design/${designId}/assets`;
+};

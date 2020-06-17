@@ -1,13 +1,21 @@
-import { DetailedProject, PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
+import {
+	DetailedProject,
+	PhaseCustomerNames,
+	PhaseInternalNames,
+	UserProjectType,
+	RevisionForm,
+} from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Divider, Empty, Row, Spin, Typography } from "antd";
+import { Divider, Empty, Row, Spin, Typography, notification } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import { getRevisionFormForProjectId } from "@api/projectApi";
 import { MaxHeightDiv, VerticalPaddedDiv } from "../styled";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
+import RevisionDetails from "./ProjectDesignInteractionPanel/RevisionDetails";
 
 const { Text } = Typography;
 
@@ -28,14 +36,33 @@ const userProjectMainPanel: React.FC<{
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const Router = useRouter();
+	const [revisionFormData, setRevisionFormData] = useState<RevisionForm>(null);
 
-	const fetchAndPopulate = async (): Promise<void> => {
+	const fetchAndPopulateProjectData = async (): Promise<void> => {
 		setLoading(true);
 		const response = await fetcher({ endPoint: `/admin/project/${userProjectId}`, method: "GET" });
 		if (response.statusCode <= 300) {
 			setProjectData(response.data);
 		}
 		setLoading(false);
+	};
+
+	const updateRevisionData = (modifiedRevisonData: RevisionForm): void => {
+		setRevisionFormData({
+			...modifiedRevisonData,
+		});
+	};
+
+	const fetchAndPopulateRevisionForm = async (): Promise<void> => {
+		const endPoint = getRevisionFormForProjectId(userProjectId);
+		const response = await fetcher({ endPoint, method: "GET" });
+		try {
+			if (response.statusCode <= 300) {
+				setRevisionFormData(response.data);
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to load revision form" });
+		}
 	};
 
 	useEffect(() => {
@@ -77,14 +104,15 @@ const userProjectMainPanel: React.FC<{
 	useEffect(() => {
 		if (!designId) {
 			if (userProjectId) {
-				fetchAndPopulate();
+				fetchAndPopulateProjectData();
 			}
 		}
 	}, [designId]);
 
 	useEffect(() => {
 		if (userProjectId) {
-			fetchAndPopulate();
+			fetchAndPopulateProjectData();
+			fetchAndPopulateRevisionForm();
 		}
 		return (): void => {
 			setProjectData(null);
@@ -108,17 +136,29 @@ const userProjectMainPanel: React.FC<{
 				{projectData ? (
 					<>
 						<ProjectSummary projectData={projectData} setProjectData={setProjectData} />
-						<Divider /> <BasicDetails projectData={projectData} />
+						{!designId && (
+							<>
+								<Divider /> <BasicDetails projectData={projectData} />
+							</>
+						)}
+						{revisionFormData && revisionFormData._id && (
+							<>
+								<Divider />
+								<RevisionDetails revisionData={revisionFormData} />
+							</>
+						)}
 						<Divider />
 						<ProjectTabView
+							updateRevisionData={updateRevisionData}
 							onTabChangeCallback={onTabChange}
 							currentTab={currentTab}
-							refetchData={fetchAndPopulate}
+							refetchData={fetchAndPopulateProjectData}
 							setLoading={setLoading}
 							projectData={projectData}
 							onSelectDesign={onSelectDesign}
 							designId={designId}
 							setProjectData={setProjectData}
+							revisionFormData={revisionFormData}
 						/>
 					</>
 				) : (

@@ -7,6 +7,7 @@ import {
 	HumanizeDesignPhases,
 	PhaseCustomerNames,
 	PhaseInternalNames,
+	RevisionForm,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
@@ -33,8 +34,10 @@ interface ProjectTabViewProps {
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	refetchData?: () => void;
 	currentTab: string;
+	revisionFormData: RevisionForm;
 	setProjectData?: React.Dispatch<React.SetStateAction<DetailedProject>>;
 	onTabChangeCallback?: (activeKey: string, pid: string, designId: string) => void;
+	updateRevisionData: (revisionData: RevisionForm) => void;
 }
 
 const ScrollableTabs = styled(Tabs)`
@@ -58,6 +61,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	onTabChangeCallback,
 	setProjectData,
 	currentTab,
+	updateRevisionData,
+	revisionFormData,
 }): JSX.Element => {
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
@@ -313,6 +318,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 				<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
 					{!!projectData && (
 						<ProjectDesignInteractionPanel
+							updateRevisionData={updateRevisionData}
+							revisionFormData={revisionFormData}
 							refetchData={refetchData}
 							setProjectData={setProjectData}
 							projectData={projectData}

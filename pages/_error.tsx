@@ -1,12 +1,10 @@
-import Image from "@components/Image";
 import User from "@customTypes/userType";
 import Layout from "@sections/Layout";
 import { redirectToLocation } from "@utils/auth";
-import { Button, Typography } from "antd";
+import { Button } from "antd";
 import React from "react";
 import styled from "styled-components";
-
-const { Text } = Typography;
+import Error from "next/error";
 
 const ErrorWrapper = styled.div`
 	min-height: calc(100vh - 60px);
@@ -17,27 +15,17 @@ const ErrorWrapper = styled.div`
 	> * + * {
 		margin-top: 1rem;
 	}
-`;
-
-const ErrorText = styled(Text)`
-	position: relative;
-	text-align: center;
-	> * + * {
-		margin-top: 1rem;
+	> div {
+		height: auto !important;
 	}
 `;
-
-const errorImage =
-	process.env.NODE_ENV === "production"
-		? "q_80/v1573097106/shared/404_btqimw.svg"
-		: "q_80/v1576132598/shared/404_btqimw.svg";
 
 const routeParameters = {
 	pathname: "/launchpad",
 	url: "/launchpad",
 };
 
-class Error extends React.Component<{ authVerification: Partial<User>; status: number }> {
+class ErrorComponent extends React.Component<{ authVerification: Partial<User>; status: number }> {
 	static getInitialProps({ res, err }) {
 		let status = null;
 		if (res) {
@@ -55,12 +43,7 @@ class Error extends React.Component<{ authVerification: Partial<User>; status: n
 		return (
 			<Layout {...this.props}>
 				<ErrorWrapper>
-					<Image
-						height="250px"
-						src={errorImage}
-						alt={status ? `An error ${status} occurred on server` : "An error occurred on client"}
-					/>
-					<ErrorText>{status ? `An error ${status} occurred on server` : "An error occurred on client"}</ErrorText>
+					<Error statusCode={status} />
 					<Button type="primary" onClick={(): void => redirectToLocation(routeParameters)}>
 						Go to Launchpad
 					</Button>
@@ -70,4 +53,4 @@ class Error extends React.Component<{ authVerification: Partial<User>; status: n
 	}
 }
 
-export default Error;
+export default ErrorComponent;

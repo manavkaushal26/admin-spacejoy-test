@@ -121,10 +121,9 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 	const setDimensions = e => {
 		e.persist();
 		const {
-			target: { naturalHeight, naturalWeight },
+			target: { naturalHeight, naturalWidth },
 		} = e;
-
-		if (naturalHeight > naturalWeight) {
+		if (naturalHeight > naturalWidth) {
 			setImageHeight("250px");
 			setImageWidth("auto");
 		} else {

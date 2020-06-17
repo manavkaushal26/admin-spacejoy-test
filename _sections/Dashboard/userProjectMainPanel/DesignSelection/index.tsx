@@ -67,6 +67,7 @@ interface DesignSelection {
 	onSelectDesign: (id: string) => void;
 	refetchData: () => void;
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	revisionDesign: string;
 }
 
 const getNumberOfDesigns = (items: Packages[]): number => {
@@ -92,7 +93,12 @@ const getNumberOfActiveProjects = (designs: DesignInterface[]): number => {
 	}, 0);
 };
 
-const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesign, setProjectData }) => {
+const DesignSelection: React.FC<DesignSelection> = ({
+	projectData,
+	onSelectDesign,
+	setProjectData,
+	revisionDesign,
+}) => {
 	const [copyDesignModalVisible, setCopyDesignModalVisible] = useState<boolean>(false);
 	const [editDesignModalVisible, setEditDesignModalVisible] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -277,6 +283,7 @@ const DesignSelection: React.FC<DesignSelection> = ({ projectData, onSelectDesig
 								onDelete={confirmDelete}
 								designName={design.design.name}
 								state={design.state}
+								revisionDesignId={revisionDesign}
 								phase={getHumanizedActivePhase(design.design.phases)}
 							/>
 						);

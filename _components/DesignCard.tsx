@@ -1,6 +1,6 @@
-import { DesignImagesInterface, DesignState } from "@customTypes/dashboardTypes";
+import { DesignImagesInterface, DesignState, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Role } from "@customTypes/userType";
-import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
+import { BiggerButtonCarousel, getTagColor } from "@sections/Dashboard/styled";
 import { Card, Col, Icon, Row, Tag, Typography } from "antd";
 import React, { useState, ReactNode, useEffect } from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
@@ -17,6 +17,7 @@ interface DesignCardProps {
 	role?: Role;
 	creatorRole?: Role;
 	feedbackPresent?: boolean;
+	revisionDesignId: string;
 	onCopyAsDesignExampleClick?: (data: string) => void;
 }
 
@@ -39,8 +40,9 @@ const topRightTick = css`
 	}
 `;
 
-const StateAwareCards = styled(Card)<{ state: DesignState }>`
+const StateAwareCards = styled(Card)<{ state: DesignState; revisionDesign: boolean }>`
 	${({ state }): FlattenSimpleInterpolation | null => (state === DesignState.Finalized ? topRightTick : null)}
+	background-color: ${({ revisionDesign }): string | null => (revisionDesign ? "#fff7e6" : null)};
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
@@ -68,6 +70,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	feedbackPresent,
 	onCopyAsDesignExampleClick,
 	role,
+	revisionDesignId,
 }) => {
 	const [actions, setActions] = useState<ReactNode[]>([]);
 
@@ -99,7 +102,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 			);
 		}
 		setActions(listOfActions);
-		return () => {
+		return (): void => {
 			setActions([]);
 		};
 	}, [onDelete, onCopyAsDesignExampleClick, role]);
@@ -121,6 +124,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 				hoverable
 				onClick={(): void => onSelectCard(uniqueId)}
 				actions={actions}
+				revisionDesign={uniqueId === revisionDesignId}
 				cover={
 					<Row
 						{...(coverImage.length !== 1
@@ -156,6 +160,11 @@ const DesignCard: React.FC<DesignCardProps> = ({
 					{creatorRole && (
 						<Col span={12}>
 							<Tag color="blue">Owner: {creatorRole}</Tag>
+						</Col>
+					)}
+					{revisionDesignId === uniqueId && (
+						<Col span={12}>
+							<Tag color="red">Revision</Tag>
 						</Col>
 					)}
 				</Row>

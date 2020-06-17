@@ -12,6 +12,21 @@ export const allowedRoles = [
 	Role.seoTeam,
 ];
 
+export const AvatarColorsList = [
+	"#820014",
+	"#871400",
+	"#873800",
+	"#874d00",
+	"#876800",
+	"#3f6600",
+	"#135200",
+	"#00474f",
+	"#003a8c",
+	"#061178",
+	"#22075e",
+	"#780650",
+];
+
 export const MountAndClampValuesForVerticals = {
 	"5d9b10ee40295b004dde4ccc": { mountValue: MountTypes.floor, clampValue: 1 },
 	"5d9b10ee40295b004dde4ccd": { mountValue: MountTypes.floor, clampValue: 1 },

@@ -23,3 +23,19 @@ export const delayProjectApi = (projectId: string): string => {
 export const searchProjectsApi = (): string => {
 	return `/admin/projects/search`;
 };
+
+/**
+ * Returns endpoint to retrieve revision form for a project
+ * @param projectId Project Id for which form will be fetched
+ */
+export const getRevisionFormForProjectId = (projectId: string): string => {
+	return `/v2/project/${projectId}/revision/form`;
+};
+
+export const editRevisionFormAPI = (projectId: string): string => {
+	return `/v2/project/${projectId}/revision/form`;
+};
+
+export const changeToDARAPI = (projectId: string): string => {
+	return `/v2/project/${projectId}/revision/dar`;
+};

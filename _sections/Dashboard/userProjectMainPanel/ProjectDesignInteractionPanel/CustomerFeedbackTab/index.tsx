@@ -1,5 +1,5 @@
 import { DetailedProject } from "@customTypes/dashboardTypes";
-import { Card, Row, Typography } from "antd";
+import { Card, Row, Typography, Col } from "antd";
 import React from "react";
 
 interface CustomerFeedbackTab {
@@ -16,9 +16,11 @@ const CustomerFeedbackTab: React.FC<CustomerFeedbackTab> = ({ projectData }) => 
 					return design.design._id === feedback.reference;
 				});
 				return (
-					<Card key={feedback._id} title={`${designData.design.name}' feedback`}>
-						<Text>{feedback.comment}</Text>
-					</Card>
+					<Col key={feedback._id}>
+						<Card title={`${designData.design.name}' feedback`}>
+							<Text>{feedback.comment}</Text>
+						</Card>
+					</Col>
 				);
 			})}
 		</Row>

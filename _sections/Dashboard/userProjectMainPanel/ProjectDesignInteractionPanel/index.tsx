@@ -1,15 +1,18 @@
 import React from "react";
 import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
-import { DetailedProject } from "@customTypes/dashboardTypes";
+import { DetailedProject, RevisionForm } from "@customTypes/dashboardTypes";
 import { Tabs } from "antd";
 import CustomerResponsesTab from "./CustomerResponesTab";
 import CustomerFeedbackTab from "./CustomerFeedbackTab";
+import CustomerRevisionData from "./CustomerRevisionData";
 
 interface ProjectDesignInteractionPanel {
 	projectData: DetailedProject;
 	onSelectDesign: (id: string) => void;
 	refetchData: () => void;
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	revisionFormData: RevisionForm;
+	updateRevisionData: (revisionForm: RevisionForm) => void;
 }
 
 const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = ({
@@ -17,6 +20,8 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	setProjectData,
 	projectData,
 	onSelectDesign,
+	revisionFormData,
+	updateRevisionData,
 }) => {
 	return (
 		<Tabs>
@@ -26,14 +31,20 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 					setProjectData={setProjectData}
 					projectData={projectData}
 					onSelectDesign={onSelectDesign}
+					revisionDesign={revisionFormData?.revisedDesign?._id}
 				/>
 			</Tabs.TabPane>
-			<Tabs.TabPane tab="Customer Responses" key="customerResponses">
+			<Tabs.TabPane tab="Quiz Responses" key="customerResponses">
 				<CustomerResponsesTab projectData={projectData} />
 			</Tabs.TabPane>
 			{projectData.feedback.length && (
-				<Tabs.TabPane tab="Customer Feedback" key="customerFeedback">
+				<Tabs.TabPane tab="Customer Feedback (Deprecated)" key="customerFeedbackDeprecated">
 					<CustomerFeedbackTab projectData={projectData} />
+				</Tabs.TabPane>
+			)}
+			{revisionFormData && revisionFormData._id && (
+				<Tabs.TabPane tab="Revision Form" key="customerFeedback">
+					<CustomerRevisionData revisionData={revisionFormData} updateRevisionData={updateRevisionData} />
 				</Tabs.TabPane>
 			)}
 		</Tabs>

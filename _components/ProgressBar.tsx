@@ -21,11 +21,6 @@ const getTextColor = days => {
 	return {};
 };
 
-const getProgressBarText = (days: number): string => {
-	const displayDays = days < 0 ? 0 : days;
-	return `${displayDays}`;
-};
-
 const ProgressBar: React.FC<ProgressBarProps> = ({ phase, size = 14, days }): JSX.Element => {
 	const smallSize = size * 0.8;
 	if (completedPhases.includes(phase)) {
@@ -42,7 +37,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ phase, size = 14, days }): JS
 			<Col span={24}>
 				<Row type="flex" justify="center">
 					<Text strong style={{ ...getTextColor(days), fontSize: `${size}px` }}>
-						{getProgressBarText(days)}
+						{Math.abs(days)}
 					</Text>
 				</Row>
 			</Col>
@@ -50,7 +45,9 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ phase, size = 14, days }): JS
 				<Row type="flex" justify="center">
 					<Text style={{ ...getTextColor(days), fontSize: `${smallSize}px` }}>
 						<small>
-							<small>{days === 1 ? "day" : "days"} left</small>
+							<small>
+								{Math.abs(days) === 1 ? "day" : "days"} {days < 0 ? "late" : "left"}
+							</small>
 						</small>
 					</Text>
 				</Row>

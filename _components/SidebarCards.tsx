@@ -102,7 +102,10 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	return (
 		<>
 			<SidebarCards
-				leftBorder={getSafetyColor(daysLeft, !endTime)}
+				leftBorder={getSafetyColor(
+					daysLeft,
+					!endTime || phase === PhaseInternalNames.designReady || phase === PhaseInternalNames.shop
+				)}
 				size="small"
 				active={selectedId === uniqueId}
 				hoverable

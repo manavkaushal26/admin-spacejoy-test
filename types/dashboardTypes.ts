@@ -575,3 +575,129 @@ export interface QuizSectionInterface {
 	createdAt: string;
 	updatedAt: string;
 }
+
+export interface RevisionRequestedProducts {
+	url: string;
+	comment: string;
+	status: Status;
+	submittedOn: string;
+	_id: string;
+}
+
+export enum DIYStatus {
+	"pending",
+	"accepted",
+	"started",
+	"revertedToDAR",
+	"underReview",
+}
+
+export enum DisplayDIYStatus {
+	"pending" = "Pending",
+	"accepted" = "Accepted",
+	"started" = "Started",
+	"revertedToDAR" = "Reverted",
+	"underReview" = "Under Review",
+}
+
+export enum HumanizeDIYStatus {
+	"pending" = "Revision Initiated",
+	"accepted" = "Designer Finalized",
+	"started" = "Revision Started",
+	"revertedToDAR" = "Changed To DAR",
+	"underReview" = "Designer review",
+}
+
+export enum DARStatus {
+	"pending",
+	"accepted",
+	"submitted",
+	"completed",
+}
+
+export enum DisplayDARStatus {
+	"pending" = "Pending",
+	"accepted" = "Accepted",
+	"submitted" = "Submitted",
+	"completed" = "Completed",
+}
+
+export enum HumanizeDARStatus {
+	"pending" = "Revision request Initiated",
+	"accepted" = "Revision Accepted by Customer",
+	"submitted" = "Revision Request has been submitted ",
+	"completed" = "Revision Complete",
+}
+
+export interface RevisionComments {
+	submittedOn: string;
+	_id: string;
+	text: string;
+	author: string;
+	authorName: string;
+}
+
+export interface FullDesignList extends Record<string, string> {
+	name: string;
+	thumbnailCdn: string;
+	_id: string;
+}
+
+export interface PreviousRevision {
+	retainedAssets: string[];
+	_id: string;
+	revisionType: string;
+	status: string;
+	revisionVersion: string;
+	revisedDesign: string;
+	revisionId: null;
+	archivedOn: string;
+}
+
+export enum Mode {
+	Finalize = "finalize",
+	Takeover = "takeover",
+	Undo = "undo",
+	Direct = "direct",
+}
+
+export enum HumanizeMode {
+	"finalize" = "Review Changes and Finalize",
+	"takeover" = "Take over from here",
+	"undo" = "Undo changes and Takeover",
+	"direct" = "Customer making Revisions",
+}
+
+export interface RevisionForm {
+	revisedDesign: {
+		name: string;
+		thumbnailCdn: string;
+		_id: string;
+	};
+	diy: {
+		isActive: boolean;
+		status: DIYStatus;
+	};
+	dar: {
+		isActive: boolean;
+		status: DARStatus;
+	};
+	mode: Mode;
+	requestedProducts: RevisionRequestedProducts[];
+	revisionVersion: number;
+	isLocked: boolean;
+	_id: string;
+	comments: RevisionComments[];
+	retainedAssets: string[];
+	project: string;
+	previousRevisions: PreviousRevision[];
+	createdAt: string;
+	updatedAt: string;
+	meta: {
+		maxRevisionsAllowed: number;
+		minRevisionTat: number;
+		maxRevisionTat: number;
+		maxProductRequestsAllowed: number;
+	};
+	fullDesignList: FullDesignList[];
+}
