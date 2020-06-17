@@ -17,7 +17,7 @@ interface DesignCardProps {
 	role?: Role;
 	creatorRole?: Role;
 	feedbackPresent?: boolean;
-	revisionDesignId: string;
+	revisionDesignId?: string;
 	onCopyAsDesignExampleClick?: (data: string) => void;
 }
 
