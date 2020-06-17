@@ -94,6 +94,13 @@ function pageRoute(app, router) {
 
 	// ************************************************** platformanager *******************************************************
 
+	router.get("/platformanager/pricemanager", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager/pricemanager", {
+			...query,
+		});
+	});
+
 	router.get("/platformanager/collectionsmeta", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager/collectionsmeta", {

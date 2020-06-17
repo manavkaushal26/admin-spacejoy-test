@@ -18,6 +18,7 @@ import "antd/lib/list/style";
 import "antd/lib/message/style";
 import "antd/lib/modal/style";
 import "antd/lib/notification/style";
+import "antd/lib/table/style";
 import "antd/lib/page-header/style";
 import "antd/lib/pagination/style";
 import "antd/lib/popconfirm/style";

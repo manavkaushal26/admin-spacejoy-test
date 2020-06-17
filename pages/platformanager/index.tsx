@@ -32,9 +32,18 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.seoTeam, Role.Admin, Role.Owner],
 	},
+	{
+		name: "Package Manager",
+		description: "Manage Price packages",
+		action: "redirect",
+		to: "/platformanager/pricemanager",
+		url: "/platformanager/pricemanager",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
 ];
 
-const platformanager: NextPage<{ isServer: boolean; authVerification: Partial<User> }> = ({
+const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<User> }> = ({
 	isServer,
 	authVerification,
 }) => {
@@ -54,9 +63,9 @@ const platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 	};
 
 	return (
-		<PageLayout pageName="Metamanger" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName="Platform Manager" isServer={isServer} authVerification={authVerification}>
 			<Head>
-				<title>platformanager | {company.product}</title>
+				<title>Platfor Manager | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
 			<MaxHeightDiv>
@@ -74,7 +83,7 @@ const platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 							</Row>
 						</Col>
 						<Col span={24}>
-							<Row>
+							<Row gutter={[8, 8]}>
 								{MetaCards.filter(({ name, allowedRoles }) => {
 									return name.toLowerCase().includes(searchText) && allowedRoles.includes(authVerification.role);
 								}).map(metaCard => {
@@ -103,7 +112,7 @@ const platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 	);
 };
 
-platformanager.getInitialProps = async ({
+Platformanager.getInitialProps = async ({
 	req,
 }): Promise<{
 	isServer: boolean;
@@ -117,4 +126,4 @@ platformanager.getInitialProps = async ({
 	return { isServer, authVerification };
 };
 
-export default withAuthVerification(platformanager);
+export default withAuthVerification(Platformanager);
