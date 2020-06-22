@@ -136,18 +136,10 @@ const userProjectMainPanel: React.FC<{
 				{projectData ? (
 					<>
 						<ProjectSummary projectData={projectData} setProjectData={setProjectData} />
-						{!designId && (
-							<>
-								<Divider /> <BasicDetails projectData={projectData} />
-							</>
-						)}
-						{revisionFormData && revisionFormData._id && (
-							<>
-								<Divider />
-								<RevisionDetails revisionData={revisionFormData} />
-							</>
-						)}
 						<Divider />
+						<BasicDetails projectData={projectData} />
+						<Divider style={{ marginBottom: "0px" }} />
+
 						<ProjectTabView
 							updateRevisionData={updateRevisionData}
 							onTabChangeCallback={onTabChange}

@@ -4,8 +4,8 @@ import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
 import ProductCard from "@sections/Cards/ProductCard";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
-import { cloudinary } from "@utils/config";
-import { Col, Divider, Empty, Row } from "antd";
+import config, { cloudinary } from "@utils/config";
+import { Col, Divider, Empty, Row, Button } from "antd";
 import React from "react";
 import ReactPannellum from "react-pannellum";
 import styled from "styled-components";
@@ -45,24 +45,50 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 					{designData.designImages
 						.filter(image => image.imgType === DesignImgTypes.Render)
 						.map(image => (
-							<div key={image._id}>
-								<Image width="100%" src={`${image.cdn}`} />
-							</div>
+							<Row key={image._id}>
+								<Col span={24}>
+									<Image width="100%" src={`${image.cdn}`} />
+								</Col>
+								<Col span={24}>
+									<Row type="flex" justify="space-around">
+										<Col>
+											<a
+												href={image.path}
+												download={`${designData.name}-${image._id}-original.jpg`}
+												target="_blank"
+												rel="noreferrer noopener"
+											>
+												<Button type="link">Open Original</Button>
+											</a>
+										</Col>
+										<Col>
+											<a
+												href={`${config.cloudinary.baseDeliveryURL}/${image.cdn}`}
+												download={`${designData.name}-${image._id}-cdn.jpg`}
+												target="_blank"
+												rel="noreferrer noopener"
+											>
+												<Button type="link">Open CDN</Button>
+											</a>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
 						))}
 				</BiggerButtonCarousel>
 			</Col>
-			<Col {...(pannelumImage ? { sm: 18 } : { sm: 0 })} {...(pannelumImage ? { md: 6 } : { md: 0 })}>
-				{pannelumImage ? (
+			{pannelumImage ? (
+				<Col sm={18} md={6}>
 					<ReactPannellum
 						id="renderPanorama"
 						sceneId="firstScene"
 						imageSource={`${cloudinary.baseDeliveryURL}/image/upload/${pannelumImage.cdn}`}
 						{...PannellumOptions}
 					/>
-				) : (
-					<Empty description="No Panorama images found" />
-				)}
-			</Col>
+				</Col>
+			) : (
+				<></>
+			)}
 			<Col span={24}>
 				<SectionHeader size={0} hgroup={3} mini title={designData.name} description={projectName} />
 			</Col>

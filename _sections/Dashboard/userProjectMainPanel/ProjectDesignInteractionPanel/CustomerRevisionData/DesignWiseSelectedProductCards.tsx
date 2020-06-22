@@ -4,6 +4,7 @@ import fetcher from "@utils/fetcher";
 import { Card, Col, notification, Row, Typography, Spin, Skeleton, Empty } from "antd";
 import React, { useEffect, useState, useMemo } from "react";
 import { getValueSafely } from "@utils/commonUtils";
+import styled from "styled-components";
 
 const { Text } = Typography;
 
@@ -17,6 +18,22 @@ interface Assetype {
 	cdn: string;
 	quantity: number;
 }
+
+const ModifiedCard = styled(Card)`
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	height: 100%;
+	> .ant-card-cover {
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
+	}
+	> .ant-card-body {
+		flex-grow: 1;
+		width: 100%;
+	}
+`;
 
 const DesignWiseSelectedProductCards: React.FC<{
 	revisionRetainedAssets: string[];
@@ -43,6 +60,7 @@ const DesignWiseSelectedProductCards: React.FC<{
 
 	useEffect(() => {
 		if (revisionRetainedAssets) {
+			setAssetList({});
 			fetchAssetsInDesign();
 		}
 	}, [revisionRetainedAssets, designId]);
@@ -56,7 +74,13 @@ const DesignWiseSelectedProductCards: React.FC<{
 	return !retainedProducts.length ? (
 		<Col span={24}>
 			<Row type="flex" justify="center">
-				<Empty description="No Products Selected from design" />
+				<Spin spinning={loading}>
+					<Col span={24}>
+						<Row type="flex" justify="center">
+							<Empty description="No Products Selected from design" />
+						</Row>
+					</Col>
+				</Spin>
 			</Row>
 		</Col>
 	) : (
@@ -65,8 +89,8 @@ const DesignWiseSelectedProductCards: React.FC<{
 				if (assetList[assetId]) {
 					const { name, price, cdn, _id } = assetList[assetId];
 					return (
-						<Col sm={12} lg={12} xl={8}>
-							<Card
+						<Col sm={12} lg={12} xl={6}>
+							<ModifiedCard
 								key={_id}
 								cover={
 									<Image
@@ -93,7 +117,7 @@ const DesignWiseSelectedProductCards: React.FC<{
 										</Row>
 									}
 								/>
-							</Card>
+							</ModifiedCard>
 						</Col>
 					);
 				}

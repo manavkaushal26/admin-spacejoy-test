@@ -2,9 +2,10 @@ import { editRevisionFormAPI, getRevisionFormForProjectId } from "@api/projectAp
 import { RevisionForm } from "@customTypes/dashboardTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Empty, notification, Radio, Row, Typography } from "antd";
-import React, { useState } from "react";
-import CommentsDrawer from "./CommentsDrawer";
+import { Card, Col, Empty, notification, Row, Select, Typography } from "antd";
+import React, { useMemo, useState } from "react";
+import RevisionDetails from "../RevisionDetails";
+import CommentsDrawer, { CommentList } from "./CommentsDrawer";
 import DesignWiseSelectedProductCards from "./DesignWiseSelectedProductCards";
 import EditRevisionDataDrawer from "./EditRevisionDataDrawer";
 import RequestProductCard from "./RequestProductCard";
@@ -18,31 +19,14 @@ interface CustomerRevisionData {
 
 const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, updateRevisionData }) => {
 	const [designId, setSelectedDesignId] = useState<string>(
-		revisionData.revisionVersion === 0 ? revisionData.fullDesignList[0]._id : revisionData.revisedDesign._id
+		revisionData.revisionVersion === 1 ? revisionData.fullDesignList[0]._id : revisionData.revisedDesign._id
 	);
 	const [editRevison, setEditRevision] = useState<boolean>(false);
 	const [commentsDrawerOpen, setCommentsDrawerOpen] = useState<boolean>(false);
-	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const handleChange = (e): void => {
-		const {
-			target: { value },
-		} = e;
+	const handleChange = (value): void => {
 		setSelectedDesignId(value);
 	};
 
-	const onRefresh = async (): Promise<void> => {
-		setRefreshing(true);
-		const endPoint = getRevisionFormForProjectId(revisionData.project);
-		const response = await fetcher({ endPoint, method: "GET" });
-		try {
-			if (response.statusCode <= 300) {
-				updateRevisionData(response.data);
-			}
-		} catch (e) {
-			notification.error({ message: "Failed to load revision form" });
-		}
-		setRefreshing(false);
-	};
 	const toggleEditRevision = (): void => {
 		setEditRevision(prevState => !prevState);
 	};
@@ -82,57 +66,49 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 		onSave({ requestedProducts: updatedList });
 	};
 
+	const authors = useMemo(() => Array.from(new Set(revisionData.comments.map(comment => comment.authorName))), [
+		revisionData,
+	]);
+
 	return (
 		<>
 			<Row gutter={[8, 16]}>
 				<Col span={24}>
-					<Row type="flex" justify="end" gutter={[4, 4]}>
-						<Col>
-							<Button onClick={toggleEditRevision} block type="danger">
-								Edit Revision Form
-							</Button>
-						</Col>
-						<Col>
-							<Button onClick={toggleCommentsDrawer} block type="primary">
-								Open Chat
-							</Button>
-						</Col>
-						<Col>
-							<Button onClick={onRefresh} block type="primary" icon="reload" loading={refreshing}>
-								Refresh Data
-							</Button>
-						</Col>
-					</Row>
+					<RevisionDetails revisionData={revisionData} toggleEditRevision={toggleEditRevision} />
 				</Col>
 				<Col span={24}>
 					<SilentDivider />
 				</Col>
 				<Col span={24}>
+					<Card title="Customer feedback on Designs">
+						<CommentList comments={revisionData.comments} authors={authors} />
+					</Card>
+				</Col>
+				<Col span={24}>
 					<Row gutter={[16, 16]} style={{ position: "relative" }}>
-						<Col sm={24} lg={16}>
-							<Row gutter={[16, 16]}>
-								<Col span={24}>
-									<Text strong>Retained Products</Text>
-								</Col>
-								<Col span={24}>
-									<Row type="flex" justify="center">
-										<Radio.Group value={designId} onChange={handleChange}>
-											{revisionData.revisionVersion === 0 ? (
-												revisionData.fullDesignList.map(design => {
-													return (
-														<Radio.Button key={design._id} value={design._id}>
-															{design.name}
-														</Radio.Button>
-													);
-												})
-											) : (
-												<Radio.Button key={revisionData.revisedDesign._id} value={revisionData.revisedDesign._id}>
-													{revisionData.revisedDesign.name}
-												</Radio.Button>
-											)}
-										</Radio.Group>
+						<Col>
+							<Card
+								title={
+									<Row type="flex" align="middle" gutter={[8, 8]}>
+										<Col>
+											<Text strong>Products shortlisted by customer from</Text>
+										</Col>
+										<Col>
+											<Select onChange={handleChange} value={designId}>
+												{revisionData.fullDesignList
+													.filter(design => !design.name.toLowerCase().includes("revision"))
+													.map(design => {
+														return (
+															<Select.Option key={design._id} value={design._id}>
+																{design.name}
+															</Select.Option>
+														);
+													})}
+											</Select>
+										</Col>
 									</Row>
-								</Col>
+								}
+							>
 								<Col span={24}>
 									<Row type="flex" gutter={[8, 8]}>
 										<DesignWiseSelectedProductCards
@@ -141,12 +117,12 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 										/>
 									</Row>
 								</Col>
-							</Row>
+							</Card>
 						</Col>
-						<Col sm={24} lg={8} style={{ position: "sticky", top: 0 }}>
+						<Col span={24}>
 							<Row gutter={[8, 16]}>
 								<Col span={24}>
-									<Text strong>Requested Products</Text>
+									<Text strong>Retained Products</Text>
 								</Col>
 								<Col span={24}>
 									<Row gutter={[8, 8]}>

@@ -35,17 +35,12 @@ const Editor = ({ onChange, onSubmit, submitting, value }): React.ReactElement =
 	</div>
 );
 
-const CommentList = ({ comments, authors }: CommentList): React.ReactElement => {
+export const CommentList = ({ comments, authors }: CommentList): React.ReactElement => {
 	return (
 		<List
 			dataSource={comments}
 			itemLayout="vertical"
 			renderItem={(comment: RevisionComments): React.ReactNode => {
-				console.log(
-					authors.indexOf(comment.authorName) % authors.length,
-					AvatarColorsList[authors.indexOf(comment.authorName) % authors.length]
-				);
-
 				return comment?.text ? (
 					<Comment
 						author={comment.authorName}
@@ -113,14 +108,14 @@ const CommentsDrawer: React.FC<CommentsDrawer> = ({ open, toggleDrawer, revision
 	return (
 		<Drawer visible={open} width={360} onClose={toggleDrawer} title="Customer Communication">
 			<CommentList comments={revisionData.comments} authors={authors} />
-			<Comment
+			{/* <Comment
 				avatar={
 					<Avatar style={{ backgroundColor: AvatarColorsList[authors.indexOf(authVerification.name)], color: "white" }}>
 						<CapitalizedText>{authVerification.name[0]}</CapitalizedText>
 					</Avatar>
 				}
 				content={<Editor onSubmit={addComment} submitting={loading} value={newComment} onChange={handleChange} />}
-			/>
+			/> */}
 		</Drawer>
 	);
 };

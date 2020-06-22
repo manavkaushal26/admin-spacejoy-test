@@ -6,6 +6,8 @@ import { SilentDivider } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Drawer, Icon, notification, Row, Switch, Typography } from "antd";
 import React, { useEffect, useState } from "react";
+import User, { Role } from "@customTypes/userType";
+import { getLocalStorageValue } from "@utils/storageUtils";
 
 const { Text } = Typography;
 
@@ -148,24 +150,38 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 						/>
 					</Col>
 				)}
-				<Col>
-					<Row gutter={[8, 8]}>
-						<Col span={24}>
-							<Text strong type="secondary">
-								Is Revision Form locked for Customer?
-							</Text>
-							<SilentDivider />
-						</Col>
-						<Col span={24}>
-							<Switch
-								checkedChildren={<Icon type="lock" />}
-								unCheckedChildren={<Icon type="unlock" />}
-								checked={state.isLocked}
-								onChange={(value): void => handleChange("isLocked", value)}
-							/>
-						</Col>
-					</Row>
-				</Col>
+				{revisionData.isLocked && (
+					<Col>
+						<Row gutter={[8, 8]}>
+							<Col span={24}>
+								<Text strong type="secondary">
+									Unlock Revision form for customer?
+								</Text>
+								<Text strong>
+									<small />
+								</Text>
+								<SilentDivider />
+							</Col>
+							<Col span={24}>
+								<Switch
+									checkedChildren={<Icon type="lock" />}
+									unCheckedChildren={<Icon type="unlock" />}
+									checked={state.isLocked}
+									onChange={(value): void => handleChange("isLocked", value)}
+								/>
+							</Col>
+							<Col>
+								<Text>
+									<small>
+										<sup>*</sup>
+										Please Note: The current revision changes are incomplete. Unlocking will allow the customer to
+										submit a new revision request.
+									</small>
+								</Text>
+							</Col>
+						</Row>
+					</Col>
+				)}
 				<Col span={24}>
 					<Row gutter={[8, 8]}>
 						<Col span={24}>
