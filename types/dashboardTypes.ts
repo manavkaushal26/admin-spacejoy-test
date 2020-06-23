@@ -667,7 +667,12 @@ export enum HumanizeMode {
 	"undo" = "Undo changes and Takeover",
 	"direct" = "Customer making Revisions",
 }
-
+export interface RevisionMeta {
+	maxRevisionsAllowed: number;
+	minRevisionTat: number;
+	maxRevisionTat: number;
+	maxProductRequestsAllowed: number;
+}
 export interface RevisionForm {
 	revisedDesign: {
 		name: string;
@@ -693,11 +698,6 @@ export interface RevisionForm {
 	previousRevisions: PreviousRevision[];
 	createdAt: string;
 	updatedAt: string;
-	meta: {
-		maxRevisionsAllowed: number;
-		minRevisionTat: number;
-		maxRevisionTat: number;
-		maxProductRequestsAllowed: number;
-	};
+	meta: RevisionMeta;
 	fullDesignList: FullDesignList[];
 }

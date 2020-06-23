@@ -4,7 +4,7 @@ import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Card, Col, Input, Row, Typography } from "antd";
+import { Card, Col, Input, Row, Typography, notification } from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
 import React, { useState } from "react";
@@ -41,6 +41,15 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.Admin, Role.Owner],
 	},
+	{
+		name: "Coupon Manager",
+		description: "Manage Coupons",
+		action: "notComplete",
+		to: "/platformanager/couponmanager",
+		url: "/platformanager/couponmanager",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
 ];
 
 const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<User> }> = ({
@@ -59,6 +68,8 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 	const onClick = ({ action, to, query, url }): void => {
 		if (action === "redirect") {
 			Router.push({ pathname: to, query }, url);
+		} else if (action === "notComplete") {
+			notification.warn({ message: "Feature not complete yet" });
 		}
 	};
 

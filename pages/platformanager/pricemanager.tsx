@@ -6,10 +6,26 @@ import PageLayout from "@sections/Layout";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Col, notification, Typography, Table, Button, Modal, Row, Input, Switch, Spin, Tag, Popconfirm } from "antd";
+import {
+	Col,
+	notification,
+	Typography,
+	Table,
+	Button,
+	Modal,
+	Row,
+	Input,
+	Switch,
+	Spin,
+	Tag,
+	Popconfirm,
+	Icon,
+} from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
 import React, { useState, useEffect } from "react";
+import PackageModifierModal from "@sections/PriceManager/packageModifierModal";
+import { withAuthVerification } from "@utils/auth";
 import { LoudPaddingDiv } from ".";
 
 const { Text, Title } = Typography;
@@ -18,6 +34,8 @@ const dataFormatter = (data: PriceData[]) => {
 	const formattedData = data.reduce((acc, packageData) => {
 		if (acc[packageData.versionNumber]) {
 			acc[packageData.versionNumber].children.push({
+				versionNumber: packageData.versionNumber,
+
 				_id: packageData._id,
 				key: packageData._id,
 				slug: packageData.slug,
@@ -32,6 +50,7 @@ const dataFormatter = (data: PriceData[]) => {
 				key: packageData.versionNumber,
 				children: [
 					{
+						versionNumber: packageData.versionNumber,
 						_id: packageData._id,
 						slug: packageData.slug,
 						price: packageData.price,
@@ -177,11 +196,14 @@ const PriceManager: NextPage<{
 			title: "Package status",
 			dataIndex: "versionNumber",
 			// eslint-disable-next-line react/display-name
-			render: (text): JSX.Element => {
-				if (text === currentActiveVersion) {
-					return <Tag color="green">Active</Tag>;
+			render: (text, record): JSX.Element => {
+				if (!record._id) {
+					if (text === currentActiveVersion) {
+						return <Tag color="green">Active</Tag>;
+					}
+					return <Tag>Inactive</Tag>;
 				}
-				return <Tag>Inactive</Tag>;
+				return <></>;
 			},
 		},
 		{
@@ -226,41 +248,25 @@ const PriceManager: NextPage<{
 		fetchCurrentActivePackages();
 	}, []);
 
-	const onChange = (e): void => {
-		const {
-			target: { name, value },
-		} = e;
-		if (name.split(".").length === 2) {
-			const nameSplit = name.split(".");
-			setEditRecord({
-				...editRecord,
-				[nameSplit[0]]: {
-					...editRecord[nameSplit[0]],
-					[nameSplit[1]]: value,
-				},
-			});
-		} else {
-			setEditRecord({
-				...editRecord,
-				[name]: value,
-			});
-		}
-	};
-
-	const saveRecord = async (): Promise<void> => {
-		setLoading(true);
-		const endPoint = editPackageApi(editRecord._id);
-		try {
-			const response = await fetcher({ endPoint, method: "PUT", body: { data: editRecord } });
-			if (response.statusCode <= 300) {
-				fetchPriceData();
-				setEditRecord(null);
-			} else {
-				notification.error({ message: "There was an error updating package", description: response.message });
+	useEffect(() => {
+		if (editRecord) {
+			if (editRecord.price.value && editRecord.salePrice.value) {
+				setEditRecord({
+					...editRecord,
+					savings: {
+						...editRecord.savings,
+						inAmount: editRecord.price.value - editRecord.salePrice.value,
+						inPercent: parseFloat(
+							(((editRecord.price.value - editRecord.salePrice.value) / editRecord.price.value) * 100).toFixed(0)
+						),
+					},
+				});
 			}
-		} catch (e) {
-			notification.error({ message: "Failed to update packages" });
 		}
+	}, [editRecord?.salePrice?.value, editRecord?.price?.value]);
+
+	const toggleDrawer = (): void => {
+		setEditRecord(null);
 	};
 
 	return (
@@ -286,63 +292,11 @@ const PriceManager: NextPage<{
 					</LoudPaddingDiv>
 				</MaxHeightDiv>
 			</Spin>
-			{editRecord && (
-				<Modal
-					visible
-					title="Edit Package"
-					onOk={saveRecord}
-					onCancel={(): void => setEditRecord(null)}
-					okButtonProps={{ loading }}
-				>
-					<Row gutter={[8, 8]}>
-						<Col>
-							<Row>
-								<Col>
-									<Text>Slug</Text>
-								</Col>
-								<Col>
-									<Input onChange={onChange} name="slug" value={editRecord.slug} />
-								</Col>
-							</Row>
-						</Col>
-						<Col>
-							<Row>
-								<Col>
-									<Text>Price</Text>
-								</Col>
-								<Col>
-									<Input onChange={onChange} name="price.value" value={editRecord.price.value} />
-								</Col>
-							</Row>
-						</Col>
-						<Col>
-							<Row>
-								<Col>
-									<Text>Sale Price</Text>
-								</Col>
-								<Col>
-									<Input onChange={onChange} name="salePrice.value" value={editRecord.salePrice.value} />
-								</Col>
-							</Row>
-						</Col>
-						<Col>
-							<Row>
-								<Col>
-									<Text>Is Sale Active?</Text>
-								</Col>
-								<Col>
-									<Switch
-										onChange={(checked): void => onChange({ target: { name: "isSaleActive", value: checked } })}
-										checked={editRecord.isSaleActive}
-										checkedChildren="Yes"
-										unCheckedChildren="No"
-									/>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</Modal>
-			)}
+			<PackageModifierModal
+				editRecordId={editRecord?._id}
+				toggleDrawer={toggleDrawer}
+				fetchPriceData={fetchPriceData}
+			/>
 		</PageLayout>
 	);
 };
@@ -370,4 +324,4 @@ PriceManager.getInitialProps = async ({
 	}
 };
 
-export default PriceManager;
+export default withAuthVerification(PriceManager);

@@ -25,3 +25,10 @@ export const getPackageVersionInfo = (): string => {
 export const editPackageApi = (packageId: string): string => {
 	return `/package/${packageId}`;
 };
+
+export const getAllCoupons = (search: boolean): string => {
+	if (search) {
+		return "/coupons/search";
+	}
+	return `/coupons`;
+};

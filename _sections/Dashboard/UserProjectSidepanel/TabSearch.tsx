@@ -38,7 +38,10 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 			const currentTime = moment({ hour: 0, minute: 0, seconds: 0, milliseconds: 0 });
 			setState({
 				...state,
-				endedAt: [copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null, state.endedAt[1]],
+				endedAt: [
+					copyValue || copyValue === 0 ? currentTime.add(copyValue, "days").toString() : null,
+					state.endedAt[1],
+				],
 			});
 			setMinMax(prevState => {
 				const newState = [...prevState];

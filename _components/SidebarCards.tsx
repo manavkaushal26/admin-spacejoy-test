@@ -10,7 +10,7 @@ import { SilentDivider } from "@sections/Dashboard/styled";
 import { Avatar, Card, Col, Row, Tooltip, Typography } from "antd";
 import { Moment } from "moment";
 import React from "react";
-import styled, { css } from "styled-components";
+import styled, { css, ThemedCssFunction, DefaultTheme } from "styled-components";
 import { CapitalizedText } from "./CommonStyledComponents";
 
 interface SidebarCard {
@@ -66,21 +66,21 @@ const { Text } = Typography;
 const SidebarCards = styled(Card)<{ active: boolean; leftBorder: string }>`
 	border: none;
 	border-radius: 0px;
-	border-left: 5px solid ${({ leftBorder }) => leftBorder};
+	border-left: 5px solid ${({ leftBorder }): string => leftBorder};
 	${({ active }) =>
 		active &&
 		css`
-			background: ${({ theme }) => theme.colors.mild.antblue};
-			border-right: 3px solid ${({ theme }) => theme.colors.antblue};
+			background: ${({ theme }): string => theme.colors.mild.antblue};
+			border-right: 3px solid ${({ theme }): string => theme.colors.antblue};
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 			:hover {
-				border-right: 5px solid ${({ theme }) => theme.colors.antblue};
+				border-right: 5px solid ${({ theme }): string => theme.colors.antblue};
 			}
 		`};
 	:hover {
-		background: ${({ theme }) => theme.colors.mild.antblue};
-		border-left: 5px solid ${({ leftBorder }) => leftBorder};
-		border-right: 5px solid ${({ theme }) => theme.colors.antblue};
+		background: ${({ theme }): string => theme.colors.mild.antblue};
+		border-left: 5px solid ${({ leftBorder }): string => leftBorder};
+		border-right: 5px solid ${({ theme }): string => theme.colors.antblue};
 	}
 `;
 
@@ -130,7 +130,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 									</Col>
 									<Col span={24}>
 										<small>
-											<Text>{subHeading}</Text>
+											<Text>{subHeading || "Room design"}</Text>
 											{endTime && (
 												<>
 													<Text> / Deliver by : </Text>
