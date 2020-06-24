@@ -194,6 +194,7 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 									multiple
 									className="upload-list-inline"
 									listType="picture"
+									fileList={fileList}
 									beforeUpload={beforeUpload}
 									onRemove={onRemove}
 									accept="image/*"
