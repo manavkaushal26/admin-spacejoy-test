@@ -1,34 +1,20 @@
-import { getAllPricePackages, getPackageVersionInfo, editPackageApi } from "@api/metaApi";
+import { editPackageApi, getAllPricePackages, getPackageVersionInfo } from "@api/metaApi";
 import { PriceData } from "@customTypes/pricesTypes";
 import User, { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
+import PackageModifierModal from "@sections/PriceManager/PackageModifierModal";
+import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import {
-	Col,
-	notification,
-	Typography,
-	Table,
-	Button,
-	Modal,
-	Row,
-	Input,
-	Switch,
-	Spin,
-	Tag,
-	Popconfirm,
-	Icon,
-} from "antd";
+import { Button, Col, notification, Popconfirm, Spin, Table, Tag, Typography } from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
-import React, { useState, useEffect } from "react";
-import PackageModifierModal from "@sections/PriceManager/packageModifierModal";
-import { withAuthVerification } from "@utils/auth";
+import React, { useEffect, useState } from "react";
 import { LoudPaddingDiv } from ".";
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 const dataFormatter = (data: PriceData[]) => {
 	const formattedData = data.reduce((acc, packageData) => {
