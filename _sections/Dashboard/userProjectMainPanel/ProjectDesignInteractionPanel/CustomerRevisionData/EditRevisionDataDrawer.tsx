@@ -170,7 +170,7 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 									onChange={(value): void => handleChange("isLocked", value)}
 								/>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Text>
 									<small>
 										<sup>*</sup>
