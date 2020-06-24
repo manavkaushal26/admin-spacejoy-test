@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { QuizSectionInterface, QuizAnswerFieldType } from "@customTypes/dashboardTypes";
 import fetcher from "@utils/fetcher";
-import { notification, Row, Tabs, Col, Button } from "antd";
+import { notification, Row, Tabs, Col, Button, Card } from "antd";
 import { getQuizSectionsApi } from "@api/quizApi";
 import { getValueSafely } from "@utils/commonUtils";
+import { UploadFile } from "antd/lib/upload/interface";
+import { VerticalPaddedDiv } from "@sections/Dashboard/styled";
 import QuizSections from "./QuizSections";
 import QuizResponse from "./QuizResponse";
+import QuizDiscussions from "./QuizDiscussions";
 
 const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ projectId }) => {
 	const [quizResponse, setQuizResponse] = useState<QuizSectionInterface[]>([]);
+
 	const fetchQuizResponses = async (): Promise<void> => {
 		const endPoint = getQuizSectionsApi(projectId);
 		try {
@@ -118,33 +122,43 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 			fetchQuizResponses();
 		}
 	}, []);
+
 	return (
-		<Row>
+		<Row gutter={[8, 8]}>
+			<Col>
+				<Row type="flex" justify="end">
+					<Button type="primary" onClick={downloadCSV}>
+						Download as JSON
+					</Button>
+				</Row>
+			</Col>
 			<Tabs>
-				{quizResponse.map(section => {
-					return (
-						<Tabs.TabPane tab={section.title} key={section._id}>
-							<Row gutter={[8, 8]}>
-								<Col>
-									<Row type="flex" justify="end">
-										<Button type="primary" onClick={downloadCSV}>
-											Download as JSON
-										</Button>
+				<Tabs.TabPane tab="Quiz Form" key="quizData">
+					{quizResponse.map(section => {
+						return (
+							<Col key={section._id}>
+								<Card title={section.title}>
+									<Row gutter={[8, 8]}>
+										<Col>
+											<QuizSections
+												key={section._id}
+												section={section}
+												setQuizResponse={setQuizResponse}
+												projectId={projectId}
+												quizResponse={quizResponse}
+											/>
+										</Col>
 									</Row>
-								</Col>
-								<Col>
-									<QuizSections
-										key={section._id}
-										section={section}
-										setQuizResponse={setQuizResponse}
-										projectId={projectId}
-										quizResponse={quizResponse}
-									/>
-								</Col>
-							</Row>
-						</Tabs.TabPane>
-					);
-				})}
+								</Card>
+							</Col>
+						);
+					})}
+				</Tabs.TabPane>
+				<Tabs.TabPane tab="Upload Missing Quiz data" key="missingdata">
+					<VerticalPaddedDiv style={{ padding: "1rem 0.3rem" }}>
+						<QuizDiscussions projectId={projectId} />
+					</VerticalPaddedDiv>
+				</Tabs.TabPane>
 			</Tabs>
 		</Row>
 	);

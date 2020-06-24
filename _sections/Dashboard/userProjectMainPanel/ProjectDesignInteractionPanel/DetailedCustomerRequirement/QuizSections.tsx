@@ -79,6 +79,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 				return (
 					<Col key={_id}>
 						<Card
+							type="inner"
 							key={_id}
 							title={
 								<Row type="flex" justify="space-between">

@@ -576,6 +576,17 @@ export interface QuizSectionInterface {
 	updatedAt: string;
 }
 
+export interface QuizDiscussion {
+	images: string[];
+	comments: string;
+	type: string;
+	_id: string;
+	projectId: string;
+	user: TeamMember;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export interface RevisionRequestedProducts {
 	url: string;
 	comment: string;

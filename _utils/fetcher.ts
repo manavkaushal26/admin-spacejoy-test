@@ -1,6 +1,5 @@
 import { clearAllStorage, redirectToLocation } from "@utils/auth";
 import { cookieNames, page } from "@utils/config";
-import fetch from "isomorphic-unfetch";
 import { NextPageContext } from "next";
 import getCookie from "./getCookie";
 
@@ -10,9 +9,10 @@ interface FetcherParams {
 	method: "GET" | "POST" | "PUT" | "DELETE";
 	body?: any;
 	hasBaseURL?: boolean;
+	isMultipartForm?: boolean;
 }
 
-async function fetcher({ ctx, endPoint, method, body, hasBaseURL }: FetcherParams): Promise<any> {
+async function fetcher({ ctx, endPoint, method, body, hasBaseURL, isMultipartForm }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
 	const isServer = ctx && ctx.req && !!ctx.req;
 	let apiURL = endPoint;
@@ -23,7 +23,10 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL }: FetcherParam
 		}
 	}
 	const headers = JWT
-		? { "Content-Type": "application/json", Authorization: JWT }
+		? {
+				"Content-Type": "application/json",
+				Authorization: JWT,
+		  }
 		: { "Content-Type": "application/json" };
 	const options =
 		method === "GET"
@@ -34,8 +37,12 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL }: FetcherParam
 			: {
 					method,
 					headers,
-					body: JSON.stringify(body),
+					body: isMultipartForm ? body : JSON.stringify(body),
 			  };
+
+	if (isMultipartForm) {
+		delete options.headers["Content-Type"];
+	}
 	const response = await fetch(apiURL, options);
 	if (response.status === 401) {
 		if (!isServer && typeof window !== "undefined") {
