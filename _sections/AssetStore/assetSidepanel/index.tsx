@@ -33,7 +33,7 @@ const addLevel = (level: string, elem): string => {
 };
 
 const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state, categoryMap }): JSX.Element => {
-	const [priceRange, setPriceRange] = useState<[number, number]>([0, 20000]);
+	const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
 	const [width, setWidthRange] = useState<[number, number]>([0, 30]);
 	const [height, setHeightRange] = useState<[number, number]>([0, 30]);
 	const [depth, setDepthRange] = useState<[number, number]>([0, 30]);
@@ -267,7 +267,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 							<SliderFilter
 								min={priceMin}
 								max={priceMax}
-								range={[0, 20000]}
+								range={[0, 50000]}
 								value={priceRange}
 								onValueEntry={onPriceSliderValueEntry}
 								onChange={onPriceRangeChange}
