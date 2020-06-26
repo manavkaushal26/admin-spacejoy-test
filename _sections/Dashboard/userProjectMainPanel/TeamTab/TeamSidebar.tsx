@@ -1,7 +1,7 @@
 import { ProjectRoles } from "@customTypes/userType";
 import { CustomDiv, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Avatar, Checkbox, Empty, Typography } from "antd";
+import { Avatar, Checkbox, Empty, Typography, Row, Col } from "antd";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { GreyColumn, NoBodyCard, StyledButton } from "./styled";
@@ -46,120 +46,213 @@ export default function TeamSidebar({
 		});
 	}, [state.assignedTeam]);
 
+	const assignedArtists = useMemo(() => {
+		return state.assignedTeam.filter(member => {
+			return member.role === ProjectRoles["3D Artist"];
+		});
+	}, [state.assignedTeam]);
+
 	return (
-		<GreyColumn>
-			<CustomDiv width="100%" type="flex" pt="0.5rem" justifyContent="space-around">
+		<Row>
+			<Col span={24}>
 				<Title level={4}>Team</Title>
-			</CustomDiv>
-			<SilentDivider />
-
-			<CustomDiv px="0.75rem">
-				<CustomDiv py="0.25rem">
-					<Text strong>Account Managers</Text>
-				</CustomDiv>
+			</Col>
+			<Col span={24}>
 				<SilentDivider />
-				<CardContainer px="8px" py="1rem" type="flex" flexWrap="wrap">
-					{assignedAccountManagers.length ? (
-						assignedAccountManagers.map(teamMember => (
-							<NoBodyCard
-								key={teamMember._id}
-								size="small"
-								title={
-									<>
-										<CustomDiv type="flex" justifyContent="space-around">
-											<Avatar>
-												{getValueSafely<string>(() => {
-													return teamMember.profile.name[0];
-												}, "N/A")}
-											</Avatar>
-										</CustomDiv>
-										<CustomDiv type="flex" justifyContent="space-around">
-											<ModifiedText textTransform="capitalize">
-												{getValueSafely<string>(() => {
-													return teamMember.profile.firstName;
-												}, "N/A")}
-											</ModifiedText>
-										</CustomDiv>
-									</>
-								}
-								extra={
-									<Checkbox
-										onChange={e => {
-											onDesignerSelect(teamMember._id, e.target.checked);
-										}}
-										checked={selectedDesignersId
-											.map(member => {
-												return member._id;
-											})
-											.includes(teamMember._id)}
-									/>
-								}
-							/>
-						))
-					) : (
-						<CustomDiv py="1rem" width="100%">
-							<Empty description="No Account Managers Assigned" />
-						</CustomDiv>
-					)}
-				</CardContainer>
-			</CustomDiv>
-			<SilentDivider />
-			<CustomDiv px="0.75rem">
-				<CustomDiv py="0.25rem">
-					<Text strong>Designers</Text>
-				</CustomDiv>
+			</Col>
+			<Col span={24}>
+				<Row>
+					<Col span={24}>
+						<Text strong>Account Managers</Text>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							{assignedAccountManagers.length ? (
+								assignedAccountManagers.map(teamMember => (
+									<Col lg={6} md={8} sm={12} key={teamMember._id}>
+										<NoBodyCard
+											key={teamMember._id}
+											size="small"
+											title={
+												<Row>
+													<Col span={24}>
+														<Row justify="center">
+															<Avatar>
+																{getValueSafely<string>(() => {
+																	return teamMember.profile.name[0];
+																}, "N/A")}
+															</Avatar>
+														</Row>
+													</Col>
+													<Col span={24}>
+														<Row justify="center">
+															<ModifiedText textTransform="capitalize">
+																{getValueSafely<string>(() => {
+																	return teamMember.profile.firstName;
+																}, "N/A")}
+															</ModifiedText>
+														</Row>
+													</Col>
+												</Row>
+											}
+											extra={
+												<Checkbox
+													onChange={e => {
+														onDesignerSelect(teamMember._id, e.target.checked);
+													}}
+													checked={selectedDesignersId
+														.map(member => {
+															return member._id;
+														})
+														.includes(teamMember._id)}
+												/>
+											}
+										/>
+									</Col>
+								))
+							) : (
+								<CustomDiv py="1rem" width="100%">
+									<Empty description="No Account Managers Assigned" />
+								</CustomDiv>
+							)}
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
 				<SilentDivider />
-				<CardContainer px="8px" py="1rem" type="flex" flexWrap="wrap">
-					{assignedDesigners.length ? (
-						assignedDesigners.map(teamMember => (
-							<NoBodyCard
-								key={teamMember._id}
-								size="small"
-								title={
-									<>
-										<CustomDiv type="flex" justifyContent="space-around">
-											<Avatar>
-												{getValueSafely<string>(() => {
-													return teamMember.profile.name[0];
-												}, "N/A")}
-											</Avatar>
-										</CustomDiv>
-										<CustomDiv type="flex" justifyContent="space-around">
-											<ModifiedText textTransform="capitalize">
-												{getValueSafely<string>(() => {
-													return teamMember.profile.firstName;
-												}, "N/A")}
-											</ModifiedText>
-										</CustomDiv>
-									</>
-								}
-								extra={
-									<Checkbox
-										onChange={e => {
-											onDesignerSelect(teamMember._id, e.target.checked);
-										}}
-										checked={selectedDesignersId
-											.map(member => {
-												return member._id;
-											})
-											.includes(teamMember._id)}
-									/>
-								}
-							/>
-						))
-					) : (
-						<CustomDiv width="100%">
-							<Empty description="No Designers Assigned" />
-						</CustomDiv>
-					)}
-				</CardContainer>
-			</CustomDiv>
+			</Col>
+			<Col span={24}>
+				<Row>
+					<Col span={24}>
+						<Text strong>Designers</Text>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							{assignedDesigners.length ? (
+								assignedDesigners.map(teamMember => (
+									<Col lg={6} md={8} sm={12} key={teamMember._id}>
+										<NoBodyCard
+											size="small"
+											title={
+												<Row>
+													<Col span={24}>
+														<Row justify="center">
+															<Avatar>
+																{getValueSafely<string>(() => {
+																	return teamMember.profile.name[0];
+																}, "N/A")}
+															</Avatar>
+														</Row>
+													</Col>
+													<Col>
+														<Row justify="center">
+															<ModifiedText textTransform="capitalize">
+																{getValueSafely<string>(() => {
+																	return teamMember.profile.firstName;
+																}, "N/A")}
+															</ModifiedText>
+														</Row>
+													</Col>
+												</Row>
+											}
+											extra={
+												<Checkbox
+													onChange={e => {
+														onDesignerSelect(teamMember._id, e.target.checked);
+													}}
+													checked={selectedDesignersId
+														.map(member => {
+															return member._id;
+														})
+														.includes(teamMember._id)}
+												/>
+											}
+										/>
+									</Col>
+								))
+							) : (
+								<Row justify="center">
+									<Empty description="No Designers Assigned" />
+								</Row>
+							)}
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row>
+					<Col span={24}>
+						<Text strong>3D Artists</Text>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							{assignedArtists.length ? (
+								assignedArtists.map(teamMember => (
+									<Col lg={6} md={8} sm={12} key={teamMember._id}>
+										<NoBodyCard
+											size="small"
+											title={
+												<Row>
+													<Col span={24}>
+														<Row justify="center">
+															<Avatar>
+																{getValueSafely<string>(() => {
+																	return teamMember.profile.name[0];
+																}, "N/A")}
+															</Avatar>
+														</Row>
+													</Col>
+													<Col>
+														<Row justify="center">
+															<ModifiedText textTransform="capitalize">
+																{getValueSafely<string>(() => {
+																	return teamMember.profile.firstName;
+																}, "N/A")}
+															</ModifiedText>
+														</Row>
+													</Col>
+												</Row>
+											}
+											extra={
+												<Checkbox
+													onChange={e => {
+														onDesignerSelect(teamMember._id, e.target.checked);
+													}}
+													checked={selectedDesignersId
+														.map(member => {
+															return member._id;
+														})
+														.includes(teamMember._id)}
+												/>
+											}
+										/>
+									</Col>
+								))
+							) : (
+								<Row justify="center">
+									<Empty description="No Designers Assigned" />
+								</Row>
+							)}
+						</Row>
+					</Col>
+				</Row>
+			</Col>
 
-			<CustomDiv>
+			<Col>
 				<StyledButton fullwidth type="primary" onClick={assignDesigners}>
 					Update Team
 				</StyledButton>
-			</CustomDiv>
-		</GreyColumn>
+			</Col>
+		</Row>
 	);
 }

@@ -64,15 +64,13 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 			<MaxWidthDesignPage>
 				<Spin spinning={loading}>
 					<Padding>
-						<Row gutter={[16, 16]}>
-							<ProjectTabView
-								onTabChangeCallback={onTabChange}
-								currentTab={currentTab}
-								onSelectDesign={goBack}
-								designId={designId}
-								setLoading={setLoading}
-							/>
-						</Row>
+						<ProjectTabView
+							onTabChangeCallback={onTabChange}
+							currentTab={currentTab}
+							onSelectDesign={goBack}
+							designId={designId}
+							setLoading={setLoading}
+						/>
 					</Padding>
 				</Spin>
 			</MaxWidthDesignPage>

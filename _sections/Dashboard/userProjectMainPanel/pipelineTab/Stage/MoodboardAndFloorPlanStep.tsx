@@ -1,17 +1,24 @@
+import {
+	CheckCircleTwoTone,
+	CheckOutlined,
+	LoadingOutlined,
+	UploadOutlined,
+	CloseCircleTwoTone,
+} from "@ant-design/icons";
 import { deleteUploadedImageApi, updateSubtasks } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { DesignImgTypes, DesignPhases, DetailedDesign } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { SilentDivider, StatusButton } from "@sections/Dashboard/styled";
+import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 import { getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, message, Modal, notification, Row, Typography, Upload } from "antd";
+import { Button, Col, message, Modal, notification, Row, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
-import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 
 const { Text } = Typography;
 interface MoodboardAndFloorPlanStep {
@@ -103,7 +110,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 		notification.open({
 			key: name,
 			message: "Please Wait",
-			icon: <Icon type="loading" />,
+			icon: <LoadingOutlined />,
 			description: "Status being Updated",
 		});
 		const endPoint = updateSubtasks(designData._id);
@@ -127,7 +134,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 				notification.open({
 					key: name,
 					message: "Successful",
-					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
 					description: "Status is successfully updated",
 				});
 			} else {
@@ -137,7 +144,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 			notification.open({
 				key: name,
 				message: "Error",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 				description: error.message,
 			});
 		}
@@ -150,12 +157,12 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 	return (
 		<StepDiv>
 			<Row gutter={[16, 16]}>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[8, 8]}>
-						<Col>
+						<Col span={24}>
 							<Text strong>Description</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Text>
 								This step involves the creation of <b>Moodboard</b> and the upload of <b>Floorplans</b>(if any) to the
 								design. Mark this step as complete once these tasks are done.
@@ -163,40 +170,33 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 						</Col>
 					</Row>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[8, 8]}>
-						<Col>
+						<Col span={24}>
 							<Text strong>Upload Floor Plan (Optional)</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<SilentDivider />
 						</Col>
-						<Col>
-							<Row gutter={[4, 4]}>
-								<Col>
-									<Text>Floorplan</Text>
-								</Col>
-								<Col>
-									<Upload
-										multiple
-										supportServerRender
-										name="files"
-										fileList={floorPlanList}
-										listType="picture-card"
-										onPreview={handlePreview}
-										action={floorPlanUploadEndpoint}
-										onRemove={confirmDelete}
-										onChange={handleOnFileUploadChange}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept="image/*"
-									>
-										<Button>
-											<Icon type="upload" />
-											Click to Upload
-										</Button>
-									</Upload>
-								</Col>
-							</Row>
+						<Col span={24}>
+							<Upload
+								multiple
+								supportServerRender
+								name="files"
+								fileList={floorPlanList}
+								listType="picture-card"
+								onPreview={handlePreview}
+								action={floorPlanUploadEndpoint}
+								onRemove={confirmDelete}
+								onChange={handleOnFileUploadChange}
+								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+								accept="image/*"
+							>
+								<Button>
+									<UploadOutlined />
+									Click to Upload
+								</Button>
+							</Upload>
 						</Col>
 					</Row>
 					<ImageDisplayModal
@@ -206,8 +206,8 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 						handleCancel={handleCancel}
 					/>
 				</Col>
-				<Col>
-					<Row type="flex" gutter={[8, 8]}>
+				<Col span={24}>
+					<Row gutter={[8, 8]}>
 						<Col xs={24} md={12}>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>FloorPlan</Col>
@@ -219,7 +219,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 										status={floorPlanStatus}
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
 										disabled={floorPlanStatus === Status.completed}
-										icon="check"
+										icon={<CheckOutlined />}
 									>
 										{floorPlanStatus === Status.completed ? "Completed" : "Mark as Complete"}
 									</StatusButton>
@@ -231,7 +231,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 										name="floorplanCreation"
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
 										disabled={floorPlanStatus !== Status.completed}
-										type="danger"
+										danger
 									>
 										{floorPlanStatus === Status.completed ? "Mark as Incomplete" : "Not yet completed"}
 									</Button>
@@ -248,7 +248,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
 										status={moodboardStatus}
 										disabled={moodboardStatus === Status.completed}
-										icon="check"
+										icon={<CheckOutlined />}
 										type="primary"
 									>
 										{moodboardStatus === Status.completed ? "Completed" : "Mark as Complete"}
@@ -258,7 +258,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 									<Button
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
 										name="moodboardCreation"
-										type="danger"
+										danger
 										disabled={moodboardStatus !== Status.completed}
 										block
 									>

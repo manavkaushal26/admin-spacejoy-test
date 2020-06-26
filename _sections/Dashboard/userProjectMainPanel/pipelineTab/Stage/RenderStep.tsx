@@ -1,16 +1,16 @@
+import { UploadOutlined } from "@ant-design/icons";
 import { deleteUploadedImageApi } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
+import ImageDisplayModal from "@components/ImageDisplayModal";
 import { DesignImgTypes, DetailedDesign, PhaseType, RenderImgUploadTypes } from "@customTypes/dashboardTypes";
-import { CustomDiv, Form } from "@sections/Dashboard/styled";
 import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Icon, message, Select, Typography, Modal } from "antd";
+import { Button, Col, message, Modal, Row, Select, Typography } from "antd";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import ImageDisplayModal from "@components/ImageDisplayModal";
+import React, { useEffect, useMemo, useState } from "react";
 import { StepDiv } from "../styled";
 
 const { Option } = Select;
@@ -89,12 +89,6 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 		setImageType(selectedValue);
 	};
 
-	const ref = useRef(null);
-
-	useEffect(() => {
-		ref.current.scrollIntoView({ behavior: "smooth" });
-	}, []);
-
 	const handlePreview = async (file): Promise<void> => {
 		const fileCopy = { ...file };
 		if (!fileCopy.url && !fileCopy.preview) {
@@ -110,22 +104,27 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 
 	return (
 		<StepDiv>
-			<CustomDiv ref={ref} width="100%" px="1rem" py="1rem">
-				<CustomDiv pb="1rem">
-					<CustomDiv>
-						<Text strong>Description</Text>
-					</CustomDiv>
-					<CustomDiv>
-						<Text>
-							Upload the Renders of the Room in this step. Please make sure you select appropriate type before uploading
-							the image. Mark this step as complete once these tasks are done.
-						</Text>
-					</CustomDiv>
-				</CustomDiv>
-				<Form>
-					<CustomDiv align="baseline" type="flex" flexDirection="row">
-						<label>Image Type</label>
-						<CustomDiv inline pl="1rem" flexBasis="15ch">
+			<Row gutter={[4, 4]}>
+				<Col>
+					<Row gutter={[4, 4]}>
+						<Col span={24}>
+							<Text strong>Description</Text>
+						</Col>
+						<Col span={24}>
+							<Text>
+								Upload the Renders of the Room in this step. Please make sure you select appropriate type before
+								uploading the image. Mark this step as complete once these tasks are done.
+							</Text>
+						</Col>
+					</Row>
+				</Col>
+
+				<Col span={24}>
+					<Row gutter={[4, 4]}>
+						<Col span={24}>
+							<Text strong>Image Type</Text>
+						</Col>
+						<Col span={24}>
 							<Select value={imageType} onSelect={onSelect} style={{ width: "100%" }}>
 								{Object.keys(RenderImgUploadTypes).map(key => {
 									return (
@@ -135,11 +134,15 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 									);
 								})}
 							</Select>
-						</CustomDiv>
-					</CustomDiv>
-					<CustomDiv width="100%" type="flex">
-						<label>Images</label>
-						<CustomDiv inline pl="1rem">
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
+					<Row gutter={[4, 4]}>
+						<Col span={24}>
+							<Text strong>Images</Text>
+						</Col>
+						<Col span={24}>
 							<Upload
 								multiple
 								supportServerRender
@@ -154,14 +157,14 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 								accept="image/*"
 							>
 								<Button>
-									<Icon type="upload" />
+									<UploadOutlined />
 									Click to Upload
 								</Button>
 							</Upload>
-						</CustomDiv>
-					</CustomDiv>
-				</Form>
-			</CustomDiv>
+						</Col>
+					</Row>
+				</Col>
+			</Row>
 			<ImageDisplayModal
 				handleCancel={handleCancel}
 				previewImage={preview.previewImage}

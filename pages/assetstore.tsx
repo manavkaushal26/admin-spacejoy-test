@@ -1,3 +1,4 @@
+import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import User from "@customTypes/userType";
@@ -5,14 +6,15 @@ import AssetCartModal from "@sections/AssetStore/assetCart";
 import AssetMainPanel from "@sections/AssetStore/assetMainpanel";
 import Sidebar from "@sections/AssetStore/assetSidepanel";
 import NewAssetModal from "@sections/AssetStore/newAssetModal";
-import { CustomDiv, MaxHeightDiv } from "@sections/Dashboard/styled";
+import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Icon, message, Spin } from "antd";
-import { NextPageContext, NextPage } from "next";
+import { Button, Col, message, Row, Spin } from "antd";
+import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useReducer, useState } from "react";
@@ -195,23 +197,23 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 
 	const categoryMap: Array<CategoryMap> = useMemo(() => {
 		if (state.metaData) {
-			return state.metaData.categories.list.map(elem => {
+			return state.metaData.categories.list.map((elem) => {
 				return {
 					title: { name: elem.name, level: "category" },
 					key: elem._id,
 					children: state.metaData.subcategories.list
-						.filter(subElem => {
+						.filter((subElem) => {
 							return subElem.category === elem._id;
 						})
-						.map(subElem => {
+						.map((subElem) => {
 							return {
 								title: { name: subElem.name, level: "subCategory" },
 								key: subElem._id,
 								children: state.metaData.verticals.list
-									.filter(vert => {
+									.filter((vert) => {
 										return vert.subcategory === subElem._id;
 									})
-									.map(filtVert => {
+									.map((filtVert) => {
 										return {
 											title: { name: filtVert.name, level: "verticals" },
 											key: filtVert._id,
@@ -244,24 +246,32 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 				<ParentContainer>
 					<SidebarContainer>
 						<MaxHeightDiv style={{ flexDirection: "column" }}>
-							<CustomDiv py="0.5rem" width="100%">
-								<Button icon="rollback" onClick={goToButtonClick} block type="primary">
-									{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
-								</Button>
-							</CustomDiv>
-							{designId && (
-								<CustomDiv py="0.5rem" width="100%">
-									<Button onClick={toggleCart} block type="default">
-										Open Cart
-									</Button>
-								</CustomDiv>
-							)}
-							<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
+							<Row>
+								<Col span={24}>
+									<Row gutter={[8, 8]}>
+										<Col span={24}>
+											<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type="primary">
+												{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
+											</Button>
+										</Col>
+										{designId && (
+											<Col span={24}>
+												<Button onClick={toggleCart} block type="default">
+													Open Cart
+												</Button>
+											</Col>
+										)}
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
+								</Col>
+							</Row>
 						</MaxHeightDiv>
 					</SidebarContainer>
 					<MainContentContainer>
 						<MaxHeightDiv>
-							<CustomDiv flexDirection="column" width="100%" px="0.5rem">
+							<PaddedDiv>
 								<AssetMainPanel
 									themeIdToNameMap={themeIdToNameMap}
 									editAsset={editAsset}
@@ -273,12 +283,12 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 									moodboard={state.moodboard}
 									addRemoveAsset={addRemoveAsset}
 								/>
-							</CustomDiv>
+							</PaddedDiv>
 						</MaxHeightDiv>
 					</MainContentContainer>
 				</ParentContainer>
 				<FAB onClick={toggleNewAssetModal}>
-					<Icon type="plus" />
+					<PlusOutlined style={{ color: "white" }} />
 				</FAB>
 			</Spin>
 

@@ -308,9 +308,9 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	};
 
 	return (
-		<Row gutter={[0, 12]} style={{ padding: "0 0.5rem 0 0" }}>
-			<MaxHeightDiv>
-				<Col>
+		<MaxHeightDiv>
+			<Row gutter={[0, 12]} style={{ padding: "0 0.5rem 0 0" }}>
+				<Col span={24}>
 					<Button
 						onClick={saveBlogButtonClicked}
 						disabled={!!state.activeBlog.publishDate || state.activeBlog.status === Status.active}
@@ -321,26 +321,26 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						Save Blog
 					</Button>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Collapse onChange={(key): void => setActiveKey(key)} activeKey={activeKey}>
 						<Panel key="1" header="General">
 							<Row gutter={[8, 8]}>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>
+										<Col span={24}>
 											<Text>Title</Text>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Input ref={titleRef} onChange={handleChange} name="title" value={state.activeBlog.title} />
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>
+										<Col span={214}>
 											<Text>Description</Text>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Input.TextArea
 												rows={2}
 												onChange={handleChange}
@@ -350,12 +350,12 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>
+										<Col span={24}>
 											<Text>Blog Type</Text>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Select
 												style={{ width: "100%" }}
 												onChange={(value): void => handleSelect(value, "blogType")}
@@ -372,7 +372,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Button
 										disabled={!state.activeBlog._id}
 										type="ghost"
@@ -382,10 +382,10 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 										Manage Image Console
 									</Button>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Text>Cover Image</Text>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Image
 										width="100%"
 										src={state.activeBlog.coverImgCdn || "v1581080070/admin/productImagePlaceholder.jpg"}
@@ -395,21 +395,19 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						</Panel>
 						<Panel key="2" header="Categories">
 							<Row gutter={[8, 8]}>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>Category</Col>
-										<Col>
+										<Col span={24}>Category</Col>
+										<Col span={24}>
 											<Select
 												value={getValueSafely(() => state.activeBlog.category._id, "")}
 												style={{ width: "100%" }}
 												onSearch={onSearch}
 												showSearch
 												notFoundContent={
-													<Row type="flex" justify="center">
-														{fetching ? <Spin spinning /> : "No Category Found"}
-													</Row>
+													<Row justify="center">{fetching ? <Spin spinning /> : "No Category Found"}</Row>
 												}
-												dropdownRender={(menu): React.ReactNode => {
+												dropdownRender={(menu): JSX.Element => {
 													return (
 														<Row gutter={[4, 4]}>
 															<Col>{menu}</Col>
@@ -443,10 +441,10 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>Tags</Col>
-										<Col>
+										<Col span={24}>Tags</Col>
+										<Col span={24}>
 											<Select
 												open={false}
 												maxTagCount={5}
@@ -463,26 +461,26 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						</Panel>
 						<Panel key="3" header="SEO">
 							<Row>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>Meta Title</Col>
-										<Col>
+										<Col span={24}>Meta Title</Col>
+										<Col span={24}>
 											<Input onChange={handleChange} name="metaTitle" value={state.activeBlog.metaTitle} />
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>Meta Description</Col>
-										<Col>
+										<Col span={24}>Meta Description</Col>
+										<Col span={24}>
 											<Input onChange={handleChange} name="metaDescription" value={state.activeBlog.metaDescription} />
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
-										<Col>What&apos;s the blog URL?</Col>
-										<Col>
+										<Col span={24}>What&apos;s the blog URL?</Col>
+										<Col span={24}>
 											<Input onChange={handleChange} name="slug" value={state.activeBlog.slug} />
 										</Col>
 									</Row>
@@ -491,31 +489,32 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						</Panel>
 					</Collapse>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<StyledButton
 						disabled={(state.activeBlog.status === Status.active && role === Role.BlogAuthor) || !state.activeBlogId}
 						onClick={onPublish}
 						block
-						type="danger"
+						type="primary"
+						danger
 						loading={loading}
 					>
 						{publishButtonText}
 					</StyledButton>
 				</Col>
-			</MaxHeightDiv>
-			<AddCategoryModal
-				visible={addCategoryModalVisible}
-				loading={addingCategoryLoading}
-				onCancel={toggleAddCategoryModal}
-				onOk={onAddCategoryOk}
-			/>
-			<ImageManagementConsole
-				state={state}
-				dispatch={dispatch}
-				imageConsoleVisible={imageConsoleVisible}
-				setImageConsoleVisible={setImageConsoleVisible}
-			/>
-		</Row>
+				<AddCategoryModal
+					visible={addCategoryModalVisible}
+					loading={addingCategoryLoading}
+					onCancel={toggleAddCategoryModal}
+					onOk={onAddCategoryOk}
+				/>
+				<ImageManagementConsole
+					state={state}
+					dispatch={dispatch}
+					imageConsoleVisible={imageConsoleVisible}
+					setImageConsoleVisible={setImageConsoleVisible}
+				/>
+			</Row>
+		</MaxHeightDiv>
 	);
 };
 

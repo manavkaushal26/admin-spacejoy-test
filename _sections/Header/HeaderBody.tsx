@@ -35,10 +35,10 @@ const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 		<PaddedDiv>
 			<Row>
 				<MobileHiddenStyled>
-					<Row type="flex" justify="space-around" align="middle">
+					<Row justify="space-around" align="middle">
 						<Col span={8}>
 							<ActiveLink href="/launchpad" as="/launchpad">
-								<Row type="flex" align="middle" gutter={[4, 0]}>
+								<Row align="middle" gutter={[4, 0]}>
 									<Col>
 										<Logo md />
 									</Col>
@@ -56,7 +56,7 @@ const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 							</ActiveLink>
 						</Col>
 						<Col span={16}>
-							<Row type="flex" justify="end" gutter={[32, 0]}>
+							<Row justify="end" gutter={[32, 0]}>
 								<Col>{navCenter(authVerification, Router.pathname)}</Col>
 								<Col> {navRight(authVerification)}</Col>
 							</Row>
@@ -66,10 +66,10 @@ const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 			</Row>
 			<Row>
 				<MobileVisibleStyled>
-					<Row type="flex" justify="space-around">
+					<Row justify="space-around">
 						<Col span={18}>
 							<ActiveLink href="/launchpad" as="/launchpad">
-								<Row type="flex" align="middle" gutter={[4, 0]}>
+								<Row align="middle" gutter={[4, 0]}>
 									<Col>
 										<Logo md />
 									</Col>

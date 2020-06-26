@@ -1,7 +1,5 @@
-import { Card, Divider, Drawer, Icon, Spin, Slider, Typography, Modal } from "antd";
+import { Card, Divider, Drawer, Spin, Slider, Modal } from "antd";
 import styled, { css } from "styled-components";
-
-const { Text } = Typography;
 
 export const ModifiedDivider = styled(Divider)`
 	margin: 12px 0;
@@ -10,14 +8,6 @@ export const ModifiedDivider = styled(Divider)`
 export const AssetCard = styled(Card)`
 	.ant-card-body {
 		padding: 0px 0px;
-	}
-`;
-
-export const StyleCorrectedIcon = styled(Icon)`
-	.anticon {
-		display: flex;
-		justify-content: center;
-		align-content: center;
 	}
 `;
 
@@ -65,7 +55,7 @@ export const StyledInput = styled.input<{ error: boolean }>`
 	width: 100%;
 	border: 1px solid rgba(0, 0, 0, 0.1);
 	border-radius: 4px;
-	border-color: ${({ error }) => (error ? "red" : "")};
+	border-color: ${({ error }): string => (error ? "red" : "")};
 `;
 
 export const MarginCorrectedSlider = styled(Slider)`

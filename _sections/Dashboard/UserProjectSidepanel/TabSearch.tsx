@@ -1,6 +1,7 @@
+import { SearchOutlined } from "@ant-design/icons";
 import { HumanizePhaseInternalNames, RoomNameSearch } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { Button, Col, DatePicker, Icon, Input, InputNumber, Row, Select, Typography } from "antd";
+import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
@@ -40,7 +41,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 				...state,
 				endedAt: [copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null, state.endedAt[1]],
 			});
-			setMinMax(prevState => {
+			setMinMax((prevState) => {
 				const newState = [...prevState];
 				newState[0] = copyValue;
 				return newState;
@@ -62,7 +63,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 				endedAt: [state.endedAt[0], copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null],
 			});
 
-			setMinMax(prevState => {
+			setMinMax((prevState) => {
 				const newState = [...prevState];
 				newState[1] = copyValue;
 				return newState;
@@ -137,8 +138,8 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 
 	return (
 		<Row gutter={[8, 8]}>
-			<Col>
-				<Row type="flex" justify="space-between">
+			<Col span={24}>
+				<Row justify="space-between">
 					<Col>
 						<Button size="small" type="primary" onClick={downloadCSV}>
 							<small>Download as JSON</small>
@@ -158,14 +159,14 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					</Col>
 				</Row>
 			</Col>
-			<Col>
+			<Col span={24}>
 				<Row gutter={[4, 16]}>
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text strong>Customer Name</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Input
 									value={state.nameSearchText}
 									style={{ width: "100%" }}
@@ -177,17 +178,17 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									}}
 									placeholder="Customer Name"
 									allowClear
-									prefix={<Icon type="search" />}
+									prefix={<SearchOutlined />}
 								/>
 							</Col>
 						</Row>
 					</Col>
 					<Col span={12}>
 						<Row gutter={[0, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text strong>Designer Name</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Input
 									value={state.designerSearchText}
 									style={{ width: "100%" }}
@@ -200,17 +201,17 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									}}
 									placeholder="Designer Name"
 									allowClear
-									prefix={<Icon type="search" />}
+									prefix={<SearchOutlined />}
 								/>
 							</Col>
 						</Row>
 					</Col>
 					<Col span={12}>
 						<Row gutter={[0, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text strong>Room Name</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Select
 									value={state.name}
 									style={{ width: "100%" }}
@@ -218,7 +219,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									onChange={(value): void => handleSelectFilter(value, "name")}
 								>
 									<Option value="">Filter by Room Name</Option>
-									{RoomNameSearch.map(roomName => {
+									{RoomNameSearch.map((roomName) => {
 										return (
 											<Option key={roomName} value={roomName}>
 												{roomName}
@@ -231,10 +232,10 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					</Col>
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text strong>Phases</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Select
 									value={state.phase}
 									style={{ width: "100%" }}
@@ -244,7 +245,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									placeholder="All Phases Shown"
 									onChange={(value): void => handleSelectFilter(value, "phase")}
 								>
-									{Object.keys(HumanizePhaseInternalNames).map(key => {
+									{Object.keys(HumanizePhaseInternalNames).map((key) => {
 										return (
 											<Option key={key} value={key}>
 												{HumanizePhaseInternalNames[key]}
@@ -262,9 +263,9 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 							</Col>
 							<Col span={24}>
 								<RangePicker
+									style={{ width: "100%" }}
 									format={dateFormat}
 									value={state.startedAt}
-									mode="date"
 									onChange={(value): void => onDateChange("startedAt", value)}
 									placeholder={["From", "To"]}
 								/>
@@ -280,7 +281,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 								</Text>
 							</Col>
 							<Col span={24}>
-								<Row type="flex">
+								<Row>
 									<InputNumber
 										style={{
 											width: "45%",
@@ -334,9 +335,9 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 							</Col>
 							<Col span={24}>
 								<RangePicker
+									style={{ width: "100%" }}
 									format={dateFormat}
 									value={state.endedAt}
-									mode="date"
 									onChange={(value): void => onDateChange("endedAt", value)}
 									placeholder={["From", "To"]}
 								/>
@@ -346,10 +347,10 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text strong>Status</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Select
 									value={state.status}
 									style={{ width: "100%" }}
@@ -358,7 +359,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									placeholder="All Status Shown"
 									onChange={(value): void => handleSelectFilter(value, "status")}
 								>
-									{Object.keys(Status).map(key => {
+									{Object.keys(Status).map((key) => {
 										return (
 											<Option key={key} value={Status[key]}>
 												{key}
@@ -376,16 +377,16 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 					</Col>
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text strong>Sort Option</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Select
 									value={JSON.stringify(selectedSort)}
 									style={{ width: "100%" }}
 									onChange={(value): void => handleSelectFilter(value, "sort")}
 								>
-									{Object.keys(SortOptions).map(key => {
+									{Object.keys(SortOptions).map((key) => {
 										return (
 											<Option key={key} value={JSON.stringify(SortOptions[key])}>
 												{key}

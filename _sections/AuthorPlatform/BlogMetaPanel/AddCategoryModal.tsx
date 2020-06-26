@@ -72,18 +72,18 @@ const AddCategoryModal: React.FC<AddCategoryModal> = ({ onOk, visible, onCancel 
 			visible={visible}
 		>
 			<Row gutter={[8, 8]}>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[4, 4]}>
-						<Col>Title</Col>
-						<Col>
+						<Col span={24}>Title</Col>
+						<Col span={24}>
 							<Input value={state.title} onChange={onChange} name="title" />
 						</Col>
 					</Row>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[4, 4]}>
-						<Col>Description</Col>
-						<Col>
+						<Col span={24}>Description</Col>
+						<Col span={24}>
 							<Input.TextArea value={state.description} onChange={onChange} name="description" />
 						</Col>
 					</Row>

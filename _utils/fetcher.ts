@@ -25,7 +25,7 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL, isMultipartFor
 	const headers = JWT
 		? {
 				"Content-Type": "application/json",
-				Authorization: JWT,
+				"Authorization": JWT,
 		  }
 		: { "Content-Type": "application/json" };
 	const options =

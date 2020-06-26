@@ -1,4 +1,4 @@
-import { Divider, Tag, Typography, Col, Icon, Button, Input, Carousel } from "antd";
+import { Divider, Tag, Typography, Col, Button, Input, Carousel } from "antd";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { Status } from "@customTypes/userType";
 import { PhaseInternalNames } from "@customTypes/dashboardTypes";
@@ -204,6 +204,7 @@ export const CustomDiv = styled.div<CustomDivProps>`
 
 export const SilentDivider = styled(Divider)`
 	margin: 0 0 !important;
+	border-top-color: #e8e8e8;
 `;
 
 export const StepsContainer = styled(CustomDiv)`
@@ -250,9 +251,6 @@ export const BorderedParagraph = styled(Paragraph)`
 export const EndCol = styled(Col)`
 	display: flex;
 	justify-content: flex-end;
-`;
-export const FitIcon = styled(Icon)`
-	display: flex;
 `;
 
 export const CustomUl = styled.ul`

@@ -16,7 +16,7 @@ const CustomerFeedbackTab: React.FC<CustomerFeedbackTab> = ({ projectData }) => 
 					return design.design._id === feedback.reference;
 				});
 				return (
-					<Col key={feedback._id}>
+					<Col key={feedback._id} span={24}>
 						<Card title={`${designData.design.name}' feedback`}>
 							<Text>{feedback.comment}</Text>
 						</Card>

@@ -126,9 +126,9 @@ function Button(props) {
 				<ButtonNormalStyled {...props}>{children}</ButtonNormalStyled>
 			) : (
 				<ButtonStyled {...props} disabled={submitInProgress || disabled}>
-					<div className="true-center">
+					<div className='true-center'>
 						{submitInProgress ? (
-							<SVGIcon name="spinner" className="loading-spinner" height={17} width={17} />
+							<SVGIcon name='spinner' className='loading-spinner' height={17} width={17} />
 						) : (
 							children
 						)}
@@ -141,7 +141,7 @@ function Button(props) {
 
 Button.defaultProps = {
 	children: null,
-	onClick: () => {},
+	onClick: undefined,
 	shape: "rounded",
 	variant: "secondary",
 	size: "md",

@@ -125,41 +125,41 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 
 	return (
 		<Row gutter={[8, 8]}>
-			<Col>
-				<Row type="flex" justify="end">
+			<Col span={24}>
+				<Row justify="end">
 					<Button type="primary" onClick={downloadCSV}>
 						Download as JSON
 					</Button>
 				</Row>
 			</Col>
-			<Tabs>
-				<Tabs.TabPane tab="Quiz Form" key="quizData">
-					{quizResponse.map(section => {
-						return (
-							<Col key={section._id}>
-								<Card title={section.title}>
-									<Row gutter={[8, 8]}>
-										<Col>
-											<QuizSections
-												key={section._id}
-												section={section}
-												setQuizResponse={setQuizResponse}
-												projectId={projectId}
-												quizResponse={quizResponse}
-											/>
-										</Col>
-									</Row>
-								</Card>
-							</Col>
-						);
-					})}
-				</Tabs.TabPane>
-				<Tabs.TabPane tab="Upload Missing Quiz data" key="missingdata">
-					<VerticalPaddedDiv style={{ padding: "1rem 0.3rem" }}>
+			<Col span={24}>
+				<Tabs>
+					<Tabs.TabPane tab="Quiz Form" key="quizData">
+						{quizResponse.map(section => {
+							return (
+								<Col key={section._id} span={24}>
+									<Card title={section.title}>
+										<Row gutter={[8, 8]}>
+											<Col>
+												<QuizSections
+													key={section._id}
+													section={section}
+													setQuizResponse={setQuizResponse}
+													projectId={projectId}
+													quizResponse={quizResponse}
+												/>
+											</Col>
+										</Row>
+									</Card>
+								</Col>
+							);
+						})}
+					</Tabs.TabPane>
+					<Tabs.TabPane tab="Upload Missing Quiz data" key="missingdata">
 						<QuizDiscussions projectId={projectId} />
-					</VerticalPaddedDiv>
-				</Tabs.TabPane>
-			</Tabs>
+					</Tabs.TabPane>
+				</Tabs>
+			</Col>
 		</Row>
 	);
 };

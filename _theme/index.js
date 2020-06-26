@@ -21,7 +21,7 @@ const theme = {
 			black: "rgba(0, 0, 0, 0.1)",
 		},
 		bg: {
-			light1: "#fafafa",
+			light1: "#fcfcfc",
 			light2: "#f2f2f2",
 			dark1: "#ddd",
 			dark2: "#ddd",

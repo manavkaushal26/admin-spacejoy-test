@@ -22,7 +22,7 @@ const CustomerResponses: React.FC<CustomerResponsesProps> = ({ formData }): JSX.
 				})
 			) : (
 				<Col span={24}>
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Empty description="Customer hasn't provided responses for this section" />
 					</Row>
 				</Col>

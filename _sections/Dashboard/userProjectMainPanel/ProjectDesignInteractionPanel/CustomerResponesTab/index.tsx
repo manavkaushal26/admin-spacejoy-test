@@ -14,8 +14,8 @@ const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData }) =
 	const [currentTab, setCurrentTab] = useState<"quiz1" | "quiz2">("quiz1");
 	return (
 		<Row gutter={[8, 8]}>
-			<Col>
-				<Row type="flex" justify="center">
+			<Col span={24}>
+				<Row justify="center">
 					<Radio.Group
 						value={currentTab}
 						onChange={(e): void => {
@@ -28,12 +28,12 @@ const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData }) =
 				</Row>
 			</Col>
 			{currentTab === "quiz1" && (
-				<Col>
+				<Col span={24}>
 					<CustomerResponses formData={formData} />
 				</Col>
 			)}
 			{currentTab === "quiz2" && (
-				<Col>
+				<Col span={24}>
 					<DetailedCustomerRequirement projectId={projectData._id} />
 				</Col>
 			)}

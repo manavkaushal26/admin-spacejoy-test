@@ -71,15 +71,15 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 														<Image width="100%" src={image.url} />
 													</Col>
 													<Col span={24}>
-														<Row type="flex" justify="space-around">
+														<Row justify="space-around">
 															<Col>
-																<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
+																<Row style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
 																	<Text strong>Time: </Text>
 																	<Text ellipsis>{image?.meta?.time}</Text>
 																</Row>
 															</Col>
 															<Col>
-																<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
+																<Row style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
 																	<Text strong>Created At: </Text>
 																	<Text ellipsis>{moment(image?.meta?.createdAt).format("DD-MM-YYYY hh:mm a")}</Text>
 																</Row>

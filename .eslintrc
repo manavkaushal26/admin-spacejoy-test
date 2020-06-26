@@ -1,29 +1,44 @@
 {
 	"extends": [
-		"airbnb",
-		"prettier/@typescript-eslint",
-		"prettier/react",
-		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:prettier/recommended",
-		"eslint:recommended"
+		"eslint:recommended",
+		"plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
+		"plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+		"prettier/@typescript-eslint", // Uses eslint-config-prettier to disable ESLint rules from @typescript-eslint/eslint-plugin that would conflict with prettier
+		"plugin:prettier/recommended"
 	],
 	"plugins": ["@typescript-eslint", "prettier"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"ecmaVersion": 2016,
+		"ecmaVersion": 2020,
 		"sourceType": "module",
 		"ecmaFeatures": {
 			"jsx": true
 		}
 	},
+	"overrides": [
+		{
+			"files": ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx"],
+			"rules": {
+				"react/prop-types": "off"
+			}
+		}
+	],
 	"env": {
 		"es6": true,
 		"browser": true,
 		"node": true
 	},
 	"settings": {
+		"import/parsers": {
+			"@typescript-eslint/parser": [".ts", ".tsx"]
+		},
 		"import/resolver": {
+			"typescript": {
+				"alwaysTryTypes": true
+			},
+			"node": {
+				"extensions": [".js", ".jsx", ".ts", ".tsx"]
+			},
 			"babel-module": {}
 		},
 		"react": {
@@ -31,46 +46,24 @@
 		}
 	},
 	"rules": {
-		"@typescript-eslint/camelcase": 2,
+		"@typescript-eslint/quotes": ["error", "double"],
+		"prettier/prettier": "error",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/no-unused-vars": "error",
+		"react/jsx-props-no-spreading": ["off"],
 		"react/jsx-filename-extension": [
-			2,
+			1,
 			{
 				"extensions": [".js", ".jsx", ".ts", ".tsx"]
 			}
 		],
-		"jsx-a11y/anchor-is-valid": [
-			1,
-			{
-				"components": ["Link"],
-				"aspects": ["invalidHref", "preferButton"]
-			}
-		],
-		"jsx-a11y/label-has-for": [
-			2,
-			{
-				"components": ["Label"],
-				"required": {
-					"some": ["nesting", "id"]
-				},
-				"allowChildren": false
-			}
-		],
 		"no-console": 2,
 		"no-underscore-dangle": 0,
-		"import/prefer-default-export": 1,
 		"react/prop-types": 0,
 		"no-mixed-spaces-and-tabs": 0,
 		"no-extra-semi": 0,
 		"@typescript-eslint/type-annotation-spacing": 0,
-		"@typescript-eslint/member-delimiter-style": 0,
-		"jsx-a11y/label-has-associated-control": [
-			1,
-			{
-				"labelAttributes": ["label"],
-				"controlComponents": ["Input", "Upload"],
-				"depth": 5
-			}
-		]
+		"@typescript-eslint/member-delimiter-style": 0
 	},
 	"reportUnusedDisableDirectives": true
 }

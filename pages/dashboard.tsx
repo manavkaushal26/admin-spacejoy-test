@@ -170,7 +170,7 @@ const dashboard: NextPage<DashboardProps> = ({
 								setProjectPhaseUpdateValue={setProjectPhaseUpdateValue}
 							/>
 						</Layout.Sider>
-						<Layout>
+						<Layout style={{ background: "#fafafa" }}>
 							<WhiteBorderMaxHeightDiv>
 								<PaddedDiv>
 									<UserProjectMainPanel

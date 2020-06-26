@@ -115,16 +115,16 @@ const SidebarCard: React.FC<SidebarCard> = ({
 					onClick(uniqueId);
 				}}
 			>
-				<Row type="flex" gutter={[8, 8]}>
+				<Row gutter={[8, 8]}>
 					<Col span={24}>
-						<Row type="flex" gutter={[4, 4]} align="middle">
+						<Row gutter={[4, 4]} align="middle">
 							<Col span={3}>
 								<Avatar style={avatarStyle}>
 									<CapitalizedText>{avatarText}</CapitalizedText>
 								</Avatar>
 							</Col>
 							<Col span={17}>
-								<Row type="flex" justify="space-between" align="middle" gutter={[4, 4]}>
+								<Row justify="space-between" align="middle" gutter={[4, 4]}>
 									<Col span={24}>
 										<CapitalizedText strong>{title}</CapitalizedText>
 									</Col>
@@ -143,7 +143,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 							</Col>
 							<Col span={4}>
 								{!endTime ? (
-									<Row type="flex" justify="center" align="middle">
+									<Row justify="center" align="middle">
 										<Text>
 											<Tooltip title="Not started">
 												<small>N/S</small>
@@ -162,7 +162,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 					<Col span={24}>
 						<Row>
 							<Col span={20}>
-								<Row type="flex" gutter={[4, 4]}>
+								<Row gutter={[4, 4]}>
 									<Col span={24}>
 										<Text strong>Phase: </Text>
 										<Text>{HumanizePhaseInternalNames[phase]}</Text>
@@ -176,8 +176,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 							{isDelayed && (
 								<Col span={4}>
 									<Row>
-										<Col>
-											<Row type="flex" justify="center">
+										<Col span={24}>
+											<Row justify="center">
 												<Text>
 													<small>
 														<small>Delay</small>
@@ -185,8 +185,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 												</Text>
 											</Row>
 										</Col>
-										<Col>
-											<Row type="flex" justify="center">
+										<Col span={24}>
+											<Row justify="center">
 												<HighlightSpan type="danger">
 													<Text strong>
 														<small>{delayText}</small>

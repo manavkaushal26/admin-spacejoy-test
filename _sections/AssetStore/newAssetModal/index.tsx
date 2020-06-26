@@ -1,3 +1,10 @@
+import {
+	CheckCircleTwoTone,
+	CloseCircleTwoTone,
+	LinkOutlined,
+	LoadingOutlined,
+	UploadOutlined,
+} from "@ant-design/icons";
 import { assetCreateOrUpdationApi } from "@api/assetApi";
 import { uploadAssetImageApi, uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
@@ -11,7 +18,7 @@ import { cloudinary, cookieNames } from "@utils/config";
 import { MountAndClampValuesForVerticals } from "@utils/constants";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
+import { Button, Col, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import AddRetailerModal from "../addRetailerModal";
@@ -508,7 +515,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		notification.open({
 			key: "saveStatus",
 			message: "Updating Asset",
-			icon: <Icon type="loading" />,
+			icon: <LoadingOutlined />,
 			description: "Trying to set asset as Active since 3D Model has been uploaded",
 		});
 
@@ -517,14 +524,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			notification.open({
 				key: "saveStatus",
 				message: "Successful",
-				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
 				description: "Status is successfully updated",
 			});
 		} else {
 			notification.open({
 				key: "saveStatus",
 				message: "Error",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 				description: "Please try saving asset manually",
 			});
 		}
@@ -722,7 +729,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 													onChange={(value): void =>
 														handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_PRICE_CURRENCY_TYPE)
 													}
-													defaultValue="usd"
 													value={state.currency}
 													style={{ width: 64 }}
 												>
@@ -790,7 +796,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									type="url"
 									addonAfter={
 										<Tooltip placement="top" title="Open URL">
-											<Icon onClick={openInNewWindow} type="link" />
+											<LinkOutlined onClick={openInNewWindow} />
 										</Tooltip>
 									}
 									placeholder="Link to product"
@@ -930,7 +936,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						</Row>
 					</Col>
 					<Col>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col span={12}>
 								<Row>
 									<Col span={24}>
@@ -979,7 +985,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						<SilentDivider />
 					</Col>
 					<Col>
-						<Row type="flex" gutter={[4, 4]}>
+						<Row gutter={[4, 4]}>
 							<Col>Dimensions in Inches?</Col>
 							<Col>
 								<Switch
@@ -1073,7 +1079,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					</Col>
 
 					<Col>
-						<Row type="flex" gutter={[4, 4]}>
+						<Row gutter={[4, 4]}>
 							<Col span={12}>
 								<Row>
 									<Col>Interacts with other Objects?</Col>
@@ -1137,7 +1143,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										accept={ModelToExtensionMap[model3dFiles]}
 									>
 										<Button>
-											<Icon type="upload" />
+											<UploadOutlined />
 											Click to Upload
 										</Button>
 									</Upload>
@@ -1160,7 +1166,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										accept=".blend"
 									>
 										<Button>
-											<Icon type="upload" />
+											<UploadOutlined />
 											Click to Upload
 										</Button>
 									</Upload>
@@ -1183,7 +1189,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										accept=".blend"
 									>
 										<Button>
-											<Icon type="upload" />
+											<UploadOutlined />
 											Click to Upload
 										</Button>
 									</Upload>
@@ -1207,7 +1213,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										accept="image/*"
 									>
 										<Button>
-											<Icon type="upload" />
+											<UploadOutlined />
 											Click to Upload
 										</Button>
 									</Upload>
@@ -1217,7 +1223,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					</Col>
 				)}
 				<Col span={24}>
-					<Row type="flex" gutter={[8, 0]} justify="end">
+					<Row gutter={[8, 0]} justify="end">
 						<Col>
 							<Button onClick={toggleNewAssetModal}>Cancel</Button>
 						</Col>

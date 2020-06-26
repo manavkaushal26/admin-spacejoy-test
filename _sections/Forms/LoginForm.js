@@ -6,33 +6,33 @@ import { Row, Col } from "antd";
 
 function LoginForm({ redirectUrl }) {
 	return (
-		<Row type="flex" justify="center">
+		<Row justify='center'>
 			<Col xs={{ span: 18 }} md={{ span: 12 }} lg={{ span: 8 }}>
 				<FormBox
-					destination="/auth/login"
+					destination='/auth/login'
 					redirectUrl={redirectUrl}
-					description="Enter your details to Login"
-					name="login"
+					description='Enter your details to Login'
+					name='login'
 				>
 					<Field
-						name="userEmail"
-						type="email"
-						label="Email"
-						placeholder="Email"
-						error="Please enter a valid email"
-						hint="should contain valid email"
+						name='userEmail'
+						type='email'
+						label='Email'
+						placeholder='Email'
+						error='Please enter a valid email'
+						hint='should contain valid email'
 						required
 					/>
 					<Field
-						name="userPassword"
-						type="password"
-						label="Password"
-						placeholder="Password"
-						error="Please enter a valid Password"
-						hint="should contain valid Password"
+						name='userPassword'
+						type='password'
+						label='Password'
+						placeholder='Password'
+						error='Please enter a valid Password'
+						hint='should contain valid Password'
 						required
 					/>
-					<Field name="userSubmit" type="submit" label="Login" />
+					<Field name='userSubmit' type='submit' label='Login' />
 				</FormBox>
 			</Col>
 		</Row>

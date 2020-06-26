@@ -1,12 +1,13 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { InboxOutlined } from "@ant-design/icons";
 import { uploadBlogImage } from "@api/blogApi";
 import Image from "@components/Image";
 import { BlogImageUploadTypes } from "@customTypes/blogTypes";
 import { ImageInterface } from "@customTypes/dashboardTypes";
 import { cookieNames } from "@utils/config";
 import getCookie from "@utils/getCookie";
-import { Card, Col, Empty, Icon, Modal, Row, Select, Upload } from "antd";
+import { Card, Col, Empty, Modal, Row, Select, Upload } from "antd";
 import { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import React, { useState } from "react";
@@ -96,7 +97,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 						accept="images/*"
 					>
 						<p className="ant-upload-drag-icon">
-							<Icon type="inbox" />
+							<InboxOutlined />
 						</p>
 						<p className="ant-upload-text">Type of Blog Image</p>
 
@@ -122,7 +123,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 					</Dragger>
 				</Col>
 				<Col span={24}>
-					<Row type="flex" style={{ justifyItems: "stretch" }} align="stretch" gutter={[4, 4]}>
+					<Row style={{ justifyItems: "stretch" }} align="stretch" gutter={[4, 4]}>
 						{state.activeBlog.images.length ? (
 							state.activeBlog.images.map(image => {
 								return (
@@ -135,7 +136,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 												bordered={false}
 												hoverable
 											>
-												<Row style={{ height: "100%" }} justify="center" align="middle" type="flex">
+												<Row style={{ height: "100%" }} justify="center" align="middle">
 													<Image src={`q_60,w_300/${image.cdn}`} width="100%" />
 												</Row>
 											</ModifiedCard>
@@ -145,7 +146,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 							})
 						) : (
 							<Col span={24}>
-								<Row type="flex" justify="center">
+								<Row justify="center">
 									<Empty description="No Images uploaded yet" />
 								</Row>
 							</Col>

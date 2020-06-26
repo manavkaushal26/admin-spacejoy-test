@@ -14,7 +14,7 @@ import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab"
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, notification, PageHeader, Spin, Tabs, Popconfirm } from "antd";
+import { Button, notification, PageHeader, Spin, Tabs, Popconfirm, Row, Col } from "antd";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { SilentDivider } from "../styled";
@@ -214,97 +214,107 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	return (
 		<>
 			{designData !== null ? (
-				<>
-					<SilentPageHeader
-						title={designData.name}
-						subTitle={
-							<CapitalizedText>
-								{getValueSafely<string>(() => designData.searchKey.roomType || designData.room.roomType, "")}
-							</CapitalizedText>
-						}
-						{...(projectData
-							? null
-							: {
-									extra: [
-										publishButtonText !== "Published" ? (
-											<Button
-												key="publish"
-												onClick={toggleEditDesignModal}
-												type="primary"
-												disabled={publishButtonDisabled}
-											>
-												{publishButtonText}
-											</Button>
-										) : (
-											<Popconfirm
-												title="Are you sure?"
-												key="popConfirm"
-												onConfirm={(): Promise<void> => onPublish(Status.pending)}
-											>
-												<Button key="unPublish" type="danger">
-													Unpublish
+				<Row>
+					<Col span={24}>
+						<SilentPageHeader
+							title={designData.name}
+							subTitle={
+								<CapitalizedText>
+									{getValueSafely<string>(() => designData.searchKey.roomType || designData.room.roomType, "")}
+								</CapitalizedText>
+							}
+							{...(projectData
+								? null
+								: {
+										extra: [
+											publishButtonText !== "Published" ? (
+												<Button
+													key='publish'
+													onClick={toggleEditDesignModal}
+													type='primary'
+													disabled={publishButtonDisabled}
+												>
+													{publishButtonText}
 												</Button>
-											</Popconfirm>
-										),
-									],
-							  })}
-						onBack={(): void => onSelectDesign()}
-					/>
-					<SilentDivider />
-
-					<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey="pipeline">
-						<TabPane tab="Team" key="team">
-							<TeamTab
-								designData={designData}
-								projectData={projectData}
-								setProjectData={setProjectData}
-								setDesignData={setDesignData}
-								setLoading={setLoading}
-								projectId={id}
-								assignedTeam={assignedTeam.map(memberData => {
-									return memberData.member;
-								})}
-							/>
-						</TabPane>
-						<TabPane tab="Moodboard" key="moodboard">
-							<MoodboardTab setDesignData={setDesignData} setLoading={setLoading} projectId={id} designId={designId} />
-						</TabPane>
-						<TabPane tab="Discussion" key="discussion">
-							<NotesTab designData={designData} />
-						</TabPane>
-						<TabPane tab="Pipeline" key="pipeline">
-							<PipelineTab
-								setProjectPhase={setProjectPhase}
-								designData={designData}
-								projectId={id}
-								setDesignData={setDesignData}
-							/>
-						</TabPane>
-						{designData.assets.length && (
-							<TabPane tab="Customer View" key="cust_view">
-								<CustomerView projectName={getValueSafely(() => projectData.name, "")} designData={designData} />
-							</TabPane>
-						)}
-						{feedback.length && (
-							<TabPane tab="Customer Feedback" key="customer_feedback">
-								<CustomerFeedbackTab
-									projectData={{
-										feedback,
-										designs: [...projectData.designs],
-									}}
-								/>
-							</TabPane>
-						)}
-						{!projectData && (
-							<TabPane tab="Design Details" key="design_details">
-								<DesignDetails
+											) : (
+												<Popconfirm
+													title='Are you sure?'
+													key='popConfirm'
+													onConfirm={(): Promise<void> => onPublish(Status.pending)}
+												>
+													<Button key='unPublish' danger type='primary'>
+														Unpublish
+													</Button>
+												</Popconfirm>
+											),
+										],
+								  })}
+							onBack={(): void => onSelectDesign()}
+						/>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey='pipeline'>
+							<TabPane tab='Team' key='team'>
+								<TeamTab
 									designData={designData}
+									projectData={projectData}
+									setProjectData={setProjectData}
 									setDesignData={setDesignData}
-									setDesignLoading={setDesignLoading}
+									setLoading={setLoading}
+									projectId={id}
+									assignedTeam={assignedTeam.map(memberData => {
+										return memberData.member;
+									})}
 								/>
 							</TabPane>
-						)}
-					</ScrollableTabs>
+							<TabPane tab='Moodboard' key='moodboard'>
+								<MoodboardTab
+									setDesignData={setDesignData}
+									setLoading={setLoading}
+									projectId={id}
+									designId={designId}
+								/>
+							</TabPane>
+							<TabPane tab='Discussion' key='discussion'>
+								<NotesTab designData={designData} />
+							</TabPane>
+							<TabPane tab='Pipeline' key='pipeline'>
+								<PipelineTab
+									setProjectPhase={setProjectPhase}
+									designData={designData}
+									projectId={id}
+									setDesignData={setDesignData}
+								/>
+							</TabPane>
+							{designData.assets.length && (
+								<TabPane tab='Customer View' key='cust_view'>
+									<CustomerView projectName={getValueSafely(() => projectData.name, "")} designData={designData} />
+								</TabPane>
+							)}
+							{feedback.length && (
+								<TabPane tab='Customer Feedback' key='customer_feedback'>
+									<CustomerFeedbackTab
+										projectData={{
+											feedback,
+											designs: [...projectData.designs],
+										}}
+									/>
+								</TabPane>
+							)}
+							{!projectData && (
+								<TabPane tab='Design Details' key='design_details'>
+									<DesignDetails
+										designData={designData}
+										setDesignData={setDesignData}
+										setDesignLoading={setDesignLoading}
+									/>
+								</TabPane>
+							)}
+						</ScrollableTabs>
+					</Col>
 					<EditDesignModal
 						confirmLoading={designLoading}
 						publish={!!projectData}
@@ -313,7 +323,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						designData={designData}
 						visible={editModalVisible}
 					/>
-				</>
+				</Row>
 			) : (
 				<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
 					{!!projectData && (

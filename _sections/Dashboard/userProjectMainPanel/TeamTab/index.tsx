@@ -167,113 +167,110 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 	};
 
 	return (
-		<CustomDiv py="10px" px="10px">
-			<Row gutter={[16, 8]}>
-				<Col span={24}>
-					<Row type="flex" gutter={[8, 8]}>
-						<Col>
-							<Row gutter={[8, 8]}>
-								<Col span={24}>
-									<Text>Search by Name</Text>
-								</Col>
-								<Col span={24}>
-									<Input onChange={onSearchTextChange} />
-								</Col>
-							</Row>
-						</Col>
-						<Col>
-							<Row type="flex" gutter={[8, 8]}>
-								<Col span={24}>
-									<Text>Role</Text>
-								</Col>
-								<Col span={24}>
-									<Select
-										style={{ flexBasis: "30ch" }}
-										value={state.role}
-										onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value })}
-									>
-										{Object.keys(ProjectRoles).map(key => (
-											<Option key={key} value={ProjectRoles[key]}>
-												{key}
-											</Option>
-										))}
-									</Select>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</Col>
-				<Col md={16}>
-					<Row type="flex" gutter={[8, 8]}>
-						{state.team.length ? (
-							state.team.map(teamMember => {
-								return (
-									<Col key={teamMember._id} span={8}>
-										<Card
-											size="small"
-											title={
-												<CustomDiv type="flex" align="center">
-													<CustomDiv py="8px" width="30%" overflow="visible">
-														<Avatar>
-															{getValueSafely<string>(() => {
-																return teamMember.profile.name[0];
-															}, "N/A").toUpperCase()}
-														</Avatar>
-													</CustomDiv>
-													<CustomDiv width="70%">
-														<Text style={{ width: "100%" }} ellipsis strong>
-															<CustomDiv width="100%" textTransform="capitalize" overflow="hidden">
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.name;
-																}, "N/A")}
-															</CustomDiv>
-														</Text>
-													</CustomDiv>
-												</CustomDiv>
-											}
-											extra={
-												<Checkbox
-													checked={selectedDesignersId.map(member => member._id).includes(teamMember._id)}
-													onChange={e => {
-														onDesignerSelect(teamMember._id, e.target.checked);
-													}}
-												/>
-											}
-											key={teamMember._id}
-										>
-											Current Projects: N/A
-										</Card>
-									</Col>
-								);
-							})
-						) : (
+		<Row gutter={[16, 8]}>
+			<Col span={24}>
+				<Row gutter={[8, 8]}>
+					<Col>
+						<Row gutter={[8, 8]}>
 							<Col span={24}>
-								<Empty description="No Users found" />
+								<Text>Search by Name</Text>
 							</Col>
-						)}
+							<Col span={24}>
+								<Input onChange={onSearchTextChange} />
+							</Col>
+						</Row>
+					</Col>
+					<Col>
+						<Row gutter={[8, 8]}>
+							<Col span={24}>
+								<Text>Role</Text>
+							</Col>
+							<Col span={24}>
+								<Select
+									value={state.role}
+									onSelect={value => dispatch({ type: DesignerTabActionType.ROLE_CHANGE, value })}
+								>
+									{Object.keys(ProjectRoles).map(key => (
+										<Option key={key} value={ProjectRoles[key]}>
+											{key}
+										</Option>
+									))}
+								</Select>
+							</Col>
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+			<Col md={16} sm={24}>
+				<Row gutter={[8, 8]}>
+					{state.team.length ? (
+						state.team.map(teamMember => {
+							return (
+								<Col key={teamMember._id} span={8}>
+									<Card
+										size="small"
+										title={
+											<Row align="middle" gutter={[8, 8]}>
+												<Col>
+													<Avatar>
+														{getValueSafely<string>(() => {
+															return teamMember.profile.name[0];
+														}, "N/A").toUpperCase()}
+													</Avatar>
+												</Col>
+												<Col>
+													<Text style={{ width: "100%" }} ellipsis strong>
+														<CustomDiv width="100%" textTransform="capitalize" overflow="hidden">
+															{getValueSafely<string>(() => {
+																return teamMember.profile.name;
+															}, "N/A")}
+														</CustomDiv>
+													</Text>
+												</Col>
+											</Row>
+										}
+										extra={
+											<Checkbox
+												checked={selectedDesignersId.map(member => member._id).includes(teamMember._id)}
+												onChange={e => {
+													onDesignerSelect(teamMember._id, e.target.checked);
+												}}
+											/>
+										}
+										key={teamMember._id}
+									>
+										Current Projects: N/A
+									</Card>
+								</Col>
+							);
+						})
+					) : (
 						<Col span={24}>
-							<Row justify="center" type="flex">
-								<Pagination
-									pageSize={6}
-									hideOnSinglePage
-									current={state.currentPage}
-									onChange={onPageChange}
-									total={state.totalCount}
-								/>
-							</Row>
+							<Empty description="No Users found" />
 						</Col>
-					</Row>
-				</Col>
-				<Col md={8}>
-					<TeamSidebar
-						state={state}
-						onDesignerSelect={onDesignerSelect}
-						selectedDesignersId={selectedDesignersId}
-						assignDesigners={assignDesigners}
-					/>
-				</Col>
-			</Row>
-		</CustomDiv>
+					)}
+					<Col span={24}>
+						<Row justify="center">
+							<Pagination
+								pageSize={6}
+								hideOnSinglePage
+								current={state.currentPage}
+								onChange={onPageChange}
+								total={state.totalCount}
+							/>
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+			<Col md={8} sm={24}>
+				<TeamSidebar
+					state={state}
+					onDesignerSelect={onDesignerSelect}
+					selectedDesignersId={selectedDesignersId}
+					assignDesigners={assignDesigners}
+				/>
+			</Col>
+		</Row>
 	);
 };
 

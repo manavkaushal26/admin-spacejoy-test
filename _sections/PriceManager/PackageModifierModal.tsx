@@ -96,10 +96,10 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 			<Drawer width={360} visible={!!editRecordId} title="Edit Package" onClose={toggleDrawer}>
 				<Spin spinning={loading}>
 					<Row gutter={[8, 8]}>
-						<Col>
+						<Col span={24}>
 							<CapitalizedText strong>{editPackage?.slug} Package Details</CapitalizedText>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Card size="small">
 								<Row>
 									<Col span={24}>
@@ -118,10 +118,10 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 									</Col>
 									<Col span={24}>
 										<Row>
-											<Col>
+											<Col span={24}>
 												<Text strong>Savings</Text>
 											</Col>
-											<Col>
+											<Col span={24}>
 												<Row gutter={[4, 4]}>
 													<Col span={12}>
 														<Input prefix="$" disabled name="salePrice.value" value={editPackage?.savings?.inAmount} />
@@ -144,13 +144,13 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 								</Row>
 							</Card>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<CapitalizedText strong>{editPackage?.slug} Revision Details</CapitalizedText>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Card size="small">
 								<Row>
-									<Col>
+									<Col span={24}>
 										<InputField
 											onChange={onChange}
 											name="revisionMeta.maxRevisionsAllowed"
@@ -158,7 +158,7 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 											value={editPackage?.revisionMeta?.maxRevisionsAllowed}
 										/>
 									</Col>
-									<Col>
+									<Col span={24}>
 										<Row>
 											<InputField
 												onChange={onChange}
@@ -168,7 +168,7 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 											/>
 										</Row>
 									</Col>
-									<Col>
+									<Col span={24}>
 										<Row>
 											<InputField
 												onChange={onChange}
@@ -178,7 +178,7 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 											/>
 										</Row>
 									</Col>
-									<Col>
+									<Col span={24}>
 										<Row>
 											<InputField
 												onChange={onChange}
@@ -191,10 +191,10 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 								</Row>
 							</Card>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Card size="small">
 								<Row gutter={[4, 4]}>
-									<Col>
+									<Col span={24}>
 										<Text strong>Features</Text>
 									</Col>
 									<Col span={24}>
@@ -213,10 +213,10 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 						<Col span={24}>
 							<Card size="small">
 								<Row>
-									<Col>
+									<Col span={24}>
 										<Text strong>Is Sale Active?</Text>
 									</Col>
-									<Col>
+									<Col span={24}>
 										<Switch
 											onChange={(checked): void => onChange("isSaleActive", checked)}
 											checked={editPackage?.isSaleActive}
@@ -229,7 +229,7 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 						</Col>
 
 						<Col span={24}>
-							<Row type="flex" justify="end">
+							<Row justify="end">
 								<Button loading={loading} type="primary" onClick={saveRecord}>
 									Save
 								</Button>

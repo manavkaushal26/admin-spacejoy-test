@@ -1,8 +1,9 @@
-import { DesignImagesInterface, DesignState, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
+import { DesignImagesInterface, DesignState } from "@customTypes/dashboardTypes";
 import { Role } from "@customTypes/userType";
-import { BiggerButtonCarousel, getTagColor } from "@sections/Dashboard/styled";
-import { Card, Col, Icon, Row, Tag, Typography } from "antd";
-import React, { useState, ReactNode, useEffect } from "react";
+import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
+import { Card, Col, Row, Tag, Typography } from "antd";
+import React, { ReactNode, useEffect, useState } from "react";
 import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import Image from "./Image";
 
@@ -79,8 +80,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 
 		if (onDelete) {
 			listOfActions.push(
-				<Icon
-					type="delete"
+				<DeleteOutlined
 					key="delete"
 					onClick={(e): void => {
 						e.stopPropagation();
@@ -91,8 +91,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 		}
 		if (onCopyAsDesignExampleClick && CopyDesignAsDesignExampleRoles.includes(role)) {
 			listOfActions.push(
-				<Icon
-					type="copy"
+				<CopyOutlined
 					key="copy"
 					onClick={(e): void => {
 						e.stopPropagation();

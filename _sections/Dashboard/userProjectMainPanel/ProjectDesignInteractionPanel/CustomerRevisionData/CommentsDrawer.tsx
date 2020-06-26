@@ -3,13 +3,14 @@ import { RevisionComments, RevisionForm } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
 import { AvatarColorsList } from "@utils/constants";
 import { getLocalStorageValue } from "@utils/storageUtils";
-import { Avatar, Button, Comment, Drawer, Form, List, Tooltip, notification } from "antd";
+import { Avatar, Button, Comment, Drawer, Form, List, Tooltip, notification, Row, Col, Typography } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import React, { useMemo, useState } from "react";
 import { editRevisionFormAPI } from "@api/projectApi";
 import moment from "moment";
 import fetcher from "@utils/fetcher";
 
+const { Text } = Typography;
 interface CommentsDrawer {
 	open: boolean;
 	toggleDrawer: () => void;
@@ -37,32 +38,36 @@ const Editor = ({ onChange, onSubmit, submitting, value }): React.ReactElement =
 
 export const CommentList = ({ comments, authors }: CommentList): React.ReactElement => {
 	return (
-		<List
-			dataSource={comments}
-			itemLayout="vertical"
-			renderItem={(comment: RevisionComments): React.ReactNode => {
-				return comment?.text ? (
-					<Comment
-						author={comment.authorName}
-						datetime={
-							<Tooltip title={moment(comment.submittedOn).format("MM-DD-YYYY hh:mm a")}>
-								{moment(comment.submittedOn).fromNow()}
-							</Tooltip>
-						}
-						avatar={
-							<Avatar
-								style={{ backgroundColor: AvatarColorsList[authors.indexOf(comment.authorName) % authors.length] }}
-							>
-								{comment.authorName[0]}
-							</Avatar>
-						}
-						content={comment.text}
-					/>
-				) : (
-					<></>
-				);
-			}}
-		/>
+		<Row>
+			<Col span={24}>
+				<List
+					dataSource={comments}
+					itemLayout="vertical"
+					renderItem={(comment: RevisionComments): React.ReactNode => {
+						return comment?.text ? (
+							<Comment
+								author={comment.authorName}
+								datetime={
+									<Tooltip title={moment(comment.submittedOn).format("MM-DD-YYYY hh:mm a")}>
+										<Text>{moment(comment.submittedOn).fromNow()}</Text>
+									</Tooltip>
+								}
+								avatar={
+									<Avatar
+										style={{ backgroundColor: AvatarColorsList[authors.indexOf(comment.authorName) % authors.length] }}
+									>
+										{comment.authorName[0]}
+									</Avatar>
+								}
+								content={comment.text}
+							/>
+						) : (
+							<></>
+						);
+					}}
+				/>
+			</Col>
+		</Row>
 	);
 };
 

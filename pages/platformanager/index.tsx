@@ -76,19 +76,19 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 	return (
 		<PageLayout pageName="Platform Manager" isServer={isServer} authVerification={authVerification}>
 			<Head>
-				<title>Platfor Manager | {company.product}</title>
+				<title>Platform Manager | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
-					<Row type="flex" gutter={[16, 16]}>
+					<Row gutter={[16, 16]}>
 						<Col span={24}>
-							<Title>Meta Manager</Title>
+							<Title>Platform Manager</Title>
 						</Col>
 						<Col span={24}>
 							<Row gutter={[8, 0]}>
-								<Col>Search</Col>
-								<Col>
+								<Col span={24}>Search</Col>
+								<Col span={24}>
 									<Input placeholder="Name of meta" value={searchText} name="search" onChange={onSearchChange} />
 								</Col>
 							</Row>
@@ -102,7 +102,7 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 									return (
 										<Col key={name} sm={12} md={8} lg={6}>
 											<Card hoverable onClick={(): void => onClick(metaCard)}>
-												<Row type="flex" justify="center">
+												<Row justify="center">
 													<Col span={24} style={{ textAlign: "center" }}>
 														<Title level={3}>{name}</Title>
 													</Col>

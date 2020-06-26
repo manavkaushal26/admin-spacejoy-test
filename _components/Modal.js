@@ -60,7 +60,7 @@ class Modal extends PureComponent {
 	render() {
 		const { isModalOpen, children, size } = this.props;
 		return (
-			<Dialog role="dialog" style={{ display: isModalOpen ? "block" : "none" }}>
+			<Dialog role='dialog' style={{ display: isModalOpen ? "block" : "none" }}>
 				<DialogContent size={size}>
 					<CloseBtn onClick={this.modalClose}>&times;</CloseBtn>
 					<div>{children}</div>
@@ -71,7 +71,7 @@ class Modal extends PureComponent {
 }
 
 Modal.defaultProps = {
-	close: () => {},
+	close: undefined,
 	size: "50",
 };
 

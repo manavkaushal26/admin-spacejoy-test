@@ -1,3 +1,4 @@
+import { ClusterOutlined, DeleteOutlined, DollarCircleFilled, LinkOutlined, PlusOutlined } from "@ant-design/icons";
 import { getAssetElasticSearchApi } from "@api/designApi";
 import Image from "@components/Image";
 import { AssetStoreSearchResponse, AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
@@ -5,7 +6,7 @@ import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/Asse
 import { ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Icon, message, Pagination, Popconfirm, Row, Tooltip, Typography } from "antd";
+import { Col, message, Pagination, Popconfirm, Row, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
@@ -216,7 +217,10 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		if (assetInMoodboard && !assetEntryId) {
 			const primaryAssetId = assetId;
 			Router.push(
-				{ pathname: "/assetstore", query: { designId, assetEntryId: primaryAssetId, projectId } },
+				{
+					pathname: "/assetstore",
+					query: { designId, assetEntryId: primaryAssetId, projectId },
+				},
 				`/assetstore/pid/${projectId}/did/${designId}/aeid/${primaryAssetId}`
 			);
 			await dispatch({ type: ASSET_ACTION_TYPES.SELECTED_ASSET, value: null });
@@ -240,28 +244,27 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		if (assetInMoodboard) {
 			actionButtons.push(
 				<Popconfirm
-					title="Are you sure?"
+					title='Are you sure?'
 					onConfirm={(e): void => {
 						e.stopPropagation();
 						onRemoveClick(assetId);
 					}}
-					okText="Yes"
-					cancelText="Cancel"
+					okText='Yes'
+					cancelText='Cancel'
 				>
-					<Icon onClick={(e): void => e.stopPropagation()} type="delete" />
+					<DeleteOutlined onClick={(e): void => e.stopPropagation()} />
 				</Popconfirm>
 			);
 		}
 
 		if (!assetInMoodboard) {
 			actionButtons.push(
-				<Tooltip title="Add">
-					<Icon
+				<Tooltip title='Add'>
+					<PlusOutlined
 						onClick={(e): void => {
 							e.stopPropagation();
 							onButtonClick(assetId, assetInMoodboard);
 						}}
-						type="plus"
 					/>
 				</Tooltip>
 			);
@@ -269,9 +272,8 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 
 		if (assetInMoodboard && !assetEntryId) {
 			actionButtons.push(
-				<Tooltip title="Add Recommendations">
-					<Icon
-						type="cluster"
+				<Tooltip title='Add Recommendations'>
+					<ClusterOutlined
 						onClick={(e): void => {
 							e.stopPropagation();
 							onButtonClick(assetId, assetInMoodboard);
@@ -287,78 +289,84 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	return (
 		<Row gutter={[12, 12]}>
 			{projectId && (
-				<Col span={24}>
-					<TopMarginTitle level={3}>
-						{assetEntryId ? "Recommendation Selection" : "Primary product selection"}
-					</TopMarginTitle>
-				</Col>
+				<>
+					<Col span={24}>
+						<TopMarginTitle level={3}>
+							{assetEntryId ? "Recommendation Selection" : "Primary product selection"}
+						</TopMarginTitle>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+				</>
 			)}
-			<Col span={24}>
-				<SilentDivider />
-			</Col>
+
 			{primaryAsset && (
-				<Col span={24}>
-					<Row>
-						<Col>
-							<Title level={4}>Primary Asset</Title>
-						</Col>
-						<Col>
-							<Row type="flex" gutter={[12, 12]}>
-								<Col>
-									<Image height="200px" src={primaryAsset.cdn} />
-								</Col>
-								<Col>
-									<Row>
-										<Col>
-											<Row type="flex" gutter={[8, 0]}>
-												<Col>
-													<Text strong>Name:</Text>
-												</Col>
-												<Col>
-													<ModifiedText textTransform="capitalize" type="secondary">
-														{primaryAsset.name}
-													</ModifiedText>
-												</Col>
-											</Row>
-										</Col>
-										<Col>
-											<Row type="flex" gutter={[8, 0]}>
-												<Col>
-													<Icon type="dollar-circle" theme="filled" />
-												</Col>
-												<Col>
-													<Text strong>{primaryAsset.price}</Text>
-												</Col>
-											</Row>
-										</Col>
-										<Col>
-											<Row type="flex" gutter={[8, 0]}>
-												<Col>
-													<Icon type="link" />
-												</Col>
-												<Col>
-													<Text type="secondary">
-														<a
-															target="_blank"
-															rel="noopener noreferrer"
-															href={getValueSafely(() => primaryAsset.retailLink, "#")}
-														>
-															{getValueSafely(() => primaryAsset.retailer.name, "N/A")}
-														</a>
-													</Text>
-												</Col>
-											</Row>
-										</Col>
-									</Row>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</Col>
+				<>
+					<Col span={24}>
+						<Row>
+							<Col span={24}>
+								<Title level={4}>Primary Asset</Title>
+							</Col>
+							<Col>
+								<Row gutter={[12, 12]}>
+									<Col>
+										<Image height='200px' src={primaryAsset.cdn} />
+									</Col>
+									<Col>
+										<Row gutter={[4, 4]}>
+											<Col span={24}>
+												<Row gutter={[8, 0]}>
+													<Col>
+														<Text strong>Name:</Text>
+													</Col>
+													<Col>
+														<ModifiedText textTransform='capitalize' type='secondary'>
+															{primaryAsset.name}
+														</ModifiedText>
+													</Col>
+												</Row>
+											</Col>
+											<Col span={24}>
+												<Row gutter={[8, 0]}>
+													<Col>
+														<DollarCircleFilled />
+													</Col>
+													<Col>
+														<Text strong>{primaryAsset.price}</Text>
+													</Col>
+												</Row>
+											</Col>
+											<Col span={24}>
+												<Row gutter={[8, 0]}>
+													<Col>
+														<LinkOutlined />
+													</Col>
+													<Col>
+														<Text type='secondary'>
+															<a
+																target='_blank'
+																rel='noopener noreferrer'
+																href={getValueSafely(() => primaryAsset.retailLink, "#")}
+															>
+																{getValueSafely(() => primaryAsset.retailer.name, "N/A")}
+															</a>
+														</Text>
+													</Col>
+												</Row>
+											</Col>
+										</Row>
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+				</>
 			)}
-			<Col span={24}>
-				<SilentDivider />
-			</Col>
+
 			<Col span={24}>
 				<Row ref={scrollParentRef} gutter={[8, 8]}>
 					{assetData.map(asset => {
@@ -377,7 +385,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				</Row>
 			</Col>
 			<Col span={24}>
-				<Row type="flex" gutter={[10, 10]} justify="center">
+				<Row gutter={[10, 10]} justify='center'>
 					<Col>
 						<Pagination
 							current={pageCount}

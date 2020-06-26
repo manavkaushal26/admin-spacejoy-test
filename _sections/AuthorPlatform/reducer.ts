@@ -31,9 +31,7 @@ export const authorInitialState: AuthorState = {
 		description: "",
 		excerpt: "",
 		blogType: BlogTypes.Full,
-		slug: `new-blog-${Math.random()
-			.toString(36)
-			.substring(7)}`,
+		slug: `new-blog-${Math.random().toString(36).substring(7)}`,
 		coverImg: "",
 		coverImgCdn: "",
 		socialImgCdn: "",
@@ -86,9 +84,7 @@ export const authorReducer = (state: AuthorState, action: AuthorActionType): Aut
 					description: "",
 					excerpt: "",
 					blogType: action.value.activeBlog.blogType,
-					slug: `new-blog-${Math.random()
-						.toString(36)
-						.substring(7)}`,
+					slug: `new-blog-${Math.random().toString(36).substring(7)}`,
 					coverImg: "",
 					coverImgCdn: "",
 					socialImgCdn: "",

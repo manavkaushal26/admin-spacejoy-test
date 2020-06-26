@@ -6,7 +6,7 @@ const { Text } = Typography;
 const DetailText: React.FC<{ name: string; value: any }> = ({ name, value }) => {
 	return (
 		<Col sm={12} md={8} lg={6}>
-			<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
+			<Row style={{ whiteSpace: "pre", flexFlow: "row" }} gutter={[4, 4]}>
 				<Text strong>{name}: </Text>
 				<Text ellipsis>{value}</Text>
 			</Row>

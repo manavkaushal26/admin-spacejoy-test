@@ -114,8 +114,8 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 			<MaxWidthDesignPage>
 				<Padding>
 					<Row gutter={[16, 16]}>
-						<Col>
-							<Row style={{ padding: "2rem 0rem" }} type="flex" justify="space-between">
+						<Col span={24}>
+							<Row style={{ padding: "2rem 0rem" }} justify="space-between">
 								<Col>
 									<Title level={3}>Design Examples</Title>
 								</Col>
@@ -126,7 +126,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 								</Col>
 							</Row>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Collapse>
 								<Collapse.Panel header="Filters" key={1}>
 									<Row gutter={[8, 8]}>
@@ -208,7 +208,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 								</Collapse.Panel>
 							</Collapse>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<DesignListDisplay state={state} dispatch={dispatch} />
 						</Col>
 					</Row>

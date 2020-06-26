@@ -1,9 +1,7 @@
-const withESLint = require("next-eslint");
 const withImages = require("next-images");
 const withOffline = require("next-offline");
 const path = require("path");
 const fs = require("fs");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 
 const withLess = require("@zeit/next-less");
@@ -20,6 +18,10 @@ const themeVariables = lessToJS(
 if (typeof require !== "undefined") {
 	require.extensions[".less"] = () => {};
 }
+
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+	enabled: process.env.ANALYZE === "true",
+});
 
 const nextConfig = {
 	poweredByHeader: false,
@@ -41,9 +43,9 @@ const nextConfig = {
 					// Only cache 10 images.
 					expiration: {
 						maxEntries: 10,
-						maxAgeSeconds: 5 * 24 * 60 * 60 // 5 Days
-					}
-				}
+						maxAgeSeconds: 5 * 24 * 60 * 60, // 5 Days
+					},
+				},
 			},
 			{
 				urlPattern: /^https?.*/,
@@ -51,28 +53,28 @@ const nextConfig = {
 				options: {
 					cacheName: "offlineCache",
 					expiration: {
-						maxEntries: 5
-					}
-				}
+						maxEntries: 5,
+					},
+				},
 			},
 			{
 				urlPattern: /^https:\/\/fonts\.googleapis\.com/,
 				handler: "StaleWhileRevalidate",
 				options: {
-					cacheName: "google-fonts-stylesheets"
-				}
-			}
-		]
+					cacheName: "google-fonts-stylesheets",
+				},
+			},
+		],
 	},
 	lessLoaderOptions: {
 		javascriptEnabled: true,
-		modifyVars: themeVariables // make your antd custom effective
+		modifyVars: themeVariables, // make your antd custom effective
 	},
 	webpack: (config, { isServer }) => {
 		config.plugins.push(
 			new MomentLocalesPlugin(),
 			new MomentLocalesPlugin({
-				localesToKeep: ["es-us"]
+				localesToKeep: ["es-us"],
 			})
 		);
 
@@ -88,29 +90,16 @@ const nextConfig = {
 						callback();
 					}
 				},
-				...(typeof origExternals[0] === "function" ? [] : origExternals)
+				...(typeof origExternals[0] === "function" ? [] : origExternals),
 			];
 
 			config.module.rules.unshift({
 				test: antStyles,
-				use: "null-loader"
+				use: "null-loader",
 			});
 		}
-
-		if (ANALYZE) {
-			config.plugins.push(
-				new BundleAnalyzerPlugin({
-					analyzerMode: "server",
-					analyzerPort: "auto",
-					openAnalyzer: true,
-					reportFilename: "Bundle-size",
-					generateStatsFile: true,
-					statsFilename: "Bundle-size-stats"
-				})
-			);
-		}
 		return config;
-	}
+	},
 };
 
-module.exports = withOffline(withESLint(withImages(withLess(nextConfig))));
+module.exports = withBundleAnalyzer(withOffline(withImages(withLess(nextConfig))));

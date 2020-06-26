@@ -2,7 +2,7 @@ import { DetailedDesign, PhaseType } from "@customTypes/dashboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import RoomUploadStep from "@sections/Dashboard/userProjectMainPanel/pipelineTab/Stage/RoomUploadStep";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
-import { Typography } from "antd";
+import { Typography, Row } from "antd";
 import React from "react";
 import Design3D from "./Design3D";
 import DesignFinalization from "./DesignFinalization";
@@ -34,13 +34,11 @@ export default function Stage(props: Stage): JSX.Element {
 			return <DesignFinalization designData={designData} setDesignData={setDesignData} />;
 		default:
 			return (
-				<CustomDiv px="1rem" py="1rem">
-					<StepDiv>
-						<CustomDiv type="flex" justifyContent="center">
-							<Text>Work in Progress</Text>
-						</CustomDiv>
-					</StepDiv>
-				</CustomDiv>
+				<StepDiv>
+					<Row justify="center">
+						<Text strong>Work in Progress</Text>
+					</Row>
+				</StepDiv>
 			);
 	}
 }

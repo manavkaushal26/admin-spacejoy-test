@@ -1,36 +1,35 @@
-import React, { useState, useEffect } from "react";
+import { DeleteOutlined } from "@ant-design/icons";
+import { createSourceApi, getAllSources, getSingleSource } from "@api/renderEngineApi";
+import Image from "@components/Image";
+import ImageSlideshowModal from "@components/ImageSlideshowModal";
+import { AllSources } from "@customTypes/renderEngineTypes";
 import User from "@customTypes/userType";
-import PageLayout from "@sections/Layout";
-import { company } from "@utils/config";
-
-import { NextPageContext, NextPage } from "next";
-import IndexPageMeta from "@utils/meta";
-import Head from "next/head";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import PageLayout from "@sections/Layout";
+import CreateNewSource from "@sections/RenderEngine/CreateNewSource";
+import { withAuthVerification } from "@utils/auth";
+import { getValueSafely } from "@utils/commonUtils";
+import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import IndexPageMeta from "@utils/meta";
 import {
-	Row,
-	Col,
-	Typography,
+	Button,
 	Card,
-	Pagination,
-	Spin,
+	Col,
 	notification,
 	PageHeader,
-	Button,
-	Result,
+	Pagination,
 	Popconfirm,
-	Icon,
+	Result,
+	Row,
+	Spin,
+	Typography,
 } from "antd";
-import { getAllSources, createSourceApi, getSingleSource } from "@api/renderEngineApi";
-import fetcher from "@utils/fetcher";
-import { AllSources } from "@customTypes/renderEngineTypes";
-import Image from "@components/Image";
-import { getValueSafely } from "@utils/commonUtils";
 import moment from "moment";
-import { withAuthVerification } from "@utils/auth";
+import { NextPage, NextPageContext } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import CreateNewSource from "@sections/RenderEngine/CreateNewSource";
-import ImageSlideshowModal from "@components/ImageSlideshowModal";
+import React, { useEffect, useState } from "react";
 import { LoudPaddingDiv } from "../platformanager/index";
 
 const { Text } = Typography;
@@ -186,7 +185,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 																}}
 																key="delete"
 															>
-																<Icon type="delete" onClick={(e): void => e.stopPropagation()} />
+																<DeleteOutlined onClick={(e): void => e.stopPropagation()} />
 															</Popconfirm>,
 														]}
 														cover={

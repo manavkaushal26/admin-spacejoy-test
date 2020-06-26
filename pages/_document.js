@@ -9,7 +9,7 @@ class MyDocument extends Document {
 		try {
 			ctx.renderPage = () =>
 				originalRenderPage({
-					enhanceApp: App => props => sheet.collectStyles(<App {...props} />)
+					enhanceApp: App => props => sheet.collectStyles(<App {...props} />),
 				});
 			const initialProps = await Document.getInitialProps(ctx);
 			return {
@@ -19,7 +19,7 @@ class MyDocument extends Document {
 						{initialProps.styles}
 						{sheet.getStyleElement()}
 					</>
-				)
+				),
 			};
 		} finally {
 			sheet.seal();
@@ -28,13 +28,13 @@ class MyDocument extends Document {
 
 	render() {
 		return (
-			<html lang="en-US">
+			<html lang='en-US'>
 				<Head>
-					<link rel="preconnect" href="//cdnjs.cloudflare.com" />
-					<link rel="preconnect" href="//res.cloudinary.com" />
-					<link rel="preload" href="/static/styles/style.css?v1.0.4" as="style" />
-					<link rel="manifest" href="/manifest.json" />
-					<link href="/static/styles/style.css?v1.0.4" rel="stylesheet" />
+					<link rel='preconnect' href='//cdnjs.cloudflare.com' />
+					<link rel='preconnect' href='//res.cloudinary.com' />
+					<link rel='preload' href='/static/styles/style.css?v1.0.4' as='style' />
+					<link rel='manifest' href='/manifest.json' />
+					<link href='/static/styles/style.css?v1.0.4' rel='stylesheet' />
 					{/* <script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} async/> */}
 				</Head>
 				<body>

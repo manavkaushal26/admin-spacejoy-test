@@ -1,16 +1,17 @@
+import { AppstoreTwoTone, BookTwoTone, DatabaseTwoTone, EditTwoTone, ProfileTwoTone } from "@ant-design/icons";
 import User, { Role } from "@customTypes/userType";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
+import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Card, Col, Icon, Row, Typography } from "antd";
+import { Card, Col, Row, Typography } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import { getValueSafely } from "@utils/commonUtils";
 
 const { Text, Title } = Typography;
 
@@ -23,7 +24,7 @@ interface LaunchpadLocations {
 	title: string;
 	description: string;
 	url: string;
-	icon: string;
+	icon: JSX.Element;
 	color?: string;
 	notActive?: boolean;
 	backgroundColor?: string;
@@ -35,7 +36,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Projects",
 		description: "Customer Project Management",
 		url: "/dashboard",
-		icon: "profile",
+		icon: <ProfileTwoTone style={{ fontSize: "3rem" }} twoToneColor="#4d2aac" />,
 		color: "#4d2aac",
 		backgroundColor: "#e3ddeb",
 		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
@@ -44,7 +45,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Product Store",
 		description: "Create/Manage Products",
 		url: "/assetstore",
-		icon: "appstore",
+		icon: <AppstoreTwoTone style={{ fontSize: "3rem" }} twoToneColor="#e66b8b" />,
 		color: "#e66b8b",
 		backgroundColor: "#fff0f1",
 		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
@@ -53,7 +54,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Design Examples",
 		description: "Create Designs that excite you",
 		url: "/designexamples",
-		icon: "book",
+		icon: <BookTwoTone style={{ fontSize: "3rem" }} twoToneColor="#1d39c4" />,
 		color: "#1d39c4",
 		backgroundColor: "#f0f5ff",
 		notActive: false,
@@ -63,7 +64,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Blog Platform",
 		description: "Write your heart out",
 		url: "/author",
-		icon: "edit",
+		icon: <EditTwoTone style={{ fontSize: "3rem" }} twoToneColor="#FA8C16" />,
 		color: "#FA8C16",
 		backgroundColor: "#FFF7E6",
 		notActive: false,
@@ -73,7 +74,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Platform Manager",
 		description: "Functions that apply across platform",
 		url: "/platformanager",
-		icon: "database",
+		icon: <DatabaseTwoTone style={{ fontSize: "3rem" }} />,
 		notActive: false,
 		allowedRoles: [Role.Admin, Role.Owner, Role.seoTeam, Role.Team],
 	},
@@ -136,26 +137,19 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 												<Link href={location.url}>
 													<Card hoverable>
 														<Row gutter={[0, 12]}>
-															<Col>
-																<Row type="flex" justify="center">
-																	<IconBackground color={location.backgroundColor}>
-																		<Icon
-																			style={{ fontSize: "3rem" }}
-																			twoToneColor={location.color}
-																			theme="twoTone"
-																			type={location.icon}
-																		/>
-																	</IconBackground>
+															<Col span={24}>
+																<Row justify="center">
+																	<IconBackground color={location.backgroundColor}>{location.icon}</IconBackground>
 																</Row>
 															</Col>
-															<Col>
+															<Col span={24}>
 																<Row>
-																	<Col>
+																	<Col span={24}>
 																		<Title style={{ textAlign: "center" }} level={4}>
 																			{location.title}
 																		</Title>
 																	</Col>
-																	<Col style={{ textAlign: "center" }}>
+																	<Col span={24} style={{ textAlign: "center" }}>
 																		<Text type="secondary">{location.description}</Text>
 																	</Col>
 																</Row>

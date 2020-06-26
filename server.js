@@ -73,10 +73,10 @@ app.prepare().then(() => {
 			console.log(`Worker ${worker.process.pid} died with code: ${code}, and signal: ${signal}`);
 			console.log("Starting a new worker");
 			workers.push(cluster.fork());
-			workers[workers.length - 1].on("message", function(message) {
+			workers[workers.length - 1].on("message", function (message) {
 				console.log(message);
 			});
-			workers[workers.length - 1].on("listening", function(message) {
+			workers[workers.length - 1].on("listening", function (message) {
 				console.log(`Worker ${workers[workers.length - 1].process.pid} is listening`);
 			});
 		});

@@ -73,10 +73,10 @@ const DesignWiseSelectedProductCards: React.FC<{
 
 	return !retainedProducts.length ? (
 		<Col span={24}>
-			<Row type="flex" justify="center">
+			<Row justify="center">
 				<Spin spinning={loading}>
 					<Col span={24}>
-						<Row type="flex" justify="center">
+						<Row justify="center">
 							<Empty description="No Products Selected from design" />
 						</Row>
 					</Col>

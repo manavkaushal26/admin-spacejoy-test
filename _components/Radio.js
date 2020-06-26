@@ -56,10 +56,10 @@ const RadioStyled = styled.input.attrs({ type: "radio" })`
 
 function Radio({ id, name, value, label, checked, required, onChange, selectionType }) {
 	return (
-		<LabelStyled htmlFor={value} selectionType={selectionType} key={value} className="radio">
+		<LabelStyled htmlFor={value} selectionType={selectionType} key={value} className='radio'>
 			<RadioStyled
-				className="hidden"
-				type="radio"
+				className='hidden'
+				type='radio'
 				id={id}
 				name={name}
 				value={value}
@@ -67,7 +67,7 @@ function Radio({ id, name, value, label, checked, required, onChange, selectionT
 				required={required}
 				onChange={onChange}
 			/>
-			<span className="label" />
+			<span className='label' />
 			{label}
 		</LabelStyled>
 	);

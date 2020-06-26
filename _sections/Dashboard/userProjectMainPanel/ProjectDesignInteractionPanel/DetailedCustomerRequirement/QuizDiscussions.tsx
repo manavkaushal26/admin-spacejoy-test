@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Row, Upload, Col, Button, Form, notification, Comment, List, Card, Typography, Modal } from "antd";
-import TextArea from "antd/lib/input/TextArea";
-import { UploadFile } from "antd/lib/upload/interface";
-import { PaddedDiv } from "@sections/Header/styled";
-import fetcher from "@utils/fetcher";
-import ImageDisplayModal from "@components/ImageDisplayModal";
-import { QuizDiscussion } from "@customTypes/dashboardTypes";
 import { getQuizDiscussions } from "@api/quizApi";
-import moment from "moment";
-import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import Image from "@components/Image";
-import { SizeAdjustedModal } from "@sections/AssetStore/styled";
-import { getLocalStorageValue } from "@utils/storageUtils";
+import { QuizDiscussion } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
+import { SizeAdjustedModal } from "@sections/AssetStore/styled";
+import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { getLocalStorageValue } from "@utils/storageUtils";
+import { Button, Card, Col, Comment, List, notification, Row, Typography, Upload } from "antd";
+import TextArea from "antd/lib/input/TextArea";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -177,18 +174,18 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 
 	return (
 		<Row gutter={[8, 8]}>
-			<Col>
+			<Col span={24}>
 				<Card size="small">
 					<DiscussionView quizDiscussions={quizDiscussions} />
 				</Card>
 			</Col>
-			<Col>
+			<Col span={24}>
 				<Row gutter={[8, 8]}>
 					<Col span={24}>
 						<TextArea placeholder="Enter comment" value={comment} onChange={onChange} />
 					</Col>
 					<Col span={24}>
-						<Row type="flex" justify="space-between">
+						<Row justify="space-between">
 							<Col md={20}>
 								<Upload
 									multiple
@@ -199,7 +196,7 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 									onRemove={onRemove}
 									accept="image/*"
 								>
-									<Button size="default">Select Images</Button>
+									<Button>Select Images</Button>
 								</Upload>
 							</Col>
 							<Col>

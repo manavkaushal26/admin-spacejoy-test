@@ -23,7 +23,7 @@ const InputField: React.FC<InputField> = ({ name, label, value, onChange }) => {
 			<Col span={24}>
 				<Text strong>{label}</Text>
 			</Col>
-			<Col>
+			<Col span={24}>
 				<Input name={name} value={value} onChange={handleChange} />
 			</Col>
 		</Row>

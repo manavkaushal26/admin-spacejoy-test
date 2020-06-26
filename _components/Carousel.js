@@ -34,12 +34,12 @@ const settings = {
 	pauseOnHover: true,
 	nextArrow: (
 		<NextStyled onClick={() => this.slider.slickNext()}>
-			<SVGIcon name="right" />
+			<SVGIcon name='right' />
 		</NextStyled>
 	),
 	prevArrow: (
 		<PrevStyled onClick={() => this.slider.slickPrev()}>
-			<SVGIcon name="left" />
+			<SVGIcon name='left' />
 		</PrevStyled>
 	),
 	responsive: [

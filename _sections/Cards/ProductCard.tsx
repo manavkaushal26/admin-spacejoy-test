@@ -91,12 +91,12 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 	);
 
 	return (
-		<ProductCardRow type="flex" justify="space-between">
+		<ProductCardRow justify="space-between">
 			{uniqueAssets.map(item => {
 				return item.asset.shoppable && item.billable && !item.hidden ? (
 					<Col md={11} lg={7} key={item._id}>
 						<Row>
-							<Row type="flex" justify="space-between">
+							<Row justify="space-between">
 								<ProductImageWrapperStyled
 									url={`//res.cloudinary.com/spacejoy/image/upload/q_100,w_300/${getValueSafely(
 										() => item.asset.cdn,

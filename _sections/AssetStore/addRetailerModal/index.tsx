@@ -95,7 +95,7 @@ const AddRetailerModal: React.FC<AddRetailerModal> = ({
 		>
 			<Row gutter={[0, 8]}>
 				<Col>
-					<Row gutter={[0, 4]} type="flex">
+					<Row gutter={[0, 4]}>
 						<Col span={24}>
 							<Text>Name</Text>
 						</Col>
@@ -112,7 +112,7 @@ const AddRetailerModal: React.FC<AddRetailerModal> = ({
 					</Row>
 				</Col>
 				<Col>
-					<Row gutter={[0, 4]} type="flex">
+					<Row gutter={[0, 4]}>
 						<Col span={24}>
 							<Text>URL</Text>
 						</Col>

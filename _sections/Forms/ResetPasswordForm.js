@@ -6,25 +6,25 @@ import { Row, Col } from "antd";
 
 function ResetPasswordForm({ redirectUrl, token }) {
 	return (
-		<Row type="flex" justify="center">
+		<Row justify='center'>
 			<Col xs={{ span: 18 }} md={{ span: 12 }} lg={{ span: 8 }}>
 				<FormBox
-					destination="/auth/password/reset"
+					destination='/auth/password/reset'
 					redirectUrl={redirectUrl}
-					description="Enter your details to Login"
-					name="resetPassword"
+					description='Enter your details to Login'
+					name='resetPassword'
 				>
-					<Field name="resetToken" type="hidden" label="" placeholder="" error="" hint="" value={token} required />
+					<Field name='resetToken' type='hidden' label='' placeholder='' error='' hint='' value={token} required />
 					<Field
-						name="userPassword"
-						type="password"
-						label="Password"
-						placeholder="Password"
-						error="Please enter a strong Password"
-						hint="Enter your strongest bet"
+						name='userPassword'
+						type='password'
+						label='Password'
+						placeholder='Password'
+						error='Please enter a strong Password'
+						hint='Enter your strongest bet'
 						required
 					/>
-					<Field name="userSubmit" type="submit" label="Submit" />
+					<Field name='userSubmit' type='submit' label='Submit' />
 				</FormBox>
 			</Col>
 		</Row>

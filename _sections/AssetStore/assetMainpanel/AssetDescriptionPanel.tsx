@@ -1,3 +1,14 @@
+import {
+	AlignLeftOutlined,
+	BookOutlined,
+	CodeSandboxOutlined,
+	DollarCircleFilled,
+	DragOutlined,
+	FileImageOutlined,
+	LinkOutlined,
+	UserOutlined,
+	EditOutlined,
+} from "@ant-design/icons";
 import { getSingleAssetApi } from "@api/designApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
@@ -8,7 +19,7 @@ import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Icon, message, notification, Popconfirm, Result, Row, Typography } from "antd";
+import { Button, Col, message, notification, Popconfirm, Result, Row, Typography } from "antd";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
@@ -167,7 +178,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						title="Error"
 						subTitle="Something went wrong"
 						extra={
-							<Row type="flex" justify="center">
+							<Row justify="center">
 								<Col span={24}>
 									<Button type="primary" onClick={closeDrawer}>
 										Close
@@ -187,11 +198,11 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 					<Row gutter={[0, 10]}>
 						{pathToFile && (
 							<Col span={24}>
-								<Row type="flex" justify="center" gutter={[0, 10]}>
+								<Row justify="center" gutter={[0, 10]}>
 									<Col span={24}>
-										<Row type="flex" gutter={[10, 0]}>
+										<Row gutter={[10, 0]}>
 											<Col>
-												<Icon type="code-sandbox" />
+												<CodeSandboxOutlined />
 											</Col>
 											<Col>
 												<Text type="secondary">Model</Text>
@@ -206,11 +217,11 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						)}
 
 						<Col span={24}>
-							<Row type="flex" justify="center" gutter={[0, 10]}>
+							<Row justify="center" gutter={[0, 10]}>
 								<Col span={24}>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="file-image" />
+											<FileImageOutlined />
 										</Col>
 										<Col>
 											<Text type="secondary">Image</Text>
@@ -233,11 +244,11 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							</Row>
 						</Col>
 						<Col span={24}>
-							<Row type="flex" align="middle" justify="space-between">
+							<Row align="middle" justify="space-between">
 								<Col>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="dollar-circle" theme="filled" />
+											<DollarCircleFilled />
 										</Col>
 										<Col>
 											<Text strong>{selectedAssetData.price}</Text>
@@ -246,9 +257,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								</Col>
 
 								<Col>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="link" />
+											<LinkOutlined />
 										</Col>
 										<Col>
 											<Text type="secondary">
@@ -266,7 +277,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<Col>
 									<Button
 										type="primary"
-										icon="edit"
+										icon={<EditOutlined />}
 										onClick={(): void => {
 											editAsset(selectedAssetData);
 											setSelectedAssetId(null);
@@ -281,9 +292,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<Row gutter={[0, 10]}>
 								<Col>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="align-left" />
+											<AlignLeftOutlined />
 										</Col>
 										<Col>
 											<Text type="secondary">Description</Text>
@@ -301,9 +312,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<Row gutter={[0, 10]}>
 								<Col>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="drag" />
+											<DragOutlined />
 										</Col>
 										<Col>
 											<Text type="secondary">Dimensions</Text>
@@ -311,7 +322,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									</Row>
 								</Col>
 								<Col>
-									<Row type="flex" justify="space-between" gutter={[0, 10]}>
+									<Row justify="space-between" gutter={[0, 10]}>
 										<Col>
 											<Text strong>Width: </Text>
 											<Text>
@@ -352,9 +363,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<Row gutter={[0, 10]}>
 								<Col>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="book" />
+											<BookOutlined />
 										</Col>
 										<Col>
 											<Text type="secondary">Categorization</Text>
@@ -398,9 +409,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<Row gutter={[0, 10]}>
 								<Col>
-									<Row type="flex" gutter={[10, 0]}>
+									<Row gutter={[10, 0]}>
 										<Col>
-											<Icon type="user" />
+											<UserOutlined />
 										</Col>
 										<Col>
 											<Text type="secondary">Metadata</Text>
@@ -447,7 +458,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									{assetInMoodboard && (
 										<Col>
 											<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
-												<Button block type="danger">
+												<Button block type="primary" danger>
 													Remove Asset
 												</Button>
 											</Popconfirm>

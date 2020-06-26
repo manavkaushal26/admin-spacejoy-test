@@ -77,12 +77,12 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 				} = answer;
 
 				return (
-					<Col key={_id}>
+					<Col key={_id} span={24}>
 						<Card
 							type="inner"
 							key={_id}
 							title={
-								<Row type="flex" justify="space-between">
+								<Row justify="space-between">
 									<Col>
 										<Row gutter={[8, 8]}>
 											<Col>
@@ -100,7 +100,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 										</Row>
 									</Col>
 									{/* <Col>
-										<Row type="flex" gutter={[8, 8]}>
+										<Row  gutter={[8, 8]}>
 											<Col>
 												<Button
 													onClick={(): Promise<void> => onReviewButtonClick(quizQuestion._id, QuizStatus.Accepted)}
@@ -119,7 +119,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 																<Input.TextArea value={rejectMessage} onChange={handleMessageChange} />
 															</Col>
 															<Col span={24}>
-																<Row type="flex" justify="end" gutter={[8, 8]}>
+																<Row  justify="end" gutter={[8, 8]}>
 																	<Col>
 																		<Button
 																			type="danger"
@@ -162,7 +162,7 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 							{hasOptions ? (
 								answer.options.map(option => {
 									return (
-										<Row type="flex" gutter={[8, 8]} key={option._id}>
+										<Row gutter={[8, 8]} key={option._id}>
 											<Col>{option.label || "Answer"}: </Col>
 											<Col>
 												<QuizResponse context={context} response={option.userResponse} />

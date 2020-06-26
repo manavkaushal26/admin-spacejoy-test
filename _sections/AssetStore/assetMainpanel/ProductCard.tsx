@@ -1,10 +1,11 @@
+import { DollarCircleFilled, LinkOutlined } from "@ant-design/icons";
+import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
-import { Typography, Icon, Row, Col } from "antd";
+import { Col, Row, Typography } from "antd";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import { CapitalizedText } from "@components/CommonStyledComponents";
 import { AssetCard } from "../styled";
 
 const { Text } = Typography;
@@ -67,9 +68,9 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 			<Row gutter={[10, 0]}>
 				<Col span={24}>
 					<CardPadding>
-						<Row type="flex" gutter={[5, 0]}>
+						<Row gutter={[5, 0]}>
 							<Col>
-								<Icon type="link" />
+								<LinkOutlined />
 							</Col>
 							<Col>
 								<Text style={{ width: "100%" }} ellipsis type="secondary">
@@ -88,7 +89,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Row>
 
 						{!noVertical && (
-							<Row type="flex" gutter={[5, 0]}>
+							<Row gutter={[5, 0]}>
 								<Col>
 									<Text strong>Vertical: </Text>
 								</Col>
@@ -100,7 +101,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 								</Col>
 							</Row>
 						)}
-						<Row type="flex" gutter={[5, 0]}>
+						<Row gutter={[5, 0]}>
 							<Col>
 								<Text strong>W:</Text>
 							</Col>
@@ -126,9 +127,9 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 								</CapitalizedText>
 							</Col>
 						</Row>
-						<Row type="flex" gutter={[10, 0]}>
+						<Row gutter={[10, 0]}>
 							<Col>
-								<Icon type="dollar-circle" theme="filled" />
+								<DollarCircleFilled />
 							</Col>
 							<Col>
 								<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>

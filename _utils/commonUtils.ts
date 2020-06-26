@@ -18,9 +18,9 @@ export const getValueSafely: GetValueFunction = (func, defaultValue) => {
 	}
 };
 
-export const debounce = (func, wait): Function => {
+export const debounce = (func, wait) => {
 	let timeout;
-	return function(...args) {
+	return function (...args) {
 		clearTimeout(timeout);
 		timeout = setTimeout(() => func.apply(this, args), wait);
 	};
@@ -116,37 +116,37 @@ export const getTimeSince = (value): string => {
 	const seconds = difference.get("s");
 	if (years !== 0) {
 		if (years === 1) {
-			return `1 Year`;
+			return "1 Year";
 		}
 		return `${years} Years`;
 	}
 	if (months !== 0) {
 		if (months === 1) {
-			return `1 Month`;
+			return "1 Month";
 		}
 		return `${months} Months`;
 	}
 	if (days !== 0) {
 		if (days === 1) {
-			return `1 day`;
+			return "1 day";
 		}
 		return `${days} days`;
 	}
 	if (hours !== 0) {
 		if (hours === 1) {
-			return `1 Hour`;
+			return "1 Hour";
 		}
 		return `${hours} Hours`;
 	}
 	if (minutes !== 0) {
 		if (minutes === 1) {
-			return `1 Minute`;
+			return "1 Minute";
 		}
 		return `${minutes} Minutes`;
 	}
 	if (seconds !== 0) {
 		if (seconds === 1) {
-			return `1 Seconds`;
+			return "1 Seconds";
 		}
 		return `${seconds} Seconds`;
 	}
@@ -189,4 +189,8 @@ export const convertMillisecondsToDays = (milliseconds: string | number): number
 		return parseFloat(milliseconds) / (24 * 60 * 60 * 1000);
 	}
 	return milliseconds / (24 * 60 * 60 * 1000);
+};
+
+export const dateFromObjectId = (objectId): string => {
+	return new Date(parseInt(objectId.substring(0, 8), 16) * 1000).toISOString();
 };

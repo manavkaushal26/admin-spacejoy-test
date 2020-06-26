@@ -41,7 +41,7 @@ const BlogListCard: React.FC<BlogListCard> = ({ blog, onCardClick, activeBlogId 
 		>
 			<Row gutter={[4, 4]}>
 				<Col span={24}>
-					<Row type="flex" justify="space-between">
+					<Row justify="space-between">
 						<Col>
 							<Text type="secondary">{getValueSafely(() => blog.category.title, "No Category")}</Text>
 						</Col>

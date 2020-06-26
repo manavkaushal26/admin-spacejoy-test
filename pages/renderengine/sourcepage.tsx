@@ -1,34 +1,34 @@
-import React, { useState, useEffect, useMemo } from "react";
-import User, { Role, Status } from "@customTypes/userType";
-import { DetailedSource, AllJobs, RenderEngineStatus } from "@customTypes/renderEngineTypes";
-import PageLayout from "@sections/Layout";
-import { company } from "@utils/config";
-import { NextPage, NextPageContext } from "next";
-import Head from "next/head";
-import IndexPageMeta from "@utils/meta";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
-import fetcher from "@utils/fetcher";
-import io from "socket.io-client";
-
+import { UploadOutlined } from "@ant-design/icons";
 import {
-	getSingleSource,
-	getAllJobs,
 	createJobApi,
+	getAllJobs,
+	getSingleJobs,
+	getSingleSource,
 	sourceUploadFileApi,
 	startRenderJob,
-	getSingleJobs,
 } from "@api/renderEngineApi";
+import { AllJobs, DetailedSource, RenderEngineStatus } from "@customTypes/renderEngineTypes";
+import User, { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
-import { LoudPaddingDiv } from "pages/platformanager";
-import { Typography, Col, Row, Upload, Button, Icon, notification, Spin, PageHeader, Result, Input } from "antd";
-import moment from "moment";
-import { getValueSafely } from "@utils/commonUtils";
+import PageLayout from "@sections/Layout";
 import CreateNewJob from "@sections/RenderEngine/CreateNewJob";
-import JobCard from "@sections/RenderEngine/JobCard";
 import DetailText from "@sections/RenderEngine/DetailText";
+import JobCard from "@sections/RenderEngine/JobCard";
 import JobDetailsModal from "@sections/RenderEngine/JobDetailsModal";
+import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { getValueSafely } from "@utils/commonUtils";
+import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import IndexPageMeta from "@utils/meta";
+import { Button, Col, Input, notification, PageHeader, Result, Row, Spin, Typography, Upload } from "antd";
+import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import moment from "moment";
+import { NextPage, NextPageContext } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
-import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
+import { LoudPaddingDiv } from "pages/platformanager";
+import React, { useEffect, useMemo, useState } from "react";
+import io from "socket.io-client";
 
 const { Text, Paragraph } = Typography;
 
@@ -229,7 +229,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 												action={sourceUploadFileApi(sourceData._id)}
 											>
 												<Button type="primary">
-													<Icon type="upload" />
+													<UploadOutlined />
 													Click to upload
 												</Button>
 											</Upload>
@@ -245,7 +245,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 									<DetailText name="Source Id" value={sourceData._id} />
 									{!!sourceData.storage && (
 										<Col sm={12} md={8} lg={6}>
-											<Row type="flex" style={{ whiteSpace: "pre", flexFlow: "row" }}>
+											<Row style={{ whiteSpace: "pre", flexFlow: "row" }}>
 												<Text strong>File uploaded: </Text>
 
 												<Text ellipsis>
@@ -296,7 +296,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 												<Result status="404" title="No Jobs" subTitle="Create a new Job to see it here" />
 										  )}
 									{(!sourceData.storage || sourceData.cameras.length === 0) && (
-										<Row type="flex" justify="space-around">
+										<Row justify="space-around">
 											<Upload
 												accept=".blend"
 												fileList={uploadedFile}

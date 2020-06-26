@@ -151,7 +151,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 							<Text>Room Type</Text>
 						</Col>
 						<Col>
-							<Select style={{ width: "100%" }} onChange={setRoomType} value={roomType}>
+							<Select style={{ width: "100%" }} onChange={(value): void => setRoomType(value)} value={roomType}>
 								{Object.keys(RoomTypes).map(key => {
 									return (
 										<Select.Option key={key} value={RoomTypes[key]}>

@@ -12,7 +12,7 @@ async function TokenCheckPoint(req, res, next) {
 		res.redirect(redirectUrl);
 	} else {
 		const contentType = "application/json";
-		const headers = { "Content-Type": contentType, Authorization: JWT };
+		const headers = { "Content-Type": contentType, "Authorization": JWT };
 		const options = {
 			method: "GET",
 			headers,

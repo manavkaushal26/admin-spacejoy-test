@@ -1,13 +1,12 @@
+import { LockOutlined, UnlockOutlined } from "@ant-design/icons";
 import { editRevisionFormAPI } from "@api/projectApi";
 import InputField from "@components/Inputs/InputField";
 import SelectField from "@components/Inputs/SelectField";
 import { RevisionForm } from "@customTypes/dashboardTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Drawer, Icon, notification, Row, Switch, Typography } from "antd";
+import { Button, Col, Drawer, notification, Row, Switch, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import User, { Role } from "@customTypes/userType";
-import { getLocalStorageValue } from "@utils/storageUtils";
 
 const { Text } = Typography;
 
@@ -164,8 +163,8 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 							</Col>
 							<Col span={24}>
 								<Switch
-									checkedChildren={<Icon type="lock" />}
-									unCheckedChildren={<Icon type="unlock" />}
+									checkedChildren={<LockOutlined />}
+									unCheckedChildren={<UnlockOutlined />}
 									checked={state.isLocked}
 									onChange={(value): void => handleChange("isLocked", value)}
 								/>
@@ -226,7 +225,7 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 					</Row>
 				</Col>
 				<Col span={24}>
-					<Row type="flex" justify="end" gutter={[4, 4]}>
+					<Row justify="end" gutter={[4, 4]}>
 						<Col>
 							<Button onClick={toggleDrawer}>Cancel</Button>
 						</Col>

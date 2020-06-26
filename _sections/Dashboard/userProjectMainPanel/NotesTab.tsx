@@ -1,17 +1,16 @@
 import { updateNotesApi } from "@api/designApi";
-import Image from "@components/Image";
+import { CapitalizedText } from "@components/CommonStyledComponents";
 import { DesignerNotes, DetailedDesign } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
-import { getValueSafely, stringToUrl } from "@utils/commonUtils";
+import { dateFromObjectId, getValueSafely, stringToUrl } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { getLocalStorageValue } from "@utils/storageUtils";
-import { Avatar, Button, Card, Col, Input, message, Row, Typography } from "antd";
-import React, { useEffect, useState } from "react";
-import parse from "html-react-parser";
+import { Avatar, Button, Card, Comment, Form, List, message, Row } from "antd";
 import TextArea from "antd/lib/input/TextArea";
-import { BorderedParagraph, CustomDiv, CustomUl, EndCol, FitIcon } from "../styled";
-
-const { Text } = Typography;
+import parse from "html-react-parser";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { CustomDiv } from "../styled";
 
 interface NotesTab {
 	designData: DetailedDesign;
@@ -98,7 +97,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 		}
 	};
 
-	const deleteNote = async (id: string) => {
+	const deleteNote = async (id: string): Promise<void> => {
 		const modifiedDesignerNotes = designerNotes.filter(note => {
 			return note._id !== id;
 		});
@@ -109,70 +108,51 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 	return (
 		designData && (
 			<CustomDiv px="10px" py="10px">
-				<CustomDiv py="10px">
-					<Card>
-						<CustomDiv type="flex" width="100%" justifyContent="stretch" flexDirection="row" flexWrap="no-wrap">
-							<CustomDiv width="30%">
-								<Image src={NotesImageURL} height="125px" width="100%" />
-							</CustomDiv>
-							<CustomDiv width="70%" px="24px">
-								<Text type="secondary">
-									Please call the customer and check if they or you have any further questions to be answered. This
-									helps build the credibility of Spacejoy being customer-centric company.
-								</Text>
-								<br />
-								<Text strong>Few pointers to remember on call:</Text>
-								<CustomUl>
-									<li>Ask for room images</li>
-									<li>Please be patient and answer cordially</li>
-								</CustomUl>
-							</CustomDiv>
-						</CustomDiv>
-					</Card>
-				</CustomDiv>
-				<Row type="flex" align="stretch" justify="start">
-					<Col span={2}>
-						<CustomDiv px="12px">
-							<Avatar>{getValueSafely(() => authVerification.name[0], "")}</Avatar>
-						</CustomDiv>
-					</Col>
-					<Col sm={22} md={22} lg={18} xl={14}>
-						<TextArea value={newNote} onChange={onNewNote} autosize={{ minRows: 2 }} />
-					</Col>
-				</Row>
-				<CustomDiv py="10px">
-					<Row type="flex">
-						<Col span={2} />
-						<EndCol md={22} lg={18} xl={14}>
-							<Button type="primary" onClick={addNote}>
-								Add Comment
-							</Button>
-						</EndCol>
-					</Row>
-				</CustomDiv>
-				{designerNotes.map(note => (
-					<CustomDiv key={note._id} py="12px">
-						<Row type="flex" align="stretch" justify="start">
-							<CustomDiv width="100%" inline type="flex" textOverflow="ellipsis" py="16px" align="center">
-								<CustomDiv textOverflow="ellipsis" inline type="flex" px="12px">
-									<Avatar>{getValueSafely(() => note.author.profile.name, "")}</Avatar>{" "}
-								</CustomDiv>
-								<Text strong ellipsis>
-									{getValueSafely(() => note.author.profile.name, "")}
-								</Text>
-								<CustomDiv px="8px">
-									<FitIcon onClick={() => deleteNote(note._id)} theme="twoTone" type="delete" />
-								</CustomDiv>
-							</CustomDiv>
-						</Row>
-						<Row>
-							<Col span={2} />
-							<Col md={22} lg={18} xl={14}>
-								<BorderedParagraph>{parse(stringToUrl(note.text))}</BorderedParagraph>
-							</Col>
-						</Row>
-					</CustomDiv>
-				))}
+				<Comment
+					avatar={
+						<Avatar>
+							<CapitalizedText>{getValueSafely(() => authVerification.name[0], "")}</CapitalizedText>
+						</Avatar>
+					}
+					content={
+						<>
+							<Form.Item>
+								<TextArea rows={4} onChange={onNewNote} value={newNote} />
+							</Form.Item>
+							<Form.Item>
+								<Row justify="end">
+									<Button type="primary" onClick={addNote}>
+										Add Comment
+									</Button>
+								</Row>
+							</Form.Item>
+						</>
+					}
+				/>
+				<List
+					dataSource={designerNotes}
+					renderItem={(note: DesignerNotes): JSX.Element => (
+						<>
+							<Comment
+								avatar={<Avatar>{getValueSafely(() => note.author.profile.name[0], "")}</Avatar>}
+								datetime={moment(dateFromObjectId(note._id)).fromNow()}
+								author={getValueSafely(() => note.author.profile.name, "")}
+								content={<Card size="small">{parse(stringToUrl(note.text))}</Card>}
+								actions={[
+									<Button
+										style={{ padding: 0 }}
+										key="delete"
+										type="link"
+										danger
+										onClick={(): Promise<void> => deleteNote(note._id)}
+									>
+										<small>Delete</small>
+									</Button>,
+								]}
+							/>
+						</>
+					)}
+				/>
 			</CustomDiv>
 		)
 	);

@@ -1,5 +1,6 @@
+import { CloseOutlined, DeleteOutlined, VideoCameraOutlined } from "@ant-design/icons";
 import { AllJobs, RenderEngineStatus } from "@customTypes/renderEngineTypes";
-import { Card, Col, Icon, notification, Popconfirm, Progress, Row, Typography } from "antd";
+import { Card, Col, notification, Popconfirm, Progress, Row, Typography } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 
 const { Text } = Typography;
@@ -167,7 +168,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									}}
 									key="render"
 								>
-									<Icon type="video-camera" onClick={(e): void => e.stopPropagation()} key="render" />
+									<VideoCameraOutlined onClick={(e): void => e.stopPropagation()} />
 								</Popconfirm>,
 								<Popconfirm
 									title="Are you Sure?"
@@ -180,7 +181,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									}}
 									key="delete"
 								>
-									<Icon onClick={(e): void => e.stopPropagation()} type="delete" />
+									<DeleteOutlined onClick={(e): void => e.stopPropagation()} />
 								</Popconfirm>,
 						  ]
 						: []),
@@ -197,7 +198,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									}}
 									key="delete"
 								>
-									<Icon type="close" onClick={(e): void => e.stopPropagation()} key="render" />
+									<CloseOutlined onClick={(e): void => e.stopPropagation()} />
 								</Popconfirm>,
 						  ]
 						: []),
@@ -208,7 +209,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 					description={
 						<Row gutter={[4, 4]}>
 							<Col span={12}>
-								<Row type="flex" gutter={[4, 4]}>
+								<Row gutter={[4, 4]}>
 									<Col>
 										<Text>
 											<small>Job Id: </small>
@@ -222,7 +223,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 								</Row>
 							</Col>
 							<Col span={12}>
-								<Row style={{ flexFlow: "row", whiteSpace: "pre", overflow: "hidden" }} gutter={[4, 4]} type="flex">
+								<Row style={{ flexFlow: "row", whiteSpace: "pre", overflow: "hidden" }} gutter={[4, 4]}>
 									<Col>
 										<Text>
 											<small>Sample count:</small>
@@ -237,7 +238,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 							</Col>
 
 							<Col span={24}>
-								<Row type="flex" gutter={[4, 4]}>
+								<Row gutter={[4, 4]}>
 									<Col>
 										<Text>
 											<small>Action: </small>
@@ -260,7 +261,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 
 							{job.status === RenderEngineStatus.pending || job.status === RenderEngineStatus.completed ? (
 								<Col>
-									<Row type="flex" gutter={[4, 4]}>
+									<Row gutter={[4, 4]}>
 										<Col>
 											<Text>
 												<small>Status: </small>
@@ -277,7 +278,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 							) : (
 								<>
 									<Col>
-										<Row type="flex" gutter={[4, 4]}>
+										<Row gutter={[4, 4]}>
 											<Col>
 												<Text>
 													<small>Time Elapsed:</small>
@@ -292,7 +293,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 										</Row>
 									</Col>
 									<Col>
-										<Row type="flex" gutter={[4, 4]}>
+										<Row gutter={[4, 4]}>
 											<Col>
 												<Text>
 													<small>Time Remaining:</small>
@@ -310,7 +311,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 							)}
 							{(job.status === RenderEngineStatus.pending || job.status === RenderEngineStatus.completed) && (
 								<Col>
-									<Row type="flex" gutter={[4, 4]}>
+									<Row gutter={[4, 4]}>
 										<Col>
 											<Text>
 												<small>Created at: </small>

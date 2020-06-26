@@ -1,3 +1,12 @@
+import {
+	CheckCircleOutlined,
+	CheckCircleTwoTone,
+	CloseCircleOutlined,
+	CloseCircleTwoTone,
+	DeleteOutlined,
+	LoadingOutlined,
+	UploadOutlined,
+} from "@ant-design/icons";
 import { markMissingAssetAsComplete } from "@api/assetApi";
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MetaDataType, MoodboardAsset } from "@customTypes/moodboardTypes";
@@ -5,11 +14,11 @@ import { Status } from "@customTypes/userType";
 import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { AddOnAfterWithoutPadding, CustomDiv } from "@sections/Dashboard/styled";
+import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Icon, List, message, Popconfirm, Row, Spin, Tooltip, Typography, notification } from "antd";
+import { Button, Col, List, message, notification, Popconfirm, Row, Spin, Tooltip, Typography } from "antd";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { getValueSafely } from "@utils/commonUtils";
 
 const { Text } = Typography;
 
@@ -169,7 +178,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		notification.open({
 			key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 			message: "Please Wait",
-			icon: <Icon type="loading" />,
+			icon: <LoadingOutlined />,
 			description: "Asset status is being updated",
 		});
 
@@ -191,14 +200,14 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 				notification.open({
 					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 					message: "Successful",
-					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
 					description: "Asset Status has been updated",
 				});
 			} else {
 				notification.open({
 					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 					message: "Error",
-					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+					icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 					description: "There was a problem marking this asset.",
 				});
 			}
@@ -206,7 +215,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			notification.open({
 				key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 				message: "Error",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 				description: "No asset has been uploaded for this link",
 			});
 		}
@@ -259,7 +268,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 							const popoverOptions = whatArethePopoverOptions(asset.asset);
 							return (
 								<List.Item>
-									<Row type="flex" gutter={[4, 4]} style={{ width: "100%" }} justify="space-between">
+									<Row gutter={[4, 4]} style={{ width: "100%" }} justify="space-between">
 										<Col span={21}>
 											<a
 												style={{ width: "100%", textOverflow: "ellipsis" }}
@@ -271,19 +280,19 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 											</a>
 										</Col>
 										<Col span={3}>
-											<Row type="flex" justify="end">
+											<Row justify="end">
 												{asset.modellingStatus !== Status.completed && (
 													<Col span={8}>
-														<Row align="middle" justify="center" type="flex">
+														<Row align="middle" justify="center">
 															<Tooltip title="Upload Asset">
-																<Icon onClick={(): void => onClick(asset)} type="upload" />
+																<UploadOutlined />
 															</Tooltip>
 														</Row>
 													</Col>
 												)}
 												{asset.modellingStatus === Status.completed ? (
 													<Col span={8}>
-														<Row align="middle" justify="center" type="flex">
+														<Row align="middle" justify="center">
 															<Popconfirm
 																title="Are you sure?"
 																onConfirm={(): Promise<void> =>
@@ -291,14 +300,14 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 																}
 															>
 																<Tooltip placement="bottom" title="Mark as not complete">
-																	<Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />
+																	<CloseCircleOutlined />
 																</Tooltip>
 															</Popconfirm>
 														</Row>
 													</Col>
 												) : (
 													<Col span={8}>
-														<Row align="middle" justify="center" type="flex">
+														<Row align="middle" justify="center">
 															<Popconfirm
 																title={popoverOptions.title}
 																okText={popoverOptions.okText}
@@ -309,8 +318,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 																}
 															>
 																<Tooltip title="Mark as complete">
-																	<Icon
-																		type="check-circle"
+																	<CheckCircleOutlined
 																		{...(!popoverOptions.force
 																			? {
 																					onClick: (): Promise<void> =>
@@ -322,7 +330,6 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 																						),
 																			  }
 																			: {})}
-																		theme="twoTone"
 																	/>
 																</Tooltip>
 															</Popconfirm>
@@ -330,13 +337,13 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 													</Col>
 												)}
 												<Col span={8}>
-													<Row align="middle" justify="center" type="flex">
+													<Row align="middle" justify="center">
 														<Tooltip title="Delete">
 															<Popconfirm
 																title="Delete Missing Asset URL?"
 																onConfirm={(): Promise<void> => removeAsset(asset.externalUrl)}
 															>
-																<Icon type="delete" />
+																<DeleteOutlined />
 															</Popconfirm>
 														</Tooltip>
 													</Row>

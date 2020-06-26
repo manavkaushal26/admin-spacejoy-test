@@ -12,6 +12,7 @@ import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Avatar, Button, Col, message, Popconfirm, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
+import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import Stage from "./Stage";
 
 const { Title, Text } = Typography;
@@ -155,9 +156,9 @@ export default function PipelineTab({
 					return (
 						<div key={step.phaseName}>
 							<ShadowDiv active={step.phaseName === stage} onClick={(): void => onClick(step.phaseName)}>
-								<Row style={{ padding: "1rem 1rem" }} type="flex" justify="space-between" gutter={[16, 16]}>
+								<Row style={{ padding: "1rem 1rem" }} justify='space-between' gutter={[16, 16]}>
 									<Col>
-										<Row type="flex" align="middle" gutter={[8, 0]}>
+										<Row align='middle' gutter={[8, 0]}>
 											<Col>
 												<Avatar>{step.stepNumber}</Avatar>
 											</Col>
@@ -167,13 +168,13 @@ export default function PipelineTab({
 										</Row>
 									</Col>
 									<Col>
-										<Row type="flex" gutter={[8, 0]}>
+										<Row gutter={[8, 0]}>
 											<Col>
 												<StatusButton
 													block
 													loading={updationPhase === step.phaseName}
 													status={phaseStatus[step.phaseName]}
-													type="primary"
+													type='primary'
 													onClick={(e): Promise<void> =>
 														updateDesignState(step.phaseName, phaseStatus[step.phaseName], e)
 													}
@@ -181,25 +182,26 @@ export default function PipelineTab({
 														phaseStatus[step.phaseName] === Status.completed ||
 														(step.prevPhase ? phaseStatus[step.prevPhase] !== Status.completed : false)
 													}
-													icon={phaseStatus[step.phaseName] === Status.completed ? "check" : null}
+													icon={phaseStatus[step.phaseName] === Status.completed ? <CheckOutlined /> : null}
 												>
 													{getButtonText(phaseStatus[step.phaseName])}
 												</StatusButton>
 											</Col>
 											<Col>
 												<Popconfirm
-													title="Are you sure you want to send back to previous team?"
-													okText="Yes"
+													title='Are you sure you want to send back to previous team?'
+													okText='Yes'
 													disabled={step.phaseName === DesignPhases.concept}
 													onConfirm={(e): Promise<void> => updateDesignState(step.prevPhase, "reset", e)}
 												>
 													<Button
 														loading={updationPhase === step.phaseName}
-														type="danger"
+														danger
+														type='primary'
 														disabled={
 															phaseStatus[step.phaseName] === Status.pending || step.phaseName === DesignPhases.concept
 														}
-														icon="rollback"
+														icon={<RollbackOutlined />}
 													>
 														Send back
 													</Button>

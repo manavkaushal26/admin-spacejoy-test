@@ -1,20 +1,19 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
-import { CustomDiv } from "@sections/Dashboard/styled";
 import { editDesignApi } from "@api/pipelineApi";
-import fetcher from "@utils/fetcher";
+import Image from "@components/Image";
+import ImageDisplayModal from "@components/ImageDisplayModal";
 import {
-	DetailedDesign,
 	DesignerImageComments,
 	DesignImagesInterface,
 	DesignImgTypes,
+	DetailedDesign,
 } from "@customTypes/dashboardTypes";
-import { Typography, message, Input, Button } from "antd";
+import { CustomDiv } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import Image from "@components/Image";
-import styled from "styled-components";
-import ImageDisplayModal from "@components/ImageDisplayModal";
-import ImageCommentDrawer from "./Components/ImageCommentsDrawer";
+import fetcher from "@utils/fetcher";
+import { Button, Col, Input, message, Row, Typography } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
 import { StepDiv } from "../styled";
+import ImageCommentDrawer from "./Components/ImageCommentsDrawer";
 
 const { Text } = Typography;
 
@@ -22,12 +21,6 @@ interface DesignFinalization {
 	designData: DetailedDesign;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 }
-
-const LastChildJustifiedStartCustomDiv = styled(CustomDiv)`
-	div:nth-last-child(1):nth-child(odd) {
-		justify-self: flex-start;
-	}
-`;
 
 const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesignData }) => {
 	const [designerNote, setDesignerNote] = useState<string>(null);
@@ -107,12 +100,6 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 		}
 	};
 
-	const ref = useRef(null);
-
-	useEffect(() => {
-		ref.current.scrollIntoView({ behavior: "smooth" });
-	}, []);
-
 	const previewImage = (cdn): void => {
 		setPreview({
 			previewImage: cdn,
@@ -123,56 +110,49 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 
 	return (
 		<StepDiv>
-			<CustomDiv px="1rem" py="1rem">
-				<CustomDiv pb="1rem">
-					<CustomDiv>
-						<Text strong>Description</Text>
-					</CustomDiv>
-					<CustomDiv>
-						<Text>
-							Please Review the uploaded render images. Remarks for each image can be left as comments on that
-							particular image. If there is any revision required for the images please use the <b>Send back</b> button
-							to send it back to the render phase. Mark this step as complete once these tasks are done.
-						</Text>
-					</CustomDiv>
-				</CustomDiv>
-				<CustomDiv type="flex" flexDirection="column">
-					<LastChildJustifiedStartCustomDiv
-						ref={ref}
-						type="flex"
-						justifyContent="space-evenly"
-						flexWrap="wrap"
-						width="100%"
-					>
+			<Row gutter={[8, 8]}>
+				<Col>
+					<Row gutter={[4, 4]}>
+						<Col span={24}>
+							<Text strong>Description</Text>
+						</Col>
+						<Col span={24}>
+							<Text>
+								Please Review the uploaded render images. Remarks for each image can be left as comments on that
+								particular image. If there is any revision required for the images please use the <b>Send back</b>{" "}
+								button to send it back to the render phase. Mark this step as complete once these tasks are done.
+							</Text>
+						</Col>
+					</Row>
+				</Col>
+				<Col>
+					<Row gutter={[4, 4]}>
 						{designImages.map(image => {
 							return (
-								<CustomDiv
-									key={image._id}
-									height="100%"
-									type="flex"
-									flexBasis="50ch"
-									flexDirection="column"
-									cursor="pointer"
-									justifyContent="center"
-									my="1rem"
-								>
-									<Image
-										width="100%"
-										onClick={(): void => {
-											previewImage(image.cdn);
-										}}
-										src={`q_80,w_400/${image.cdn}`}
-									/>
-									<CustomDiv>
-										<Button onClick={(): void => setImageId(image._id)} block>
-											Add Comments
-										</Button>
-									</CustomDiv>
-								</CustomDiv>
+								<Col key={image._id} sm={24} md={12} lg={8}>
+									<Row>
+										<Col span={24}>
+											<Image
+												width="100%"
+												onClick={(): void => {
+													previewImage(image.cdn);
+												}}
+												src={`q_80,w_400/${image.cdn}`}
+											/>
+										</Col>
+										<Col span={24}>
+											<CustomDiv>
+												<Button onClick={(): void => setImageId(image._id)} block>
+													Add Comments
+												</Button>
+											</CustomDiv>
+										</Col>
+									</Row>
+								</Col>
 							);
 						})}
-					</LastChildJustifiedStartCustomDiv>
-				</CustomDiv>
+					</Row>
+				</Col>
 				<ImageCommentDrawer
 					setImageId={setImageId}
 					imageId={imageId}
@@ -181,28 +161,25 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 					setImageComments={setImageComments}
 				/>
 
-				<CustomDiv
-					ref={ref}
-					type="flex"
-					justifyContent="space-evenly"
-					flexWrap="wrap"
-					flexDirection="column"
-					width="100%"
-					px="1rem"
-					py="1rem"
-				>
-					<CustomDiv pb="1rem">
-						<Text strong>Design Note</Text>
-					</CustomDiv>
-					<Input.TextArea
-						style={{ marginBottom: "1rem" }}
-						value={designerNote}
-						autoSize={{ minRows: 2 }}
-						onChange={handleTextChange}
-					/>
-					<Button onClick={saveDesignerNote}>Add Description</Button>
-				</CustomDiv>
-			</CustomDiv>
+				<Col span={24}>
+					<Row>
+						<Col span={24}>
+							<Text strong>Design Note</Text>
+						</Col>
+						<Col span={24}>
+							<Input.TextArea
+								style={{ marginBottom: "1rem" }}
+								value={designerNote}
+								autoSize={{ minRows: 2 }}
+								onChange={handleTextChange}
+							/>
+						</Col>
+						<Col span={24}>
+							<Button onClick={saveDesignerNote}>Add Description</Button>
+						</Col>
+					</Row>
+				</Col>
+			</Row>
 			<ImageDisplayModal
 				previewImage={preview.previewImage}
 				cdn={preview.cdn}

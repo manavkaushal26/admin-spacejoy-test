@@ -49,8 +49,8 @@ function Checkbox({ id, name, label, checked, required, onChange }) {
 	return (
 		<CheckboxLabelStyled htmlFor={id}>
 			<CheckboxStyled
-				className=""
-				type="checkbox"
+				className=''
+				type='checkbox'
 				id={id}
 				name={name}
 				checked={checked}
@@ -58,7 +58,7 @@ function Checkbox({ id, name, label, checked, required, onChange }) {
 				onChange={onChange}
 			/>
 			<CustomCheckboxStyled />
-			<span className="label">{label}</span>
+			<span className='label'>{label}</span>
 		</CheckboxLabelStyled>
 	);
 }

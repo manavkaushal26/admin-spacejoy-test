@@ -56,9 +56,9 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	return (
 		<Collapse>
 			<Collapse.Panel header="Project Details" key="projectDetails">
-				<Row type="flex" justify="space-between" gutter={[16, 16]}>
+				<Row justify="space-between" gutter={[16, 16]}>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Project Id:</Text>
 							</Col>
@@ -68,7 +68,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Account Manager:</Text>
 							</Col>
@@ -80,7 +80,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Created on:</Text>
 							</Col>
@@ -92,7 +92,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Payment Status:</Text>
 							</Col>
@@ -104,7 +104,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Assigned Team:</Text>
 							</Col>
@@ -116,7 +116,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Started on:</Text>
 							</Col>
@@ -129,7 +129,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 					</Col>
 
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Phone:</Text>
 							</Col>
@@ -148,7 +148,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Email:</Text>
 							</Col>
@@ -167,7 +167,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 						</Row>
 					</Col>
 					<Col sm={12} md={12} lg={8} xl={8}>
-						<Row type="flex" gutter={[4, 8]}>
+						<Row gutter={[4, 8]}>
 							<Col>
 								<Text strong>Package:</Text>
 							</Col>

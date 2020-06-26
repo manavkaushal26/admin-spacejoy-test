@@ -91,9 +91,9 @@ function Field({
 		<FieldWrapperStyled hasError={data.error}>
 			{(type === "email" || type === "text" || type === "password" || type === "tel") && (
 				<LabelStyled htmlFor={name}>
-					<div className="grid">
+					<div className='grid'>
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
-							<span className="styled">
+							<span className='styled'>
 								{label}
 								<sup>{required ? "*" : ""}</sup>
 							</span>
@@ -129,10 +129,10 @@ function Field({
 				>
 					{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
 						<>
-							<LabelStyled htmlFor="address">
-								<span className="styled">{label}</span>
+							<LabelStyled htmlFor='address'>
+								<span className='styled'>{label}</span>
 								<InputStyled
-									autoComplete="false"
+									autoComplete='false'
 									{...getInputProps({
 										name: "address",
 										id: "address",
@@ -158,7 +158,7 @@ function Field({
 			)}
 			{type === "radio" && (
 				<RadioWrapperStyled>
-					<div className="grid">
+					<div className='grid'>
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							<span>
 								{label}
@@ -187,7 +187,7 @@ function Field({
 			)}
 			{type === "checkbox" && (
 				<CheckboxWrapperStyled>
-					<div className="grid">
+					<div className='grid'>
 						<div className={`col-xs-${inline ? 6 : 12} col-bleed-y`}>
 							<Checkbox
 								readonly={readonly}
@@ -206,9 +206,9 @@ function Field({
 				</CheckboxWrapperStyled>
 			)}
 			{type === "submit" && (
-				<div className="grid">
-					<div className="col-xs-12">
-						<Button type="submit" shape="rounded" size="md" full variant="primary" submitInProgress={submitInProgress}>
+				<div className='grid'>
+					<div className='col-xs-12'>
+						<Button type='submit' shape='rounded' size='md' full variant='primary' submitInProgress={submitInProgress}>
 							{label}
 						</Button>
 					</div>
@@ -224,8 +224,8 @@ Field.defaultProps = {
 		error: "",
 	},
 	options: [],
-	onchange: () => {},
-	handleAddressChange: () => {},
+	onchange: undefined,
+	handleAddressChange: undefined,
 	placeholder: "",
 	error: "",
 	hint: "",

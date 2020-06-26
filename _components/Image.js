@@ -149,7 +149,7 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 		return (
 			<div>
 				{renderLazyImage}
-				{caption && <p className="text-center">{caption}</p>}
+				{caption && <p className='text-center'>{caption}</p>}
 			</div>
 		);
 	}

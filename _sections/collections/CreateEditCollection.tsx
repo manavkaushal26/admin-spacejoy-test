@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Input, Row, Col, notification, Spin, Select, Icon, Button, Upload, Typography, Tooltip } from "antd";
-import { DetailedCollection } from "@customTypes/collectionTypes";
-import { Status, AssetStatus } from "@customTypes/userType";
-import { getSingleCollection } from "@api/metaApi";
-import fetcher from "@utils/fetcher";
-import { MetaDataType } from "@customTypes/moodboardTypes";
+import { CheckCircleTwoTone, CloseCircleTwoTone, LinkOutlined, PlusOutlined } from "@ant-design/icons";
 import { getMetaDataApi } from "@api/designApi";
-import { getValueSafely, getBase64 } from "@utils/commonUtils";
-import { RoomTypes } from "@customTypes/dashboardTypes";
-import getCookie from "@utils/getCookie";
-import { cloudinary, cookieNames, page, company } from "@utils/config";
+import { getSingleCollection } from "@api/metaApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
-import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
+import { DetailedCollection } from "@customTypes/collectionTypes";
+import { RoomTypes } from "@customTypes/dashboardTypes";
+import { MetaDataType } from "@customTypes/moodboardTypes";
+import { AssetStatus, Status } from "@customTypes/userType";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
+import { getBase64, getValueSafely } from "@utils/commonUtils";
+import { cloudinary, company, cookieNames, page } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import getCookie from "@utils/getCookie";
+import { Button, Col, Input, notification, Row, Select, Spin, Tooltip, Typography, Upload } from "antd";
+import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import React, { useEffect, useMemo, useState } from "react";
 
 const { Text } = Typography;
 
@@ -181,20 +182,20 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				notification.open({
 					key: "Regenerate",
 					message: "Saved Collection",
-					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
 				});
 			} else {
 				notification.open({
 					key: "Regenerate",
 					message: "Error Saving Collection",
-					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+					icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 				});
 			}
 		} catch (e) {
 			notification.open({
 				key: "Regenerate",
 				message: "Error Saving Collection",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 			});
 		}
 		setLoading(false);
@@ -224,7 +225,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 			notification.open({
 				key: "save",
 				message: "Saved Collection",
-				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
 			});
 			setCollectionData(response.data);
 			await onRegenerateClick();
@@ -235,7 +236,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 			notification.open({
 				key: "save",
 				message: "Error Saving Collection",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 			});
 		}
 	};
@@ -292,71 +293,82 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 	};
 
 	return (
-		<SizeAdjustedModal
-			visible={isOpen}
-			onCancel={onCloseModal}
-			onOk={onSaveClick}
-			footer={[
-				<Button key="back" onClick={onCloseModal}>
-					Close
-				</Button>,
-				...[
-					collectionData._id ? (
-						<Button key="regen" type="default" onClick={onRegenerateClick}>
-							Regenerate Collection
-						</Button>
-					) : null,
-				],
-				<Button key="save" type="primary" loading={loading} onClick={onSaveClick}>
-					Save
-				</Button>,
-			]}
-		>
-			<Spin spinning={loading}>
+		<Spin spinning={loading}>
+			<SizeAdjustedModal
+				visible={isOpen}
+				onCancel={onCloseModal}
+				onOk={onSaveClick}
+				footer={[
+					<Button key="back" onClick={onCloseModal}>
+						Close
+					</Button>,
+					...[
+						collectionData._id ? (
+							<Button key="regen" type="default" onClick={onRegenerateClick}>
+								Regenerate Collection
+							</Button>
+						) : null,
+					],
+					<Button key="save" type="primary" loading={loading} onClick={onSaveClick}>
+						Save
+					</Button>,
+				]}
+			>
 				<Row gutter={[8, 8]}>
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>Name</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Name</Text>
+							</Col>
+							<Col span={24}>
 								<Input onChange={onChange} name="name" value={collectionData.name} />
 							</Col>
 						</Row>
 					</Col>
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>Description</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Description</Text>
+							</Col>
+							<Col span={24}>
 								<Input.TextArea onChange={onChange} name="description" value={collectionData.description} />
 							</Col>
 						</Row>
 					</Col>
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>Meta Title</Col>
-							<Col>
+							<Col span={24}>
+								{" "}
+								<Text strong>Meta Title </Text>
+							</Col>
+							<Col span={24}>
 								<Input onChange={onChange} name="metaTitle" value={collectionData.metaTitle} />
 							</Col>
 						</Row>
 					</Col>
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>Meta Description</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Meta Description</Text>
+							</Col>
+							<Col span={24}>
 								<Input.TextArea onChange={onChange} name="metaDescription" value={collectionData.metaDescription} />
 							</Col>
 						</Row>
 					</Col>
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>Slug</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Slug</Text>
+							</Col>
+							<Col span={24}>
 								<Input
 									onChange={onChange}
 									name="slug"
 									value={collectionData.slug}
 									addonAfter={
 										<Tooltip placement="top" title="Open URL">
-											<Icon onClick={openInNewWindow} type="link" />
+											<LinkOutlined onClick={openInNewWindow} />
 										</Tooltip>
 									}
 								/>
@@ -365,16 +377,20 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 					</Col>
 					<Col span={12}>
 						<Row gutter={[4, 4]}>
-							<Col>Background Color</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Background Color</Text>
+							</Col>
+							<Col span={24}>
 								<Input onChange={onChange} name="bg" value={collectionData.bg} type="color" />
 							</Col>
 						</Row>
 					</Col>
 					<Col span={12}>
 						<Row gutter={[4, 4]}>
-							<Col>Status</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Status</Text>
+							</Col>
+							<Col span={24}>
 								<Select
 									onChange={(value): void => handleSelect(value, "status")}
 									value={collectionData.status}
@@ -394,13 +410,15 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 					</Col>
 					<Col span={12}>
 						<Row gutter={[4, 4]}>
-							<Col>Tags</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Tags</Text>
+							</Col>
+							<Col span={24}>
 								<Select
 									onChange={(value): void => handleSelect(value, "tags")}
 									style={{ width: "100%" }}
 									mode="tags"
-									dropdownRender={(): React.ReactNode => <></>}
+									open={false}
 									tokenSeparators={[","]}
 								/>
 							</Col>
@@ -408,8 +426,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 					</Col>
 					<Col span={12}>
 						<Row gutter={[4, 4]}>
-							<Col>Room Type</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Room Type</Text>
+							</Col>
+							<Col span={24}>
 								<Select
 									showSearch
 									onChange={(value): void => handleSelect(value, "roomType")}
@@ -419,7 +439,9 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 									value={collectionData.searchKey.roomType}
 								>
 									{Object.entries(RoomTypes).map(([key, value]) => (
-										<Select.Option key={key}>{value}</Select.Option>
+										<Select.Option value={value} key={key}>
+											{key}
+										</Select.Option>
 									))}
 								</Select>
 							</Col>
@@ -427,8 +449,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 					</Col>
 					<Col span={12}>
 						<Row gutter={[4, 4]}>
-							<Col>Retailers</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Retailers</Text>
+							</Col>
+							<Col span={24}>
 								<Select
 									onChange={(value): void => handleSelect(value, "retailers")}
 									placeholder="Select Retailer"
@@ -449,8 +473,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 					</Col>
 					<Col span={12}>
 						<Row gutter={[4, 4]}>
-							<Col>Themes</Col>
-							<Col>
+							<Col span={24}>
+								<Text strong>Themes</Text>
+							</Col>
+							<Col span={24}>
 								<Select
 									mode="multiple"
 									onChange={(value): void => handleSelect(value, "themes")}
@@ -473,8 +499,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						<>
 							<Col span={12}>
 								<Row gutter={[4, 4]}>
-									<Col>Thumbnail</Col>
-									<Col>
+									<Col span={24}>
+										<Text strong>Thumbnail</Text>
+									</Col>
+									<Col span={24}>
 										<Upload
 											supportServerRender
 											name="thumbnail"
@@ -488,10 +516,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 											accept="image/*"
 										>
 											<Row>
-												<Col>
-													<Icon type="plus" />
+												<Col span={24}>
+													<PlusOutlined />
 												</Col>
-												<Col>
+												<Col span={24}>
 													<Text>Add Image</Text>
 												</Col>
 											</Row>
@@ -501,8 +529,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 							</Col>
 							<Col span={12}>
 								<Row gutter={[4, 4]}>
-									<Col>Cover</Col>
-									<Col>
+									<Col span={24}>
+										<Text strong>Cover</Text>
+									</Col>
+									<Col span={24}>
 										<Upload
 											supportServerRender
 											name="cover"
@@ -516,10 +546,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 											accept="image/*"
 										>
 											<Row>
-												<Col>
-													<Icon type="plus" />
+												<Col span={24}>
+													<PlusOutlined />
 												</Col>
-												<Col>
+												<Col span={24}>
 													<Text>Add Image</Text>
 												</Col>
 											</Row>
@@ -530,14 +560,14 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						</>
 					)}
 				</Row>
-			</Spin>
-			<ImageDisplayModal
-				handleCancel={handleCancel}
-				previewImage={preview.previewImage}
-				previewVisible={preview.previewVisible}
-				altText="previewImages"
-			/>
-		</SizeAdjustedModal>
+				<ImageDisplayModal
+					handleCancel={handleCancel}
+					previewImage={preview.previewImage}
+					previewVisible={preview.previewVisible}
+					altText="previewImages"
+				/>
+			</SizeAdjustedModal>
+		</Spin>
 	);
 };
 

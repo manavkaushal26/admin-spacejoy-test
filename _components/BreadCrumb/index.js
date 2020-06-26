@@ -36,34 +36,34 @@ const BreadCrumbStyled = styled.div`
 `;
 
 const DMS = () => (
-	<li key="dms">
-		<Link href="/designMySpace" as="/designMySpace">
-			<a href="/designMySpace">Design My Space</a>
+	<li key='dms'>
+		<Link href='/designMySpace' as='/designMySpace'>
+			<a href='/designMySpace'>Design My Space</a>
 		</Link>
 	</li>
 );
 
 const QZ = () => (
-	<li key="qz">
+	<li key='qz'>
 		<Link
 			href={{ pathname: "/designMySpace", query: { quiz: "start", plan: "delight" } }}
-			as="/designMySpace/delight?quiz=start"
+			as='/designMySpace/delight?quiz=start'
 		>
-			<a href="/designMySpace?quiz=start">Design My Space - Quiz</a>
+			<a href='/designMySpace?quiz=start'>Design My Space - Quiz</a>
 		</Link>
 	</li>
 );
 
 const DASHBORD = () => (
-	<li key="dashbord">
-		<Link href={{ pathname: "/dashboard" }} as="/dashboard">
-			<a href="/dashboard">Dashboard</a>
+	<li key='dashbord'>
+		<Link href={{ pathname: "/dashboard" }} as='/dashboard'>
+			<a href='/dashboard'>Dashboard</a>
 		</Link>
 	</li>
 );
 
 const ACTIVE = query => (
-	<li key="active">
+	<li key='active'>
 		{query.quiz === "start" && "Intro"}
 		{query.quiz === "1" && "Select Room"}
 		{query.quiz === "2" && "Set Budget"}
@@ -73,10 +73,10 @@ const ACTIVE = query => (
 	</li>
 );
 
-const PRICING = () => <li key="pricing">Pricing</li>;
-const PROFILE = () => <li key="profile">Profile</li>;
-const DASHBOARD = () => <li key="dashboard">Dashboard</li>;
-const DASHBOARD_DESIGNVIEW = () => <li key="dashboard">Design View</li>;
+const PRICING = () => <li key='pricing'>Pricing</li>;
+const PROFILE = () => <li key='profile'>Profile</li>;
+const DASHBOARD = () => <li key='dashboard'>Dashboard</li>;
+const DASHBOARD_DESIGNVIEW = () => <li key='dashboard'>Design View</li>;
 
 function index({ router }) {
 	const getCrumbs = () => {
@@ -108,15 +108,15 @@ function index({ router }) {
 	};
 
 	return (
-		<div className="container">
-			<div className="grid">
-				<div className="col-12 col-bleed-y">
+		<div className='container'>
+			<div className='grid'>
+				<div className='col-12 col-bleed-y'>
 					<BreadCrumbStyled>
 						<ul>
 							<li>
-								<Link href="/" as="/">
-									<a href="/">
-										<SVGIcon name="logo" height={15} width={14} />
+								<Link href='/' as='/'>
+									<a href='/'>
+										<SVGIcon name='logo' height={15} width={14} />
 									</a>
 								</Link>
 							</li>

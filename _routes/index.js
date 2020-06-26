@@ -5,5 +5,5 @@ const definedRoutes = require("./definedRoutes");
 
 module.exports = {
 	authRoutes,
-	definedRoutes
+	definedRoutes,
 };

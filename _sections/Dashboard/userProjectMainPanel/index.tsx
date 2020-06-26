@@ -1,21 +1,20 @@
+import { getRevisionFormForProjectId } from "@api/projectApi";
 import {
 	DetailedProject,
 	PhaseCustomerNames,
 	PhaseInternalNames,
-	UserProjectType,
 	RevisionForm,
+	UserProjectType,
 } from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Divider, Empty, Row, Spin, Typography, notification } from "antd";
+import { Col, Divider, Empty, notification, Row, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { getRevisionFormForProjectId } from "@api/projectApi";
-import { MaxHeightDiv, VerticalPaddedDiv } from "../styled";
+import { MaxHeightDiv, VerticalPaddedDiv, SilentDivider } from "../styled";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
-import RevisionDetails from "./ProjectDesignInteractionPanel/RevisionDetails";
 
 const { Text } = Typography;
 
@@ -132,35 +131,42 @@ const userProjectMainPanel: React.FC<{
 
 	return (
 		<Spin spinning={loading}>
-			<Row>
+			<Row gutter={[8, 8]}>
 				{projectData ? (
 					<>
-						<ProjectSummary projectData={projectData} setProjectData={setProjectData} />
-						<Divider />
-						<BasicDetails projectData={projectData} />
-						<Divider style={{ marginBottom: "0px" }} />
-
-						<ProjectTabView
-							updateRevisionData={updateRevisionData}
-							onTabChangeCallback={onTabChange}
-							currentTab={currentTab}
-							refetchData={fetchAndPopulateProjectData}
-							setLoading={setLoading}
-							projectData={projectData}
-							onSelectDesign={onSelectDesign}
-							designId={designId}
-							setProjectData={setProjectData}
-							revisionFormData={revisionFormData}
-						/>
+						<Col span={24}>
+							<ProjectSummary projectData={projectData} setProjectData={setProjectData} />
+						</Col>
+						<Col span={24}>
+							<BasicDetails projectData={projectData} />
+						</Col>
+						<Col span={24}>
+							<ProjectTabView
+								updateRevisionData={updateRevisionData}
+								onTabChangeCallback={onTabChange}
+								currentTab={currentTab}
+								refetchData={fetchAndPopulateProjectData}
+								setLoading={setLoading}
+								projectData={projectData}
+								onSelectDesign={onSelectDesign}
+								designId={designId}
+								setProjectData={setProjectData}
+								revisionFormData={revisionFormData}
+							/>
+						</Col>
 					</>
 				) : (
-					<MaxHeightDiv>
-						<VerticalPaddedDiv>
-							<Row type="flex" justify="center">
-								<Empty description={<Text>Select a Project to work on!</Text>} />
-							</Row>
-						</VerticalPaddedDiv>
-					</MaxHeightDiv>
+					<Col span={24}>
+						<MaxHeightDiv>
+							<VerticalPaddedDiv>
+								<Row justify="center">
+									<Col>
+										<Empty description={<Text>Select a Project to work on!</Text>} />
+									</Col>
+								</Row>
+							</VerticalPaddedDiv>
+						</MaxHeightDiv>
+					</Col>
 				)}
 			</Row>
 		</Spin>

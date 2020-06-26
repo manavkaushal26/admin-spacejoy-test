@@ -99,7 +99,7 @@ const CollectionsMeta: NextPage<{
 			<LoudPaddingDiv>
 				<Row gutter={[8, 8]}>
 					<Col span={24}>
-						<Row type="flex" justify="space-between">
+						<Row justify="space-between">
 							<Col>
 								<Title>Collections</Title>
 							</Col>
@@ -129,7 +129,7 @@ const CollectionsMeta: NextPage<{
 						</Row>
 					</Col>
 					<Col span={24}>
-						<Row type="flex" justify="center">
+						<Row justify="center">
 							<Pagination
 								current={pageNo}
 								total={collectionMeta.count}

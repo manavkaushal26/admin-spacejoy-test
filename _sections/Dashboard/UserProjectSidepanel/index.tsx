@@ -202,7 +202,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	return (
 		<MaxHeightDiv style={{ position: "relative", overflow: "hidden" }} ref={scrollRef}>
 			<Row gutter={[8, 8]}>
-				<Col>
+				<Col span={24}>
 					<Button block type="primary" onClick={toggleDrawer}>
 						Sort &amp; filter ({loading ? 0 : count} Results)
 					</Button>
@@ -221,7 +221,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 							<TabSearch setState={setState} state={state} />
 						</Col>
 						<Col span={24}>
-							<Row type="flex" gutter={[8, 8]} justify="end">
+							<Row gutter={[8, 8]} justify="end">
 								<Col>
 									<Button onClick={toggleDrawer}>Cancel</Button>
 								</Col>
@@ -235,11 +235,11 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 					</Row>
 				</Drawer>
 				{loading && (
-					<Col>
+					<Col span={24}>
 						<LoadingCard />
 					</Col>
 				)}
-				<Col>
+				<Col span={24}>
 					<ProjectInfiniteLoaderWrapper
 						infiniteLoaderRef={infiniteLoaderRef}
 						hasNextPage={hasNextPage}

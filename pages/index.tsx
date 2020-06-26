@@ -67,13 +67,11 @@ const auth: NextPage<Auth> = ({ isServer, authVerification, flow = "login", redi
 					{flow} | {company.product}
 				</title>
 			</Head>
-			<Row style={{ paddingTop: "2rem" }} type="flex" justify="center">
+			<Row style={{ paddingTop: "2rem" }} justify="center">
 				<Col xs={24} sm={20} md={20}>
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Col span={12}>
-							<Row type="flex" justify="center">
-								{getHeadingText(flow)}
-							</Row>
+							<Row justify="center">{getHeadingText(flow)}</Row>
 						</Col>
 						<Col span={24}>
 							{flow === "login" && (

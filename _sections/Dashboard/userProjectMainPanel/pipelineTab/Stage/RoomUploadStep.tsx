@@ -1,7 +1,8 @@
-/* eslint-disable jsx-a11y/label-has-for */
-/* eslint-disable jsx-a11y/label-has-associated-control */
+import { CheckCircleTwoTone, CheckOutlined, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import { updateSubtasks } from "@api/designApi";
 import { uploadRoomApi } from "@api/pipelineApi";
+import dynamic from "next/dynamic";
+
 import {
 	DesignPhases,
 	DetailedDesign,
@@ -17,10 +18,11 @@ import { getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
+import { Button, Col, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
-import ModelViewer from "@components/ModelViewer";
+
+const ModelViewer = dynamic(() => import("@components/ModelViewer"));
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -172,7 +174,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 		notification.open({
 			key: name,
 			message: "Please Wait",
-			icon: <Icon type="loading" />,
+			icon: <LoadingOutlined />,
 			description: "Status being Updated",
 		});
 		const endPoint = updateSubtasks(designData._id);
@@ -196,7 +198,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 				notification.open({
 					key: name,
 					message: "Successful",
-					icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 					description: "Status is successfully updated",
 				});
 			} else {
@@ -206,7 +208,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 			notification.open({
 				key: name,
 				message: "Successful",
-				icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+				icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 				description: error.message,
 			});
 		}
@@ -217,10 +219,10 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 			<Row gutter={[16, 16]}>
 				<Col span={24}>
 					<Row gutter={[8, 8]}>
-						<Col>
+						<Col span={24}>
 							<Text strong>Description</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Text>
 								This step involes upload of <b>Room File</b> and any other files related to the design. Mark this step
 								as complete once these tasks are done.
@@ -229,13 +231,13 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 					</Row>
 				</Col>
 				{roomFileList.length !== 0 && designData?.room?.spatialData?.fileUrls?.glb && (
-					<Col>
+					<Col span={24}>
 						<Row gutter={[8, 8]}>
 							<Col sm={24}>
 								<Text strong>Room Model View</Text>
 							</Col>
 							<Col>
-								<ModelViewer centerCamera type="glb" pathToFile={designData.room.spatialData.fileUrls.glb} />
+								<ModelViewer centerCamera type='glb' pathToFile={designData.room.spatialData.fileUrls.glb} />
 							</Col>
 						</Row>
 					</Col>
@@ -254,7 +256,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 									<Text>Room Name</Text>
 								</Col>
 								<Col span={24}>
-									<Input value={roomName} name="roomName" onChange={onChange} />
+									<Input value={roomName} name='roomName' onChange={onChange} />
 								</Col>
 							</Row>
 						</Col>
@@ -299,12 +301,12 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 						</Col>
 						{!(designData.room && designData.room._id) ? (
 							<Col sm={24}>
-								<Row>
-									<Col>
+								<Row gutter={[4, 4]}>
+									<Col span={24}>
 										<Text>Upload Room to all Designs?</Text>
 									</Col>
-									<Col>
-										<Radio.Group name="isGlobal" onChange={onChange} value={isGlobal}>
+									<Col span={24}>
+										<Radio.Group name='isGlobal' onChange={onChange} value={isGlobal}>
 											<Radio value>Yes</Radio>
 											<Radio value={false}>No</Radio>
 										</Radio.Group>
@@ -314,21 +316,20 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 						) : (
 							<Col sm={24}>
 								<Row>
-									<Col>
+									<Col span={24}>
 										<Text>Upload type?</Text>
 									</Col>
-									<Col>
-										<Radio.Group name="isNewRoom" onChange={onChange} value={isNewRoom}>
+									<Col span={24}>
+										<Radio.Group name='isNewRoom' onChange={onChange} value={isNewRoom}>
 											<Radio style={radioStyle} value>
 												<Row>Create New Room</Row>
 											</Radio>
 											<Radio style={radioStyle} value={false}>
 												<Row>
 													<Col>
-														<Text>Update Current Room</Text>
-													</Col>
-													<Col>
-														<small>Note:- All Designs with the same room will be affected</small>
+														<Text>
+															Update Current Room <small>Note:- All Designs with the same room will be affected</small>
+														</Text>
 													</Col>
 												</Row>
 											</Radio>
@@ -347,7 +348,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 									<Upload
 										disabled={!projectId}
 										supportServerRender
-										name="file"
+										name='file'
 										fileList={roomFileList}
 										action={uploadRoomUrl}
 										onRemove={(): false => false}
@@ -357,8 +358,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 										accept={ModelToExtensionMap[model3dFiles]}
 									>
 										<Button disabled={!roomName || !projectId}>
-											<Icon type="upload" />
-											Click to Upload
+											<UploadOutlined /> Click to Upload
 										</Button>
 									</Upload>
 								</Col>
@@ -374,17 +374,17 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 										<Upload
 											disabled={!projectId}
 											supportServerRender
-											name="file"
+											name='file'
 											fileList={sourceFileList}
 											action={uploadRoomUrl}
 											onRemove={(): false => false}
 											onChange={(info): void => handleOnFileUploadChange("source", info)}
 											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 											data={{ name: roomName, fileType: "source", roomType }}
-											accept=".blend"
+											accept='.blend'
 										>
 											<Button disabled={!roomName || !projectId}>
-												<Icon type="upload" />
+												<UploadOutlined />
 												Click to Upload
 											</Button>
 										</Upload>
@@ -395,7 +395,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 					</Row>
 				</Col>
 				<Col span={24}>
-					<Row type="flex" gutter={[8, 8]}>
+					<Row gutter={[8, 8]}>
 						<Col xs={24} md={12}>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>Asset Creation</Col>
@@ -404,9 +404,9 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 										block
 										status={assetModelling}
 										disabled={assetModelling === Status.completed}
-										name="assetModelling"
-										type="primary"
-										icon={assetModelling === Status.completed ? "check" : null}
+										name='assetModelling'
+										type='primary'
+										icon={assetModelling === Status.completed ? <CheckOutlined /> : null}
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
 									>
 										{assetModelling === Status.completed ? "Completed" : "Mark as Complete"}
@@ -414,11 +414,11 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 								</Col>
 								<Col span={12}>
 									<Button
-										name="assetModelling"
+										name='assetModelling'
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
 										block
 										disabled={assetModelling !== Status.completed}
-										type="danger"
+										danger
 									>
 										{assetModelling === Status.completed ? "Mark as Incomplete" : "Not yet Complete"}
 									</Button>
@@ -433,9 +433,9 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 										block
 										status={roomModelling}
 										disabled={roomModelling === Status.completed}
-										name="roomModelling"
-										icon={roomModelling === Status.completed ? "check" : null}
-										type="primary"
+										name='roomModelling'
+										icon={roomModelling === Status.completed ? <CheckOutlined /> : null}
+										type='primary'
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
 									>
 										{roomModelling === Status.completed ? "Completed" : "Mark as Complete"}
@@ -444,9 +444,9 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 								<Col span={12}>
 									<Button
 										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
-										name="roomModelling"
+										name='roomModelling'
 										disabled={roomModelling !== Status.completed}
-										type="danger"
+										danger
 										block
 									>
 										{roomModelling === Status.completed ? "Mark as Incomplete" : "Not yet Complete"}

@@ -1,26 +1,26 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-param-reassign */
+import { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import { OrbitControls } from "@utils/OrbitControls";
-import { Icon } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import {
 	Box3,
+	Color,
+	Fog,
+	FrontSide,
+	HemisphereLight,
+	Mesh,
+	MeshStandardMaterial,
+	PCFShadowMap,
 	PerspectiveCamera,
+	PlaneGeometry,
+	PointLight,
 	Scene,
+	sRGBEncoding,
+	Vector2,
 	Vector3,
 	WebGLRenderer,
-	PlaneGeometry,
-	sRGBEncoding,
-	PointLight,
-	MeshStandardMaterial,
-	Fog,
-	Mesh,
-	HemisphereLight,
-	PCFShadowMap,
-	FrontSide,
-	Vector2,
-	Color,
 } from "three";
 import GLTFLoader from "three-gltf-loader";
 
@@ -176,10 +176,10 @@ const ModelViewer: React.FC<ModelViewer> = ({ type, pathToFile, centerCamera }) 
 			{loading && (
 				<ModelLoaderProgress>
 					{!error ? (
-						<Icon style={{ fontSize: "2rem" }} type="loading" />
+						<LoadingOutlined spin style={{ fontSize: "2rem" }} />
 					) : (
 						<>
-							<Icon type="close" />
+							<CloseOutlined />
 							<span>Failed to load model</span>
 						</>
 					)}

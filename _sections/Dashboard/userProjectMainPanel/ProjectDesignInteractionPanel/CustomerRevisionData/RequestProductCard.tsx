@@ -1,7 +1,8 @@
-import React from "react";
-import { Card, Row, Col, Typography, Icon, Popconfirm, Button, notification, Tooltip } from "antd";
 import { getMoodboardApi } from "@api/designApi";
 import fetcher from "@utils/fetcher";
+import { Button, Card, Col, notification, Popconfirm, Row, Tooltip, Typography } from "antd";
+import React from "react";
+import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -46,7 +47,7 @@ const RequestProductCard: React.FC<{
 							}}
 							block
 							type="link"
-							icon="plus"
+							icon={<PlusOutlined />}
 						/>
 					</Tooltip>
 				</Popconfirm>,
@@ -65,7 +66,7 @@ const RequestProductCard: React.FC<{
 								e.stopPropagation();
 							}}
 							type="link"
-							icon="delete"
+							icon={<DeleteOutlined />}
 						/>
 					</Tooltip>
 				</Popconfirm>,
@@ -74,7 +75,7 @@ const RequestProductCard: React.FC<{
 			<Card.Meta
 				title={
 					<>
-						<Row>
+						<Row gutter={[4, 4]}>
 							<Col>
 								<Text type="secondary">
 									<small>URL:</small>
@@ -89,7 +90,7 @@ const RequestProductCard: React.FC<{
 					</>
 				}
 				description={
-					<Row>
+					<Row gutter={[4, 4]}>
 						<Col>
 							<Text type="secondary">
 								<small>Comment:</small>

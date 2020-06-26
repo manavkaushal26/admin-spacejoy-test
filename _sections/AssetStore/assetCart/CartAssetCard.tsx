@@ -1,11 +1,11 @@
+import { DeleteOutlined, DollarCircleFilled, LinkOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { AssetType } from "@customTypes/moodboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
-import { Button, Icon, message, Popconfirm, Typography, Row, Col, Card } from "antd";
+import { Button, Card, Col, message, Popconfirm, Row, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import styled, { FlattenSimpleInterpolation } from "styled-components";
-import { activeShadows } from "../styled";
+import styled from "styled-components";
 
 const { Text } = Typography;
 
@@ -23,11 +23,6 @@ interface CartAssetCard {
 const BorderlessAssetCard = styled(Card)<{ active?: boolean }>`
 	border: none;
 	background: transparent;
-	:hover {
-		${activeShadows}
-	}
-
-	${({ active }): FlattenSimpleInterpolation => (active ? activeShadows : null)};
 
 	> .ant-card-body {
 		padding: 0px;
@@ -80,7 +75,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 	return (
 		<Col onClick={(e): void => redirect(e, type)}>
 			<BorderlessAssetCard id="cartCard" hoverable={type === "primary"} active={currentlySelectingRecommendation}>
-				<Row gutter={[8, 4]} type="flex" align="middle">
+				<Row gutter={[8, 4]} align="middle">
 					<Col span={8}>
 						<Image
 							width="100%"
@@ -100,9 +95,9 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 								</Text>
 							</Col>
 							<Col span={24}>
-								<Row type="flex" gutter={[4, 4]}>
+								<Row gutter={[4, 4]}>
 									<Col>
-										<Icon type="link" />
+										<LinkOutlined />
 									</Col>
 									<Col>
 										<Text type="secondary">
@@ -114,9 +109,9 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 								</Row>
 							</Col>
 							<Col span={24}>
-								<Row type="flex" gutter={[4, 4]}>
+								<Row gutter={[4, 4]}>
 									<Col>
-										<Icon type="dollar-circle" theme="filled" />
+										<DollarCircleFilled />
 									</Col>
 									<Col>
 										<Text strong>{asset.price}</Text>
@@ -148,9 +143,10 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 									<StyledButton
 										disabled={currentlySelectingRecommendation}
 										loading={loading}
-										icon="delete"
+										icon={<DeleteOutlined />}
 										onClick={(e): void => e.stopPropagation()}
-										type="danger"
+										type="primary"
+										danger
 										block
 									/>
 								</Popconfirm>

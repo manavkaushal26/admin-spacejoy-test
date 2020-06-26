@@ -48,7 +48,7 @@ const TopBar: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 	};
 
 	return (
-		<Row type="flex" align="stretch" gutter={[8, 8]} style={{ padding: "0 0.5rem 0 0 " }}>
+		<Row align="stretch" gutter={[8, 8]} style={{ padding: "0 0.5rem 0 0 " }}>
 			<Col span={8}>
 				<StyledMenu selectedKeys={[state.activeKey]} onClick={onMenuClick} mode="horizontal">
 					<Menu.Item key={Status.inactive}>Draft</Menu.Item>

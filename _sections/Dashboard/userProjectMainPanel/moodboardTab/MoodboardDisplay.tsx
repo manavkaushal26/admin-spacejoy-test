@@ -1,7 +1,7 @@
 import { MoodboardAsset } from "@customTypes/moodboardTypes";
 import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 import { CustomDiv, SilentDivider } from "@sections/Dashboard/styled";
-import { Typography, Empty } from "antd";
+import { Typography, Empty, Row, Col } from "antd";
 import { useRouter } from "next/router";
 import React from "react";
 import { getValueSafely } from "@utils/commonUtils";
@@ -23,61 +23,59 @@ const MoodboardDisplay: (props: MoodboardDisplayProps) => JSX.Element = ({ moodb
 
 	return (
 		<>
-			<CustomDiv mt="0.5em" type="flex" width="100%">
-				<CustomDiv inline minWidth="30ch" px="0.7em">
+			<Row justify="space-between">
+				<Col>
 					<Typography.Title style={{ width: "100%" }} level={3}>
 						Primary ({getValueSafely(() => moodboard.filter(asset => asset.isExistingAsset).length, 0)})
 					</Typography.Title>
-				</CustomDiv>
-				<CustomDiv inline>
-					<SilentDivider style={{ height: "100%" }} type="vertical" />
-				</CustomDiv>
-				<CustomDiv px="0.7em" inline overX="scroll" whiteSpace="nowrap">
+				</Col>
+				<Col>
 					<Typography.Title style={{ width: "100%" }} ellipsis level={3}>
 						Recommendations
 					</Typography.Title>
-				</CustomDiv>
-			</CustomDiv>
-			<SilentDivider />
-			{moodboard &&
-				moodboard
-					.filter(assetEntry => assetEntry.isExistingAsset)
-					.map(assetEntry => {
-						return (
-							<>
-								<CustomDiv type="flex" width="100%">
-									<CustomDiv inline minWidth="30ch" maxWidth="30ch">
-										<ProductCard
-											noVertical
-											asset={assetEntry.asset}
-											onCardClick={(): void => {
-												onPrimaryAssetClick(assetEntry.asset._id);
-											}}
-										/>
+				</Col>
+			</Row>
+			<Row>
+				{moodboard &&
+					moodboard
+						.filter(assetEntry => assetEntry.isExistingAsset)
+						.map(assetEntry => {
+							return (
+								<>
+									<CustomDiv width="100%">
+										<CustomDiv inline minWidth="30ch" maxWidth="30ch">
+											<ProductCard
+												noVertical
+												asset={assetEntry.asset}
+												onCardClick={(): void => {
+													onPrimaryAssetClick(assetEntry.asset._id);
+												}}
+											/>
+										</CustomDiv>
+										<CustomDiv inline>
+											<SilentDivider style={{ height: "100%" }} type="vertical" />
+										</CustomDiv>
+										<CustomDiv inline overX="scroll" whiteSpace="nowrap">
+											{assetEntry.recommendations.length ? (
+												assetEntry.recommendations.map(asset => {
+													return (
+														<CustomDiv width="30ch" key={assetEntry._id} inline>
+															<ProductCard noVertical hoverable={false} asset={asset} />
+														</CustomDiv>
+													);
+												})
+											) : (
+												<CustomDiv px="1rem" align="center" width="100%" height="100%">
+													<Empty description="No Recommendations added for this product yet." />
+												</CustomDiv>
+											)}
+										</CustomDiv>
 									</CustomDiv>
-									<CustomDiv inline>
-										<SilentDivider style={{ height: "100%" }} type="vertical" />
-									</CustomDiv>
-									<CustomDiv inline overX="scroll" whiteSpace="nowrap">
-										{assetEntry.recommendations.length ? (
-											assetEntry.recommendations.map(asset => {
-												return (
-													<CustomDiv width="30ch" key={assetEntry._id} inline>
-														<ProductCard noVertical hoverable={false} asset={asset} />
-													</CustomDiv>
-												);
-											})
-										) : (
-											<CustomDiv type="flex" px="1rem" align="center" width="100%" height="100%">
-												<Empty description="No Recommendations added for this product yet." />
-											</CustomDiv>
-										)}
-									</CustomDiv>
-								</CustomDiv>
-								<SilentDivider />
-							</>
-						);
-					})}
+									<SilentDivider />
+								</>
+							);
+						})}
+			</Row>
 		</>
 	);
 };

@@ -11,7 +11,7 @@ export const designCopyApi: (designId: string) => string = designId => {
 };
 
 export const createDesignApi: () => string = () => {
-	return `/design`;
+	return "/design";
 };
 
 export const deleteDesignApi: (designId) => string = designId => {
@@ -82,7 +82,7 @@ export const editDesignApi = (designId): string => {
 // *****************************************************************************************************************
 
 export const getThemes = (): string => {
-	return `/themes`;
+	return "/themes";
 };
 
 // *****************************************************************************************************************

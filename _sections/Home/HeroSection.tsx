@@ -8,24 +8,17 @@ import React from "react";
 
 const redirectObj = {
 	pathname: "/dashboard",
-	url: "/dashboard"
+	url: "/dashboard",
 };
 
 function HeroSection({ authVerification }) {
 	return (
 		<CustomDiv>
-			<CustomDiv
-				py="0.5em"
-				mx="auto"
-				maxWidth="1200px"
-				type="flex"
-				flexDirection="column"
-				justifyContent="space-around"
-			>
-				<CustomDiv type="flex" justifyContent="center" py="1em">
+			<CustomDiv py="0.5em" mx="auto" maxWidth="1200px" flexDirection="column" justifyContent="space-around">
+				<CustomDiv justifyContent="center" py="1em">
 					<Typography.Title level={2}>Spacejoy Admin</Typography.Title>
 				</CustomDiv>
-				<CustomDiv justifyContent="center" type="flex" py="1em">
+				<CustomDiv justifyContent="center" py="1em">
 					{allowedRoles.includes(authVerification.role) ? (
 						<Button variant="primary" onClick={redirectToLocation.bind(null, redirectObj)} type="primary">
 							Go to Dashboard

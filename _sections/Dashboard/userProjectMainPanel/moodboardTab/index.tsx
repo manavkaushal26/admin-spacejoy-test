@@ -1,10 +1,11 @@
 import { getMoodboardApi } from "@api/designApi";
 import { DetailedDesign } from "@customTypes/dashboardTypes";
 import fetcher from "@utils/fetcher";
-import { Button } from "antd";
+import { Button, Row, Col } from "antd";
 import Router from "next/router";
 import React, { useEffect, useState, useMemo } from "react";
 import { MoodboardAsset } from "@customTypes/moodboardTypes";
+import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import { CustomDiv } from "../../styled";
 import MissingAssetModal from "./MissingAssetModal";
 import MoodboardDisplay from "./MoodboardDisplay";
@@ -54,20 +55,20 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, pro
 	}, moodboard);
 
 	return (
-		<CustomDiv type="flex" width="100%" flexWrap="wrap" overY="scroll">
-			<CustomDiv width="50%" pr="8px" justifyContent="center">
+		<Row gutter={[8, 8]} justify="space-between">
+			<Col span={12}>
 				<Button block type="primary" onClick={goToStore}>
 					Open Asset Store
 				</Button>
-			</CustomDiv>
-			<CustomDiv width="50%" pl="8px" justifyContent="center">
+			</Col>
+			<Col span={12}>
 				<Button block type="default" onClick={toggleAddMissingAssetModal}>
 					Manage Missing assets ({missingAssets.length})
 				</Button>
-			</CustomDiv>
-			<CustomDiv width="100%" py="0.5em" overY="scroll">
+			</Col>
+			<Col span={24}>
 				<MoodboardDisplay designId={designId} projectId={projectId} moodboard={moodboard} />
-			</CustomDiv>
+			</Col>
 			<MissingAssetModal
 				designId={designId}
 				setMoodboard={setMoodboard}
@@ -75,7 +76,7 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, pro
 				toggleAddMissingAssetModal={toggleAddMissingAssetModal}
 				addMissingAssetModalVisible={addMissingAssetModalVisible}
 			/>
-		</CustomDiv>
+		</Row>
 	);
 };
 

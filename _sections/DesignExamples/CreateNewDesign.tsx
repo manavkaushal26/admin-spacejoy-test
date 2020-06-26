@@ -225,7 +225,7 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 					</Row>
 				</Col>
 				<Col span={24}>
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Pagination
 							hideOnSinglePage
 							onChange={(number): void => setPageNo(number)}

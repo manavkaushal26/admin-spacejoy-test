@@ -1,8 +1,9 @@
+import { DollarCircleFilled } from "@ant-design/icons";
 import Image from "@components/Image";
 import { MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { getValueSafely } from "@utils/commonUtils";
-import { Empty, Icon, Spin, Statistic, Typography, Row, Col } from "antd";
+import { Col, Empty, Row, Spin, Statistic, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import { GreyDrawer } from "../styled";
 import CartAssetCard from "./CartAssetCard";
@@ -74,7 +75,7 @@ const AssetCartModal = ({
 						<Text>Primary Assets</Text>
 					</Col>
 					<Col span={24}>
-						<Statistic value={costOfMoodboard} prefix={<Icon type="dollar-circle" theme="filled" />} />
+						<Statistic value={costOfMoodboard} prefix={<DollarCircleFilled />} />
 					</Col>
 				</Row>
 			}
@@ -84,13 +85,13 @@ const AssetCartModal = ({
 			visible={cartOpen}
 		>
 			<Spin spinning={dataLoading}>
-				<Row>
+				<Row gutter={[4, 4]}>
 					{getValueSafely<boolean>(() => moodboard.length > 0, false) ? (
 						moodboard
 							.filter(assetEntry => assetEntry.isExistingAsset)
 							.map(assetEntry => {
 								return (
-									<>
+									<Col key={assetEntry.asset._id} span={24}>
 										<CartAssetCard
 											projectId={projectId}
 											designId={designId}
@@ -101,24 +102,28 @@ const AssetCartModal = ({
 											asset={assetEntry.asset}
 											entryId={assetEntry.asset._id}
 										/>
-									</>
+									</Col>
 								);
 							})
 					) : (
-						<Empty description="Add some products to design" />
+						<Col span={24}>
+							<Row justify="center">
+								<Empty description="Add some products as recommendation" />
+							</Row>
+						</Col>
 					)}
 					{selectedEntry && (
 						<GreyDrawer
 							title={
 								<>
-									<Row type="flex" justify="center" align="middle">
+									<Row justify="center" align="middle">
 										<Col span={24}>
-											<Row type="flex" justify="center" align="middle">
+											<Row justify="center" align="middle">
 												<Image width="40%" src={`/q_80/${selectedAsset.asset.cdn}`} />
 											</Row>
 										</Col>
 										<Col span={24}>
-											<Row type="flex" justify="center" align="middle">
+											<Row justify="center" align="middle">
 												{getValueSafely(() => `${selectedAsset.asset.name} Recommendation`, "Recommendations")}
 											</Row>
 										</Col>
@@ -131,11 +136,11 @@ const AssetCartModal = ({
 							visible={selectedEntry !== null}
 						>
 							<Spin spinning={dataLoading}>
-								<Row>
+								<Row gutter={[4, 4]}>
 									{selectedAsset && selectedAsset.recommendations.length ? (
 										selectedAsset.recommendations.map(asset => {
 											return (
-												<>
+												<Col span={24} key={selectedAsset.asset._id}>
 													<CartAssetCard
 														projectId={projectId}
 														designId={designId}
@@ -144,11 +149,15 @@ const AssetCartModal = ({
 														type="recommendation"
 														asset={asset}
 													/>
-												</>
+												</Col>
 											);
 										})
 									) : (
-										<Empty description="Add some products as recommendation" />
+										<Col span={24}>
+											<Row justify="center">
+												<Empty description="Add some products as recommendation" />
+											</Row>
+										</Col>
 									)}
 								</Row>
 							</Spin>

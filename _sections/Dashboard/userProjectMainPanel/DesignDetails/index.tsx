@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { Row, Col, notification, Typography, Input, Select, Button, Tooltip, Icon } from "antd";
-import { getThemes, editDesignApi } from "@api/designApi";
-import fetcher from "@utils/fetcher";
-import { ThemeInterface, RoomTypes, DetailedDesign, RoomLabels } from "@customTypes/dashboardTypes";
-import { getValueSafely } from "@utils/commonUtils";
+import { LinkOutlined } from "@ant-design/icons";
+import { editDesignApi, getThemes } from "@api/designApi";
+import { DetailedDesign, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
+import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import { Button, Col, Input, notification, Row, Select, Tooltip, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -125,15 +126,17 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			{designData.slug && (
 				<Col span={24}>
 					<Row gutter={[4, 4]}>
-						<Col>Slug</Col>
-						<Col>
+						<Col span={24}>
+							<Text strong>Slug</Text>
+						</Col>
+						<Col span={24}>
 							<Input
 								name="slug"
 								disabled
 								value={designData.slug}
 								addonAfter={
 									<Tooltip placement="top" title="Open URL">
-										<Icon onClick={openInNewWindow} type="link" />
+										<LinkOutlined onClick={openInNewWindow} />
 									</Tooltip>
 								}
 							/>
@@ -144,7 +147,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			<Col span={24}>
 				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text>Title</Text>
+						<Text strong>Title</Text>
 					</Col>
 					<Col span={24}>
 						<Input onChange={handleChange} placeholder="Title" value={title} name="title" />
@@ -154,7 +157,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			<Col span={12}>
 				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text>Theme</Text>
+						<Text strong>Theme</Text>
 					</Col>
 					<Col span={24}>
 						<Select
@@ -177,11 +180,11 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			</Col>
 			<Col span={12}>
 				<Row gutter={[4, 4]}>
-					<Col>
-						<Text>Room Type</Text>
+					<Col span={24}>
+						<Text strong>Room Type</Text>
 					</Col>
-					<Col>
-						<Select style={{ width: "100%" }} onChange={setRoomType} value={roomType}>
+					<Col span={24}>
+						<Select style={{ width: "100%" }} onChange={(value): void => setRoomType(value)} value={roomType}>
 							{Object.keys(RoomTypes).map(key => {
 								return (
 									<Select.Option key={key} value={RoomTypes[key]}>
@@ -196,7 +199,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			<Col sm={24} md={24}>
 				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text>Tags</Text>
+						<Text strong>Tags</Text>
 					</Col>
 					<Col span={24}>
 						<Select
@@ -212,9 +215,9 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			</Col>
 
 			<Col span={24}>
-				<Row>
+				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text>Designer Description</Text>
+						<Text strong>Designer Description</Text>
 					</Col>
 					<Col span={24}>
 						<Input.TextArea onChange={handleChange} placeholder="Description" value={description} name="description" />
@@ -223,9 +226,9 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			</Col>
 
 			<Col span={24}>
-				<Row>
+				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text>Long Description</Text>
+						<Text strong>Long Description</Text>
 					</Col>
 					<Col span={24}>
 						<Input.TextArea
@@ -238,9 +241,9 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 				</Row>
 			</Col>
 			<Col sm={24} md={24}>
-				<Row>
+				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text>Bullet points</Text>
+						<Text strong>Bullet points</Text>
 					</Col>
 					<Col span={24}>
 						<Select
@@ -255,7 +258,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 				</Row>
 			</Col>
 			<Col span={24}>
-				<Row type="flex" justify="end">
+				<Row justify="end">
 					<Button onClick={onClickOk} type="primary" disabled={designData.status === Status.active}>
 						Save Data
 					</Button>

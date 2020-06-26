@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { List, Typography, Row, Col, Button, Card, Popconfirm, Avatar, InputNumber, Input } from "antd";
 import InputField from "@components/Inputs/InputField";
 import { Feature } from "@customTypes/pricesTypes";
 import { SilentDivider } from "@sections/Dashboard/styled";
+import { Button, Card, Col, List, Popconfirm, Row, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -16,7 +16,7 @@ const ShowFeatureList = ({ list, remove }: { list: Feature[]; remove: (index: nu
 					key={item.label}
 					actions={[
 						<Popconfirm title="Are you sure?" key="delete" onConfirm={(): void => remove(index)}>
-							<Button type="danger" size="small">
+							<Button danger type="primary" size="small">
 								Delete
 							</Button>
 						</Popconfirm>,
@@ -111,35 +111,37 @@ const MultiInputField: React.FC<{ list: Feature[]; onChange: (name, value) => vo
 
 	return (
 		<Row gutter={[8, 4]}>
-			<Col>
+			<Col span={24}>
 				<ShowFeatureList list={copyList} remove={onDelete} />
 			</Col>
-			<Col>
+			<Col span={24}>
 				<SilentDivider />
 			</Col>
-			<Col>
+			<Col span={24}>
 				<Row gutter={[4, 4]}>
-					<Col>
+					<Col span={24}>
 						<Text strong>Add New Feature</Text>
 					</Col>
-					<Card size="small">
-						<Col>
-							<InputField onChange={onChange} label="Label" name="label" value={newInput.label} />
-						</Col>
-						<Col>
-							<InputField onChange={onChange} label="Help Text" name="helpText" value={newInput.helpText} />
-						</Col>
-						<Col>
-							<InputField onChange={onChange} label="Position" name="position" value={newInput.position} />
-						</Col>
-						<Col>
-							<Row type="flex" justify="end">
-								<Button onClick={addToList} type="primary">
-									Add
-								</Button>
-							</Row>
-						</Col>
-					</Card>
+					<Col span={24}>
+						<Card size="small">
+							<Col span={24}>
+								<InputField onChange={onChange} label="Label" name="label" value={newInput.label} />
+							</Col>
+							<Col span={24}>
+								<InputField onChange={onChange} label="Help Text" name="helpText" value={newInput.helpText} />
+							</Col>
+							<Col span={24}>
+								<InputField onChange={onChange} label="Position" name="position" value={newInput.position} />
+							</Col>
+							<Col span={24}>
+								<Row justify="end">
+									<Button onClick={addToList} type="primary">
+										Add
+									</Button>
+								</Row>
+							</Col>
+						</Card>
+					</Col>
 				</Row>
 			</Col>
 		</Row>

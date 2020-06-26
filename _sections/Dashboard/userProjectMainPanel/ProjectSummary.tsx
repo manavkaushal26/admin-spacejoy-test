@@ -1,17 +1,18 @@
+import { CheckCircleTwoTone, CloseCircleTwoTone, LoadingOutlined } from "@ant-design/icons";
+import { delayProjectApi, startProjectApi } from "@api/projectApi";
 import ProgressBar from "@components/ProgressBar";
 import { DetailedProject, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import {
-	getColorsForPackages,
-	getValueSafely,
 	convertDaysToMilliseconds,
 	convertMillisecondsToDays,
+	getColorsForPackages,
+	getValueSafely,
 } from "@utils/commonUtils";
-import { Avatar, Col, Row, Typography, Button, Popconfirm, Input, notification, Icon, Radio, Tag } from "antd";
-import moment from "moment";
-import React, { useMemo, useState, useEffect } from "react";
-import styled from "styled-components";
-import { delayProjectApi, startProjectApi } from "@api/projectApi";
 import fetcher from "@utils/fetcher";
+import { Avatar, Button, Col, Input, notification, Popconfirm, Radio, Row, Tag, Typography } from "antd";
+import moment from "moment";
+import React, { useEffect, useMemo, useState } from "react";
+import styled from "styled-components";
 import { getTagColor, StyledTag } from "../styled";
 
 const { Title, Text } = Typography;
@@ -102,7 +103,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		notification.open({
 			key: "Delay",
 			message: "Please Wait",
-			icon: <Icon type="loading" />,
+			icon: <LoadingOutlined />,
 			description: "Setting Delay",
 		});
 		if (delayValue.min < delayValue.max) {
@@ -124,7 +125,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					notification.open({
 						key: "Delay",
 						message: "Successful",
-						icon: <Icon type="check-circle" theme="twoTone" twoToneColor="#52c41a" />,
+						icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
 						description: "Delay has been set Successfully",
 					});
 				}
@@ -132,7 +133,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 				notification.open({
 					key: "Delay",
 					message: "Error",
-					icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+					icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 					description: "There was a problem setting delay",
 				});
 			}
@@ -140,7 +141,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 			notification.open({
 				key: "Delay",
 				message: "Error",
-				icon: <Icon type="close-circle" theme="twoTone" twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
 				description: "There was a problem setting delay",
 			});
 		}
@@ -165,9 +166,9 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 	const isDelayed = getValueSafely(() => projectData.delay.isDelayed, false);
 	return (
 		<VerticallyPaddedDiv>
-			<Row type="flex" justify="space-between" align="middle" gutter={[8, 8]}>
+			<Row justify="space-between" align="middle" gutter={[8, 8]}>
 				<Col offset={1}>
-					<Row type="flex" gutter={[16, 8]}>
+					<Row gutter={[16, 8]}>
 						<Col>
 							<Avatar size={48} style={getColorsForPackages(items)}>
 								{displayName[0].toUpperCase()}
@@ -188,7 +189,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					</Row>
 				</Col>
 				<Col>
-					<Row type="flex" gutter={[4, 4]}>
+					<Row gutter={[4, 4]}>
 						<Col>
 							<StyledTag color={getTagColor(phase)}>Phase: {HumanizePhaseInternalNames[phase]}</StyledTag>
 						</Col>
@@ -199,7 +200,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 				</Col>
 				<Col>
 					{endTime ? (
-						<Row align="middle" type="flex" gutter={[16, 8]}>
+						<Row align="middle" gutter={[16, 8]}>
 							<Col>
 								<ProgressBar phase={phase} size={22} days={daysLeft} />
 							</Col>

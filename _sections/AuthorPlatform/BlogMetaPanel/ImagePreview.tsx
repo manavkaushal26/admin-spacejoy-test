@@ -111,7 +111,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 			centered
 			width="auto"
 		>
-			<Row type="flex">
+			<Row>
 				<Col sm={24} md={16}>
 					<Image width="100%" alt="Blog Image" src={`${imageCdn}`} />
 				</Col>
@@ -121,7 +121,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 							{imageType === DesignImgTypes.Render && (
 								<>
 									<Col>
-										<Row type="flex" justify="center">
+										<Row justify="center">
 											<Text copyable={{ text: `${cloudinary.baseDeliveryURL}/w_800/${imageCdn}` }}>
 												Click Icon to copy URL to Image
 											</Text>
@@ -157,7 +157,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 								</Col>
 							)}
 							<Col span={24}>
-								<Button loading={loading} onClick={onDeleteButtonClick} type="danger" block>
+								<Button loading={loading} onClick={onDeleteButtonClick} type="primary" danger block>
 									Delete Image
 								</Button>
 							</Col>

@@ -1,3 +1,4 @@
+import { FileAddOutlined } from "@ant-design/icons";
 import { deleteDesignApi, designCopyApi } from "@api/designApi";
 import { editProjectApi, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
@@ -17,7 +18,7 @@ import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Icon, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
+import { Button, Col, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CopyDesignModal from "./CopyDesignModal";
@@ -238,7 +239,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	return (
 		<Row gutter={[0, 16]}>
 			<Col span={24}>
-				<Row type="flex" align="stretch" gutter={[8, 8]}>
+				<Row align="stretch" gutter={[8, 8]}>
 					{projectData.designs.map(design => {
 						const feedback = projectData.feedback.filter(designFeedback => {
 							if (design) return designFeedback.reference === design.design._id;
@@ -290,14 +291,12 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					})}
 					<Col xs={24} sm={12} md={8} lg={8} xl={6} onClick={toggleCopyDesignModal}>
 						<HoverCard>
-							<Row style={{ height: "100%", flexDirection: "column" }} type="flex" justify="center" align="middle">
+							<Row style={{ height: "100%" }} justify="center" align="middle">
 								<Col span={24}>
-									<Row type="flex" justify="center" align="middle">
-										<Icon style={{ fontSize: "36px" }} type="file-add" />
+									<Row justify="center" align="middle">
+										<FileAddOutlined style={{ fontSize: "3rem" }} />
 									</Row>
-								</Col>
-								<Col span={24}>
-									<Row style={{ padding: "15px" }} type="flex" justify="center" align="middle">
+									<Row style={{ padding: "15px" }} justify="center" align="middle">
 										<Text>{cardText}</Text>
 									</Row>
 								</Col>
@@ -309,7 +308,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			<Col span={24}>
 				<Row gutter={[8, 8]}>
 					<Col sm={12} md={8}>
-						<Row type="flex" justify="center">
+						<Row justify="center">
 							<Button
 								onClick={onSubmit}
 								disabled={
@@ -323,7 +322,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 						</Row>
 					</Col>
 					<Col sm={12} md={8}>
-						<Row type="flex" justify="center">
+						<Row justify="center">
 							<Popconfirm
 								title="Are you sure?"
 								onConfirm={sendToRevision}
@@ -336,7 +335,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 						</Row>
 					</Col>
 					<Col sm={12} md={8}>
-						<Row type="flex" justify="center">
+						<Row justify="center">
 							<CyanButton
 								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
 								onClick={warnUser}
@@ -350,7 +349,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			<Col span={24}>
 				{(numberOfActiveProjects !== numberOfDesigns ||
 					projectData.currentPhase.name.internalName === PhaseInternalNames.designReady) && (
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Text>
 							Submit Disabled? The project is either already marked complete or the required number designs are not yet
 							ready.
@@ -360,7 +359,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			</Col>
 			<Col span={24}>
 				{(userRole === Role.Admin || userRole === Role.Owner) && (
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Select onChange={onStatusChange} style={{ width: 200 }} defaultValue={projectData.status}>
 							{Object.keys(Status).map(key => {
 								return (

@@ -1,11 +1,11 @@
 import { MetaDataType } from "@customTypes/moodboardTypes";
+import { AssetStatus } from "@customTypes/userType";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
-import { CustomDiv } from "@sections/Dashboard/styled";
-import { Input, Tree, Typography, Radio } from "antd";
+import { SilentDivider } from "@sections/Dashboard/styled";
+import { Col, Input, Radio, Row, Tree, Typography } from "antd";
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
-import { AssetStatus } from "@customTypes/userType";
-import { FilterCard, ModifiedDivider } from "../styled";
+import { FilterCard } from "../styled";
 import SliderFilter from "./filters/SliderFilter";
 
 const { TreeNode } = Tree;
@@ -189,7 +189,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		return options.map(item => {
 			if (item.children) {
 				return (
-					<TreeNode title={item.title.name} key={`${item.title.name}-${item.title.level}`} dataRef={item}>
+					<TreeNode title={item.title.name} key={`${item.title.name}-${item.title.level}`}>
 						{renderTreeNodes(item.children)}
 					</TreeNode>
 				);
@@ -205,113 +205,195 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 	return (
 		<>
 			{metaData && (
-				<>
-					<CustomDiv py="0.5rem">
+				<Row gutter={[16, 16]}>
+					<Col span={24}>
 						<FilterCard>
-							<Text strong>Search by Name</Text>
-							<Input allowClear value={state.searchText} onChange={onSearchInput} />
-							<Text strong>Category</Text>
-							<Tree checkStrictly onCheck={onCheck} checkedKeys={mergedArray} checkable>
-								{renderTreeNodes(categoryMap)}
-							</Tree>
+							<Row gutter={[4, 4]}>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Text strong>Search by Name</Text>
+										</Col>
+										<Col span={24}>
+											<Input allowClear value={state.searchText} onChange={onSearchInput} />
+										</Col>
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Text strong>Category</Text>
+										</Col>
+										<Col span={24}>
+											<Tree checkStrictly onCheck={onCheck} checkedKeys={mergedArray} checkable>
+												{renderTreeNodes(categoryMap)}
+											</Tree>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
 						</FilterCard>
-					</CustomDiv>
-					<FilterCard>
-						<Title level={4} type="secondary">
-							Filter Products
-						</Title>
-						<ModifiedDivider />
-						<Filter
-							value={state.retailerFilter}
-							name={{ categoryName: "Retailer", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
-							options={metaData.retailers.list
-								.sort((a, b) => {
-									if (a.name.toLowerCase() > b.name.toLowerCase()) {
-										return 1;
-									}
-									if (b.name.toLowerCase() > a.name.toLowerCase()) {
-										return -1;
-									}
-									return 0;
-								})
-								.map(elem => {
-									return { label: elem.name, value: elem.name };
-								})}
-							dispatch={dispatch}
-						/>
-						<Text strong>Status</Text>
-						<Radio.Group name="status" onChange={onStatusChange} value={state.status}>
-							{Object.entries(AssetStatus).map(([name, value]) => {
-								return (
-									<Radio
-										key={value}
-										style={{
-											display: "block",
-											height: "30px",
-											lineHeight: "30px",
-										}}
-										value={value}
-									>
-										{name}
-									</Radio>
-								);
-							})}
-							<Radio value="">All</Radio>
-						</Radio.Group>
-						<Title type="secondary" level={4}>
-							Range Filters
-						</Title>
-						<ModifiedDivider />
-						<Text strong>Price</Text>
-						<CustomDiv width="100%" type="flex" align="center">
-							<SliderFilter
-								min={priceMin}
-								max={priceMax}
-								range={[0, 50000]}
-								value={priceRange}
-								onValueEntry={onPriceSliderValueEntry}
-								onChange={onPriceRangeChange}
-								onAfterChange={afterPriceChange}
-							/>
-						</CustomDiv>
-						<Text strong>Width</Text>
-						<CustomDiv width="100%" type="flex" align="center">
-							<SliderFilter
-								min={widthMin}
-								max={widthMax}
-								range={[0, 30]}
-								value={width}
-								onValueEntry={onWidthSliderValueEntry}
-								onChange={onWidthRangeChange}
-								onAfterChange={afterWidthChange}
-							/>
-						</CustomDiv>
-						<Text strong>Height</Text>
-						<CustomDiv width="100%" type="flex" align="center">
-							<SliderFilter
-								min={heightMin}
-								max={heightMax}
-								range={[0, 30]}
-								value={height}
-								onValueEntry={onHeightSliderValueEntry}
-								onChange={onHeightRangeChange}
-								onAfterChange={afterHeightChange}
-							/>
-						</CustomDiv>
-						<Text strong>Depth</Text>
-						<CustomDiv width="100%" type="flex" align="center">
-							<SliderFilter
-								min={depthMin}
-								max={depthMax}
-								range={[0, 30]}
-								value={depth}
-								onValueEntry={onDepthSliderValueEntry}
-								onChange={onDepthRangeChange}
-								onAfterChange={afterDepthChange}
-							/>
-						</CustomDiv>
-					</FilterCard>
-				</>
+					</Col>
+					<Col span={24}>
+						<FilterCard>
+							<Row gutter={[4, 4]}>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Title level={4} type="secondary">
+												Filter Products
+											</Title>
+										</Col>
+										<Col span={24}>
+											<SilentDivider />
+										</Col>
+										<Col span={24}>
+											<Filter
+												value={state.retailerFilter}
+												name={{ categoryName: "Retailer", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
+												options={metaData.retailers.list
+													.sort((a, b) => {
+														if (a.name.toLowerCase() > b.name.toLowerCase()) {
+															return 1;
+														}
+														if (b.name.toLowerCase() > a.name.toLowerCase()) {
+															return -1;
+														}
+														return 0;
+													})
+													.map(elem => {
+														return { label: elem.name, value: elem.name };
+													})}
+												dispatch={dispatch}
+											/>
+										</Col>
+										<Col span={24}>
+											<Row gutter={[2, 2]}>
+												<Col span={24}>
+													<Text strong>Status</Text>
+												</Col>
+												<Col span={24}>
+													<Radio.Group name="status" onChange={onStatusChange} value={state.status}>
+														{Object.entries(AssetStatus).map(([name, value]) => {
+															return (
+																<Radio
+																	key={value}
+																	style={{
+																		display: "block",
+																		height: "30px",
+																		lineHeight: "30px",
+																	}}
+																	value={value}
+																>
+																	{name}
+																</Radio>
+															);
+														})}
+														<Radio value="">All</Radio>
+													</Radio.Group>
+												</Col>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</FilterCard>
+					</Col>
+					<Col span={24}>
+						<FilterCard>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<Title type="secondary" level={4}>
+										Range Filters
+									</Title>
+								</Col>
+								<Col span={24}>
+									<SilentDivider />
+								</Col>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Text strong>Price</Text>
+										</Col>
+										<Col span={24}>
+											<Row gutter={[2, 2]}>
+												<SliderFilter
+													min={priceMin}
+													max={priceMax}
+													range={[0, 20000]}
+													value={priceRange}
+													onValueEntry={onPriceSliderValueEntry}
+													onChange={onPriceRangeChange}
+													onAfterChange={afterPriceChange}
+												/>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Text strong>Width</Text>
+										</Col>
+										<Col span={24}>
+											<Row align="middle">
+												<SliderFilter
+													min={widthMin}
+													max={widthMax}
+													range={[0, 30]}
+													value={width}
+													onValueEntry={onWidthSliderValueEntry}
+													onChange={onWidthRangeChange}
+													onAfterChange={afterWidthChange}
+												/>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Text strong>Height</Text>
+										</Col>
+										<Col span={24}>
+											<Row gutter={[2, 2]}>
+												<SliderFilter
+													min={heightMin}
+													max={heightMax}
+													range={[0, 30]}
+													value={height}
+													onValueEntry={onHeightSliderValueEntry}
+													onChange={onHeightRangeChange}
+													onAfterChange={afterHeightChange}
+												/>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Row gutter={[2, 2]}>
+										<Col span={24}>
+											<Text strong>Depth</Text>
+										</Col>
+										<Col span={24}>
+											<Row align="middle">
+												<SliderFilter
+													min={depthMin}
+													max={depthMax}
+													range={[0, 30]}
+													value={depth}
+													onValueEntry={onDepthSliderValueEntry}
+													onChange={onDepthRangeChange}
+													onAfterChange={afterDepthChange}
+												/>
+											</Row>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</FilterCard>
+					</Col>
+				</Row>
 			)}
 		</>
 	);

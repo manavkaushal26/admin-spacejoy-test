@@ -8,9 +8,9 @@ const { Text } = Typography;
 const Design3D: React.FC = () => {
 	return (
 		<StepDiv>
-			<Row style={{ paddingTop: "1rem" }} gutter={[0, 24]}>
-				<Col>
-					<Row gutter={[12, 0]}>
+			<Row gutter={[8, 8]}>
+				<Col span={12}>
+					<Row gutter={[4, 4]}>
 						<Col>
 							<Text strong>Description</Text>
 						</Col>
@@ -22,8 +22,8 @@ const Design3D: React.FC = () => {
 						</Col>
 					</Row>
 				</Col>
-				<Col>
-					<Row type="flex" justify="space-around" gutter={[16, 16]}>
+				<Col span={12}>
+					<Row justify="space-around" gutter={[16, 16]}>
 						<Col>
 							<a
 								target="_blank"

@@ -50,7 +50,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 									<Image width="100%" src={`${image.cdn}`} />
 								</Col>
 								<Col span={24}>
-									<Row type="flex" justify="space-around">
+									<Row justify="space-around">
 										<Col>
 											<a
 												href={image.path}

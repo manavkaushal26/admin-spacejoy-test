@@ -64,7 +64,7 @@ const DesignListDisplay: React.FC<DesignListDisplay> = ({ state, dispatch }) => 
 
 	return (
 		<Spin spinning={loading}>
-			<Row gutter={[0, 8]} type="flex">
+			<Row gutter={[0, 8]}>
 				<Col span={24}>
 					<Row gutter={[8, 8]}>
 						{state.designs.map(design => {
@@ -105,7 +105,7 @@ const DesignListDisplay: React.FC<DesignListDisplay> = ({ state, dispatch }) => 
 					</Row>
 				</Col>
 				<Col span={24}>
-					<Row type="flex" justify="center">
+					<Row justify="center">
 						<Pagination
 							hideOnSinglePage
 							onChange={(pageNo): void => dispatch({ type: DesignListAction.UPDATE_PAGE_NUMBER, value: { pageNo } })}

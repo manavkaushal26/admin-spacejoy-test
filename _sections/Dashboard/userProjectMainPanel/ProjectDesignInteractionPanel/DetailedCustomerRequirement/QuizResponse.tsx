@@ -1,10 +1,11 @@
+import { CheckSquareTwoTone, CloseSquareFilled } from "@ant-design/icons";
 import Image from "@components/Image";
 import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes/dashboardTypes";
-import { cloudinary } from "@utils/config";
-import { Icon, Typography } from "antd";
-import React from "react";
 import { getValueSafely, stringToUrl } from "@utils/commonUtils";
+import { cloudinary } from "@utils/config";
+import { Typography } from "antd";
 import parse from "html-react-parser";
+import React from "react";
 
 const { Text } = Typography;
 
@@ -32,9 +33,9 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 			return <Text>{value}</Text>;
 		case QuizAnswerFieldType.Select:
 			if (select) {
-				return <Icon type="check-square" theme="twoTone" twoToneColor="#52c41a" />;
+				return <CheckSquareTwoTone twoToneColor="#52c41a" />;
 			}
-			return <Icon type="close-square" theme="twoTone" twoToneColor="#f5222d" />;
+			return <CloseSquareFilled twoToneColor="#f5222d" />;
 		case QuizAnswerFieldType.Text:
 			if (text) {
 				return <Text>{parse(stringToUrl(text))}</Text>;

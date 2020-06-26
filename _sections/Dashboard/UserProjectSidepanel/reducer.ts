@@ -1,6 +1,6 @@
 import { UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { Moment } from "moment";
+import moment from "moment";
 
 export interface UserProjectSidePanelState {
 	nameSearchText: string;
@@ -16,8 +16,8 @@ export interface UserProjectSidePanelState {
 	name: string;
 	searchResults: UserProjectType[];
 	count: number;
-	startedAt: [Moment, Moment];
-	endedAt: [Moment, Moment];
+	startedAt: [moment.Moment, moment.Moment];
+	endedAt: [moment.Moment, moment.Moment];
 }
 
 export enum UserProjectSidePanelActionTypes {
