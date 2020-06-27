@@ -1,14 +1,14 @@
 import Card from "@components/Card";
 import Image from "@components/Image";
 import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
-import ProductCard from "@sections/Cards/ProductCard";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
 import config, { cloudinary } from "@utils/config";
-import { Col, Divider, Empty, Row, Button } from "antd";
+import { Col, Divider, Row, Button } from "antd";
 import React from "react";
 import ReactPannellum from "react-pannellum";
 import styled from "styled-components";
+import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 
 interface CustomerView {
 	designData: DetailedDesign;
@@ -47,28 +47,28 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 						.map(image => (
 							<Row key={image._id}>
 								<Col span={24}>
-									<Image width="100%" src={`${image.cdn}`} />
+									<Image width='100%' src={`${image.cdn}`} />
 								</Col>
 								<Col span={24}>
-									<Row justify="space-around">
+									<Row justify='space-around'>
 										<Col>
 											<a
 												href={image.path}
 												download={`${designData.name}-${image._id}-original.jpg`}
-												target="_blank"
-												rel="noreferrer noopener"
+												target='_blank'
+												rel='noreferrer noopener'
 											>
-												<Button type="link">Open Original</Button>
+												<Button type='link'>Open Original</Button>
 											</a>
 										</Col>
 										<Col>
 											<a
 												href={`${config.cloudinary.baseDeliveryURL}/${image.cdn}`}
 												download={`${designData.name}-${image._id}-cdn.jpg`}
-												target="_blank"
-												rel="noreferrer noopener"
+												target='_blank'
+												rel='noreferrer noopener'
 											>
-												<Button type="link">Open CDN</Button>
+												<Button type='link'>Open CDN</Button>
 											</a>
 										</Col>
 									</Row>
@@ -80,8 +80,8 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 			{pannelumImage ? (
 				<Col sm={18} md={6}>
 					<ReactPannellum
-						id="renderPanorama"
-						sceneId="firstScene"
+						id='renderPanorama'
+						sceneId='firstScene'
 						imageSource={`${cloudinary.baseDeliveryURL}/image/upload/${pannelumImage.cdn}`}
 						{...PannellumOptions}
 					/>
@@ -94,23 +94,30 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 			</Col>
 			{designData.description !== "" && (
 				<Col span={24}>
-					<FlatCard noMargin noShadow full bg="red">
-						<div className="grid">
-							<div className="col-xs-12">{designData.description}</div>
+					<FlatCard noMargin noShadow full bg='red'>
+						<div className='grid'>
+							<div className='col-xs-12'>{designData.description}</div>
 						</div>
 					</FlatCard>
 				</Col>
 			)}
 			<Col span={24}>
-				<Divider>Your Shopping List</Divider>
-				<ProductCard
-					assets={designData.assets}
-					gridCount={4}
-					showLoadMore={false}
-					designName={designData.name}
-					designId={designData.id}
-					size="150"
-				/>
+				<Row>
+					<Col span={24}>
+						<Divider>Your Shopping List</Divider>
+					</Col>
+					<Col>
+						<Row gutter={[8, 8]}>
+							{designData.assets.map(asset => {
+								return (
+									<Col sm={12} md={8} lg={6} key={asset._id}>
+										<ProductCard hoverable={false} asset={asset?.asset} noVertical />
+									</Col>
+								);
+							})}
+						</Row>
+					</Col>
+				</Row>
 			</Col>
 		</Row>
 	);

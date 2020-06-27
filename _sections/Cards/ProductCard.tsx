@@ -91,12 +91,12 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 	);
 
 	return (
-		<ProductCardRow justify="space-between">
+		<ProductCardRow justify='space-between'>
 			{uniqueAssets.map(item => {
 				return item.asset.shoppable && item.billable && !item.hidden ? (
 					<Col md={11} lg={7} key={item._id}>
-						<Row>
-							<Row justify="space-between">
+						<Row align='middle'>
+							<Col span={24}>
 								<ProductImageWrapperStyled
 									url={`//res.cloudinary.com/spacejoy/image/upload/q_100,w_300/${getValueSafely(
 										() => item.asset.cdn,
@@ -104,35 +104,38 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 									)}`}
 									size={size}
 								/>
-							</Row>
-							<div className="col-xs-7 col-bleed-y">
+							</Col>
+
+							<Col span={14}>
 								<ProductBrandStyled>{getValueSafely(() => item.asset.retailer.name, "N/A")}</ProductBrandStyled>
 								<ProductNameStyled>{getValueSafely(() => item.asset.name, "N/A")}</ProductNameStyled>
 								<ProductPriceStyled>$ {getValueSafely(() => item.asset.price, NaN)}</ProductPriceStyled>
-							</div>
-							<div className="col-xs-5 col-bleed-y text-right">
-								<a href={item.asset.retailLink} target="_blank" rel="noopener noreferrer">
-									<Button
-										variant="secondary"
-										fill="ghost"
-										size="xs"
-										action="buy product"
-										label={`buy product > ${item.asset.retailLink}`}
-										event="buyProduct"
-										data={{ SectionName: "Product Buy Link" }}
-									>
-										Buy Now
-									</Button>
-								</a>
-							</div>
+							</Col>
+							<Col span={10}>
+								<Row justify='end'>
+									<a href={item.asset.retailLink} target='_blank' rel='noopener noreferrer'>
+										<Button
+											variant='secondary'
+											fill='ghost'
+											size='xs'
+											action='buy product'
+											label={`buy product > ${item.asset.retailLink}`}
+											event='buyProduct'
+											data={{ SectionName: "Product Buy Link" }}
+										>
+											Buy Now
+										</Button>
+									</a>
+								</Row>
+							</Col>
 						</Row>
 					</Col>
 				) : null;
 			})}
 			{showLoadMore && (
 				<div className={`col-xs-${gridCount}`}>
-					<div className="grid">
-						<div className="col-xs-12">
+					<div className='grid'>
+						<div className='col-xs-12'>
 							<Link
 								href={{ pathname: "/designView", query: { designName: designNameClean, designId } }}
 								as={`/designView/${designNameClean}/${designId}`}

@@ -49,8 +49,8 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 			cover={
 				<ImageContainer>
 					<Image
-						width="auto"
-						height="250px"
+						width='auto'
+						height='250px'
 						autoAdjust
 						src={getValueSafely(
 							() => asset.cdn,
@@ -62,7 +62,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 				</ImageContainer>
 			}
 			actions={actions || []}
-			onClick={(): void => onCardClick(asset._id)}
+			{...(onCardClick ? { onClick: (): void => onCardClick(asset._id) } : {})}
 			hoverable={hoverable}
 		>
 			<Row gutter={[10, 0]}>
@@ -73,8 +73,8 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 								<LinkOutlined />
 							</Col>
 							<Col>
-								<Text style={{ width: "100%" }} ellipsis type="secondary">
-									<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
+								<Text style={{ width: "100%" }} ellipsis type='secondary'>
+									<a target='_blank' rel='noopener noreferrer' href={getValueSafely(() => asset.retailLink, "#")}>
 										{getValueSafely(() => asset.retailer.name, "N/A")}
 									</a>
 								</Text>

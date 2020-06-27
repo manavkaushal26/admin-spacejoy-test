@@ -123,7 +123,7 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 		const {
 			target: { naturalHeight, naturalWidth },
 		} = e;
-		if (naturalHeight > naturalWidth) {
+		if (naturalHeight >= naturalWidth) {
 			setImageHeight("250px");
 			setImageWidth("auto");
 		} else {
