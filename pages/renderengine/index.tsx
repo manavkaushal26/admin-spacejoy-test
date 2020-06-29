@@ -130,7 +130,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName="Render Engine">
+		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Render Engine'>
 			<Head>
 				<title>Render Engine | {company.product}</title>
 				{IndexPageMeta}
@@ -139,19 +139,19 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
 						<Row gutter={[0, 16]}>
-							<Col style={{ backgroundColor: "white" }}>
+							<Col span={24} style={{ backgroundColor: "white" }}>
 								<PageHeader
 									onBack={(): void => router.back()}
 									style={{ paddingLeft: "0px", paddingRight: "0px" }}
-									title="All Sources"
+									title='All Sources'
 									extra={[
-										<Button onClick={toggleCreateSourcesModal} key="addSource" type="primary">
+										<Button onClick={toggleCreateSourcesModal} key='addSource' type='primary'>
 											Add new Source
 										</Button>,
 									]}
 								/>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Row gutter={[16, 16]}>
 									{sources.length !== 0 ? (
 										sources.map(source => {
@@ -175,7 +175,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 														hoverable
 														actions={[
 															<Popconfirm
-																title="Are you sure?"
+																title='Are you sure?'
 																onCancel={(e): void => {
 																	e.stopPropagation();
 																}}
@@ -183,7 +183,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 																	e.stopPropagation();
 																	deleteSource(source._id);
 																}}
-																key="delete"
+																key='delete'
 															>
 																<DeleteOutlined onClick={(e): void => e.stopPropagation()} />
 															</Popconfirm>,
@@ -197,7 +197,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 																			handleImageClick(renders);
 																		}}
 																		nolazy
-																		width="100%"
+																		width='100%'
 																		src={renders[0]}
 																	/>
 																</Col>
@@ -224,11 +224,13 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 											);
 										})
 									) : (
-										<Result status="404" title="No Sources" subTitle="Create a new Source to see it here" />
+										<Col span={24}>
+											<Result status='404' title='No Sources' subTitle='Create a new Source to see it here' />
+										</Col>
 									)}
 								</Row>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Pagination
 									current={pageNumber}
 									total={sources.length}
@@ -243,7 +245,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 						</Row>
 					</LoudPaddingDiv>
 					<ImageSlideshowModal
-						altText="Render Images"
+						altText='Render Images'
 						previewImages={previewImages}
 						previewVisible={previewVisible}
 						handleCancel={handleImageClick}

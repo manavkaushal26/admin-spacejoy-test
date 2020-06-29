@@ -78,8 +78,8 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 		<Modal
 			visible={isOpen}
 			onCancel={closeModal}
-			title="Create New Job"
-			okText="Create"
+			title='Create New Job'
+			okText='Create'
 			okButtonProps={{
 				disabled: createButtonDisabled,
 				loading,
@@ -89,30 +89,30 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 			<Row gutter={[8, 8]}>
 				<Col span={24}>
 					<Row gutter={[4, 4]}>
-						<Col>
+						<Col span={24}>
 							<Text>Job name</Text>
 						</Col>
-						<Col>
-							<Input name="name" value={state.name} onChange={onChange} placeholder="Name" />
+						<Col span={24}>
+							<Input name='name' value={state.name} onChange={onChange} placeholder='Name' />
 						</Col>
 					</Row>
 				</Col>
 				<Col span={24}>
 					<Row gutter={[4, 4]}>
-						<Col>
+						<Col span={24}>
 							<Text>Description</Text>
 						</Col>
-						<Col>
-							<Input name="description" value={state.description} onChange={onChange} placeholder="Description" />
+						<Col span={24}>
+							<Input name='description' value={state.description} onChange={onChange} placeholder='Description' />
 						</Col>
 					</Row>
 				</Col>
 				<Col span={12}>
 					<Row gutter={[4, 4]}>
-						<Col>
+						<Col span={24}>
 							<Text>Render Type</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Select style={{ width: "100%" }} onChange={renderTypeChange} defaultValue={500}>
 								<Select.Option value={300}>Quick</Select.Option>
 								<Select.Option value={500}>HD</Select.Option>
@@ -124,36 +124,36 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 				</Col>
 				<Col span={12}>
 					<Row gutter={[4, 4]}>
-						<Col>
+						<Col span={24}>
 							<Text>Sample Count</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Input
 								ref={sampleRef}
-								type="number"
-								name="samples"
+								type='number'
+								name='samples'
 								value={state.samples}
 								onChange={onChange}
 								disabled={renderTypeSelected}
-								placeholder="Samples"
+								placeholder='Samples'
 							/>
 						</Col>
 					</Row>
 				</Col>
 				<Col span={24}>
 					<Row gutter={[4, 4]}>
-						<Col>
+						<Col span={24}>
 							<Text>Camera Type</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Select
 								style={{ width: "100%" }}
 								value={state.cameraType}
 								onChange={(value): void => onChange({ target: { name: "cameraType", value } })}
 							>
-								<Select.Option value="first">First Camera</Select.Option>
-								<Select.Option value="specific">Specific Cameras</Select.Option>
-								<Select.Option value="all">All Cameras</Select.Option>
+								<Select.Option value='first'>First Camera</Select.Option>
+								<Select.Option value='specific'>Specific Cameras</Select.Option>
+								<Select.Option value='all'>All Cameras</Select.Option>
 							</Select>
 						</Col>
 					</Row>
@@ -161,17 +161,17 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 				{state.cameraType === "specific" && (
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>
+							<Col span={24}>
 								<Text>Camera Name</Text>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Select
 									style={{ width: "100%" }}
-									mode="multiple"
+									mode='multiple'
 									tokenSeparators={[","]}
 									value={state.cameraSpecific === "" ? [] : state.cameraSpecific.split(",")}
 									onChange={(value): void => onChange({ target: { name: "cameraSpecific", value: value.join(",") } })}
-									placeholder="Camera Name"
+									placeholder='Camera Name'
 								>
 									{cameras.map(camera => {
 										return (

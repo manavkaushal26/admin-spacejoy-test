@@ -202,7 +202,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setSearchText(value.toLowerCase());
 	};
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName="Render Engine">
+		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Render Engine'>
 			<Head>
 				<title>Render Engine | {company.product}</title>
 				{IndexPageMeta}
@@ -211,24 +211,24 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
 						<Row gutter={[0, 16]}>
-							<Col>
+							<Col span={24}>
 								<PageHeader
 									style={{ paddingLeft: "0px", paddingRight: "0px" }}
 									onBack={(): void => Router.back()}
-									title="Source Details"
+									title='Source Details'
 									extra={[
 										sourceData.storage ? (
-											<Button key="create" onClick={toggleJobCreationModal} type="primary">
+											<Button key='create' onClick={toggleJobCreationModal} type='primary'>
 												Create new Job
 											</Button>
 										) : (
 											<Upload
-												accept=".blend"
+												accept='.blend'
 												fileList={uploadedFile}
 												onChange={handleFileChange}
 												action={sourceUploadFileApi(sourceData._id)}
 											>
-												<Button type="primary">
+												<Button type='primary'>
 													<UploadOutlined />
 													Click to upload
 												</Button>
@@ -238,11 +238,11 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 								/>
 							</Col>
 
-							<Col>
+							<Col span={24}>
 								<Row gutter={[8, 8]}>
-									<DetailText name="Name" value={sourceData.name} />
-									<DetailText name="Created At" value={moment(sourceData.createdAt).format("D-MMM-YYYY")} />
-									<DetailText name="Source Id" value={sourceData._id} />
+									<DetailText name='Name' value={sourceData.name} />
+									<DetailText name='Created At' value={moment(sourceData.createdAt).format("D-MMM-YYYY")} />
+									<DetailText name='Source Id' value={sourceData._id} />
 									{!!sourceData.storage && (
 										<Col sm={12} md={8} lg={6}>
 											<Row style={{ whiteSpace: "pre", flexFlow: "row" }}>
@@ -256,23 +256,25 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 									)}
 									<Col span={24}>
 										<Text strong>Description</Text>
-										<Paragraph ellipsis={{ rows: 3, expandable: true }}>{sourceData.description}</Paragraph>
+										<Paragraph ellipsis={{ rows: 3, expandable: true }}>
+											{sourceData.description || "No Description"}
+										</Paragraph>
 									</Col>
 								</Row>
 							</Col>
 							{jobs.length !== 0 && (
-								<Col>
+								<Col span={24}>
 									<Row gutter={[8, 8]}>
 										<Col span={24}>
 											<Text strong>Search</Text>
 										</Col>
 										<Col span={24}>
-											<Input name="search" placeholder="Search nbby name" onChange={handleSearch} />
+											<Input name='search' placeholder='Search nbby name' onChange={handleSearch} />
 										</Col>
 									</Row>
 								</Col>
 							)}
-							<Col>
+							<Col span={24}>
 								<Row gutter={[8, 8]}>
 									{jobs.length !== 0 && sourceData.cameras.length !== 0
 										? jobs
@@ -293,28 +295,32 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 													);
 												})
 										: !!sourceData.storage && (
-												<Result status="404" title="No Jobs" subTitle="Create a new Job to see it here" />
+												<Col span={24}>
+													<Result status='404' title='No Jobs' subTitle='Create a new Job to see it here' />
+												</Col>
 										  )}
 									{(!sourceData.storage || sourceData.cameras.length === 0) && (
-										<Row justify="space-around">
-											<Upload
-												accept=".blend"
-												fileList={uploadedFile}
-												onChange={handleFileChange}
-												action={sourceUploadFileApi(sourceData._id)}
-											>
-												<Result
-													style={{ cursor: "pointer" }}
-													status="500"
-													title="Click to upload source"
-													subTitle={
-														sourceData.cameras.length === 0
-															? "Uploaded file has no Cameras"
-															: "No file has been uploaded"
-													}
-												/>
-											</Upload>
-										</Row>
+										<Col span={24}>
+											<Row justify='space-around'>
+												<Upload
+													accept='.blend'
+													fileList={uploadedFile}
+													onChange={handleFileChange}
+													action={sourceUploadFileApi(sourceData._id)}
+												>
+													<Result
+														style={{ cursor: "pointer" }}
+														status='500'
+														title='Click to upload source'
+														subTitle={
+															sourceData.cameras.length === 0
+																? "Uploaded file has no Cameras"
+																: "No file has been uploaded"
+														}
+													/>
+												</Upload>
+											</Row>
+										</Col>
 									)}
 								</Row>
 							</Col>
@@ -357,7 +363,7 @@ SourcePage.getInitialProps = async (ctx: NextPageContext): Promise<SourcePagePro
 			throw Error();
 		}
 	} else {
-		redirectToLocation({ res, pathname: `/renderengine` });
+		redirectToLocation({ res, pathname: "/renderengine" });
 	}
 
 	return {

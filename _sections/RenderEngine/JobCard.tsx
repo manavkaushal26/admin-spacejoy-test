@@ -157,7 +157,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 					...(job.status !== RenderEngineStatus.active && job.status !== RenderEngineStatus.waiting
 						? [
 								<Popconfirm
-									title="Are you Sure?"
+									title='Are you Sure?'
 									onCancel={(e): void => {
 										e.stopPropagation();
 									}}
@@ -166,12 +166,12 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 										setProgressData(null);
 										startJob(job._id);
 									}}
-									key="render"
+									key='render'
 								>
 									<VideoCameraOutlined onClick={(e): void => e.stopPropagation()} />
 								</Popconfirm>,
 								<Popconfirm
-									title="Are you Sure?"
+									title='Are you Sure?'
 									onCancel={(e): void => {
 										e.stopPropagation();
 									}}
@@ -179,7 +179,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 										e.stopPropagation();
 										onDelete(job._id);
 									}}
-									key="delete"
+									key='delete'
 								>
 									<DeleteOutlined onClick={(e): void => e.stopPropagation()} />
 								</Popconfirm>,
@@ -188,7 +188,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 					...(job.status === RenderEngineStatus.active || job.status === RenderEngineStatus.waiting
 						? [
 								<Popconfirm
-									title="Are you Sure?"
+									title='Are you Sure?'
 									onCancel={(e): void => {
 										e.stopPropagation();
 									}}
@@ -196,7 +196,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 										e.stopPropagation();
 										cancelJob(job._id);
 									}}
-									key="delete"
+									key='delete'
 								>
 									<CloseOutlined onClick={(e): void => e.stopPropagation()} />
 								</Popconfirm>,
@@ -251,16 +251,16 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 									</Col>
 								</Row>
 							</Col>
-							<Col>
+							<Col span={24}>
 								<Progress
 									percent={job.status === RenderEngineStatus.completed ? 100 : progressData?.completion}
-									size="small"
+									size='small'
 									{...(progressStatus ? { status: progressStatus } : {})}
 								/>
 							</Col>
 
 							{job.status === RenderEngineStatus.pending || job.status === RenderEngineStatus.completed ? (
-								<Col>
+								<Col span={24}>
 									<Row gutter={[4, 4]}>
 										<Col>
 											<Text>
@@ -277,7 +277,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 								</Col>
 							) : (
 								<>
-									<Col>
+									<Col span={24}>
 										<Row gutter={[4, 4]}>
 											<Col>
 												<Text>
@@ -292,7 +292,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 											</Col>
 										</Row>
 									</Col>
-									<Col>
+									<Col span={24}>
 										<Row gutter={[4, 4]}>
 											<Col>
 												<Text>
@@ -310,7 +310,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 								</>
 							)}
 							{(job.status === RenderEngineStatus.pending || job.status === RenderEngineStatus.completed) && (
-								<Col>
+								<Col span={24}>
 									<Row gutter={[4, 4]}>
 										<Col>
 											<Text>
