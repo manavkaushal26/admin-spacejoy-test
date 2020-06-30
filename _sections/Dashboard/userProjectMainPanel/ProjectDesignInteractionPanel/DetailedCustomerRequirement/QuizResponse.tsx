@@ -3,7 +3,7 @@ import Image from "@components/Image";
 import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes/dashboardTypes";
 import { getValueSafely, stringToUrl } from "@utils/commonUtils";
 import { cloudinary } from "@utils/config";
-import { Typography, Col, Row, Button } from "antd";
+import { Col, Row, Typography } from "antd";
 import parse from "html-react-parser";
 import React from "react";
 
@@ -92,7 +92,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 										</Col>
 										<Col span={24}>
 											<Text style={{ width: "100%" }} ellipsis copyable>
-												{file.cdn}
+												{`${cloudinary.baseDeliveryURL.replace("//", "")}/image/upload/${file.cdn}`}
 											</Text>
 										</Col>
 									</Row>

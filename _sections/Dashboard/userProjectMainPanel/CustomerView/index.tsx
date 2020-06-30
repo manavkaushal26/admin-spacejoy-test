@@ -22,7 +22,6 @@ const FlatCard = styled(Card)`
 const PannellumOptions = {
 	style: {
 		width: "100%",
-		height: "300px",
 	},
 
 	config: {
@@ -32,6 +31,7 @@ const PannellumOptions = {
 		uiText: {
 			loadButtonLabel: "Start",
 		},
+		hfov: 70,
 	},
 };
 
