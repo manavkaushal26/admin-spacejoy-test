@@ -80,14 +80,14 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 					<RevisionDetails revisionData={revisionData} toggleEditRevision={toggleEditRevision} />
 				</Col>
 				<Col span={24}>
-					<Card title="Customer feedback on Designs">
+					<Card title='Customer feedback on Designs'>
 						<CommentList comments={revisionData.comments} authors={authors} />
 					</Card>
 				</Col>
 				<Col span={24}>
 					<Card
 						title={
-							<Row align="middle" gutter={[8, 8]}>
+							<Row align='middle' gutter={[8, 8]}>
 								<Col>
 									<Text strong>Products shortlisted by customer from</Text>
 								</Col>
@@ -120,7 +120,7 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 				<Col span={24}>
 					<Row gutter={[8, 16]}>
 						<Col span={24}>
-							<Text strong>Retained Products</Text>
+							<Text strong>Products Requested by Customer</Text>
 						</Col>
 						<Col span={24}>
 							<Row gutter={[8, 8]}>
@@ -139,7 +139,7 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 										);
 									})
 								) : (
-									<Empty description="No new products requested" />
+									<Empty description='No new products requested' />
 								)}
 							</Row>
 						</Col>

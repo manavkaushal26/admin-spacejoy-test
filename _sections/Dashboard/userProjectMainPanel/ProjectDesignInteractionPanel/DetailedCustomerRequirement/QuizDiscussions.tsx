@@ -35,7 +35,7 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 	return (
 		<>
 			<List
-				itemLayout="horizontal"
+				itemLayout='horizontal'
 				dataSource={quizDiscussions}
 				renderItem={(item: QuizDiscussion): JSX.Element => (
 					<li>
@@ -43,13 +43,13 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 							actions={
 								item?.images?.length !== 0
 									? [
-											<span key="view">
+											<span key='view'>
 												<Text>
 													<Button
 														onClick={(): void => openImages(item.images)}
 														style={{ padding: "0px" }}
-														size="small"
-														type="link"
+														size='small'
+														type='link'
 													>
 														<small>View Photos</small>
 													</Button>
@@ -73,9 +73,21 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 			>
 				<BiggerButtonCarousel autoplay>
 					{viewImages.map(image => (
-						<div key={image}>
-							<Image nolazy width="100%" src={image} />
-						</div>
+						<Row key={image}>
+							<Col span={24}>
+								<Image nolazy width='100%' src={image} />
+							</Col>
+							<Col span={24}>
+								<Row justify='center' gutter={[4, 4]}>
+									<Col>
+										<Text strong>Link to Image: </Text>
+									</Col>
+									<Col>
+										<Text copyable>{image}</Text>
+									</Col>
+								</Row>
+							</Col>
+						</Row>
 					))}
 				</BiggerButtonCarousel>
 			</SizeAdjustedModal>
@@ -175,32 +187,32 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
-				<Card size="small">
+				<Card size='small'>
 					<DiscussionView quizDiscussions={quizDiscussions} />
 				</Card>
 			</Col>
 			<Col span={24}>
 				<Row gutter={[8, 8]}>
 					<Col span={24}>
-						<TextArea placeholder="Enter comment" value={comment} onChange={onChange} />
+						<TextArea placeholder='Enter comment' value={comment} onChange={onChange} />
 					</Col>
 					<Col span={24}>
-						<Row justify="space-between">
+						<Row justify='space-between'>
 							<Col md={20}>
 								<Upload
 									multiple
-									className="upload-list-inline"
-									listType="picture"
+									className='upload-list-inline'
+									listType='picture'
 									fileList={fileList}
 									beforeUpload={beforeUpload}
 									onRemove={onRemove}
-									accept="image/*"
+									accept='image/*'
 								>
 									<Button>Select Images</Button>
 								</Upload>
 							</Col>
 							<Col>
-								<Button disabled={comment.length === 0} loading={loading} type="primary" onClick={handleUpload}>
+								<Button disabled={comment.length === 0} loading={loading} type='primary' onClick={handleUpload}>
 									Save
 								</Button>
 							</Col>

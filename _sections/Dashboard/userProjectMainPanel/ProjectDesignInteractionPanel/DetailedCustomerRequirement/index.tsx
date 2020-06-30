@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { QuizSectionInterface, QuizAnswerFieldType } from "@customTypes/dashboardTypes";
-import fetcher from "@utils/fetcher";
-import { notification, Row, Tabs, Col, Button, Card } from "antd";
 import { getQuizSectionsApi } from "@api/quizApi";
+import { QuizAnswerFieldType, QuizSectionInterface } from "@customTypes/dashboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
-import { UploadFile } from "antd/lib/upload/interface";
-import { VerticalPaddedDiv } from "@sections/Dashboard/styled";
-import QuizSections from "./QuizSections";
-import QuizResponse from "./QuizResponse";
+import fetcher from "@utils/fetcher";
+import { Button, Card, Col, notification, Row, Tabs } from "antd";
+import React, { useEffect, useState } from "react";
 import QuizDiscussions from "./QuizDiscussions";
+import QuizResponse from "./QuizResponse";
+import QuizSections from "./QuizSections";
 
 const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ projectId }) => {
 	const [quizResponse, setQuizResponse] = useState<QuizSectionInterface[]>([]);
@@ -110,7 +108,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 		const url = window.URL || window.webkitURL;
 		const link = url.createObjectURL(jsonBlob);
 		const a = document.createElement("a");
-		a.download = `${projectId}-quizResponse.jsode`;
+		a.download = `${projectId}-quizResponse.json`;
 		a.href = link;
 		document.body.appendChild(a);
 		a.click();
@@ -126,15 +124,15 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
-				<Row justify="end">
-					<Button type="primary" onClick={downloadCSV}>
+				<Row justify='end'>
+					<Button type='primary' onClick={downloadCSV}>
 						Download as JSON
 					</Button>
 				</Row>
 			</Col>
 			<Col span={24}>
 				<Tabs>
-					<Tabs.TabPane tab="Quiz Form" key="quizData">
+					<Tabs.TabPane tab='Quiz Form' key='quizData'>
 						{quizResponse.map(section => {
 							return (
 								<Col key={section._id} span={24}>
@@ -155,7 +153,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 							);
 						})}
 					</Tabs.TabPane>
-					<Tabs.TabPane tab="Upload Missing Quiz data" key="missingdata">
+					<Tabs.TabPane tab='Upload Missing Quiz data' key='missingdata'>
 						<QuizDiscussions projectId={projectId} />
 					</Tabs.TabPane>
 				</Tabs>

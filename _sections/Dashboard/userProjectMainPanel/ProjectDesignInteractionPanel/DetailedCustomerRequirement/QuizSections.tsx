@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { QuizSectionInterface, QuizStatus } from "@customTypes/dashboardTypes";
-import { Card, Col, Row, Button, notification, Popover, Input, Typography, Alert } from "antd";
+import { QuizAnswerFieldType, QuizSectionInterface } from "@customTypes/dashboardTypes";
+import { Card, Col, Row, Typography } from "antd";
+import React from "react";
 // import { setQuizReviewApi } from "@api/quizApi";
 // import fetcher from "@utils/fetcher";
 import QuizResponse from "./QuizResponse";
@@ -13,7 +13,7 @@ interface QuizSection {
 	quizResponse: QuizSectionInterface[];
 }
 
-const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizResponse }) => {
+const QuizSections: React.FC<QuizSection> = ({ section }) => {
 	// const [rejectMessage, setRejectMessage] = useState<string>("");
 	// const [currentQuizId, setCurrentQuizId] = useState<string>("");
 
@@ -79,14 +79,27 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 				return (
 					<Col key={_id} span={24}>
 						<Card
-							type="inner"
+							type='inner'
 							key={_id}
 							title={
-								<Row justify="space-between">
+								<Row justify='space-between'>
 									<Col>
 										<Row gutter={[8, 8]}>
-											<Col>
-												<Text strong>{`${title} ${mandatory ? "*" : ""}`}</Text>
+											<Col span={24}>
+												<Row gutter={[4, 4]}>
+													<Col>
+														<Text strong>{`${title}`}</Text>
+													</Col>
+													<Col>
+														{mandatory ? (
+															<Text strong>
+																<small>(Required)</small>
+															</Text>
+														) : (
+															""
+														)}
+													</Col>
+												</Row>
 											</Col>
 											{/* {!!quizQuestion.designerComment && (
 												<Col>
@@ -162,10 +175,12 @@ const QuizSections: React.FC<QuizSection> = ({ section, projectId, setQuizRespon
 							{hasOptions ? (
 								answer.options.map(option => {
 									return (
-										<Row gutter={[8, 8]} key={option._id}>
+										<Row gutter={[8, 8]} key={option._id} align='top'>
 											<Col>{option.label || "Answer"}: </Col>
-											<Col>
-												<QuizResponse context={context} response={option.userResponse} />
+											<Col {...(context.fieldType !== QuizAnswerFieldType.Select ? { span: 24 } : {})}>
+												<Row gutter={[16, 8]}>
+													<QuizResponse context={context} response={option.userResponse} />
+												</Row>
 											</Col>
 										</Row>
 									);

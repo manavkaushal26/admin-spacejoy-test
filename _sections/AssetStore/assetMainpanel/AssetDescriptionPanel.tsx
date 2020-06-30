@@ -174,13 +174,13 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 			<FullheightSpin spinning={loading || dataLoading}>
 				{error && (
 					<Result
-						status="500"
-						title="Error"
-						subTitle="Something went wrong"
+						status='500'
+						title='Error'
+						subTitle='Something went wrong'
 						extra={
-							<Row justify="center">
+							<Row justify='center'>
 								<Col span={24}>
-									<Button type="primary" onClick={closeDrawer}>
+									<Button type='primary' onClick={closeDrawer}>
 										Close
 									</Button>
 								</Col>
@@ -198,14 +198,14 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 					<Row gutter={[0, 10]}>
 						{pathToFile && (
 							<Col span={24}>
-								<Row justify="center" gutter={[0, 10]}>
+								<Row justify='center' gutter={[0, 10]}>
 									<Col span={24}>
 										<Row gutter={[10, 0]}>
 											<Col>
 												<CodeSandboxOutlined />
 											</Col>
 											<Col>
-												<Text type="secondary">Model</Text>
+												<Text type='secondary'>Model</Text>
 											</Col>
 										</Row>
 									</Col>
@@ -217,21 +217,21 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						)}
 
 						<Col span={24}>
-							<Row justify="center" gutter={[0, 10]}>
+							<Row justify='center' gutter={[0, 10]}>
 								<Col span={24}>
 									<Row gutter={[10, 0]}>
 										<Col>
 											<FileImageOutlined />
 										</Col>
 										<Col>
-											<Text type="secondary">Image</Text>
+											<Text type='secondary'>Image</Text>
 										</Col>
 									</Row>
 								</Col>
 								<Col>
 									<ClickDiv onClick={toggleImagePreviewModal}>
 										<Image
-											width="100%"
+											width='100%'
 											src={getValueSafely(
 												() => selectedAssetData.cdn,
 												process.env.NODE_ENV === "production"
@@ -244,7 +244,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							</Row>
 						</Col>
 						<Col span={24}>
-							<Row align="middle" justify="space-between">
+							<Row align='middle' justify='space-between'>
 								<Col>
 									<Row gutter={[10, 0]}>
 										<Col>
@@ -262,10 +262,10 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											<LinkOutlined />
 										</Col>
 										<Col>
-											<Text type="secondary">
+											<Text type='secondary'>
 												<a
-													target="_blank"
-													rel="noopener noreferrer"
+													target='_blank'
+													rel='noopener noreferrer'
 													href={getValueSafely(() => selectedAssetData.retailLink, "#")}
 												>
 													{getValueSafely(() => selectedAssetData.retailer.name, "N/A")}
@@ -276,7 +276,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								</Col>
 								<Col>
 									<Button
-										type="primary"
+										type='primary'
 										icon={<EditOutlined />}
 										onClick={(): void => {
 											editAsset(selectedAssetData);
@@ -297,7 +297,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											<AlignLeftOutlined />
 										</Col>
 										<Col>
-											<Text type="secondary">Description</Text>
+											<Text type='secondary'>Description</Text>
 										</Col>
 									</Row>
 								</Col>
@@ -317,12 +317,12 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											<DragOutlined />
 										</Col>
 										<Col>
-											<Text type="secondary">Dimensions</Text>
+											<Text type='secondary'>Dimensions</Text>
 										</Col>
 									</Row>
 								</Col>
 								<Col>
-									<Row justify="space-between" gutter={[0, 10]}>
+									<Row justify='space-between' gutter={[0, 10]}>
 										<Col>
 											<Text strong>Width: </Text>
 											<Text>
@@ -368,7 +368,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											<BookOutlined />
 										</Col>
 										<Col>
-											<Text type="secondary">Categorization</Text>
+											<Text type='secondary'>Categorization</Text>
 										</Col>
 									</Row>
 								</Col>
@@ -414,7 +414,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 											<UserOutlined />
 										</Col>
 										<Col>
-											<Text type="secondary">Metadata</Text>
+											<Text type='secondary'>Metadata</Text>
 										</Col>
 									</Row>
 								</Col>
@@ -457,8 +457,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<Row gutter={[0, 10]}>
 									{assetInMoodboard && (
 										<Col>
-											<Popconfirm title="Are you sure?" onConfirm={onRemoveClick} okText="Yes" cancelText="Cancel">
-												<Button block type="primary" danger>
+											<Popconfirm title='Are you sure?' onConfirm={onRemoveClick} okText='Yes' cancelText='Cancel'>
+												<Button block type='primary' danger>
 													Remove Asset
 												</Button>
 											</Popconfirm>
@@ -466,14 +466,14 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									)}
 									{!assetInMoodboard && assetEntryId && (
 										<Col>
-											<Button block type="primary" loading={loading} onClick={onButtonClick}>
+											<Button block type='primary' loading={loading} onClick={onButtonClick}>
 												Add as Recommendation
 											</Button>
 										</Col>
 									)}
 									{!assetEntryId && (
 										<Col>
-											<Button block type="primary" loading={loading} onClick={onButtonClick}>
+											<Button block type='primary' loading={loading} onClick={onButtonClick}>
 												{buttonText}
 											</Button>
 										</Col>

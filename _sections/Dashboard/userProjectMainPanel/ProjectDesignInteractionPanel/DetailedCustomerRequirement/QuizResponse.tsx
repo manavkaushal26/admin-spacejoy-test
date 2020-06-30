@@ -3,7 +3,7 @@ import Image from "@components/Image";
 import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes/dashboardTypes";
 import { getValueSafely, stringToUrl } from "@utils/commonUtils";
 import { cloudinary } from "@utils/config";
-import { Typography } from "antd";
+import { Typography, Col, Row, Button } from "antd";
 import parse from "html-react-parser";
 import React from "react";
 
@@ -28,21 +28,45 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 	switch (context.fieldType) {
 		case QuizAnswerFieldType.Stepper:
 			if (!select) {
-				return <Text>No Answer Provided</Text>;
+				return (
+					<Col span={24}>
+						<Text>No Answer Provided</Text>
+					</Col>
+				);
 			}
-			return <Text>{value}</Text>;
+			return (
+				<Col span={24}>
+					<Text>{value}</Text>
+				</Col>
+			);
 		case QuizAnswerFieldType.Select:
 			if (select) {
-				return <CheckSquareTwoTone twoToneColor="#52c41a" />;
+				return (
+					<Col>
+						<CheckSquareTwoTone twoToneColor='#52c41a' />
+					</Col>
+				);
 			}
-			return <CloseSquareFilled twoToneColor="#f5222d" />;
+			return (
+				<Col>
+					<CloseSquareFilled twoToneColor='#f5222d' />
+				</Col>
+			);
 		case QuizAnswerFieldType.Text:
 			if (text) {
-				return <Text>{parse(stringToUrl(text))}</Text>;
+				return (
+					<Col span={24}>
+						<Text>{parse(stringToUrl(text))}</Text>
+					</Col>
+				);
 			}
 			return <Text>No Answer Provided</Text>;
 		case QuizAnswerFieldType.Value:
-			return <Text>{value}</Text>;
+			return (
+				<Col span={24}>
+					<Text>{value}</Text>
+				</Col>
+			);
 		case QuizAnswerFieldType.Image:
 		case QuizAnswerFieldType.File: {
 			if (files.length !== 0) {
@@ -55,27 +79,41 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 								file.cdn.endsWith("png") ||
 								file.cdn.endsWith("gif");
 							return (
-								<a
-									key={file._id}
-									href={`${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`}
-									rel="noopener noreferrer"
-									target="_blank"
-								>
-									{isImage ? <Image src={file.cdn} width="150px" /> : file.cdn}
-								</a>
+								<Col {...(isImage ? { sm: 12, md: 8, lg: 6 } : {})} key={file._id}>
+									<Row justify='center' gutter={[4, 4]}>
+										<Col>
+											<a
+												href={`${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`}
+												rel='noopener noreferrer'
+												target='_blank'
+											>
+												{isImage ? <Image src={file.cdn} width='150px' /> : file.cdn}
+											</a>
+										</Col>
+										<Col span={24}>
+											<Text style={{ width: "100%" }} ellipsis copyable>
+												{file.cdn}
+											</Text>
+										</Col>
+									</Row>
+								</Col>
 							);
 						})}
 					</>
 				);
 			}
 			return (
-				<>
+				<Col>
 					<Text>No Files Uploaded</Text>
-				</>
+				</Col>
 			);
 		}
 		default:
-			return <Text>Unknown Error</Text>;
+			return (
+				<Col>
+					<Text>Unknown Error</Text>
+				</Col>
+			);
 	}
 };
 

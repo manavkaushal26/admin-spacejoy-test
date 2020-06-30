@@ -106,14 +106,38 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 					<Col span={24}>
 						<Divider>Your Shopping List</Divider>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[8, 8]}>
 							{designData.assets.map(asset => {
-								return (
-									<Col sm={12} md={8} lg={6} key={asset._id}>
-										<ProductCard hoverable={false} asset={asset?.asset} noVertical />
-									</Col>
-								);
+								if (asset.billable) {
+									return (
+										<Col sm={12} md={8} lg={6} key={asset._id}>
+											<ProductCard hoverable={false} asset={asset?.asset} noVertical />
+										</Col>
+									);
+								}
+								return <></>;
+							})}
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row>
+					<Col span={24}>
+						<Divider>Non Billable Assets (Designer&apos;s use)</Divider>
+					</Col>
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							{designData.assets.map(asset => {
+								if (!asset.billable) {
+									return (
+										<Col sm={12} md={8} lg={6} key={asset._id}>
+											<ProductCard hoverable={false} asset={asset?.asset} noVertical />
+										</Col>
+									);
+								}
+								return <></>;
 							})}
 						</Row>
 					</Col>
