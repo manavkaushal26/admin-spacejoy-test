@@ -111,7 +111,8 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 	if (
 		src.includes("storage.googleapis.com") ||
 		src.includes("api.homefuly.com") ||
-		src.includes("kakarender.s3.ap-south-1.amazonaws.com")
+		src.includes("kakarender.s3.ap-south-1.amazonaws.com") ||
+		src.includes("res.cloudinary.com")
 	) {
 		source = src;
 	} else {
