@@ -226,7 +226,7 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 					</Row>
 				</Col>
 				<Col>
-					<Button disabled={loading} onClick={toggleRearrangeList}>
+					<Button disabled={loading || designImagesList.length === 0} onClick={toggleRearrangeList}>
 						Rearrange Image order
 					</Button>
 				</Col>
