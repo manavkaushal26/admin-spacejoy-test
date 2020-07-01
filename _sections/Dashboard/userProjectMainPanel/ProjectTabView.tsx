@@ -14,16 +14,16 @@ import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab"
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, notification, PageHeader, Spin, Tabs, Popconfirm, Row, Col } from "antd";
+import { Button, Col, notification, PageHeader, Popconfirm, Row, Spin, Tabs } from "antd";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { SilentDivider } from "../styled";
 import CustomerView from "./CustomerView";
+import DesignDetails from "./DesignDetails";
 import NotesTab from "./NotesTab";
 import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
 import CustomerFeedbackTab from "./ProjectDesignInteractionPanel/CustomerFeedbackTab";
 import TeamTab from "./TeamTab";
-import DesignDetails from "./DesignDetails";
 
 const { TabPane } = Tabs;
 
@@ -115,7 +115,6 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	useEffect(() => {
 		if (designId) {
 			fetchDesignData();
-			return (): void => {};
 		}
 		setDesignData(null);
 		return (): void => {

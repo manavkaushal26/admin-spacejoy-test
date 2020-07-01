@@ -14,13 +14,14 @@ import { Status } from "@customTypes/userType";
 import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { AddOnAfterWithoutPadding, CustomDiv } from "@sections/Dashboard/styled";
-import { getValueSafely } from "@utils/commonUtils";
+import { dateFromObjectId, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Col, List, message, notification, Popconfirm, Row, Spin, Tooltip, Typography } from "antd";
+import moment from "moment";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 const ChildSpacedDiv = styled.div`
 	> * + * {
@@ -200,14 +201,14 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 				notification.open({
 					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 					message: "Successful",
-					icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 					description: "Asset Status has been updated",
 				});
 			} else {
 				notification.open({
 					key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 					message: "Error",
-					icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+					icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 					description: "There was a problem marking this asset.",
 				});
 			}
@@ -215,7 +216,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			notification.open({
 				key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
 				message: "Error",
-				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 				description: "No asset has been uploaded for this link",
 			});
 		}
@@ -237,7 +238,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 
 	return (
 		<SizeAdjustedModal
-			title="Add Missing Product"
+			title='Add Missing Product'
 			onCancel={toggleAddMissingAssetModal}
 			footer={null}
 			destroyOnClose
@@ -254,7 +255,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 					onPressEnter={addAsset}
 					value={assetUrl}
 					addonAfter={
-						<Button loading={loading} type="primary" onClick={addAsset}>
+						<Button loading={loading} type='primary' onClick={addAsset}>
 							Add
 						</Button>
 					}
@@ -268,38 +269,44 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 							const popoverOptions = whatArethePopoverOptions(asset.asset);
 							return (
 								<List.Item>
-									<Row gutter={[4, 4]} style={{ width: "100%" }} justify="space-between">
+									<Row gutter={[4, 4]} style={{ width: "100%" }} justify='space-between' align='middle'>
 										<Col span={21}>
-											<a
-												style={{ width: "100%", textOverflow: "ellipsis" }}
-												target="_blank"
-												rel="noopener noreferrer"
-												href={`${asset.externalUrl}`}
-											>
-												{asset.externalUrl}
-											</a>
+											<Row gutter={[8, 8]}>
+												<Col span={3}>{moment(dateFromObjectId(asset._id)).format("MM-DD-YYYY")}</Col>
+												<Col span={21}>
+													<Link
+														style={{ width: "100%" }}
+														href={asset.externalUrl}
+														target='_blank'
+														rel='noopener noreferrer'
+														ellipsis={true}
+													>
+														{asset.externalUrl}
+													</Link>
+												</Col>
+											</Row>
 										</Col>
 										<Col span={3}>
-											<Row justify="end">
+											<Row justify='end'>
 												{asset.modellingStatus !== Status.completed && (
 													<Col span={8}>
-														<Row align="middle" justify="center">
-															<Tooltip title="Upload Asset">
-																<UploadOutlined />
+														<Row align='middle' justify='center'>
+															<Tooltip title='Upload Asset'>
+																<UploadOutlined onClick={() => onClick(asset)} />
 															</Tooltip>
 														</Row>
 													</Col>
 												)}
 												{asset.modellingStatus === Status.completed ? (
 													<Col span={8}>
-														<Row align="middle" justify="center">
+														<Row align='middle' justify='center'>
 															<Popconfirm
-																title="Are you sure?"
+																title='Are you sure?'
 																onConfirm={(): Promise<void> =>
 																	markAssetAsComplete(asset.asset, asset._id, Status.pending)
 																}
 															>
-																<Tooltip placement="bottom" title="Mark as not complete">
+																<Tooltip placement='bottom' title='Mark as not complete'>
 																	<CloseCircleOutlined />
 																</Tooltip>
 															</Popconfirm>
@@ -307,17 +314,17 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 													</Col>
 												) : (
 													<Col span={8}>
-														<Row align="middle" justify="center">
+														<Row align='middle' justify='center'>
 															<Popconfirm
 																title={popoverOptions.title}
 																okText={popoverOptions.okText}
 																disabled={!popoverOptions.force}
-																cancelText="No, Cancel"
+																cancelText='No, Cancel'
 																onConfirm={(): Promise<void> =>
 																	markAssetAsComplete(asset.asset, asset._id, Status.completed, popoverOptions.force)
 																}
 															>
-																<Tooltip title="Mark as complete">
+																<Tooltip title='Mark as complete'>
 																	<CheckCircleOutlined
 																		{...(!popoverOptions.force
 																			? {
@@ -337,10 +344,10 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 													</Col>
 												)}
 												<Col span={8}>
-													<Row align="middle" justify="center">
-														<Tooltip title="Delete">
+													<Row align='middle' justify='center'>
+														<Tooltip title='Delete'>
 															<Popconfirm
-																title="Delete Missing Asset URL?"
+																title='Delete Missing Asset URL?'
 																onConfirm={(): Promise<void> => removeAsset(asset.externalUrl)}
 															>
 																<DeleteOutlined />
@@ -357,7 +364,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 					/>
 				</Spin>
 				<NewAssetModal
-					location="MISSING_ASSETS"
+					location='MISSING_ASSETS'
 					metadata={metaData}
 					categoryMap={categoryMap}
 					assetData={editAssetData}

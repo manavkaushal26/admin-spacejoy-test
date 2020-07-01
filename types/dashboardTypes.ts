@@ -134,6 +134,9 @@ export interface Phase {
 		internalName: PhaseInternalNames;
 		customerName: PhaseCustomerNames;
 	};
+	endTime: string;
+	startTime: string;
+	_id: string;
 }
 
 export enum DesignImgTypes {
@@ -276,7 +279,7 @@ export interface DetailedProject {
 	_id: string;
 	name: string;
 	customer: UserData;
-	currentPhase: CurrentPhase;
+	currentPhase: Phase;
 	order: Order;
 	form: FormType[];
 	completedPhases: Phase[];

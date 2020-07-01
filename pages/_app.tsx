@@ -40,6 +40,7 @@ import "antd/lib/result/style";
 import "antd/lib/upload/style";
 import "antd/lib/date-picker/style";
 import "antd/lib/input-number/style";
+import "antd/lib/timeline/style";
 
 import App from "next/app";
 import Router from "next/router";
@@ -81,7 +82,7 @@ export default class MyApp extends App {
 			<ThemeProvider theme={theme}>
 				<div className={`${loading ? "loading" : ""}`}>
 					<Component {...pageProps} />
-					<div className="loader-ring">
+					<div className='loader-ring'>
 						<StyledLoaderIcon />
 					</div>
 				</div>
