@@ -26,6 +26,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { FullheightSpin, GreyDrawer } from "../styled";
 import { isAssetInMoodboard } from "./utils";
+import AssetHistoryDrawer from "./AssetHistoryDrawer";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -87,6 +88,12 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		moodboard,
 		assetEntryId,
 	]);
+
+	const [historyOpen, setHistoryOpen] = useState(false);
+
+	const toggleHistory = () => {
+		setHistoryOpen(prevState => !prevState);
+	};
 
 	const fetchAssetData = async (): Promise<void> => {
 		setLoading(true);
@@ -322,7 +329,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									</Row>
 								</Col>
 								<Col>
-									<Row justify='space-between' gutter={[0, 10]}>
+									<Row justify='space-between' gutter={[10, 10]}>
 										<Col>
 											<Text strong>Width: </Text>
 											<Text>
@@ -361,9 +368,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
-							<Row gutter={[0, 10]}>
-								<Col>
-									<Row gutter={[10, 0]}>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<Row gutter={[8, 8]}>
 										<Col>
 											<BookOutlined />
 										</Col>
@@ -374,25 +381,25 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								</Col>
 								<Col>
 									<Row gutter={[0, 10]}>
-										<Col>
+										<Col span={24}>
 											<Text strong>Category: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => categoryMap[selectedAssetData.meta.category], "Undefined")}
 											</CapitalizedText>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Text strong>Sub-Category: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => subCategoryMap[selectedAssetData.meta.subcategory], "Undefined")}
 											</CapitalizedText>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Text strong>Vertical: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => verticalMap[selectedAssetData.meta.vertical], "Undefined")}
 											</CapitalizedText>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Text strong>Theme: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => themeIdToNameMap[selectedAssetData.meta.theme], "Undefined")}
@@ -407,26 +414,37 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						</Col>
 
 						<Col span={24}>
-							<Row gutter={[0, 10]}>
-								<Col>
-									<Row gutter={[10, 0]}>
+							<Row gutter={[0, 8]}>
+								<Col span={24}>
+									<Row gutter={[8, 0]} align='middle' justify='space-between'>
 										<Col>
-											<UserOutlined />
+											<Row gutter={[8, 0]}>
+												<Col>
+													<UserOutlined />
+												</Col>
+												<Col>
+													<Text type='secondary'>Metadata</Text>
+												</Col>
+											</Row>
 										</Col>
-										<Col>
-											<Text type='secondary'>Metadata</Text>
+										<Col flex='auto'>
+											<Row justify='end'>
+												<Button onClick={toggleHistory} type='link'>
+													See history
+												</Button>
+											</Row>
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[0, 10]}>
-										<Col>
+										<Col span={24}>
 											<Text strong>Created by: </Text>
 											<CapitalizedText>
 												{getValueSafely(() => `${selectedAssetData.artist.profile.name}`, "Undefined")}
 											</CapitalizedText>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Text strong>Created At: </Text>
 											<CapitalizedText>
 												{getValueSafely<string>(
@@ -435,7 +453,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 												)}
 											</CapitalizedText>
 										</Col>
-										<Col>
+										<Col span={24}>
 											<Text strong>Updated At: </Text>
 											<CapitalizedText>
 												{getValueSafely<string>(
@@ -493,6 +511,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 					cdn
 				/>
 			)}
+			<AssetHistoryDrawer assetId={selectedAssetId} open={historyOpen} closeModal={toggleHistory} />
 		</GreyDrawer>
 	);
 };

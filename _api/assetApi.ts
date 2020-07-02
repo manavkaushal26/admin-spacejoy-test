@@ -1,5 +1,5 @@
 export const roomMetaDataApi = (): string => {
-	return `/designs/search/public`;
+	return "/designs/search/public";
 };
 
 export const assetCreateOrUpdationApi = (assetId?: string): string => {
@@ -10,6 +10,10 @@ export const addRetailerApi = (): string => {
 	return "/retailer";
 };
 
-export const markMissingAssetAsComplete = (designId, assetId): string => {
+export const markMissingAssetAsComplete = (designId: string, assetId: string): string => {
 	return `/admin/design/${designId}/moodboard/${assetId}`;
+};
+
+export const getAssetHistoryApi = (assetId: string): string => {
+	return `/admin/assets/log/${assetId}`;
 };
