@@ -113,10 +113,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 	};
 
 	const openInNewWindow = (): void => {
-		const roomName = designData.room.roomType
-			.toLowerCase()
-			.split(" ")
-			.join("-");
+		const roomName = designData.room.roomType.toLowerCase().split(" ").join("-");
 		const url = `${company.customerPortalLink}/interior-designs/${roomName}-ideas/${designData.slug}`;
 		window.open(url, "_blank", "noopener");
 	};
@@ -131,11 +128,11 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 						</Col>
 						<Col span={24}>
 							<Input
-								name="slug"
+								name='slug'
 								disabled
 								value={designData.slug}
 								addonAfter={
-									<Tooltip placement="top" title="Open URL">
+									<Tooltip placement='top' title='Open URL'>
 										<LinkOutlined onClick={openInNewWindow} />
 									</Tooltip>
 								}
@@ -150,7 +147,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 						<Text strong>Title</Text>
 					</Col>
 					<Col span={24}>
-						<Input onChange={handleChange} placeholder="Title" value={title} name="title" />
+						<Input onChange={handleChange} placeholder='Title' value={title} name='title' />
 					</Col>
 				</Row>
 			</Col>
@@ -162,7 +159,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 					<Col span={24}>
 						<Select
 							showSearch
-							optionFilterProp="children"
+							optionFilterProp='children'
 							value={selectedTheme}
 							onChange={handleSelect}
 							style={{ width: "100%" }}
@@ -207,8 +204,8 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 							style={{ width: "100%" }}
 							value={tags}
 							onChange={(value): void => handleSelect(value, "tags")}
+							mode='tags'
 							tokenSeparators={[","]}
-							mode="tags"
 						/>
 					</Col>
 				</Row>
@@ -220,7 +217,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 						<Text strong>Designer Description</Text>
 					</Col>
 					<Col span={24}>
-						<Input.TextArea onChange={handleChange} placeholder="Description" value={description} name="description" />
+						<Input.TextArea onChange={handleChange} placeholder='Description' value={description} name='description' />
 					</Col>
 				</Row>
 			</Col>
@@ -233,9 +230,9 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 					<Col span={24}>
 						<Input.TextArea
 							onChange={handleChange}
-							placeholder="Long Description"
+							placeholder='Long Description'
 							value={longDescription}
-							name="longDescription"
+							name='longDescription'
 						/>
 					</Col>
 				</Row>
@@ -252,14 +249,14 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 							value={attributeList}
 							onChange={(value: string[]): void => handleSelect(value, "attributeList")}
 							tokenSeparators={["["]}
-							mode="tags"
+							mode='tags'
 						/>
 					</Col>
 				</Row>
 			</Col>
 			<Col span={24}>
-				<Row justify="end">
-					<Button onClick={onClickOk} type="primary" disabled={designData.status === Status.active}>
+				<Row justify='end'>
+					<Button onClick={onClickOk} type='primary' disabled={designData.status === Status.active}>
 						Save Data
 					</Button>
 				</Row>
