@@ -127,6 +127,8 @@ export interface DesignInterface {
 	state: DesignState;
 	_id?: string;
 	design: Partial<DetailedDesign>;
+	operationState?: string;
+	parent?: string;
 }
 
 export interface Phase {

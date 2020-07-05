@@ -26,7 +26,7 @@ const Footer: React.FC<{
 	return (
 		<>
 			<Button onClick={toggleModal}>Cancel</Button>
-			<Button type="primary" loading={loading} onClick={onSubmit} disabled={disabled}>
+			<Button type='primary' loading={loading} onClick={onSubmit} disabled={disabled}>
 				Submit
 			</Button>
 		</>
@@ -101,7 +101,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 	return (
 		<Modal
 			visible={copyDesignModalVisible}
-			title="Choose a design to copy"
+			title='Choose a design to copy'
 			onCancel={toggleModal}
 			footer={
 				<Footer
@@ -119,7 +119,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 					<Text>Design</Text>
 				</Col>
 				<Col>
-					<Select placeholder="Select a Design" style={{ width: "100%" }} onSelect={onSelect}>
+					<Select placeholder='Select a Design' style={{ width: "100%" }} onSelect={onSelect}>
 						<Option key={Math.random()} value={null}>
 							Select Design
 						</Option>

@@ -36,7 +36,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Projects",
 		description: "Customer Project Management",
 		url: "/dashboard",
-		icon: <ProfileTwoTone style={{ fontSize: "3rem" }} twoToneColor="#4d2aac" />,
+		icon: <ProfileTwoTone style={{ fontSize: "3rem" }} twoToneColor='#4d2aac' />,
 		color: "#4d2aac",
 		backgroundColor: "#e3ddeb",
 		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
@@ -45,7 +45,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Product Store",
 		description: "Create/Manage Products",
 		url: "/assetstore",
-		icon: <AppstoreTwoTone style={{ fontSize: "3rem" }} twoToneColor="#e66b8b" />,
+		icon: <AppstoreTwoTone style={{ fontSize: "3rem" }} twoToneColor='#e66b8b' />,
 		color: "#e66b8b",
 		backgroundColor: "#fff0f1",
 		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
@@ -54,7 +54,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Design Examples",
 		description: "Create Designs that excite you",
 		url: "/designexamples",
-		icon: <BookTwoTone style={{ fontSize: "3rem" }} twoToneColor="#1d39c4" />,
+		icon: <BookTwoTone style={{ fontSize: "3rem" }} twoToneColor='#1d39c4' />,
 		color: "#1d39c4",
 		backgroundColor: "#f0f5ff",
 		notActive: false,
@@ -64,7 +64,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Blog Platform",
 		description: "Write your heart out",
 		url: "/author",
-		icon: <EditTwoTone style={{ fontSize: "3rem" }} twoToneColor="#FA8C16" />,
+		icon: <EditTwoTone style={{ fontSize: "3rem" }} twoToneColor='#FA8C16' />,
 		color: "#FA8C16",
 		backgroundColor: "#FFF7E6",
 		notActive: false,
@@ -115,7 +115,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 	}, [authVerification]);
 
 	return (
-		<PageLayout pageName="Launchpad" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Launchpad' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Launchpad | {company.product}</title>
 				{IndexPageMeta}
@@ -138,7 +138,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 													<Card hoverable>
 														<Row gutter={[0, 12]}>
 															<Col span={24}>
-																<Row justify="center">
+																<Row justify='center'>
 																	<IconBackground color={location.backgroundColor}>{location.icon}</IconBackground>
 																</Row>
 															</Col>
@@ -150,7 +150,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 																		</Title>
 																	</Col>
 																	<Col span={24} style={{ textAlign: "center" }}>
-																		<Text type="secondary">{location.description}</Text>
+																		<Text type='secondary'>{location.description}</Text>
 																	</Col>
 																</Row>
 															</Col>

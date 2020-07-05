@@ -99,25 +99,28 @@
 
 import { cloudinary } from "@utils/config";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
+import FallbackImage from "@static/images/fallback-background.svg";
 
 function Image({ src, height, width, alt, nolazy, className, caption, scrollPosition, autoAdjust, ...props }) {
-	let source = "";
+	const [source, setSource] = useState("");
 
 	const [imgHeight, setImageHeight] = useState(height);
 	const [imgWidth, setImageWidth] = useState(width);
 
-	if (
-		src.includes("storage.googleapis.com") ||
-		src.includes("api.homefuly.com") ||
-		src.includes("kakarender.s3.ap-south-1.amazonaws.com") ||
-		src.includes("res.cloudinary.com")
-	) {
-		source = src;
-	} else {
-		source = `${cloudinary.baseDeliveryURL}/image/upload/${src}`;
-	}
+	useEffect(() => {
+		if (
+			src.includes("storage.googleapis.com") ||
+			src.includes("api.homefuly.com") ||
+			src.includes("kakarender.s3.ap-south-1.amazonaws.com") ||
+			src.includes("res.cloudinary.com")
+		) {
+			setSource(src);
+		} else {
+			setSource(`${cloudinary.baseDeliveryURL}/image/upload/${src}`);
+		}
+	}, []);
 
 	const setDimensions = e => {
 		e.persist();
@@ -133,10 +136,15 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 		}
 	};
 
+	const onError = () => {
+		setSource(FallbackImage);
+	};
+
 	const renderLazyImage = (
 		<LazyLoadImage
 			{...props}
 			src={source}
+			onError={onError}
 			alt={alt}
 			{...(autoAdjust ? { onLoad: setDimensions } : {})}
 			width={imgWidth}

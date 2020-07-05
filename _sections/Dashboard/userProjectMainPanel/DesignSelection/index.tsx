@@ -223,6 +223,15 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		setEditDesignModalVisible(false);
 	};
 
+	const designIdToNameMap = useMemo(() => {
+		if (projectData) {
+			return projectData.designs.reduce((acc, design) => {
+				return { ...acc, [design.design.id]: design.design.name };
+			}, {});
+		}
+		return {};
+	}, [projectData]);
+
 	const onOkClickInCopyDesignModal = async (data): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${designCopyApi(designToBeCopied._id)}?designScope=portfolio`;
@@ -239,7 +248,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	return (
 		<Row gutter={[0, 16]}>
 			<Col span={24}>
-				<Row align="stretch" gutter={[8, 8]}>
+				<Row align='stretch' gutter={[8, 8]}>
 					{projectData.designs.map(design => {
 						const feedback = projectData.feedback.filter(designFeedback => {
 							if (design) return designFeedback.reference === design.design._id;
@@ -284,6 +293,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								onDelete={confirmDelete}
 								designName={design.design.name}
 								state={design.state}
+								parentDesign={getValueSafely(() => designIdToNameMap[design.parent], undefined)}
 								revisionDesignId={revisionDesign}
 								phase={getHumanizedActivePhase(design.design.phases)}
 							/>
@@ -291,12 +301,12 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					})}
 					<Col xs={24} sm={12} md={8} lg={8} xl={6} onClick={toggleCopyDesignModal}>
 						<HoverCard>
-							<Row style={{ height: "100%" }} justify="center" align="middle">
+							<Row style={{ height: "100%" }} justify='center' align='middle'>
 								<Col span={24}>
-									<Row justify="center" align="middle">
+									<Row justify='center' align='middle'>
 										<FileAddOutlined style={{ fontSize: "3rem" }} />
 									</Row>
-									<Row style={{ padding: "15px" }} justify="center" align="middle">
+									<Row style={{ padding: "15px" }} justify='center' align='middle'>
 										<Text>{cardText}</Text>
 									</Row>
 								</Col>
@@ -308,23 +318,23 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			<Col span={24}>
 				<Row gutter={[8, 8]}>
 					<Col sm={12} md={8}>
-						<Row justify="center">
+						<Row justify='center'>
 							<Button
 								onClick={onSubmit}
 								disabled={
 									numberOfActiveProjects < numberOfDesigns ||
 									projectData.currentPhase.name.internalName === PhaseInternalNames.designReady
 								}
-								type="primary"
+								type='primary'
 							>
 								Submit Project
 							</Button>
 						</Row>
 					</Col>
 					<Col sm={12} md={8}>
-						<Row justify="center">
+						<Row justify='center'>
 							<Popconfirm
-								title="Are you sure?"
+								title='Are you sure?'
 								onConfirm={sendToRevision}
 								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
 							>
@@ -335,7 +345,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 						</Row>
 					</Col>
 					<Col sm={12} md={8}>
-						<Row justify="center">
+						<Row justify='center'>
 							<CyanButton
 								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
 								onClick={warnUser}
@@ -349,7 +359,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			<Col span={24}>
 				{(numberOfActiveProjects !== numberOfDesigns ||
 					projectData.currentPhase.name.internalName === PhaseInternalNames.designReady) && (
-					<Row justify="center">
+					<Row justify='center'>
 						<Text>
 							Submit Disabled? The project is either already marked complete or the required number designs are not yet
 							ready.
@@ -359,7 +369,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			</Col>
 			<Col span={24}>
 				{(userRole === Role.Admin || userRole === Role.Owner) && (
-					<Row justify="center">
+					<Row justify='center'>
 						<Select onChange={onStatusChange} style={{ width: 200 }} defaultValue={projectData.status}>
 							{Object.keys(Status).map(key => {
 								return (

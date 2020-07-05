@@ -20,6 +20,7 @@ interface DesignCardProps {
 	feedbackPresent?: boolean;
 	revisionDesignId?: string;
 	onCopyAsDesignExampleClick?: (data: string) => void;
+	parentDesign?: string;
 }
 
 const topRightTick = css`
@@ -72,6 +73,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	onCopyAsDesignExampleClick,
 	role,
 	revisionDesignId,
+	parentDesign,
 }) => {
 	const [actions, setActions] = useState<ReactNode[]>([]);
 
@@ -81,7 +83,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 		if (onDelete) {
 			listOfActions.push(
 				<DeleteOutlined
-					key="delete"
+					key='delete'
 					onClick={(e): void => {
 						e.stopPropagation();
 						onDelete(uniqueId);
@@ -92,7 +94,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 		if (onCopyAsDesignExampleClick && CopyDesignAsDesignExampleRoles.includes(role)) {
 			listOfActions.push(
 				<CopyOutlined
-					key="copy"
+					key='copy'
 					onClick={(e): void => {
 						e.stopPropagation();
 						onCopyAsDesignExampleClick(uniqueId);
@@ -134,7 +136,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 							<BiggerButtonCarousel autoplay>
 								{coverImage.map(image => (
 									<div key={image._id}>
-										<Image nolazy width="100%" src={`q_80,w_300/${image.cdn}`} />
+										<Image nolazy width='100%' src={`q_80,w_300/${image.cdn}`} />
 									</div>
 								))}
 							</BiggerButtonCarousel>
@@ -148,22 +150,33 @@ const DesignCard: React.FC<DesignCardProps> = ({
 							{designName}
 						</Text>
 					</Col>
-					<Col span={12}>
-						<Tag>Phase: {phase}</Tag>
+					<Col>
+						<Tag>
+							<Text strong>Phase:</Text> {phase}
+						</Tag>
 					</Col>
 					{feedbackPresent && (
-						<Col span={12}>
-							<Tag color="orange">Feedback</Tag>
+						<Col>
+							<Tag color='orange'>Feedback</Tag>
 						</Col>
 					)}
 					{creatorRole && (
-						<Col span={12}>
-							<Tag color="blue">Owner: {creatorRole}</Tag>
+						<Col>
+							<Tag color='blue'>
+								<Text strong>Owner:</Text> {creatorRole}
+							</Tag>
 						</Col>
 					)}
 					{revisionDesignId === uniqueId && (
-						<Col span={12}>
-							<Tag color="red">Revision</Tag>
+						<Col>
+							<Tag color='red'>Revision</Tag>
+						</Col>
+					)}
+					{parentDesign && (
+						<Col>
+							<Tag>
+								<Text strong>Parent:</Text> {parentDesign}
+							</Tag>
 						</Col>
 					)}
 				</Row>
