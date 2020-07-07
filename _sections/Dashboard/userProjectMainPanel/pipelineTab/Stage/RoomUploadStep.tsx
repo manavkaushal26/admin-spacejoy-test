@@ -30,6 +30,7 @@ interface Stage {
 	designData: DetailedDesign;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 	projectId: string;
+	updateDesignState: (currentStage, status: Status | "reset", e: any) => Promise<void>;
 }
 
 const radioStyle = {
@@ -39,7 +40,7 @@ const radioStyle = {
 	margin: "5px 0px",
 };
 
-const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId }) => {
+const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId, updateDesignState }) => {
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [roomName, setRoomName] = useState<string>(null);
@@ -163,14 +164,26 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 		}
 	}, [designData.room]);
 
-	const assetModelling = getValueSafely(() => designData.phases.modelling.assetModelling, Status.pending);
+	const assetModelling = useMemo(
+		() => getValueSafely(() => designData.phases.modelling.assetModelling, Status.pending),
+		[designData.phases]
+	);
 
-	const roomModelling = getValueSafely(() => designData.phases.modelling.roomModelling, Status.pending);
+	const roomModelling = useMemo(() => getValueSafely(() => designData.phases.modelling.roomModelling, Status.pending), [
+		designData.phases,
+	]);
 
-	const markSubtaskComplete = async (e, status: Status): Promise<void> => {
-		const {
-			target: { name },
-		} = e;
+	useEffect(() => {
+		if (
+			assetModelling === Status.completed &&
+			roomModelling === Status.completed &&
+			designData.phases.modelling.status !== Status.completed
+		) {
+			updateDesignState(DesignPhases.modelling, designData.phases.modelling.status, undefined);
+		}
+	}, [assetModelling, roomModelling]);
+
+	const markSubtaskComplete = async (name, status: Status): Promise<void> => {
 		notification.open({
 			key: name,
 			message: "Please Wait",
@@ -404,18 +417,16 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 										block
 										status={assetModelling}
 										disabled={assetModelling === Status.completed}
-										name='assetModelling'
 										type='primary'
 										icon={assetModelling === Status.completed ? <CheckOutlined /> : null}
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
+										onClick={(): Promise<void> => markSubtaskComplete("assetModelling", Status.completed)}
 									>
 										{assetModelling === Status.completed ? "Completed" : "Mark as Complete"}
 									</StatusButton>
 								</Col>
 								<Col span={12}>
 									<Button
-										name='assetModelling'
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
+										onClick={(): Promise<void> => markSubtaskComplete("assetModelling", Status.pending)}
 										block
 										disabled={assetModelling !== Status.completed}
 										danger
@@ -433,18 +444,16 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId 
 										block
 										status={roomModelling}
 										disabled={roomModelling === Status.completed}
-										name='roomModelling'
 										icon={roomModelling === Status.completed ? <CheckOutlined /> : null}
 										type='primary'
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
+										onClick={(): Promise<void> => markSubtaskComplete("roomModelling", Status.completed)}
 									>
 										{roomModelling === Status.completed ? "Completed" : "Mark as Complete"}
 									</StatusButton>
 								</Col>
 								<Col span={12}>
 									<Button
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
-										name='roomModelling'
+										onClick={(): Promise<void> => markSubtaskComplete("roomModelling", Status.pending)}
 										disabled={roomModelling !== Status.completed}
 										danger
 										block

@@ -24,9 +24,14 @@ const { Text } = Typography;
 interface MoodboardAndFloorPlanStep {
 	designData: DetailedDesign;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	updateDesignState: (currentStage, status: Status | "reset", e: any) => Promise<void>;
 }
 
-const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ designData, setDesignData }) => {
+const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
+	designData,
+	setDesignData,
+	updateDesignState,
+}) => {
 	const [floorPlanList, setFloorPlanList] = useState<UploadFile<any>[]>([]);
 	const [preview, setPreview] = useState({
 		previewImage: "",
@@ -103,10 +108,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 	const floorPlanUploadEndpoint = useMemo(() => uploadRenderImages(designData._id, "floorplan"), [designData._id]);
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
-	const markSubtaskComplete = async (e, status: Status): Promise<void> => {
-		const {
-			target: { name },
-		} = e;
+	const markSubtaskComplete = async (name, status: Status): Promise<void> => {
 		notification.open({
 			key: name,
 			message: "Please Wait",
@@ -134,7 +136,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 				notification.open({
 					key: name,
 					message: "Successful",
-					icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 					description: "Status is successfully updated",
 				});
 			} else {
@@ -144,15 +146,31 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 			notification.open({
 				key: name,
 				message: "Error",
-				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 				description: error.message,
 			});
 		}
 	};
 
-	const floorPlanStatus = getValueSafely(() => designData.phases.concept.floorplanCreation, Status.pending);
+	const floorPlanStatus = useMemo(
+		() => getValueSafely(() => designData.phases.concept.floorplanCreation, Status.pending),
+		[designData.phases]
+	);
 
-	const moodboardStatus = getValueSafely(() => designData.phases.concept.moodboardCreation, Status.pending);
+	const moodboardStatus = useMemo(
+		() => getValueSafely(() => designData.phases.concept.moodboardCreation, Status.pending),
+		[designData.phases]
+	);
+
+	useEffect(() => {
+		if (
+			floorPlanStatus === Status.completed &&
+			moodboardStatus === Status.completed &&
+			designData.phases.concept.status !== Status.completed
+		) {
+			updateDesignState(DesignPhases.concept, designData.phases.concept.status, undefined);
+		}
+	}, [floorPlanStatus, moodboardStatus]);
 
 	return (
 		<StepDiv>
@@ -182,15 +200,15 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 							<Upload
 								multiple
 								supportServerRender
-								name="files"
+								name='files'
 								fileList={floorPlanList}
-								listType="picture-card"
+								listType='picture-card'
 								onPreview={handlePreview}
 								action={floorPlanUploadEndpoint}
 								onRemove={confirmDelete}
 								onChange={handleOnFileUploadChange}
 								headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-								accept="image/*"
+								accept='image/*'
 							>
 								<Button>
 									<UploadOutlined />
@@ -202,7 +220,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 					<ImageDisplayModal
 						previewImage={preview.previewImage}
 						previewVisible={preview.previewVisible}
-						altText="floorplan"
+						altText='floorplan'
 						handleCancel={handleCancel}
 					/>
 				</Col>
@@ -214,10 +232,10 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 								<Col span={12}>
 									<StatusButton
 										block
-										type="primary"
-										name="floorplanCreation"
+										type='primary'
+										name='floorplanCreation'
 										status={floorPlanStatus}
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
+										onClick={(): Promise<void> => markSubtaskComplete("floorplanCreation", Status.completed)}
 										disabled={floorPlanStatus === Status.completed}
 										icon={<CheckOutlined />}
 									>
@@ -228,8 +246,8 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 								<Col span={12}>
 									<Button
 										block
-										name="floorplanCreation"
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
+										name='floorplanCreation'
+										onClick={(): Promise<void> => markSubtaskComplete("floorplanCreation", Status.pending)}
 										disabled={floorPlanStatus !== Status.completed}
 										danger
 									>
@@ -244,20 +262,20 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({ design
 								<Col span={12}>
 									<StatusButton
 										block
-										name="moodboardCreation"
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.completed)}
+										name='moodboardCreation'
+										onClick={(): Promise<void> => markSubtaskComplete("moodboardCreation", Status.completed)}
 										status={moodboardStatus}
 										disabled={moodboardStatus === Status.completed}
 										icon={<CheckOutlined />}
-										type="primary"
+										type='primary'
 									>
 										{moodboardStatus === Status.completed ? "Completed" : "Mark as Complete"}
 									</StatusButton>
 								</Col>
 								<Col span={12}>
 									<Button
-										onClick={(e): Promise<void> => markSubtaskComplete(e, Status.pending)}
-										name="moodboardCreation"
+										onClick={(): Promise<void> => markSubtaskComplete("moodboardCreation", Status.pending)}
+										name='moodboardCreation'
 										danger
 										disabled={moodboardStatus !== Status.completed}
 										block

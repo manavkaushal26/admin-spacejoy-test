@@ -113,8 +113,8 @@ export default function PipelineTab({
 		[DesignPhases.ready]: getValueSafely(() => phaseData.ready.status, Status.pending),
 	};
 
-	const updateDesignState = async (currentStage, status: Status | "reset", e): Promise<void> => {
-		e.stopPropagation();
+	const updateDesignState = async (currentStage, status: Status | "reset", e = undefined): Promise<void> => {
+		if (e) e.stopPropagation();
 		setUpdationPhase(currentStage);
 		const endpoint = updateDesignPhase(designData._id);
 		let updatedStatus: Status;
@@ -218,6 +218,7 @@ export default function PipelineTab({
 									designData={designData}
 									setDesignData={setDesignData}
 									stage={stage}
+									updateDesignState={updateDesignState}
 								/>
 							)}
 						</div>
