@@ -1,17 +1,19 @@
-import { Col, Input, Modal, Row, Select, Typography } from "antd";
+import { Col, Input, Modal, Row, Select, Typography, Button, Checkbox } from "antd";
 import React, { useEffect, useRef, useState } from "react";
+import { SilentDivider } from "@sections/Dashboard/styled";
 
 const { Text } = Typography;
 
 interface CreateNewJob {
 	isOpen: boolean;
 	closeModal: () => void;
-	createJob: (state: Record<string, string | number>) => void;
+	createJob: (state: Record<string, string | number>, separateJobs: boolean) => void;
 	loading: boolean;
 	cameras: string[];
+	refreshSource: () => Promise<void>;
 }
 
-const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, loading, cameras }) => {
+const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, loading, cameras, refreshSource }) => {
 	const [state, setState] = useState({
 		name: "",
 		description: "",
@@ -19,6 +21,8 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 		cameraType: "all",
 		cameraSpecific: "",
 	});
+
+	const [separateJobs, setSeparateJobs] = useState<boolean>(false);
 
 	const [renderTypeSelected, setRenderTypeSelected] = useState(true);
 
@@ -57,6 +61,14 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 		}));
 	};
 	const sampleRef = useRef();
+
+	const setJobsAsSeparate = changeEvent => {
+		const {
+			target: { checked },
+		} = changeEvent;
+		setSeparateJobs(checked);
+	};
+
 	const renderTypeChange = (value: number): void => {
 		setState(prevState => ({
 			...prevState,
@@ -84,7 +96,7 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 				disabled: createButtonDisabled,
 				loading,
 			}}
-			onOk={(): void => createJob(state)}
+			onOk={(): void => createJob(state, separateJobs)}
 		>
 			<Row gutter={[8, 8]}>
 				<Col span={24}>
@@ -158,6 +170,18 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 						</Col>
 					</Row>
 				</Col>
+				{(state.cameraType === "all" || state.cameraType === "specific") && (
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							<Col>
+								<Checkbox checked={separateJobs} onChange={changedState => setJobsAsSeparate(changedState)} />
+							</Col>
+							<Col>
+								<Text>Create separate jobs for each camera</Text>
+							</Col>
+						</Row>
+					</Col>
+				)}
 				{state.cameraType === "specific" && (
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
@@ -172,6 +196,21 @@ const CreateNewJob: React.FC<CreateNewJob> = ({ isOpen, closeModal, createJob, l
 									value={state.cameraSpecific === "" ? [] : state.cameraSpecific.split(",")}
 									onChange={(value): void => onChange({ target: { name: "cameraSpecific", value: value.join(",") } })}
 									placeholder='Camera Name'
+									dropdownRender={menu => (
+										<>
+											<Row>
+												<Col span={24}>{menu}</Col>
+												<Col span={24}>
+													<SilentDivider />
+												</Col>
+												<Col span={24}>
+													<Button block type='link' onClick={refreshSource}>
+														Refresh Camera List
+													</Button>
+												</Col>
+											</Row>
+										</>
+									)}
 								>
 									{cameras.map(camera => {
 										return (

@@ -56,6 +56,7 @@ export interface DetailedJob extends AllJobs {
 	options: {
 		cameraType: string;
 		samples: number;
+		cameraSpecific?: string;
 	};
 	process: {
 		cloud: string;

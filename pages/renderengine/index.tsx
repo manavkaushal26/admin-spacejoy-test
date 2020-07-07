@@ -196,6 +196,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 																			e.stopPropagation();
 																			handleImageClick(renders);
 																		}}
+																		height='157.47px'
 																		nolazy
 																		width='100%'
 																		src={renders[0]}
@@ -207,7 +208,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 														<Card.Meta
 															title={source.name}
 															description={
-																<Row style={{ flexFlow: "row", whiteSpace: "pre", overflow: "hidden" }} gutter={[4, 4]}>
+																<Row gutter={[4, 4]}>
 																	<Col span={24}>
 																		<Text strong>Created at: </Text>
 																		<Text> {moment(source.createdAt).format("D-MMM-YYYY")}</Text>

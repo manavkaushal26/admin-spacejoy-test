@@ -26,23 +26,23 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ phase, size = 14, days }): JS
 	if (completedPhases.includes(phase)) {
 		return (
 			<Col span={24}>
-				<Row justify="center">
-					<Progress percent={100} type="circle" width={30} />
+				<Row justify='center'>
+					<Progress percent={100} type='circle' width={30} />
 				</Row>
 			</Col>
 		);
 	}
 	return (
-		<Row justify="center" gutter={[0, 0]} style={getTextColor(days)}>
+		<Row justify='center' gutter={[0, 0]} style={getTextColor(days)}>
 			<Col span={24}>
-				<Row justify="center">
+				<Row justify='center'>
 					<Text strong style={{ ...getTextColor(days), fontSize: `${size}px` }}>
 						{Math.abs(days)}
 					</Text>
 				</Row>
 			</Col>
 			<Col span={24}>
-				<Row justify="center">
+				<Row justify='center'>
 					<Text style={{ ...getTextColor(days), fontSize: `${smallSize}px` }}>
 						<small>
 							<small>

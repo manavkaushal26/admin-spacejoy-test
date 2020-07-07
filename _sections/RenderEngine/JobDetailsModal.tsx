@@ -54,7 +54,10 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 					<DetailText name='GPU' value={jobDetails?.process?.gpu} />
 					<DetailText name='Cloud' value={jobDetails?.process?.cloud} />
 					<DetailText name='Created At' value={moment(jobDetails?.createdAt).format("DD-MM-YYYY hh:mm a")} />
-
+					<DetailText name='Camera Type' value={jobDetails?.options?.cameraType} />
+					{jobDetails?.options?.cameraType === "specific" && (
+						<DetailText name='Camera Name' value={jobDetails?.options?.cameraSpecific} />
+					)}
 					{jobDetails?.renders.length !== 0 && (
 						<Col span={24}>
 							<Row gutter={[8, 8]}>

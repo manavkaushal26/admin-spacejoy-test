@@ -276,7 +276,11 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 												<Col span={21}>
 													<Link
 														style={{ width: "100%" }}
-														href={asset.externalUrl}
+														href={
+															asset.externalUrl.includes("res.cloudinary") && !asset.externalUrl.startsWith("//")
+																? `//${asset.externalUrl}`
+																: asset.externalUrl
+														}
 														target='_blank'
 														rel='noopener noreferrer'
 														ellipsis={true}

@@ -30,7 +30,7 @@ import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useState } from "react";
 import io from "socket.io-client";
 
-const { Text, Paragraph } = Typography;
+const { Text, Paragraph, Link } = Typography;
 
 interface SourcePageProps {
 	isServer: boolean;
@@ -81,6 +81,16 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		fetchJobs();
 	}, []);
 
+	const refreshSource = async (): Promise<void> => {
+		const endPoint = getSingleSource(fetchedSourceData._id);
+		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
+		if (!response.err) {
+			setSourceData(response.data);
+		} else {
+			throw Error();
+		}
+	};
+
 	const toggleJobDetails = (job?: AllJobs): void => {
 		if (job) {
 			setJobId(job._id);
@@ -89,35 +99,85 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		}
 	};
 
-	const createJob = async (state: Record<string, string | number>): Promise<void> => {
+	const createJob = async (state: Record<string, string | number>, separateJobs): Promise<void> => {
 		setLoading(true);
+		const { cameraSpecific } = state as { cameraSpecific: string };
 		const endPoint = createJobApi(sourceData._id);
+		if (separateJobs) {
+			let data = [];
+			if (state.cameraType === "all") {
+				data = sourceData.cameras.map(camera => {
+					return {
+						name: `${state.name}-${camera}`,
+						description: state.description,
+						options: {
+							samples: state.samples,
+							cameraType: "specific",
+							cameraSpecific: [camera].join(","),
+						},
+					};
+				});
+			} else {
+				data = cameraSpecific.split(",").map(camera => ({
+					name: `${state.name}-${camera}`,
+					description: state.description,
+					options: {
+						samples: state.samples,
+						cameraType: state.cameraType,
+						cameraSpecific: camera,
+					},
+				}));
+			}
 
-		const data = {
-			name: state.name,
-			description: state.description,
-			options: {
-				samples: state.samples,
-				cameraType: state.cameraType,
-				...(state.cameraType === "specific" ? { cameraSpecific: state.cameraSpecific } : {}),
-			},
-		};
-
-		const response = await fetcher({
-			endPoint,
-			method: "POST",
-			body: {
-				data,
-			},
-			hasBaseURL: true,
-		});
-		if (!response.err) {
-			notification.success({ message: "Created Job Successfully" });
-			// console.log("Create Job Resoponse", response.data);
-			setJobs(prevState => [response.data, ...prevState]);
-			toggleJobCreationModal();
+			const requests = data.map(bodyData => {
+				return new Promise<any>(resolve => {
+					fetcher({
+						endPoint,
+						method: "POST",
+						body: {
+							data: bodyData,
+						},
+						hasBaseURL: true,
+					}).then(data => resolve(data));
+				});
+			});
+			const responses = await Promise.all(requests);
+			responses.map(response => {
+				if (!response.err) {
+					notification.success({ message: `Created ${response.data.options.cameraSpecific} Job Successfully` });
+					// console.log("Create Job Response", response.data);
+					setJobs(prevState => [response.data, ...prevState]);
+				} else {
+					notification.error({ message: "Failed to create Job" });
+				}
+			});
 		} else {
-			notification.error({ message: "Failed to create Job" });
+			const data = {
+				name: state.name,
+				description: state.description,
+				options: {
+					samples: state.samples,
+					cameraType: state.cameraType,
+					...(state.cameraType === "specific" ? { cameraSpecific: state.cameraSpecific } : {}),
+				},
+			};
+
+			const response = await fetcher({
+				endPoint,
+				method: "POST",
+				body: {
+					data,
+				},
+				hasBaseURL: true,
+			});
+			if (!response.err) {
+				notification.success({ message: "Created Job Successfully" });
+				// console.log("Create Job Response", response.data);
+				setJobs(prevState => [response.data, ...prevState]);
+				toggleJobCreationModal();
+			} else {
+				notification.error({ message: "Failed to create Job" });
+			}
 		}
 		setLoading(false);
 	};
@@ -242,7 +302,14 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 								<Row gutter={[8, 8]}>
 									<DetailText name='Name' value={sourceData.name} />
 									<DetailText name='Created At' value={moment(sourceData.createdAt).format("D-MMM-YYYY")} />
-									<DetailText name='Source Id' value={sourceData._id} />
+									<DetailText
+										name='Source Id'
+										value={
+											<Link target='_blank' href={`${sourceData.storage.url}`}>
+												{sourceData._id}
+											</Link>
+										}
+									/>
 									{!!sourceData.storage && (
 										<Col sm={12} md={8} lg={6}>
 											<Row style={{ whiteSpace: "pre", flexFlow: "row" }}>
@@ -327,6 +394,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 						</Row>
 					</LoudPaddingDiv>
 					<CreateNewJob
+						refreshSource={refreshSource}
 						createJob={createJob}
 						isOpen={jobCreationModalVisible}
 						closeModal={toggleJobCreationModal}

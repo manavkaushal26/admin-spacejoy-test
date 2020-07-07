@@ -92,7 +92,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 										</Col>
 										<Col span={24}>
 											<Text style={{ width: "100%" }} ellipsis copyable>
-												{`${cloudinary.baseDeliveryURL.replace("//", "")}/image/upload/${file.cdn}`}
+												{`${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`}
 											</Text>
 										</Col>
 									</Row>
