@@ -1,5 +1,5 @@
 export const getAllSources = (): string => {
-	return `https://krmasternode.spacejoy.com/api/v1/sources?status=active`;
+	return "https://krmasternode.spacejoy.com/api/v1/sources?status=active";
 };
 
 export const getSingleSource = (sourceId: string): string => {
@@ -15,7 +15,7 @@ export const getSingleJobs = (sourceId: string, jobId: string): string => {
 };
 
 export const createSourceApi = (): string => {
-	return `https://krmasternode.spacejoy.com/api/v1/source`;
+	return "https://krmasternode.spacejoy.com/api/v1/source";
 };
 
 export const createJobApi = (sourceId: string): string => {
@@ -28,4 +28,8 @@ export const sourceUploadFileApi = (sourceId: string): string => {
 
 export const startRenderJob = (sourceId: string, jobId: string): string => {
 	return `https://krmasternode.spacejoy.com/api/v1/source/${sourceId}/job/${jobId}/process`;
+};
+
+export const getSourceCount = (): string => {
+	return "https://krmasternode.spacejoy.com/api/v1/sources/count";
 };

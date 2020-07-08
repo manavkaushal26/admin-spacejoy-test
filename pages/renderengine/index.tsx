@@ -1,5 +1,5 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { createSourceApi, getAllSources, getSingleSource } from "@api/renderEngineApi";
+import { createSourceApi, getAllSources, getSingleSource, getSourceCount } from "@api/renderEngineApi";
 import Image from "@components/Image";
 import ImageSlideshowModal from "@components/ImageSlideshowModal";
 import { AllSources } from "@customTypes/renderEngineTypes";
@@ -42,10 +42,10 @@ interface RenderEngineProps {
 const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification }) => {
 	const [sources, setSources] = useState<AllSources[]>([]);
 	const [pageNumber, setPageNumber] = useState(1);
-	const [countPerPage, setCountPerPage] = useState(40);
+	const [countPerPage, setCountPerPage] = useState(24);
 	const [loading, setLoading] = useState(false);
 	const [createSourceModalVisible, setCreateSourceModalVisible] = useState<boolean>(false);
-
+	const [total, setTotal] = useState<number>(0);
 	const [previewVisible, setPreviewVisible] = useState<boolean>(false);
 	const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -79,8 +79,31 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 		setCountPerPage(size);
 	};
 
+	const fetchSourceCount = async (): Promise<void> => {
+		setLoading(true);
+
+		const endPoint = getSourceCount();
+
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: "GET",
+				hasBaseURL: true,
+			});
+			if (!response.err) {
+				setTotal(response.data);
+			} else {
+				notification.error({ message: "Failed to fetch source count" });
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to fetch source count" });
+		}
+
+		setLoading(false);
+	};
 	useEffect(() => {
 		fetchSources();
+		fetchSourceCount();
 	}, [pageNumber, countPerPage]);
 
 	const redirectToSource = (srcId): void => {
@@ -232,16 +255,18 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 								</Row>
 							</Col>
 							<Col span={24}>
-								<Pagination
-									current={pageNumber}
-									total={sources.length}
-									onChange={setPageNumber}
-									hideOnSinglePage
-									pageSize={countPerPage}
-									showSizeChanger
-									pageSizeOptions={["10", "20", "30", "40"]}
-									onShowSizeChange={onPageSizeChange}
-								/>
+								<Row justify='center'>
+									<Pagination
+										current={pageNumber}
+										total={total}
+										onChange={setPageNumber}
+										hideOnSinglePage
+										pageSize={countPerPage}
+										showSizeChanger
+										pageSizeOptions={["12", "24", "36", "48"]}
+										onShowSizeChange={onPageSizeChange}
+									/>
+								</Row>
 							</Col>
 						</Row>
 					</LoudPaddingDiv>

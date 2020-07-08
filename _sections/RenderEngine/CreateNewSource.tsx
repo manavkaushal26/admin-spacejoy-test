@@ -26,8 +26,8 @@ const CreateNewSource: React.FC<CreateNewSource> = ({ onCreate, isOpen, toggleMo
 
 	return (
 		<Modal
-			title="Create New Source"
-			okText="Create"
+			title='Create New Source'
+			okText='Create'
 			okButtonProps={{
 				loading,
 				disabled: state.name === "",
@@ -37,19 +37,19 @@ const CreateNewSource: React.FC<CreateNewSource> = ({ onCreate, isOpen, toggleMo
 			onCancel={toggleModal}
 		>
 			<Row>
-				<Col>
+				<Col span={24}>
 					<Row>
-						<Col>Name</Col>
-						<Col>
-							<Input name="name" onChange={onChange} />
+						<Col span={24}>Name</Col>
+						<Col span={24}>
+							<Input name='name' onChange={onChange} />
 						</Col>
 					</Row>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Row>
-						<Col>Description</Col>
-						<Col>
-							<Input.TextArea name="description" onChange={onChange} />
+						<Col span={24}>Description</Col>
+						<Col span={24}>
+							<Input.TextArea name='description' onChange={onChange} />
 						</Col>
 					</Row>
 				</Col>
