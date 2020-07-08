@@ -302,21 +302,21 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 								<Row gutter={[8, 8]}>
 									<DetailText name='Name' value={sourceData.name} />
 									<DetailText name='Created At' value={moment(sourceData.createdAt).format("D-MMM-YYYY")} />
-									<DetailText
-										name='Source Id'
-										value={
-											<Link target='_blank' href={`${sourceData.storage.url}`}>
-												{sourceData._id}
-											</Link>
-										}
-									/>
+									<DetailText name='Source Id' value={sourceData._id} />
 									{!!sourceData.storage && (
 										<Col sm={12} md={8} lg={6}>
 											<Row style={{ whiteSpace: "pre", flexFlow: "row" }}>
 												<Text strong>File uploaded: </Text>
 
 												<Text ellipsis>
-													{getValueSafely(() => sourceData.storage.key.split("/").pop(), "No file uploaded")}
+													{getValueSafely(
+														() => (
+															<Link target='_blank' href={`${sourceData.storage.url}`}>
+																{sourceData.storage.key.split("/").pop()}
+															</Link>
+														),
+														<>No file uploaded</>
+													)}
 												</Text>
 											</Row>
 										</Col>
