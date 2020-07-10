@@ -13,8 +13,9 @@ import { Button, Col, notification, Row, Table, Typography } from "antd";
 import moment from "moment";
 import { NextPage } from "next";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { LoudPaddingDiv } from ".";
+import Form from "antd/lib/form/Form";
 
 const { Title } = Typography;
 
@@ -30,6 +31,7 @@ const CouponManager: NextPage<{
 	const [loading, setLoading] = useState<boolean>(false);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(10);
+
 	const fetchAndPopulateCoupons = async (): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${getAllCoupons(false)}?limit=${limit}&skip=${(pageNumber - 1) * limit}`;
@@ -55,23 +57,35 @@ const CouponManager: NextPage<{
 		fetchAndPopulateCoupons();
 	}, [limit, pageNumber]);
 
-	const onCouponValueChange = (newValue: BasicCoupon) => {
-		setCoupons(
-			coupons.map(coupon => {
-				if (coupon._id === newValue._id) {
-					return newValue;
-				}
-				return coupon;
-			})
-		);
+	const toggleCreateEditCoupon = (): void => {
+		setCreateEditCouponVisible(prevState => {
+			if (prevState) setSelectedCoupon(null);
+			return !prevState;
+		});
 	};
 
-	const toggleCreateEditCoupon = (): void => {
-		setCreateEditCouponVisible(prevState => !prevState);
+	const onEditClick = couponData => {
+		setSelectedCoupon(couponData);
+		toggleCreateEditCoupon();
+	};
+
+	const onCouponValueChange = (newValue: BasicCoupon, isNewCoupon) => {
+		if (isNewCoupon) {
+			setCoupons([newValue, ...coupons]);
+		} else {
+			setCoupons(
+				coupons.map(coupon => {
+					if (coupon._id === newValue._id) {
+						return newValue;
+					}
+					return coupon;
+				})
+			);
+		}
 	};
 
 	return (
-		<PageLayout pageName="Coupon Manager" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Coupon Manager' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Coupon Manager | {company.product}</title>
 				{IndexPageMeta}
@@ -79,11 +93,19 @@ const CouponManager: NextPage<{
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
 					<Row>
-						<Title>Coupon Manager</Title>
-
-						<Col>
+						<Col span={24}>
+							<Row justify='space-between' onClick={toggleCreateEditCoupon}>
+								<Col>
+									<Title>Coupon Manager</Title>
+								</Col>
+								<Col>
+									<Button type='primary'>Create New Coupon</Button>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
 							<Table
-								size="middle"
+								size='middle'
 								loading={loading}
 								rowKey={(record): string => record._id}
 								dataSource={coupons}
@@ -100,61 +122,67 @@ const CouponManager: NextPage<{
 								}}
 								scroll={{ x: 1024 }}
 							>
-								<Table.Column title="Title" dataIndex="title" key="title" />
-								<Table.Column title="Code" dataIndex="code" key="code" />
+								<Table.Column title='Title' dataIndex='title' key='title' />
+								<Table.Column title='Code' dataIndex='code' key='code' />
 								<Table.Column
-									title="Amount"
-									dataIndex="amount"
-									key="amount"
+									title='Amount'
+									dataIndex='amount'
+									key='amount'
 									render={(_text, record: BasicCoupon): string => {
 										return record.isPercent ? `${record.amount} %` : `$ ${record.amount}}`;
 									}}
 								/>
 								<Table.Column
-									title="Start Date"
-									dataIndex="startTime"
-									key="startTime"
+									title='Start Date'
+									dataIndex='startTime'
+									key='startTime'
 									render={(_text): string => {
 										return moment(_text).format("MM-DD-YYYY");
 									}}
 								/>
 								<Table.Column
-									title="End Date"
-									dataIndex="endTime"
-									key="endTime"
+									title='End Date'
+									dataIndex='endTime'
+									key='endTime'
 									render={(text): string => {
 										return moment(text).format("MM-DD-YYYY");
 									}}
 								/>
 								<Table.Column
-									title="Status"
-									dataIndex="status"
-									key="status"
+									title='Status'
+									dataIndex='status'
+									key='status'
 									render={(text): JSX.Element => {
 										return <CapitalizedText>{text}</CapitalizedText>;
 									}}
 								/>
 								<Table.Column
-									title="Category"
-									dataIndex="category"
-									key="category"
+									title='Category'
+									dataIndex='category'
+									key='category'
 									render={(text): JSX.Element => {
 										return <CapitalizedText>{text}</CapitalizedText>;
 									}}
 								/>
 								<Table.Column
-									title="Actions"
-									key="actions"
-									fixed="right"
-									width="300"
-									render={(): JSX.Element => {
+									title='Actions'
+									key='actions'
+									fixed='right'
+									width='300'
+									render={(_text, record): JSX.Element => {
 										return (
-											<>
-												<Button type="link">Edit</Button>
-												<Button style={{ color: "red" }} type="link">
-													Delete
-												</Button>
-											</>
+											<Row>
+												<Col>
+													<Button type='link' onClick={() => onEditClick(record)}>
+														Edit
+													</Button>
+												</Col>
+												<Col>
+													<Button style={{ color: "red" }} type='link'>
+														Delete
+													</Button>
+												</Col>
+											</Row>
 										);
 									}}
 								/>

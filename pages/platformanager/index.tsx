@@ -44,7 +44,7 @@ const MetaCards = [
 	{
 		name: "Coupon Manager",
 		description: "Manage Coupons",
-		action: "notComplete",
+		action: "redirect",
 		to: "/platformanager/couponmanager",
 		url: "/platformanager/couponmanager",
 		query: {},
@@ -74,7 +74,7 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 	};
 
 	return (
-		<PageLayout pageName="Platform Manager" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Platform Manager' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Platform Manager | {company.product}</title>
 				{IndexPageMeta}
@@ -89,7 +89,7 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 							<Row gutter={[8, 0]}>
 								<Col span={24}>Search</Col>
 								<Col span={24}>
-									<Input placeholder="Name of meta" value={searchText} name="search" onChange={onSearchChange} />
+									<Input placeholder='Name of meta' value={searchText} name='search' onChange={onSearchChange} />
 								</Col>
 							</Row>
 						</Col>
@@ -102,7 +102,7 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 									return (
 										<Col key={name} sm={12} md={8} lg={6}>
 											<Card hoverable onClick={(): void => onClick(metaCard)}>
-												<Row justify="center">
+												<Row justify='center'>
 													<Col span={24} style={{ textAlign: "center" }}>
 														<Title level={3}>{name}</Title>
 													</Col>
