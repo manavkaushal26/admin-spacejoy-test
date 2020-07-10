@@ -4,6 +4,7 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	UploadOutlined,
+	PlusOutlined,
 } from "@ant-design/icons";
 import { assetCreateOrUpdationApi } from "@api/assetApi";
 import { uploadAssetImageApi, uploadAssetModelApi } from "@api/designApi";
@@ -48,12 +49,6 @@ interface NewAssetModal {
 	setAssetData?: React.Dispatch<React.SetStateAction<AssetType>>;
 	onOkComplete?: (data: Partial<AssetType>, missingAssetId?: string, status?: Status) => Promise<void>;
 	location?: "MISSING_ASSETS";
-}
-
-interface RoomTypeMeta {
-	_id: string;
-	name: string;
-	label: string;
 }
 
 const formatDimensionsForSending: (
@@ -223,7 +218,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					fileUrls: {
 						glb: getValueSafely(() => assetData.spatialData.fileUrls.glb, ""),
 						source: getValueSafely(() => assetData.spatialData.fileUrls.source, ""),
-						// eslint-disable-next-line @typescript-eslint/camelcase
 						legacy_obj: getValueSafely(() => assetData.spatialData.fileUrls.legacy_obj, ""),
 						sourceHighPoly: getValueSafely(() => assetData.spatialData.fileUrls.sourceHighPoly, ""),
 					},
@@ -272,14 +266,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		const dimensionsToSend = formatDimensionsForSending(state.dimension, dimensionInInches);
 
 		const requestBody = {
-			name: state.name.trim(),
-			description: state.description.trim(),
-			status: state.status || Status.pending,
-			shoppable: state.shoppable,
-			retailer: state.retailer,
-			retailLink: state.retailLink,
-			primaryColor: state.primaryColor,
-			secondaryColors: state.secondaryColors,
+			"name": state.name.trim(),
+			"description": state.description.trim(),
+			"status": state.status || Status.pending,
+			"shoppable": state.shoppable,
+			"retailer": state.retailer,
+			"retailLink": state.retailLink,
+			"primaryColor": state.primaryColor,
+			"secondaryColors": state.secondaryColors,
 			"meta.category": state.meta.category,
 			"meta.subcategory": state.meta.subcategory,
 			"meta.vertical": state.meta.vertical,
@@ -289,12 +283,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			"dimension.width": dimensionsToSend.width,
 			"dimension.height": dimensionsToSend.height,
 			"dimension.depth": dimensionsToSend.depth,
-			price: state.price,
-			currency: state.currency,
-			imageUrl: state.imageUrl,
-			cdn: state.cdn,
-			tags: state.tags,
-			artist: state.artist,
+			"price": state.price,
+			"currency": state.currency,
+			"imageUrl": state.imageUrl,
+			"cdn": state.cdn,
+			"tags": state.tags,
+			"artist": state.artist,
 		};
 		try {
 			const response = await fetcher({
@@ -312,7 +306,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension, dimensionInInches);
 				}
 				if (onOkComplete && !state._id) {
-					onOkComplete({ _id: responseAssetData._id }, null, Status.pending);
+					onOkComplete({ _id: responseAssetData._id }, null, responseAssetData.status);
 				}
 				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: responseAssetData });
 
@@ -524,14 +518,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			notification.open({
 				key: "saveStatus",
 				message: "Successful",
-				icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+				icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 				description: "Status is successfully updated",
 			});
 		} else {
 			notification.open({
 				key: "saveStatus",
 				message: "Error",
-				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 				description: "Please try saving asset manually",
 			});
 		}
@@ -671,10 +665,10 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					<Col span={24}>
 						<Title level={4}>Product Info</Title>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<SilentDivider />
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col span={24}>
 								<Text>Product Name</Text>
@@ -686,12 +680,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									onChange={handleChange}
 									name={NEW_ASSET_ACTION_TYPES.ASSET_NAME}
 									value={state.name}
-									placeholder="Product Name"
+									placeholder='Product Name'
 								/>
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col span={24}>
 								<Text>Description</Text>
@@ -703,12 +697,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									onChange={handleChange}
 									name={NEW_ASSET_ACTION_TYPES.ASSET_DESCRIPTION}
 									value={state.description}
-									placeholder="Description"
+									placeholder='Description'
 								/>
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[8, 8]}>
 							<Col span={12}>
 								<Row gutter={[0, 4]}>
@@ -719,8 +713,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										<Input
 											ref={assetPrice}
 											required
-											type="number"
-											placeholder="Price"
+											type='number'
+											placeholder='Price'
 											onChange={handleChange}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_PRICE}
 											value={state.price}
@@ -750,24 +744,24 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									</Col>
 									<Col span={24}>
 										<Select
-											placeholder="Select Retailer"
+											placeholder='Select Retailer'
 											ref={assetRetailer}
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_RETAILER)}
 											value={state.retailer}
 											dropdownRender={(menu): JSX.Element => (
 												<Row gutter={[0, 4]}>
-													<Col>{menu}</Col>
-													<Col>
+													<Col span={24}>{menu}</Col>
+													<Col span={24}>
 														<SilentDivider />
 													</Col>
-													<Col>
+													<Col span={24}>
 														<Button
 															onMouseDown={(e): void => e.preventDefault()}
 															onClick={toggleAddRetailerModal}
 															block
-															type="ghost"
-															size="large"
-															icon="plus"
+															type='link'
+															size='large'
+															icon={<PlusOutlined />}
 														>
 															Add Retailer
 														</Button>
@@ -775,7 +769,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 												</Row>
 											)}
 											showSearch
-											optionFilterProp="children"
+											optionFilterProp='children'
 											style={{ width: "100%" }}
 										>
 											{retailers.map(retailer => (
@@ -793,19 +787,19 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									required
 									onChange={handleChange}
 									value={state.retailLink}
-									type="url"
+									type='url'
 									addonAfter={
-										<Tooltip placement="top" title="Open URL">
+										<Tooltip placement='top' title='Open URL'>
 											<LinkOutlined onClick={openInNewWindow} />
 										</Tooltip>
 									}
-									placeholder="Link to product"
+									placeholder='Link to product'
 									name={NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK}
 								/>
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[4, 4]}>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
@@ -816,8 +810,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_CATEGORY)}
 											value={state.meta.category}
 											showSearch
-											optionFilterProp="children"
-											placeholder="Select A Category"
+											optionFilterProp='children'
+											placeholder='Select A Category'
 											style={{ width: "100%" }}
 										>
 											{categoryMap.map(category => (
@@ -839,8 +833,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											disabled={!state.meta.category}
 											value={state.meta.subcategory}
 											showSearch
-											optionFilterProp="children"
-											placeholder="Select A Sub Category"
+											optionFilterProp='children'
+											placeholder='Select A Sub Category'
 											style={{ width: "100%" }}
 										>
 											{!!state.meta.category &&
@@ -865,8 +859,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											disabled={!state.meta.subcategory}
 											value={state.meta.vertical}
 											showSearch
-											optionFilterProp="children"
-											placeholder="Select A Vertical"
+											optionFilterProp='children'
+											placeholder='Select A Vertical'
 											style={{ width: "100%" }}
 										>
 											{!!state.meta.subcategory &&
@@ -884,7 +878,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[8, 0]}>
 							<Col span={12}>
 								<Row gutter={[4, 4]}>
@@ -897,8 +891,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_THEME)}
 											value={state.meta.theme}
 											showSearch
-											optionFilterProp="children"
-											placeholder="Select a Theme"
+											optionFilterProp='children'
+											placeholder='Select a Theme'
 											style={{ width: "100%" }}
 										>
 											{themes.map(theme => (
@@ -920,8 +914,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_STATUS)}
 											value={state.status}
 											showSearch
-											optionFilterProp="children"
-											placeholder="Select a Status"
+											optionFilterProp='children'
+											placeholder='Select a Status'
 											style={{ width: "100%" }}
 										>
 											{Object.keys(AssetStatus).map(key => (
@@ -935,13 +929,13 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[4, 8]}>
 							<Col span={12}>
 								<Row>
 									<Col span={24}>
 										<Row>
-											<Col>Is the Item Shoppable?</Col>
+											<Col span={24}>Is the Item Shoppable?</Col>
 										</Row>
 									</Col>
 									<Col span={24}>
@@ -963,12 +957,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									</Col>
 									<Col span={24}>
 										<Select
-											mode="tags"
+											mode='tags'
 											tokenSeparators={[",", " "]}
 											open={false}
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_TAGS)}
 											value={state.tags}
-											placeholder="Tag products"
+											placeholder='Tag products'
 											style={{ width: "100%" }}
 										/>
 									</Col>
@@ -981,28 +975,28 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 					<Col span={24}>
 						<Title level={4}>3D Properties</Title>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<SilentDivider />
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>Dimensions in Inches?</Col>
-							<Col>
+							<Col span={24}>Dimensions in Inches?</Col>
+							<Col span={24}>
 								<Switch
 									onChange={onSwitchChange}
 									checked={dimensionInInches}
-									checkedChildren="Yes"
-									unCheckedChildren="No"
+									checkedChildren='Yes'
+									unCheckedChildren='No'
 								/>
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[4, 4]}>
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
 									<Col span={24}>Width({dimensionText})</Col>
-									<Col>
+									<Col span={24}>
 										<Input
 											ref={assetWidth}
 											required
@@ -1010,7 +1004,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											value={state.dimension.width}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_WIDTH}
 											placeholder={`Width(${dimensionText})`}
-											type="number"
+											type='number'
 										/>
 									</Col>
 								</Row>
@@ -1018,7 +1012,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
 									<Col span={24}>Height({dimensionText})</Col>
-									<Col>
+									<Col span={24}>
 										<Input
 											ref={assetHeight}
 											required
@@ -1026,7 +1020,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											value={state.dimension.height}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_HEIGHT}
 											placeholder={`Height(${dimensionText})`}
-											type="number"
+											type='number'
 										/>
 									</Col>
 								</Row>
@@ -1034,7 +1028,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							<Col span={8}>
 								<Row gutter={[4, 4]}>
 									<Col span={24}>Depth({dimensionText})</Col>
-									<Col>
+									<Col span={24}>
 										<Input
 											ref={assetDepth}
 											required
@@ -1042,14 +1036,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											value={state.dimension.depth}
 											name={NEW_ASSET_ACTION_TYPES.ASSET_DEPTH}
 											placeholder={`Depth(${dimensionText})`}
-											type="number"
+											type='number'
 										/>
 									</Col>
 								</Row>
 							</Col>
 						</Row>
 					</Col>
-					<Col>
+					<Col span={24}>
 						<Row gutter={[8, 0]}>
 							<Col span={12}>
 								<Row gutter={[4, 4]}>
@@ -1060,10 +1054,10 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										<Select
 											ref={assetMountType}
 											showSearch
-											optionFilterProp="children"
+											optionFilterProp='children'
 											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE)}
 											value={state.spatialData.mountType}
-											placeholder="Select a Mount Type"
+											placeholder='Select a Mount Type'
 											style={{ width: "100%" }}
 										>
 											{Object.keys(MountTypes).map(key => (
@@ -1078,12 +1072,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						</Row>
 					</Col>
 
-					<Col>
+					<Col span={24}>
 						<Row gutter={[4, 4]}>
 							<Col span={12}>
 								<Row>
-									<Col>Interacts with other Objects?</Col>
-									<Col>
+									<Col span={24}>Interacts with other Objects?</Col>
+									<Col span={24}>
 										<small>e.g. Rugs do not interact with other objects</small>
 									</Col>
 								</Row>
@@ -1100,137 +1094,138 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							</Col>
 						</Row>
 					</Col>
+					{!!state._id && (
+						<Col lg={24}>
+							<Col span={24}>
+								<Title level={4}>File Upload</Title>
+							</Col>
+							<Col span={24}>
+								<SilentDivider />
+							</Col>
+							<Col span={24}>
+								<Row gutter={[8, 12]}>
+									<Col span={24}>
+										<Text strong>Upload Product File</Text>
+									</Col>
+									<Col lg={8}>
+										<Row gutter={[8, 8]}>
+											<Col span={8}>Type</Col>
+											<Col span={16}>
+												<Select style={{ width: "100%" }} value={model3dFiles} onSelect={onSelect}>
+													{Object.keys(Model3DFiles).map(key => {
+														return (
+															<Option key={key} value={Model3DFiles[key]}>
+																{key}
+															</Option>
+														);
+													})}
+												</Select>
+											</Col>
+										</Row>
+									</Col>
+									<Col lg={16}>
+										<Upload
+											beforeUpload={(info): boolean => checkFileExtension("model", info)}
+											supportServerRender
+											name='file'
+											fileList={assetFile}
+											action={uploadModelEndpoint}
+											onRemove={(): false => false}
+											onChange={(info): Promise<void> => handleOnFileUploadChange("model", info)}
+											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+											accept={ModelToExtensionMap[model3dFiles]}
+										>
+											<Button>
+												<UploadOutlined />
+												Click to Upload
+											</Button>
+										</Upload>
+									</Col>
+								</Row>
+								<Row gutter={[0, 12]}>
+									<Col span={24}>
+										<Text strong>Upload Low/Medium Poly File</Text>
+									</Col>
+									<Col lg={12}>
+										<Upload
+											beforeUpload={(info): boolean => checkFileExtension("source", info)}
+											supportServerRender
+											name='file'
+											fileList={sourceFileList}
+											action={uploadModelSourceEndpoint}
+											onRemove={(): false => false}
+											onChange={(info): Promise<void> => handleOnFileUploadChange("source", info)}
+											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+											accept='.blend'
+										>
+											<Button>
+												<UploadOutlined />
+												Click to Upload
+											</Button>
+										</Upload>
+									</Col>
+								</Row>
+								<Row gutter={[0, 12]}>
+									<Col span={24}>
+										<Text strong>Upload High Poly File(Optional)</Text>
+									</Col>
+									<Col lg={12}>
+										<Upload
+											beforeUpload={(info): boolean => checkFileExtension("source", info)}
+											supportServerRender
+											name='file'
+											fileList={sourceHighPolyFileList}
+											action={uploadModelHighPolySouceEndpoint}
+											onRemove={(): false => false}
+											onChange={(info): Promise<void> => handleOnFileUploadChange("sourceHighPoly", info)}
+											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+											accept='.blend'
+										>
+											<Button>
+												<UploadOutlined />
+												Click to Upload
+											</Button>
+										</Upload>
+									</Col>
+								</Row>
+								<Row gutter={[0, 12]}>
+									<Col span={24}>
+										<Text strong>Upload Product Image</Text>
+									</Col>
+									<Col span={24}>
+										<Upload
+											supportServerRender
+											name='image'
+											fileList={imageFile}
+											listType='picture-card'
+											onPreview={handlePreview}
+											action={uploadAssetImageEndpoint}
+											onRemove={(): false => false}
+											onChange={(info): Promise<void> => handleOnFileUploadChange("image", info)}
+											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+											accept='image/*'
+										>
+											<Button>
+												<UploadOutlined />
+												Click to Upload
+											</Button>
+										</Upload>
+									</Col>
+								</Row>
+							</Col>
+						</Col>
+					)}
 				</Col>
-				{!!state._id && (
-					<Col lg={12}>
-						<Col span={24}>
-							<Title level={4}>File Upload</Title>
-						</Col>
-						<Col>
-							<SilentDivider />
-						</Col>
-						<Col>
-							<Row gutter={[8, 12]}>
-								<Col span={24}>
-									<Text strong>Upload Product File</Text>
-								</Col>
-								<Col lg={8}>
-									<Row gutter={[8, 8]}>
-										<Col span={8}>Type</Col>
-										<Col span={16}>
-											<Select style={{ width: "100%" }} value={model3dFiles} onSelect={onSelect}>
-												{Object.keys(Model3DFiles).map(key => {
-													return (
-														<Option key={key} value={Model3DFiles[key]}>
-															{key}
-														</Option>
-													);
-												})}
-											</Select>
-										</Col>
-									</Row>
-								</Col>
-								<Col lg={16}>
-									<Upload
-										beforeUpload={(info): boolean => checkFileExtension("model", info)}
-										supportServerRender
-										name="file"
-										fileList={assetFile}
-										action={uploadModelEndpoint}
-										onRemove={(): false => false}
-										onChange={(info): Promise<void> => handleOnFileUploadChange("model", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept={ModelToExtensionMap[model3dFiles]}
-									>
-										<Button>
-											<UploadOutlined />
-											Click to Upload
-										</Button>
-									</Upload>
-								</Col>
-							</Row>
-							<Row gutter={[0, 12]}>
-								<Col span={24}>
-									<Text strong>Upload Low/Medium Poly File</Text>
-								</Col>
-								<Col lg={12}>
-									<Upload
-										beforeUpload={(info): boolean => checkFileExtension("source", info)}
-										supportServerRender
-										name="file"
-										fileList={sourceFileList}
-										action={uploadModelSourceEndpoint}
-										onRemove={(): false => false}
-										onChange={(info): Promise<void> => handleOnFileUploadChange("source", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept=".blend"
-									>
-										<Button>
-											<UploadOutlined />
-											Click to Upload
-										</Button>
-									</Upload>
-								</Col>
-							</Row>
-							<Row gutter={[0, 12]}>
-								<Col span={24}>
-									<Text strong>Upload High Poly File(Optional)</Text>
-								</Col>
-								<Col lg={12}>
-									<Upload
-										beforeUpload={(info): boolean => checkFileExtension("source", info)}
-										supportServerRender
-										name="file"
-										fileList={sourceHighPolyFileList}
-										action={uploadModelHighPolySouceEndpoint}
-										onRemove={(): false => false}
-										onChange={(info): Promise<void> => handleOnFileUploadChange("sourceHighPoly", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept=".blend"
-									>
-										<Button>
-											<UploadOutlined />
-											Click to Upload
-										</Button>
-									</Upload>
-								</Col>
-							</Row>
-							<Row gutter={[0, 12]}>
-								<Col span={24}>
-									<Text strong>Upload Product Image</Text>
-								</Col>
-								<Col span={24}>
-									<Upload
-										supportServerRender
-										name="image"
-										fileList={imageFile}
-										listType="picture-card"
-										onPreview={handlePreview}
-										action={uploadAssetImageEndpoint}
-										onRemove={(): false => false}
-										onChange={(info): Promise<void> => handleOnFileUploadChange("image", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										accept="image/*"
-									>
-										<Button>
-											<UploadOutlined />
-											Click to Upload
-										</Button>
-									</Upload>
-								</Col>
-							</Row>
-						</Col>
-					</Col>
-				)}
+
 				<Col span={24}>
-					<Row gutter={[8, 0]} justify="end">
+					<Row gutter={[8, 0]} justify='end'>
 						<Col>
 							<Button onClick={toggleNewAssetModal}>Cancel</Button>
 						</Col>
 						<Col>
 							<Button
 								disabled={submitButtonDisabled || !modifiedForm}
-								type="primary"
+								type='primary'
 								onClick={(): void => {
 									saveAsset();
 								}}
@@ -1245,7 +1240,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				handleCancel={handleCancel}
 				previewImage={preview.previewImage}
 				previewVisible={preview.previewVisible}
-				altText="previewImages"
+				altText='previewImages'
 			/>
 			<AddRetailerModal
 				metadata={metadata}

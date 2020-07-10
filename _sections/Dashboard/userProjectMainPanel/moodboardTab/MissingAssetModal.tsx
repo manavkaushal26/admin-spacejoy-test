@@ -175,6 +175,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		status?: Status,
 		force?: boolean
 	): Promise<void> => {
+		console.log("Fired", createdAsset);
 		const _id = getValueSafely(() => createdAsset._id, "");
 		notification.open({
 			key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
@@ -184,7 +185,9 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		});
 
 		const endPoint = markMissingAssetAsComplete(designId, missingAssetId || editAssetId);
-		if (_id !== "" || force || status === Status.pending) {
+		if (_id !== "" || force) {
+			console.log("Fired 1");
+
 			setEditAsseId(null);
 			const response = await fetcher({
 				endPoint,
@@ -305,7 +308,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 													<Col span={8}>
 														<Row align='middle' justify='center'>
 															<Popconfirm
-																title='Are you sure?'
+																title='Are you sure you want to mark product as incomplete?'
 																onConfirm={(): Promise<void> =>
 																	markAssetAsComplete(asset.asset, asset._id, Status.pending)
 																}

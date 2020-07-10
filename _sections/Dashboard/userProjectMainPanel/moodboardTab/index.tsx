@@ -52,17 +52,17 @@ const MoodboardTab: (props: MoodboardTabProps) => JSX.Element = ({ designId, pro
 			return moodboard.filter(assetEntry => !assetEntry.isExistingAsset);
 		}
 		return [];
-	}, moodboard);
+	}, [moodboard]);
 
 	return (
-		<Row gutter={[8, 8]} justify="space-between">
+		<Row gutter={[8, 8]} justify='space-between'>
 			<Col span={12}>
-				<Button block type="primary" onClick={goToStore}>
+				<Button block type='primary' onClick={goToStore}>
 					Open Asset Store
 				</Button>
 			</Col>
 			<Col span={12}>
-				<Button block type="default" onClick={toggleAddMissingAssetModal}>
+				<Button block type='default' onClick={toggleAddMissingAssetModal}>
 					Manage Missing assets ({missingAssets.length})
 				</Button>
 			</Col>

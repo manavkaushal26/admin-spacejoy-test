@@ -298,7 +298,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						</Col>
 						<Col span={24}>
 							<Row gutter={[0, 10]}>
-								<Col>
+								<Col span={24}>
 									<Row gutter={[10, 0]}>
 										<Col>
 											<AlignLeftOutlined />
@@ -308,7 +308,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										</Col>
 									</Row>
 								</Col>
-								<Col>
+								<Col span={24}>
 									<Text>{getValueSafely(() => selectedAssetData.description, "No Description provided")}</Text>
 								</Col>
 							</Row>
