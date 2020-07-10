@@ -175,7 +175,6 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		status?: Status,
 		force?: boolean
 	): Promise<void> => {
-		console.log("Fired", createdAsset);
 		const _id = getValueSafely(() => createdAsset._id, "");
 		notification.open({
 			key: MARK_AS_COMPLETE_NOTIFICATION_KEY,
@@ -186,8 +185,6 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 
 		const endPoint = markMissingAssetAsComplete(designId, missingAssetId || editAssetId);
 		if (_id !== "" || force) {
-			console.log("Fired 1");
-
 			setEditAsseId(null);
 			const response = await fetcher({
 				endPoint,
@@ -270,6 +267,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 						dataSource={missingAssets}
 						renderItem={(asset): JSX.Element => {
 							const popoverOptions = whatArethePopoverOptions(asset.asset);
+
 							return (
 								<List.Item>
 									<Row gutter={[4, 4]} style={{ width: "100%" }} justify='space-between' align='middle'>
@@ -280,7 +278,9 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 													<Link
 														style={{ width: "100%" }}
 														href={
-															asset.externalUrl.includes("res.cloudinary") && !asset.externalUrl.startsWith("//")
+															asset.externalUrl.includes("res.cloudinary") &&
+															!asset.externalUrl.startsWith("//") &&
+															!asset.externalUrl.startsWith("http")
 																? `//${asset.externalUrl}`
 																: asset.externalUrl
 														}
