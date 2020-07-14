@@ -16,7 +16,7 @@ import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { AddOnAfterWithoutPadding, CustomDiv } from "@sections/Dashboard/styled";
 import { dateFromObjectId, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, List, message, notification, Popconfirm, Row, Spin, Tooltip, Typography } from "antd";
+import { Button, Col, List, notification, Popconfirm, Row, Spin, Tooltip, Typography, Badge } from "antd";
 import moment from "moment";
 import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -137,7 +137,12 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 			if (response.statusCode <= 300) {
 				setMoodboard(response.data.moodboard);
 				setAssetUrl("");
-				message.success("Product URL added successfully");
+				notification.success({
+					message: "Successfully added URL",
+					description:
+						"Please make sure that the link contains details regarding product such as Dimensions, Color, etc. If not Please add the info by clicking the upload Icon next to the URL",
+					duration: 12000,
+				});
 			}
 			setLoading(false);
 		}
@@ -158,7 +163,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		});
 		if (response.statusCode <= 300) {
 			setMoodboard(response.data.moodboard);
-			message.success("Product URL deleted successfully");
+			notification.success({ message: "Product URL deleted successfully" });
 		}
 		setDeleteLoading(false);
 	};
@@ -296,13 +301,15 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 										<Col span={3}>
 											<Row justify='end'>
 												{asset.modellingStatus !== Status.completed && (
-													<Col span={8}>
-														<Row align='middle' justify='center'>
-															<Tooltip title='Upload Asset'>
-																<UploadOutlined onClick={() => onClick(asset)} />
-															</Tooltip>
-														</Row>
-													</Col>
+													<Badge dot>
+														<Col span={8}>
+															<Row align='middle' justify='center'>
+																<Tooltip title='Upload Asset'>
+																	<UploadOutlined onClick={() => onClick(asset)} />
+																</Tooltip>
+															</Row>
+														</Col>
+													</Badge>
 												)}
 												{asset.modellingStatus === Status.completed ? (
 													<Col span={8}>
