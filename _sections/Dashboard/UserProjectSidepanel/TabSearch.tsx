@@ -19,7 +19,11 @@ const { Option } = Select;
 
 const dateFormat = "MM-DD-YYYY";
 
-const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element => {
+const TabSearch: React.FC<{
+	setState: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
+	state: UserProjectSidePanelState;
+	onSearchSubmit: () => void;
+}> = ({ setState: updateState, state: initialState, onSearchSubmit }): JSX.Element => {
 	const [state, setState] = useState<UserProjectSidePanelState>(UserProjectSidePanelInitialState);
 	const [selectedSort, setSelectedSort] = useState(SortOptions["Created At - Newest First"]);
 	const [minMax, setMinMax] = useState<number[]>([]);
@@ -41,7 +45,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 				...state,
 				endedAt: [copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null, state.endedAt[1]],
 			});
-			setMinMax((prevState) => {
+			setMinMax(prevState => {
 				const newState = [...prevState];
 				newState[0] = copyValue;
 				return newState;
@@ -63,7 +67,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 				endedAt: [state.endedAt[0], copyValue || copyValue === 0 ? currentTime.add(copyValue, "days") : null],
 			});
 
-			setMinMax((prevState) => {
+			setMinMax(prevState => {
 				const newState = [...prevState];
 				newState[1] = copyValue;
 				return newState;
@@ -90,7 +94,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 		const url = window.URL || window.webkitURL;
 		const link = url.createObjectURL(jsonBlob);
 		const a = document.createElement("a");
-		a.download = `preset-data.json`;
+		a.download = "preset-data.json";
 		a.href = link;
 		document.body.appendChild(a);
 		a.click();
@@ -139,9 +143,9 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
-				<Row justify="space-between">
+				<Row justify='space-between'>
 					<Col>
-						<Button size="small" type="primary" onClick={downloadCSV}>
+						<Button size='small' type='primary' onClick={downloadCSV}>
 							<small>Download as JSON</small>
 						</Button>
 					</Col>
@@ -152,7 +156,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 								setMinMax([]);
 								setSelectedSort(SortOptions["Created At - Newest First"]);
 							}}
-							type="link"
+							type='link'
 						>
 							<small>Reset Filters</small>
 						</SilentButton>
@@ -176,7 +180,8 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 										} = e;
 										handleSearch(value, "customer");
 									}}
-									placeholder="Customer Name"
+									onPressEnter={onSearchSubmit}
+									placeholder='Customer Name'
 									allowClear
 									prefix={<SearchOutlined />}
 								/>
@@ -199,7 +204,8 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 										} = e;
 										handleSearch(value, "designer");
 									}}
-									placeholder="Designer Name"
+									onPressEnter={onSearchSubmit}
+									placeholder='Designer Name'
 									allowClear
 									prefix={<SearchOutlined />}
 								/>
@@ -218,8 +224,8 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									defaultValue={null}
 									onChange={(value): void => handleSelectFilter(value, "name")}
 								>
-									<Option value="">Filter by Room Name</Option>
-									{RoomNameSearch.map((roomName) => {
+									<Option value=''>Filter by Room Name</Option>
+									{RoomNameSearch.map(roomName => {
 										return (
 											<Option key={roomName} value={roomName}>
 												{roomName}
@@ -240,12 +246,12 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									value={state.phase}
 									style={{ width: "100%" }}
 									defaultValue={phaseDefaultValues}
-									mode="multiple"
+									mode='multiple'
 									maxTagCount={2}
-									placeholder="All Phases Shown"
+									placeholder='All Phases Shown'
 									onChange={(value): void => handleSelectFilter(value, "phase")}
 								>
-									{Object.keys(HumanizePhaseInternalNames).map((key) => {
+									{Object.keys(HumanizePhaseInternalNames).map(key => {
 										return (
 											<Option key={key} value={key}>
 												{HumanizePhaseInternalNames[key]}
@@ -293,7 +299,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 											handleSearch(value, "min");
 										}}
 										value={minMax[0]}
-										placeholder="Min(Optional)"
+										placeholder='Min(Optional)'
 									/>
 									<Input
 										style={{
@@ -305,7 +311,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 											pointerEvents: "none",
 											backgroundColor: "#fff",
 										}}
-										placeholder="~"
+										placeholder='~'
 										disabled
 									/>
 									<InputNumber
@@ -320,7 +326,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 										onChange={(value): void => {
 											handleSearch(value, "max");
 										}}
-										placeholder="Max(Optional)"
+										placeholder='Max(Optional)'
 									/>
 								</Row>
 							</Col>
@@ -356,10 +362,10 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									style={{ width: "100%" }}
 									defaultValue={Status.active}
 									maxTagCount={2}
-									placeholder="All Status Shown"
+									placeholder='All Status Shown'
 									onChange={(value): void => handleSelectFilter(value, "status")}
 								>
-									{Object.keys(Status).map((key) => {
+									{Object.keys(Status).map(key => {
 										return (
 											<Option key={key} value={Status[key]}>
 												{key}
@@ -386,7 +392,7 @@ const TabSearch = ({ setState: updateState, state: initialState }): JSX.Element 
 									style={{ width: "100%" }}
 									onChange={(value): void => handleSelectFilter(value, "sort")}
 								>
-									{Object.keys(SortOptions).map((key) => {
+									{Object.keys(SortOptions).map(key => {
 										return (
 											<Option key={key} value={JSON.stringify(SortOptions[key])}>
 												{key}

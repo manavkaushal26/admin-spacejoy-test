@@ -40,23 +40,23 @@ const getRequestBody = (
 	});
 
 	const body = {
-		customerName: { search: "single", value: nameSearchText },
+		"customerName": { search: "single", value: nameSearchText },
 		"team.memberName": { search: "single", value: designerSearchText },
 		"currentPhase.name.internalName": { search: "array", value: phase },
-		status: { search: "single", value: status },
-		name: {
+		"status": { search: "single", value: status },
+		"name": {
 			search: "single",
 			value: roomName,
 		},
-		sort: {
+		"sort": {
 			by,
 			order: order.toString(),
 		},
-		startedAt: {
+		"startedAt": {
 			search: "range",
 			value: startedAtMap,
 		},
-		endedAt: {
+		"endedAt": {
 			search: "range",
 			value: endedAtMap,
 		},
@@ -203,30 +203,30 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 		<MaxHeightDiv style={{ position: "relative", overflow: "hidden" }} ref={scrollRef}>
 			<Row gutter={[8, 8]}>
 				<Col span={24}>
-					<Button block type="primary" onClick={toggleDrawer}>
+					<Button block type='primary' onClick={toggleDrawer}>
 						Sort &amp; filter ({loading ? 0 : count} Results)
 					</Button>
 				</Col>
 				<Drawer
-					placement="left"
-					title="Sort &amp; Filters"
+					placement='left'
+					title='Sort &amp; Filters'
 					getContainer={false}
 					style={{ position: "absolute" }}
 					onClose={toggleDrawer}
 					visible={drawerOpen}
-					width="100%"
+					width='100%'
 				>
 					<Row gutter={[16, 16]}>
 						<Col span={24}>
-							<TabSearch setState={setState} state={state} />
+							<TabSearch setState={setState} state={state} onSearchSubmit={onSearchSubmit} />
 						</Col>
 						<Col span={24}>
-							<Row gutter={[8, 8]} justify="end">
+							<Row gutter={[8, 8]} justify='end'>
 								<Col>
 									<Button onClick={toggleDrawer}>Cancel</Button>
 								</Col>
 								<Col>
-									<Button type="primary" onClick={onSearchSubmit}>
+									<Button type='primary' onClick={onSearchSubmit}>
 										Submit
 									</Button>
 								</Col>
