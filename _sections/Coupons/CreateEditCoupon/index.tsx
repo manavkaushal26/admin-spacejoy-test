@@ -30,10 +30,16 @@ const convertFormat = (data, type = "fromState") => {
 				code: data.code,
 			};
 		} else {
-			console.log("data", data);
 			const startTime = data.validity ? data.validity[0]?.toISOString() : undefined;
 			const endTime = data.validity ? data.validity[1]?.toISOString() : undefined;
-			return { ...data, ...(startTime ? { startTime: startTime } : {}), ...(endTime ? { endTime: endTime } : {}) };
+			return {
+				...data,
+				title: data.title.trim(),
+				description: data.description.trim(),
+				code: data.code.trim(),
+				...(startTime ? { startTime: startTime } : {}),
+				...(endTime ? { endTime: endTime } : {}),
+			};
 		}
 	} else {
 		return {};
@@ -78,6 +84,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 			const response = await fetcher({ endPoint, method: couponData ? "PUT" : "POST", body: { data: values } });
 			if (response.status !== "error") {
 				modifyCouponValue(response.data, !couponData);
+				setChangedFields({});
 				toggleCreateEditCoupon();
 				notification.success({ message: couponData ? "Saved Coupon successfully" : "Created coupon successfully" });
 			}

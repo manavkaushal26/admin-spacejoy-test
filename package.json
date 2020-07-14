@@ -33,6 +33,7 @@
 		"react-compare-image": "^1.4.1",
 		"react-dom": "^16.13.1",
 		"react-ga": "^2.6.0",
+		"react-highlight-words": "^0.16.0",
 		"react-infinite-loader": "^1.0.4",
 		"react-infinite-scroller": "^1.2.4",
 		"react-lazy-load-image-component": "^1.3.2",

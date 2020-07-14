@@ -123,11 +123,11 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 			<GreyMaxHeightDiv>
 				<LoudPaddingDiv>
 					<Row gutter={[0, 16]}>
-						<Col style={{ backgroundColor: "white" }}>
+						<Col style={{ backgroundColor: "white" }} span={24}>
 							<CapitalizedTitle level={2}>Hey {getValueSafely(() => authVerification.name, "")},</CapitalizedTitle>
 							<h2 style={{ margin: 0 }}>Welcome to the Spacejoy Launchpad</h2>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Row gutter={[12, 12]}>
 								{launchpadLocations.map(location => {
 									return (
