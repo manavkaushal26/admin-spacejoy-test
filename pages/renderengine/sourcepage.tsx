@@ -87,7 +87,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 					icon: <LoadingOutlined />,
 				});
 			});
-			socket.on("Job.Cam.Complete", data => {
+			socket.on("Job.Cam.Finish", data => {
 				console.log("data", data);
 
 				setSourceData({

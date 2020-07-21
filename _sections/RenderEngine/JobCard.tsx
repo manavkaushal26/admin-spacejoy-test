@@ -53,12 +53,14 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 
 				socket.on("Job.Render.Start", data => {
 					if (job.qid === data.id) {
+						console.log("start", data);
 						notification.warn({ message: `Job ${job.qid} has started.` });
 					}
 				});
 
 				socket.on("Job.Render.Progress", progressInfo => {
 					if (job.qid === progressInfo.id) {
+						console.log("progressInfo", progressInfo);
 						const status = {
 							status: job.status,
 						};
@@ -67,6 +69,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						}
 						setProgressData({
 							...progressInfo,
+							completion: progressInfo?.data?.tile?.percent || progressData.completion,
 							sample: {
 								...{ ...(progressData && progressData?.sample ? { ...progressData?.sample } : {}) },
 								done: progressInfo?.data?.sample?.done || progressData?.sample?.done,
@@ -80,9 +83,9 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						});
 					}
 				});
-				socket.on("Job.Render.Complete", message => {
+				socket.on("Job.Render.Finish", message => {
 					if (job.qid === message.id) {
-						// console.log("Job.Complete", message);
+						console.log("finish", message);
 
 						if (job.qid === message.id) {
 							notification.success({ message: `Job ${job.qid} has completed.` });
@@ -93,6 +96,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 								total: "100",
 								percent: "100",
 							},
+							completion: 100,
 						});
 						setJob({
 							...job,
@@ -103,6 +107,8 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 				});
 				socket.on("Job.Render.Failed", id => {
 					if (job._id === id) {
+						console.log("failed", id);
+
 						if (job.qid === id) {
 							notification.error({ message: `Job ${job.qid} has failed.` });
 						}
