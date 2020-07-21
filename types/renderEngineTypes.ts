@@ -20,6 +20,7 @@ export interface AllSources {
 
 export interface DetailedSource extends AllSources {
 	jobs: DetailedJob[];
+	job?: string;
 	cameras: string[];
 	storage: {
 		url: string;

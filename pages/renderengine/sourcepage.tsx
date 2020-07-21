@@ -1,4 +1,4 @@
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, LoadingOutlined, CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import {
 	createJobApi,
 	getAllJobs,
@@ -65,6 +65,54 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 	};
 
 	const socket = useMemo(() => io("https://krmasternode.spacejoy.com"), []);
+
+	useEffect(() => {
+		const key = "cameraStatus";
+		console.log("Job", sourceData.job);
+		if (sourceData.job && !sourceData.cameras.length) {
+			socket.emit("subscribe", sourceData.job);
+			socket.on("Job.Cam.Start", () => {
+				notification.open({
+					message: "Discovering Camera",
+					key,
+					description: "Starting to process Camera",
+					icon: <LoadingOutlined />,
+				});
+			});
+			socket.on("Job.Cam.Progress", () => {
+				notification.open({
+					message: "Discovering Camera",
+					key,
+					description: "Processing Source file. Please Wait",
+					icon: <LoadingOutlined />,
+				});
+			});
+			socket.on("Job.Cam.Complete", data => {
+				console.log("data", data);
+
+				setSourceData({
+					...sourceData,
+					cameras: data.data,
+				});
+				notification.open({
+					message: "Completed",
+					key,
+					description: "Done Processing source file",
+					icon: <CheckCircleFilled twoToneColor='#52c41a' />,
+				});
+			});
+			socket.on("Job.Cam.Error", data => {
+				console.log("data", data);
+
+				notification.open({
+					message: "Completed",
+					key,
+					description: `Done Processing source file. ${data.data}`,
+					icon: <CloseCircleFilled twoToneColor='#ff7875' />,
+				});
+			});
+		}
+	}, [sourceData.job]);
 
 	useEffect(() => {
 		return (): void => {
@@ -144,6 +192,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 			const responses = await Promise.all(requests);
 			responses.map(response => {
 				if (!response.err) {
+					console.log("response.data", response.data);
 					notification.success({ message: `Created ${response.data.options.cameraSpecific} Job Successfully` });
 					// console.log("Create Job Response", response.data);
 					setJobs(prevState => [response.data, ...prevState]);
@@ -366,7 +415,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 													<Result status='404' title='No Jobs' subTitle='Create a new Job to see it here' />
 												</Col>
 										  )}
-									{(!sourceData.storage || sourceData.cameras.length === 0) && (
+									{!sourceData.storage && sourceData.cameras.length === 0 && (
 										<Col span={24}>
 											<Row justify='space-around'>
 												<Upload

@@ -28,6 +28,7 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
 
 		if (!response.err) {
+			console.log("response", response);
 			setJobDetails(response.data);
 		} else {
 			notification.error({ message: "Failed to fetch job details" });
@@ -39,6 +40,9 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 		if (jobId) {
 			fetchJobDetails();
 		}
+		return () => {
+			setJobDetails(null);
+		};
 	}, [jobId]);
 
 	return (

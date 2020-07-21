@@ -44,20 +44,20 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 		...jobInitialData,
 	});
 	const [progressError, setProgressError] = useState<boolean>(false);
-	const [progressData, setProgressData] = useState<Partial<ProgressData>>(null);
+	const [progressData, setProgressData] = useState<Partial<ProgressData>>();
 
 	useEffect(() => {
 		if (job.status === RenderEngineStatus.waiting || job.status === RenderEngineStatus.active) {
 			if (job.qid) {
 				socket.emit("subscribe", job.qid);
 
-				socket.on("Job.Start", data => {
+				socket.on("Job.Render.Start", data => {
 					if (job.qid === data.id) {
 						notification.warn({ message: `Job ${job.qid} has started.` });
 					}
 				});
 
-				socket.on("Job.Progress", progressInfo => {
+				socket.on("Job.Render.Progress", progressInfo => {
 					if (job.qid === progressInfo.id) {
 						const status = {
 							status: job.status,
@@ -68,19 +68,19 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						setProgressData({
 							...progressInfo,
 							sample: {
-								...progressData?.sample,
-								done: progressInfo?.sample?.done || progressData?.sample?.done,
-								total: progressInfo?.sample?.total || progressData?.sample?.total,
-								percent: progressInfo?.sample?.percent || progressData?.sample?.percent,
+								...{ ...(progressData && progressData?.sample ? { ...progressData?.sample } : {}) },
+								done: progressInfo?.data?.sample?.done || progressData?.sample?.done,
+								total: progressInfo?.data?.sample?.total || progressData?.sample?.total,
+								percent: progressInfo?.data?.sample?.percent || progressData?.sample?.percent,
 							},
 							time: {
-								elapsed: progressInfo.time?.elapsed || progressData?.time?.elapsed,
-								remaining: progressInfo.time?.remaining || progressData?.time?.remaining,
+								elapsed: progressInfo?.data?.time?.elapsed || progressData?.time?.elapsed,
+								remaining: progressInfo?.data?.time?.remaining || progressData?.time?.remaining,
 							},
 						});
 					}
 				});
-				socket.on("Job.Complete", message => {
+				socket.on("Job.Render.Complete", message => {
 					if (job.qid === message.id) {
 						// console.log("Job.Complete", message);
 
@@ -101,7 +101,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						socket.emit("unsubscribe", job.qid);
 					}
 				});
-				socket.on("Job.Failed", id => {
+				socket.on("Job.Render.Failed", id => {
 					if (job._id === id) {
 						if (job.qid === id) {
 							notification.error({ message: `Job ${job.qid} has failed.` });
@@ -115,7 +115,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						socket.removeAllListeners();
 					}
 				});
-				socket.on("Job.Complete", id => {
+				socket.on("Job.Render.Complete", id => {
 					if (job._id === id) {
 						setJob({
 							...job,
