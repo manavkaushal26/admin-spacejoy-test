@@ -60,7 +60,7 @@ const EditableComment: React.FC<EditableComment> = ({
 			<Form.Item label='Quote' name='quote' rules={[{ required: true }]}>
 				<Input />
 			</Form.Item>
-			<Form.Item label='Description' name='description' rules={[{ required: true }]}>
+			<Form.Item label='Description' name='description'>
 				<Input />
 			</Form.Item>
 			<Form.Item>
@@ -149,7 +149,7 @@ const CommentPanel: React.FC<CommentPanel> = ({ entryId, commentData, setOrderIt
 							<Form.Item label='Update' name='quote' rules={[{ required: true }]}>
 								<Input />
 							</Form.Item>
-							<Form.Item label='Description' name='description' rules={[{ required: true }]}>
+							<Form.Item label='Description' name='description'>
 								<Input />
 							</Form.Item>
 							<Form.Item>

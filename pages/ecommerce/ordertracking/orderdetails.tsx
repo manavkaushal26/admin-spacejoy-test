@@ -132,7 +132,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	}, []);
 
 	const goBack = () => {
-		Router.back();
+		Router.push({ pathname: "/ecommerce/ordertracking", query: {} }, "/ecommerce/ordertracking");
 	};
 
 	return (

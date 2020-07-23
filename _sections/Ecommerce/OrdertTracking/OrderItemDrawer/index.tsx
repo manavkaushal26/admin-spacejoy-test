@@ -1,10 +1,12 @@
-import { OrderItems as OrderItem } from "@customTypes/ecommerceTypes";
-import { Col, Collapse, Drawer, Row, Typography } from "antd";
+import { OrderItems as OrderItem, OrderItemStatus } from "@customTypes/ecommerceTypes";
+import { Col, Collapse, Drawer, Row, Typography, Form, Select, Button, Modal, notification } from "antd";
 import React, { useState } from "react";
 import CancelPanel from "./CancelPanel";
 import CommentPanel from "./CommentPanel";
 import ReturnPanel from "./ReturnPanel";
 import TrackingPanel from "./TrackingPanel";
+import { getOrderItemApi } from "@api/ecommerceApi";
+import fetcher from "@utils/fetcher";
 
 const { Text } = Typography;
 
@@ -27,6 +29,32 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 		setOrderItemData({ ...orderItem, ...data });
 	};
 
+	const updateStatus = async data => {
+		const endPoint = getOrderItemApi(orderItemData._id);
+		try {
+			const response = await fetcher({ endPoint, method: "PUT", body: data });
+			if (response.statusCode <= 300) {
+				updateOrderItemData({
+					...orderItemData,
+					...data,
+					...response.data,
+				});
+				notification.success({ message: "Updated status" });
+			} else {
+				throw new Error();
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to update status" });
+		}
+	};
+
+	const handleFinish = data => {
+		Modal.confirm({
+			title: "This will change the status of the order Item. Are you sure you want to proceed?",
+			onOk: () => updateStatus(data),
+		});
+	};
+
 	return (
 		<Drawer
 			width={360}
@@ -43,6 +71,28 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 				</Row>
 			}
 		>
+			{!orderItemData.status.includes("cancel") && !orderItemData.status.includes("returns") && (
+				<Form initialValues={{ status: orderItemData.status }} onFinish={handleFinish}>
+					<Form.Item label='Status' name='status'>
+						<Select>
+							{Object.entries(OrderItemStatus)
+								.filter((_, index) => index < 6)
+								.map(([value, key]) => {
+									return (
+										<Select.Option key={key} value={value}>
+											{key}
+										</Select.Option>
+									);
+								})}
+						</Select>
+					</Form.Item>
+					<Form.Item>
+						<Button htmlType='submit' type='primary'>
+							Save
+						</Button>
+					</Form.Item>
+				</Form>
+			)}
 			<Collapse activeKey={activeCollapseKey} onChange={onKeyChange}>
 				<Collapse.Panel header='Tracking' key='tracking'>
 					<TrackingPanel
@@ -52,7 +102,7 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 						setOrderItemData={updateOrderItemData}
 					/>
 				</Collapse.Panel>
-				<Collapse.Panel header='Status Updates' key='comments'>
+				<Collapse.Panel header='Live Updates' key='comments'>
 					<CommentPanel
 						commentData={orderItem.comments}
 						entryId={orderItem._id}

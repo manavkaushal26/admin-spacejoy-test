@@ -18,4 +18,5 @@ export interface BasicCoupon {
 	startTime: string;
 	createdAt: string;
 	updatedAt: string;
+	type: "product" | "designPackage";
 }

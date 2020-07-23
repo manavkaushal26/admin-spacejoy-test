@@ -4,16 +4,12 @@ import { Status } from "./userType";
 export const EcommerceOrderStatus = {
 	Pending: "pending",
 	Confirmed: "confirmed",
-	Shipped: "shipped",
-	Cancelled: "cancelled",
 	Complete: "complete",
 };
 
 export const EcommerceOrderStatusReverseMap = {
 	pending: "Pending",
 	confirmed: "Confirmed",
-	shipped: "Shipped",
-	cancelled: "Cancelled",
 	complete: "Complete",
 };
 
@@ -65,7 +61,7 @@ export interface OrderItemComments {
 	updatedAt: string;
 }
 
-export enum OrderStatus {
+export enum OrderItemStatus {
 	pending = "Pending",
 	cancelled = "Cancelled",
 	confirmed = "Confirmed",
@@ -75,11 +71,14 @@ export enum OrderStatus {
 	returnInitiated = "Return Initiated",
 	returnApproved = "Return Approved",
 	returnDeclined = "Return Declined",
+	cancellationInitiated = "Cancellation Initiated",
+	cancellationApproved = "Cancellation Approved",
+	cancellationRejected = "Cancellation Rejected",
 }
 
 export interface OrderItems {
 	_id: string;
-	status: Status;
+	status: OrderItemStatus;
 	shippingCharge: number;
 	orderItemId: string;
 	order: string;

@@ -50,9 +50,9 @@ const CouponManager: NextPage<{
 				endPoint,
 				method: "GET",
 			});
-			if (response.status === "success") {
-				setCoupons(response.data.data || response.data);
-				setTotal(response.data.count || response.data.length);
+			if (response.statusCode <= "300") {
+				setCoupons(response.data.data.data || response.data);
+				setTotal(response.data.data.count || response.data.length);
 			} else {
 				notification.error({ message: "Failed to fetch Coupons" });
 			}
@@ -216,6 +216,29 @@ const CouponManager: NextPage<{
 									)}
 									render={text =>
 										searchKey.searchedColumn === "code" ? (
+											<Highlighter
+												highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
+												searchWords={[searchKey.searchText]}
+												autoEscape
+												textToHighlight={text ? text.toString() : ""}
+											/>
+										) : (
+											text
+										)
+									}
+								/>
+								<Table.Column
+									title='Coupon Type'
+									dataIndex='type'
+									key='type'
+									filterDropdown={props => filterDropdown(props, "type")}
+									filterIcon={filtered => (
+										<SearchOutlined
+											style={{ color: filtered && searchKey.searchedColumn === "type" ? "#1890ff" : undefined }}
+										/>
+									)}
+									render={text =>
+										searchKey.searchedColumn === "type" ? (
 											<Highlighter
 												highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
 												searchWords={[searchKey.searchText]}

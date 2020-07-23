@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Row, Col, Avatar, Typography, Button } from "antd";
 import Image from "@components/Image";
-import { OrderItems, OrderStatus } from "@customTypes/ecommerceTypes";
+import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
 
 const { Text, Link } = Typography;
 
@@ -45,7 +45,7 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 					);
 				}}
 			/>
-			<Table.Column key='_id' title='Status' dataIndex='status' render={text => OrderStatus[text]} />
+			<Table.Column key='_id' title='Status' dataIndex='status' render={text => OrderItemStatus[text]} />
 			<Table.Column key='_id' title='Quantity' dataIndex='quantity' />
 			<Table.Column key='_id' title='Price' dataIndex='price' />
 			<Table.Column
