@@ -55,9 +55,9 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		const endPoint = `${getAllJobs(sourceData._id)}&skip=0&limit=50`;
 		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
 
-		if (!response.err) {
-			// console.log("Jobs", response.data);
-			setJobs(response.data);
+		if (!response.data.data.err) {
+			// console.log("Jobs", response.data.data);
+			setJobs(response.data.data);
 		} else {
 			notification.error({ message: "Failed to fetch jobs" });
 		}
@@ -132,8 +132,8 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 	const refreshSource = async (): Promise<void> => {
 		const endPoint = getSingleSource(fetchedSourceData._id);
 		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
-		if (!response.err) {
-			setSourceData(response.data);
+		if (!response.data.data.err) {
+			setSourceData(response.data.data);
 		} else {
 			throw Error();
 		}
@@ -191,11 +191,11 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 			});
 			const responses = await Promise.all(requests);
 			responses.map(response => {
-				if (!response.err) {
+				if (!response.data.err) {
 					console.log("response.data", response.data);
-					notification.success({ message: `Created ${response.data.options.cameraSpecific} Job Successfully` });
-					// console.log("Create Job Response", response.data);
-					setJobs(prevState => [response.data, ...prevState]);
+					notification.success({ message: `Created ${response.data.data.options.cameraSpecific} Job Successfully` });
+					// console.log("Create Job Response", response.data.data);
+					setJobs(prevState => [response.data.data, ...prevState]);
 				} else {
 					notification.error({ message: "Failed to create Job" });
 				}
@@ -219,10 +219,10 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 				},
 				hasBaseURL: true,
 			});
-			if (!response.err) {
+			if (!response.data.data.err) {
 				notification.success({ message: "Created Job Successfully" });
-				// console.log("Create Job Response", response.data);
-				setJobs(prevState => [response.data, ...prevState]);
+				// console.log("Create Job Response", response.data.data);
+				setJobs(prevState => [response.data.data, ...prevState]);
 				toggleJobCreationModal();
 			} else {
 				notification.error({ message: "Failed to create Job" });
@@ -237,7 +237,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setUploadedFile(prunedFileList);
 		if (info.file.status === "done") {
 			notification.success({ message: "File upload Complete" });
-			// console.log("File Upload Response", info.file.response.data);
+			// console.log("File Upload Response", info.file.response.data.data);
 
 			setSourceData(info.file.response.data);
 		}
@@ -251,10 +251,10 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 			method: "POST",
 			hasBaseURL: true,
 		});
-		if (!response.err) {
+		if (!response.data.data.err) {
 			const modifiedJobs = jobs.map(job => {
 				if (job._id === jobID) {
-					return { ...response.data };
+					return { ...response.data.data };
 				}
 				return job;
 			});
@@ -272,7 +272,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 			method: "DELETE",
 			hasBaseURL: true,
 		});
-		if (!response.err) {
+		if (!response.data.data.err) {
 			const modifiedJobs = jobs.map(job => {
 				if (job._id === jobID) {
 					return { ...job, status: RenderEngineStatus.pending };
@@ -289,7 +289,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		const endPoint = `${getSingleJobs(sourceData._id, jobID)}?hard=true`;
 		try {
 			const response = await fetcher({ endPoint, method: "DELETE", hasBaseURL: true });
-			if (!response.err) {
+			if (!response.data.data.err) {
 				const remainingJobs = jobs.filter(job => {
 					return job._id !== jobID;
 				});
@@ -474,8 +474,8 @@ SourcePage.getInitialProps = async (ctx: NextPageContext): Promise<SourcePagePro
 	if (srcId) {
 		const endPoint = getSingleSource(srcId as string);
 		const response = await fetcher({ endPoint, method: "GET", hasBaseURL: true });
-		if (!response.err) {
-			sourceData = response.data;
+		if (!response.data.data.err) {
+			sourceData = response.data.data;
 		} else {
 			throw Error();
 		}

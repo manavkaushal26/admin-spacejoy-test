@@ -55,11 +55,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 	const [coverList, setCoverList] = useState<UploadFile[]>([]);
 
 	const uploadImageEndpoint = useMemo(
-		() =>
-			collectionData._id &&
-			`${process.env.NODE_ENV === "production" ? page.apiBaseUrl : page.stageApiBaseUrl}${getSingleCollection(
-				collectionData._id
-			)}`,
+		() => collectionData._id && `${page.apiBaseUrl}${getSingleCollection(collectionData._id)}`,
 		[collectionData]
 	);
 
@@ -182,20 +178,20 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				notification.open({
 					key: "Regenerate",
 					message: "Saved Collection",
-					icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 				});
 			} else {
 				notification.open({
 					key: "Regenerate",
 					message: "Error Saving Collection",
-					icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+					icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 				});
 			}
 		} catch (e) {
 			notification.open({
 				key: "Regenerate",
 				message: "Error Saving Collection",
-				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 			});
 		}
 		setLoading(false);
@@ -225,7 +221,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 			notification.open({
 				key: "save",
 				message: "Saved Collection",
-				icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+				icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 			});
 			setCollectionData(response.data);
 			await onRegenerateClick();
@@ -236,7 +232,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 			notification.open({
 				key: "save",
 				message: "Error Saving Collection",
-				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 			});
 		}
 	};
@@ -299,17 +295,17 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				onCancel={onCloseModal}
 				onOk={onSaveClick}
 				footer={[
-					<Button key="back" onClick={onCloseModal}>
+					<Button key='back' onClick={onCloseModal}>
 						Close
 					</Button>,
 					...[
 						collectionData._id ? (
-							<Button key="regen" type="default" onClick={onRegenerateClick}>
+							<Button key='regen' type='default' onClick={onRegenerateClick}>
 								Regenerate Collection
 							</Button>
 						) : null,
 					],
-					<Button key="save" type="primary" loading={loading} onClick={onSaveClick}>
+					<Button key='save' type='primary' loading={loading} onClick={onSaveClick}>
 						Save
 					</Button>,
 				]}
@@ -321,7 +317,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Text strong>Name</Text>
 							</Col>
 							<Col span={24}>
-								<Input onChange={onChange} name="name" value={collectionData.name} />
+								<Input onChange={onChange} name='name' value={collectionData.name} />
 							</Col>
 						</Row>
 					</Col>
@@ -331,7 +327,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Text strong>Description</Text>
 							</Col>
 							<Col span={24}>
-								<Input.TextArea onChange={onChange} name="description" value={collectionData.description} />
+								<Input.TextArea onChange={onChange} name='description' value={collectionData.description} />
 							</Col>
 						</Row>
 					</Col>
@@ -342,7 +338,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Text strong>Meta Title </Text>
 							</Col>
 							<Col span={24}>
-								<Input onChange={onChange} name="metaTitle" value={collectionData.metaTitle} />
+								<Input onChange={onChange} name='metaTitle' value={collectionData.metaTitle} />
 							</Col>
 						</Row>
 					</Col>
@@ -352,7 +348,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Text strong>Meta Description</Text>
 							</Col>
 							<Col span={24}>
-								<Input.TextArea onChange={onChange} name="metaDescription" value={collectionData.metaDescription} />
+								<Input.TextArea onChange={onChange} name='metaDescription' value={collectionData.metaDescription} />
 							</Col>
 						</Row>
 					</Col>
@@ -364,10 +360,10 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 							<Col span={24}>
 								<Input
 									onChange={onChange}
-									name="slug"
+									name='slug'
 									value={collectionData.slug}
 									addonAfter={
-										<Tooltip placement="top" title="Open URL">
+										<Tooltip placement='top' title='Open URL'>
 											<LinkOutlined onClick={openInNewWindow} />
 										</Tooltip>
 									}
@@ -381,7 +377,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Text strong>Background Color</Text>
 							</Col>
 							<Col span={24}>
-								<Input onChange={onChange} name="bg" value={collectionData.bg} type="color" />
+								<Input onChange={onChange} name='bg' value={collectionData.bg} type='color' />
 							</Col>
 						</Row>
 					</Col>
@@ -395,8 +391,8 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 									onChange={(value): void => handleSelect(value, "status")}
 									value={collectionData.status}
 									showSearch
-									optionFilterProp="children"
-									placeholder="Select a Status"
+									optionFilterProp='children'
+									placeholder='Select a Status'
 									style={{ width: "100%" }}
 								>
 									{Object.keys(AssetStatus).map(key => (
@@ -417,7 +413,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Select
 									onChange={(value): void => handleSelect(value, "tags")}
 									style={{ width: "100%" }}
-									mode="tags"
+									mode='tags'
 									open={false}
 									tokenSeparators={[","]}
 								/>
@@ -433,8 +429,8 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<Select
 									showSearch
 									onChange={(value): void => handleSelect(value, "roomType")}
-									optionFilterProp="children"
-									mode="multiple"
+									optionFilterProp='children'
+									mode='multiple'
 									style={{ width: "100%" }}
 									value={collectionData.searchKey.roomType}
 								>
@@ -455,11 +451,11 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 							<Col span={24}>
 								<Select
 									onChange={(value): void => handleSelect(value, "retailers")}
-									placeholder="Select Retailer"
+									placeholder='Select Retailer'
 									value={collectionData.searchKey.retailers}
 									showSearch
-									mode="multiple"
-									optionFilterProp="children"
+									mode='multiple'
+									optionFilterProp='children'
 									style={{ width: "100%" }}
 								>
 									{retailers.map(retailer => (
@@ -478,12 +474,12 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 							</Col>
 							<Col span={24}>
 								<Select
-									mode="multiple"
+									mode='multiple'
 									onChange={(value): void => handleSelect(value, "themes")}
 									value={collectionData.searchKey.themes}
 									showSearch
-									optionFilterProp="children"
-									placeholder="Select a Theme"
+									optionFilterProp='children'
+									placeholder='Select a Theme'
 									style={{ width: "100%" }}
 								>
 									{themes.map(theme => (
@@ -505,15 +501,15 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 									<Col span={24}>
 										<Upload
 											supportServerRender
-											name="thumbnail"
+											name='thumbnail'
 											fileList={thumbnailList}
-											listType="picture-card"
+											listType='picture-card'
 											onPreview={handlePreview}
 											action={uploadImageEndpoint}
 											onRemove={(): false => false}
 											onChange={(info): void => handleOnFileUploadChange("thumbnail", info)}
 											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-											accept="image/*"
+											accept='image/*'
 										>
 											<Row>
 												<Col span={24}>
@@ -535,15 +531,15 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 									<Col span={24}>
 										<Upload
 											supportServerRender
-											name="cover"
+											name='cover'
 											fileList={coverList}
-											listType="picture-card"
+											listType='picture-card'
 											onPreview={handlePreview}
 											action={uploadImageEndpoint}
 											onRemove={(): false => false}
 											onChange={(info): void => handleOnFileUploadChange("cover", info)}
 											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-											accept="image/*"
+											accept='image/*'
 										>
 											<Row>
 												<Col span={24}>
@@ -564,7 +560,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 					handleCancel={handleCancel}
 					previewImage={preview.previewImage}
 					previewVisible={preview.previewVisible}
-					altText="previewImages"
+					altText='previewImages'
 				/>
 			</SizeAdjustedModal>
 		</Spin>

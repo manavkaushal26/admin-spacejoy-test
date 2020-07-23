@@ -124,6 +124,45 @@ function pageRoute(app, router) {
 
 	// *************************************************************************************************************************
 
+	// ***************************************************** ecommerce *********************************************************
+	router.get("/ecommerce/ordertracking/orderdetails", TokenCheckMiddleware, (req, res) => {
+		console.log("req", req);
+		const { query, params } = req;
+		app.render(req, res, "/ecommerce/ordertracking/orderdetails", {
+			...query,
+			...params,
+		});
+	});
+	router.get("/ecommerce/ordertracking", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/ecommerce/ordertracking", {
+			...query,
+		});
+	});
+
+	router.get("/ecommerce/retailers", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/ecommerce/retailers", {
+			...query,
+		});
+	});
+
+	router.get("/ecommerce/retailers/modifyretailer", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/ecommerce/retailers/modifyretailer", {
+			...query,
+			...params,
+		});
+	});
+
+	router.get("/ecommerce", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/ecommerce", {
+			...query,
+		});
+	});
+	// *************************************************************************************************************************
+
 	return router;
 }
 

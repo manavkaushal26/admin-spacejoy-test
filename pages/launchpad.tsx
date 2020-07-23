@@ -1,4 +1,11 @@
-import { AppstoreTwoTone, BookTwoTone, DatabaseTwoTone, EditTwoTone, ProfileTwoTone } from "@ant-design/icons";
+import {
+	AppstoreTwoTone,
+	BookTwoTone,
+	DatabaseTwoTone,
+	EditTwoTone,
+	ProfileTwoTone,
+	ShopTwoTone,
+} from "@ant-design/icons";
 import User, { Role } from "@customTypes/userType";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
@@ -75,8 +82,19 @@ const launchpadLocations: LaunchpadLocations[] = [
 		description: "Functions that apply across platform",
 		url: "/platformanager",
 		icon: <DatabaseTwoTone style={{ fontSize: "3rem" }} />,
+		backgroundColor: "#e6f7ff",
 		notActive: false,
 		allowedRoles: [Role.Admin, Role.Owner, Role.seoTeam, Role.Team],
+	},
+	{
+		title: "Ecommerce",
+		description: "All things Ecommerce",
+		url: "/ecommerce",
+		icon: <ShopTwoTone style={{ fontSize: "3rem" }} twoToneColor='#fa541c' />,
+		color: "#fa541c",
+		backgroundColor: "#fff2e8",
+		notActive: false,
+		allowedRoles: [Role.Admin, Role.Owner],
 	},
 ];
 

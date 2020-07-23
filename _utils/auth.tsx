@@ -17,14 +17,16 @@ function redirectToLocation({
 	query = {},
 	url,
 	res,
+	options = {},
 }: {
 	pathname: string;
 	query?: Record<string, string>;
 	url?: string;
 	res?: ServerResponse;
+	options?: { shallow?: boolean };
 }): void {
 	if (typeof window !== "undefined") {
-		Router.push({ pathname, query }, url);
+		Router.push({ pathname, query }, url, options);
 	} else {
 		res.writeHead(302, {
 			Location: url,

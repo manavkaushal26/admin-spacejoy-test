@@ -99,6 +99,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		setLoading(true);
 		const endPoint = getSingleAssetApi(selectedAssetId);
 		const response = await fetcher({ endPoint, method: "GET" });
+
 		if (response.statusCode <= 300) {
 			const { category, subcategory, vertical, theme } = getValueSafely(() => response.data.meta, {
 				category: { _id: "", name: "Undefined" },

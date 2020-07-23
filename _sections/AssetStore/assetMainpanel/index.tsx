@@ -65,9 +65,10 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 			},
 		},
 	});
-	if (responseData) {
-		if (responseData.hits) {
-			const assetData: AssetType[] = responseData.hits.map((asset: AssetStoreSearchResponse) => {
+
+	if (responseData.statusCode <= 300) {
+		if (responseData.data.hits) {
+			const assetData: AssetType[] = responseData.data.hits.map((asset: AssetStoreSearchResponse) => {
 				return {
 					name: asset.name,
 					price: asset.price,

@@ -1,3 +1,4 @@
+import { Status } from "./userType";
 export enum MountTypes {
 	floor = "floor",
 	ceiling = "ceiling",
@@ -45,4 +46,60 @@ export interface AssetHistory {
 	meta: string;
 	createdAt: string;
 	updatedAt: string;
+}
+
+export interface EcommRetailer {
+	_id: string;
+	name: String;
+	description: String;
+
+	url: String;
+
+	status: Status;
+
+	shippingPolicy: String;
+
+	cancellationPolicy: String;
+
+	refundPolicy: String;
+
+	returnPolicy: String;
+
+	estimatedArrival: String;
+
+	estimatedDispatch: String;
+
+	logo: String;
+
+	logoCdn: String;
+
+	banners: { fileUrl: String; cdn: String }[];
+
+	excludedDeliveryStates: [{ String }];
+
+	prf: String; // retailer priority
+
+	partner: Boolean;
+
+	exclusive: Boolean;
+
+	tags: { type: String }[];
+
+	rating: Number;
+
+	modeOfOperation: "online" | "offline" | "both";
+
+	brandColor: String;
+
+	sellType: "buy" | "rent" | "both";
+
+	offers: {
+		quote: String;
+		discount: Number;
+		isPercent: { type: Boolean; default: false };
+	}[];
+
+	shippingOfferQuote: String;
+
+	productSpecialization: { type: String }[];
 }

@@ -1,7 +1,7 @@
 import { createEditCouponApi } from "@api/metaApi";
 import { BasicCoupon } from "@customTypes/couponTypes";
 import fetcher from "@utils/fetcher";
-import { Button, DatePicker, Drawer, Form, Input, InputNumber, notification, Radio, Select } from "antd";
+import { Button, DatePicker, Drawer, Form, Input, InputNumber, notification, Radio, Select, Row } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
@@ -116,62 +116,68 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 				onFieldsChange={onFieldsChange}
 				onFinish={onFinish}
 			>
-				<Form.Item label='Title' name='title' rules={[{ required: true, message: "Please Enter Title" }]}>
-					<Input />
-				</Form.Item>
-				<Form.Item
-					label='Description'
-					name='description'
-					rules={[{ required: true, message: "Please Enter Description" }]}
-				>
-					<Input.TextArea />
-				</Form.Item>
-				<Form.Item label='Code' name='code' rules={[{ required: true, message: "Please Enter Title" }]}>
-					<Input />
-				</Form.Item>
-				<Form.Item label='Amount' name='amount' rules={[{ required: true, message: "Please Enter Amount" }]}>
-					<InputNumber style={{ width: "100%" }} />
-				</Form.Item>
-				<Form.Item label='Is the above mentioned Amount in Percentage?' name='isPercent' rules={[{ required: true }]}>
-					<Radio.Group buttonStyle='solid'>
-						<Radio.Button value={true}>Yes</Radio.Button>
-						<Radio.Button value={false}>No</Radio.Button>
-					</Radio.Group>
-				</Form.Item>
-				<Form.Item
-					label='Max Discount in Dollars'
-					name='maxDiscount'
-					rules={[{ required: true, message: "Please Enter value" }]}
-				>
-					<InputNumber style={{ width: "100%" }} />
-				</Form.Item>
-				<Form.Item
-					label='Max no of times the Coupon can be used'
-					name='maxUsePerUser'
-					rules={[{ required: true, message: "Please Enter value" }]}
-				>
-					<InputNumber style={{ width: "100%" }} />
-				</Form.Item>
-				<Form.Item label='Coupon Validity' name='validity' rules={[{ required: true, message: "Please Enter value" }]}>
-					<RangePicker showTime allowEmpty={[false, true]} format='YYYY-MM-DD HH:mm' />
-				</Form.Item>
-				<Form.Item label='Visibility' name='category' rules={[{ required: true, message: "Please select a value" }]}>
-					<Select style={{ width: "100%" }}>
-						<Select.Option value='public'>Public</Select.Option>
-						<Select.Option value='private'>Private</Select.Option>
-					</Select>
-				</Form.Item>
-				<Form.Item label='Status' name='status' rules={[{ required: true, message: "Please select a value" }]}>
-					<Select style={{ width: "100%" }}>
-						<Select.Option value='active'>Active</Select.Option>
-						<Select.Option value='inactive'>Inactive</Select.Option>
-					</Select>
-				</Form.Item>
-				<Form.Item>
-					<Button type='primary' htmlType='submit'>
-						Submit
-					</Button>
-				</Form.Item>
+				<Row>
+					<Form.Item label='Title' name='title' rules={[{ required: true, message: "Please Enter Title" }]}>
+						<Input />
+					</Form.Item>
+					<Form.Item
+						label='Description'
+						name='description'
+						rules={[{ required: true, message: "Please Enter Description" }]}
+					>
+						<Input.TextArea />
+					</Form.Item>
+					<Form.Item label='Code' name='code' rules={[{ required: true, message: "Please Enter Title" }]}>
+						<Input />
+					</Form.Item>
+					<Form.Item label='Amount' name='amount' rules={[{ required: true, message: "Please Enter Amount" }]}>
+						<InputNumber style={{ width: "100%" }} />
+					</Form.Item>
+					<Form.Item label='Is the above mentioned Amount in Percentage?' name='isPercent' rules={[{ required: true }]}>
+						<Radio.Group buttonStyle='solid'>
+							<Radio.Button value={true}>Yes</Radio.Button>
+							<Radio.Button value={false}>No</Radio.Button>
+						</Radio.Group>
+					</Form.Item>
+					<Form.Item
+						label='Max Discount in Dollars'
+						name='maxDiscount'
+						rules={[{ required: true, message: "Please Enter value" }]}
+					>
+						<InputNumber style={{ width: "100%" }} />
+					</Form.Item>
+					<Form.Item
+						label='Max no of times the Coupon can be used'
+						name='maxUsePerUser'
+						rules={[{ required: true, message: "Please Enter value" }]}
+					>
+						<InputNumber style={{ width: "100%" }} />
+					</Form.Item>
+					<Form.Item
+						label='Coupon Validity'
+						name='validity'
+						rules={[{ required: true, message: "Please Enter value" }]}
+					>
+						<RangePicker showTime allowEmpty={[false, true]} format='YYYY-MM-DD HH:mm' />
+					</Form.Item>
+					<Form.Item label='Visibility' name='category' rules={[{ required: true, message: "Please select a value" }]}>
+						<Select style={{ width: "100%" }}>
+							<Select.Option value='public'>Public</Select.Option>
+							<Select.Option value='private'>Private</Select.Option>
+						</Select>
+					</Form.Item>
+					<Form.Item label='Status' name='status' rules={[{ required: true, message: "Please select a value" }]}>
+						<Select style={{ width: "100%" }}>
+							<Select.Option value='active'>Active</Select.Option>
+							<Select.Option value='inactive'>Inactive</Select.Option>
+						</Select>
+					</Form.Item>
+					<Form.Item>
+						<Button type='primary' htmlType='submit'>
+							Submit
+						</Button>
+					</Form.Item>
+				</Row>
 			</Form>
 		</Drawer>
 	);

@@ -63,6 +63,9 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL, isMultipartFor
 	}
 	if (response.status) {
 		const resData = await response.json();
+		if (!resData.statusCode) {
+			return { data: resData, statusCode: response.status };
+		}
 		return resData;
 	}
 

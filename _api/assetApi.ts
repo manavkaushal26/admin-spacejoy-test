@@ -3,7 +3,7 @@ export const roomMetaDataApi = (): string => {
 };
 
 export const assetCreateOrUpdationApi = (assetId?: string): string => {
-	return `/asset${assetId ? `/${assetId}` : ""}`;
+	return `/v1/products${assetId ? `/${assetId}` : ""}`;
 };
 
 export const addRetailerApi = (): string => {
@@ -16,4 +16,8 @@ export const markMissingAssetAsComplete = (designId: string, assetId: string): s
 
 export const getAssetHistoryApi = (assetId: string): string => {
 	return `/admin/assets/log/${assetId}`;
+};
+
+export const uploadProductImagesApi = (assetId: string): string => {
+	return `/v1/products/${assetId}/images`;
 };

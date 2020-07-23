@@ -65,9 +65,9 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 		setLoading(true);
 		const endPoint = `${getAllSources()}&skip=${countPerPage * (pageNumber - 1)}&limit=${countPerPage}`;
 		const response = await fetcher({ endPoint, hasBaseURL: true, method: "GET" });
-		if (!response.err) {
+		if (!response.data.err) {
 			// console.log("Sources", response.data);
-			setSources(response.data);
+			setSources(response.data.data);
 		} else {
 			notification.error({ message: "Failed to fetch sources" });
 		}
@@ -90,8 +90,8 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 				method: "GET",
 				hasBaseURL: true,
 			});
-			if (!response.err) {
-				setTotal(response.data);
+			if (!response.data.err) {
+				setTotal(response.data.data);
 			} else {
 				notification.error({ message: "Failed to fetch source count" });
 			}
@@ -118,7 +118,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 		const endPoint = `${getSingleSource(id)}?hard=true`;
 		try {
 			const response = await fetcher({ endPoint, method: "DELETE", hasBaseURL: true });
-			if (!response.err) {
+			if (!response.data.err) {
 				const filteredSources = sources.filter(source => {
 					return source._id !== id;
 				});
@@ -143,8 +143,8 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 			},
 			hasBaseURL: true,
 		});
-		if (!response.err) {
-			setSources(prevState => [response.data, ...prevState]);
+		if (!response.data.err) {
+			setSources(prevState => [response.data.data, ...prevState]);
 			toggleCreateSourcesModal();
 		} else {
 			notification.error({ message: "Failed to Create Source" });

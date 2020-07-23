@@ -92,6 +92,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 	const fetchMetaData = async (): Promise<void> => {
 		const endpoint = getMetaDataApi();
 		const response = await fetcher({ endPoint: endpoint, method: "GET" });
+
 		if (response.statusCode === 200) {
 			dispatch({ type: ASSET_ACTION_TYPES.METADATA, value: response.data });
 		}
@@ -197,23 +198,23 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 
 	const categoryMap: Array<CategoryMap> = useMemo(() => {
 		if (state.metaData) {
-			return state.metaData.categories.list.map((elem) => {
+			return state.metaData.categories.list.map(elem => {
 				return {
 					title: { name: elem.name, level: "category" },
 					key: elem._id,
 					children: state.metaData.subcategories.list
-						.filter((subElem) => {
+						.filter(subElem => {
 							return subElem.category === elem._id;
 						})
-						.map((subElem) => {
+						.map(subElem => {
 							return {
 								title: { name: subElem.name, level: "subCategory" },
 								key: subElem._id,
 								children: state.metaData.verticals.list
-									.filter((vert) => {
+									.filter(vert => {
 										return vert.subcategory === subElem._id;
 									})
-									.map((filtVert) => {
+									.map(filtVert => {
 										return {
 											title: { name: filtVert.name, level: "verticals" },
 											key: filtVert._id,
@@ -237,7 +238,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 	}, [state.metaData]);
 
 	return (
-		<PageLayout pageName="Asset Store" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Asset Store' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Asset Store | {company.product}</title>
 				{IndexPageMeta}
@@ -250,13 +251,13 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 								<Col span={24}>
 									<Row gutter={[8, 8]}>
 										<Col span={24}>
-											<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type="primary">
+											<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type='primary'>
 												{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
 											</Button>
 										</Col>
 										{designId && (
 											<Col span={24}>
-												<Button onClick={toggleCart} block type="default">
+												<Button onClick={toggleCart} block type='default'>
 													Open Cart
 												</Button>
 											</Col>

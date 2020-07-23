@@ -2,6 +2,7 @@ import { Currency, MountTypes } from "@customTypes/assetInfoTypes";
 import User, { Status } from "@customTypes/userType";
 import { getLocalStorageValue } from "@utils/storageUtils";
 import { getValueSafely } from "@utils/commonUtils";
+import { ModeOfOperation } from "@customTypes/moodboardTypes";
 
 export interface NewAssetUploadState {
 	_id?: string;
@@ -40,10 +41,27 @@ export interface NewAssetUploadState {
 	imageUrl: string;
 	cdn: string;
 	tags: string[];
-	artist: string;
+	assemblyInfo?: string;
+	warrantyInfo?: string;
+	shippingPolicy?: string;
+	cancellationPolicy?: string;
+	refundPolicy?: string;
+	returnPolicy?: string;
+	estimatedArrival?: string;
+	estimatedDispatch?: string;
+	countryOfOrigin?: string;
+	sku?: string;
+	modeOfOperation?: ModeOfOperation;
+	stockQty?: number;
+	productImages?: {
+		storageUrl: string;
+		cdn: string;
+	}[];
+	flatShipping: number;
 }
 
 export const initialState = {
+	flatShipping: 0,
 	name: "",
 	description: "",
 	status: Status.active,
@@ -64,7 +82,6 @@ export const initialState = {
 		fileUrls: {
 			glb: "",
 			source: "",
-			// eslint-disable-next-line @typescript-eslint/camelcase
 			legacy_obj: "",
 			sourceHighPoly: "",
 		},
@@ -106,138 +123,3 @@ export enum NEW_ASSET_ACTION_TYPES {
 	UPDATE_DIMENSION = "UPDATE_DIMENSION",
 	CLEAR = "CLEAR",
 }
-
-export interface ActionType {
-	type: NEW_ASSET_ACTION_TYPES;
-	value: any;
-}
-
-export interface NewAssetUploadReducer {
-	(state: NewAssetUploadState, action: ActionType): NewAssetUploadState;
-}
-
-export const reducer = (state: NewAssetUploadState, action: ActionType): NewAssetUploadState => {
-	switch (action.type) {
-		case NEW_ASSET_ACTION_TYPES.ASSET_NAME:
-			return { ...state, name: action.value };
-		case NEW_ASSET_ACTION_TYPES.ASSET_DESCRIPTION:
-			return { ...state, description: action.value };
-		case NEW_ASSET_ACTION_TYPES.ASSET_PRICE:
-			return { ...state, price: action.value < 0 ? 0 : parseInt(action.value, 10) };
-		case NEW_ASSET_ACTION_TYPES.ASSET_PRICE_CURRENCY_TYPE:
-			return { ...state, currency: action.value };
-		case NEW_ASSET_ACTION_TYPES.ASSET_RETAILER:
-			return { ...state, retailer: action.value };
-		case NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK:
-			return { ...state, retailLink: action.value };
-		case NEW_ASSET_ACTION_TYPES.UPDATE_DIMENSION:
-			return {
-				...state,
-				dimension: {
-					width: action.value.width,
-					height: action.value.height,
-					depth: action.value.depth,
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE:
-			return {
-				...state,
-				shoppable: action.value,
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_CATEGORY:
-			return {
-				...state,
-				meta: {
-					...state.meta,
-					category: action.value,
-					subcategory: "",
-					vertical: "",
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_SUB_CATEGORY:
-			return {
-				...state,
-				meta: {
-					...state.meta,
-					subcategory: action.value,
-					vertical: "",
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_VERTICAL:
-			return {
-				...state,
-				meta: {
-					...state.meta,
-					vertical: action.value,
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_THEME:
-			return {
-				...state,
-				meta: {
-					...state.meta,
-					theme: action.value,
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_WIDTH:
-			return {
-				...state,
-				dimension: {
-					...state.dimension,
-					width: action.value < 0 ? 0 : parseFloat(action.value),
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_HEIGHT:
-			return {
-				...state,
-				dimension: {
-					...state.dimension,
-					height: action.value < 0 ? 0 : parseFloat(action.value),
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_DEPTH:
-			return {
-				...state,
-				dimension: {
-					...state.dimension,
-					depth: action.value < 0 ? 0 : parseFloat(action.value),
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_STATUS:
-			return {
-				...state,
-				status: action.value,
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE:
-			return {
-				...state,
-				spatialData: {
-					...state.spatialData,
-					mountType: action.value,
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE:
-			return {
-				...state,
-				spatialData: {
-					...state.spatialData,
-					clampValue: action.value,
-				},
-			};
-		case NEW_ASSET_ACTION_TYPES.ASSET_TAGS:
-			return {
-				...state,
-				tags: action.value,
-			};
-		case NEW_ASSET_ACTION_TYPES.SET_ASSET:
-			return {
-				...action.value,
-			};
-		case NEW_ASSET_ACTION_TYPES.CLEAR:
-			return {
-				...initialState,
-			};
-		default:
-			return state;
-	}
-};

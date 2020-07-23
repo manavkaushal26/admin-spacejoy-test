@@ -3,29 +3,29 @@ import {
 	CloseCircleTwoTone,
 	LinkOutlined,
 	LoadingOutlined,
-	UploadOutlined,
 	PlusOutlined,
+	UploadOutlined,
 } from "@ant-design/icons";
-import { assetCreateOrUpdationApi } from "@api/assetApi";
-import { uploadAssetImageApi, uploadAssetModelApi } from "@api/designApi";
+import { assetCreateOrUpdationApi, uploadProductImagesApi } from "@api/assetApi";
+import { uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { Currency, MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
-import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
+import { AssetType, MetaDataType, ModeOfOperation } from "@customTypes/moodboardTypes";
 import { AssetStatus, Status } from "@customTypes/userType";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { convertToFeet, convertToInches, debounce, getBase64, getValueSafely } from "@utils/commonUtils";
+import { convertToFeet, convertToInches, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, cookieNames } from "@utils/config";
 import { MountAndClampValuesForVerticals } from "@utils/constants";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import { Button, Col, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
-import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import AddRetailerModal from "../addRetailerModal";
 import { AssetAction } from "../reducer";
 import { SizeAdjustedModal } from "../styled";
-import { initialState, NewAssetUploadReducer, NEW_ASSET_ACTION_TYPES, reducer } from "./reducer";
+import { NewAssetUploadState } from "./reducer";
 
 const { Text, Title } = Typography;
 const { Option } = Select;
@@ -52,17 +52,26 @@ interface NewAssetModal {
 }
 
 const formatDimensionsForSending: (
-	dimensions: { width: number; height: number; depth: number },
+	dimensions: { "dimension.width": number; "dimension.height": number; "dimension.depth": number },
 	dimensionInInches: boolean
-) => { width: number; height: number; depth: number } = (dimensions, dimensionInInches) => {
-	if (dimensionInInches) {
-		return {
-			height: convertToFeet(dimensions.height),
-			width: convertToFeet(dimensions.width),
-			depth: convertToFeet(dimensions.depth),
-		};
+) => { "dimension.width"?: number; "dimension.height"?: number; "dimension.depth"?: number } = (
+	dimensions,
+	dimensionInInches
+) => {
+	if (dimensions) {
+		if (dimensionInInches) {
+			return {
+				...(dimensions["dimension.height"]
+					? { "dimension.height": convertToFeet(dimensions["dimension.height"]) }
+					: {}),
+				...(dimensions["dimension.width"] ? { "dimension.width": convertToFeet(dimensions["dimension.width"]) } : {}),
+				...(dimensions["dimension.depth"] ? { "dimension.depth": convertToFeet(dimensions["dimension.depth"]) } : {}),
+			};
+		}
+
+		return { ...dimensions };
 	}
-	return { ...dimensions };
+	return {};
 };
 
 const formatResponseOnRecieve: (
@@ -90,11 +99,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	setAssetData,
 	location,
 }) => {
-	const [state, dispatch] = useReducer<NewAssetUploadReducer>(reducer, initialState);
+	const [state, setState] = useState<Partial<NewAssetUploadState>>({});
+	const [changedState, setChangedState] = useState<Record<string, any>>({});
 	const [firstLoad, setFirstLoad] = useState<boolean>(true);
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 	const [imageFile, setImageFile] = useState<UploadFile<any>[]>([]);
+	const [imageFilesToUpload, setImageFilesToUpload] = useState([]);
+
 	const [dimensionInInches, setDimensionInInches] = useState<boolean>(true);
 	const [addRetailerModalVisible, setAddRetailerModalVisible] = useState(false);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
@@ -106,7 +118,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	const uploadModelEndpoint = useMemo(() => uploadAssetModelApi(state._id, model3dFiles), [state._id, model3dFiles]);
 	const uploadModelSourceEndpoint = useMemo(() => uploadAssetModelApi(state._id, "source"), [state._id]);
-	const uploadAssetImageEndpoint = useMemo(() => uploadAssetImageApi(state._id), [state._id]);
+	const uploadAssetImageEndpoint = useMemo(() => uploadProductImagesApi(state._id), [state._id]);
 	const uploadModelHighPolySouceEndpoint = useMemo(() => uploadAssetModelApi(state._id, "sourceHighPoly"), [state._id]);
 
 	const [preview, setPreview] = useState<{ previewImage: string; previewVisible: boolean }>({
@@ -142,40 +154,42 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [modifiedForm, setModifiedForm] = useState<boolean>(false);
 
 	const checkValidity = (): void => {
-		setAssetNameValid(!!assetName.current.props.value);
-		setAssetPriceValid(!!assetPrice.current.input.checkValidity());
-		setAssetRetailerValid(!!assetRetailer.current.props.value);
-		setAssetUrlValid(assetUrl.current.input.checkValidity());
-		setAssetCategoryValid(!!assetCategory.current.props.value);
-		setAssetSubCategoryValid(!!assetSubCategory.current.props.value);
-		setAssetVerticalValid(!!assetVertical.current.props.value);
+		setAssetNameValid(!!assetName.current?.props?.value);
+		setAssetPriceValid(!!assetPrice.current?.input?.checkValidity());
+		setAssetRetailerValid(!!assetRetailer.current?.props.value);
+		setAssetUrlValid(assetUrl.current?.input.checkValidity());
+		setAssetCategoryValid(!!assetCategory.current?.props.value);
+		setAssetSubCategoryValid(!!assetSubCategory.current?.props.value);
+		setAssetVerticalValid(!!assetVertical.current?.props.value);
 		setAssetWidthValid(
-			parseFloat(assetWidth.current.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current.props.value))
+			parseFloat(assetWidth.current?.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current?.props.value))
 		);
 		setAssetHeightValid(
-			parseFloat(assetHeight.current.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current.props.value))
+			parseFloat(assetHeight.current?.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current?.props.value))
 		);
 		setAssetDepthValid(
-			parseFloat(assetDepth.current.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current.props.value))
+			parseFloat(assetDepth.current?.props.value) !== 0 && !Number.isNaN(parseFloat(assetWidth.current?.props.value))
 		);
-		setAssetMountTypeValid(!!assetMountType.current.props.value);
+		setAssetMountTypeValid(!!assetMountType.current?.props.value);
 	};
-
+	useEffect(() => {
+		checkValidity();
+	}, [changedState, modifiedForm]);
 	const onSwitchChange = (checked: boolean): void => {
 		setDimensionInInches(!dimensionInInches);
 		if (checked) {
-			dispatch({
-				type: NEW_ASSET_ACTION_TYPES.UPDATE_DIMENSION,
-				value: {
+			setState({
+				...state,
+				dimension: {
 					height: convertToInches(state.dimension.height),
 					width: convertToInches(state.dimension.width),
 					depth: convertToInches(state.dimension.depth),
 				},
 			});
 		} else {
-			dispatch({
-				type: NEW_ASSET_ACTION_TYPES.UPDATE_DIMENSION,
-				value: {
+			setState({
+				...state,
+				dimension: {
 					height: convertToFeet(state.dimension.height),
 					width: convertToFeet(state.dimension.width),
 					depth: convertToFeet(state.dimension.depth),
@@ -183,8 +197,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			});
 		}
 	};
-
-	const debouncedCheckValidity = debounce(checkValidity, 50);
 
 	const openInNewWindow = (): void => {
 		if (state.retailLink && assetUrl.current.input.checkValidity()) {
@@ -195,21 +207,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	useEffect(() => {
 		if (assetData) {
 			const newState = {
-				_id: assetData._id,
-				name: assetData.name,
-				description: assetData.description,
-				status: assetData.status,
-				shoppable: assetData.shoppable,
+				...assetData,
 				retailer: getValueSafely(() => assetData.retailer._id, ""),
-				retailLink: assetData.retailLink,
-				meta: {
-					category: getValueSafely(() => assetData.meta.category, ""),
-					subcategory: getValueSafely(() => assetData.meta.subcategory, ""),
-					vertical: getValueSafely(() => assetData.meta.vertical, ""),
-					theme: getValueSafely(() => assetData.meta.theme, ""),
-				},
-				primaryColor: "", // TO BE ADDED LATER
-				secondaryColors: [], // TO BE ADDED LATER
 				spatialData: {
 					mountType: getValueSafely(() => assetData.spatialData.mountType, MountTypes.attached),
 					clampValue: getValueSafely(() => {
@@ -222,20 +221,14 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						sourceHighPoly: getValueSafely(() => assetData.spatialData.fileUrls.sourceHighPoly, ""),
 					},
 				},
-				price: assetData.price,
-				currency: assetData.currency || "usd",
+				currency: assetData.currency || Currency.USD,
 				dimension: {
 					width: getValueSafely(() => convertToInches(assetData.dimension.width), 0),
 					depth: getValueSafely(() => convertToInches(assetData.dimension.depth), 0),
 					height: getValueSafely(() => convertToInches(assetData.dimension.height), 0),
 				},
-				imageUrl: assetData.imageUrl,
-				cdn: assetData.cdn,
-				tags: assetData.tags, // TO BE ADDED LATER
-				artist: assetData.artist,
 			};
-			dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: newState });
-			debouncedCheckValidity();
+			setState({ ...newState });
 			setAssetData(null);
 		}
 	}, [assetData]);
@@ -245,15 +238,42 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			target: { name, value },
 		} = e;
 
-		dispatch({ type: name, value });
+		if (name.split(".").length === 2) {
+			const nameSplit = name.split(".");
+			setState({
+				...state,
+				[nameSplit[0]]: {
+					...state[nameSplit[0]],
+					[nameSplit[1]]: value,
+				},
+			});
+		} else {
+			setState({
+				...state,
+				[name]: value,
+			});
+		}
+		setChangedState({ ...changedState, [name]: value });
 		setModifiedForm(true);
-		debouncedCheckValidity();
 	};
 
-	const handleSelect = (value, action): void => {
-		dispatch({ type: action, value });
+	const handleSelect = (value, name): void => {
+		if (name.split(".").length === 2) {
+			const nameSplit = name.split(".");
+			setState({
+				...state,
+				[nameSplit[0]]: {
+					...state[nameSplit[0]],
+					[nameSplit[1]]: value,
+				},
+			});
+		} else {
+			setState({
+				...state,
+				[name]: value,
+			});
+		}
 		setModifiedForm(true);
-		debouncedCheckValidity();
 	};
 
 	const onSelect = (selectedValue): void => {
@@ -263,39 +283,25 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const saveAsset = async (): Promise<number> => {
 		const endPoint = assetCreateOrUpdationApi(state._id);
 
-		const dimensionsToSend = formatDimensionsForSending(state.dimension, dimensionInInches);
+		const dimensionsToSend = formatDimensionsForSending(
+			{
+				"dimension.width": changedState["dimension.width"],
+				"dimension.depth": changedState["dimension.depth"],
+				"dimension.height": changedState["dimension.height"],
+			},
+			dimensionInInches
+		);
 
 		const requestBody = {
-			"name": state.name.trim(),
-			"description": state.description.trim(),
-			"status": state.status || Status.pending,
-			"shoppable": state.shoppable,
-			"retailer": state.retailer,
-			"retailLink": state.retailLink,
-			"primaryColor": state.primaryColor,
-			"secondaryColors": state.secondaryColors,
-			"meta.category": state.meta.category,
-			"meta.subcategory": state.meta.subcategory,
-			"meta.vertical": state.meta.vertical,
-			"meta.theme": state.meta.theme,
-			"spatialData.mountType": state.spatialData.mountType,
-			"spatialData.clampValue": state.spatialData.clampValue ? 0 : -1,
-			"dimension.width": dimensionsToSend.width,
-			"dimension.height": dimensionsToSend.height,
-			"dimension.depth": dimensionsToSend.depth,
-			"price": state.price,
-			"currency": state.currency,
-			"imageUrl": state.imageUrl,
-			"cdn": state.cdn,
-			"tags": state.tags,
-			"artist": state.artist,
+			...changedState,
+			...dimensionsToSend,
 		};
 		try {
 			const response = await fetcher({
 				endPoint,
 				method: state._id ? "PUT" : "POST",
 				body: {
-					data: requestBody,
+					...requestBody,
 				},
 			});
 			if (response.statusCode <= 300) {
@@ -308,8 +314,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				if (onOkComplete && !state._id) {
 					onOkComplete({ _id: responseAssetData._id }, null, responseAssetData.status);
 				}
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: responseAssetData });
-
+				setState({ ...responseAssetData });
+				setChangedState({});
 				setModifiedForm(false);
 			}
 			return 1;
@@ -325,7 +331,20 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	useEffect(() => {
 		if (state) {
-			if (state.cdn) {
+			if (state.productImages) {
+				setImageFile(
+					state.productImages.map((image, index) => {
+						return {
+							uid: index.toString(),
+							name: image.cdn.split("/").pop(),
+							status: "done",
+							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+							size: 0,
+							type: "application/octet-stream",
+						};
+					})
+				);
+			} else if (state.cdn) {
 				setImageFile([
 					{
 						uid: "-1",
@@ -454,7 +473,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	useEffect(() => {
 		return (): void => {
-			dispatch({ type: NEW_ASSET_ACTION_TYPES.CLEAR, value: null });
+			setState({});
 			setModel3dFiles(Model3DFiles.Glb);
 			setAssetFile(null);
 			setImageFile(null);
@@ -471,6 +490,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			setAssetHeightValid(false);
 			setAssetDepthValid(false);
 			setAssetMountTypeValid(false);
+			setChangedState({});
 			setModifiedForm(false);
 			setFirstLoad(true);
 			setSourceHighPolyFileList(null);
@@ -478,27 +498,27 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	}, [isOpen]);
 
 	useEffect(() => {
-		if (state.meta.vertical && !firstLoad) {
+		if (state.meta?.vertical && !firstLoad) {
 			const mountAndClampValue = MountAndClampValuesForVerticals[state.meta.vertical];
 			if (mountAndClampValue) {
 				if (mountAndClampValue.clampValue >= 0) {
-					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: true });
+					setState({ ...state, spatialData: { ...state.spatialData, clampValue: true } });
 				} else {
-					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: false });
+					setState({ ...state, spatialData: { ...state.spatialData, clampValue: false } });
 				}
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE, value: mountAndClampValue.mountValue });
+				setState({ ...state, spatialData: { ...state.spatialData, mountType: mountAndClampValue.mountValue } });
 			} else {
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE, value: true });
+				setState({ ...state, spatialData: { ...state.spatialData, clampValue: false } });
 			}
 			notification.info({ message: "Mount type has changed since the vertical was changed" });
 		}
 		setFirstLoad(false);
-	}, [state.meta.vertical]);
+	}, [state.meta?.vertical]);
 
 	useEffect(() => {
 		if ((state.price === 0 || Number.isNaN(state.price)) && !assetData) {
 			if (state.shoppable !== false) {
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE, value: false });
+				setState({ ...state, shoppable: false });
 				notification.info({ message: "Item has been marked as not shoppable" });
 			}
 		}
@@ -544,7 +564,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 			});
 			if (spacejoyRetailer) {
 				if (spacejoyRetailer._id === state.retailer) {
-					dispatch({ type: NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK, value: "http://www.spacejoy.com" });
+					setState({ ...state, retailLink: "http://www.spacejoy.com" });
 				}
 			}
 		}
@@ -569,28 +589,21 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		info: UploadChangeParam<UploadFile>
 	): Promise<void> => {
 		let fileList = [...info.fileList];
-
-		fileList = fileList.slice(-1);
+		if (uploadFileType !== "image") {
+			fileList = fileList.slice(-1);
+		}
 		// 1. Limit the number of uploaded files
 		// Only to show one recent uploaded files, and old ones will be replaced by the new
 		if (info.file.status === "done") {
 			notification.success({ message: "Product Saved", description: "File has been uploaded" });
 			if (uploadFileType === "model") {
-				dispatch({
-					type: NEW_ASSET_ACTION_TYPES.SET_ASSET,
-					value: { ...state, ...info.file.response.data },
-				});
+				setState({ ...state, ...info.file.response.data });
 				if (state.status !== Status.active) {
-					dispatch({
-						type: NEW_ASSET_ACTION_TYPES.ASSET_STATUS,
-						value: Status.active,
-					});
+					setState({ ...state, status: Status.active });
 					setImmediateUpdate(true);
 				}
-			} else if (uploadFileType === "source") {
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: { ...state, ...info.file.response.data } });
-			} else if (uploadFileType === "image") {
-				dispatch({ type: NEW_ASSET_ACTION_TYPES.SET_ASSET, value: { ...state, ...info.file.response.data } });
+			} else {
+				setState({ ...state, ...info.file.response.data });
 			}
 		}
 		if (uploadFileType === "model") {
@@ -651,6 +664,50 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		return true;
 	};
 
+	const handleBeforeProductImageUpload = (file): boolean => {
+		setImageFile(prevFileList => [...prevFileList, file]);
+		setImageFilesToUpload(prevFileList => [...prevFileList, file]);
+		return false;
+	};
+
+	const handleProductImageUpload = async (): Promise<void> => {
+		const endPoint = uploadAssetImageEndpoint;
+		const key = "notify";
+		const formData = new FormData();
+		imageFilesToUpload.forEach(file => {
+			formData.append("files", file, file.fileName);
+		});
+		notification.info({ message: "Uploading Product images", key });
+
+		try {
+			const response = await fetcher({
+				isMultipartForm: true,
+				endPoint,
+				method: "POST",
+				body: formData,
+			});
+			if (response.statusCode <= 300) {
+				const productImageFileList = response.data.productImages.map((image, index) => {
+					return {
+						uid: index.toString(),
+						name: image.cdn.split("/").pop(),
+						status: "done",
+						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+						size: 0,
+						type: "application/octet-stream",
+					};
+				});
+				setImageFile(productImageFileList);
+				setImageFilesToUpload([]);
+				notification.success({ message: "Uploaded Images successfully", key });
+			} else {
+				throw new Error();
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to upload", key });
+		}
+	};
+
 	return (
 		<SizeAdjustedModal
 			destroyOnClose
@@ -678,7 +735,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									ref={assetName}
 									required
 									onChange={handleChange}
-									name={NEW_ASSET_ACTION_TYPES.ASSET_NAME}
+									name='name'
 									value={state.name}
 									placeholder='Product Name'
 								/>
@@ -695,7 +752,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									ref={assetDescription}
 									required
 									onChange={handleChange}
-									name={NEW_ASSET_ACTION_TYPES.ASSET_DESCRIPTION}
+									name='description'
 									value={state.description}
 									placeholder='Description'
 								/>
@@ -707,7 +764,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							<Col span={12}>
 								<Row gutter={[0, 4]}>
 									<Col span={24}>
-										<Text>Price</Text>
+										<Text>Price (USD)</Text>
 									</Col>
 									<Col span={24}>
 										<Input
@@ -716,23 +773,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											type='number'
 											placeholder='Price'
 											onChange={handleChange}
-											name={NEW_ASSET_ACTION_TYPES.ASSET_PRICE}
+											name='price'
 											value={state.price}
-											addonAfter={
-												<Select
-													onChange={(value): void =>
-														handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_PRICE_CURRENCY_TYPE)
-													}
-													value={state.currency}
-													style={{ width: 64 }}
-												>
-													{Object.keys(Currency).map(key => (
-														<Option key={key} value={Currency[key]}>
-															{key}
-														</Option>
-													))}
-												</Select>
-											}
 										/>
 									</Col>
 								</Row>
@@ -746,7 +788,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										<Select
 											placeholder='Select Retailer'
 											ref={assetRetailer}
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_RETAILER)}
+											onChange={(value): void => handleSelect(value, "retailer")}
 											value={state.retailer}
 											dropdownRender={(menu): JSX.Element => (
 												<Row gutter={[0, 4]}>
@@ -794,7 +836,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										</Tooltip>
 									}
 									placeholder='Link to product'
-									name={NEW_ASSET_ACTION_TYPES.ASSET_RETAIL_LINK}
+									name='retailLink'
 								/>
 							</Col>
 						</Row>
@@ -807,8 +849,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									<Col span={24}>
 										<Select
 											ref={assetCategory}
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_CATEGORY)}
-											value={state.meta.category}
+											onChange={(value): void => handleSelect(value, "meta.category")}
+											value={state.meta?.category}
 											showSearch
 											optionFilterProp='children'
 											placeholder='Select A Category'
@@ -829,18 +871,20 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									<Col span={24}>
 										<Select
 											ref={assetSubCategory}
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_SUB_CATEGORY)}
-											disabled={!state.meta.category}
-											value={state.meta.subcategory}
+											onChange={(value): void => handleSelect(value, "meta.subcategory")}
+											disabled={!state.meta?.category}
+											value={state.meta?.subcategory}
 											showSearch
 											optionFilterProp='children'
 											placeholder='Select A Sub Category'
 											style={{ width: "100%" }}
 										>
-											{!!state.meta.category &&
+											{!!state.meta?.category &&
 												categoryMap
-													.find(category => category.key === state.meta.category)
-													.children.map(category => (
+													.find(category => {
+														return category.key === state.meta?.category;
+													})
+													?.children?.map(category => (
 														<Option key={category.key} value={category.key}>
 															{category.title.name}
 														</Option>
@@ -855,18 +899,18 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									<Col span={24}>
 										<Select
 											ref={assetVertical}
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_VERTICAL)}
-											disabled={!state.meta.subcategory}
-											value={state.meta.vertical}
+											onChange={(value): void => handleSelect(value, "meta.vertical")}
+											disabled={!state.meta?.subcategory}
+											value={state.meta?.vertical}
 											showSearch
 											optionFilterProp='children'
 											placeholder='Select A Vertical'
 											style={{ width: "100%" }}
 										>
-											{!!state.meta.subcategory &&
+											{!!state.meta?.subcategory &&
 												categoryMap
-													.find(category => category.key === state.meta.category)
-													.children.find(subCategory => subCategory.key === state.meta.subcategory)
+													.find(category => category.key === state.meta?.category)
+													.children.find(subCategory => subCategory.key === state.meta?.subcategory)
 													.children.map(category => (
 														<Option key={category.key} value={category.key}>
 															{category.title.name}
@@ -888,8 +932,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									<Col span={24}>
 										<Select
 											ref={assetTheme}
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_THEME)}
-											value={state.meta.theme}
+											onChange={(value): void => handleSelect(value, "meta.theme")}
+											value={state.meta?.theme}
 											showSearch
 											optionFilterProp='children'
 											placeholder='Select a Theme'
@@ -911,7 +955,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									</Col>
 									<Col span={24}>
 										<Select
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_STATUS)}
+											onChange={(value): void => handleSelect(value, "status")}
 											value={state.status}
 											showSearch
 											optionFilterProp='children'
@@ -939,11 +983,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 										</Row>
 									</Col>
 									<Col span={24}>
-										<Radio.Group
-											onChange={handleChange}
-											value={state.shoppable}
-											name={NEW_ASSET_ACTION_TYPES.ASSET_SHOPPABLE}
-										>
+										<Radio.Group onChange={handleChange} value={state.shoppable} name='shoppable'>
 											<Radio value>Yes</Radio>
 											<Radio value={false}>No</Radio>
 										</Radio.Group>
@@ -960,7 +1000,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											mode='tags'
 											tokenSeparators={[",", " "]}
 											open={false}
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_TAGS)}
+											onChange={(value): void => handleSelect(value, "tags")}
 											value={state.tags}
 											placeholder='Tag products'
 											style={{ width: "100%" }}
@@ -1001,8 +1041,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											ref={assetWidth}
 											required
 											onChange={handleChange}
-											value={state.dimension.width}
-											name={NEW_ASSET_ACTION_TYPES.ASSET_WIDTH}
+											value={state.dimension?.width}
+											name='dimension.width'
 											placeholder={`Width(${dimensionText})`}
 											type='number'
 										/>
@@ -1017,8 +1057,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											ref={assetHeight}
 											required
 											onChange={handleChange}
-											value={state.dimension.height}
-											name={NEW_ASSET_ACTION_TYPES.ASSET_HEIGHT}
+											value={state.dimension?.height}
+											name='dimension.height'
 											placeholder={`Height(${dimensionText})`}
 											type='number'
 										/>
@@ -1033,8 +1073,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											ref={assetDepth}
 											required
 											onChange={handleChange}
-											value={state.dimension.depth}
-											name={NEW_ASSET_ACTION_TYPES.ASSET_DEPTH}
+											value={state.dimension?.depth}
+											name='dimension.depth'
 											placeholder={`Depth(${dimensionText})`}
 											type='number'
 										/>
@@ -1055,8 +1095,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 											ref={assetMountType}
 											showSearch
 											optionFilterProp='children'
-											onChange={(value): void => handleSelect(value, NEW_ASSET_ACTION_TYPES.ASSET_MOUNT_TYPE)}
-											value={state.spatialData.mountType}
+											onChange={(value): void => handleSelect(value, "spatialData.mountType")}
+											value={state.spatialData?.mountType}
 											placeholder='Select a Mount Type'
 											style={{ width: "100%" }}
 										>
@@ -1085,8 +1125,8 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							<Col span={12}>
 								<Radio.Group
 									onChange={handleChange}
-									value={state.spatialData.clampValue}
-									name={NEW_ASSET_ACTION_TYPES.ASSET_CLAMP_VALUE}
+									value={state.spatialData?.clampValue}
+									name='spatialData.clampValue'
 								>
 									<Radio value>Yes</Radio>
 									<Radio value={false}>No</Radio>
@@ -1195,26 +1235,246 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 									<Col span={24}>
 										<Upload
 											supportServerRender
-											name='image'
+											name='files'
 											fileList={imageFile}
 											listType='picture-card'
 											onPreview={handlePreview}
-											action={uploadAssetImageEndpoint}
-											onRemove={(): false => false}
-											onChange={(info): Promise<void> => handleOnFileUploadChange("image", info)}
-											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
+											multiple
+											beforeUpload={handleBeforeProductImageUpload}
 											accept='image/*'
 										>
-											<Button>
-												<UploadOutlined />
-												Click to Upload
-											</Button>
+											<Row>
+												<Col span={24}>
+													<PlusOutlined />
+												</Col>
+												<Col span={24}>Click to Select Images</Col>
+											</Row>
 										</Upload>
+									</Col>
+									<Col>
+										<Button onClick={handleProductImageUpload} disabled={!imageFilesToUpload.length}>
+											Upload Images
+										</Button>
 									</Col>
 								</Row>
 							</Col>
 						</Col>
 					)}
+				</Col>
+				<Col span={24}>
+					<Row gutter={[8, 8]}>
+						<Col span={24}>
+							<Title level={4}>Additional Details (For E-commerce)</Title>
+						</Col>
+						<Col span={8}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Estimated Arrival</Text>
+								</Col>
+								<Col span={24}>
+									<Input
+										required
+										onChange={handleChange}
+										name='estimatedArrival'
+										value={state.estimatedArrival}
+										placeholder='Estimated Arrival'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Estimated Dispatch</Text>
+								</Col>
+								<Col span={24}>
+									<Input
+										required
+										onChange={handleChange}
+										name='estimatedDispatch'
+										value={state.estimatedDispatch}
+										placeholder='Estimated Dispatch'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Country of Origin</Text>
+								</Col>
+								<Col span={24}>
+									<Input
+										required
+										onChange={handleChange}
+										name='countryOfOrigin'
+										value={state.countryOfOrigin}
+										placeholder='Country of Origin'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Stock Quantity</Text>
+								</Col>
+								<Col span={24}>
+									<Input
+										required
+										onChange={handleChange}
+										name='stockQty'
+										value={state.stockQty}
+										placeholder='Stock Quantity'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Mode of Operation</Text>
+								</Col>
+								<Col span={24}>
+									<Select style={{ width: "100%" }}>
+										{Object.entries(ModeOfOperation).map(([label, value]) => {
+											return (
+												<Select.Option key={value} value={value}>
+													{label}
+												</Select.Option>
+											);
+										})}
+									</Select>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row>
+								<Col span={24}>
+									<Row>
+										<Col span={24}>Flat Shopping</Col>
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Input
+										required
+										onChange={handleChange}
+										name='flatShipping'
+										value={state.flatShipping}
+										placeholder='Stock Quantity'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row>
+								<Col span={24}>
+									<Title level={4}>Policies</Title>
+								</Col>
+
+								<Col>
+									<small>Retailer links are preferred for all the fields below</small>
+								</Col>
+							</Row>
+						</Col>
+
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Shipping Policy</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea
+										required
+										onChange={handleChange}
+										name='shippingPolicy'
+										value={state.shippingPolicy}
+										placeholder='Shipping Policy'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Cancellation Policy</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea
+										required
+										onChange={handleChange}
+										name='cancellationPolicy'
+										value={state.cancellationPolicy}
+										placeholder='Cancellation Policy'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Warranty Info</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea
+										required
+										onChange={handleChange}
+										name='warrantyInfo'
+										value={state.warrantyInfo}
+										placeholder='Warranty Info'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Assembly Info</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea
+										required
+										onChange={handleChange}
+										name='assemblyInfo'
+										value={state.assemblyInfo}
+										placeholder='Assembly Info'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Return Policy</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea
+										required
+										onChange={handleChange}
+										name='returnPolicy'
+										value={state.returnPolicy}
+										placeholder='Return Policy'
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text>Refund Policy</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea
+										required
+										onChange={handleChange}
+										name='refundPolicy'
+										value={state.refundPolicy}
+										placeholder='Refund Policy'
+									/>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
 				</Col>
 
 				<Col span={24}>

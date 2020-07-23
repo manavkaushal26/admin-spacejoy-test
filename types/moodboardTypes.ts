@@ -1,4 +1,4 @@
-import { MountTypes } from "./assetInfoTypes";
+import { MountTypes, Currency } from "./assetInfoTypes";
 import { Status } from "./userType";
 
 enum ServiceType {
@@ -75,114 +75,27 @@ export interface MetaDataType {
 	cdnPrefix: string;
 }
 
-export interface AssetType {
-	name: string;
-	price: number;
-	currency: string;
-	description: string;
-	retailer: {
-		_id: string;
-		name: string;
-	};
-	status: Status;
-	shoppable: boolean;
-	spatialData: {
-		fileUrls: {
-			source: string;
-			glb: string;
-			legacy_obj: string;
-			sourceHighPoly: string;
-		};
-		mountType: MountTypes;
-		clampValue: -1 | 0;
-	};
-	dimension: {
-		depth: number;
-		width: number;
-		height: number;
-	};
-	meta: {
-		category: string;
-		subcategory: string;
-		vertical: string;
-		theme: string;
-	};
-	retailLink: string;
+export interface ImageType {
 	cdn: string;
-	_id: string;
-	imageUrl: string;
-	artist: {
-		_id: string;
-		profile: {
-			firstName: string;
-			lastName: string;
-			name: string;
-		};
-		name: string;
-	};
-	tags: string[];
-	createdAt: string;
-	updatedAt: string;
+	storageUrl: string;
 }
-export interface AssetType {
-	name: string;
-	price: number;
-	currency: string;
-	description: string;
-	retailer: {
-		_id: string;
-		name: string;
-	};
-	status: Status;
-	shoppable: boolean;
-	spatialData: {
-		fileUrls: {
-			source: string;
-			glb: string;
-			legacy_obj: string;
-			sourceHighPoly: string;
-		};
-		mountType: MountTypes;
-		clampValue: -1 | 0;
-	};
-	dimension: {
-		depth: number;
-		width: number;
-		height: number;
-	};
-	meta: {
-		category: string;
-		subcategory: string;
-		vertical: string;
-		theme: string;
-	};
-	retailLink: string;
-	cdn: string;
-	_id: string;
-	imageUrl: string;
-	artist: {
-		_id: string;
-		profile: {
-			firstName: string;
-			lastName: string;
-			name: string;
-		};
-		name: string;
-	};
-	tags: string[];
-	createdAt: string;
-	updatedAt: string;
+
+export enum ModeOfOperation {
+	Online = "online",
+	Offline = "offline",
+	Both = "both",
 }
 
 export interface AssetType {
 	name: string;
 	price: number;
-	currency: string;
+	currency: Currency;
 	description: string;
 	retailer: {
 		_id: string;
 		name: string;
 	};
+	productImages: ImageType[];
 	status: Status;
 	shoppable: boolean;
 	spatialData: {
@@ -222,16 +135,31 @@ export interface AssetType {
 	tags: string[];
 	createdAt: string;
 	updatedAt: string;
+	// E-COMMERCE
+	assemblyInfo?: string;
+	warrantyInfo?: string;
+	shippingPolicy?: string;
+	cancellationPolicy?: string;
+	refundPolicy?: string;
+	returnPolicy?: string;
+	estimatedArrival?: string;
+	estimatedDispatch?: string;
+	countryOfOrigin?: string;
+	sku?: string;
+	modeOfOperation?: ModeOfOperation;
+	stockQty?: number;
+	flatShipping?: number;
 }
 
 export interface AssetStoreSearchResponse {
 	artist: string;
 	category: string;
+	productImages: ImageType[];
 	cdn: string;
 	clampValue: number;
 	colors: string[];
 	createdAt: string;
-	currency: string;
+	currency: Currency;
 	depth: number;
 	description: string;
 	height: number;

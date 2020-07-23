@@ -185,7 +185,7 @@ const PriceManager: NextPage<{
 			render: (text, record): JSX.Element => {
 				if (!record._id) {
 					if (text === currentActiveVersion) {
-						return <Tag color="green">Active</Tag>;
+						return <Tag color='green'>Active</Tag>;
 					}
 					return <Tag>Inactive</Tag>;
 				}
@@ -200,26 +200,26 @@ const PriceManager: NextPage<{
 			render: (_, record): JSX.Element =>
 				record.slug ? (
 					<span>
-						<Button type="link" onClick={(): void => setEditRecord(record)}>
+						<Button type='link' onClick={(): void => setEditRecord(record)}>
 							Edit
 						</Button>
 					</span>
 				) : (
 					<span>
 						<Popconfirm
-							title="This will create a copy of the packages with new version numbers? Are you sure?"
+							title='This will create a copy of the packages with new version numbers? Are you sure?'
 							onConfirm={(): Promise<void> => copyAsNewVersion(record.children)}
 						>
-							<Button type="link" onClick={(e): void => e.stopPropagation()}>
+							<Button type='link' onClick={(e): void => e.stopPropagation()}>
 								Copy
 							</Button>
 						</Popconfirm>
 						{record.versionNumber !== currentActiveVersion && (
 							<Popconfirm
-								title="This will mark this version as live prices. Are you sure?"
+								title='This will mark this version as live prices. Are you sure?'
 								onConfirm={(): Promise<void> => setAsActive(record.children)}
 							>
-								<Button type="link" onClick={(e): void => e.stopPropagation()}>
+								<Button type='link' onClick={(e): void => e.stopPropagation()}>
 									Set as Active
 								</Button>
 							</Popconfirm>
@@ -256,7 +256,7 @@ const PriceManager: NextPage<{
 	};
 
 	return (
-		<PageLayout pageName="Price Manager" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Price Manager' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Package Manager | {company.product}</title>
 				{IndexPageMeta}

@@ -4,11 +4,10 @@ import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { Col, Input, Radio, Row, Tree, Typography } from "antd";
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
+import { DataNode } from "antd/lib/tree";
+import React, { useEffect, useMemo, useState } from "react";
 import { FilterCard } from "../styled";
 import SliderFilter from "./filters/SliderFilter";
-
-const { TreeNode } = Tree;
 
 const { Title, Text } = Typography;
 
@@ -185,16 +184,16 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		}
 	};
 
-	const renderTreeNodes = (options: Array<CategoryMap>): ReactNode => {
+	const renderTreeNodes = (options: Array<CategoryMap>): DataNode[] => {
 		return options.map(item => {
 			if (item.children) {
-				return (
-					<TreeNode title={item.title.name} key={`${item.title.name}-${item.title.level}`}>
-						{renderTreeNodes(item.children)}
-					</TreeNode>
-				);
+				return {
+					key: `${item.title.name}-${item.title.level}`,
+					title: item.title.name,
+					children: renderTreeNodes(item.children),
+				};
 			}
-			return <TreeNode title={item.title.name} key={`${item.title.name}-${item.title.level}`} />;
+			return { key: `${item.title.name}-${item.title.level}`, title: item.title.name };
 		});
 	};
 
@@ -225,9 +224,13 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 											<Text strong>Category</Text>
 										</Col>
 										<Col span={24}>
-											<Tree checkStrictly onCheck={onCheck} checkedKeys={mergedArray} checkable>
-												{renderTreeNodes(categoryMap)}
-											</Tree>
+											<Tree
+												checkStrictly
+												onCheck={onCheck}
+												checkedKeys={mergedArray}
+												checkable
+												treeData={renderTreeNodes(categoryMap)}
+											/>
 										</Col>
 									</Row>
 								</Col>
@@ -240,7 +243,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 								<Col span={24}>
 									<Row gutter={[2, 2]}>
 										<Col span={24}>
-											<Title level={4} type="secondary">
+											<Title level={4} type='secondary'>
 												Filter Products
 											</Title>
 										</Col>
@@ -273,7 +276,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 													<Text strong>Status</Text>
 												</Col>
 												<Col span={24}>
-													<Radio.Group name="status" onChange={onStatusChange} value={state.status}>
+													<Radio.Group name='status' onChange={onStatusChange} value={state.status}>
 														{Object.entries(AssetStatus).map(([name, value]) => {
 															return (
 																<Radio
@@ -289,7 +292,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 																</Radio>
 															);
 														})}
-														<Radio value="">All</Radio>
+														<Radio value=''>All</Radio>
 													</Radio.Group>
 												</Col>
 											</Row>
@@ -303,7 +306,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 						<FilterCard>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>
-									<Title type="secondary" level={4}>
+									<Title type='secondary' level={4}>
 										Range Filters
 									</Title>
 								</Col>
@@ -336,7 +339,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 											<Text strong>Width</Text>
 										</Col>
 										<Col span={24}>
-											<Row align="middle">
+											<Row align='middle'>
 												<SliderFilter
 													min={widthMin}
 													max={widthMax}
@@ -376,7 +379,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 											<Text strong>Depth</Text>
 										</Col>
 										<Col span={24}>
-											<Row align="middle">
+											<Row align='middle'>
 												<SliderFilter
 													min={depthMin}
 													max={depthMax}

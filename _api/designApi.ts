@@ -31,7 +31,7 @@ export const getAssetApi: () => string = () => {
 };
 
 export const getAssetElasticSearchApi: () => string = () => {
-	return "v1/assets/search";
+	return "v1/products/search";
 };
 
 export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "source" | "sourceHighPoly") => string = (
@@ -50,7 +50,7 @@ export const deleteUploadedImageApi = (designId: string, imageId: string) => {
 };
 
 export const getSingleAssetApi: (assetId: string) => string = assetId => {
-	return `/admin/asset/${assetId}`;
+	return `/v1/products/${assetId}`;
 };
 
 export const getMoodboardApi: (designId: string, assetEntryId?: string) => string = (designId, assetEntryId) => {
