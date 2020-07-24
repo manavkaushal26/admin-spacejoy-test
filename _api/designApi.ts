@@ -38,7 +38,7 @@ export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "s
 	assetId,
 	filetype = Model3DFiles.Glb
 ) => {
-	return `${page.apiBaseUrl}/admin/asset/${assetId}/model?filetype=${filetype}`;
+	return `${page.apiBaseUrl}/v1/products/${assetId}/3d-file?fileType=${filetype}`;
 };
 
 export const uploadAssetImageApi: (assetId: string) => string = assetId => {

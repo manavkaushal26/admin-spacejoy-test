@@ -75,7 +75,8 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 
 	const onFieldsChange = changedFieldsData => {
 		if (changedFieldsData.length) {
-			setChangedFields({ ...changedFields, [changedFieldsData[0]?.name]: changedFieldsData[0]?.value });
+			console.log('changedFieldsData[0]?.name.join(".")', changedFieldsData[0]?.name.join("."));
+			setChangedFields({ ...changedFields, [changedFieldsData[0]?.name.join(".")]: changedFieldsData[0]?.value });
 		}
 	};
 

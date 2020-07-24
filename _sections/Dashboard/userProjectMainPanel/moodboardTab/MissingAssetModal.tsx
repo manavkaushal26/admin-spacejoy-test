@@ -8,17 +8,17 @@ import {
 	UploadOutlined,
 } from "@ant-design/icons";
 import { markMissingAssetAsComplete } from "@api/assetApi";
-import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
-import { AssetType, MetaDataType, MoodboardAsset } from "@customTypes/moodboardTypes";
+import { getMoodboardApi } from "@api/designApi";
+import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { Status } from "@customTypes/userType";
-import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { AddOnAfterWithoutPadding, CustomDiv } from "@sections/Dashboard/styled";
+import { redirectToLocation } from "@utils/auth";
 import { dateFromObjectId, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, List, notification, Popconfirm, Row, Spin, Tooltip, Typography, Badge } from "antd";
+import { Badge, Button, Col, List, notification, Popconfirm, Row, Spin, Tooltip, Typography } from "antd";
 import moment from "moment";
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
 const { Text, Link } = Typography;
@@ -58,48 +58,8 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	const [assetUrl, setAssetUrl] = useState<string>("");
 	const [loading, setLoading] = useState(false);
 	const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
-	const [metaData, setMetadata] = useState<MetaDataType>(null);
-	const [editAssetData, setEditAssetData] = useState<Partial<AssetType>>(null);
-	const [newAssetModalVisible, setNewAssetModalVisible] = useState<boolean>(false);
+
 	const [editAssetId, setEditAsseId] = useState<string>(null);
-
-	const toggleNewAssetModal = (): void => {
-		setNewAssetModalVisible(prevState => {
-			return !prevState;
-		});
-	};
-
-	const categoryMap: Array<CategoryMap> = useMemo(() => {
-		if (metaData) {
-			return metaData.categories.list.map(elem => {
-				return {
-					title: { name: elem.name, level: "category" },
-					key: elem._id,
-					children: metaData.subcategories.list
-						.filter(subElem => {
-							return subElem.category === elem._id;
-						})
-						.map(subElem => {
-							return {
-								title: { name: subElem.name, level: "subCategory" },
-								key: subElem._id,
-								children: metaData.verticals.list
-									.filter(vert => {
-										return vert.subcategory === subElem._id;
-									})
-									.map(filtVert => {
-										return {
-											title: { name: filtVert.name, level: "verticals" },
-											key: filtVert._id,
-										};
-									}),
-							};
-						}),
-				};
-			});
-		}
-		return [];
-	}, [metaData]);
 
 	const assetUrlChange = (e: ChangeEvent<HTMLInputElement>): void => {
 		const {
@@ -107,18 +67,6 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 		} = e;
 		setAssetUrl(value);
 	};
-
-	const fetchMetaData = async (): Promise<void> => {
-		const endpoint = getMetaDataApi();
-		const response = await fetcher({ endPoint: endpoint, method: "GET" });
-		if (response.statusCode === 200) {
-			setMetadata(response.data);
-		}
-	};
-
-	useEffect(() => {
-		fetchMetaData();
-	}, [addMissingAssetModalVisible]);
 
 	const addAsset = async (): Promise<void> => {
 		if (assetUrl) {
@@ -169,9 +117,22 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 	};
 
 	const onClick = (assetData: MoodboardAsset): void => {
-		setEditAssetData({ retailLink: assetData.externalUrl, ...assetData.asset });
-		setEditAsseId(assetData._id);
-		toggleNewAssetModal();
+		redirectToLocation({
+			pathname: "/assetstore/assetdetails",
+			query: {
+				assetId: assetData.asset ? assetData.asset._id : undefined,
+				mai: assetData._id,
+				did: designId,
+				rlink: assetData.externalUrl,
+				entry: window.location.pathname,
+			},
+			url: `/assetstore/assetdetails?mai=${assetData._id}&did=${designId}&entry=${window.location.pathname}&rlink=${
+				assetData.externalUrl
+			}${assetData.asset ? `&assetId=${assetData.asset._id}` : ""}`,
+		});
+		// setEditAssetData({ retailLink: assetData.externalUrl, ...assetData.asset });
+		// setEditAsseId(assetData._id);
+		// toggleNewAssetModal();
 	};
 
 	const markAssetAsComplete = async (
@@ -377,16 +338,6 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 						}}
 					/>
 				</Spin>
-				<NewAssetModal
-					location='MISSING_ASSETS'
-					metadata={metaData}
-					categoryMap={categoryMap}
-					assetData={editAssetData}
-					setAssetData={setEditAssetData}
-					toggleNewAssetModal={toggleNewAssetModal}
-					isOpen={newAssetModalVisible}
-					onOkComplete={markAssetAsComplete}
-				/>
 			</ChildSpacedDiv>
 		</SizeAdjustedModal>
 	);

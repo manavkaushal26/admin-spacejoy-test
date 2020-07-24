@@ -113,7 +113,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 				};
 			});
 			setAssetData(assetData);
-			setTotalCount(responseData.total);
+			setTotalCount(responseData.data.total);
 		}
 	}
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });

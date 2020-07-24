@@ -9,7 +9,7 @@ import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { withAuthVerification, redirectToLocation } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
@@ -19,7 +19,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useReducer, useState } from "react";
 import styled from "styled-components";
-import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "../_sections/AssetStore/reducer";
+import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
 
 interface AssetStoreProps {
 	isServer: boolean;
@@ -191,9 +191,15 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 		dispatch({ type: ASSET_ACTION_TYPES.NEW_ASSET_MODAL_VISIBLE, value: null });
 	};
 
-	const editAsset = (assetData): void => {
-		setEditAssetData(assetData);
-		toggleNewAssetModal();
+	const editAsset = (assetData: AssetType): void => {
+		redirectToLocation({
+			pathname: "/assetstore/assetdetails",
+			query: {
+				assetId: assetData._id,
+				entry: window.location.pathname,
+			},
+			url: `/assetstore/assetdetails?entry=${window.location.pathname}&assetId=${assetData._id}`,
+		});
 	};
 
 	const categoryMap: Array<CategoryMap> = useMemo(() => {

@@ -46,6 +46,13 @@ function pageRoute(app, router) {
 
 	// ****************************************************** Asset Store ******************************************************
 
+	router.get("/assetstore/assetdetails", TokenCheckMiddleware, (req, res) => {
+		const { params, query } = req;
+		app.render(req, res, "/assetstore/assetdetails", {
+			...query,
+		});
+	});
+
 	router.get("/assetstore/pid/:projectId/did/:designId/aeid/:assetEntryId", TokenCheckMiddleware, (req, res) => {
 		const { params } = req;
 		app.render(req, res, "/assetstore", {

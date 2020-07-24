@@ -1,8 +1,8 @@
-import React from "react";
-import { Table } from "antd";
 import { EcommOrder } from "@customTypes/ecommerceTypes";
+import { Table } from "antd";
 import moment from "moment";
-import { redirectToLocation } from "@utils/auth";
+import Link from "next/link";
+import React from "react";
 import OrderItemTable from "../OrderItemTable";
 
 interface AllOrderTable {
@@ -20,27 +20,16 @@ const AllOrderTable: React.FC<AllOrderTable> = ({ orderData, total, pageSize, pa
 		setPageNo(pageNo);
 	};
 
-	const onRowClick = (row: EcommOrder) => {
-		redirectToLocation({
-			pathname: "/ecommerce/ordertracking/orderdetails",
-			query: { orderId: row._id },
-			url: `/ecommerce/ordertracking/orderdetails?orderId=${row._id}`,
-		});
-	};
-
 	return (
 		<Table
 			rowKey='_id'
 			expandable={{
 				expandedRowRender: function TableRender(record) {
-					return <OrderItemTable orderItems={record.orderItems || []} />;
+					return <OrderItemTable orderItems={record.orderItems || []} orderId={record._id} />;
 				},
 				rowExpandable: record => record.orderItems && !!record.orderItems.length,
 			}}
 			dataSource={orderData}
-			onRow={record => {
-				return { onClick: () => onRowClick(record) };
-			}}
 			pagination={{
 				current: pageNo,
 				total,
@@ -54,7 +43,11 @@ const AllOrderTable: React.FC<AllOrderTable> = ({ orderData, total, pageSize, pa
 				key='_id'
 				title='Name'
 				render={(_text, record: EcommOrder) => {
-					return `${record.firstName} ${record.lastName}`;
+					return (
+						<Link href={`/ecommerce/ordertracking/orderdetails?orderId=${record._id}`}>
+							{`${record.firstName} ${record.lastName}`}
+						</Link>
+					);
 				}}
 			/>
 			<Table.Column key='_id' title='Order Id' dataIndex='orderId' />

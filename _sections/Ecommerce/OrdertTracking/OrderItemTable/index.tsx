@@ -2,15 +2,17 @@ import React from "react";
 import { Table, Row, Col, Avatar, Typography, Button } from "antd";
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
+import Link from "next/link";
 
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 interface OrderItemTable {
 	orderItems: OrderItems[];
 	toggleOrderItemDrawer?: (data: OrderItems) => void;
+	orderId?: string;
 }
 
-const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemDrawer }) => {
+const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemDrawer, orderId }) => {
 	return (
 		<Table rowKey='_id' dataSource={orderItems || []} scroll={{ x: 768 }} pagination={{ hideOnSinglePage: true }}>
 			<Table.Column
@@ -34,7 +36,9 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 							<Col>
 								<Row>
 									<Col span={24}>
-										<Text strong>{record?.product?.name}</Text>
+										<a href={record?.product?.retailLink} target='_blank' rel='noopener noreferrer'>
+											{record?.product?.name}
+										</a>
 									</Col>
 									<Col span={24}>
 										<Text type='secondary'>{record?.orderItemId}</Text>
@@ -60,26 +64,28 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 				title='Actions'
 				render={(_, record: OrderItems) => (
 					<Row align='middle'>
-						{toggleOrderItemDrawer || record.tracking ? (
-							<>
-								{record.tracking && (
-									<Col>
-										<Link href={record.tracking.trackingUrl} rel='noopener noreferrer' target='_blank'>
-											Track
-										</Link>
-									</Col>
+						<>
+							{record.tracking && (
+								<Col>
+									<a href={record.tracking.trackingUrl} rel='noopener noreferrer' target='_blank'>
+										Track
+									</a>
+								</Col>
+							)}
+							<Col>
+								{toggleOrderItemDrawer ? (
+									<Button type='link' onClick={() => toggleOrderItemDrawer(record)}>
+										Modify
+									</Button>
+								) : (
+									<Link
+										href={`/ecommerce/ordertracking/orderdetails?orderId=${orderId}&orderItemId=${record.orderItemId}`}
+									>
+										Modify
+									</Link>
 								)}
-								{toggleOrderItemDrawer && (
-									<Col>
-										<Button type='link' onClick={() => toggleOrderItemDrawer(record)}>
-											Modify
-										</Button>
-									</Col>
-								)}
-							</>
-						) : (
-							"-"
-						)}
+							</Col>
+						</>
 					</Row>
 				)}
 			/>
