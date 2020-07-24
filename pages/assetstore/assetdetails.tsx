@@ -38,6 +38,7 @@ import {
 	Tooltip,
 	Typography,
 	Upload,
+	Switch,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -613,6 +614,8 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				if (mai && designId) {
 					markAssetAsComplete(responseAssetData._id, responseAssetData.status);
 				}
+			} else {
+				notification.error({ message: "Failed to save Product", description: response.message });
 			}
 		} catch (e) {
 			if (e.message === "Failed to fetch") {
@@ -668,7 +671,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 															<Input.TextArea />
 														</Form.Item>
 													</Col>
-													<Col span={12}>
+													<Col span={8}>
 														<Form.Item
 															name='price'
 															label='Price (USD)'
@@ -677,23 +680,22 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 															<InputNumber style={{ width: "100%" }} />
 														</Form.Item>
 													</Col>
-													<Col span={12}>
-														<Row gutter={[0, 18]}>
-															<Col span={24}>Weight</Col>
-															<Col span={20}>
-																<Form.Item name='weight' rules={[{ required: true, type: "number", min: 0 }]} noStyle>
-																	<InputNumber style={{ width: "100%" }} />
-																</Form.Item>
-															</Col>
-															<Col span={4}>
-																<Form.Item name='weightUnit' rules={[{ required: true }]} noStyle>
-																	<Select>
-																		<Select.Option value='kg'>Kg</Select.Option>
-																		<Select.Option value='lb'>lb</Select.Option>
-																	</Select>
-																</Form.Item>
-															</Col>
-														</Row>
+													<Col span={8}>
+														<Form.Item
+															name='weight'
+															label='Weight'
+															rules={[{ required: true, type: "number", min: 0 }]}
+														>
+															<InputNumber style={{ width: "100%" }} />
+														</Form.Item>
+													</Col>
+													<Col span={8}>
+														<Form.Item name='weightUnit' label='Weight Unit' rules={[{ required: true }]}>
+															<Select>
+																<Select.Option value='kg'>Kg</Select.Option>
+																<Select.Option value='lb'>lb</Select.Option>
+															</Select>
+														</Form.Item>
 													</Col>
 													<Col span={12}>
 														<Form.Item name='material' label='Material' rules={[{ required: true }]}>
@@ -828,11 +830,8 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 														</Form.Item>
 													</Col>
 													<Col span={12}>
-														<Form.Item name='shoppable' label='Shoppable' normalize={value => !!value}>
-															<Select>
-																<Select.Option value={1}>Yes</Select.Option>
-																<Select.Option value={0}>No</Select.Option>
-															</Select>
+														<Form.Item name='shoppable' label='Shoppable'>
+															<Switch size='default' checkedChildren='Yes' unCheckedChildren='No' />
 														</Form.Item>
 													</Col>
 													<Col span={12}>

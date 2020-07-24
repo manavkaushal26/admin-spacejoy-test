@@ -188,7 +188,13 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 	};
 
 	const toggleNewAssetModal = (): void => {
-		dispatch({ type: ASSET_ACTION_TYPES.NEW_ASSET_MODAL_VISIBLE, value: null });
+		redirectToLocation({
+			pathname: "/assetstore/assetdetails",
+			query: {
+				entry: window.location.pathname,
+			},
+			url: `/assetstore/assetdetails?entry=${window.location.pathname}`,
+		});
 	};
 
 	const editAsset = (assetData: AssetType): void => {

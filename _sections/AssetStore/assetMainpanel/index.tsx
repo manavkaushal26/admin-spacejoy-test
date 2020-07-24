@@ -312,7 +312,16 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 							<Col>
 								<Row gutter={[12, 12]}>
 									<Col>
-										<Image height='200px' src={primaryAsset.cdn} />
+										<Image
+											height='200px'
+											src={getValueSafely(
+												() =>
+													primaryAsset.productImages
+														? primaryAsset.productImages[0]?.cdn
+														: undefined || primaryAsset.cdn,
+												""
+											)}
+										/>
 									</Col>
 									<Col>
 										<Row gutter={[4, 4]}>

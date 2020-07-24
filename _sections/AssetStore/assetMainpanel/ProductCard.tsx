@@ -53,7 +53,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						height='250px'
 						autoAdjust
 						src={getValueSafely(
-							() => asset.cdn,
+							() => (asset.productImages ? asset.productImages[0]?.cdn : undefined || asset.cdn),
 							process.env.NODE_ENV !== "production"
 								? "v1581080070/admin/productImagePlaceholder.jpg"
 								: "v1581080111/admin/productImagePlaceholder.jpg"

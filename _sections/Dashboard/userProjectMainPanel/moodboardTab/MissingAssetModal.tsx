@@ -130,9 +130,6 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 				assetData.externalUrl
 			}${assetData.asset ? `&assetId=${assetData.asset._id}` : ""}`,
 		});
-		// setEditAssetData({ retailLink: assetData.externalUrl, ...assetData.asset });
-		// setEditAsseId(assetData._id);
-		// toggleNewAssetModal();
 	};
 
 	const markAssetAsComplete = async (
@@ -278,7 +275,7 @@ const MissingAssetModal: React.FC<MissingAssetModal> = ({
 															<Popconfirm
 																title='Are you sure you want to mark product as incomplete?'
 																onConfirm={(): Promise<void> =>
-																	markAssetAsComplete(asset.asset, asset._id, Status.pending)
+																	markAssetAsComplete(asset.asset, asset._id, Status.pending, popoverOptions.force)
 																}
 															>
 																<Tooltip placement='bottom' title='Mark as not complete'>
