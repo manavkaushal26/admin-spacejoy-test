@@ -102,8 +102,8 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 		const endPoint = getSingleCollection(id);
 		try {
 			const response = await fetcher({ endPoint, method: "GET" });
-			if (response.status === "success") {
-				setCollectionData(response.data);
+			if (response.data.status === "success") {
+				setCollectionData(response.data.data);
 			} else {
 				notification.error({ message: "Something went wrong fetching the collection" });
 			}
@@ -172,25 +172,21 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				},
 			});
 
-			if (response.status === "success") {
-				setCollectionData({ ...collectionData, ...response.data });
-				onSave({ ...collectionData, ...response.data }, false);
+			if (response.data.status === "success") {
+				setCollectionData({ ...collectionData, ...response.data.data });
+				onSave({ ...collectionData, ...response.data.data }, false);
 				notification.open({
 					key: "Regenerate",
-					message: "Saved Collection",
+					message: "Regenerated Collection",
 					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 				});
 			} else {
-				notification.open({
-					key: "Regenerate",
-					message: "Error Saving Collection",
-					icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
-				});
+				throw new Error();
 			}
 		} catch (e) {
 			notification.open({
 				key: "Regenerate",
-				message: "Error Saving Collection",
+				message: "Error regenerating Collection",
 				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 			});
 		}
@@ -217,16 +213,16 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 				data: collectionData,
 			},
 		});
-		if (response.status === "success") {
+		if (response.data.status === "success") {
 			notification.open({
 				key: "save",
 				message: "Saved Collection",
 				icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 			});
-			setCollectionData(response.data);
+			setCollectionData(response.data.data);
 			await onRegenerateClick();
 			if (onSave) {
-				onSave(response.data, newEntry);
+				onSave(response.data.data, newEntry);
 			}
 		} else {
 			notification.open({

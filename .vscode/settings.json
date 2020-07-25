@@ -1,10 +1,14 @@
-{ 
+{
   "workbench.editor.limit.enabled": true,
   "workbench.editor.limit.value": 7,
-  "eslint.enable": true,
+	"eslint.enable": true,
+	"editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  },
-  "typescript.suggest.completeFunctionCalls": true
-
+		"source.organizeImports": true,
+		"source.fixAll": true,
+	},
+	"typescript.suggest.completeFunctionCalls": true,
+	"eslint.codeActionsOnSave.mode": "all",
+	"files.trimFinalNewlines": true,
+	"files.trimTrailingWhitespace": true,
 }

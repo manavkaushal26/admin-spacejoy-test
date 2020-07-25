@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from "react";
-import PageLayout from "@sections/Layout";
-import { company } from "@utils/config";
-import Head from "next/head";
-import { NextPage } from "next";
-import User, { Role } from "@customTypes/userType";
-import IndexPageMeta from "@utils/meta";
-import { Row, Typography, Col, notification, Card, Button, Pagination } from "antd";
-import { CollectionBase } from "@customTypes/collectionTypes";
 import { getAllCollections, getAllCollectionsMeta } from "@api/metaApi";
-import fetcher from "@utils/fetcher";
 import Image from "@components/Image";
-import styled from "styled-components";
+import { CollectionBase } from "@customTypes/collectionTypes";
+import User, { Role } from "@customTypes/userType";
 import CreateEditCollection from "@sections/collections/CreateEditCollection";
+import PageLayout from "@sections/Layout";
+import { withAuthVerification } from "@utils/auth";
+import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import IndexPageMeta from "@utils/meta";
+import { Button, Card, Col, notification, Pagination, Row, Typography } from "antd";
+import { NextPage } from "next";
+import Head from "next/head";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
 const { Title } = Typography;
 const LoudPaddingDiv = styled.div`
@@ -58,8 +59,8 @@ const CollectionsMeta: NextPage<{
 	const fetchCollection = async (): Promise<void> => {
 		const endPoint = `${getAllCollections()}?skip=${pageSize * (pageNo - 1)}&limit=${pageSize}`;
 		const response = await fetcher({ endPoint, method: "GET" });
-		if (response.status === "success") {
-			setCollections(response.data);
+		if (response.statusCode <= 300) {
+			setCollections(response.data.data);
 			fetchCollectionMeta();
 		} else {
 			notification.error({ message: "Failed to fetch collections" });
@@ -91,7 +92,7 @@ const CollectionsMeta: NextPage<{
 	}, [pageNo, pageSize]);
 
 	return (
-		<PageLayout pageName="Metamanger" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Metamanger' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Collections | {company.product}</title>
 				{IndexPageMeta}
@@ -99,12 +100,12 @@ const CollectionsMeta: NextPage<{
 			<LoudPaddingDiv>
 				<Row gutter={[8, 8]}>
 					<Col span={24}>
-						<Row justify="space-between">
+						<Row justify='space-between'>
 							<Col>
 								<Title>Collections</Title>
 							</Col>
 							<Col>
-								<Button type="primary" onClick={(): void => onClick()}>
+								<Button type='primary' onClick={(): void => onClick()}>
 									Create New Collection
 								</Button>
 							</Col>
@@ -129,7 +130,7 @@ const CollectionsMeta: NextPage<{
 						</Row>
 					</Col>
 					<Col span={24}>
-						<Row justify="center">
+						<Row justify='center'>
 							<Pagination
 								current={pageNo}
 								total={collectionMeta.count}
@@ -162,4 +163,4 @@ CollectionsMeta.getInitialProps = async ({
 	};
 	return { isServer, authVerification };
 };
-export default CollectionsMeta;
+export default withAuthVerification(CollectionsMeta);

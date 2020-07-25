@@ -76,6 +76,7 @@ export interface MetaDataType {
 }
 
 export interface ImageType {
+	_id: string;
 	cdn: string;
 	storageUrl: string;
 }

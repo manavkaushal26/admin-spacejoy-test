@@ -30,15 +30,16 @@ import {
 	Form,
 	Input,
 	InputNumber,
+	Modal,
 	notification,
 	Row,
 	Select,
 	Space,
 	Spin,
+	Switch,
 	Tooltip,
 	Typography,
 	Upload,
-	Switch,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -204,9 +205,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 		if (state) {
 			if (state.productImages) {
 				setImageFile(
-					state.productImages.map((image, index) => {
+					state.productImages.map(image => {
 						return {
-							uid: index.toString(),
+							uid: image._id,
 							name: image.cdn.split("/").pop(),
 							status: "done",
 							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
@@ -466,6 +467,45 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 		};
 	};
 
+	const handleProductImageDeleteAfterConfirm = async (file: RcFile) => {
+		const endPoint = uploadAssetImageEndpoint;
+		const key = "notify";
+
+		notification.open({ icon: <LoadingOutlined />, message: "Deleting Product image", key, duration: 0 });
+
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: "DELETE",
+				body: { imageIds: [file.uid] },
+			});
+			if (response.statusCode <= 300) {
+				const productImageFileList = response.data.productImages.map((image, index) => {
+					return {
+						uid: index._id,
+						name: image.cdn.split("/").pop(),
+						status: "done",
+						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+						size: 0,
+						type: "application/octet-stream",
+					};
+				});
+				setImageFile(productImageFileList);
+				notification.success({ message: "Deleted Image successfully", key });
+			} else {
+				throw new Error();
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to Delete", key });
+		}
+	};
+	const handleProductImageDelete = async (file: RcFile) => {
+		Modal.confirm({
+			title: "This will delete the image. Are you sure?",
+			onOk: () => handleProductImageDeleteAfterConfirm(file),
+		});
+	};
+
 	const handleProductImageUpload = async (): Promise<void> => {
 		const endPoint = uploadAssetImageEndpoint;
 		const key = "notify";
@@ -473,7 +513,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 		imageFilesToUpload.forEach(file => {
 			formData.append("files", file, file.fileName);
 		});
-		notification.info({ message: "Uploading Product images", key });
+		notification.open({ icon: <LoadingOutlined />, message: "Uploading Product images", key, duration: 0 });
 
 		try {
 			const response = await fetcher({
@@ -483,9 +523,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				body: formData,
 			});
 			if (response.statusCode <= 300) {
-				const productImageFileList = response.data.productImages.map((image, index) => {
+				const productImageFileList = response.data.productImages.map(image => {
 					return {
-						uid: index.toString(),
+						uid: image._id,
 						name: image.cdn.split("/").pop(),
 						status: "done",
 						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
@@ -493,6 +533,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 						type: "application/octet-stream",
 					};
 				});
+				console.log("productImageFileList", productImageFileList);
 				setImageFile(productImageFileList);
 				setImageFilesToUpload([]);
 				notification.success({ message: "Uploaded Images successfully", key });
@@ -830,7 +871,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 														</Form.Item>
 													</Col>
 													<Col span={12}>
-														<Form.Item name='shoppable' label='Shoppable'>
+														<Form.Item name='shoppable' label='Shoppable' valuePropName='checked'>
 															<Switch size='default' checkedChildren='Yes' unCheckedChildren='No' />
 														</Form.Item>
 													</Col>
@@ -1082,6 +1123,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 															listType='picture-card'
 															onPreview={handlePreview}
 															multiple
+															onRemove={handleProductImageDelete}
 															beforeUpload={handleBeforeProductImageUpload}
 															accept='image/*'
 														>
