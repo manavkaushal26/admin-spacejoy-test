@@ -1,14 +1,14 @@
+import { getOrderItemApi } from "@api/ecommerceApi";
 import {
-	ReturnCancelledInterface,
-	OrderItems,
 	EcommerceStatus,
 	EcommerceStatusPosition,
 	EcommerceStatusReverseMap,
+	OrderItems,
+	ReturnCancelledInterface,
 } from "@customTypes/ecommerceTypes";
-import { Button, Card, Col, Form, Input, Row, Typography, notification, Spin, Select, Steps, Modal } from "antd";
-import React, { useState } from "react";
-import { getOrderItemApi } from "@api/ecommerceApi";
 import fetcher from "@utils/fetcher";
+import { Button, Card, Col, Form, Input, Modal, notification, Row, Select, Spin, Steps, Typography } from "antd";
+import React, { useState } from "react";
 
 const { Text } = Typography;
 
@@ -28,7 +28,7 @@ const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemD
 		try {
 			const response = await fetcher({ endPoint, method: cancelData ? "PUT" : "POST", body: formData });
 			if (response.statusCode <= 300) {
-				setOrderItemData({ cancel: response.data });
+				setOrderItemData({ cancellation: response.data });
 			} else {
 				throw new Error();
 			}

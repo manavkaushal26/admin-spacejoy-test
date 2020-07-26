@@ -480,9 +480,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				body: { imageIds: [file.uid] },
 			});
 			if (response.statusCode <= 300) {
-				const productImageFileList = response.data.productImages.map((image, index) => {
+				const productImageFileList = response.data.productImages.map(image => {
 					return {
-						uid: index._id,
+						uid: image._id,
 						name: image.cdn.split("/").pop(),
 						status: "done",
 						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,

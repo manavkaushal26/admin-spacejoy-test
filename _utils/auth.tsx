@@ -8,7 +8,7 @@ import React, { Component } from "react";
 import { allowedRoles } from "./constants";
 import fetcher from "./fetcher";
 import getCookie from "./getCookie";
-import { setLocalStorageValue, getLocalStorageValue } from "./storageUtils";
+import { getLocalStorageValue, setLocalStorageValue } from "./storageUtils";
 
 const endPointAuthCheck = "/auth/check";
 
@@ -54,7 +54,8 @@ function login({ token, user, redirectUrl = "/launchpad" }): void {
 	}
 }
 
-function logout(): void {
+async function logout(): Promise<void> {
+	await fetcher({ endPoint: "/auth/logout", method: "POST", body: {} });
 	clearAllStorage();
 	window.localStorage.setItem("logout", Date.now().toString());
 	redirectToLocation({

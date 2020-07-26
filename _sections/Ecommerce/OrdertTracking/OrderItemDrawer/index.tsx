@@ -1,12 +1,12 @@
+import { getOrderItemApi } from "@api/ecommerceApi";
 import { OrderItems as OrderItem, OrderItemStatus } from "@customTypes/ecommerceTypes";
-import { Col, Collapse, Drawer, Row, Typography, Form, Select, Button, Modal, notification } from "antd";
+import fetcher from "@utils/fetcher";
+import { Button, Col, Collapse, Drawer, Form, Modal, notification, Row, Select, Typography } from "antd";
 import React, { useState } from "react";
 import CancelPanel from "./CancelPanel";
 import CommentPanel from "./CommentPanel";
 import ReturnPanel from "./ReturnPanel";
 import TrackingPanel from "./TrackingPanel";
-import { getOrderItemApi } from "@api/ecommerceApi";
-import fetcher from "@utils/fetcher";
 
 const { Text } = Typography;
 
@@ -76,7 +76,7 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 					<Form.Item label='Status' name='status'>
 						<Select>
 							{Object.entries(OrderItemStatus)
-								.filter((_, index) => index < 6)
+								.filter((_, index) => index < 5)
 								.map(([value, key]) => {
 									return (
 										<Select.Option key={key} value={value}>
@@ -110,9 +110,9 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 					/>
 				</Collapse.Panel>
 				<Collapse.Panel
-					header={`Return ${orderItem.cancel ? "(Disabled as Cancellation is initiated)" : ""}`}
+					header={`Return ${orderItem.cancellation ? "(Disabled as Cancellation is initiated)" : ""}`}
 					key='return'
-					disabled={!!orderItem.cancel}
+					disabled={!!orderItem.cancellation}
 				>
 					<ReturnPanel entryId={orderItem._id} returnData={orderItem.return} setOrderItemData={updateOrderItemData} />
 				</Collapse.Panel>
@@ -122,7 +122,11 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 					key='cancel'
 					disabled={!!orderItem.return}
 				>
-					<CancelPanel entryId={orderItem._id} cancelData={orderItem.cancel} setOrderItemData={updateOrderItemData} />
+					<CancelPanel
+						entryId={orderItem._id}
+						cancelData={orderItem.cancellation}
+						setOrderItemData={updateOrderItemData}
+					/>
 				</Collapse.Panel>
 			</Collapse>
 		</Drawer>

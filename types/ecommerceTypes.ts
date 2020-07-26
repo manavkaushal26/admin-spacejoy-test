@@ -63,7 +63,6 @@ export interface OrderItemComments {
 
 export enum OrderItemStatus {
 	pending = "Pending",
-	cancelled = "Cancelled",
 	confirmed = "Confirmed",
 	dispatched = "Dispatched",
 	shipped = "Shipped",
@@ -90,7 +89,7 @@ export interface OrderItems {
 	comments: OrderItemComments[];
 	tracking: Tracking;
 	return: ReturnCancelledInterface;
-	cancel: ReturnCancelledInterface;
+	cancellation: ReturnCancelledInterface;
 }
 
 export interface EcommOrder {
