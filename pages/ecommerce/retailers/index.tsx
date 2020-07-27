@@ -1,18 +1,18 @@
+import { searchRetailerApi } from "@api/ecommerceApi";
+import Image from "@components/Image";
+import { Status } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification, redirectToLocation } from "@utils/auth";
+import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Col, Row, Typography, Card, Button, Pagination, Input, Select, Form, Spin } from "antd";
+import { Button, Card, Col, Form, Input, Pagination, Row, Select, Spin, Typography } from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
-import fetcher from "@utils/fetcher";
-import Image from "@components/Image";
-import Link from "next/link";
-import { Status } from "@customTypes/userType";
-import { searchRetailerApi } from "@api/ecommerceApi";
 
 const { Title } = Typography;
 
@@ -71,7 +71,9 @@ const Retailer: NextPage = () => {
 											type='primary'
 											onClick={() =>
 												redirectToLocation({
-													pathname: "/ecommerce/retailers/modifyretailer?mode=new",
+													pathname: "/ecommerce/retailers/modifyretailer",
+													query: { mode: "new" },
+													url: "/ecommerce/retailers/modifyretailer?mode=new",
 												})
 											}
 										>
