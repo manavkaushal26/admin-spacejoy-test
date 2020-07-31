@@ -709,7 +709,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 													</Col>
 													<Col span={24}>
 														<Form.Item name='description' label='Description' rules={[{ required: true }]}>
-															<Input.TextArea />
+															<Input.TextArea placeholder='Fill N/A if not available' />
 														</Form.Item>
 													</Col>
 													<Col span={8}>
@@ -722,16 +722,12 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 														</Form.Item>
 													</Col>
 													<Col span={8}>
-														<Form.Item
-															name='weight'
-															label='Weight'
-															rules={[{ required: true, type: "number", min: 0 }]}
-														>
+														<Form.Item name='weight' label='Weight' rules={[{ type: "number", min: 0 }]}>
 															<InputNumber style={{ width: "100%" }} />
 														</Form.Item>
 													</Col>
 													<Col span={8}>
-														<Form.Item name='weightUnit' label='Weight Unit' rules={[{ required: true }]}>
+														<Form.Item name='weightUnit' label='Weight Unit'>
 															<Select>
 																<Select.Option value='kg'>Kg</Select.Option>
 																<Select.Option value='lb'>lb</Select.Option>
@@ -740,7 +736,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 													</Col>
 													<Col span={12}>
 														<Form.Item name='material' label='Material' rules={[{ required: true }]}>
-															<Input />
+															<Input placeholder='Fill N/A if not available' />
 														</Form.Item>
 													</Col>
 													<Col span={12}>

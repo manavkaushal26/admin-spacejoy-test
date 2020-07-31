@@ -78,7 +78,10 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 	};
 
 	useEffect(() => {
-		if (open) fetchAndPopulatePaymentDetails();
+		if (open) {
+			fetchAndPopulatePaymentDetails();
+			form.setFieldsValue({ provider: "stripe", amount: originalAmount ? amount - originalAmount : 0 });
+		}
 	}, [open]);
 
 	const capturePayment = async paymentId => {
@@ -123,7 +126,7 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 							<Collapse.Panel key='payment' header='Create new payment'>
 								<Form
 									form={form}
-									initialValues={{ provider: "stripe", amount: originalAmount ? amount - originalAmount : amount }}
+									initialValues={{ provider: "stripe", amount: originalAmount ? amount - originalAmount : 0 }}
 									onFinish={confirmCreate}
 									labelCol={{ span: 24 }}
 								>
@@ -169,10 +172,10 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 										<Text>
 											{record.receipt ? (
 												<a href={record.receipt} rel='noopener noreferrer' target='_blank'>
-													Open reciept
+													Open receipt
 												</a>
 											) : (
-												"No reciept generated"
+												"No receipt generated"
 											)}
 										</Text>
 									);

@@ -190,7 +190,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									}
 									bordered
 									layout='vertical'
-									column={5}
+									column={6}
 									size='small'
 								>
 									<Descriptions.Item label='Order Id'>
@@ -210,10 +210,19 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									<Descriptions.Item label='Status'>
 										<Text strong>{EcommerceOrderStatusReverseMap[order?.status]}</Text>
 									</Descriptions.Item>
-									<Descriptions.Item label='Sub-total'>
+									<Descriptions.Item label='No of Products'>
+										<Text strong>{order?.orderItems?.length || 0}</Text>
+									</Descriptions.Item>
+									<Descriptions.Item label='Product Amount'>
 										<Text strong>
 											{(order?.amount - order?.shippingCharge - order?.tax + order?.discount)?.toFixed(2)}
 										</Text>
+									</Descriptions.Item>
+									<Descriptions.Item label='Discount'>
+										<Text strong>{order?.discount}</Text>
+									</Descriptions.Item>
+									<Descriptions.Item label='Sub-Total'>
+										<Text strong>{(order?.amount - order?.shippingCharge - order?.tax)?.toFixed(2)}</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label='Shipping Charge'>
 										<Text strong>{order?.shippingCharge}</Text>
@@ -221,32 +230,40 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									<Descriptions.Item label='Tax'>
 										<Text strong>{order?.tax}</Text>
 									</Descriptions.Item>
-									<Descriptions.Item label='Discount'>
-										<Text strong>{order?.discount}</Text>
-									</Descriptions.Item>
 									<Descriptions.Item label='Total'>
 										<Text strong>{order?.amount}</Text>
 									</Descriptions.Item>
 									{order?.originalOrder && order?.originalOrder?.amount !== order.amount && (
 										<>
-											<Descriptions.Item label='Original Sub-total'>
+											<Descriptions.Item label='Product Amount'>
 												<Text strong>
-													{order?.originalOrder?.amount -
+													{(
+														order?.originalOrder?.amount -
 														order?.originalOrder?.shippingCharge -
 														order?.originalOrder?.tax +
-														order?.originalOrder?.discount}
+														order?.originalOrder?.discount
+													)?.toFixed(2)}
 												</Text>
 											</Descriptions.Item>
-											<Descriptions.Item label='Original Shipping Charge'>
-												<Text strong>{order?.originalOrder?.shippingCharge}</Text>
-											</Descriptions.Item>
-											<Descriptions.Item label='Original Tax'>
-												<Text strong>{order?.originalOrder?.tax}</Text>
-											</Descriptions.Item>
-											<Descriptions.Item label='Original Discount'>
+											<Descriptions.Item label='Discount'>
 												<Text strong>{order?.originalOrder?.discount}</Text>
 											</Descriptions.Item>
-											<Descriptions.Item label='Original Total'>
+											<Descriptions.Item label='Sub-Total'>
+												<Text strong>
+													{(
+														order?.originalOrder?.amount -
+														order?.originalOrder?.shippingCharge -
+														order?.originalOrder?.tax
+													)?.toFixed(2)}
+												</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Shipping Charge'>
+												<Text strong>{order?.originalOrder?.shippingCharge}</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Tax'>
+												<Text strong>{order?.originalOrder?.tax}</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Total'>
 												<Text strong>{order?.originalOrder?.amount}</Text>
 											</Descriptions.Item>
 										</>
