@@ -33,6 +33,7 @@ const AllOrderTable: React.FC<AllOrderTable> = ({
 		<Table
 			loading={loading}
 			rowKey='_id'
+			scroll={{ x: 768 }}
 			expandable={{
 				expandedRowRender: function TableRender(record) {
 					return <OrderItemTable orderItems={record.orderItems || []} orderId={record._id} />;

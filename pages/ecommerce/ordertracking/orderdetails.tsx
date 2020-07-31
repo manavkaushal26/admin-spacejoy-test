@@ -19,7 +19,8 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { CSVLink } from "react-csv";
 
 const { Text } = Typography;
 
@@ -43,7 +44,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 
 	useEffect(() => {
 		if (order && orderItemId) {
-			const foundOrderItem = order.orderItems.find(singleItem => singleItem.orderItemId.includes(orderItemId));
+			const foundOrderItem = order?.orderItems.find(singleItem => singleItem.orderItemId.includes(orderItemId));
 
 			if (foundOrderItem) {
 				setOrderItem(foundOrderItem);
@@ -113,7 +114,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	};
 
 	const updateOrderItemData = (data: OrderItems) => {
-		const newOrderItems = order.orderItems.map(orderItem => {
+		const newOrderItems = order?.orderItems.map(orderItem => {
 			if (orderItem._id === data._id) {
 				return {
 					...orderItem,
@@ -146,6 +147,92 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 		Router.push({ pathname: "/ecommerce/ordertracking", query: {} }, "/ecommerce/ordertracking");
 	};
 
+	const csvData = useMemo(() => {
+		const data = [];
+		data.push(["Order Id", order?.orderId]);
+		data.push(["Name", `${order?.firstName} ${order?.lastName}`]);
+		data.push(["Phone Number", order?.phoneNumber]);
+		data.push(["Email", order?.user?.email]);
+		data.push(["Status", order?._id]);
+		data.push(["Payment Id", order?.payment]);
+		data.push(["Created At", moment(order?.createdAt).format("MM-DD-YYYY")]);
+		data.push(["Address", order?.address]);
+
+		data.push(["No of Products", order?.orderItems?.length || 0]);
+		data.push([]);
+		data.push(["Product Amount", "Discount", "Sub-Total", "Shipping Charge", "Tax", "Total"]);
+		data.push([
+			(order?.amount - order?.shippingCharge - order?.tax + order?.discount)?.toFixed(2),
+			order?.discount,
+			(order?.amount - order?.shippingCharge - order?.tax)?.toFixed(2),
+			order?.shippingCharge,
+			order?.tax,
+			order?.amount,
+		]);
+		data.push([]);
+		data.push([
+			"Original Product Amount",
+			"Original Discount",
+			"Original Sub-Total",
+			"Original Shipping Charge",
+			"Original Tax",
+			"Original Total",
+		]);
+		data.push([
+			(
+				order?.originalOrder?.amount -
+				order?.originalOrder?.shippingCharge -
+				order?.originalOrder?.tax +
+				order?.originalOrder?.discount
+			)?.toFixed(2),
+			order?.discount,
+			(order?.originalOrder?.amount - order?.originalOrder?.shippingCharge - order?.originalOrder?.tax)?.toFixed(2),
+			order?.originalOrder?.shippingCharge,
+			order?.originalOrder?.tax,
+			order?.originalOrder?.amount,
+		]);
+		data.push([]);
+		data.push([]);
+
+		data.push([
+			"Product Name",
+			"Order Item Id",
+			"Status",
+			"Quantity",
+			"Price",
+			"Total",
+			"Tracking",
+			"Live Update",
+			"Return Status",
+			"Return Reason",
+			"Cancellation Status",
+			"Cancellation Reason",
+		]);
+
+		order?.orderItems?.map(item => {
+			data.push([
+				item.product.name,
+				item.orderItemId,
+				item.status,
+				item.quantity,
+				item.price,
+				(item.price * item.quantity).toFixed(2),
+				item.tracking
+					? item.tracking.reduce(
+							(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
+							""
+					  )
+					: "",
+				item.comments ? item.comments.reduce((acc, curr) => acc.concat(`${curr.quote}-${curr.description}\n`), "") : "",
+				item?.return?.status || "",
+				item?.return?.reason || item?.return?.declineComment || item?.return?.comment || "",
+				item?.cancellation?.status || "",
+				item?.cancellation?.reason || item?.cancellation?.declineComment || item?.cancellation?.comment || "",
+			]);
+		});
+		return data;
+	}, [order]);
+
 	return (
 		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Order Tracking'>
 			<Head>
@@ -169,7 +256,17 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 												</Row>
 											</Col>
 											<Col>
-												<Row gutter={[4, 4]}>
+												<Row gutter={[4, 8]}>
+													<Col>
+														<CSVLink
+															className='ant-btn ant-btn-link'
+															data={csvData}
+															filename={`${order?.user?.email || order?.orderId}.csv`}
+															target='_blank'
+														>
+															Download CSV
+														</CSVLink>
+													</Col>
 													<Col>
 														<Button type='link' onClick={toggleEditPaymentDrawer}>
 															Payment details
@@ -190,7 +287,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									}
 									bordered
 									layout='vertical'
-									column={6}
+									column={{ lg: 6, md: 4, sm: 3, xs: 2 }}
 									size='small'
 								>
 									<Descriptions.Item label='Order Id'>
@@ -233,7 +330,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									<Descriptions.Item label='Total'>
 										<Text strong>{order?.amount}</Text>
 									</Descriptions.Item>
-									{order?.originalOrder && order?.originalOrder?.amount !== order.amount && (
+									{order?.originalOrder && order?.originalOrder?.amount !== order?.amount && (
 										<>
 											<Descriptions.Item label='Product Amount'>
 												<Text strong>
