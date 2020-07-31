@@ -191,6 +191,6 @@ export const convertMillisecondsToDays = (milliseconds: string | number): number
 	return milliseconds / (24 * 60 * 60 * 1000);
 };
 
-export const dateFromObjectId = (objectId): string => {
-	return new Date(parseInt(objectId.substring(0, 8), 16) * 1000).toISOString();
+export const dateFromObjectId = (objectId: string): string => {
+	return new Date(parseInt(objectId?.substring(0, 8), 16) * 1000 || 0)?.toISOString();
 };

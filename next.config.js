@@ -97,6 +97,10 @@ const nextConfig = {
 				test: antStyles,
 				use: "null-loader",
 			});
+			config.module.rules.unshift({
+				test: /\.css$/i,
+				use: ["style-loader", "css-loader"],
+			});
 		}
 		return config;
 	},

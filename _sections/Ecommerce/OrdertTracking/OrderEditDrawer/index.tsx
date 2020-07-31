@@ -1,7 +1,7 @@
 import { getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatus, EcommOrder, OrderItems as OrderItem } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
-import { Button, Drawer, Form, Input, notification, Select, Modal } from "antd";
+import { Button, Drawer, Form, Input, InputNumber, Modal, notification, Select } from "antd";
 import React from "react";
 
 interface OrderEditDrawer {
@@ -45,6 +45,11 @@ const OrderEditDrawer: React.FC<OrderEditDrawer> = ({ orderData, open, closeDraw
 					lastName: orderData.lastName,
 					phoneNumber: orderData.phoneNumber,
 					status: orderData.status,
+					address: orderData.address,
+					shippingCharge: orderData.shippingCharge,
+					tax: orderData.tax,
+					amount: orderData.amount,
+					discount: orderData.discount,
 				}}
 				onFinish={onClickFinish}
 			>
@@ -56,6 +61,22 @@ const OrderEditDrawer: React.FC<OrderEditDrawer> = ({ orderData, open, closeDraw
 				</Form.Item>
 				<Form.Item label='Phone Number' name='phoneNumber' rules={[{ required: true }]}>
 					<Input />
+				</Form.Item>
+				<Form.Item label='Shipping Address' name='address' rules={[{ required: true }]}>
+					<Input.TextArea />
+				</Form.Item>
+				<Form.Item label='Shipping Charges' name='shippingCharge' rules={[{ required: true, type: "number", min: 0 }]}>
+					<InputNumber style={{ width: "100%" }} />
+				</Form.Item>
+				<Form.Item label='Tax' name='tax' rules={[{ required: true, type: "number", min: 0 }]}>
+					<InputNumber style={{ width: "100%" }} />
+				</Form.Item>
+
+				<Form.Item label='Discount' name='discount' rules={[{ required: true, type: "number", min: 0 }]}>
+					<InputNumber style={{ width: "100%" }} />
+				</Form.Item>
+				<Form.Item label='Total' name='amount' rules={[{ required: true, type: "number", min: 0 }]}>
+					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item label='Status' name='status' rules={[{ required: true }]}>
 					<Select>

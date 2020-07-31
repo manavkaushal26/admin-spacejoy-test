@@ -19,3 +19,17 @@ export const getOrderApi = (orderId: string): string => {
 export const getOrderItemApi = (orderItemId: string): string => {
 	return `/v1/orderItems/${orderItemId}`;
 };
+
+// ===================================================================================================
+
+export const getOrderPaymentApi = (orderId: string): string => {
+	return `/v1/orders/${orderId}/payments`;
+};
+
+export const getCapturePaymentApi = (): string => {
+	return "/v1/orders/capturePayment";
+};
+
+export const getOrderTriggerEmailApi = (orderId: string): string => {
+	return `/v1/orders/${orderId}/email`;
+};

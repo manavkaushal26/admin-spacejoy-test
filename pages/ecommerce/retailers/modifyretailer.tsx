@@ -1,24 +1,38 @@
+import { PlusOutlined } from "@ant-design/icons";
+import { uploadRetailerImageApi } from "@api/ecommerceApi";
+import { retailerApi } from "@api/retailerApi";
+import ImageDisplayModal from "@components/ImageDisplayModal";
+import { EcommRetailer } from "@customTypes/assetInfoTypes";
 import User, { Status } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
+import { getBase64 } from "@utils/commonUtils";
+import { cloudinary, cookieNames, page } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import getCookie from "@utils/getCookie";
 import IndexPageMeta from "@utils/meta";
-import { Col, Form, Input, Radio, Row, Select, Slider, Button, notification, Spin, Upload, Typography } from "antd";
+import {
+	Button,
+	Col,
+	Form,
+	Input,
+	InputNumber,
+	notification,
+	Radio,
+	Row,
+	Select,
+	Slider,
+	Spin,
+	Typography,
+	Upload,
+} from "antd";
+import { FormInstance } from "antd/lib/form";
+import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import { NextPage } from "next";
 import Head from "next/head";
-import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { retailerApi } from "@api/retailerApi";
-import fetcher from "@utils/fetcher";
-import { EcommRetailer } from "@customTypes/assetInfoTypes";
-import { FormInstance } from "antd/lib/form";
 import { useRouter } from "next/router";
-import { UploadFile, UploadChangeParam } from "antd/lib/upload/interface";
-import { cloudinary, cookieNames, page } from "@utils/config";
-import { uploadRetailerImageApi } from "@api/ecommerceApi";
-import { PlusOutlined } from "@ant-design/icons";
-import getCookie from "@utils/getCookie";
-import { getBase64 } from "@utils/commonUtils";
-import ImageDisplayModal from "@components/ImageDisplayModal";
+import { LoudPaddingDiv } from "pages/platformanager";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const { Text } = Typography;
 
@@ -271,6 +285,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 											</Radio.Group>
 										</Form.Item>
 									</Col>
+
 									<Col sm={24} md={12} lg={6}>
 										<Form.Item label='Exclusive Partner?' name='exclusive'>
 											<Radio.Group defaultValue={false}>
@@ -279,7 +294,15 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 											</Radio.Group>
 										</Form.Item>
 									</Col>
-
+									<Col sm={24} md={12} lg={6}>
+										<Form.Item
+											label='Return Period (in Days)'
+											name='returnTimeLimit'
+											rules={[{ type: "number", min: 0 }]}
+										>
+											<InputNumber style={{ width: "100%" }} />
+										</Form.Item>
+									</Col>
 									<Col span={24}>
 										<Form.Item label='Shipping Policy' name='shippingPolicy' rules={[{ required: true }]}>
 											<Input.TextArea />

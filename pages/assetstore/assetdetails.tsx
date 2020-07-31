@@ -157,7 +157,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				"spatialData.mountType": response.data.spatialData.mountType,
 				"spatialData.clampValue": response.data.spatialData.clampValue,
 				"weight": parseFloat(response.data.weight),
-				"price": parseFloat(response.data.weight),
+				"price": parseFloat(response.data.price),
 			});
 		} else {
 			notification.error({ message: "Failed to load asset data" });

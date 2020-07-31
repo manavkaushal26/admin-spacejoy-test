@@ -1,14 +1,14 @@
+import { getOrderItemApi } from "@api/ecommerceApi";
 import {
-	ReturnCancelledInterface,
-	OrderItems,
 	EcommerceStatus,
 	EcommerceStatusPosition,
 	EcommerceStatusReverseMap,
+	OrderItems,
+	ReturnCancelledInterface,
 } from "@customTypes/ecommerceTypes";
-import { Button, Card, Col, Form, Input, Row, Typography, notification, Spin, Select, Steps, Modal } from "antd";
-import React, { useState } from "react";
-import { getOrderItemApi } from "@api/ecommerceApi";
 import fetcher from "@utils/fetcher";
+import { Button, Card, Col, Form, Input, Modal, notification, Row, Select, Spin, Steps, Typography } from "antd";
+import React, { useState } from "react";
 
 const { Text } = Typography;
 
@@ -28,7 +28,7 @@ const ReturnPanel: React.FC<ReturnPanel> = ({ returnData, entryId, setOrderItemD
 		try {
 			const response = await fetcher({ endPoint, method: returnData ? "PUT" : "POST", body: formData });
 			if (response.statusCode <= 300) {
-				setOrderItemData({ return: response.data });
+				setOrderItemData({ return: response.data, status: formData.status });
 			} else {
 				throw new Error();
 			}
@@ -110,7 +110,7 @@ const ReturnPanel: React.FC<ReturnPanel> = ({ returnData, entryId, setOrderItemD
 							{returnData ? (
 								<>
 									<Form.Item label='Status' name='status' rules={[{ required: true }]}>
-										<Select disabled={returnData.status !== EcommerceStatus.Initiated}>
+										<Select>
 											{Object.entries(EcommerceStatus)
 												.filter(([, value]) => value !== returnData.status)
 												.map(([key, value]) => {
@@ -130,14 +130,14 @@ const ReturnPanel: React.FC<ReturnPanel> = ({ returnData, entryId, setOrderItemD
 										{({ getFieldValue }) => {
 											return getFieldValue("status") === EcommerceStatus.Declined ? (
 												<Form.Item name='declineComment' label='Reason' rules={[{ required: true }]}>
-													<Input disabled={returnData.status !== EcommerceStatus.Initiated} />
+													<Input />
 												</Form.Item>
 											) : null;
 										}}
 									</Form.Item>
 
 									<Form.Item>
-										<Button htmlType='submit' type='primary' disabled={returnData.status !== EcommerceStatus.Initiated}>
+										<Button htmlType='submit' type='primary'>
 											Save
 										</Button>
 									</Form.Item>

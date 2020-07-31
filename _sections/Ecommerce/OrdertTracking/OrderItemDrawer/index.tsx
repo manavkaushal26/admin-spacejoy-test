@@ -1,7 +1,7 @@
 import { getOrderItemApi } from "@api/ecommerceApi";
 import { OrderItems as OrderItem, OrderItemStatus } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Collapse, Drawer, Form, Modal, notification, Row, Select, Typography } from "antd";
+import { Button, Col, Collapse, Drawer, Form, InputNumber, Modal, notification, Row, Select, Typography } from "antd";
 import React, { useState } from "react";
 import CancelPanel from "./CancelPanel";
 import CommentPanel from "./CommentPanel";
@@ -9,6 +9,10 @@ import ReturnPanel from "./ReturnPanel";
 import TrackingPanel from "./TrackingPanel";
 
 const { Text } = Typography;
+
+const validateMessages = {
+	required: "'${label}' is required!",
+};
 
 interface OrderItemDrawer {
 	orderItemData: OrderItem;
@@ -37,7 +41,9 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 				updateOrderItemData({
 					...orderItemData,
 					...data,
-					...response.data,
+					status: response.data.status,
+					price: response.data.price,
+					quantity: response.data.quantity,
 				});
 				notification.success({ message: "Updated status" });
 			} else {
@@ -72,8 +78,19 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 			}
 		>
 			{!orderItemData.status.includes("cancel") && !orderItemData.status.includes("returns") && (
-				<Form initialValues={{ status: orderItemData.status }} onFinish={handleFinish}>
-					<Form.Item label='Status' name='status'>
+				<Form
+					validateMessages={validateMessages}
+					labelCol={{ span: 24 }}
+					initialValues={{ status: orderItemData.status, price: orderItemData.price, quantity: orderItemData.quantity }}
+					onFinish={handleFinish}
+				>
+					<Form.Item label='Price' name='price' rules={[{ required: true, type: "number", min: 0 }]}>
+						<InputNumber style={{ width: "100%" }} />
+					</Form.Item>
+					<Form.Item label='Quantity' name='quantity' rules={[{ required: true, type: "number", min: 0 }]}>
+						<InputNumber style={{ width: "100%" }} />
+					</Form.Item>
+					<Form.Item label='Status' name='status' rules={[{ required: true }]}>
 						<Select>
 							{Object.entries(OrderItemStatus)
 								.filter((_, index) => index < 5)

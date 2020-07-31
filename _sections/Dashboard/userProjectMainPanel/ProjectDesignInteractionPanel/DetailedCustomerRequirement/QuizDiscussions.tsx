@@ -109,8 +109,8 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 				endPoint,
 				method: "GET",
 			});
-			if (response) {
-				setQuizDiscussions(response);
+			if (response.statusCode <= 300) {
+				setQuizDiscussions(response.data);
 			} else {
 				notification.error({ message: "Failed to fetch discussions" });
 			}
@@ -165,7 +165,7 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 			setQuizDiscussions(prevDiscussions => [
 				...prevDiscussions,
 				{
-					...response,
+					...response.data,
 					user: {
 						profile: { firstName: getValueSafely(() => authVerification.name.split(" ")[0], "Unknown") },
 					},

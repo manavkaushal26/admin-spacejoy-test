@@ -1,4 +1,4 @@
-import { UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import moment from "moment";
 
@@ -18,6 +18,7 @@ export interface UserProjectSidePanelState {
 	count: number;
 	startedAt: [moment.Moment, moment.Moment];
 	endedAt: [moment.Moment, moment.Moment];
+	email: string;
 }
 
 export enum UserProjectSidePanelActionTypes {
@@ -73,6 +74,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	count: 0,
 	startedAt: [null, null],
 	endedAt: [null, null],
+	email: "",
 };
 
 export const UserProjectSidePanelActionCreator = (

@@ -1,5 +1,5 @@
 import { AssetType } from "./moodboardTypes";
-import { Status } from "./userType";
+import User, { Status } from "./userType";
 
 export const EcommerceOrderStatus = {
 	Pending: "pending",
@@ -35,13 +35,43 @@ export enum EcommerceStatusEnum {
 	Declined = 2,
 }
 export interface Tracking {
-	orderItemId: string;
-
+	orderItem: string;
+	_id: string;
 	trackingNumber: string;
-
+	createdAt: string;
 	trackingUrl: string;
 
 	vendor: string;
+}
+export enum OrderItemStatus {
+	pending = "Pending",
+	confirmed = "Confirmed",
+	dispatched = "Dispatched",
+	shipped = "Shipped",
+	delivered = "Delivered",
+	returnInitiated = "Return Initiated",
+	returnApproved = "Return Approved",
+	returnDeclined = "Return Declined",
+	cancellationInitiated = "Cancellation Initiated",
+	cancellationApproved = "Cancellation Approved",
+	cancellationRejected = "Cancellation Rejected",
+}
+
+export enum OrderItemStatuses {
+	pending = "pending",
+	confirmed = "confirmed",
+	dispatched = "dispatched",
+	shipped = "shipped",
+	delivered = "delivered",
+	returnInitiated = "returnInitiated",
+	returnApproved = "returnApproved",
+	returnDeclined = "returnDeclined",
+	cancellationInitiated = "cancellationInitiated",
+	cancellationApproved = "cancellationApproved",
+	cancellationRejected = "cancellationRejected",
+	initiated = "initiated",
+	approved = "approved",
+	declined = "declined",
 }
 
 export interface ReturnCancelledInterface {
@@ -61,23 +91,50 @@ export interface OrderItemComments {
 	updatedAt: string;
 }
 
-export enum OrderItemStatus {
-	pending = "Pending",
-	confirmed = "Confirmed",
-	dispatched = "Dispatched",
-	shipped = "Shipped",
-	delivered = "Delivered",
-	returnInitiated = "Return Initiated",
-	returnApproved = "Return Approved",
-	returnDeclined = "Return Declined",
-	cancellationInitiated = "Cancellation Initiated",
-	cancellationApproved = "Cancellation Approved",
-	cancellationRejected = "Cancellation Rejected",
+export interface OrderPayments {
+	provider: string;
+	paymentId: string;
+	chargeId: string;
+	refundId: string;
+	receipt: string;
+	capture: boolean;
+	_id: string;
+	order: string;
+	status: "succeeded" | "requires_capture";
+	meta: {
+		charge: {
+			id: string;
+			object: string;
+			amount: number;
+			amount_refunded: number;
+			application: null;
+			application_fee: null;
+			application_fee_amount: null;
+			balance_transaction: null;
+			calculated_statement_descriptor: "SPACEJOY";
+			captured: boolean;
+			created: number;
+			currency: "usd";
+			customer: string;
+			description: string;
+			paid: true;
+			payment_intent: null;
+			payment_method: "card_1H9bIUJH6mCGeVzyiCwo25dS";
+			receipt_email: string;
+			receipt_number: number;
+			receipt_url: string;
+			refunded: boolean;
+			status: "succeeded" | "requires_capture";
+		};
+	};
+	amount: number;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export interface OrderItems {
 	_id: string;
-	status: OrderItemStatus;
+	status: OrderItemStatuses;
 	shippingCharge: number;
 	orderItemId: string;
 	order: string;
@@ -87,7 +144,7 @@ export interface OrderItems {
 	createdAt: string;
 	updatedAt: string;
 	comments: OrderItemComments[];
-	tracking: Tracking;
+	tracking: Tracking[];
 	return: ReturnCancelledInterface;
 	cancellation: ReturnCancelledInterface;
 }
@@ -96,12 +153,13 @@ export interface EcommOrder {
 	_id: string;
 	status: Status;
 	payment: string;
-	user: string;
+	user: Partial<User>;
 	orderId: string;
 	address: string;
 	firstName: string;
 	lastName: string;
 	phoneNumber: string;
+	originalOrder: EcommOrder;
 	shippingCharge: number;
 	tax: number;
 	amount: number;

@@ -1,11 +1,11 @@
 import { searchProjectsApi } from "@api/projectApi";
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Drawer, Row } from "antd";
-import React, { useEffect, useRef, useState } from "react";
 import { Moment } from "moment";
-import { Status } from "@customTypes/userType";
+import React, { useEffect, useRef, useState } from "react";
 import LoadingCard from "../LoadingCard";
 import { MaxHeightDiv } from "../styled";
 import UserProjectCard from "../UserProjectCards";
@@ -17,22 +17,23 @@ const getRequestBody = (
 	nameSearchText: string,
 	designerSearchText: string,
 	phase: PhaseInternalNames[],
-	currentTab: string,
 	roomName: string,
 	by: SortFields,
 	order: -1 | 1,
 	startedAt: [Moment, Moment],
 	endedAt: [Moment, Moment],
-	status: Status
+	status: Status,
+	email: string
 ): Record<string, Record<string, string | PhaseInternalNames[] | string[]>> => {
-	const startedAtMap = startedAt.map(value => {
+	console.log("email", email);
+	const startedAtMap = startedAt?.map(value => {
 		if (value !== null) {
 			return value.format();
 		}
 		return null;
 	});
 
-	const endedAtMap = endedAt.map(value => {
+	const endedAtMap = endedAt?.map(value => {
 		if (value !== null) {
 			return value.format();
 		}
@@ -59,6 +60,10 @@ const getRequestBody = (
 		"endedAt": {
 			search: "range",
 			value: endedAtMap,
+		},
+		"email": {
+			search: "single",
+			value: email,
 		},
 	};
 	return body;
@@ -112,13 +117,13 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			state.nameSearchText,
 			state.designerSearchText,
 			state.phase,
-			state.currentTab,
 			state.name,
 			state.sortBy,
 			state.sortOrder,
 			state.startedAt,
 			state.endedAt,
-			state.status
+			state.status,
+			state.email
 		);
 		const resData = await fetcher({
 			endPoint,

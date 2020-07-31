@@ -12,9 +12,18 @@ interface AllOrderTable {
 	pageNo: number;
 	setPageNo: React.Dispatch<React.SetStateAction<number>>;
 	setPageSize: React.Dispatch<React.SetStateAction<number>>;
+	loading: boolean;
 }
 
-const AllOrderTable: React.FC<AllOrderTable> = ({ orderData, total, pageSize, pageNo, setPageNo, setPageSize }) => {
+const AllOrderTable: React.FC<AllOrderTable> = ({
+	orderData,
+	total,
+	pageSize,
+	pageNo,
+	setPageNo,
+	setPageSize,
+	loading,
+}) => {
 	const handleChange = (pageNo, pageSize) => {
 		setPageSize(pageSize);
 		setPageNo(pageNo);
@@ -22,6 +31,7 @@ const AllOrderTable: React.FC<AllOrderTable> = ({ orderData, total, pageSize, pa
 
 	return (
 		<Table
+			loading={loading}
 			rowKey='_id'
 			expandable={{
 				expandedRowRender: function TableRender(record) {

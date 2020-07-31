@@ -4,8 +4,10 @@ import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customT
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import OrderEditDrawer from "@sections/Ecommerce/OrdertTracking/OrderEditDrawer";
+import OrderEmailModal from "@sections/Ecommerce/OrdertTracking/OrderEmailModal";
 import OrderItemDrawer from "@sections/Ecommerce/OrdertTracking/OrderItemDrawer";
 import OrderItemTable from "@sections/Ecommerce/OrdertTracking/OrderItemTable";
+import PaymentsDrawer from "@sections/Ecommerce/OrdertTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
@@ -34,6 +36,8 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [editOrder, setEditOrder] = useState<boolean>(false);
+	const [paymentDrawerOpen, setPaymentDrawerOpen] = useState<boolean>(false);
+	const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
 
 	const Router = useRouter();
 
@@ -97,6 +101,13 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 		}
 	};
 
+	const toggleEditPaymentDrawer = () => {
+		setPaymentDrawerOpen(prevState => !prevState);
+	};
+	const toggleEmailModal = () => {
+		setEmailModalVisible(prevState => !prevState);
+	};
+
 	const setOrderData = orderData => {
 		setOrder(orderData);
 	};
@@ -136,7 +147,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification}>
+		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Order Tracking'>
 			<Head>
 				{IndexPageMeta}
 				<title>Orders | {company.product}</title>
@@ -158,15 +169,28 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 												</Row>
 											</Col>
 											<Col>
-												<Button type='primary' onClick={toggleEditOrderDrawer}>
-													Edit Order
-												</Button>
+												<Row gutter={[4, 4]}>
+													<Col>
+														<Button type='link' onClick={toggleEditPaymentDrawer}>
+															Payment details
+														</Button>
+													</Col>
+
+													<Col>
+														<Button onClick={toggleEmailModal}>Email Customer</Button>
+													</Col>
+													<Col>
+														<Button type='primary' onClick={toggleEditOrderDrawer}>
+															Edit Order
+														</Button>
+													</Col>
+												</Row>
 											</Col>
 										</Row>
 									}
 									bordered
 									layout='vertical'
-									column={4}
+									column={5}
 									size='small'
 								>
 									<Descriptions.Item label='Order Id'>
@@ -180,11 +204,16 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									<Descriptions.Item label='Phone Number'>
 										<Text strong>{order?.phoneNumber}</Text>
 									</Descriptions.Item>
+									<Descriptions.Item label='Email'>
+										<Text strong>{order?.user?.email}</Text>
+									</Descriptions.Item>
 									<Descriptions.Item label='Status'>
 										<Text strong>{EcommerceOrderStatusReverseMap[order?.status]}</Text>
 									</Descriptions.Item>
-									<Descriptions.Item label='Amount'>
-										<Text strong>{order?.amount}</Text>
+									<Descriptions.Item label='Sub-total'>
+										<Text strong>
+											{(order?.amount - order?.shippingCharge - order?.tax + order?.discount)?.toFixed(2)}
+										</Text>
 									</Descriptions.Item>
 									<Descriptions.Item label='Shipping Charge'>
 										<Text strong>{order?.shippingCharge}</Text>
@@ -195,6 +224,33 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 									<Descriptions.Item label='Discount'>
 										<Text strong>{order?.discount}</Text>
 									</Descriptions.Item>
+									<Descriptions.Item label='Total'>
+										<Text strong>{order?.amount}</Text>
+									</Descriptions.Item>
+									{order?.originalOrder && order?.originalOrder?.amount !== order.amount && (
+										<>
+											<Descriptions.Item label='Original Sub-total'>
+												<Text strong>
+													{order?.originalOrder?.amount -
+														order?.originalOrder?.shippingCharge -
+														order?.originalOrder?.tax +
+														order?.originalOrder?.discount}
+												</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Original Shipping Charge'>
+												<Text strong>{order?.originalOrder?.shippingCharge}</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Original Tax'>
+												<Text strong>{order?.originalOrder?.tax}</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Original Discount'>
+												<Text strong>{order?.originalOrder?.discount}</Text>
+											</Descriptions.Item>
+											<Descriptions.Item label='Original Total'>
+												<Text strong>{order?.originalOrder?.amount}</Text>
+											</Descriptions.Item>
+										</>
+									)}
 									<Descriptions.Item label='Payment Id'>
 										<Text strong>{order?.payment}</Text>
 									</Descriptions.Item>
@@ -202,7 +258,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 										<Text strong>{moment(order?.createdAt).format("MM-DD-YYYY")}</Text>
 									</Descriptions.Item>
 
-									<Descriptions.Item span={4} label='Address'>
+									<Descriptions.Item label='Address'>
 										<Text strong>{order?.address}</Text>
 									</Descriptions.Item>
 								</Descriptions>
@@ -215,6 +271,20 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 							</Col>
 						</Row>
 					</Spin>
+					<PaymentsDrawer
+						orderId={orderId}
+						toggleDrawer={toggleEditPaymentDrawer}
+						open={paymentDrawerOpen}
+						originalAmount={order?.originalOrder?.amount}
+						amount={order?.amount}
+					/>
+					<OrderEmailModal
+						open={emailModalVisible}
+						onClose={toggleEmailModal}
+						orderId={orderId}
+						orderItems={order?.orderItems}
+						order={order}
+					/>
 					{orderItem && (
 						<OrderItemDrawer
 							orderItemData={orderItem}

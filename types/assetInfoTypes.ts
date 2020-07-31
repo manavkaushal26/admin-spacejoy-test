@@ -91,6 +91,8 @@ export interface EcommRetailer {
 
 	brandColor: String;
 
+	returnTimeLimit: number;
+
 	sellType: "buy" | "rent" | "both";
 
 	offers: {

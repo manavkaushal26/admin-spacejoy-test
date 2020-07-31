@@ -1,8 +1,8 @@
-import React from "react";
-import { Table, Row, Col, Avatar, Typography, Button } from "antd";
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
+import { Button, Col, Row, Table, Typography } from "antd";
 import Link from "next/link";
+import React from "react";
 
 const { Text } = Typography;
 
@@ -23,14 +23,13 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 						<Row gutter={[8, 8]} align='middle'>
 							{((record?.product?.productImages && record?.product?.productImages[0]?.cdn) || record?.product?.cdn) && (
 								<Col>
-									<Avatar shape='square' size='large'>
-										<Image
-											src={
-												(record?.product?.productImages && record?.product?.productImages[0]?.cdn) ||
-												record?.product?.cdn
-											}
-										/>
-									</Avatar>
+									<Image
+										src={
+											(record?.product?.productImages && record?.product?.productImages[0]?.cdn) || record?.product?.cdn
+										}
+										width='50px'
+										nolazy
+									/>
 								</Col>
 							)}
 							<Col>
@@ -65,13 +64,6 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 				render={(_, record: OrderItems) => (
 					<Row align='middle'>
 						<>
-							{record.tracking && (
-								<Col>
-									<a href={record.tracking.trackingUrl} rel='noopener noreferrer' target='_blank'>
-										Track
-									</a>
-								</Col>
-							)}
 							<Col>
 								{toggleOrderItemDrawer ? (
 									<Button type='link' onClick={() => toggleOrderItemDrawer(record)}>

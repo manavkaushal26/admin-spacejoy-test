@@ -23,8 +23,9 @@ interface OrderTracking {
 
 const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) => {
 	const [orders, setOrders] = useState<EcommOrder[]>([]);
+	const [loading, setLoading] = useState(false);
 	const [searchValues, setSearchValues] = useState({
-		firstName: "",
+		email: "",
 		status: Status.pending,
 	});
 	const [total, setTotal] = useState(Number.NEGATIVE_INFINITY);
@@ -32,6 +33,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 	const [pageNo, setPageNo] = useState(1);
 
 	const fetchAndPopulateOrders = async () => {
+		setLoading(true);
 		const endPoint = `${searchOrdersApi()}?skip=${(pageNo - 1) * pageSize}&limit=${pageSize}`;
 		const response = await fetcher({
 			endPoint,
@@ -42,6 +44,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 		});
 		setOrders(response.data.orders);
 		setTotal(response.data.count);
+		setLoading(false);
 	};
 
 	useEffect(() => {
@@ -78,12 +81,12 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 										>
 											<Row gutter={[8, 0]}>
 												<Col sm={24} md={12}>
-													<Form.Item label='First Name' name='firstName'>
-														<Input placeholder='First Name' />
+													<Form.Item label='Email' name='email' normalize={(value: string) => value.trim()}>
+														<Input placeholder='Email' />
 													</Form.Item>
 												</Col>
 												<Col sm={24} md={6}>
-													<Form.Item label='Order Id' name='orderId'>
+													<Form.Item label='Order Id' name='orderId' normalize={(value: string) => value.trim()}>
 														<Input placeholder='Order Id' />
 													</Form.Item>
 												</Col>
@@ -97,6 +100,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 																	</Select.Option>
 																);
 															})}
+															<Select.Option value=''>All</Select.Option>
 														</Select>
 													</Form.Item>
 												</Col>
@@ -115,6 +119,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 						</Col>
 						<Col span={24}>
 							<AllOrderTable
+								loading={loading}
 								orderData={orders}
 								total={total}
 								pageSize={pageSize}

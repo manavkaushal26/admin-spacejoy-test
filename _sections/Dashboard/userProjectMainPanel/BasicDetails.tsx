@@ -1,7 +1,7 @@
 import { DetailedProject, PaymentStatus } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
-import { Col, Row, Typography, Collapse, Tooltip } from "antd";
+import { Col, Collapse, Row, Tooltip, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
 import { ModifiedText } from "../styled";
@@ -227,7 +227,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 										href={`mailto:${getValueSafely(
 											() => customer.email,
 											"N/A"
-										)}?subject=Regarding%20your%20${name}%20Project&body=Hi%20${customer.profile.firstName},`}
+										)}?subject=Regarding%20your%20${name}%20Project&body=Hi%20${customer?.profile?.firstName},`}
 									>
 										{getValueSafely(() => customer.email, "N/A")}
 									</a>

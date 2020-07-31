@@ -33,6 +33,13 @@ const TabSearch: React.FC<{
 	}, []);
 
 	const handleSearch = (value: string | number, type: string): void => {
+		if (type === "email") {
+			setState({
+				...state,
+				email: value as string,
+			});
+		}
+
 		if (type === "min") {
 			let copyValue = value as number;
 			if (minMax[1]) {
@@ -206,6 +213,30 @@ const TabSearch: React.FC<{
 									}}
 									onPressEnter={onSearchSubmit}
 									placeholder='Designer Name'
+									allowClear
+									prefix={<SearchOutlined />}
+								/>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={12}>
+						<Row gutter={[0, 4]}>
+							<Col span={24}>
+								<Text strong>Email</Text>
+							</Col>
+							<Col span={24}>
+								<Input
+									value={state.email}
+									style={{ width: "100%" }}
+									onChange={(e): void => {
+										e.persist();
+										const {
+											target: { value },
+										} = e;
+										handleSearch(value, "email");
+									}}
+									onPressEnter={onSearchSubmit}
+									placeholder='Email Id'
 									allowClear
 									prefix={<SearchOutlined />}
 								/>

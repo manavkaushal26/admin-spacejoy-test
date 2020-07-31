@@ -18,6 +18,12 @@ interface CancelPanel {
 	setOrderItemData: (data: Partial<OrderItems>) => void;
 }
 
+enum CancelStatus {
+	initiated = "cancellationInitiated",
+	approved = "cancellationApproved",
+	declined = "cancellationRejected",
+}
+
 const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemData }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
@@ -28,7 +34,7 @@ const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemD
 		try {
 			const response = await fetcher({ endPoint, method: cancelData ? "PUT" : "POST", body: formData });
 			if (response.statusCode <= 300) {
-				setOrderItemData({ cancellation: response.data });
+				setOrderItemData({ cancellation: response.data, status: CancelStatus[formData.status] });
 			} else {
 				throw new Error();
 			}
@@ -110,7 +116,7 @@ const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemD
 							{cancelData ? (
 								<>
 									<Form.Item label='Status' name='status' rules={[{ required: true }]}>
-										<Select disabled={cancelData.status !== EcommerceStatus.Initiated}>
+										<Select>
 											{Object.entries(EcommerceStatus)
 												.filter(([, value]) => value !== cancelData.status)
 												.map(([key, value]) => {
@@ -129,13 +135,13 @@ const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemD
 										{({ getFieldValue }) => {
 											return getFieldValue("status") === EcommerceStatus.Declined ? (
 												<Form.Item name='declineComment' label='Reason' rules={[{ required: true }]}>
-													<Input disabled={cancelData.status !== EcommerceStatus.Initiated} />
+													<Input />
 												</Form.Item>
 											) : null;
 										}}
 									</Form.Item>
 									<Form.Item>
-										<Button disabled={cancelData.status !== EcommerceStatus.Initiated} htmlType='submit' type='primary'>
+										<Button htmlType='submit' type='primary'>
 											Save
 										</Button>
 									</Form.Item>
