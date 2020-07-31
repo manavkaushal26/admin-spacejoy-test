@@ -24,8 +24,7 @@ const getRequestBody = (
 	endedAt: [Moment, Moment],
 	status: Status,
 	email: string
-): Record<string, Record<string, string | PhaseInternalNames[] | string[]>> => {
-	console.log("email", email);
+): Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string> => {
 	const startedAtMap = startedAt?.map(value => {
 		if (value !== null) {
 			return value.format();
@@ -61,10 +60,7 @@ const getRequestBody = (
 			search: "range",
 			value: endedAtMap,
 		},
-		"email": {
-			search: "single",
-			value: email,
-		},
+		"email": email,
 	};
 	return body;
 };
