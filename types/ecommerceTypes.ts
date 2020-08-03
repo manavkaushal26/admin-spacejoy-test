@@ -4,7 +4,7 @@ import User, { Status } from "./userType";
 export const EcommerceOrderStatus = {
 	Pending: "pending",
 	Confirmed: "confirmed",
-	Complete: "complete",
+	Complete: "completed",
 };
 
 export const EcommerceOrderStatusReverseMap = {

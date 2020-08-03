@@ -1,6 +1,6 @@
 import { searchOrdersApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatus, EcommOrder } from "@customTypes/ecommerceTypes";
-import User, { Status } from "@customTypes/userType";
+import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import AllOrderTable from "@sections/Ecommerce/OrdertTracking/AllOrderTable";
 import PageLayout from "@sections/Layout";
@@ -26,7 +26,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 	const [loading, setLoading] = useState(false);
 	const [searchValues, setSearchValues] = useState({
 		email: "",
-		status: Status.pending,
+		status: "",
 	});
 	const [total, setTotal] = useState(Number.NEGATIVE_INFINITY);
 	const [pageSize, setPageSize] = useState(24);

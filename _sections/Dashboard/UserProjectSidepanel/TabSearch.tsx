@@ -145,6 +145,7 @@ const TabSearch: React.FC<{
 		state.name,
 		state.endedAt,
 		state.startedAt,
+		state.email,
 	]);
 
 	return (

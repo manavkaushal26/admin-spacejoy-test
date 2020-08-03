@@ -223,7 +223,13 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 							""
 					  )
 					: "",
-				item.comments ? item.comments.reduce((acc, curr) => acc.concat(`${curr.quote}-${curr.description}\n`), "") : "",
+				item.comments
+					? item.comments.reduce(
+							(acc, curr) =>
+								acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
+							""
+					  )
+					: "",
 				item?.return?.status || "",
 				item?.return?.reason || item?.return?.declineComment || item?.return?.comment || "",
 				item?.cancellation?.status || "",
@@ -261,7 +267,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 														<CSVLink
 															className='ant-btn ant-btn-link'
 															data={csvData}
-															filename={`${order?.user?.email || order?.orderId}.csv`}
+															filename={`${order?.user?.email}-${order?.orderId}.csv`}
 															target='_blank'
 														>
 															Download CSV
