@@ -142,12 +142,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 			});
 			setState({
 				...response.data,
-				"meta": {
-					category: getValueSafely(() => category._id, "Undefined"),
-					subcategory: getValueSafely(() => subcategory._id, "Undefined"),
-					vertical: getValueSafely(() => vertical._id, "Undefined"),
-					theme: getValueSafely(() => theme._id, "Undefined"),
-				},
+				"meta.category": getValueSafely(() => category._id, "Undefined"),
+				"meta.subcategory": getValueSafely(() => subcategory._id, "Undefined"),
+				"meta.vertical": getValueSafely(() => vertical._id, "Undefined"),
+				"meta.theme": getValueSafely(() => theme._id, "Undefined"),
 				"dimension": {
 					width: getValueSafely(() => convertToInches(response.data.dimension.width), 0),
 					depth: getValueSafely(() => convertToInches(response.data.dimension.depth), 0),
@@ -192,6 +190,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 
 	useEffect(() => {
 		fetchMetaData();
+		console.log("assetId", assetId);
 		if (assetId) {
 			fetchAssetData();
 		}
@@ -533,7 +532,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 						type: "application/octet-stream",
 					};
 				});
-				console.log("productImageFileList", productImageFileList);
+
 				setImageFile(productImageFileList);
 				setImageFilesToUpload([]);
 				notification.success({ message: "Uploaded Images successfully", key });
@@ -651,7 +650,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension);
 				setState({ ...responseAssetData, weight: parseFloat(responseAssetData.weight) });
 				setChangedState({});
-				console.log("mai, designId", mai, designId);
 				if (mai && designId) {
 					markAssetAsComplete(responseAssetData._id, responseAssetData.status);
 				}
@@ -771,7 +769,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 															{() => {
 																return (
 																	<Form.Item
-																		name={["meta", "category"]}
+																		name={["meta.category"]}
 																		label='Category'
 																		labelCol={{ span: 24 }}
 																		rules={[{ required: true }]}
@@ -793,20 +791,20 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 															{({ getFieldValue }) => {
 																return (
 																	<Form.Item
-																		name={["meta", "subcategory"]}
+																		name={["meta.subcategory"]}
 																		labelCol={{ span: 24 }}
 																		label='Sub Category'
 																		rules={[{ required: true }]}
 																	>
 																		<Select
-																			disabled={!getFieldValue(["meta", "category"])}
+																			disabled={!getFieldValue(["meta.category"])}
 																			showSearch
 																			optionFilterProp='children'
 																			placeholder='Select A Sub Category'
 																		>
 																			{categoryMap
 																				.find(category => {
-																					return category.key === form.getFieldValue(["meta", "category"]);
+																					return category.key === form.getFieldValue(["meta.category"]);
 																				})
 																				?.children?.map(category => (
 																					<Select.Option key={category.key} value={category.key}>
@@ -824,20 +822,20 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 															{({ getFieldValue }) => (
 																<Form.Item
 																	labelCol={{ span: 24 }}
-																	name={["meta", "vertical"]}
+																	name={["meta.vertical"]}
 																	label='Vertical'
 																	rules={[{ required: true }]}
 																>
 																	<Select
-																		disabled={!getFieldValue(["meta", "subcategory"])}
+																		disabled={!getFieldValue(["meta.subcategory"])}
 																		showSearch
 																		optionFilterProp='children'
 																		placeholder='Select A Vertical'
 																	>
 																		{categoryMap
-																			.find(category => category.key === form.getFieldValue(["meta", "category"]))
+																			.find(category => category.key === form.getFieldValue(["meta.category"]))
 																			?.children.find(
-																				subCategory => subCategory.key === form.getFieldValue(["meta", "subcategory"])
+																				subCategory => subCategory.key === form.getFieldValue(["meta.subcategory"])
 																			)
 																			?.children.map(category => (
 																				<Select.Option key={category.key} value={category.key}>
@@ -850,7 +848,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 														</Form.Item>
 													</Col>
 													<Col span={12}>
-														<Form.Item name={["meta", "theme"]} label='Theme'>
+														<Form.Item name={["meta.theme"]} label='Theme'>
 															<Select showSearch optionFilterProp='children' placeholder='Select a Theme'>
 																{metadata?.themes?.list?.map(theme => (
 																	<Select.Option value={theme._id} key={theme._id}>
