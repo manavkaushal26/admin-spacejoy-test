@@ -154,8 +154,8 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				"retailer": getValueSafely(() => response.data.retailer._id, ""),
 				"spatialData.mountType": response.data.spatialData.mountType,
 				"spatialData.clampValue": response.data.spatialData.clampValue,
-				"weight": parseFloat(response.data.weight),
-				"price": parseFloat(response.data.price),
+				"weight": parseFloat(response.data.weight || 0),
+				"price": parseFloat(response.data.price || 0),
 			});
 		} else {
 			notification.error({ message: "Failed to load asset data" });
@@ -629,15 +629,23 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 
 		const metaToSend = state._id
 			? {
-					...{ ...(changedState?.meta?.category ? { "meta.category": changedState?.meta.category } : {}) },
-					...{ ...(changedState?.meta?.subcategory ? { "meta.subcategory": changedState?.meta.subcategory } : {}) },
-					...{ ...(changedState?.meta?.vertical ? { "meta.vertical": changedState?.meta.vertical } : {}) },
+					...{
+						...(changedState?.meta?.category ? { "meta.category": changedState?.["meta.category"] } : {}),
+					},
+					...{
+						...(changedState?.meta?.subcategory ? { "meta.subcategory": changedState?.["meta.category"] } : {}),
+					},
+					...{
+						...(changedState?.meta?.vertical ? { "meta.vertical": changedState?.["meta.category"] } : {}),
+					},
 			  }
 			: {
 					meta: {
-						...{ ...(changedState?.meta?.category ? { category: changedState?.meta.category } : {}) },
-						...{ ...(changedState?.meta?.subcategory ? { subcategory: changedState?.meta.subcategory } : {}) },
-						...{ ...(changedState?.meta?.vertical ? { vertical: changedState?.meta.vertical } : {}) },
+						...{ ...(changedState?.["meta.category"] ? { category: changedState?.["meta.category"] } : {}) },
+						...{
+							...(changedState?.["meta.subcategory"] ? { subcategory: changedState?.["meta.subcategory"] } : {}),
+						},
+						...{ ...(changedState?.["meta.vertical"] ? { vertical: changedState?.["meta.vertical"] } : {}) },
 					},
 			  };
 
@@ -655,6 +663,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 			},
 			...metaToSend,
 		};
+
 		try {
 			const response = await fetcher({
 				endPoint,
