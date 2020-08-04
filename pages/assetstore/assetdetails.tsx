@@ -190,7 +190,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 
 	useEffect(() => {
 		fetchMetaData();
-		console.log("assetId", assetId);
 		if (assetId) {
 			fetchAssetData();
 		}
@@ -628,12 +627,33 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 			"dimension.height": changedState.dimension?.height,
 		});
 
-		const requestBody = {
+		const metaToSend = state._id
+			? {
+					...{ ...(changedState?.meta?.category ? { "meta.category": changedState?.meta.category } : {}) },
+					...{ ...(changedState?.meta?.subcategory ? { "meta.subcategory": changedState?.meta.subcategory } : {}) },
+					...{ ...(changedState?.meta?.vertical ? { "meta.vertical": changedState?.meta.vertical } : {}) },
+			  }
+			: {
+					meta: {
+						...{ ...(changedState?.meta?.category ? { category: changedState?.meta.category } : {}) },
+						...{ ...(changedState?.meta?.subcategory ? { subcategory: changedState?.meta.subcategory } : {}) },
+						...{ ...(changedState?.meta?.vertical ? { vertical: changedState?.meta.vertical } : {}) },
+					},
+			  };
+
+		const changedStateToSend = {
 			...changedState,
+		};
+		if (state._id) {
+			delete changedStateToSend.meta;
+		}
+		const requestBody = {
+			...changedStateToSend,
 			dimension: {
 				...currentDimensions,
 				...dimensionToSend,
 			},
+			...metaToSend,
 		};
 		try {
 			const response = await fetcher({
@@ -648,7 +668,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				const responseAssetData = response.data;
 				responseAssetData.spatialData.clampValue = responseAssetData.spatialData.clampValue !== -1;
 				responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension);
-				setState({ ...responseAssetData, weight: parseFloat(responseAssetData.weight) });
+				setState({ ...responseAssetData, weight: parseFloat(responseAssetData.weight || 0) });
 				setChangedState({});
 				if (mai && designId) {
 					markAssetAsComplete(responseAssetData._id, responseAssetData.status);
@@ -706,7 +726,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 														</Form.Item>
 													</Col>
 													<Col span={24}>
-														<Form.Item name='description' label='Description' rules={[{ required: true }]}>
+														<Form.Item name='description' label='Description'>
 															<Input.TextArea placeholder='Fill N/A if not available' />
 														</Form.Item>
 													</Col>
@@ -733,7 +753,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 														</Form.Item>
 													</Col>
 													<Col span={12}>
-														<Form.Item name='material' label='Material' rules={[{ required: true }]}>
+														<Form.Item name='material' label='Material'>
 															<Input placeholder='Fill N/A if not available' />
 														</Form.Item>
 													</Col>
