@@ -1,14 +1,30 @@
-import { getOrderItemApi } from "@api/ecommerceApi";
+import { PlusOutlined } from "@ant-design/icons";
+import { getOrderItemApi, reasonApi } from "@api/ecommerceApi";
 import {
 	EcommerceStatus,
 	EcommerceStatusPosition,
 	EcommerceStatusReverseMap,
 	OrderItems,
+	ReasonModel,
 	ReturnCancelledInterface,
 } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Form, Input, Modal, notification, Row, Select, Spin, Steps, Typography } from "antd";
-import React, { useState } from "react";
+import {
+	Button,
+	Card,
+	Col,
+	Divider,
+	Form,
+	Input,
+	Modal,
+	notification,
+	Row,
+	Select,
+	Spin,
+	Steps,
+	Typography,
+} from "antd";
+import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -26,6 +42,45 @@ enum CancelStatus {
 
 const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemData }) => {
 	const [loading, setLoading] = useState<boolean>(false);
+	const [reasons, setReasons] = useState<ReasonModel[]>([]);
+
+	const fetchReasons = async () => {
+		const endPoint = `${reasonApi()}?type=Cancellation`;
+
+		try {
+			const response = await fetcher({ endPoint, method: "GET" });
+
+			if (response.statusCode <= 300) {
+				setReasons(response.data.reasons);
+			} else {
+				throw new Error();
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to fetch reasons" });
+		}
+	};
+
+	useEffect(() => {
+		fetchReasons();
+	}, []);
+
+	const onAddReason = async data => {
+		const body = {
+			...data,
+			type: "Cancellation",
+		};
+
+		const endPoint = reasonApi();
+
+		try {
+			const response = await fetcher({ endPoint, method: "POST", body });
+			if (response.statusCode <= 300) {
+				setReasons([response.data, ...reasons]);
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to add reason" });
+		}
+	};
 
 	const onFinish = async formData => {
 		setLoading(true);
@@ -148,8 +203,36 @@ const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemD
 								</>
 							) : (
 								<>
-									<Form.Item label='Reason' name='reason' rules={[{ required: true }]}>
-										<Input />
+									<Form.Item label='Reason' name='reasonId' rules={[{ required: true }]}>
+										<Select
+											dropdownRender={menu => {
+												return (
+													<>
+														{menu}
+														<Divider style={{ margin: "4px 0" }} />
+														<Form onFinish={onAddReason}>
+															<Row style={{ flexWrap: "nowrap" }}>
+																<Form.Item style={{ margin: "0" }} name='label' rules={[{ required: true }]}>
+																	<Input />
+																</Form.Item>
+																<Form.Item style={{ margin: "0" }}>
+																	<Button htmlType='submit' type='link'>
+																		<PlusOutlined />
+																		Add
+																	</Button>
+																</Form.Item>
+															</Row>
+														</Form>
+													</>
+												);
+											}}
+										>
+											{reasons.map(reason => (
+												<Select.Option key={reason._id} value={reason._id}>
+													{reason.label}
+												</Select.Option>
+											))}
+										</Select>
 									</Form.Item>
 									<Form.Item label='Comment' name='comment' rules={[{ required: true }]}>
 										<Input />

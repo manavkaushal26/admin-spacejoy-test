@@ -74,6 +74,12 @@ export enum OrderItemStatuses {
 	declined = "declined",
 }
 
+export interface ReasonModel {
+	_id: string;
+	type: string;
+	label: string;
+}
+
 export interface ReturnCancelledInterface {
 	_id: string;
 	reason: string;

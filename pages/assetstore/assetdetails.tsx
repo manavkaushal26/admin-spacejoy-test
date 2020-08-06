@@ -153,7 +153,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				},
 				"retailer": getValueSafely(() => response.data.retailer._id, ""),
 				"spatialData.mountType": response.data.spatialData.mountType,
-				"spatialData.clampValue": response.data.spatialData.clampValue,
+				"spatialData.clampValue": getValueSafely<number>(
+					() => (response.data.spatialData.clampValue < 0 ? 0 : response.data.spatialData.clampValue),
+					0
+				),
 				"weight": parseFloat(response.data.weight || 0),
 				"price": parseFloat(response.data.price || 0),
 			});
@@ -206,7 +209,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 					state.productImages.map(image => {
 						return {
 							uid: image._id,
-							name: image.cdn.split("/").pop(),
+							name: image?.cdn?.split("/")?.pop(),
 							status: "done",
 							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
 							size: 0,
@@ -218,7 +221,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				setImageFile([
 					{
 						uid: "-1",
-						name: state.cdn.split("/").pop(),
+						name: state?.cdn?.split("/")?.pop(),
 						status: "done",
 						url: `${cloudinary.baseDeliveryURL}/image/upload/${state.cdn}`,
 						size: 0,
@@ -227,11 +230,8 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 				]);
 			}
 			if (state.spatialData) {
-				const {
-					spatialData: {
-						fileUrls: { glb, legacy_obj: legacyObj, source, sourceHighPoly },
-					},
-				} = state;
+				const { glb = undefined, legacy_obj: legacyObj = undefined, source = undefined, sourceHighPoly = undefined } =
+					state?.spatialData?.fileUrls || {};
 
 				if (model3dFiles === Model3DFiles.Glb) {
 					if (glb) {

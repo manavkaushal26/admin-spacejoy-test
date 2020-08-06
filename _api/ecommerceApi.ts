@@ -33,3 +33,9 @@ export const getCapturePaymentApi = (): string => {
 export const getOrderTriggerEmailApi = (orderId: string): string => {
 	return `/v1/orders/${orderId}/email`;
 };
+
+// ===================================================================================================
+
+export const reasonApi = (): string => {
+	return "/v1/reasons";
+};
