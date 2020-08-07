@@ -212,12 +212,10 @@ const ReturnPanel: React.FC<ReturnPanel> = ({ returnData, entryId, setOrderItemD
 																	<Input />
 																</Form.Item>
 																<Form.Item style={{ margin: "0" }}>
-																	{({ getFieldValue }) => (
-																		<Button htmlType='submit' disabled={!getFieldValue("label")} type='link'>
-																			<PlusOutlined />
-																			Add
-																		</Button>
-																	)}
+																	<Button block htmlType='submit' type='link'>
+																		<PlusOutlined />
+																		Add
+																	</Button>
 																</Form.Item>
 															</Row>
 														</Form>

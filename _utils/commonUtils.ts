@@ -155,7 +155,7 @@ export const getTimeSince = (value): string => {
 
 // /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
 
-export const urlRegex = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+/gi;
+export const urlRegex = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:"/?#[\]@!$&'()*+,;=.]+/gi;
 
 export const matchUrl = (url: string): boolean => {
 	const urlRegexObj = new RegExp(urlRegex);
