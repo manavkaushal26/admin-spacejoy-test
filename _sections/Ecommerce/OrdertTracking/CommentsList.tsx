@@ -9,9 +9,10 @@ import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
-const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => void }> = ({
+const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => void; localUser: Partial<User> }> = ({
 	comment,
 	onDeleteDone,
+	localUser,
 }) => {
 	const [edit, setEdit] = useState(false);
 	const [editableComment, setEditableComment] = useState(comment);
@@ -57,7 +58,7 @@ const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => v
 		try {
 			const response = await fetcher({ endPoint: endPoint, method: "PUT", body: body });
 			if (response.statusCode <= 300) {
-				setEditableComment(response.data);
+				setEditableComment({ ...response.data, user: comment.user });
 				setEdit(false);
 			}
 		} catch (e) {
@@ -81,7 +82,11 @@ const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => v
 					</Form.Item>
 				</Form>
 			) : (
-				<Comment actions={actions} author={authorName} content={editableComment?.text} />
+				<Comment
+					actions={comment?.user?._id === localUser?.id ? actions : []}
+					author={authorName}
+					content={editableComment?.text}
+				/>
 			)}
 		</>
 	) : null;
@@ -165,7 +170,7 @@ const CommentsList: React.FC<CommentsList> = ({ id, type }) => {
 					dataSource={comments}
 					locale={{ emptyText: "No Comments" }}
 					renderItem={comment => {
-						return <EditComment onDeleteDone={onDeleteDone} comment={comment} />;
+						return <EditComment localUser={user} onDeleteDone={onDeleteDone} comment={comment} />;
 					}}
 				/>
 			</Col>
