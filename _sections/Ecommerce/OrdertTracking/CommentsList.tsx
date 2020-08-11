@@ -1,6 +1,8 @@
 import { commentApi } from "@api/ecommerceApi";
 import { Comments } from "@customTypes/ecommerceTypes";
+import User from "@customTypes/userType";
 import fetcher from "@utils/fetcher";
+import { getLocalStorageValue } from "@utils/storageUtils";
 import { Button, Col, Comment, Form, Input, List, notification, Row, Typography } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React, { useEffect, useState } from "react";
@@ -17,6 +19,8 @@ const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => v
 	const onEdit = () => {
 		setEdit(prevState => !prevState);
 	};
+
+	const authorName = `${editableComment?.user?.profile?.name} - ${editableComment?.user?.email}`;
 
 	const onDelete = async () => {
 		const endPoint = `${commentApi()}/${comment._id}`;
@@ -77,7 +81,7 @@ const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => v
 					</Form.Item>
 				</Form>
 			) : (
-				<Comment actions={actions} author={editableComment?.user?.name} content={editableComment?.text} />
+				<Comment actions={actions} author={authorName} content={editableComment?.text} />
 			)}
 		</>
 	) : null;
@@ -91,6 +95,12 @@ interface CommentsList {
 const CommentsList: React.FC<CommentsList> = ({ id, type }) => {
 	const [comments, setComments] = useState<Comments[]>([]);
 	const [form] = useForm();
+	const [user, setUser] = useState<Partial<User>>({});
+
+	useEffect(() => {
+		const localUser = getLocalStorageValue("authVerification");
+		setUser(localUser);
+	}, []);
 
 	const saveComment = async data => {
 		const endPoint = commentApi();
@@ -103,7 +113,16 @@ const CommentsList: React.FC<CommentsList> = ({ id, type }) => {
 		try {
 			const response = await fetcher({ endPoint: endPoint, method: "POST", body });
 			if (response.statusCode <= 300) {
-				setComments([...comments, response.data]);
+				setComments([
+					...comments,
+					{
+						...response.data,
+						user: {
+							email: user?.email,
+							profile: { name: user?.name },
+						},
+					},
+				]);
 				form.setFieldsValue({ text: "" });
 			} else throw new Error();
 		} catch (e) {

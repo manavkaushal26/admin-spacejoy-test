@@ -1,3 +1,4 @@
+import { TeamMember } from "@customTypes/dashboardTypes";
 import { AssetType } from "./moodboardTypes";
 import User, { Status } from "./userType";
 
@@ -49,7 +50,7 @@ export interface Comments {
 	text: string;
 	resourceType: "Order" | "OrderItem";
 	resourceId: string;
-	user: User;
+	user: TeamMember;
 }
 
 export enum OrderItemStatus {
