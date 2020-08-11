@@ -1,14 +1,17 @@
 import { getOrderItemApi } from "@api/ecommerceApi";
-import { OrderItemComments, OrderItems } from "@customTypes/ecommerceTypes";
+import { OrderItemComments, OrderItems, OrderItemStatus, OrderItemStatuses } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Comment, Form, Input, List, notification, Row, Spin } from "antd";
+import { Button, Card, Col, Comment, Form, Input, List, notification, Row, Select, Spin, Typography } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
+
+const { Text } = Typography;
 
 interface CommentPanel {
 	commentData: OrderItemComments[];
 	entryId: string;
 	setOrderItemData: (data: Partial<OrderItems>) => void;
+	orderItemStatus: OrderItemStatuses;
 }
 
 interface EditableComment {
@@ -20,6 +23,7 @@ interface EditableComment {
 	idOfEditingComment: string;
 	completeEditing: () => void;
 	orderItemId: string;
+	status: OrderItemStatuses;
 }
 
 const EditableComment: React.FC<EditableComment> = ({
@@ -31,8 +35,9 @@ const EditableComment: React.FC<EditableComment> = ({
 	completeEditing,
 	actions,
 	orderItemId,
+	status: orderItemStatus,
 }) => {
-	const [comment, setComment] = useState({ quote, description, updatedAt, orderItemId });
+	const [comment, setComment] = useState({ quote, description, updatedAt, orderItemId, orderItemStatus });
 
 	const onFinish = async data => {
 		const endPoint = `${getOrderItemApi(orderItemId)}/orderItemComments/${commentId}`;
@@ -50,10 +55,26 @@ const EditableComment: React.FC<EditableComment> = ({
 	};
 
 	return idOfEditingComment !== commentId ? (
-		<Comment actions={actions} author={comment.quote} content={comment.description} datetime={updatedAt} />
+		<Comment
+			actions={actions}
+			author={`Status: ${OrderItemStatus[comment.orderItemStatus]}`}
+			content={
+				<Row>
+					<Col span={24}>
+						<Text>{comment.quote}</Text>
+					</Col>
+					<Col span={24}>
+						<Text type='secondary'>
+							<small>{comment.description}</small>
+						</Text>
+					</Col>
+				</Row>
+			}
+			datetime={updatedAt}
+		/>
 	) : (
 		<Form
-			initialValues={{ quote: comment.quote, description: comment.description }}
+			initialValues={{ quote: comment.quote, description: comment.description, status: comment?.orderItemStatus }}
 			labelCol={{ span: 24 }}
 			onFinish={onFinish}
 		>
@@ -62,6 +83,19 @@ const EditableComment: React.FC<EditableComment> = ({
 			</Form.Item>
 			<Form.Item label='Description' name='description'>
 				<Input />
+			</Form.Item>
+			<Form.Item label='Status' name='orderItemStatus'>
+				<Select>
+					{Object.keys(OrderItemStatuses)
+						.filter((_, index) => index < 11)
+						.map(key => {
+							return (
+								<Select.Option key={key} value={key}>
+									{OrderItemStatus[key]}
+								</Select.Option>
+							);
+						})}
+				</Select>
 			</Form.Item>
 			<Form.Item>
 				<Row gutter={[4, 4]}>
@@ -81,7 +115,7 @@ const EditableComment: React.FC<EditableComment> = ({
 	);
 };
 
-const CommentPanel: React.FC<CommentPanel> = ({ entryId, commentData, setOrderItemData }) => {
+const CommentPanel: React.FC<CommentPanel> = ({ entryId, commentData, setOrderItemData, orderItemStatus }) => {
 	const [loading, setLoading] = useState(false);
 	const [idOfEditingComment, setIdOfEditingComment] = useState<string>("");
 
@@ -132,6 +166,7 @@ const CommentPanel: React.FC<CommentPanel> = ({ entryId, commentData, setOrderIt
 										idOfEditingComment={idOfEditingComment}
 										completeEditing={completeEditing}
 										orderItemId={entryId}
+										status={item?.orderItemStatus}
 									/>
 								</li>
 							);
@@ -141,7 +176,7 @@ const CommentPanel: React.FC<CommentPanel> = ({ entryId, commentData, setOrderIt
 				<Col span={24}>
 					<Card size='small' title='Update status'>
 						<Form
-							initialValues={{ quote: "", description: "" }}
+							initialValues={{ quote: "", description: "", orderItemStatus: orderItemStatus }}
 							labelCol={{ span: 24 }}
 							form={form}
 							onFinish={onFinish}
@@ -151,6 +186,19 @@ const CommentPanel: React.FC<CommentPanel> = ({ entryId, commentData, setOrderIt
 							</Form.Item>
 							<Form.Item label='Description' name='description'>
 								<Input />
+							</Form.Item>
+							<Form.Item label='Status' name='orderItemStatus' rules={[{ required: true }]}>
+								<Select>
+									{Object.keys(OrderItemStatuses)
+										.filter((_, index) => index < 11)
+										.map(key => {
+											return (
+												<Select.Option key={key} value={key}>
+													{OrderItemStatus[key]}
+												</Select.Option>
+											);
+										})}
+								</Select>
 							</Form.Item>
 							<Form.Item>
 								<Button htmlType='submit' type='primary'>

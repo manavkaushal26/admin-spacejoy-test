@@ -43,6 +43,15 @@ export interface Tracking {
 
 	vendor: string;
 }
+
+export interface Comments {
+	_id: string;
+	text: string;
+	resourceType: "Order" | "OrderItem";
+	resourceId: string;
+	user: User;
+}
+
 export enum OrderItemStatus {
 	pending = "Pending",
 	confirmed = "Confirmed",
@@ -95,6 +104,7 @@ export interface OrderItemComments {
 	description: string;
 	createdAt: string;
 	updatedAt: string;
+	orderItemStatus: OrderItemStatuses;
 }
 
 export interface OrderPayments {

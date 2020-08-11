@@ -39,3 +39,7 @@ export const getOrderTriggerEmailApi = (orderId: string): string => {
 export const reasonApi = (): string => {
 	return "/v1/reasons";
 };
+
+export const commentApi = (): string => {
+	return "/v1/comments";
+};

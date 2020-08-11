@@ -1,9 +1,10 @@
 import { EcommOrder } from "@customTypes/ecommerceTypes";
-import { Table } from "antd";
+import { Table, Typography } from "antd";
 import moment from "moment";
-import Link from "next/link";
 import React from "react";
 import OrderItemTable from "../OrderItemTable";
+
+const { Text, Link } = Typography;
 
 interface AllOrderTable {
 	orderData: EcommOrder[];
@@ -55,15 +56,20 @@ const AllOrderTable: React.FC<AllOrderTable> = ({
 				title='Name'
 				render={(_text, record: EcommOrder) => {
 					return (
-						<Link href={`/ecommerce/ordertracking/orderdetails?orderId=${record._id}`}>
+						<Link strong href={`/ecommerce/ordertracking/orderdetails?orderId=${record._id}`}>
 							{`${record.firstName} ${record.lastName}`}
 						</Link>
 					);
 				}}
 			/>
-			<Table.Column key='_id' title='Order Id' dataIndex='orderId' />
-			<Table.Column key='_id' title='Phone Number' dataIndex='phoneNumber' />
-			<Table.Column key='_id' title='Amount' dataIndex='amount' />
+			<Table.Column key='_id' title='Order Id' dataIndex='orderId' render={text => <Text copyable>{text}</Text>} />
+			<Table.Column
+				key='_id'
+				title='Phone Number'
+				dataIndex='phoneNumber'
+				render={text => <a href={`tel:${text}`}>{text}</a>}
+			/>
+			<Table.Column key='_id' title='Amount' dataIndex='amount' render={text => <Text>${text}</Text>} />
 			<Table.Column key='_id' title='Status' dataIndex='status' />
 			<Table.Column
 				key='_id'

@@ -1,10 +1,9 @@
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
 import { Button, Col, Row, Table, Typography } from "antd";
-import Link from "next/link";
 import React from "react";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 interface OrderItemTable {
 	orderItems: OrderItems[];
@@ -35,12 +34,24 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 							<Col>
 								<Row>
 									<Col span={24}>
-										<a href={record?.product?.retailLink} target='_blank' rel='noopener noreferrer'>
+										<Link
+											strong
+											href={`https://www.spacejoy.com/product-view/${record?.product?._id}`}
+											target='_blank'
+											rel='noopener noreferrer'
+										>
 											{record?.product?.name}
-										</a>
+										</Link>
 									</Col>
 									<Col span={24}>
-										<Text type='secondary'>{record?.orderItemId}</Text>
+										<Link href={record?.product?.retailLink} target='_blank' rel='noopener noreferrer'>
+											{record?.product?.retailer?.name}
+										</Link>
+									</Col>
+									<Col span={24}>
+										<Text type='secondary' copyable>
+											{record?.orderItemId}
+										</Text>
 									</Col>
 								</Row>
 							</Col>
@@ -50,12 +61,12 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 			/>
 			<Table.Column key='_id' title='Status' dataIndex='status' render={text => OrderItemStatus[text]} />
 			<Table.Column key='_id' title='Quantity' dataIndex='quantity' />
-			<Table.Column key='_id' title='Price' dataIndex='price' />
+			<Table.Column key='_id' title='Price' dataIndex='price' render={text => <>${text}</>} />
 			<Table.Column
 				key='_id'
 				title='Total'
 				render={(_, record: OrderItems) => {
-					return record.price * record.quantity;
+					return <>${record.price * record.quantity}</>;
 				}}
 			/>
 			<Table.Column

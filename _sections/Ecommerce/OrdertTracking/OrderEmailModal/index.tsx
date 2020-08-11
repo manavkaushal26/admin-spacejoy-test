@@ -131,7 +131,7 @@ const OrderEmailModal: React.FC<OrderEmailModal> = ({ open, onClose, orderId, or
 				</Form.Item>
 				<Form.Item shouldUpdate={(prevValues, currentValues) => prevValues.type !== currentValues.type}>
 					{({ getFieldValue }) =>
-						getFieldValue("type") === "shipped" || getFieldValue("type") === "delivered" ? (
+						getFieldValue("type") !== "" ? (
 							<Form.Item labelCol={{ span: 24 }} label='Items' name='orderItemId' rules={[{ required: true }]}>
 								<Checkbox.Group style={{ width: "100%" }}>
 									<Row>

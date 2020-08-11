@@ -3,6 +3,7 @@ import { OrderItems as OrderItem, OrderItemStatus } from "@customTypes/ecommerce
 import fetcher from "@utils/fetcher";
 import { Button, Col, Collapse, Drawer, Form, InputNumber, Modal, notification, Row, Select, Typography } from "antd";
 import React, { useState } from "react";
+import CommentsList from "../CommentsList";
 import CancelPanel from "./CancelPanel";
 import CommentPanel from "./CommentPanel";
 import ReturnPanel from "./ReturnPanel";
@@ -124,6 +125,7 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 						commentData={orderItem.comments}
 						entryId={orderItem._id}
 						setOrderItemData={updateOrderItemData}
+						orderItemStatus={orderItem?.status}
 					/>
 				</Collapse.Panel>
 				<Collapse.Panel
@@ -144,6 +146,11 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 						cancelData={orderItem.cancellation}
 						setOrderItemData={updateOrderItemData}
 					/>
+				</Collapse.Panel>
+				<Collapse.Panel header='Internal Comments' key='comment'>
+					<Col span={24}>
+						<CommentsList type='OrderItem' id={orderItem?._id} />
+					</Col>
 				</Collapse.Panel>
 			</Collapse>
 		</Drawer>
