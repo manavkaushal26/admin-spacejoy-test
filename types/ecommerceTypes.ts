@@ -51,12 +51,13 @@ export interface Comments {
 	resourceType: "Order" | "OrderItem";
 	resourceId: string;
 	user: TeamMember;
+	createdAt: string;
+	updatedAt: string;
 }
 
 export enum OrderItemStatus {
 	pending = "Pending",
 	confirmed = "Confirmed",
-	dispatched = "Dispatched",
 	shipped = "Shipped",
 	delivered = "Delivered",
 	returnInitiated = "Return Initiated",
@@ -64,13 +65,12 @@ export enum OrderItemStatus {
 	returnDeclined = "Return Declined",
 	cancellationInitiated = "Cancellation Initiated",
 	cancellationApproved = "Cancellation Approved",
-	cancellationRejected = "Cancellation Rejected",
+	cancellationDeclined = "Cancellation Declined",
 }
 
 export enum OrderItemStatuses {
 	pending = "pending",
 	confirmed = "confirmed",
-	dispatched = "dispatched",
 	shipped = "shipped",
 	delivered = "delivered",
 	returnInitiated = "returnInitiated",
@@ -78,7 +78,7 @@ export enum OrderItemStatuses {
 	returnDeclined = "returnDeclined",
 	cancellationInitiated = "cancellationInitiated",
 	cancellationApproved = "cancellationApproved",
-	cancellationRejected = "cancellationRejected",
+	cancellationDeclined = "cancellationDeclined",
 	initiated = "initiated",
 	approved = "approved",
 	declined = "declined",

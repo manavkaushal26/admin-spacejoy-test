@@ -1,10 +1,11 @@
 import { EcommOrder } from "@customTypes/ecommerceTypes";
-import { Table, Typography } from "antd";
+import { Col, Row, Table, Typography } from "antd";
 import moment from "moment";
+import Link from "next/link";
 import React from "react";
 import OrderItemTable from "../OrderItemTable";
 
-const { Text, Link } = Typography;
+const { Text, Link: TextLink } = Typography;
 
 interface AllOrderTable {
 	orderData: EcommOrder[];
@@ -56,9 +57,18 @@ const AllOrderTable: React.FC<AllOrderTable> = ({
 				title='Name'
 				render={(_text, record: EcommOrder) => {
 					return (
-						<Link strong href={`/ecommerce/ordertracking/orderdetails?orderId=${record._id}`}>
-							{`${record.firstName} ${record.lastName}`}
-						</Link>
+						<Row>
+							<Col span={24}>
+								<Link href={{ pathname: "/ecommerce/ordertracking/orderdetails", query: { orderId: record._id } }}>
+									<TextLink strong>{`${record.firstName} ${record.lastName}`}</TextLink>
+								</Link>
+							</Col>
+							<Col span={24}>
+								<TextLink href={`mailto:${record?.user?.email}?subject=${record?.orderId}%20update`}>
+									{record?.user?.email}
+								</TextLink>
+							</Col>
+						</Row>
 					);
 				}}
 			/>
@@ -67,7 +77,11 @@ const AllOrderTable: React.FC<AllOrderTable> = ({
 				key='_id'
 				title='Phone Number'
 				dataIndex='phoneNumber'
-				render={text => <a href={`tel:${text}`}>{text}</a>}
+				render={text => (
+					<TextLink strong href={`tel:${text}`}>
+						{text}
+					</TextLink>
+				)}
 			/>
 			<Table.Column key='_id' title='Amount' dataIndex='amount' render={text => <Text>${text}</Text>} />
 			<Table.Column key='_id' title='Status' dataIndex='status' />

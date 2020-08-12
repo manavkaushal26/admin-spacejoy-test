@@ -3,6 +3,7 @@ import { getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import CommentsList from "@sections/Ecommerce/OrdertTracking/CommentsList";
 import OrderEditDrawer from "@sections/Ecommerce/OrdertTracking/OrderEditDrawer";
 import OrderEmailModal from "@sections/Ecommerce/OrdertTracking/OrderEmailModal";
 import OrderItemDrawer from "@sections/Ecommerce/OrdertTracking/OrderItemDrawer";
@@ -13,7 +14,7 @@ import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, Descriptions, Divider, notification, Row, Spin, Typography } from "antd";
+import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
 import moment from "moment";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -248,54 +249,51 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
 					<Spin spinning={loading}>
-						<Row gutter={[0, 16]}>
+						<Row gutter={[8, 16]}>
 							<Col span={24}>
-								<Descriptions
-									title={
-										<Row justify='space-between' align='middle'>
+								<Row justify='space-between' align='middle'>
+									<Col>
+										<Row gutter={[8, 0]} align='middle'>
 											<Col>
-												<Row gutter={[8, 0]} align='middle'>
-													<Col>
-														<ArrowLeftOutlined onClick={goBack} />
-													</Col>
-													<Col>Order Details ({order?.orderId})</Col>
-												</Row>
+												<ArrowLeftOutlined onClick={goBack} />
 											</Col>
 											<Col>
-												<Row gutter={[4, 8]}>
-													<Col>
-														<CSVLink
-															className='ant-btn ant-btn-link'
-															data={csvData}
-															filename={`${order?.user?.email}-${order?.orderId}.csv`}
-															target='_blank'
-														>
-															Download CSV
-														</CSVLink>
-													</Col>
-													<Col>
-														<Button type='link' onClick={toggleEditPaymentDrawer}>
-															Payment details
-														</Button>
-													</Col>
-
-													<Col>
-														<Button onClick={toggleEmailModal}>Email Customer</Button>
-													</Col>
-													<Col>
-														<Button type='primary' onClick={toggleEditOrderDrawer}>
-															Edit Order
-														</Button>
-													</Col>
-												</Row>
+												<Text strong>Order Details ({order?.orderId})</Text>
 											</Col>
 										</Row>
-									}
-									bordered
-									layout='vertical'
-									column={{ lg: 6, md: 4, sm: 3, xs: 2 }}
-									size='small'
-								>
+									</Col>
+									<Col>
+										<Row gutter={[4, 8]}>
+											<Col>
+												<CSVLink
+													className='ant-btn ant-btn-link'
+													data={csvData}
+													filename={`${order?.user?.email}-${order?.orderId}.csv`}
+													target='_blank'
+												>
+													Download CSV
+												</CSVLink>
+											</Col>
+											<Col>
+												<Button type='link' onClick={toggleEditPaymentDrawer}>
+													Payment details
+												</Button>
+											</Col>
+
+											<Col>
+												<Button onClick={toggleEmailModal}>Email Customer</Button>
+											</Col>
+											<Col>
+												<Button type='primary' onClick={toggleEditOrderDrawer}>
+													Edit Order
+												</Button>
+											</Col>
+										</Row>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={24}>
+								<Descriptions bordered layout='vertical' column={{ lg: 6, md: 4, sm: 3, xs: 2 }} size='small'>
 									<Descriptions.Item label='Order Id'>
 										<Text strong copyable>
 											{order?.orderId}
@@ -312,7 +310,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 										</Link>
 									</Descriptions.Item>
 									<Descriptions.Item label='Email'>
-										<Link href={`mailto:${order?.user?.email}?subject=${order?.orderId} Update`} strong>
+										<Link href={`mailto:${order?.user?.email}?subject=${order?.orderId}%20update`} strong>
 											<a>{order?.user?.email}</a>
 										</Link>
 									</Descriptions.Item>
@@ -392,7 +390,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 								</Descriptions>
 							</Col>
 							<Col span={24}>
-								<Divider />
+								<CommentsList type='Order' id={order?._id} />
 							</Col>
 							<Col span={24}>
 								<OrderItemTable orderItems={order?.orderItems} toggleOrderItemDrawer={toggleOrderItemDrawer} />

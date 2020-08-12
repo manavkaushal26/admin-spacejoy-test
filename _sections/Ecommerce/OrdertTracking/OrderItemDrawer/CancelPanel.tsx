@@ -37,7 +37,7 @@ interface CancelPanel {
 enum CancelStatus {
 	initiated = "cancellationInitiated",
 	approved = "cancellationApproved",
-	declined = "cancellationRejected",
+	declined = "cancellationDeclined",
 }
 
 const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemData }) => {

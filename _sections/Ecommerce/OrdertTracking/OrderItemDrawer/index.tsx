@@ -1,8 +1,9 @@
 import { getOrderItemApi } from "@api/ecommerceApi";
-import { OrderItems as OrderItem, OrderItemStatus } from "@customTypes/ecommerceTypes";
+import { OrderItems as OrderItem, OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Collapse, Drawer, Form, InputNumber, Modal, notification, Row, Select, Typography } from "antd";
-import React, { useState } from "react";
+import { useForm } from "antd/lib/form/Form";
+import React, { useEffect, useState } from "react";
 import CommentsList from "../CommentsList";
 import CancelPanel from "./CancelPanel";
 import CommentPanel from "./CommentPanel";
@@ -16,22 +17,23 @@ const validateMessages = {
 };
 
 interface OrderItemDrawer {
-	orderItemData: OrderItem;
+	orderItemData: OrderItems;
 	open: boolean;
 	closeDrawer: () => void;
 	setOrderItemData: (data: Partial<OrderItem>) => void;
 }
 
-const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, closeDrawer, setOrderItemData }) => {
+const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, closeDrawer }) => {
 	const [orderItem, setOrderItem] = useState<OrderItem>(() => orderItemData);
 	const [activeCollapseKey, setActiveCollapseKey] = useState<string>("");
+	const [form] = useForm();
+
 	const onKeyChange = value => {
 		setActiveCollapseKey(activeCollapseKey.length ? value[1] || "" : value[0]);
 	};
 
-	const updateOrderItemData = (data: Partial<OrderItem>) => {
-		setOrderItem({ ...orderItem, ...data });
-		setOrderItemData({ ...orderItem, ...data });
+	const updateOrderItemData = (data: Partial<OrderItems>) => {
+		setOrderItem(prevState => ({ ...prevState, ...data }));
 	};
 
 	const updateStatus = async data => {
@@ -62,6 +64,15 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 		});
 	};
 
+	useEffect(() => {
+		if (orderItem)
+			form.setFieldsValue({
+				status: orderItem.status,
+				price: orderItem.price,
+				quantity: orderItem.quantity,
+			});
+	}, [orderItem?.status]);
+
 	return (
 		<Drawer
 			width={360}
@@ -78,11 +89,12 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 				</Row>
 			}
 		>
-			{!orderItemData.status.includes("cancel") && !orderItemData.status.includes("returns") && (
+			{!orderItem?.status?.includes("cancel") && !orderItem?.status?.includes("return") && (
 				<Form
+					form={form}
 					validateMessages={validateMessages}
 					labelCol={{ span: 24 }}
-					initialValues={{ status: orderItemData.status, price: orderItemData.price, quantity: orderItemData.quantity }}
+					initialValues={{ status: orderItem.status, price: orderItem.price, quantity: orderItem.quantity }}
 					onFinish={handleFinish}
 				>
 					<Form.Item label='Price' name='price' rules={[{ required: true, type: "number", min: 0 }]}>
@@ -94,7 +106,7 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 					<Form.Item label='Status' name='status' rules={[{ required: true }]}>
 						<Select>
 							{Object.entries(OrderItemStatus)
-								.filter((_, index) => index < 5)
+								.filter((_, index) => index < 4)
 								.map(([value, key]) => {
 									return (
 										<Select.Option key={key} value={value}>

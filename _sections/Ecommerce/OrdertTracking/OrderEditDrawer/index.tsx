@@ -2,9 +2,7 @@ import { getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatus, EcommOrder, OrderItems as OrderItem } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Drawer, Form, Input, InputNumber, Modal, notification, Row, Select } from "antd";
-import { useForm } from "antd/lib/form/Form";
 import React from "react";
-import CommentsList from "../CommentsList";
 
 interface OrderEditDrawer {
 	orderData: EcommOrder;
@@ -14,8 +12,6 @@ interface OrderEditDrawer {
 }
 
 const OrderEditDrawer: React.FC<OrderEditDrawer> = ({ orderData, open, closeDrawer, setOrderData }) => {
-	const [form] = useForm();
-
 	const onFinish = async formData => {
 		const endPoint = getOrderApi(orderData._id);
 		try {
@@ -40,22 +36,11 @@ const OrderEditDrawer: React.FC<OrderEditDrawer> = ({ orderData, open, closeDraw
 		});
 	};
 
-	const updateTotal = (value, prevValue) => {
-		const numberValue = parseFloat(value);
-		if (!Number.isNaN(numberValue)) {
-			const amount = form.getFieldValue("amount");
-			form.setFieldsValue({ amount: parseFloat((value + amount - prevValue).toFixed(2)) });
-			return numberValue;
-		}
-		return value;
-	};
-
 	return (
 		<Drawer width={360} visible={open} onClose={() => closeDrawer()} title='Edit Order'>
 			<Row>
 				<Col span={24}>
 					<Form
-						form={form}
 						labelCol={{ span: 24 }}
 						initialValues={{
 							firstName: orderData.firstName,
@@ -70,41 +55,34 @@ const OrderEditDrawer: React.FC<OrderEditDrawer> = ({ orderData, open, closeDraw
 						}}
 						onFinish={onClickFinish}
 					>
-						<Form.Item label='First Name' name='firstName' rules={[{ required: true }]}>
-							<Input />
-						</Form.Item>
-						<Form.Item label='Last Name' name='lastName'>
-							<Input />
-						</Form.Item>
-						<Form.Item label='Phone Number' name='phoneNumber' rules={[{ required: true }]}>
-							<Input />
-						</Form.Item>
-						<Form.Item label='Shipping Address' name='address' rules={[{ required: true }]}>
-							<Input.TextArea />
-						</Form.Item>
+						{false && (
+							<>
+								<Form.Item label='First Name' name='firstName' rules={[{ required: true }]}>
+									<Input />
+								</Form.Item>
+								<Form.Item label='Last Name' name='lastName'>
+									<Input />
+								</Form.Item>
+								<Form.Item label='Phone Number' name='phoneNumber' rules={[{ required: true }]}>
+									<Input />
+								</Form.Item>
+								<Form.Item label='Shipping Address' name='address' rules={[{ required: true }]}>
+									<Input.TextArea />
+								</Form.Item>
+							</>
+						)}
 						<Form.Item
 							label='Shipping Charges'
-							normalize={(value, prevValue) => updateTotal(value, prevValue)}
 							name='shippingCharge'
 							rules={[{ required: true, type: "number", min: 0 }]}
 						>
 							<InputNumber style={{ width: "100%" }} />
 						</Form.Item>
-						<Form.Item
-							label='Tax'
-							name='tax'
-							normalize={(value, prevValue) => updateTotal(value, prevValue)}
-							rules={[{ required: true, type: "number", min: 0 }]}
-						>
+						<Form.Item label='Tax' name='tax' rules={[{ required: true, type: "number", min: 0 }]}>
 							<InputNumber style={{ width: "100%" }} />
 						</Form.Item>
 
-						<Form.Item
-							label='Discount'
-							normalize={(value, prevValue) => updateTotal(value, prevValue)}
-							name='discount'
-							rules={[{ required: true, type: "number", min: 0 }]}
-						>
+						<Form.Item label='Discount' name='discount' rules={[{ required: true, type: "number", min: 0 }]}>
 							<InputNumber style={{ width: "100%" }} />
 						</Form.Item>
 						<Form.Item label='Total' name='amount' rules={[{ required: true, type: "number", min: 0 }]}>
@@ -127,9 +105,6 @@ const OrderEditDrawer: React.FC<OrderEditDrawer> = ({ orderData, open, closeDraw
 							</Button>
 						</Form.Item>
 					</Form>
-				</Col>
-				<Col span={24}>
-					<CommentsList type='Order' id={orderData._id} />
 				</Col>
 			</Row>
 		</Drawer>

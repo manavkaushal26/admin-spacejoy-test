@@ -34,7 +34,7 @@ const OrderUpdate: React.FC<OrderUpdate> = ({
 			item.status === OrderItemStatuses.pending ||
 			item.status === OrderItemStatuses.cancellationApproved ||
 			item.status === OrderItemStatuses.cancellationInitiated ||
-			item.status === OrderItemStatuses.cancellationRejected ||
+			item.status === OrderItemStatuses.cancellationDeclined ||
 			item.status === OrderItemStatuses.returnApproved ||
 			item.status === OrderItemStatuses.returnDeclined ||
 			item.status === OrderItemStatuses.returnInitiated

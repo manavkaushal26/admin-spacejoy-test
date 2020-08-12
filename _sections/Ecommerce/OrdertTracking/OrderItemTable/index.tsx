@@ -1,7 +1,8 @@
+import { SearchOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
-import { Button, Col, Row, Table, Typography } from "antd";
-import React from "react";
+import { Button, Col, Input, Row, Table, Typography } from "antd";
+import React, { useState } from "react";
 
 const { Text, Link } = Typography;
 
@@ -12,11 +13,36 @@ interface OrderItemTable {
 }
 
 const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemDrawer, orderId }) => {
+	const [searchText, setSearchText] = useState("");
+
+	const searchOrderItem = e => {
+		const {
+			target: { value },
+		} = e;
+		setSearchText(value);
+	};
+
 	return (
-		<Table rowKey='_id' dataSource={orderItems || []} scroll={{ x: 768 }} pagination={{ hideOnSinglePage: true }}>
+		<Table
+			rowKey='_id'
+			dataSource={
+				orderItems?.filter(item => {
+					return (
+						item.product?.name?.toLowerCase()?.includes(searchText) ||
+						item?.product?.retailer?.name?.toLowerCase()?.includes(searchText)
+					);
+				}) || []
+			}
+			scroll={{ x: 768 }}
+			pagination={{ hideOnSinglePage: true }}
+		>
 			<Table.Column
 				key='_id'
 				title='Name'
+				filterDropdown={() => {
+					return <Input onChange={searchOrderItem} value={searchText} />;
+				}}
+				filterIcon={<SearchOutlined style={{ color: searchText !== "" ? "#1890ff" : undefined }} />}
 				render={(_, record: OrderItems) => {
 					return (
 						<Row gutter={[8, 8]} align='middle'>

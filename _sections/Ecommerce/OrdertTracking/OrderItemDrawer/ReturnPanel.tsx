@@ -28,6 +28,12 @@ import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
+enum ReturnStatus {
+	initiated = "returnInitiated",
+	approved = "returnApproved",
+	declined = "returnDeclined",
+}
+
 interface ReturnPanel {
 	returnData: ReturnCancelledInterface;
 	entryId: string;
@@ -83,7 +89,7 @@ const ReturnPanel: React.FC<ReturnPanel> = ({ returnData, entryId, setOrderItemD
 		try {
 			const response = await fetcher({ endPoint, method: returnData ? "PUT" : "POST", body: formData });
 			if (response.statusCode <= 300) {
-				setOrderItemData({ return: response.data, status: formData.status });
+				setOrderItemData({ return: response.data, status: ReturnStatus[formData.status] });
 			} else {
 				throw new Error();
 			}
