@@ -1,5 +1,6 @@
 import { getCapturePaymentApi, getOrderPaymentApi } from "@api/ecommerceApi";
 import { OrderPayments } from "@customTypes/ecommerceTypes";
+import { getValueSafely } from "@utils/commonUtils";
 import config from "@utils/config";
 import fetcher from "@utils/fetcher";
 import {
@@ -15,11 +16,12 @@ import {
 	Row,
 	Spin,
 	Table,
-	Typography,
+	Typography
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
+import CapturePaymentsModal from "./capturePayments";
 
 const { Text } = Typography;
 
@@ -34,7 +36,8 @@ interface PaymentsDrawer {
 const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer, amount, originalAmount }) => {
 	const [paymentDetails, setPaymentDetails] = useState<OrderPayments[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
-
+	const [paymentRecord, setPaymentRecord] = useState<OrderPayments>();
+	const [paymentModalVisible, setPaymentModalVisible] = useState<boolean>(false);
 	const [form] = useForm();
 
 	const fetchAndPopulatePaymentDetails = async () => {
@@ -84,8 +87,9 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 		}
 	}, [open]);
 
-	const capturePayment = async paymentId => {
+	const capturePayment = async (paymentId, data) => {
 		const endPoint = getCapturePaymentApi();
+		togglePaymentModal();
 		try {
 			const response = await fetcher({
 				endPoint,
@@ -93,28 +97,47 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 				body: {
 					orderId,
 					paymentId,
+					...data,
 				},
 			});
 			if (response.statusCode < 300) {
 				const modifiedOrderResponse = paymentDetails.map(payment => {
 					if (payment._id === paymentId) {
-						return response.data;
+						return {
+							...response.data,
+							amount: response.data.amount / 100,
+							meta: {
+								...response?.data?.meta,
+								charge: {
+									...response?.data?.meta?.charge,
+									amount_refunded: response?.data?.meta?.charge?.amount_refunded,
+								},
+							},
+						};
 					}
 					return payment;
 				});
 				notification.success({ message: "Payment captured successfully" });
 				setPaymentDetails(modifiedOrderResponse);
+			} else {
+				notification.error({ message: response.data.message });
 			}
 		} catch (e) {
 			notification.error({ message: "Failed to intitate payment" });
 		}
 	};
 
-	const confirmCapturePayment = paymentId => {
+	const confirmCapturePayment = (paymentId, data) => {
+		const { amount } = data;
 		Modal.confirm({
-			title: "This will debit the user's card. Do you want to continue?",
-			onOk: () => capturePayment(paymentId),
+			title: `$${amount} will be debited from the user's card. Do you want to continue?`,
+			onOk: () => capturePayment(paymentId, data),
 		});
+	};
+
+	const togglePaymentModal = (record?: OrderPayments) => {
+		setPaymentModalVisible(!!record);
+		setPaymentRecord(record);
 	};
 
 	return (
@@ -150,18 +173,34 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 							<Table.Column
 								title='Amount'
 								dataIndex='amount'
-								render={text => {
-									return `$ ${text}`;
+								render={(_, record: OrderPayments) => {
+									return (
+										<Row>
+											<Col span={24}>
+												${record.amount - getValueSafely(() => record.meta.charge.amount_refunded / 100, 0)}
+											</Col>
+											{record?.meta?.charge?.amount_refunded && record?.meta?.charge?.amount_refunded > 0 ? (
+												<Col span={24}>
+													<Text type='secondary'>
+														<small>${getValueSafely(() => record.meta.charge.amount_refunded / 100, 0)} refunded</small>
+													</Text>
+												</Col>
+											) : (
+												<></>
+											)}
+										</Row>
+									);
 								}}
 							/>
 							<Table.Column
-								title='Days left to capture'
+								title='Expires'
 								render={(_, record: OrderPayments) => {
 									const createdAt = moment(record.createdAt);
-									const endDate = moment(record.createdAt).add(7, "days");
-									const duration = moment.duration(endDate.diff(createdAt)).asDays();
+									const endDate = createdAt.clone().add(7, "days");
+									const duration = moment.duration(endDate.diff(moment())).asDays();
+
 									return (
-										<Text type={duration <= 3 && !record.capture ? "danger" : undefined}>{endDate.fromNow(true)}</Text>
+										<Text type={duration <= 3 && !record.capture ? "danger" : undefined}>{endDate.fromNow()}</Text>
 									);
 								}}
 							/>
@@ -187,7 +226,7 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 									return (
 										<>
 											{!record.capture && !!record.chargeId ? (
-												<Button type='link' onClick={() => confirmCapturePayment(record._id)}>
+												<Button type='link' onClick={() => togglePaymentModal(record)}>
 													Debit Amount
 												</Button>
 											) : (
@@ -214,6 +253,13 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 					</Col>
 				</Row>
 			</Spin>
+			<CapturePaymentsModal
+				open={paymentModalVisible}
+				toggleModal={togglePaymentModal}
+				onComplete={confirmCapturePayment}
+				id={paymentRecord?._id}
+				initialValue={paymentRecord?.amount}
+			/>
 		</Drawer>
 	);
 };
