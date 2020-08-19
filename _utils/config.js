@@ -21,6 +21,9 @@ const page = {
 	facebookAppId: "652491341906462",
 	pinterestAppId: "78963155e9328e543f3c8741e7afb48c",
 	whatsAppShareBaseUrl: "https://api.whatsapp.com/send",
+	WssUrl: isProduction
+		? "wss://api.spacejoy.com/socket.io/?EIO=4&transport=websocket"
+		: "wss://api-staging.spacejoy.com/socket.io/?EIO=4&transport=websocket",
 };
 
 const projectConfig = {

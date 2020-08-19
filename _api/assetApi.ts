@@ -21,3 +21,7 @@ export const getAssetHistoryApi = (assetId: string): string => {
 export const uploadProductImagesApi = (assetId: string): string => {
 	return `/v1/products/${assetId}/images`;
 };
+
+export const updateAssetStockApi = (): string => {
+	return "/asset/stock/update";
+};

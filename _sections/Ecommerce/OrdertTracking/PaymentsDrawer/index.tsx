@@ -144,30 +144,32 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 		<Drawer title='Payment Details' width={480} visible={open} onClose={toggleDrawer}>
 			<Spin spinning={loading}>
 				<Row gutter={[4, 16]}>
-					<Col span={24}>
-						<Collapse>
-							<Collapse.Panel key='payment' header='Create new payment'>
-								<Form
-									form={form}
-									initialValues={{ provider: "stripe", amount: originalAmount ? amount - originalAmount : 0 }}
-									onFinish={confirmCreate}
-									labelCol={{ span: 24 }}
-								>
-									<Form.Item label='Amount' name='amount' rules={[{ required: true, type: "number", min: 0 }]}>
-										<InputNumber style={{ width: "100%" }} />
-									</Form.Item>
-									<Form.Item name='provider' label='Provider'>
-										<Input disabled />
-									</Form.Item>
-									<Form.Item>
-										<Button htmlType='submit' type='primary'>
-											Create
-										</Button>
-									</Form.Item>
-								</Form>
-							</Collapse.Panel>
-						</Collapse>
-					</Col>
+					{originalAmount && originalAmount !== amount && (
+						<Col span={24}>
+							<Collapse>
+								<Collapse.Panel key='payment' header='Create new payment'>
+									<Form
+										form={form}
+										initialValues={{ provider: "stripe", amount: originalAmount ? amount - originalAmount : 0 }}
+										onFinish={confirmCreate}
+										labelCol={{ span: 24 }}
+									>
+										<Form.Item label='Amount' name='amount' rules={[{ required: true, type: "number", min: 0 }]}>
+											<InputNumber style={{ width: "100%" }} />
+										</Form.Item>
+										<Form.Item name='provider' label='Provider'>
+											<Input disabled />
+										</Form.Item>
+										<Form.Item>
+											<Button htmlType='submit' type='primary'>
+												Create
+											</Button>
+										</Form.Item>
+									</Form>
+								</Collapse.Panel>
+							</Collapse>
+						</Col>
+					)}
 					<Col span={24}>
 						<Table dataSource={paymentDetails} rowKey='_id'>
 							<Table.Column

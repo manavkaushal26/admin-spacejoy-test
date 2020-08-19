@@ -1,6 +1,8 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, RedoOutlined } from "@ant-design/icons";
 import { getOrderApi } from "@api/ecommerceApi";
+import { scrapeAssetById } from "@api/scraperApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
+import { ScrapedAssetType } from "@customTypes/moodboardTypes";
 import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import CommentsList from "@sections/Ecommerce/OrdertTracking/CommentsList";
@@ -11,7 +13,8 @@ import OrderItemTable from "@sections/Ecommerce/OrdertTracking/OrderItemTable";
 import PaymentsDrawer from "@sections/Ecommerce/OrdertTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
-import { company } from "@utils/config";
+import { getValueSafely } from "@utils/commonUtils";
+import { company, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
@@ -22,8 +25,9 @@ import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
+import useWebSocket from "react-use-websocket";
 
-const { Text, Link } = Typography;
+const { Text, Link, Title } = Typography;
 
 interface OrderTracking {
 	authVerification: Partial<User>;
@@ -31,6 +35,10 @@ interface OrderTracking {
 	orderId: string;
 	orderItemId: string;
 }
+
+const returnSocketId = (lastMessage: MessageEvent) => {
+	return getValueSafely(() => JSON.parse(lastMessage.data.replace("42", "")), "");
+};
 
 const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, orderId, orderItemId }) => {
 	const [order, setOrder] = useState<EcommOrder>();
@@ -40,8 +48,11 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	const [editOrder, setEditOrder] = useState<boolean>(false);
 	const [paymentDrawerOpen, setPaymentDrawerOpen] = useState<boolean>(false);
 	const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
-
+	const [requestId, setRequestId] = useState("");
+	const [scrapedData, setScrapedData] = useState<Record<string, ScrapedAssetType>>();
+	const [scraping, setScraping] = useState<boolean>(false);
 	const Router = useRouter();
+	const { lastMessage } = useWebSocket(page.WssUrl);
 
 	useEffect(() => {
 		if (order && orderItemId) {
@@ -74,6 +85,48 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 		}
 		setLoading(false);
 	};
+
+	const fetchCurrentDataForAssets = async () => {
+		setScraping(true);
+		const assetIds = order?.orderItems.map(orderItem => {
+			return orderItem?.product?._id;
+		});
+
+		const endPoint = scrapeAssetById();
+		try {
+			if (assetIds.length) {
+				const response = await fetcher({ endPoint, method: "POST", body: { ids: assetIds, requestId } });
+				if (response.statusCode <= 300) {
+					notification.info({ message: "Scraping products data. This might take a while" });
+				} else {
+					throw new Error();
+				}
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to get scraped data" });
+			setScraping(false);
+		}
+	};
+
+	useEffect(() => {
+		try {
+			if (!!order && !!order?.orderItems && lastMessage) {
+				const [event, data] = returnSocketId(lastMessage);
+				if (event === "OAuthCrossLogin.CONNECTION") {
+					setRequestId(prevState => data?.id || prevState);
+				} else if (event === "Scrape:Response") {
+					setScrapedData(data);
+					setScraping(false);
+				} else if (event === "Scrape:Error") {
+					setScraping(false);
+				}
+			}
+		} catch (e) {}
+	}, [order, lastMessage]);
+
+	useEffect(() => {
+		if (requestId) fetchCurrentDataForAssets();
+	}, [requestId]);
 
 	const toggleOrderItemDrawer = (orderItemToSet?: OrderItems) => {
 		if (!orderItemToSet) {
@@ -220,16 +273,16 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 				(item.price * item.quantity).toFixed(2),
 				item.tracking
 					? item.tracking.reduce(
-						(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
-						""
-					)
+							(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
+							""
+					  )
 					: "",
 				item.comments
 					? item.comments.reduce(
-						(acc, curr) =>
-							acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
-						""
-					)
+							(acc, curr) =>
+								acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
+							""
+					  )
 					: "",
 				item?.return?.status || "",
 				item?.return?.reason || item?.return?.declineComment || item?.return?.comment || "",
@@ -395,8 +448,27 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 							<Col span={24}>
 								<CommentsList type='Order' id={order?._id} />
 							</Col>
+							<Col>
+								<Row>
+									<Col>
+										<Title level={4}>Product List</Title>
+									</Col>
+									{scraping && (
+										<Col>
+											<Button type='link'>
+												<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />
+												Fetching Asset data
+											</Button>
+										</Col>
+									)}
+								</Row>
+							</Col>
 							<Col span={24}>
-								<OrderItemTable orderItems={order?.orderItems} toggleOrderItemDrawer={toggleOrderItemDrawer} />
+								<OrderItemTable
+									scrapedData={scrapedData}
+									orderItems={order?.orderItems}
+									toggleOrderItemDrawer={toggleOrderItemDrawer}
+								/>
 							</Col>
 						</Row>
 					</Spin>

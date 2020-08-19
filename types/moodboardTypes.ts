@@ -1,4 +1,4 @@
-import { MountTypes, Currency } from "./assetInfoTypes";
+import { Currency, MountTypes } from "./assetInfoTypes";
 import { Status } from "./userType";
 
 enum ServiceType {
@@ -109,6 +109,7 @@ export interface AssetType {
 		mountType: MountTypes;
 		clampValue: -1 | 0;
 	};
+	available: boolean;
 	dimension: {
 		depth: number;
 		width: number;
@@ -150,6 +151,19 @@ export interface AssetType {
 	modeOfOperation?: ModeOfOperation;
 	stockQty?: number;
 	flatShipping?: number;
+}
+
+export interface ScrapedAssetType extends AssetType {
+	scrape: {
+		available: boolean;
+		price: number;
+		prices: number[];
+		currency: string;
+		retailer: {
+			host: string;
+			name: string;
+		};
+	};
 }
 
 export interface AssetStoreSearchResponse {

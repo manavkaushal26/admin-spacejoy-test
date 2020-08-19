@@ -3,9 +3,9 @@ import { page } from "@utils/config";
 
 export const getBlogs = (role: Role): string => {
 	if (role === Role.BlogAuthor) {
-		return `/v1/blogs/author`;
+		return "/v1/blogs/author";
 	}
-	return `/v1/blogs/admin`;
+	return "/v1/blogs/admin";
 };
 
 export const blogApi = (blogId?: string): string => {

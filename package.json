@@ -42,6 +42,7 @@
 		"react-slick": "^0.25.2",
 		"react-stripe-elements": "^5.0.1",
 		"react-text-loop": "^2.2.0",
+		"react-use-websocket": "^2.1.1",
 		"react-window": "^1.8.5",
 		"react-window-infinite-loader": "^1.0.5",
 		"reactjs-places-autocomplete": "^7.2.1",
