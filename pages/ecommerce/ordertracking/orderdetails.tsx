@@ -251,6 +251,10 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 		data.push([
 			"Product Name",
 			"Order Item Id",
+			"Retailer",
+			"Retailer Link",
+			"Asset URL",
+			"Asset Store URL",
 			"Status",
 			"Quantity",
 			"Price",
@@ -267,6 +271,10 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 			data.push([
 				item.product.name,
 				item.orderItemId,
+				item.product?.retailer?.name,
+				item.product?.retailLink,
+				`${company.customerPortalLink}/product-view/${item?.product?._id}`,
+				`${company.url}/assetstore/assetdetails?assetId=${item?.product?._id}`,
 				item.status,
 				item.quantity,
 				item.price,

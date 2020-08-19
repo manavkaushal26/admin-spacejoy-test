@@ -2,6 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
 import { ScrapedAssetType } from "@customTypes/moodboardTypes";
+import { company } from "@utils/config";
 import { Button, Col, Input, Row, Table, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
 import UpdateAssetDataModal from "./UpdateAssetDataModal";
@@ -76,7 +77,7 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 										<Col span={24}>
 											<Link
 												strong
-												href={`https://www.spacejoy.com/product-view/${record?.product?._id}`}
+												href={`${company.customerPortalLink}/product-view/${record?.product?._id}`}
 												target='_blank'
 												rel='noopener noreferrer'
 											>

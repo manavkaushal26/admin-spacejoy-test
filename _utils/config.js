@@ -41,7 +41,7 @@ const company = {
 	product: "Spacejoy-Dashboard",
 	tagLine: "Designing your imagination",
 	url: isProduction ? "https://admin.spacejoy.com" : "https://staging-admin.spacejoy.com",
-	customerPortalLink: isProduction ? "Https://spacejoy.com" : "https://staging.spacejoy.com",
+	customerPortalLink: isProduction ? "https://spacejoy.com" : "https://staging.spacejoy.com",
 	country: "us",
 	subject: "Dashboard to manage customer projects",
 	description: "Dashboard for managing customer projects by Spacejoy employees",
