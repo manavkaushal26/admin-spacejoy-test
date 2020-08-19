@@ -26,7 +26,7 @@ const CapturePaymentsModal: React.FC<CapturePaymentsModal> = ({ open, toggleModa
 	}, [id, initialValue]);
 
 	return (
-		<Modal title='Debit Payment' visible={open} footer={null}>
+		<Modal title='Debit Payment' visible={open} footer={null} onCancel={() => toggleModal()}>
 			<Form form={form} labelCol={{ span: 24 }} onFinish={okClickOk} initialValues={{ amount: initialValue }}>
 				<Row>
 					<Col span={24}>
@@ -41,7 +41,7 @@ const CapturePaymentsModal: React.FC<CapturePaymentsModal> = ({ open, toggleModa
 					<Col span={24}>
 						<Row justify='end' gutter={[8, 8]}>
 							<Col>
-								<Button onClick={toggleModal} htmlType='reset'>
+								<Button onClick={() => toggleModal()} htmlType='reset'>
 									Cancel
 								</Button>
 							</Col>
