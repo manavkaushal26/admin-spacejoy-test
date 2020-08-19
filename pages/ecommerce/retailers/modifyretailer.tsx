@@ -296,7 +296,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 									</Col>
 									<Col sm={24} md={12} lg={6}>
 										<Form.Item
-											label='Return Period (in Days)'
+											label='Return Period (in Hours)'
 											name='returnTimeLimit'
 											rules={[{ type: "number", min: 0 }]}
 										>

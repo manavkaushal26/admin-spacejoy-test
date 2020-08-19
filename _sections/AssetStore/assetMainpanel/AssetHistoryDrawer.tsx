@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Drawer, notification, Empty, Row, Col, Timeline, Typography, Card } from "antd";
 import { getAssetHistoryApi } from "@api/assetApi";
-import fetcher from "@utils/fetcher";
-import moment from "moment";
 import { AssetHistory, HumanizeAssetHistoryType } from "@customTypes/assetInfoTypes";
+import fetcher from "@utils/fetcher";
+import { Card, Col, Drawer, Empty, notification, Row, Timeline, Typography } from "antd";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 
 const { Text, Paragraph } = Typography;
 
@@ -21,7 +21,7 @@ const AssetHistoryDrawer: React.FC<AssetHistoryComponent> = ({ assetId, open, cl
 		try {
 			const response = await fetcher({ endPoint, method: "GET" });
 			if (response) {
-				setAssetHistory(response.data);
+				setAssetHistory(response.data.data);
 			} else {
 				notification.error({ message: "Failed to fetch Asset history" });
 			}

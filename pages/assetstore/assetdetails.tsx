@@ -280,7 +280,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 					]);
 				}
 				if (sourceHighPoly) {
-					const fileName = source.split("/").pop();
+					const fileName = sourceHighPoly.split("/").pop();
 					setSourceHighPolyFileList([
 						{
 							uid: "-1",
