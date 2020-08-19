@@ -7,6 +7,7 @@ export interface BasicCoupon {
 	status: string;
 	isPercent: boolean;
 	maxUsePerUser: number;
+	minDiscount: number;
 	maxDiscount: number;
 	category: string;
 	impressions: number;

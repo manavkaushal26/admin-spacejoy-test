@@ -1,9 +1,10 @@
+import { InfoCircleOutlined } from "@ant-design/icons";
 import { MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus } from "@customTypes/userType";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { Col, Input, Radio, Row, Tree, Typography } from "antd";
+import { Col, Input, Radio, Row, Tooltip, Tree, Typography } from "antd";
 import { DataNode } from "antd/lib/tree";
 import React, { useEffect, useMemo, useState } from "react";
 import { FilterCard } from "../styled";
@@ -214,7 +215,16 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 											<Text strong>Search by Name</Text>
 										</Col>
 										<Col span={24}>
-											<Input allowClear value={state.searchText} onChange={onSearchInput} />
+											<Row gutter={[4, 4]} align='middle'>
+												<Col style={{ flexGrow: 1 }}>
+													<Input allowClear value={state.searchText} onChange={onSearchInput} />
+												</Col>
+												<Col>
+													<Tooltip title='Search by Name, Retailer, Color, Shape etc.,'>
+														<InfoCircleOutlined />
+													</Tooltip>
+												</Col>
+											</Row>
 										</Col>
 									</Row>
 								</Col>

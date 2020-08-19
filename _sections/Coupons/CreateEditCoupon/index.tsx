@@ -33,6 +33,7 @@ const convertFormat = (data, type = "fromState") => {
 					minAmount: data?.constraints.minAmount,
 					maxAmount: data?.constraints.maxAmount,
 				},
+				minDiscount: data.minDiscount,
 			};
 		} else {
 			const startTime = data.validity ? data.validity[0]?.toISOString() : undefined;
@@ -119,7 +120,11 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 				<Form.Item label='Code' name='code' rules={[{ required: true, message: "Please Enter Title" }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item label='Amount' name='amount' rules={[{ required: true, message: "Please Enter Amount" }]}>
+				<Form.Item
+					label='Amount'
+					name='amount'
+					rules={[{ required: true, message: "Please Enter Amount", type: "number", min: 0 }]}
+				>
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item label='Is the above mentioned Amount in Percentage?' name='isPercent' rules={[{ required: true }]}>
@@ -133,7 +138,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					dependencies={[["constraints", "maxAmount"]]}
 					name={["constraints", "minAmount"]}
 					rules={[
-						{ required: true, message: "Please Enter value" },
+						{ required: true, message: "Please Enter value", type: "number", min: 1 },
 						({ getFieldValue }) => ({
 							validator(_rule, value) {
 								const maxValue = getFieldValue(["constraints", "maxAmount"]);
@@ -152,7 +157,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					name={["constraints", "maxAmount"]}
 					dependencies={[["constraints", "minAmount"]]}
 					rules={[
-						{ required: true, message: "Please Enter value" },
+						{ required: true, message: "Please Enter value", type: "number", min: 1 },
 						({ getFieldValue }) => ({
 							validator(_rule, value) {
 								const minValue = getFieldValue(["constraints", "minAmount"]);
@@ -168,16 +173,23 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
+					label='Min Discount in Dollars'
+					name='minDiscount'
+					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
+				>
+					<InputNumber style={{ width: "100%" }} />
+				</Form.Item>
+				<Form.Item
 					label='Max Discount in Dollars'
 					name='maxDiscount'
-					rules={[{ required: true, message: "Please Enter value" }]}
+					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
 				>
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
 					label='Max no of times the Coupon can be used'
 					name='maxUsePerUser'
-					rules={[{ required: true, message: "Please Enter value" }]}
+					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
 				>
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
