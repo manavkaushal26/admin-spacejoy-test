@@ -1,7 +1,7 @@
 import { createEditCouponApi } from "@api/metaApi";
 import { BasicCoupon } from "@customTypes/couponTypes";
 import fetcher from "@utils/fetcher";
-import { Button, DatePicker, Drawer, Form, Input, InputNumber, notification, Radio, Select, Row } from "antd";
+import { Button, DatePicker, Drawer, Form, Input, InputNumber, notification, Radio, Select } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
@@ -29,6 +29,10 @@ const convertFormat = (data, type = "fromState") => {
 				category: data.category,
 				code: data.code,
 				type: data.type,
+				constraints: {
+					minAmount: data?.constraints.minAmount,
+					maxAmount: data?.constraints.maxAmount,
+				},
 			};
 		} else {
 			const startTime = data.validity ? data.validity[0]?.toISOString() : undefined;
@@ -36,8 +40,8 @@ const convertFormat = (data, type = "fromState") => {
 			return {
 				...data,
 				title: data.title.trim(),
-				description: data.description.trim(),
-				code: data.code.trim(),
+				description: data?.description ? data.description.trim() : data.description,
+				code: data?.code ? data.code.trim() : data.code,
 				...(startTime ? { startTime: startTime } : {}),
 				...(endTime ? { endTime: endTime } : {}),
 			};
@@ -54,7 +58,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 	createEditCouponVisible,
 }) => {
 	const [coupon, setCoupon] = useState({});
-	const [changedFields, setChangedFields] = useState<Partial<BasicCoupon>>({});
+
 	const [form] = Form.useForm();
 
 	useEffect(() => {
@@ -73,20 +77,13 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 		}
 	}, [coupon]);
 
-	const onFieldsChange = changedFieldsData => {
-		if (changedFieldsData.length) {
-			console.log('changedFieldsData[0]?.name.join(".")', changedFieldsData[0]?.name.join("."));
-			setChangedFields({ ...changedFields, [changedFieldsData[0]?.name.join(".")]: changedFieldsData[0]?.value });
-		}
-	};
-
 	const saveCoupon = async values => {
 		const endPoint = createEditCouponApi(couponData?._id);
+
 		try {
 			const response = await fetcher({ endPoint, method: couponData ? "PUT" : "POST", body: { data: values } });
 			if (response.status !== "error") {
-				modifyCouponValue(response.data, !couponData);
-				setChangedFields({});
+				modifyCouponValue(response.data.data, !couponData);
 				toggleCreateEditCoupon();
 				notification.success({ message: couponData ? "Saved Coupon successfully" : "Created coupon successfully" });
 			}
@@ -96,11 +93,8 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 	};
 
 	const onFinish = values => {
-		if (couponData) {
-			saveCoupon(convertFormat(changedFields));
-		} else {
-			saveCoupon(convertFormat(values));
-		}
+		// console.log("values", values);
+		saveCoupon(convertFormat(values));
 	};
 
 	return (
@@ -111,13 +105,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 			title='Coupon'
 			onClose={toggleCreateEditCoupon}
 		>
-			<Form
-				labelCol={{ span: 24 }}
-				wrapperCol={{ span: 24 }}
-				form={form}
-				onFieldsChange={onFieldsChange}
-				onFinish={onFinish}
-			>
+			<Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} form={form} onFinish={onFinish}>
 				<Form.Item label='Title' name='title' rules={[{ required: true, message: "Please Enter Title" }]}>
 					<Input />
 				</Form.Item>
@@ -139,6 +127,45 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 						<Radio.Button value={true}>Yes</Radio.Button>
 						<Radio.Button value={false}>No</Radio.Button>
 					</Radio.Group>
+				</Form.Item>
+				<Form.Item
+					label='Min Amount Coupon can be applied for'
+					dependencies={[["constraints", "maxAmount"]]}
+					name={["constraints", "minAmount"]}
+					rules={[
+						{ required: true, message: "Please Enter value" },
+						({ getFieldValue }) => ({
+							validator(_rule, value) {
+								const maxValue = getFieldValue(["constraints", "maxAmount"]);
+								if (!value || !maxValue || maxValue >= value) {
+									return Promise.resolve();
+								}
+								return Promise.reject("Min Amount has to be lesser than Max Amount");
+							},
+						}),
+					]}
+				>
+					<InputNumber style={{ width: "100%" }} />
+				</Form.Item>
+				<Form.Item
+					label='Max Amount Coupon can be applied for'
+					name={["constraints", "maxAmount"]}
+					dependencies={[["constraints", "minAmount"]]}
+					rules={[
+						{ required: true, message: "Please Enter value" },
+						({ getFieldValue }) => ({
+							validator(_rule, value) {
+								const minValue = getFieldValue(["constraints", "minAmount"]);
+
+								if (!value || !minValue || minValue <= value) {
+									return Promise.resolve();
+								}
+								return Promise.reject("Max Amount has to be greater than Min Amount");
+							},
+						}),
+					]}
+				>
+					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
 					label='Max Discount in Dollars'
