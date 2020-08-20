@@ -369,20 +369,24 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 										<Descriptions.Item label='File uploaded'>
 											{getValueSafely(
 												() => (
-													<Row align='middle'>
-														<Link target='_blank' href={`${sourceData.storage.url}`}>
-															{sourceData.storage.key.split("/").pop()}
-														</Link>
-														<Upload
-															accept='.blend'
-															fileList={uploadedFile}
-															onChange={handleFileChange}
-															action={sourceUploadFileApi(sourceData._id)}
-														>
-															<Button type='link'>
-																<UploadOutlined />
-															</Button>
-														</Upload>
+													<Row gutter={[4, 4]} align='middle'>
+														<Col>
+															<Link target='_blank' href={`${sourceData.storage.url}`}>
+																{sourceData.storage.key.split("/").pop()}
+															</Link>
+														</Col>
+														<Col>
+															<Upload
+																accept='.blend'
+																fileList={uploadedFile}
+																onChange={handleFileChange}
+																action={sourceUploadFileApi(sourceData._id)}
+															>
+																<Button type='ghost'>
+																	<UploadOutlined /> Re-upload
+																</Button>
+															</Upload>
+														</Col>
 													</Row>
 												),
 												<>No file uploaded</>

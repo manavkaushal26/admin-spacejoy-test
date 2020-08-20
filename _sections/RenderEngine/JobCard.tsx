@@ -69,7 +69,7 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						}
 						setProgressData({
 							...progressInfo,
-							completion: progressInfo?.data?.tile?.percent || progressData.completion,
+							completion: progressInfo?.data?.tile?.percent || progressData?.completion,
 							sample: {
 								...{ ...(progressData && progressData?.sample ? { ...progressData?.sample } : {}) },
 								done: progressInfo?.data?.sample?.done || progressData?.sample?.done,
