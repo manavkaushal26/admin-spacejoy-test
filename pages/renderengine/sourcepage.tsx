@@ -1,4 +1,4 @@
-import { UploadOutlined, LoadingOutlined, CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
+import { CheckCircleFilled, CloseCircleFilled, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import {
 	createJobApi,
 	getAllJobs,
@@ -12,7 +12,6 @@ import User, { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import CreateNewJob from "@sections/RenderEngine/CreateNewJob";
-import DetailText from "@sections/RenderEngine/DetailText";
 import JobCard from "@sections/RenderEngine/JobCard";
 import JobDetailsModal from "@sections/RenderEngine/JobDetailsModal";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
@@ -20,7 +19,19 @@ import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, Input, notification, PageHeader, Result, Row, Spin, Typography, Upload } from "antd";
+import {
+	Button,
+	Col,
+	Descriptions,
+	Input,
+	notification,
+	PageHeader,
+	Result,
+	Row,
+	Spin,
+	Typography,
+	Upload,
+} from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import moment from "moment";
 import { NextPage, NextPageContext } from "next";
@@ -348,35 +359,42 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 							</Col>
 
 							<Col span={24}>
-								<Row gutter={[8, 8]}>
-									<DetailText name='Name' value={sourceData.name} />
-									<DetailText name='Created At' value={moment(sourceData.createdAt).format("D-MMM-YYYY")} />
-									<DetailText name='Source Id' value={sourceData._id} />
+								<Descriptions bordered column={{ md: 3, sm: 3, xs: 2 }}>
+									<Descriptions.Item label='Name'>{sourceData.name}</Descriptions.Item>
+									<Descriptions.Item label='Created At'>
+										{moment(sourceData.createdAt).format("D-MMM-YYYY")}
+									</Descriptions.Item>
+									<Descriptions.Item label='Source Id'>{sourceData._id}</Descriptions.Item>
 									{!!sourceData.storage && (
-										<Col sm={12} md={8} lg={6}>
-											<Row style={{ whiteSpace: "pre", flexFlow: "row" }}>
-												<Text strong>File uploaded: </Text>
-
-												<Text ellipsis>
-													{getValueSafely(
-														() => (
-															<Link target='_blank' href={`${sourceData.storage.url}`}>
-																{sourceData.storage.key.split("/").pop()}
-															</Link>
-														),
-														<>No file uploaded</>
-													)}
-												</Text>
-											</Row>
-										</Col>
+										<Descriptions.Item label='File uploaded'>
+											{getValueSafely(
+												() => (
+													<Row align='middle'>
+														<Link target='_blank' href={`${sourceData.storage.url}`}>
+															{sourceData.storage.key.split("/").pop()}
+														</Link>
+														<Upload
+															accept='.blend'
+															fileList={uploadedFile}
+															onChange={handleFileChange}
+															action={sourceUploadFileApi(sourceData._id)}
+														>
+															<Button type='link'>
+																<UploadOutlined />
+															</Button>
+														</Upload>
+													</Row>
+												),
+												<>No file uploaded</>
+											)}
+										</Descriptions.Item>
 									)}
-									<Col span={24}>
-										<Text strong>Description</Text>
+									<Descriptions.Item label='Description'>
 										<Paragraph ellipsis={{ rows: 3, expandable: true }}>
 											{sourceData.description || "No Description"}
 										</Paragraph>
-									</Col>
-								</Row>
+									</Descriptions.Item>
+								</Descriptions>
 							</Col>
 							{jobs.length !== 0 && (
 								<Col span={24}>
