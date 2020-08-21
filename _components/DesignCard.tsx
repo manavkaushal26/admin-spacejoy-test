@@ -42,19 +42,15 @@ const topRightTick = css`
 	}
 `;
 
-const StateAwareCards = styled(Card)<{ state: DesignState; revisionDesign: boolean }>`
+const StateAwareCards = styled(Card) <{ state: DesignState; revisionDesign: boolean }>`
 	${({ state }): FlattenSimpleInterpolation | null => (state === DesignState.Finalized ? topRightTick : null)}
 	background-color: ${({ revisionDesign }): string | null => (revisionDesign ? "#fff7e6" : null)};
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	> .ant-card-cover {
-		width: 100%;
-	}
 	> .ant-card-body {
 		flex-grow: 1;
 	}
 `;
+
+const { Meta } = Card;
 
 const { Text } = Typography;
 
@@ -144,42 +140,38 @@ const DesignCard: React.FC<DesignCardProps> = ({
 					</Row>
 				}
 			>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong style={{ width: "100%" }} ellipsis>
-							{designName}
-						</Text>
-					</Col>
-					<Col>
-						<Tag>
-							<Text strong>Phase:</Text> {phase}
-						</Tag>
-					</Col>
-					{feedbackPresent && (
+				<Meta title={designName} description={
+					<Row gutter={[4, 4]}>
 						<Col>
-							<Tag color='orange'>Feedback</Tag>
+							<Tag><Text strong>Phase:</Text>{phase}</Tag>
 						</Col>
-					)}
-					{creatorRole && (
-						<Col>
-							<Tag color='blue'>
-								<Text strong>Owner:</Text> {creatorRole}
-							</Tag>
-						</Col>
-					)}
-					{revisionDesignId === uniqueId && (
-						<Col>
-							<Tag color='red'>Revision</Tag>
-						</Col>
-					)}
-					{parentDesign && (
-						<Col>
-							<Tag>
-								<Text strong>Parent:</Text> {parentDesign}
-							</Tag>
-						</Col>
-					)}
-				</Row>
+						{feedbackPresent && (
+							<Col>
+								<Tag color='orange'>Feedback</Tag>
+							</Col>
+						)}
+						{creatorRole && (
+							<Col>
+								<Tag color='blue'>
+									<Text strong>Owner:</Text> {creatorRole}
+								</Tag>
+							</Col>
+						)}
+						{revisionDesignId === uniqueId && (
+							<Col>
+								<Tag color='red'>Revision</Tag>
+							</Col>
+						)}
+						{parentDesign && (
+							<Col>
+								<Tag>
+									<Text strong>Parent:</Text> {parentDesign}
+								</Tag>
+							</Col>
+						)}
+					</Row>
+				} />
+
 			</StateAwareCards>
 		</Col>
 	);

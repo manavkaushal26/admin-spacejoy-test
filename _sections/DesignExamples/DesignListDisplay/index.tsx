@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Row, Col, Pagination, Spin, notification } from "antd";
-import fetcher from "@utils/fetcher";
 import { getDesignSearchApi } from "@api/designApi";
 import DesignCard from "@components/DesignCard";
-import { getValueSafely, getHumanizedActivePhase } from "@utils/commonUtils";
 import { DesignImgTypes } from "@customTypes/dashboardTypes";
-
+import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { Col, notification, Pagination, Row, Spin } from "antd";
 import { useRouter } from "next/router";
-import { DesignListDisplayState, DesignListAction, DesignListActionType } from "./reducer";
+import React, { useEffect, useState } from "react";
+import { DesignListAction, DesignListActionType, DesignListDisplayState } from "./reducer";
+
 
 interface DesignListDisplay {
 	state: DesignListDisplayState;
@@ -83,19 +83,19 @@ const DesignListDisplay: React.FC<DesignListDisplay> = ({ state, dispatch }) => 
 										},
 										process.env.NODE_ENV === "production"
 											? [
-													{
-														cdn: "/v1581057410/admin/designImagePlaceholder.jpg",
-														_id: "1",
-														imgType: DesignImgTypes.Render,
-													},
-											  ]
+												{
+													cdn: "/v1581057410/admin/designImagePlaceholder.jpg",
+													_id: "1",
+													imgType: DesignImgTypes.Render,
+												},
+											]
 											: [
-													{
-														cdn: "/v1581057545/admin/designImagePlaceholder.jpg",
-														_id: "1",
-														imgType: DesignImgTypes.Render,
-													},
-											  ]
+												{
+													cdn: "/v1581057545/admin/designImagePlaceholder.jpg",
+													_id: "1",
+													imgType: DesignImgTypes.Render,
+												},
+											]
 									)}
 									designName={design.name}
 									phase={getHumanizedActivePhase(design.phases)}

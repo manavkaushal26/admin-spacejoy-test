@@ -6,7 +6,7 @@ import {
 	convertDaysToMilliseconds,
 	convertMillisecondsToDays,
 	getColorsForPackages,
-	getValueSafely,
+	getValueSafely
 } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Avatar, Button, Col, Input, notification, Popconfirm, Radio, Row, Tag, Typography } from "antd";
@@ -65,7 +65,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 			return moment(endedAt).add(delayValue.max, "days");
 		}
 		return null;
-	}, [endedAt, startedAt]);
+	}, [endedAt, startedAt, delayValue]);
 
 	const duration = moment.duration((endTime || moment()).diff(moment()));
 	const daysLeft = duration.get("days");
@@ -215,10 +215,10 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 							</Col>
 						</Row>
 					) : (
-						<Button type="primary" onClick={onStartClick}>
-							Start Project
-						</Button>
-					)}
+							<Button type="primary" onClick={onStartClick}>
+								Start Project
+							</Button>
+						)}
 				</Col>
 				{endTime && (
 					<Col>
@@ -275,10 +275,10 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 								<Button type="primary">Delay Project</Button>
 							</Popconfirm>
 						) : (
-							<Tag color="red">
-								Delayed by {delayValue.min} - {delayValue.max} days
-							</Tag>
-						)}
+								<Tag color="red">
+									Delayed by {delayValue.min} - {delayValue.max} days
+								</Tag>
+							)}
 					</Col>
 				)}
 			</Row>

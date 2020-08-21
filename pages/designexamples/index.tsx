@@ -1,11 +1,11 @@
-import { RoomLabels, RoomTypes, DesignPhases, HumanizeDesignPhases } from "@customTypes/dashboardTypes";
+import { DesignPhases, HumanizeDesignPhases, RoomLabels, RoomTypes } from "@customTypes/dashboardTypes";
 import User, { AssetStatus } from "@customTypes/userType";
 import CreateDesignModal from "@sections/DesignExamples/CreateNewDesign";
 import DesignListDisplay from "@sections/DesignExamples/DesignListDisplay";
 import {
 	DesignListAction,
 	DesignListDisplayInitialState,
-	DesignListDisplayReducer,
+	DesignListDisplayReducer
 } from "@sections/DesignExamples/DesignListDisplay/reducer";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
@@ -15,9 +15,9 @@ import IndexPageMeta from "@utils/meta";
 import { Button, Col, Collapse, Input, Row, Select, Typography } from "antd";
 import { NextPage, NextPageContext } from "next";
 import Head from "next/head";
-import React, { useReducer, useState, useEffect } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/router";
+import React, { useEffect, useReducer, useState } from "react";
+import styled from "styled-components";
 
 interface DesignExamplesProps {
 	isServer: boolean;
@@ -130,10 +130,10 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 							<Collapse>
 								<Collapse.Panel header="Filters" key={1}>
 									<Row gutter={[8, 8]}>
-										<Col sm={24} md={12}>
+										<Col sm={24} md={8}>
 											<Row>
 												<Col>Search by Name</Col>
-												<Col>
+												<Col span={24}>
 													<Input.Search
 														onChange={(e): void => debouncedHandleSearch(e.target.value)}
 														onSearch={handleSearchInput}
@@ -141,10 +141,10 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 												</Col>
 											</Row>
 										</Col>
-										<Col sm={12} md={6}>
+										<Col sm={12} md={8}>
 											<Row>
 												<Col>Filter by Room Type</Col>
-												<Col>
+												<Col span={24}>
 													<Select
 														mode="multiple"
 														maxTagCount={2}
@@ -163,10 +163,11 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 												</Col>
 											</Row>
 										</Col>
-										<Col sm={12} md={6}>
+										<Col sm={12} md={8}>
 											<Row>
 												<Col>Filter by Status</Col>
-												<Col>
+												<Col span={24}>
+
 													<Select
 														onChange={(value): void => handleSelect(value, DesignListAction.STATUS_FILTER)}
 														style={{ width: "100%" }}
@@ -185,7 +186,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 										<Col sm={24} md={12}>
 											<Row>
 												<Col>Filter by Phase</Col>
-												<Col>
+												<Col span={24} >
 													<Select
 														mode="multiple"
 														value={state.phaseFilter}
@@ -220,7 +221,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 				onCreate={onCreate}
 				designScope="portfolio"
 			/>
-		</PageLayout>
+		</PageLayout >
 	);
 };
 

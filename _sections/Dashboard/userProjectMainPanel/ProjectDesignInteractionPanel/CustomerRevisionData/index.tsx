@@ -85,6 +85,34 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 					</Card>
 				</Col>
 				<Col span={24}>
+					<Row gutter={[8, 16]}>
+						<Col span={24}>
+							<Text strong>Products Requested by Customer</Text>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[8, 8]}>
+								{revisionData?.requestedProducts && revisionData.requestedProducts.length ? (
+									revisionData.requestedProducts.map(requestedStore => {
+										return (
+											<Col key={requestedStore._id} span={24}>
+												<RequestProductCard
+													designId={revisionData.revisedDesign?._id}
+													url={requestedStore.url}
+													id={requestedStore._id}
+													deleteCard={deleteCard}
+													comment={requestedStore.comment}
+												/>
+											</Col>
+										);
+									})
+								) : (
+										<Empty description='No new products requested' />
+									)}
+							</Row>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
 					<Card
 						title={
 							<Row align='middle' gutter={[8, 8]}>
@@ -117,34 +145,7 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 						</Col>
 					</Card>
 				</Col>
-				<Col span={24}>
-					<Row gutter={[8, 16]}>
-						<Col span={24}>
-							<Text strong>Products Requested by Customer</Text>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[8, 8]}>
-								{revisionData?.requestedProducts && revisionData.requestedProducts.length ? (
-									revisionData.requestedProducts.map(requestedStore => {
-										return (
-											<Col key={requestedStore._id} span={24}>
-												<RequestProductCard
-													designId={revisionData.revisedDesign?._id}
-													url={requestedStore.url}
-													id={requestedStore._id}
-													deleteCard={deleteCard}
-													comment={requestedStore.comment}
-												/>
-											</Col>
-										);
-									})
-								) : (
-									<Empty description='No new products requested' />
-								)}
-							</Row>
-						</Col>
-					</Row>
-				</Col>
+
 			</Row>
 			<EditRevisionDataDrawer
 				open={editRevison}
