@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Modal, Select, Input, Button, Row, Col, Typography, message } from "antd";
-import { DesignInterface, DetailedProject, PhaseInternalNames, DesignState } from "@customTypes/dashboardTypes";
-import { designCopyApi, createDesignApi } from "@api/designApi";
+import { createDesignApi, designCopyApi } from "@api/designApi";
+import { DetailedProject, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import fetcher from "@utils/fetcher";
+import { Button, Col, Input, message, Modal, Row, Select, Typography } from "antd";
+import React, { useState } from "react";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -11,7 +11,7 @@ interface CopyDesignModal {
 	projectData: DetailedProject;
 	toggleModal: () => void;
 	copyDesignModalVisible: boolean;
-	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	refetchData: () => void;
 }
 
 const Footer: React.FC<{
@@ -36,7 +36,7 @@ const Footer: React.FC<{
 const CopyDesignModal: React.FC<CopyDesignModal> = ({
 	projectData,
 	toggleModal,
-	setProjectData,
+	refetchData,
 	copyDesignModalVisible,
 }) => {
 	const [selectedDesignId, setSelectedDesignId] = useState<string>(null);
@@ -76,15 +76,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 			},
 		});
 		if (response.statusCode <= 300) {
-			const designData = response.data;
-			const newDesign: DesignInterface = {
-				state: DesignState.New,
-				design: designData,
-			};
-			setProjectData({
-				...projectData,
-				designs: [...projectData.designs, newDesign],
-			});
+			refetchData();
 			message.success("Revision Design Created Succesfully");
 			toggleModal();
 		} else {

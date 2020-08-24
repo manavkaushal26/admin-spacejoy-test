@@ -9,10 +9,10 @@ import {
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Divider, Empty, notification, Row, Spin, Typography } from "antd";
+import { Col, Empty, notification, Row, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { MaxHeightDiv, VerticalPaddedDiv, SilentDivider } from "../styled";
+import { MaxHeightDiv, VerticalPaddedDiv } from "../styled";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
 
@@ -121,7 +121,7 @@ const userProjectMainPanel: React.FC<{
 	const onTabChange = (activeKey, pid, did): void => {
 		Router.push(
 			{
-				pathname: `/dashboard`,
+				pathname: "/dashboard",
 				query: { pid, designId: did, activeKey },
 			},
 			`/dashboard/pid/${projectData._id}/did/${did}?activeKey=${activeKey}`,
@@ -159,7 +159,7 @@ const userProjectMainPanel: React.FC<{
 					<Col span={24}>
 						<MaxHeightDiv>
 							<VerticalPaddedDiv>
-								<Row justify="center">
+								<Row justify='center'>
 									<Col>
 										<Empty description={<Text>Select a Project to work on!</Text>} />
 									</Col>

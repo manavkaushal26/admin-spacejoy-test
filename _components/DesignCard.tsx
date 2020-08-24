@@ -42,7 +42,7 @@ const topRightTick = css`
 	}
 `;
 
-const StateAwareCards = styled(Card) <{ state: DesignState; revisionDesign: boolean }>`
+const StateAwareCards = styled(Card)<{ state: DesignState; revisionDesign: boolean }>`
 	${({ state }): FlattenSimpleInterpolation | null => (state === DesignState.Finalized ? topRightTick : null)}
 	background-color: ${({ revisionDesign }): string | null => (revisionDesign ? "#fff7e6" : null)};
 	> .ant-card-body {
@@ -140,38 +140,43 @@ const DesignCard: React.FC<DesignCardProps> = ({
 					</Row>
 				}
 			>
-				<Meta title={designName} description={
-					<Row gutter={[4, 4]}>
-						<Col>
-							<Tag><Text strong>Phase:</Text>{phase}</Tag>
-						</Col>
-						{feedbackPresent && (
-							<Col>
-								<Tag color='orange'>Feedback</Tag>
-							</Col>
-						)}
-						{creatorRole && (
-							<Col>
-								<Tag color='blue'>
-									<Text strong>Owner:</Text> {creatorRole}
-								</Tag>
-							</Col>
-						)}
-						{revisionDesignId === uniqueId && (
-							<Col>
-								<Tag color='red'>Revision</Tag>
-							</Col>
-						)}
-						{parentDesign && (
+				<Meta
+					title={designName}
+					description={
+						<Row gutter={[4, 4]}>
 							<Col>
 								<Tag>
-									<Text strong>Parent:</Text> {parentDesign}
+									<Text strong>Phase:</Text>
+									{phase}
 								</Tag>
 							</Col>
-						)}
-					</Row>
-				} />
-
+							{feedbackPresent && (
+								<Col>
+									<Tag color='orange'>Feedback</Tag>
+								</Col>
+							)}
+							{creatorRole && (
+								<Col>
+									<Tag color='blue'>
+										<Text strong>Owner:</Text> {creatorRole}
+									</Tag>
+								</Col>
+							)}
+							{revisionDesignId === uniqueId && (
+								<Col>
+									<Tag color='red'>Revision</Tag>
+								</Col>
+							)}
+							{parentDesign && (
+								<Col>
+									<Tag>
+										<Text strong>Parent:</Text> {parentDesign}
+									</Tag>
+								</Col>
+							)}
+						</Row>
+					}
+				/>
 			</StateAwareCards>
 		</Col>
 	);

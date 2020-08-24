@@ -89,7 +89,7 @@ const CancelPanel: React.FC<CancelPanel> = ({ cancelData, entryId, setOrderItemD
 		try {
 			const response = await fetcher({ endPoint, method: cancelData ? "PUT" : "POST", body: formData });
 			if (response.statusCode <= 300) {
-				setOrderItemData({ cancellation: response.data, status: CancelStatus[formData.status] });
+				setOrderItemData({ cancellation: response.data, status: CancelStatus[response.data.status], _id: entryId });
 			} else {
 				throw new Error();
 			}

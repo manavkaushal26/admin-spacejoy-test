@@ -1,12 +1,12 @@
-import React from "react";
-import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
-import { DetailedProject, RevisionForm } from "@customTypes/dashboardTypes";
-import { Tabs } from "antd";
-import CustomerResponsesTab from "./CustomerResponesTab";
-import CustomerFeedbackTab from "./CustomerFeedbackTab";
-import CustomerRevisionData from "./CustomerRevisionData";
 import PhaseTimeline from "@components/PhaseTimeline";
+import { DetailedProject, RevisionForm } from "@customTypes/dashboardTypes";
+import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
 import { PaddedDiv } from "@sections/Header/styled";
+import { Tabs } from "antd";
+import React from "react";
+import CustomerFeedbackTab from "./CustomerFeedbackTab";
+import CustomerResponsesTab from "./CustomerResponesTab";
+import CustomerRevisionData from "./CustomerRevisionData";
 
 interface ProjectDesignInteractionPanel {
 	projectData: DetailedProject;

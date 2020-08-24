@@ -2,6 +2,7 @@ import { searchProjectsApi } from "@api/projectApi";
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
+import { useSessionStorage } from "@utils/customHooks/useSessionStorage";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Drawer, Row } from "antd";
 import { Moment } from "moment";
@@ -97,7 +98,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 }) => {
 	const [data, setData] = useState<UserProjectType[]>([]);
 	const [count, setCount] = useState(1000);
-	const [state, setState] = useState(UserProjectSidePanelInitialState);
+	const [state, setState] = useSessionStorage("tabSearch", UserProjectSidePanelInitialState);
 	const [loading, setLoading] = useState(false);
 	const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 	const [drawerOpen, setDrawerOpen] = useState<boolean>(false);

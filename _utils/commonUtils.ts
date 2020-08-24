@@ -194,3 +194,10 @@ export const convertMillisecondsToDays = (milliseconds: string | number): number
 export const dateFromObjectId = (objectId: string): string => {
 	return new Date(parseInt(objectId?.substring(0, 8), 16) * 1000 || 0)?.toISOString();
 };
+
+export const fixDecimals = (value: number, points: number) => {
+	if (value) {
+		return value.toFixed(points);
+	}
+	return (0).toFixed(points);
+};

@@ -99,6 +99,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	onSelectDesign,
 	setProjectData,
 	revisionDesign,
+	refetchData,
 }) => {
 	const [copyDesignModalVisible, setCopyDesignModalVisible] = useState<boolean>(false);
 	const [editDesignModalVisible, setEditDesignModalVisible] = useState<boolean>(false);
@@ -168,10 +169,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	const deleteDesign = async (id: string): Promise<void> => {
 		const endPoint = deleteDesignApi(id);
 		await fetcher({ endPoint, method: "DELETE" });
-		setProjectData({
-			...projectData,
-			designs: [...projectData.designs.filter(design => design.design._id !== id)],
-		});
+		refetchData();
 	};
 	const confirmDelete = (id: string): void => {
 		Modal.confirm({
@@ -198,6 +196,9 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			...projectData,
 			status: response.data.status,
 		});
+	};
+	const confirmChange = value => {
+		Modal.confirm({ title: `Change status to ${value}?`, onOk: () => onStatusChange(value) });
 	};
 
 	const onCopyAsDesignExampleClick = (data?: string): void => {
@@ -370,7 +371,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 			<Col span={24}>
 				{(userRole === Role.Admin || userRole === Role.Owner) && (
 					<Row justify='center'>
-						<Select onChange={onStatusChange} style={{ width: 200 }} defaultValue={projectData.status}>
+						<Select onChange={confirmChange} style={{ width: 200 }} defaultValue={projectData.status}>
 							{Object.keys(Status).map(key => {
 								return (
 									<Option key={key} value={key}>
@@ -390,10 +391,10 @@ const DesignSelection: React.FC<DesignSelection> = ({
 				designData={designToBeCopied}
 			/>
 			<CopyDesignModal
+				refetchData={refetchData}
 				projectData={projectData}
 				toggleModal={onClose}
 				copyDesignModalVisible={copyDesignModalVisible}
-				setProjectData={setProjectData}
 			/>
 		</Row>
 	);

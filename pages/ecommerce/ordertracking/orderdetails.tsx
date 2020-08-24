@@ -15,6 +15,7 @@ import PageLayout from "@sections/Layout";
 import { redirectToLocation, withAuthVerification } from "@utils/auth";
 import { getValueSafely } from "@utils/commonUtils";
 import { company, page } from "@utils/config";
+import { useLocalStorage } from "@utils/customHooks/useLocalStorage";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
@@ -37,7 +38,8 @@ interface OrderTracking {
 }
 
 const returnSocketId = (lastMessage: MessageEvent) => {
-	return getValueSafely(() => JSON.parse(lastMessage.data.replace("42", "")), "");
+	if (lastMessage.data.includes("42")) return getValueSafely(() => JSON.parse(lastMessage.data.replace("42", "")), "");
+	return [];
 };
 
 const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, orderId, orderItemId }) => {
@@ -49,10 +51,11 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	const [paymentDrawerOpen, setPaymentDrawerOpen] = useState<boolean>(false);
 	const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
 	const [requestId, setRequestId] = useState("");
-	const [scrapedData, setScrapedData] = useState<Record<string, ScrapedAssetType>>();
+	const [scrapedData, setScrapedData] = useLocalStorage<Record<string, ScrapedAssetType>>(orderId, null);
 	const [scraping, setScraping] = useState<boolean>(false);
+	const [scrapeURL, setScrapeURL] = useState(null);
 	const Router = useRouter();
-	const { lastMessage } = useWebSocket(page.WssUrl);
+	const { lastMessage } = useWebSocket(scrapeURL);
 
 	useEffect(() => {
 		if (order && orderItemId) {
@@ -110,23 +113,32 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 
 	useEffect(() => {
 		try {
-			if (!!order && !!order?.orderItems && lastMessage) {
+			if (!!order && !!order?.orderItems && !!lastMessage && scrapeURL !== "") {
 				const [event, data] = returnSocketId(lastMessage);
 				if (event === "OAuthCrossLogin.CONNECTION") {
 					setRequestId(prevState => data?.id || prevState);
 				} else if (event === "Scrape:Response") {
 					setScrapedData(data);
+					setScrapeURL(null);
 					setScraping(false);
 				} else if (event === "Scrape:Error") {
 					setScraping(false);
 				}
 			}
-		} catch (e) {}
+		} catch (e) {
+			setScrapeURL(null);
+
+			notification.error({ message: "Scraping Socket Error" });
+		}
 	}, [order, lastMessage]);
 
 	useEffect(() => {
 		if (requestId) fetchCurrentDataForAssets();
 	}, [requestId]);
+
+	const triggerScraping = () => {
+		setScrapeURL(page.WssUrl);
+	};
 
 	const toggleOrderItemDrawer = (orderItemToSet?: OrderItems) => {
 		if (!orderItemToSet) {
@@ -457,15 +469,25 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 								<CommentsList type='Order' id={order?._id} />
 							</Col>
 							<Col>
-								<Row>
+								<Row gutter={[8, 8]} align='top'>
 									<Col>
 										<Title level={4}>Product List</Title>
 									</Col>
-									{scraping && (
+									{scraping ? (
 										<Col>
-											<Button type='link'>
-												<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />
-												Fetching Asset data
+											<Link>
+												<Row gutter={[4, 4]} align='middle'>
+													<Col>
+														<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />
+													</Col>
+													<Col>Fetching Asset data</Col>
+												</Row>
+											</Link>
+										</Col>
+									) : (
+										<Col>
+											<Button type='link' onClick={triggerScraping}>
+												Fetch Asset Data
 											</Button>
 										</Col>
 									)}

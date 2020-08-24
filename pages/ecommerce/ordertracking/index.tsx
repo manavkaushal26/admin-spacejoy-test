@@ -6,6 +6,7 @@ import AllOrderTable from "@sections/Ecommerce/OrdertTracking/AllOrderTable";
 import PageLayout from "@sections/Layout";
 import { withAuthVerification } from "@utils/auth";
 import { company } from "@utils/config";
+import { useSessionStorage } from "@utils/customHooks/useSessionStorage";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Card, Col, Form, Input, Row, Select, Typography } from "antd";
@@ -24,7 +25,7 @@ interface OrderTracking {
 const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) => {
 	const [orders, setOrders] = useState<EcommOrder[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [searchValues, setSearchValues] = useState({
+	const [searchValues, setSearchValues] = useSessionStorage("searchOrders", {
 		email: "",
 		status: "",
 	});

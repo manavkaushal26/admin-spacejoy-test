@@ -23,7 +23,7 @@ interface OrderItemDrawer {
 	setOrderItemData: (data: Partial<OrderItem>) => void;
 }
 
-const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, closeDrawer }) => {
+const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, closeDrawer, setOrderItemData }) => {
 	const [orderItem, setOrderItem] = useState<OrderItem>(() => orderItemData);
 	const [activeCollapseKey, setActiveCollapseKey] = useState<string>("");
 	const [form] = useForm();
@@ -34,6 +34,7 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 
 	const updateOrderItemData = (data: Partial<OrderItems>) => {
 		setOrderItem(prevState => ({ ...prevState, ...data }));
+		setOrderItemData(data);
 	};
 
 	const updateStatus = async data => {

@@ -131,16 +131,15 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 						render={(_, record: OrderItems) => {
 							if (scrapedData[record?.product?._id]?.scrape?.price) {
 								const difference = scrapedData[record?.product?._id]?.scrape?.price - record?.product?.price;
-
+								const fixedDifference = difference.toFixed(2);
 								return (
 									<>
-										{difference < 0 ? `-$${-difference}` : `$${-difference}`} (
-										{(difference / record?.product?.price).toFixed(2)}%)
+										{difference < 0 ? `-$${-fixedDifference}` : `$${-fixedDifference}`} (
+										{((difference * 100) / record?.product?.price).toFixed(2)}%)
 									</>
 								);
 							} else if (scrapedData[record?.product?._id]?.scrape?.prices) {
 								const priceRange = scrapedData[record?.product?._id]?.scrape?.prices.join("-");
-
 								return <>${priceRange}</>;
 							} else {
 								return (
