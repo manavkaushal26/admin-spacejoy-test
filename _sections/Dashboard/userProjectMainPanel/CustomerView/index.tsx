@@ -1,18 +1,22 @@
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import Card from "@components/Card";
 import Image from "@components/Image";
-import { DesignImgTypes, DetailedDesign } from "@customTypes/dashboardTypes";
+import { DesignImgTypes, DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
+import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
+import { getValueSafely } from "@utils/commonUtils";
 import config, { cloudinary } from "@utils/config";
-import { Col, Divider, Row, Button } from "antd";
-import React from "react";
+import { Button, Card as AntdCard, Col, Divider, Row, Typography } from "antd";
+import React, { useMemo } from "react";
 import ReactPannellum from "react-pannellum";
 import styled from "styled-components";
-import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 
+const { Text } = Typography;
 interface CustomerView {
 	designData: DetailedDesign;
 	projectName: string;
+	projectData: DetailedProject;
 }
 
 const FlatCard = styled(Card)`
@@ -34,12 +38,64 @@ const PannellumOptions = {
 		hfov: 70,
 	},
 };
+const PackageDetails: React.FC<{
+	items: string;
+}> = ({ items }) => {
+	if (items === "delight")
+		return (
+			<>
+				<Col>
+					<CloseOutlined style={{ color: "red" }} />
+					<Text strong>Paint Recommendations </Text>
+				</Col>
+				<Col>
+					<CloseOutlined style={{ color: "red" }} />
+					<Text strong> Window Treatment </Text>
+				</Col>
+			</>
+		);
+	if (items === "bliss")
+		return (
+			<>
+				<Col>
+					<CloseOutlined style={{ color: "red" }} />
+					<Text strong> Paint Recommendations </Text>
+				</Col>
+				<Col>
+					<CheckOutlined style={{ color: "green" }} />
+					<Text strong> Window Treatment </Text>
+				</Col>
+			</>
+		);
+	if (items === "euphoria")
+		return (
+			<>
+				<Col>
+					<CheckOutlined style={{ color: "green" }} />
+					<Text strong> Paint Recommendations </Text>
+				</Col>
+				<Col>
+					<CheckOutlined style={{ color: "green" }} />
+					<Text strong> Window Treatment </Text>
+				</Col>
+			</>
+		);
+};
 
-const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
+const CustomerView: React.FC<CustomerView> = ({ designData, projectName, projectData }) => {
 	const pannelumImage = designData.designImages.find(image => image.imgType === DesignImgTypes.Panorama);
-
+	const { order } = projectData;
+	const items = useMemo(
+		() =>
+			order.items
+				.map(item => {
+					return getValueSafely(() => item.name, "");
+				})
+				.join(","),
+		[projectData.order]
+	);
 	return (
-		<Row gutter={[4, 8]}>
+		<Row gutter={[4, 16]}>
 			<Col sm={24} {...(pannelumImage ? { md: 18 } : {})} style={{ marginBottom: "1rem" }}>
 				<BiggerButtonCarousel slidesToShow={1} slidesToScroll={1} autoplay>
 					{designData.designImages
@@ -102,6 +158,16 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 				</Col>
 			)}
 			<Col span={24}>
+				<Divider />
+			</Col>
+			<Col span={24}>
+				<AntdCard size='small'>
+					<Row gutter={[8, 8]} justify='space-around' align='middle'>
+						<PackageDetails items={items} />
+					</Row>
+				</AntdCard>
+			</Col>
+			<Col span={24}>
 				<Row>
 					<Col span={24}>
 						<Divider>Your Shopping List</Divider>
@@ -122,6 +188,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName }) => {
 					</Col>
 				</Row>
 			</Col>
+
 			<Col span={24}>
 				<Row>
 					<Col span={24}>
