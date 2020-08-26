@@ -139,7 +139,7 @@ const dashboard: NextPage<DashboardProps> = ({
 	};
 
 	return (
-		<PageLayout pageName="Dashboard" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Dashboard' isServer={isServer} authVerification={authVerification}>
 			<Head>
 				<title>Dashboard | {company.product}</title>
 				{IndexPageMeta}
@@ -154,9 +154,9 @@ const dashboard: NextPage<DashboardProps> = ({
 								setCollapsed(collapsedState && !!projectId);
 							}}
 							zeroWidthTriggerStyle={{ top: "1.8rem", borderRadius: "0 2px 2px 0" }}
-							breakpoint="lg"
-							width="360"
-							theme="dark"
+							breakpoint='lg'
+							width='360'
+							theme='dark'
 							collapsible
 							collapsedWidth={0}
 						>

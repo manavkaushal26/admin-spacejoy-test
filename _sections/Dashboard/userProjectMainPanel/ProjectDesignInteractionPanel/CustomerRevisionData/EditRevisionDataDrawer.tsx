@@ -127,13 +127,13 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 	};
 
 	return (
-		<Drawer visible={open} width={360} onClose={toggleDrawer} title="Edit Revision Details">
+		<Drawer visible={open} width={360} onClose={toggleDrawer} title='Edit Revision Details'>
 			<Row gutter={[16, 16]}>
 				{false && (
 					<Col>
 						<SelectField
-							name="revisionType"
-							label="Revision Type"
+							name='revisionType'
+							label='Revision Type'
 							value={state.revisionType}
 							options={[
 								{
@@ -153,7 +153,7 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 					<Col>
 						<Row gutter={[8, 8]}>
 							<Col span={24}>
-								<Text strong type="secondary">
+								<Text strong type='secondary'>
 									Unlock Revision form for customer?
 								</Text>
 								<Text strong>
@@ -184,14 +184,14 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 				<Col span={24}>
 					<Row gutter={[8, 8]}>
 						<Col span={24}>
-							<Text strong type="secondary">
+							<Text strong type='secondary'>
 								Meta
 							</Text>
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
 							<InputField
-								name="meta.maxRevisionsAllowed"
+								name='meta.maxRevisionsAllowed'
 								label="Maximum Revision's Allowed"
 								value={state.meta.maxRevisionsAllowed}
 								onChange={handleChange}
@@ -199,8 +199,8 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 						</Col>
 						<Col span={24}>
 							<InputField
-								name="meta.maxProductRequestsAllowed"
-								label="Maximum Product Requests Allowed"
+								name='meta.maxProductRequestsAllowed'
+								label='Maximum Product Requests Allowed'
 								value={state.meta.maxProductRequestsAllowed}
 								onChange={handleChange}
 							/>
@@ -208,16 +208,16 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 
 						<Col span={24}>
 							<InputField
-								name="meta.minRevisionTat"
-								label="Minimum Revision TAT"
+								name='meta.minRevisionTat'
+								label='Minimum Revision TAT'
 								value={state.meta.minRevisionTat}
 								onChange={handleChange}
 							/>
 						</Col>
 						<Col span={24}>
 							<InputField
-								name="meta.maxRevisionTat"
-								label="Minimum Revision TAT"
+								name='meta.maxRevisionTat'
+								label='Minimum Revision TAT'
 								value={state.meta.maxRevisionTat}
 								onChange={handleChange}
 							/>
@@ -225,13 +225,13 @@ const EditRevisionDataDrawer: React.FC<EditRevisionDataDrawer> = ({
 					</Row>
 				</Col>
 				<Col span={24}>
-					<Row justify="end" gutter={[4, 4]}>
+					<Row justify='end' gutter={[4, 4]}>
 						<Col>
 							<Button onClick={toggleDrawer}>Cancel</Button>
 						</Col>
 						<Col>
 							<Button
-								type="primary"
+								type='primary'
 								onClick={(): void => {
 									onSave();
 								}}

@@ -1,8 +1,8 @@
 import SidebarCard from "@components/SidebarCards";
-import { UserProjectType, PhaseInternalNames } from "@customTypes/dashboardTypes";
-import { getColorsForPackages, getValueSafely, convertMillisecondsToDays } from "@utils/commonUtils";
-import React, { useMemo } from "react";
+import { PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
+import { convertMillisecondsToDays, getColorsForPackages, getValueSafely } from "@utils/commonUtils";
 import moment from "moment";
+import React, { useMemo } from "react";
 
 const UserProjectCard: React.FC<{
 	userProjectData: UserProjectType;
@@ -35,10 +35,10 @@ const UserProjectCard: React.FC<{
 
 	const endTime = useMemo(() => {
 		if (phase === PhaseInternalNames.designsInRevision) {
-			return moment(phaseStartTime).add(5 + maxDelay, "days");
+			return moment(phaseStartTime).add(5, "days");
 		}
 		if (endedAt) {
-			return moment(endedAt).add(maxDelay, "days");
+			return moment(endedAt);
 		}
 		return null;
 	}, [endedAt, startedAt]);

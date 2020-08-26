@@ -1,5 +1,5 @@
 import { CheckCircleTwoTone, CloseCircleTwoTone, LoadingOutlined } from "@ant-design/icons";
-import { delayProjectApi, startProjectApi } from "@api/projectApi";
+import { delayProjectApi, editProjectApi, startProjectApi } from "@api/projectApi";
 import ProgressBar from "@components/ProgressBar";
 import { DetailedProject, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import {
@@ -9,7 +9,7 @@ import {
 	getValueSafely
 } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Avatar, Button, Col, Input, notification, Popconfirm, Radio, Row, Tag, Typography } from "antd";
+import { Avatar, Button, Col, Input, notification, Popconfirm, Radio, Row, Spin, Tag, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -44,6 +44,8 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 			startTime: phaseStartTime,
 		},
 	} = projectData;
+
+	const [roomNameLoading, setRoomNameLoading] = useState<boolean>(false);
 
 	const [delayValue, setDelayValue] = useState<{
 		min: number;
@@ -125,7 +127,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					notification.open({
 						key: "Delay",
 						message: "Successful",
-						icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+						icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 						description: "Delay has been set Successfully",
 					});
 				}
@@ -133,7 +135,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 				notification.open({
 					key: "Delay",
 					message: "Error",
-					icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+					icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 					description: "There was a problem setting delay",
 				});
 			}
@@ -141,7 +143,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 			notification.open({
 				key: "Delay",
 				message: "Error",
-				icon: <CloseCircleTwoTone twoToneColor="#f5222d" />,
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
 				description: "There was a problem setting delay",
 			});
 		}
@@ -163,10 +165,27 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		}
 	};
 
+	const changeName = async editedName => {
+		const endPoint = editProjectApi(projectData?._id);
+		const body = { data: { name: editedName } };
+		setRoomNameLoading(true);
+		try {
+			const response = await fetcher({ endPoint, method: "PUT", body });
+			if (response.statusCode <= 300) {
+				setProjectData({ ...projectData, ...body.data });
+			} else {
+				throw new Error();
+			}
+		} catch (e) {
+			notification.error({ message: "Something went wrong" });
+		}
+		setRoomNameLoading(false);
+	};
+
 	const isDelayed = getValueSafely(() => projectData.delay.isDelayed, false);
 	return (
 		<VerticallyPaddedDiv>
-			<Row justify="space-between" align="middle" gutter={[8, 8]}>
+			<Row justify='space-between' align='middle' gutter={[8, 8]}>
 				<Col offset={1}>
 					<Row gutter={[16, 8]}>
 						<Col>
@@ -182,7 +201,9 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 									</SilentTitle>
 								</Col>
 								<Col span={24}>
-									<Text>{room}</Text>
+									<Spin spinning={roomNameLoading}>
+										<Text editable={{ onChange: changeName }}>{room}</Text>
+									</Spin>
 								</Col>
 							</Row>
 						</Col>
@@ -200,25 +221,21 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 				</Col>
 				<Col>
 					{endTime ? (
-						<Row align="middle" gutter={[16, 8]}>
+						<Row align='middle' gutter={[16, 8]}>
 							<Col>
 								<ProgressBar phase={phase} size={22} days={daysLeft} />
 							</Col>
 							<Col>
 								<Text>
-									Ends on:{" "}
-									{moment(endTime)
-										.add(delayValue.max, "days")
-										.format("MM-DD-YYYY")}{" "}
-									at {moment(endTime).format("HH:mm")}
+									Ends on: {moment(endTime).format("MM-DD-YYYY")} at {moment(endTime).format("HH:mm")}
 								</Text>
 							</Col>
 						</Row>
 					) : (
-							<Button type="primary" onClick={onStartClick}>
-								Start Project
-							</Button>
-						)}
+						<Button type='primary' onClick={onStartClick}>
+							Start Project
+						</Button>
+					)}
 				</Col>
 				{endTime && (
 					<Col>
@@ -236,7 +253,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 															<Text>Min</Text>
 														</Col>
 														<Col>
-															<Input type="number" onChange={onDelayValueChange} value={delayValue.min} name="min" />
+															<Input type='number' onChange={onDelayValueChange} value={delayValue.min} name='min' />
 														</Col>
 													</Row>
 												</Col>
@@ -246,7 +263,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 															<Text>Max</Text>
 														</Col>
 														<Col>
-															<Input type="number" onChange={onDelayValueChange} value={delayValue.max} name="max" />
+															<Input type='number' onChange={onDelayValueChange} value={delayValue.max} name='max' />
 														</Col>
 													</Row>
 												</Col>
@@ -259,7 +276,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 															<Radio.Group
 																value={delayValue.notifyCustomer}
 																onChange={onDelayValueChange}
-																name="notifyCustomer"
+																name='notifyCustomer'
 															>
 																<Radio value>Yes</Radio>
 																<Radio value={false}>No</Radio>
@@ -272,13 +289,13 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 									</Row>
 								}
 							>
-								<Button type="primary">Delay Project</Button>
+								<Button type='primary'>Delay Project</Button>
 							</Popconfirm>
 						) : (
-								<Tag color="red">
-									Delayed by {delayValue.min} - {delayValue.max} days
-								</Tag>
-							)}
+							<Tag color='red'>
+								Delayed by {delayValue.min} - {delayValue.max} days
+							</Tag>
+						)}
 					</Col>
 				)}
 			</Row>
