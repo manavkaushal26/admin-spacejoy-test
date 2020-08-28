@@ -1,10 +1,10 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { searchOrdersApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatus, EcommOrder } from "@customTypes/ecommerceTypes";
-import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import AllOrderTable from "@sections/Ecommerce/OrdertTracking/AllOrderTable";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import { useSessionStorage } from "@utils/customHooks/useSessionStorage";
 import fetcher from "@utils/fetcher";
@@ -18,11 +18,10 @@ import React, { useEffect, useState } from "react";
 const { Title } = Typography;
 
 interface OrderTracking {
-	authVerification: Partial<User>;
 	isServer: boolean;
 }
 
-const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) => {
+const OrderTracking: NextPage<OrderTracking> = ({ isServer }) => {
 	const [orders, setOrders] = useState<EcommOrder[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [searchValues, setSearchValues] = useSessionStorage("searchOrders", {
@@ -57,9 +56,8 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 			setSearchValues({ ...searchValues, [changedFields[0].name[0]]: changedFields[0].value });
 		}
 	};
-
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Orders'>
+		<PageLayout isServer={isServer} pageName='Orders'>
 			<Head>
 				{IndexPageMeta}
 				<title>Orders | {company.product}</title>
@@ -67,9 +65,14 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
 					<Row gutter={[0, 16]}>
-						<Col span={24}>
-							<Title>Order Tracking</Title>
-						</Col>
+						<Title level={3}>
+							<Row gutter={[8, 8]}>
+								<Col>
+									<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/ecommerce" })} />
+								</Col>
+								<Col>Order Tracking</Col>
+							</Row>
+						</Title>
 						<Col span={24}>
 							<Card size='small'>
 								<Row>
@@ -136,11 +139,4 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer }) 
 	);
 };
 
-OrderTracking.getInitialProps = async ({ req }) => {
-	return {
-		isServer: !!req,
-		authVerification: { name: "", email: "" },
-	};
-};
-
-export default withAuthVerification(OrderTracking);
+export default ProtectRoute(OrderTracking);

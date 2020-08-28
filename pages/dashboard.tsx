@@ -1,16 +1,15 @@
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
-import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
 import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute } from "@utils/authContext";
 import { debounce } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Layout, Spin } from "antd";
-import { NextPage, NextPageContext } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
@@ -20,8 +19,6 @@ const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};
 `;
 interface DashboardProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	projectId: string;
 	designId: string;
 	currentTab: string;
@@ -43,13 +40,7 @@ const handleResize = (setIsDesktop): void => {
 
 const debouncedHandleResize = debounce(handleResize, 100);
 
-const dashboard: NextPage<DashboardProps> = ({
-	isServer,
-	authVerification,
-	projectId,
-	designId,
-	currentTab,
-}): JSX.Element => {
+const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading] = useState<boolean>(false);
 	const [dates, setDates] = useState<Partial<UserProjectType>>(null);
@@ -59,12 +50,6 @@ const dashboard: NextPage<DashboardProps> = ({
 	const [isDesktop, setIsDesktop] = useState<boolean>(true);
 
 	const onResize = (): void => debouncedHandleResize(setIsDesktop);
-
-	useEffect(() => {
-		if (!authVerification.name) {
-			Router.push("/auth", "/auth/login");
-		}
-	}, [authVerification]);
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -111,7 +96,7 @@ const dashboard: NextPage<DashboardProps> = ({
 	}, [projectId, isDesktop]);
 
 	/**
-	 * Function to cause main panel to update start date and hece the progress bar when the start button
+	 * Function to cause main panel to update start date and hence the progress bar when the start button
 	 * is clicked on the sidebar and the project is open in mainpanel
 	 * @param pid ProjectID
 	 * @param startDate Time when the start button is clicked in the sidepanel
@@ -139,7 +124,7 @@ const dashboard: NextPage<DashboardProps> = ({
 	};
 
 	return (
-		<PageLayout pageName='Dashboard' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Dashboard'>
 			<Head>
 				<title>Dashboard | {company.product}</title>
 				{IndexPageMeta}
@@ -191,20 +176,15 @@ const dashboard: NextPage<DashboardProps> = ({
 	);
 };
 
-dashboard.getInitialProps = async (ctx: NextPageContext): Promise<DashboardProps> => {
+export const getServerSideProps: GetServerSideProps<DashboardProps> = async ctx => {
 	const {
-		req,
-		query: { pid, designId: did, activeKey },
+		query: { pid = "", designId: did = "", activeKey = "" },
 	} = ctx;
-	const isServer = !!req;
 	const designId: string = did as string;
 	const projectId: string = pid as string;
 	const currentTab: string = activeKey as string;
-	const authVerification = {
-		name: "",
-		email: "",
-	};
-	return { isServer, authVerification, projectId, designId, currentTab };
+
+	return { props: { projectId, designId, currentTab } };
 };
 
-export default withAuthVerification(dashboard);
+export default ProtectRoute(dashboard);

@@ -1,12 +1,11 @@
-import fetcher from "@utils/fetcher";
+import { AuthContext, redirectToLocation } from "@utils/authContext";
 import PropTypes from "prop-types";
 import React, { PureComponent } from "react";
 import styled from "styled-components";
-import { login, redirectToLocation } from "../../_utils/auth";
 import { ValidateEmail, ValidateMobile } from "./Validation";
 
 const ErrorText = "error";
-const SuccessText = "success";
+// const SuccessText = "success";
 
 const FormStatusStyled = styled.div`
 	margin: 1rem 0 2rem 0;
@@ -42,30 +41,20 @@ class FormBox extends PureComponent {
 		});
 		this.state = { ...stateObj, formStatus: "", formMessage: "", submitInProgress: false, address: {} };
 	}
+	static contextType = AuthContext;
 
 	handleSubmit = async event => {
 		event.preventDefault();
 		const { state } = this;
-		const { destination, name, redirectUrl } = this.props;
+		const { login } = this.context;
+		const { name, redirectUrl } = this.props;
 		this.setState({ formStatus: "", formMessage: "", submitInProgress: true });
 		function reqBody() {
-			if (name === "signup") {
-				return {
-					data: {
-						email: state.userEmail.value,
-						password: state.userPassword.value,
-						firstName: state.userName.value,
-						lastName: "",
-						phone: state.userMobile.value,
-						tnc: state.userCommutePermissionGranted.value,
-						privacyPolicy: state.userCommutePermissionGranted.value,
-					},
-				};
-			}
 			if (name === "login") {
 				return {
 					email: state.userEmail.value,
 					password: state.userPassword.value,
+					redirectUrl: redirectUrl,
 				};
 			}
 			if (name === "forgotPassword") {
@@ -83,74 +72,17 @@ class FormBox extends PureComponent {
 					},
 				};
 			}
-			if (name === "designmyspace") {
-				if (destination === "/form") {
-					return {
-						data: {
-							name,
-							environment: process.env.NODE_ENV,
-							formData: [
-								{
-									key: "firstName",
-									value: state.userName.value,
-								},
-								{
-									key: "email",
-									value: state.userEmail.value,
-								},
-								{
-									key: "mobile",
-									value: state.userMobile.value,
-								},
-								{
-									key: "package",
-									value: state.selectedPlan.value,
-								},
-								{
-									key: "whichRoomAreYouDesigning",
-									value: state.whichRoomAreYouDesigning.value,
-								},
-								{
-									key: "haveABudgetInMind",
-									value: state.haveABudgetInMind.value,
-								},
-								{
-									key: "howDoesYourRoomLookToday",
-									value: state.howDoesYourRoomLookToday.value,
-								},
-								{
-									key: "address",
-									value: state.address.value,
-								},
-							],
-							userId: "",
-							userEmail: state.userEmail.value,
-						},
-					};
-				}
-				return {
-					firstName: state.userName.value,
-					email: state.userEmail.value,
-					mobile: state.userMobile.value,
-					whichRoomAreYouDesigning: state.whichRoomAreYouDesigning.value,
-					haveABudgetInMind: state.haveABudgetInMind.value,
-					howDoesYourRoomLookToday: state.howDoesYourRoomLookToday.value,
-				};
-			}
 			return {};
 		}
-		const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
-		if (response.statusCode <= 300) {
-			if (name === "login" || name === "signup") {
-				const { token, user } = response.data;
-				login({ token, user, redirectUrl });
-			} else if (redirectUrl && redirectUrl !== "") {
-				redirectToLocation({ pathname: redirectUrl, url: redirectUrl });
-			}
+		// const response = await fetcher({ endPoint: destination, method: "POST", body: reqBody(name) });
+		const response = await login(reqBody());
+		if (redirectUrl && redirectUrl !== "" && response === "success") {
+			redirectToLocation({ pathname: redirectUrl, url: redirectUrl });
 		}
+
 		this.setState({
-			formStatus: response.statusCode <= 300 ? SuccessText : ErrorText,
-			formMessage: response.message,
+			formStatus: response,
+			formMessage: response,
 			submitInProgress: false,
 		});
 	};

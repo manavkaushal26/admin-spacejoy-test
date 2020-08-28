@@ -1,16 +1,19 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { getMetaDataApi } from "@api/designApi";
 import { getAllCollections, getAllCollectionsMeta } from "@api/metaApi";
 import Image from "@components/Image";
 import { CollectionBase } from "@customTypes/collectionTypes";
-import User, { Role } from "@customTypes/userType";
+import { MetaDataType } from "@customTypes/moodboardTypes";
 import CreateEditCollection from "@sections/collections/CreateEditCollection";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Card, Col, notification, Pagination, Row, Typography } from "antd";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -26,15 +29,28 @@ const LoudPaddingDiv = styled.div`
 `;
 
 const CollectionsMeta: NextPage<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> = ({ isServer, authVerification }) => {
+	metaData: MetaDataType;
+}> = ({ metaData }) => {
 	const [collections, setCollections] = useState<CollectionBase[]>([]);
 	const [createEditModalVisible, setCreateEditModalVisible] = useState<boolean>(false);
 	const [editCollectionId, setEditCollectionId] = useState<string>(null);
 	const [pageSize, setPageSize] = useState<number>(12);
 	const [pageNo, setPageNo] = useState<number>(1);
 	const [collectionMeta, setCollectionMeta] = useState<{ count: number }>({ count: 0 });
+	const [metadata, setMetadata] = useState<MetaDataType>(metaData);
+
+	useEffect(() => {
+		const fetchMetaData = async () => {
+			if (!metaData) {
+				const endpoint = getMetaDataApi();
+				const response = await fetcher({ endPoint: endpoint, method: "GET" });
+				if (response.statusCode <= 300) {
+					setMetadata(response.data);
+				}
+			}
+		};
+		if (!metaData) fetchMetaData();
+	}, []);
 
 	const onClick: (id?: string, type?: "open" | "close") => void = (id = null, type = "open") => {
 		if (type === "open") {
@@ -49,8 +65,8 @@ const CollectionsMeta: NextPage<{
 	const fetchCollectionMeta = async (): Promise<void> => {
 		const endPoint = getAllCollectionsMeta();
 		const response = await fetcher({ endPoint, method: "GET" });
-		if (response.status === "success") {
-			setCollectionMeta(response.data);
+		if (response.statusCode <= 300) {
+			setCollectionMeta(response.data.data);
 		} else {
 			notification.error({ message: "Failed to fetch collections metadata" });
 		}
@@ -90,9 +106,9 @@ const CollectionsMeta: NextPage<{
 	useEffect(() => {
 		fetchCollection();
 	}, [pageNo, pageSize]);
-
+	const router = useRouter();
 	return (
-		<PageLayout pageName='Metamanger' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Collections'>
 			<Head>
 				<title>Collections | {company.product}</title>
 				{IndexPageMeta}
@@ -102,7 +118,14 @@ const CollectionsMeta: NextPage<{
 					<Col span={24}>
 						<Row justify='space-between'>
 							<Col>
-								<Title>Collections</Title>
+								<Title level={3}>
+									<Row gutter={[8, 8]}>
+										<Col>
+											<ArrowLeftOutlined onClick={() => router.back()} />
+										</Col>
+										<Col>Collections</Col>
+									</Row>
+								</Title>
 							</Col>
 							<Col>
 								<Button type='primary' onClick={(): void => onClick()}>
@@ -145,22 +168,30 @@ const CollectionsMeta: NextPage<{
 					</Col>
 				</Row>
 			</LoudPaddingDiv>
-			<CreateEditCollection onSave={onSave} id={editCollectionId} isOpen={createEditModalVisible} onClose={onClick} />
+			<CreateEditCollection
+				onSave={onSave}
+				id={editCollectionId}
+				isOpen={createEditModalVisible}
+				onClose={onClick}
+				metadata={metadata}
+			/>
 		</PageLayout>
 	);
 };
 
-CollectionsMeta.getInitialProps = async ({
-	req,
-}): Promise<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> => {
-	const isServer = !!req;
-	const authVerification = {
-		name: "",
-		role: Role.Guest,
-	};
-	return { isServer, authVerification };
+export const getServerSideProps: GetServerSideProps<{
+	metaData?: MetaDataType;
+}> = async ctx => {
+	try {
+		const endpoint = getMetaDataApi();
+		const response = await fetcher({ ctx, endPoint: endpoint, method: "GET" });
+		if (response.statusCode === 200) {
+			return { props: { metaData: response.data } };
+		} else {
+			throw new Error();
+		}
+	} catch (e) {
+		return { props: {} };
+	}
 };
-export default withAuthVerification(CollectionsMeta);
+export default ProtectRoute(CollectionsMeta);

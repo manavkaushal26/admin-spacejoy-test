@@ -1,4 +1,3 @@
-import User, { Role } from "@customTypes/userType";
 import GlobalStyle from "@theme/globalStyle";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
@@ -26,29 +25,20 @@ const MainStyled = styled.main<{ isServer: boolean }>`
 `;
 interface LayoutProps {
 	isServer?: boolean | undefined;
-	authVerification?: Partial<User>;
 	children: ReactNode;
 	pageName?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ isServer, authVerification, children, pageName }) => {
+const Layout: React.FC<LayoutProps> = ({ isServer, children, pageName }) => {
 	return (
 		<>
 			<GlobalStyle />
-			<Header authVerification={authVerification} pageName={pageName} />
+			<Header pageName={pageName} />
 			<MainStyled isServer={isServer} className={dev ? "client-server-identifier" : ""}>
 				{children}
 			</MainStyled>
 		</>
 	);
-};
-
-Layout.defaultProps = {
-	isServer: undefined,
-	authVerification: {
-		role: Role.Guest,
-		name: "",
-	},
 };
 
 export default Layout;

@@ -1,14 +1,14 @@
 import { createDesignApi, getRoomsListApi } from "@api/designApi";
 import Image from "@components/Image";
-import { DetailedDesign, RoomType, RoomTypes, RoomLabels } from "@customTypes/dashboardTypes";
-import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, message, Radio, Row, Typography, Pagination, Select } from "antd";
-import React, { useEffect, useState } from "react";
-import { getValueSafely } from "@utils/commonUtils";
-import { SizeAdjustedModal } from "@sections/AssetStore/styled";
-import { RadioChangeEvent } from "antd/lib/radio";
-import styled from "styled-components";
+import { DetailedDesign, RoomLabels, RoomType, RoomTypes } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
+import { SizeAdjustedModal } from "@sections/AssetStore/styled";
+import { getValueSafely } from "@utils/commonUtils";
+import fetcher from "@utils/fetcher";
+import { Button, Card, Col, Input, message, Pagination, Radio, Row, Select, Typography } from "antd";
+import { RadioChangeEvent } from "antd/lib/radio";
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 
 const { Option } = Select;
 const { Text } = Typography;
@@ -31,7 +31,7 @@ const Footer: React.FC<{
 	return (
 		<>
 			<Button onClick={toggleModal}>Cancel</Button>
-			<Button type="primary" loading={loading} onClick={onSubmit} disabled={disabled}>
+			<Button type='primary' loading={loading} onClick={onSubmit} disabled={disabled}>
 				Submit
 			</Button>
 		</>
@@ -95,7 +95,7 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 			setSelectedRoomId(null);
 			setRoomName(null);
 			setRoomType(RoomTypes.LivingRoom);
-			setRoomData(null);
+			setRoomData([]);
 			setPageNo(1);
 			setNoOfRooms(0);
 			setLoading(false);
@@ -150,7 +150,7 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 		<SizeAdjustedModal
 			destroyOnClose
 			visible={createDesignModalVisible}
-			title="Create Design"
+			title='Create Design'
 			onCancel={toggleModal}
 			footer={
 				<Footer
@@ -165,59 +165,63 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 			<Row gutter={[16, 16]}>
 				<Col md={12}>
 					<Row>
-						<Col>
+						<Col span={24}>
 							<Text>Design Name</Text>
 						</Col>
-						<Col>
-							<Input value={roomName} placeholder="Design Name" onChange={onChange} />
+						<Col span={24}>
+							<Input value={roomName} placeholder='Design Name' onChange={onChange} />
 						</Col>
 					</Row>
 				</Col>
 				<Col md={12}>
 					<Row>
-						<Col>
+						<Col span={224}>
 							<Text>Room Type</Text>
 						</Col>
-						<Select style={{ width: "100%" }} onChange={onSelect} value={roomType}>
-							{Object.keys(RoomTypes).map(key => {
-								return (
-									<Option key={key} value={RoomTypes[key]}>
-										{RoomLabels[key]}
-									</Option>
-								);
-							})}
-						</Select>
+						<Col span={24}>
+							<Select style={{ width: "100%" }} onChange={onSelect} value={roomType}>
+								{Object.keys(RoomTypes).map(key => {
+									return (
+										<Option key={key} value={RoomTypes[key]}>
+											{RoomLabels[key]}
+										</Option>
+									);
+								})}
+							</Select>
+						</Col>
 					</Row>
 				</Col>
 				<Col md={24}>
 					<Row>
-						<Col>
+						<Col span={24}>
 							<Text>Room Layout</Text>
 						</Col>
-						<Col>
+						<Col span={24}>
 							<Radio.Group onChange={handleRadio}>
 								<Row gutter={[16, 16]}>
 									<Col span={24}>
-										{roomData.map(room => {
-											return (
-												<Col key={room._id} sm={12} md={8} lg={6}>
-													<StyledRadio style={{ width: "100%" }} value={room._id}>
-														<Card cover={<Image src={getValueSafely(() => room.coverImageCdn, "")} />}>
-															<Row>
-																<Col span={24}>
-																	<Text style={{ width: "100%" }} ellipsis>
-																		{room.name}
-																	</Text>
-																</Col>
-																<Col span={24}>
-																	<small>{room.roomType}</small>
-																</Col>
-															</Row>
-														</Card>
-													</StyledRadio>
-												</Col>
-											);
-										})}
+										<Row gutter={[8, 8]}>
+											{roomData.map(room => {
+												return (
+													<Col key={room._id} sm={12} md={8} lg={6}>
+														<StyledRadio style={{ width: "100%" }} value={room._id}>
+															<Card cover={<Image src={getValueSafely(() => room.coverImageCdn, "")} />}>
+																<Row>
+																	<Col span={24}>
+																		<Text style={{ width: "100%" }} ellipsis>
+																			{room.name}
+																		</Text>
+																	</Col>
+																	<Col span={24}>
+																		<small>{room.roomType}</small>
+																	</Col>
+																</Row>
+															</Card>
+														</StyledRadio>
+													</Col>
+												);
+											})}
+										</Row>
 									</Col>
 								</Row>
 							</Radio.Group>
@@ -225,7 +229,7 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 					</Row>
 				</Col>
 				<Col span={24}>
-					<Row justify="center">
+					<Row justify='center'>
 						<Pagination
 							hideOnSinglePage
 							onChange={(number): void => setPageNo(number)}

@@ -1,7 +1,7 @@
+import { UserProjectType } from "@customTypes/dashboardTypes";
 import React, { useMemo } from "react";
 import { FixedSizeList as List, ListChildComponentProps } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { UserProjectType } from "@customTypes/dashboardTypes";
 
 interface ProjectInfiniteLoaderWrapper {
 	// Are there more items to load?
@@ -58,17 +58,17 @@ const ProjectInfiniteLoaderWrapper: React.FC<ProjectInfiniteLoaderWrapper> = ({
 			isItemLoaded={isItemLoaded}
 			itemCount={itemCount}
 			loadMoreItems={loadMoreItems}
-			minimumBatchSize={300}
+			minimumBatchSize={150}
 		>
 			{({ onItemsRendered, ref }): JSX.Element => (
 				<List
-					className="List"
+					className='List'
 					height={height}
 					itemCount={itemCount}
 					itemSize={158}
 					onItemsRendered={onItemsRendered}
 					ref={ref}
-					width="100%"
+					width='100%'
 				>
 					{Row}
 				</List>

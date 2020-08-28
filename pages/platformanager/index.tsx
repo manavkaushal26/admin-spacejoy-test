@@ -1,15 +1,16 @@
-import User, { Role } from "@customTypes/userType";
+import { ArrowLeftOutlined } from "@ant-design/icons";
+import { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import useAuth, { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Card, Col, Input, Row, Typography, notification } from "antd";
+import { Card, Col, Input, notification, Row, Typography } from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useRouter } from "next/router";
 
 const { Title, Text } = Typography;
 
@@ -52,12 +53,12 @@ const MetaCards = [
 	},
 ];
 
-const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<User> }> = ({
-	isServer,
-	authVerification,
-}) => {
+const Platformanager: NextPage = () => {
 	const Router = useRouter();
 	const [searchText, setSearchText] = useState("");
+
+	const { user: authVerification } = useAuth();
+
 	const onSearchChange = (e): void => {
 		const {
 			target: { value },
@@ -73,8 +74,10 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 		}
 	};
 
+	const router = useRouter();
+
 	return (
-		<PageLayout pageName='Platform Manager' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Platform Manager'>
 			<Head>
 				<title>Platform Manager | {company.product}</title>
 				{IndexPageMeta}
@@ -83,7 +86,14 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 				<LoudPaddingDiv>
 					<Row gutter={[16, 16]}>
 						<Col span={24}>
-							<Title>Platform Manager</Title>
+							<Title level={3}>
+								<Row gutter={[8, 8]}>
+									<Col>
+										<ArrowLeftOutlined onClick={() => router.back()} />
+									</Col>
+									<Col>Platform Manager</Col>
+								</Row>
+							</Title>
 						</Col>
 						<Col span={24}>
 							<Row gutter={[8, 0]}>
@@ -123,18 +133,4 @@ const Platformanager: NextPage<{ isServer: boolean; authVerification: Partial<Us
 	);
 };
 
-Platformanager.getInitialProps = async ({
-	req,
-}): Promise<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> => {
-	const isServer = !!req;
-	const authVerification = {
-		name: "",
-		role: Role.Guest,
-	};
-	return { isServer, authVerification };
-};
-
-export default withAuthVerification(Platformanager);
+export default ProtectRoute(Platformanager);

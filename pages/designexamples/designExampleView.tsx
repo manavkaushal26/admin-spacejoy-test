@@ -1,19 +1,16 @@
-import User from "@customTypes/userType";
 import ProjectTabView from "@sections/Dashboard/userProjectMainPanel/ProjectTabView";
 import PageLayout from "@sections/Layout";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Row, Spin } from "antd";
-import { NextPage, NextPageContext } from "next";
+import { Spin } from "antd";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useRouter } from "next/router";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 interface DesignExampleViewProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	designId: string;
 	currentTab: string;
 }
@@ -27,7 +24,7 @@ const Padding = styled.div`
 	padding: 1rem;
 `;
 
-const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerification, designId, currentTab }) => {
+const DesignExamples: NextPage<DesignExampleViewProps> = ({ designId, currentTab }) => {
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const Router = useRouter();
@@ -35,17 +32,12 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 	const goBack = (): void => {
 		redirectToLocation({ pathname: "/designexamples", url: "/designexamples" });
 	};
-	useEffect(() => {
-		if (!authVerification.name) {
-			Router.push("/auth", "/auth/login");
-		}
-	}, [authVerification]);
 
 	const onTabChange = (activeKey, pid = null, did): void => {
 		if (!pid)
 			Router.push(
 				{
-					pathname: `/designexamples/designExampleView`,
+					pathname: "/designexamples/designExampleView",
 					query: { designId: did, activeKey },
 				},
 				`/designexamples/${did}?activeKey=${activeKey}`,
@@ -54,7 +46,7 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 	};
 
 	return (
-		<PageLayout pageName="Design Example View" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Design Example View'>
 			<Head>
 				<title>
 					Design Examples | {designId} | {company.product}
@@ -78,20 +70,14 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ isServer, authVerifi
 	);
 };
 
-DesignExamples.getInitialProps = async (ctx: NextPageContext): Promise<DesignExampleViewProps> => {
+export const getServerSideProps: GetServerSideProps<DesignExampleViewProps> = async ctx => {
 	const {
-		req,
 		query: { designId, activeKey },
 	} = ctx;
-	const isServer = !!req;
 
-	const authVerification = {
-		name: "",
-		email: "",
-	};
-	const designIdAsString = designId as string;
-	const activeKeyAsString = activeKey as string;
-	return { isServer, authVerification, designId: designIdAsString, currentTab: activeKeyAsString };
+	const designIdAsString = (designId || "") as string;
+	const activeKeyAsString = (activeKey || "") as string;
+	return { props: { designId: designIdAsString, currentTab: activeKeyAsString } };
 };
 
-export default withAuthVerification(DesignExamples);
+export default ProtectRoute(DesignExamples);

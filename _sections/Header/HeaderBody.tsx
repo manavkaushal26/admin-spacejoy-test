@@ -1,12 +1,12 @@
 import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
-import User, { Role } from "@customTypes/userType";
+import useAuth from "@utils/authContext";
 import { Col, Row, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import ActiveLink from "./ActiveLink";
 import navCenter from "./navCenter";
-import navRight from "./navRight";
+import NavRight from "./NaviRight";
 import {
 	HorizontalListStyled,
 	MobileHiddenStyled,
@@ -20,13 +20,12 @@ import {
 const { Text } = Typography;
 
 interface HeaderBody {
-	authVerification: Partial<User>;
 	pageName?: string;
 }
 
-const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
+const HeaderBody: React.FC<HeaderBody> = ({ pageName }) => {
 	const [mobileNavStatus, updateMobileNavStatus] = useState(false);
-
+	const { user: authVerification, logout } = useAuth();
 	const handleClick = () => updateMobileNavStatus(!mobileNavStatus);
 	const Router = useRouter();
 	return (
@@ -56,7 +55,9 @@ const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 						<Col span={16}>
 							<Row justify='end' gutter={[32, 0]}>
 								<Col>{navCenter(authVerification, Router.pathname)}</Col>
-								<Col> {navRight(authVerification)}</Col>
+								<Col>
+									<NavRight authVerification={authVerification} logout={logout} />
+								</Col>
 							</Row>
 						</Col>
 					</Row>
@@ -103,7 +104,7 @@ const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 							{navCenter(authVerification, Router.pathname)}
 						</Col>
 						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
-							{navRight(authVerification)}
+							<NavRight authVerification={authVerification} logout={logout} />
 						</Col>
 					</Row>
 				</MobileNavVisibleStyled>
@@ -114,13 +115,6 @@ const HeaderBody: React.FC<HeaderBody> = ({ authVerification, pageName }) => {
 			</Row>
 		</PaddedDiv>
 	);
-};
-
-HeaderBody.defaultProps = {
-	authVerification: {
-		name: "",
-		role: Role.Guest,
-	},
 };
 
 export default React.memo(HeaderBody);

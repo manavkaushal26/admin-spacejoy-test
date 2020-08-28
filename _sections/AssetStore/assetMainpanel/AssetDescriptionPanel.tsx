@@ -4,31 +4,37 @@ import {
 	CodeSandboxOutlined,
 	DollarCircleFilled,
 	DragOutlined,
+	EditOutlined,
 	FileImageOutlined,
 	LinkOutlined,
 	UserOutlined,
-	EditOutlined,
 } from "@ant-design/icons";
 import { getSingleAssetApi } from "@api/designApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
 import ImageDisplayModal from "@components/ImageDisplayModal";
-import ModelViewer from "@components/ModelViewer";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, message, notification, Popconfirm, Result, Row, Typography } from "antd";
+import { Button, Col, message, notification, Popconfirm, Result, Row, Skeleton, Typography } from "antd";
 import moment from "moment";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { FullheightSpin, GreyDrawer } from "../styled";
-import { isAssetInMoodboard } from "./utils";
 import AssetHistoryDrawer from "./AssetHistoryDrawer";
+import { isAssetInMoodboard } from "./utils";
 
 const { Title, Text, Paragraph } = Typography;
+
+const DynamicModelViewer = dynamic(() => import("@components/ModelViewer"), {
+	loading: function placeholder() {
+		return <Skeleton avatar={false} />;
+	},
+});
 
 interface AssetDescriptionPanelProps {
 	editAsset: (assetData: AssetType) => void;
@@ -218,7 +224,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										</Row>
 									</Col>
 									<Col>
-										<ModelViewer type={typeOfFile} pathToFile={pathToFile} />
+										<DynamicModelViewer type={typeOfFile} pathToFile={pathToFile} />
 									</Col>
 								</Row>
 							</Col>

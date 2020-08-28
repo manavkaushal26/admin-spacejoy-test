@@ -3,11 +3,10 @@ import { createSourceApi, getAllSources, getSingleSource, getSourceCount } from 
 import Image from "@components/Image";
 import ImageSlideshowModal from "@components/ImageSlideshowModal";
 import { AllSources } from "@customTypes/renderEngineTypes";
-import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import CreateNewSource from "@sections/RenderEngine/CreateNewSource";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -26,7 +25,7 @@ import {
 	Typography,
 } from "antd";
 import moment from "moment";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -34,12 +33,7 @@ import { LoudPaddingDiv } from "../platformanager/index";
 
 const { Text } = Typography;
 
-interface RenderEngineProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
-}
-
-const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification }) => {
+const RenderEngine: NextPage = () => {
 	const [sources, setSources] = useState<AllSources[]>([]);
 	const [pageNumber, setPageNumber] = useState(1);
 	const [countPerPage, setCountPerPage] = useState(24);
@@ -153,7 +147,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Render Engine'>
+		<PageLayout pageName='Render Engine'>
 			<Head>
 				<title>Render Engine | {company.product}</title>
 				{IndexPageMeta}
@@ -164,7 +158,7 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 						<Row gutter={[0, 16]}>
 							<Col span={24} style={{ backgroundColor: "white" }}>
 								<PageHeader
-									onBack={(): void => router.back()}
+									onBack={(): void => redirectToLocation({ pathname: "/platformanager" })}
 									style={{ paddingLeft: "0px", paddingRight: "0px" }}
 									title='All Sources'
 									extra={[
@@ -288,15 +282,4 @@ const RenderEngine: NextPage<RenderEngineProps> = ({ isServer, authVerification 
 	);
 };
 
-RenderEngine.getInitialProps = async (ctx: NextPageContext): Promise<RenderEngineProps> => {
-	const { req } = ctx;
-	const isServer = !!req;
-
-	const authVerification = {
-		name: "",
-		email: "",
-	};
-	return { isServer, authVerification };
-};
-
-export default withAuthVerification(RenderEngine);
+export default ProtectRoute(RenderEngine);

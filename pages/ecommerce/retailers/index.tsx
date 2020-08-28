@@ -1,9 +1,10 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { searchRetailerApi } from "@api/ecommerceApi";
 import Image from "@components/Image";
 import { Status } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
@@ -50,9 +51,8 @@ const Retailer: NextPage = () => {
 			setSearchValues({ ...searchValues, [changedFields[0].name[0]]: changedFields[0].value });
 		}
 	};
-
 	return (
-		<PageLayout>
+		<PageLayout pageName='Retailer Management'>
 			<Head>
 				{IndexPageMeta}
 				<title>Retailer | {company.product}</title>
@@ -64,7 +64,14 @@ const Retailer: NextPage = () => {
 							<Col span={24}>
 								<Row justify='space-between' align='top'>
 									<Col>
-										<Title>Retailer Management</Title>
+										<Title level={3}>
+											<Row gutter={[8, 8]}>
+												<Col>
+													<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/ecommerce" })} />
+												</Col>
+												<Col>Retailer Management</Col>
+											</Row>
+										</Title>
 									</Col>
 									<Col>
 										<Button
@@ -157,10 +164,4 @@ const Retailer: NextPage = () => {
 	);
 };
 
-Retailer.getInitialProps = async () => {
-	return {
-		authVerification: { name: "", email: "" },
-	};
-};
-
-export default withAuthVerification(Retailer);
+export default ProtectRoute(Retailer);

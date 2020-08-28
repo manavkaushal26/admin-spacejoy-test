@@ -13,10 +13,10 @@ import ImageDisplayModal from "@components/ImageDisplayModal";
 import { MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
-import User, { AssetStatus, Status } from "@customTypes/userType";
+import { AssetStatus, Status } from "@customTypes/userType";
 import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { convertToFeet, convertToInches, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, company, cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -43,7 +43,7 @@ import {
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
-import { NextPage, NextPageContext } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useState } from "react";
@@ -55,8 +55,6 @@ const validateMessages = {
 };
 
 interface AssetStoreProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	assetId: string;
 	mai: string;
 	designId: string;
@@ -73,15 +71,7 @@ interface CategoryMap {
 	children?: Array<CategoryMap>;
 }
 
-const AssetDetailPage: NextPage<AssetStoreProps> = ({
-	isServer,
-	authVerification,
-	assetId,
-	mai,
-	designId,
-	retailLink,
-	entry,
-}) => {
+const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, retailLink, entry }) => {
 	const [loading, setLoading] = useState(false);
 	const [state, setState] = useState<Partial<AssetType>>({});
 	const [metadata, setMetadata] = useState<MetaDataType>();
@@ -695,7 +685,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Asset Editing'>
+		<PageLayout pageName='Asset Editing'>
 			<Head>
 				<title>Asset Editing | {company.product}</title>
 				{IndexPageMeta}
@@ -1191,24 +1181,18 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({
 	);
 };
 
-AssetDetailPage.getInitialProps = async (ctx: NextPageContext) => {
-	const { req, query } = ctx;
+export const getServerSideProps: GetServerSideProps<AssetStoreProps> = async ctx => {
+	const { query } = ctx;
 
-	const assetId = query.assetId as string;
-	const mai = query.mai as string;
-	const designId = query.did as string;
-	const retailLink = query.rlink as string;
-	const entry = query.entry as string;
+	const assetId = (query.assetId || "") as string;
+	const mai = (query.mai || "") as string;
+	const designId = (query.did || "") as string;
+	const retailLink = (query.rlink || "") as string;
+	const entry = (query.entry || "") as string;
 
 	return {
-		isServer: !!req,
-		authVerification: { name: "", email: "" },
-		assetId,
-		mai,
-		designId,
-		retailLink,
-		entry,
+		props: { assetId, mai, designId, retailLink, entry },
 	};
 };
 
-export default withAuthVerification(AssetDetailPage);
+export default ProtectRoute(AssetDetailPage);

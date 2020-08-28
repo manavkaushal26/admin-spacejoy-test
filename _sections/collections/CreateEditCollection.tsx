@@ -1,5 +1,4 @@
 import { CheckCircleTwoTone, CloseCircleTwoTone, LinkOutlined, PlusOutlined } from "@ant-design/icons";
-import { getMetaDataApi } from "@api/designApi";
 import { getSingleCollection } from "@api/metaApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { DetailedCollection } from "@customTypes/collectionTypes";
@@ -42,12 +41,12 @@ interface CreateEditCollection {
 	isOpen: boolean;
 	onSave?: (data: DetailedCollection, newEntry: boolean) => void;
 	onClose: (id: string, type: "open" | "close") => void;
+	metadata: MetaDataType;
 }
 
-const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSave, onClose }) => {
+const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSave, onClose, metadata }) => {
 	const [collectionData, setCollectionData] = useState<DetailedCollection>(initialState);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [metadata, setMetadata] = useState<MetaDataType>(null);
 	const [preview, setPreview] = useState({ previewImage: "", previewVisible: false });
 	const themes = useMemo(() => getValueSafely(() => metadata.themes.list, []), [metadata]);
 	const retailers = useMemo(() => getValueSafely(() => metadata.retailers.list, []), [metadata]);
@@ -111,14 +110,6 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 			notification.error({ message: "Facing communication issues. Please check your internet connection." });
 		}
 		setLoading(false);
-	};
-
-	const fetchMetaData = async (): Promise<void> => {
-		const endpoint = getMetaDataApi();
-		const response = await fetcher({ endPoint: endpoint, method: "GET" });
-		if (response.statusCode === 200) {
-			setMetadata(response.data);
-		}
 	};
 
 	const onChange = (e): void => {
@@ -263,10 +254,6 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 			},
 		});
 	};
-
-	useEffect(() => {
-		fetchMetaData();
-	}, []);
 
 	useEffect(() => {
 		if (id !== null) {

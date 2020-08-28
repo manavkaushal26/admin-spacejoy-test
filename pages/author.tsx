@@ -1,20 +1,19 @@
-import User, { Status } from "@customTypes/userType";
+import { blogApi } from "@api/blogApi";
+import { Blog } from "@customTypes/blogTypes";
+import { Status } from "@customTypes/userType";
 import AuthorPlatform from "@sections/AuthorPlatform";
 import { AuthorActionType, authorInitialState, authorReducer, AUTHOR_ACTIONS } from "@sections/AuthorPlatform/reducer";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute } from "@utils/authContext";
 import { debounce } from "@utils/commonUtils";
 import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { NextPage, NextPageContext } from "next";
+import { notification } from "antd";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
 import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
-import { blogApi } from "@api/blogApi";
-import fetcher from "@utils/fetcher";
-import { Blog, BlogTypes } from "@customTypes/blogTypes";
-import { notification } from "antd";
 
 const BackgroundDiv = styled.div`
 	background-color: #fff;
@@ -23,12 +22,9 @@ const BackgroundDiv = styled.div`
 `;
 
 interface AuthorProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	searchText: string;
 	blogId: string;
 	currentTab: Status;
-	blogType: BlogTypes;
 }
 
 const handleResize = (dispatch: React.Dispatch<AuthorActionType>): void => {
@@ -58,18 +54,10 @@ const fetchActiveBlog = async (blogId): Promise<Blog> => {
 };
 
 const debouncedHandleResize = debounce(handleResize, 100);
-const author: NextPage<AuthorProps> = ({
-	isServer,
-	authVerification,
-	blogId,
-	searchText,
-	currentTab,
-	blogType,
-}): JSX.Element => {
+const author: NextPage<AuthorProps> = ({ blogId, searchText, currentTab }) => {
 	const [state, dispatch] = useReducer(authorReducer, authorInitialState);
 
 	const onResize = (): void => debouncedHandleResize(dispatch);
-	const Router = useRouter();
 
 	useEffect(() => {
 		if (blogId) {
@@ -89,14 +77,6 @@ const author: NextPage<AuthorProps> = ({
 			});
 		}
 	}, [blogId]);
-
-	useEffect(() => {}, [blogType]);
-
-	useEffect(() => {
-		if (!authVerification.name) {
-			Router.push("/auth", "/auth/login");
-		}
-	}, [authVerification]);
 
 	useEffect(() => {
 		if (typeof window !== "undefined") {
@@ -138,7 +118,7 @@ const author: NextPage<AuthorProps> = ({
 	}, [currentTab]);
 
 	return (
-		<PageLayout pageName="Author" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Author'>
 			<Head>
 				<title>Author | {company.product}</title>
 				{IndexPageMeta}
@@ -150,21 +130,14 @@ const author: NextPage<AuthorProps> = ({
 	);
 };
 
-author.getInitialProps = async (ctx: NextPageContext): Promise<AuthorProps> => {
+export const getServerSideProps: GetServerSideProps<AuthorProps> = async ctx => {
 	const {
-		req,
-		query: { searchText: srchtxt, blogId: bid, activeKey, blogType },
+		query: { searchText: srchtxt, blogId: bid, activeKey },
 	} = ctx;
-	const isServer = !!req;
-	const blogId: string = bid as string;
-	const searchText: string = srchtxt as string;
-	const currentTab: Status = activeKey as Status;
-	const authVerification = {
-		name: "",
-		email: "",
-	};
-	const blgType: BlogTypes = blogType as BlogTypes;
-	return { isServer, authVerification, blogId, searchText, currentTab, blogType: blgType };
+	const blogId: string = (bid || "") as string;
+	const searchText: string = (srchtxt || "") as string;
+	const currentTab: Status = (activeKey || "") as Status;
+	return { props: { blogId, searchText, currentTab } };
 };
 
-export default withAuthVerification(author);
+export default ProtectRoute(author);

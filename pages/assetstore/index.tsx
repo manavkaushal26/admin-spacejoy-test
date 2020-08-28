@@ -1,29 +1,25 @@
 import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
-import User from "@customTypes/userType";
 import AssetCartModal from "@sections/AssetStore/assetCart";
 import AssetMainPanel from "@sections/AssetStore/assetMainpanel";
 import Sidebar from "@sections/AssetStore/assetSidepanel";
 import NewAssetModal from "@sections/AssetStore/newAssetModal";
+import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification, redirectToLocation } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, message, Row, Spin } from "antd";
-import { NextPage, NextPageContext } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useReducer, useState } from "react";
 import styled from "styled-components";
-import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
-
 interface AssetStoreProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	designId: string;
 	assetEntryId: string;
 	projectId: string;
@@ -79,13 +75,7 @@ const FAB = styled.button`
 	}
 `;
 
-const AssetStore: NextPage<AssetStoreProps> = ({
-	isServer,
-	authVerification,
-	projectId,
-	designId,
-	assetEntryId,
-}): JSX.Element => {
+const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntryId }): JSX.Element => {
 	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
 	const [editAssetData, setEditAssetData] = useState<AssetType>(null);
@@ -97,12 +87,6 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 			dispatch({ type: ASSET_ACTION_TYPES.METADATA, value: response.data });
 		}
 	};
-
-	useEffect(() => {
-		if (!authVerification.name) {
-			Router.push("/auth", "/auth/login");
-		}
-	}, [authVerification]);
 
 	const fetchMoodBoard = async (): Promise<void> => {
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
@@ -250,7 +234,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 	}, [state.metaData]);
 
 	return (
-		<PageLayout pageName='Asset Store' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Asset Store'>
 			<Head>
 				<title>Asset Store | {company.product}</title>
 				{IndexPageMeta}
@@ -330,29 +314,15 @@ const AssetStore: NextPage<AssetStoreProps> = ({
 	);
 };
 
-AssetStore.getInitialProps = (
-	ctx: NextPageContext
-): {
-	isServer: boolean;
-	authVerification: Partial<User>;
-	projectId: string;
-	designId: string;
-	assetEntryId: string;
-} => {
+export const getServerSideProps: GetServerSideProps<AssetStoreProps> = async ctx => {
 	const {
-		req,
 		query: { designId: did, assetEntryId: aeid, projectId: pid },
 	} = ctx;
-	const isServer = !!req;
-	const authVerification = {
-		name: "",
-		email: "",
-	};
 
-	const designId: string = did as string;
-	const assetEntryId: string = aeid as string;
-	const projectId: string = pid as string;
-	return { isServer, authVerification, projectId, designId, assetEntryId };
+	const designId: string = (did || "") as string;
+	const assetEntryId: string = (aeid || "") as string;
+	const projectId: string = (pid || "") as string;
+	return { props: { projectId, designId, assetEntryId } };
 };
 
-export default withAuthVerification(AssetStore);
+export default ProtectRoute(AssetStore);

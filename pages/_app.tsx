@@ -1,3 +1,4 @@
+import { AuthProvider } from "@utils/authContext";
 import "antd/lib/affix/style";
 import "antd/lib/alert/style";
 import "antd/lib/badge/style";
@@ -82,12 +83,14 @@ export default class MyApp extends App {
 		const { Component, pageProps } = this.props;
 		return (
 			<ThemeProvider theme={theme}>
-				<div className={`${loading ? "loading" : ""}`}>
-					<Component {...pageProps} />
-					<div className='loader-ring'>
-						<StyledLoaderIcon />
+				<AuthProvider>
+					<div className={`${loading ? "loading" : ""}`}>
+						<Component {...pageProps} />
+						<div className='loader-ring'>
+							<StyledLoaderIcon />
+						</div>
 					</div>
-				</div>
+				</AuthProvider>
 			</ThemeProvider>
 		);
 	}

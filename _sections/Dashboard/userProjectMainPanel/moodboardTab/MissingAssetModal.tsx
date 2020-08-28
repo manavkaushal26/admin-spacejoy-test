@@ -13,7 +13,7 @@ import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { Status } from "@customTypes/userType";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { AddOnAfterWithoutPadding, CustomDiv } from "@sections/Dashboard/styled";
-import { redirectToLocation } from "@utils/auth";
+import { redirectToLocation } from "@utils/authContext";
 import { dateFromObjectId, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Badge, Button, Col, List, notification, Popconfirm, Row, Spin, Tooltip, Typography } from "antd";

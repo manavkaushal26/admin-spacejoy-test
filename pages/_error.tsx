@@ -1,10 +1,10 @@
 import User from "@customTypes/userType";
 import Layout from "@sections/Layout";
-import { redirectToLocation } from "@utils/auth";
+import { redirectToLocation } from "@utils/authContext";
 import { Button } from "antd";
+import Error from "next/error";
 import React from "react";
 import styled from "styled-components";
-import Error from "next/error";
 
 const ErrorWrapper = styled.div`
 	min-height: calc(100vh - 60px);
@@ -44,7 +44,7 @@ class ErrorComponent extends React.Component<{ authVerification: Partial<User>; 
 			<Layout {...this.props}>
 				<ErrorWrapper>
 					<Error statusCode={status} />
-					<Button type="primary" onClick={(): void => redirectToLocation(routeParameters)}>
+					<Button type='primary' onClick={(): void => redirectToLocation(routeParameters)}>
 						Go to Launchpad
 					</Button>
 				</ErrorWrapper>

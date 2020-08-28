@@ -6,15 +6,25 @@ import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/Asse
 import { ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, message, Pagination, Popconfirm, Row, Tooltip, Typography } from "antd";
+import { Col, Drawer, message, Pagination, Popconfirm, Row, Skeleton, Tooltip, Typography } from "antd";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import styled from "styled-components";
-import AssetDescriptionPanel from "./AssetDescriptionPanel";
 import ProductCard from "./ProductCard";
 import { categoryIdNameMapper, isAssetInMoodboard, subCategoryIdNameMapper, verticalIdNameMapper } from "./utils";
 
 const { Title, Text } = Typography;
+
+const DynamicAssetDescriptionPanel = dynamic(() => import("./AssetDescriptionPanel"), {
+	loading: function placeholder() {
+		return (
+			<Drawer width={360} visible={true}>
+				<Skeleton />
+			</Drawer>
+		);
+	},
+});
 
 interface AssetMainPanelProps {
 	editAsset: (assetData: AssetType) => void;
@@ -408,22 +418,24 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 				</Row>
 			</Col>
 
-			<AssetDescriptionPanel
-				themeIdToNameMap={themeIdToNameMap}
-				editAsset={editAsset}
-				dataLoading={state.loading}
-				dispatch={dispatch}
-				projectId={projectId}
-				assetEntryId={assetEntryId}
-				selectedAssetId={selectedAssetId}
-				setSelectedAssetId={setSelectedAssetId}
-				categoryMap={categoryMap}
-				verticalMap={verticalMap}
-				subCategoryMap={subCategoryMap}
-				designId={designId}
-				moodboard={moodboard}
-				addRemoveAsset={addRemoveAsset}
-			/>
+			{!!selectedAssetId && (
+				<DynamicAssetDescriptionPanel
+					themeIdToNameMap={themeIdToNameMap}
+					editAsset={editAsset}
+					dataLoading={state.loading}
+					dispatch={dispatch}
+					projectId={projectId}
+					assetEntryId={assetEntryId}
+					selectedAssetId={selectedAssetId}
+					setSelectedAssetId={setSelectedAssetId}
+					categoryMap={categoryMap}
+					verticalMap={verticalMap}
+					subCategoryMap={subCategoryMap}
+					designId={designId}
+					moodboard={moodboard}
+					addRemoveAsset={addRemoveAsset}
+				/>
+			)}
 		</Row>
 	);
 };

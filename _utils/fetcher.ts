@@ -1,10 +1,10 @@
-import { clearAllStorage, redirectToLocation } from "@utils/auth";
+import { clearAllStorage, redirectToLocation } from "@utils/authContext";
 import { cookieNames, page } from "@utils/config";
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext, NextPageContext } from "next";
 import getCookie from "./getCookie";
 
 interface FetcherParams {
-	ctx?: NextPageContext;
+	ctx?: NextPageContext | GetServerSidePropsContext;
 	endPoint: string;
 	method: "GET" | "POST" | "PUT" | "DELETE";
 	body?: any;
@@ -14,7 +14,7 @@ interface FetcherParams {
 
 async function fetcher({ ctx, endPoint, method, body, hasBaseURL, isMultipartForm }: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
-	const isServer = ctx && ctx.req && !!ctx.req;
+	const isServer = ctx && ctx?.req && !!ctx?.req;
 	let apiURL = endPoint;
 	if (!hasBaseURL) {
 		apiURL = `${page.apiBaseUrl}${endPoint}`;

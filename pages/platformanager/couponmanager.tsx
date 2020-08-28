@@ -1,20 +1,20 @@
-import { SearchOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, SearchOutlined } from "@ant-design/icons";
 import { getAllCoupons } from "@api/metaApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { BasicCoupon } from "@customTypes/couponTypes";
-import User, { Role } from "@customTypes/userType";
 import CreateEditCoupon from "@sections/Coupons/CreateEditCoupon";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Input, notification, Row, Space, Table, Typography } from "antd";
 import { FilterDropdownProps } from "antd/lib/table/interface";
 import moment from "moment";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Highlighter from "react-highlight-words";
 import { LoudPaddingDiv } from ".";
@@ -22,14 +22,14 @@ import { LoudPaddingDiv } from ".";
 const { Title } = Typography;
 
 const CouponManager: NextPage<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> = ({ authVerification, isServer }) => {
-	const [coupons, setCoupons] = useState<BasicCoupon[]>([]);
-
+	serverCoupons: BasicCoupon[];
+	serverTotal: number;
+}> = ({ serverCoupons, serverTotal }) => {
+	const [coupons, setCoupons] = useState<BasicCoupon[]>(serverCoupons || []);
+	const [firstLoad, setFirstLoad] = useState(true);
 	const [selectedCoupon, setSelectedCoupon] = useState<BasicCoupon>(null);
 	const [createEditCouponVisible, setCreateEditCouponVisible] = useState<boolean>(false);
-	const [total, setTotal] = useState<number>(0);
+	const [total, setTotal] = useState<number>(serverTotal || 0);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(10);
@@ -61,9 +61,9 @@ const CouponManager: NextPage<{
 		}
 		setLoading(false);
 	};
-
 	useEffect(() => {
-		fetchAndPopulateCoupons();
+		if (!firstLoad) fetchAndPopulateCoupons();
+		else setFirstLoad(false);
 	}, [limit, pageNumber, searchKey]);
 
 	const toggleCreateEditCoupon = (): void => {
@@ -143,8 +143,10 @@ const CouponManager: NextPage<{
 		);
 	};
 
+	const router = useRouter();
+
 	return (
-		<PageLayout pageName='Coupon Manager' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Coupon Manager'>
 			<Head>
 				<title>Coupon Manager | {company.product}</title>
 				{IndexPageMeta}
@@ -153,12 +155,21 @@ const CouponManager: NextPage<{
 				<LoudPaddingDiv>
 					<Row>
 						<Col span={24}>
-							<Row justify='space-between' onClick={toggleCreateEditCoupon}>
+							<Row justify='space-between'>
 								<Col>
-									<Title>Coupon Manager</Title>
+									<Title level={3}>
+										<Row gutter={[8, 8]}>
+											<Col>
+												<ArrowLeftOutlined onClick={() => router.back()} />
+											</Col>
+											<Col>Coupon Manager</Col>
+										</Row>
+									</Title>
 								</Col>
 								<Col>
-									<Button type='primary'>Create New Coupon</Button>
+									<Button type='primary' onClick={toggleCreateEditCoupon}>
+										Create New Coupon
+									</Button>
 								</Col>
 							</Row>
 						</Col>
@@ -372,28 +383,33 @@ const CouponManager: NextPage<{
 		</PageLayout>
 	);
 };
-CouponManager.getInitialProps = async ({
-	req,
-}): Promise<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> => {
-	const isServer = !!req;
-	const authVerification = {
-		name: "",
-		role: Role.Guest,
-	};
+export const getServerSideProps: GetServerSideProps<{
+	serverCoupons?: BasicCoupon[];
+	serverTotal?: number;
+}> = async ctx => {
+	const endPoint = `${getAllCoupons(false)}?limit=10&skip=0`;
+
 	try {
-		return {
-			isServer,
-			authVerification,
-		};
+		const response = await fetcher({
+			ctx,
+			endPoint,
+			method: "GET",
+		});
+		if (response.statusCode <= "300") {
+			return {
+				props: {
+					serverCoupons: response.data.data.data || response.data,
+					serverTotal: response.data.data.data.count || response.data.length || 0,
+				},
+			};
+		} else {
+			throw new Error();
+		}
 	} catch (e) {
 		return {
-			isServer,
-			authVerification,
+			props: {},
 		};
 	}
 };
 
-export default withAuthVerification(CouponManager);
+export default ProtectRoute(CouponManager);

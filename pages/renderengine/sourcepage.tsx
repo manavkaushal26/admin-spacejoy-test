@@ -8,13 +8,12 @@ import {
 	startRenderJob,
 } from "@api/renderEngineApi";
 import { AllJobs, DetailedSource, RenderEngineStatus } from "@customTypes/renderEngineTypes";
-import User, { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import CreateNewJob from "@sections/RenderEngine/CreateNewJob";
 import JobCard from "@sections/RenderEngine/JobCard";
 import JobDetailsModal from "@sections/RenderEngine/JobDetailsModal";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -34,7 +33,7 @@ import {
 } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import moment from "moment";
-import { NextPage, NextPageContext } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
@@ -44,12 +43,10 @@ import io from "socket.io-client";
 const { Text, Paragraph, Link } = Typography;
 
 interface SourcePageProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	sourceData: DetailedSource;
 }
 
-const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sourceData: fetchedSourceData }) => {
+const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }) => {
 	const [jobs, setJobs] = useState<AllJobs[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [sourceData, setSourceData] = useState<DetailedSource>(fetchedSourceData);
@@ -322,7 +319,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 		setSearchText(value.toLowerCase());
 	};
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Render Engine'>
+		<PageLayout pageName='Render Engine'>
 			<Head>
 				<title>Render Engine | {company.product}</title>
 				{IndexPageMeta}
@@ -479,17 +476,11 @@ const SourcePage: NextPage<SourcePageProps> = ({ isServer, authVerification, sou
 	);
 };
 
-SourcePage.getInitialProps = async (ctx: NextPageContext): Promise<SourcePageProps> => {
+export const getServerSideProps: GetServerSideProps = async ctx => {
 	const {
-		req,
 		res,
 		query: { srcId },
 	} = ctx;
-	const isServer = !!req;
-	const authVerification = {
-		name: "",
-		role: Role.Guest,
-	};
 
 	let sourceData = null;
 
@@ -506,10 +497,8 @@ SourcePage.getInitialProps = async (ctx: NextPageContext): Promise<SourcePagePro
 	}
 
 	return {
-		isServer,
-		authVerification,
-		sourceData,
+		props: { sourceData },
 	};
 };
 
-export default withAuthVerification(SourcePage);
+export default ProtectRoute(SourcePage);

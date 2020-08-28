@@ -1,29 +1,23 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { DesignPhases, HumanizeDesignPhases, RoomLabels, RoomTypes } from "@customTypes/dashboardTypes";
-import User, { AssetStatus } from "@customTypes/userType";
+import { AssetStatus } from "@customTypes/userType";
 import CreateDesignModal from "@sections/DesignExamples/CreateNewDesign";
 import DesignListDisplay from "@sections/DesignExamples/DesignListDisplay";
 import {
 	DesignListAction,
 	DesignListDisplayInitialState,
-	DesignListDisplayReducer
+	DesignListDisplayReducer,
 } from "@sections/DesignExamples/DesignListDisplay/reducer";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { debounce } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Collapse, Input, Row, Select, Typography } from "antd";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useReducer, useState } from "react";
 import styled from "styled-components";
-
-interface DesignExamplesProps {
-	isServer: boolean;
-	authVerification: Partial<User>;
-}
-
 const { Title } = Typography;
 
 const MaxWidthDesignPage = styled.div`
@@ -35,7 +29,7 @@ const Padding = styled.div`
 	padding: 1rem;
 `;
 
-const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerification }) => {
+const DesignExamples: NextPage = () => {
 	const [createDesignModalVisible, setCreateDesignModalVisible] = useState<boolean>();
 
 	const [state, dispatch] = useReducer(DesignListDisplayReducer, DesignListDisplayInitialState);
@@ -43,14 +37,6 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 	const toggleModal = (): void => {
 		setCreateDesignModalVisible(!createDesignModalVisible);
 	};
-
-	const Router = useRouter();
-
-	useEffect(() => {
-		if (!authVerification.name) {
-			Router.push("/auth", "/auth/login");
-		}
-	}, [authVerification]);
 
 	const onCreate = (designData): void => {
 		dispatch({
@@ -106,7 +92,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 	const debouncedHandleSearch = debounce(handleSearchInput, 500);
 
 	return (
-		<PageLayout pageName="Design Examples" isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Design Examples'>
 			<Head>
 				<title>Design Examples | {company.product}</title>
 				{IndexPageMeta}
@@ -115,12 +101,19 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 				<Padding>
 					<Row gutter={[16, 16]}>
 						<Col span={24}>
-							<Row style={{ padding: "2rem 0rem" }} justify="space-between">
+							<Row style={{ padding: "2rem 0rem" }} justify='space-between'>
 								<Col>
-									<Title level={3}>Design Examples</Title>
+									<Title level={3}>
+										<Row gutter={[8, 8]}>
+											<Col>
+												<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/launchpad" })} />
+											</Col>
+											<Col>Design Examples</Col>
+										</Row>
+									</Title>
 								</Col>
 								<Col>
-									<Button type="primary" onClick={toggleModal}>
+									<Button type='primary' onClick={toggleModal}>
 										Create new Design
 									</Button>
 								</Col>
@@ -128,7 +121,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 						</Col>
 						<Col span={24}>
 							<Collapse>
-								<Collapse.Panel header="Filters" key={1}>
+								<Collapse.Panel header='Filters' key={1}>
 									<Row gutter={[8, 8]}>
 										<Col sm={24} md={8}>
 											<Row>
@@ -146,7 +139,7 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 												<Col>Filter by Room Type</Col>
 												<Col span={24}>
 													<Select
-														mode="multiple"
+														mode='multiple'
 														maxTagCount={2}
 														value={state.roomTypeFilter}
 														onChange={(value): void => handleSelect(value, DesignListAction.ROOM_TYPE_FILTER)}
@@ -167,7 +160,6 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 											<Row>
 												<Col>Filter by Status</Col>
 												<Col span={24}>
-
 													<Select
 														onChange={(value): void => handleSelect(value, DesignListAction.STATUS_FILTER)}
 														style={{ width: "100%" }}
@@ -186,9 +178,9 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 										<Col sm={24} md={12}>
 											<Row>
 												<Col>Filter by Phase</Col>
-												<Col span={24} >
+												<Col span={24}>
 													<Select
-														mode="multiple"
+														mode='multiple'
 														value={state.phaseFilter}
 														maxTagCount={5}
 														onChange={(value): void => handleSelect(value, DesignListAction.PHASE_FILTER)}
@@ -219,21 +211,10 @@ const DesignExamples: NextPage<DesignExamplesProps> = ({ isServer, authVerificat
 				createDesignModalVisible={createDesignModalVisible}
 				toggleModal={toggleModal}
 				onCreate={onCreate}
-				designScope="portfolio"
+				designScope='portfolio'
 			/>
-		</PageLayout >
+		</PageLayout>
 	);
 };
 
-DesignExamples.getInitialProps = async (ctx: NextPageContext): Promise<DesignExamplesProps> => {
-	const { req } = ctx;
-	const isServer = !!req;
-
-	const authVerification = {
-		name: "",
-		email: "",
-	};
-	return { isServer, authVerification };
-};
-
-export default withAuthVerification(DesignExamples);
+export default ProtectRoute(DesignExamples);

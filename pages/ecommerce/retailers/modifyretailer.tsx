@@ -1,11 +1,12 @@
-import { PlusOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadRetailerImageApi } from "@api/ecommerceApi";
 import { retailerApi } from "@api/retailerApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { EcommRetailer } from "@customTypes/assetInfoTypes";
-import User, { Status } from "@customTypes/userType";
+import { Status } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
+import { ProtectRoute } from "@utils/authContext";
 import { getBase64 } from "@utils/commonUtils";
 import { cloudinary, cookieNames, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -28,19 +29,18 @@ import {
 } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 interface ModifyRetailer {
-	isServer: boolean;
-	authVerification: Partial<User>;
 	mode: "edit" | "new";
 	retailerId?: string;
+	retailer?: EcommRetailer;
 }
 
 const validateMessages = {
@@ -56,14 +56,16 @@ const ratingMarks = {
 	5: "Excellent",
 };
 
-const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, mode = "new", retailerId }) => {
-	const [retailer, setRetailer] = useState<Partial<EcommRetailer>>({
-		status: Status.inactive,
-		modeOfOperation: "offline",
-		sellType: "buy",
-		exclusive: false,
-		partner: false,
-	});
+const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, retailer: serverRetailer }) => {
+	const [retailer, setRetailer] = useState<Partial<EcommRetailer>>(
+		serverRetailer || {
+			status: Status.inactive,
+			modeOfOperation: "offline",
+			sellType: "buy",
+			exclusive: false,
+			partner: false,
+		}
+	);
 	const [changedFields, setChangedFields] = useState<Partial<EcommRetailer>>();
 	const [loading, setLoading] = useState(false);
 	const [logoThumbnail, setLogoThumbnail] = useState<UploadFile[]>([]);
@@ -116,10 +118,10 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 	}, [retailer]);
 
 	useEffect(() => {
-		if (retailerId) {
+		if (retailerId && !serverRetailer) {
 			fetchAndPopulateRetailerdata();
 		}
-	}, []);
+	}, [retailerId]);
 
 	const onChange = changedFieldsInForm => {
 		if (changedFieldsInForm.length) {
@@ -191,7 +193,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 	};
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Retailer'>
+		<PageLayout pageName='Modify Retailer'>
 			<Head>
 				<title>Retailer</title>
 				{IndexPageMeta}
@@ -199,6 +201,22 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 			<Spin spinning={loading}>
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
+						<Row>
+							<Col>
+								<Col>
+									<Title level={3}>
+										<Row gutter={[8, 8]}>
+											<Col>
+												<ArrowLeftOutlined onClick={() => Router.back()} />
+											</Col>
+											<Col>
+												{retailer?.name ? "Edit" : "Create"} {retailer?.name || "retailer"}
+											</Col>
+										</Row>
+									</Title>
+								</Col>
+							</Col>
+						</Row>
 						<Row>
 							<Form
 								ref={formRef}
@@ -393,18 +411,29 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ isServer, authVerification, 
 	);
 };
 
-ModifyRetailer.getInitialProps = async ctx => {
-	const { req, query } = ctx;
-	const isServer = !!req;
+export const getServerSideProps: GetServerSideProps<ModifyRetailer> = async ctx => {
+	const { query } = ctx;
 	const mode = query.mode as "edit" | "new";
-	const retailerId = query.id as string;
+	const retailerId = (query.id || "") as string;
+
+	if (retailerId) {
+		try {
+			const endPoint = retailerApi(retailerId);
+
+			const response = await fetcher({ ctx, endPoint, method: "GET" });
+			if (response.statusCode <= 300) {
+				return { props: { mode, retailerId, retailer: response.data } };
+			}
+		} catch (_e) {
+			return {
+				props: { mode, retailerId },
+			};
+		}
+	}
 
 	return {
-		authVerification: { name: "", email: "" },
-		mode,
-		isServer,
-		retailerId,
+		props: { mode, retailerId },
 	};
 };
 
-export default ModifyRetailer;
+export default ProtectRoute(ModifyRetailer);

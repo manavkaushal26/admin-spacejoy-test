@@ -1,8 +1,7 @@
-import React from "react";
-import { Editor } from "@tinymce/tinymce-react";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
+import { Editor } from "@tinymce/tinymce-react";
 import { useRouter } from "next/router";
-import { BlogTypes } from "@customTypes/blogTypes";
+import React from "react";
 import { AuthorPlatformProps } from "..";
 import { AUTHOR_ACTIONS } from "../reducer";
 import { getQueryObject, getQueryString } from "../utils";
@@ -17,7 +16,7 @@ const TinyMCEEditor: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		<MaxHeightDiv>
 			<Editor
 				value={state.activeBlog.body}
-				apiKey="nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq"
+				apiKey='nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq'
 				init={{
 					menubar: "file edit insert view format table tools help",
 					toolbar:
@@ -27,41 +26,19 @@ const TinyMCEEditor: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 					},
 					height: "100%",
 					setup: (editor): void => {
-						editor.ui.registry.addNestedMenuItem("customnewdocument", {
+						editor.ui.registry.addMenuItem("customnewdocument", {
 							text: "New Document",
 							icon: "document-properties",
-							getSubmenuItems: () => {
-								return [
-									{
-										type: "menuitem",
-										text: "New Short Blog",
-										onAction: (): void => {
-											dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: { blogType: BlogTypes.Short } } });
+							onAction: (): void => {
+								dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: {} } });
 
-											Router.push(
-												{
-													pathname: "/author",
-													query: { ...getQueryObject({ ...state, activeBlogId: "" }), blogType: BlogTypes.Short },
-												},
-												`/author${getQueryString({ ...state, activeBlogId: "" })}&blogType=${BlogTypes.Short}`
-											);
-										},
-									},
+								Router.push(
 									{
-										type: "menuitem",
-										text: "New Long Blog",
-										onAction: (): void => {
-											dispatch({ type: AUTHOR_ACTIONS.NEW_BLOG, value: { activeBlog: { blogType: BlogTypes.Full } } });
-											Router.push(
-												{
-													pathname: "/author",
-													query: { ...getQueryObject({ ...state, activeBlogId: "" }), blogType: BlogTypes.Full },
-												},
-												`/author${getQueryString({ ...state, activeBlogId: "" })}&blogType=${BlogTypes.Full}`
-											);
-										},
+										pathname: "/author",
+										query: { ...getQueryObject({ ...state, activeBlogId: "" }) },
 									},
-								];
+									`/author${getQueryString({ ...state, activeBlogId: "" })}`
+								);
 							},
 						});
 					},

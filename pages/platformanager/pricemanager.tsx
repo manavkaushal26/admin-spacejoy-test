@@ -1,16 +1,17 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { editPackageApi, getAllPricePackages, getPackageVersionInfo } from "@api/metaApi";
 import { PriceData } from "@customTypes/pricesTypes";
-import User, { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import PackageModifierModal from "@sections/PriceManager/PackageModifierModal";
-import { withAuthVerification } from "@utils/auth";
+import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, notification, Popconfirm, Spin, Table, Tag, Typography } from "antd";
-import { NextPage } from "next";
+import { Button, Col, notification, Popconfirm, Row, Spin, Table, Tag, Typography } from "antd";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { LoudPaddingDiv } from ".";
 
@@ -53,14 +54,12 @@ const dataFormatter = (data: PriceData[]) => {
 };
 
 const PriceManager: NextPage<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> = ({ authVerification, isServer }) => {
-	const [allPrices, setAllPrices] = useState<PriceData[]>([]);
+	prices: PriceData[];
+}> = ({ prices }) => {
+	const [allPrices, setAllPrices] = useState<PriceData[]>(prices || []);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [currentActiveVersion, setCurrentActiveVersion] = useState<number>(null);
 	const [editRecord, setEditRecord] = useState<PriceData>(null);
-
 	const fetchPriceData = async (): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${getAllPricePackages()}?limit=100`;
@@ -230,7 +229,7 @@ const PriceManager: NextPage<{
 	];
 
 	useEffect(() => {
-		fetchPriceData();
+		if (!prices) fetchPriceData();
 		fetchCurrentActivePackages();
 	}, []);
 
@@ -254,9 +253,10 @@ const PriceManager: NextPage<{
 	const toggleDrawer = (): void => {
 		setEditRecord(null);
 	};
+	const router = useRouter();
 
 	return (
-		<PageLayout pageName='Price Manager' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Package Manager'>
 			<Head>
 				<title>Package Manager | {company.product}</title>
 				{IndexPageMeta}
@@ -265,7 +265,14 @@ const PriceManager: NextPage<{
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
 						<Col span={24}>
-							<Title>Package Manager</Title>
+							<Title level={3}>
+								<Row gutter={[8, 8]}>
+									<Col>
+										<ArrowLeftOutlined onClick={() => router.back()} />
+									</Col>
+									<Col>Package Manager</Col>
+								</Row>
+							</Title>
 						</Col>
 						<Col span={24}>
 							<Table
@@ -286,28 +293,25 @@ const PriceManager: NextPage<{
 		</PageLayout>
 	);
 };
-PriceManager.getInitialProps = async ({
-	req,
-}): Promise<{
-	isServer: boolean;
-	authVerification: Partial<User>;
-}> => {
-	const isServer = !!req;
-	const authVerification = {
-		name: "",
-		role: Role.Guest,
-	};
+export const getServerSideProps: GetServerSideProps<{
+	prices?: PriceData[];
+}> = async ctx => {
 	try {
-		return {
-			isServer,
-			authVerification,
-		};
+		const endPoint = `${getAllPricePackages()}?limit=100`;
+		const response = await fetcher({ ctx, endPoint, method: "GET" });
+		if (response.statusCode <= 300) {
+			const prices = dataFormatter(response.data.list);
+			return {
+				props: { prices },
+			};
+		} else {
+			throw new Error();
+		}
 	} catch (e) {
 		return {
-			isServer,
-			authVerification,
+			props: {},
 		};
 	}
 };
 
-export default withAuthVerification(PriceManager);
+export default ProtectRoute(PriceManager);

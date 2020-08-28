@@ -6,25 +6,23 @@ import {
 	ProfileTwoTone,
 	ShopTwoTone,
 } from "@ant-design/icons";
-import User, { Role } from "@customTypes/userType";
+import { Role } from "@customTypes/userType";
 import PageLayout from "@sections/Layout";
-import { withAuthVerification } from "@utils/auth";
+import useAuth, { ProtectRoute } from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Card, Col, Row, Typography } from "antd";
-import { NextPage, NextPageContext } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const { Text, Title } = Typography;
 
 interface LandingPageProps {
 	isServer: boolean;
-	authVerification: Partial<User>;
 }
 
 interface LaunchpadLocations {
@@ -123,17 +121,11 @@ const IconBackground = styled.div<{ color: string }>`
 	border-radius: 50px;
 `;
 
-const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification }) => {
-	const Router = useRouter();
-
-	useEffect(() => {
-		if (!authVerification.name) {
-			Router.push("/auth", "/auth/login");
-		}
-	}, [authVerification]);
+const LandingPage: NextPage<LandingPageProps> = () => {
+	const { user } = useAuth();
 
 	return (
-		<PageLayout pageName='Launchpad' isServer={isServer} authVerification={authVerification}>
+		<PageLayout pageName='Launchpad'>
 			<Head>
 				<title>Launchpad | {company.product}</title>
 				{IndexPageMeta}
@@ -142,7 +134,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 				<LoudPaddingDiv>
 					<Row gutter={[0, 16]}>
 						<Col style={{ backgroundColor: "white" }} span={24}>
-							<CapitalizedTitle level={2}>Hey {getValueSafely(() => authVerification.name, "")},</CapitalizedTitle>
+							<CapitalizedTitle level={2}>Hey {getValueSafely(() => user.name, "")},</CapitalizedTitle>
 							<h2 style={{ margin: 0 }}>Welcome to the Spacejoy Launchpad</h2>
 						</Col>
 						<Col span={24}>
@@ -150,7 +142,7 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 								{launchpadLocations.map(location => {
 									return (
 										!(location.notActive && process.env.NODE_ENV === "production") &&
-										location.allowedRoles.includes(authVerification.role) && (
+										location.allowedRoles.includes(user.role) && (
 											<Col sm={12} md={8} key={location.url}>
 												<Link href={location.url}>
 													<Card hoverable>
@@ -188,15 +180,4 @@ const LandingPage: NextPage<LandingPageProps> = ({ isServer, authVerification })
 	);
 };
 
-LandingPage.getInitialProps = async (ctx: NextPageContext): Promise<LandingPageProps> => {
-	const { req } = ctx;
-	const isServer = !!req;
-
-	const authVerification = {
-		name: "",
-		email: "",
-	};
-	return { isServer, authVerification };
-};
-
-export default withAuthVerification(LandingPage);
+export default ProtectRoute(LandingPage);

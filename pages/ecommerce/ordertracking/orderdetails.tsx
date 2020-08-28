@@ -3,7 +3,6 @@ import { getOrderApi } from "@api/ecommerceApi";
 import { scrapeAssetById } from "@api/scraperApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
 import { ScrapedAssetType } from "@customTypes/moodboardTypes";
-import User from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import CommentsList from "@sections/Ecommerce/OrdertTracking/CommentsList";
 import OrderEditDrawer from "@sections/Ecommerce/OrdertTracking/OrderEditDrawer";
@@ -12,7 +11,7 @@ import OrderItemDrawer from "@sections/Ecommerce/OrdertTracking/OrderItemDrawer"
 import OrderItemTable from "@sections/Ecommerce/OrdertTracking/OrderItemTable";
 import PaymentsDrawer from "@sections/Ecommerce/OrdertTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
-import { redirectToLocation, withAuthVerification } from "@utils/auth";
+import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import { company, page } from "@utils/config";
 import { useLocalStorage } from "@utils/customHooks/useLocalStorage";
@@ -20,7 +19,7 @@ import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
 import moment from "moment";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
@@ -31,10 +30,9 @@ import useWebSocket from "react-use-websocket";
 const { Text, Link, Title } = Typography;
 
 interface OrderTracking {
-	authVerification: Partial<User>;
-	isServer: boolean;
 	orderId: string;
 	orderItemId: string;
+	orderData?: EcommOrder;
 }
 
 const returnSocketId = (lastMessage: MessageEvent) => {
@@ -42,8 +40,8 @@ const returnSocketId = (lastMessage: MessageEvent) => {
 	return [];
 };
 
-const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, orderId, orderItemId }) => {
-	const [order, setOrder] = useState<EcommOrder>();
+const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderData }) => {
+	const [order, setOrder] = useState<EcommOrder>(orderData);
 	const [orderItem, setOrderItem] = useState<OrderItems>();
 	const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -206,11 +204,11 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	};
 
 	useEffect(() => {
-		fetchAndPopulateOrder();
+		if (!orderData) fetchAndPopulateOrder();
 	}, []);
 
 	const goBack = () => {
-		Router.push({ pathname: "/ecommerce/ordertracking", query: {} }, "/ecommerce/ordertracking");
+		Router.push({ pathname: "/ecommerce/ordertracking" });
 	};
 
 	const csvData = useMemo(() => {
@@ -317,7 +315,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	}, [order?.originalOrder, order?.amount]);
 
 	return (
-		<PageLayout isServer={isServer} authVerification={authVerification} pageName='Order Tracking'>
+		<PageLayout pageName='Order Tracking'>
 			<Head>
 				{IndexPageMeta}
 				<title>Orders | {company.product}</title>
@@ -538,16 +536,30 @@ const OrderTracking: NextPage<OrderTracking> = ({ authVerification, isServer, or
 	);
 };
 
-OrderTracking.getInitialProps = async ({ req, query }) => {
-	const orderId = query.orderId as string;
-	const orderItemId = query.orderItemId as string;
+export const getServerSideProps: GetServerSideProps<OrderTracking> = async ctx => {
+	const { query } = ctx;
+	const orderId = (query.orderId || "") as string;
+	const orderItemId = (query.orderItemId || "") as string;
+	const endPoint = getOrderApi(orderId);
 
-	return {
-		isServer: !!req,
-		authVerification: { name: "", email: "" },
-		orderId,
-		orderItemId,
-	};
+	try {
+		const response = await fetcher({
+			ctx,
+			endPoint,
+			method: "GET",
+		});
+		if (response.statusCode <= 200) {
+			return {
+				props: { orderId, orderItemId, orderData: response.data },
+			};
+		} else {
+			throw new Error();
+		}
+	} catch (e) {
+		return {
+			props: { orderId, orderItemId },
+		};
+	}
 };
 
-export default withAuthVerification(OrderTracking);
+export default ProtectRoute(OrderTracking);
