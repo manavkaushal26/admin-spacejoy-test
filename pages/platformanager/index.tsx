@@ -2,7 +2,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import useAuth, { ProtectRoute } from "@utils/authContext";
+import useAuth, { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Card, Col, Input, notification, Row, Typography } from "antd";
@@ -74,8 +74,6 @@ const Platformanager: NextPage = () => {
 		}
 	};
 
-	const router = useRouter();
-
 	return (
 		<PageLayout pageName='Platform Manager'>
 			<Head>
@@ -89,7 +87,7 @@ const Platformanager: NextPage = () => {
 							<Title level={3}>
 								<Row gutter={[8, 8]}>
 									<Col>
-										<ArrowLeftOutlined onClick={() => router.back()} />
+										<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/launchpad" })} />
 									</Col>
 									<Col>Platform Manager</Col>
 								</Row>

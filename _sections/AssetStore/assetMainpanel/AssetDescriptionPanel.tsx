@@ -12,7 +12,6 @@ import {
 import { getSingleAssetApi } from "@api/designApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
-import ImageDisplayModal from "@components/ImageDisplayModal";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
@@ -59,10 +58,6 @@ const SilentTitle = styled(Title)`
 	margin-bottom: 0 !important;
 `;
 
-const ClickDiv = styled.div`
-	cursor: pointer;
-`;
-
 const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element = ({
 	addRemoveAsset,
 	moodboard,
@@ -87,7 +82,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		data: string;
 	}>(null);
 	const [selectedAssetData, setSelectedAssetData] = useState<AssetType>(null);
-	const [imagePreviewVisible, setImagePreviewVisible] = useState<boolean>(false);
 	const Router = useRouter();
 	const assetInMoodboard = useMemo(() => isAssetInMoodboard(moodboard, selectedAssetId, assetEntryId), [
 		selectedAssetId,
@@ -172,10 +166,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 
 	const buttonText = assetInMoodboard ? "Add Recommendations" : "Add to Design";
 
-	const toggleImagePreviewModal = (): void => {
-		setImagePreviewVisible(!imagePreviewVisible);
-	};
-
 	const pathToFile = getValueSafely(() => selectedAssetData.spatialData.fileUrls.glb, null);
 	const typeOfFile = "glb";
 	return (
@@ -243,20 +233,19 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									</Row>
 								</Col>
 								<Col>
-									<ClickDiv onClick={toggleImagePreviewModal}>
-										<Image
-											width='100%'
-											src={getValueSafely(
-												() =>
-													selectedAssetData.productImages
-														? selectedAssetData.productImages[0].cdn
-														: undefined || selectedAssetData.cdn,
-												process.env.NODE_ENV === "production"
-													? "v1581080070/admin/productImagePlaceholder.jpg"
-													: "v1581080111/admin/productImagePlaceholder.jpg"
-											)}
-										/>
-									</ClickDiv>
+									<Image
+										width='100%'
+										src={getValueSafely(
+											() =>
+												selectedAssetData.productImages
+													? selectedAssetData.productImages[0].cdn
+													: undefined || selectedAssetData.cdn,
+											process.env.NODE_ENV === "production"
+												? "v1581080070/admin/productImagePlaceholder.jpg"
+												: "v1581080111/admin/productImagePlaceholder.jpg"
+										)}
+										preview
+									/>
 								</Col>
 							</Row>
 						</Col>
@@ -512,15 +501,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 					</Row>
 				)}
 			</FullheightSpin>
-			{selectedAssetData && (
-				<ImageDisplayModal
-					previewImage={getValueSafely(() => selectedAssetData.cdn, "")}
-					previewVisible={imagePreviewVisible}
-					handleCancel={toggleImagePreviewModal}
-					altText={getValueSafely(() => selectedAssetData.name, "Product Image")}
-					cdn
-				/>
-			)}
 			<AssetHistoryDrawer assetId={selectedAssetId} open={historyOpen} closeModal={toggleHistory} />
 		</GreyDrawer>
 	);

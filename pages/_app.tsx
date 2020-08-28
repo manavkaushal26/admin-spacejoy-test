@@ -17,6 +17,7 @@ import "antd/lib/dropdown/style";
 import "antd/lib/empty/style";
 import "antd/lib/form/style";
 import "antd/lib/icon/style";
+import "antd/lib/image/style";
 import "antd/lib/input-number/style";
 import "antd/lib/input/style";
 import "antd/lib/layout/style";

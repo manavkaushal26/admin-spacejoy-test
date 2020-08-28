@@ -36,7 +36,7 @@ const cookieNames = {
 };
 
 const company = {
-	logo: isProduction ? "v1578101355/shared/spacejoy-logo_ase39m.svg" : "v1578482972/shared/spacejoy-logo_rdqft7.svg",
+	logo: isProduction ? "v1578101355/shared/spacejoy-logo_ase39m.jpg" : "v1578482972/shared/spacejoy-logo_rdqft7.jpg",
 	name: "Neo Design Labs Inc",
 	product: "Spacejoy-Dashboard",
 	tagLine: "Designing your imagination",

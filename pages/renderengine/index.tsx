@@ -211,10 +211,9 @@ const RenderEngine: NextPage = () => {
 																	<Image
 																		onClick={(e): void => {
 																			e.stopPropagation();
-																			handleImageClick(renders);
 																		}}
+																		preview
 																		height='157.47px'
-																		nolazy
 																		width='100%'
 																		src={renders[0]}
 																	/>

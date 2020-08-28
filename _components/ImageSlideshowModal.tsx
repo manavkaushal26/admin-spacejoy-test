@@ -1,8 +1,8 @@
 import Image from "@components/Image";
+import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import { Modal } from "antd";
 import React from "react";
 import styled from "styled-components";
-import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 
 interface ImageSlideshowModal {
 	previewVisible: boolean;
@@ -29,7 +29,7 @@ const ImageSlideshowModal: React.FC<ImageSlideshowModal> = ({
 			<BiggerButtonCarousel slidesToShow={1} slidesToScroll={1} autoplay>
 				{previewImages.map(image => {
 					return cdn ? (
-						<Image width="100%" key={image} alt={altText} nolazy src={`q_100/${image}`} />
+						<Image width='100%' key={image} alt={altText} src={`q_100/${image}`} />
 					) : (
 						<img alt={altText} key={image} style={{ width: "100%" }} src={image} />
 					);

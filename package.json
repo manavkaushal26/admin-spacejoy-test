@@ -108,7 +108,7 @@
 	},
 	"scripts": {
 		"dev": "NODE_ENV=local node server.js",
-		"build": "next build",
+		"build": "NODE_OPTIONS='--max_old_space_size=4096' next build",
 		"start": "NODE_ENV=production node server.js",
 		"start:staging": "node server.js NODE_ENV=staging",
 		"analyze": "cross-env ANALYZE=true next build",

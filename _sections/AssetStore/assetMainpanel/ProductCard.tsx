@@ -27,14 +27,9 @@ const CardPadding = styled.div`
 
 const ImageContainer = styled.div`
 	text-align: center;
-	min-height: 250px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	> img {
-		max-width: 100%;
-		max-height: 250px;
-	}
 `;
 
 const ProductCard: (props: AssetCards) => JSX.Element = ({
@@ -51,13 +46,11 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 					<Image
 						width='auto'
 						height='250px'
-						autoAdjust
-						src={getValueSafely(
-							() => (asset.productImages ? asset.productImages[0]?.cdn : undefined || asset.cdn),
-							process.env.NODE_ENV !== "production"
-								? "v1581080070/admin/productImagePlaceholder.jpg"
-								: "v1581080111/admin/productImagePlaceholder.jpg"
-						)}
+						src={
+							asset.productImages
+								? `q_80,h_250,w_250,c_pad,b_white/${asset.productImages[0]?.cdn}`
+								: undefined || `q_80,h_250,w_250,c_pad,b_white/${asset.cdn}`
+						}
 					/>
 				</ImageContainer>
 			}

@@ -132,7 +132,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 							<BiggerButtonCarousel autoplay>
 								{coverImage.map(image => (
 									<div key={image._id}>
-										<Image nolazy width='100%' src={`q_80,w_300/${image.cdn}`} />
+										<Image width='100%' src={`q_80,w_300,ar_1.82/${image.cdn}`} />
 									</div>
 								))}
 							</BiggerButtonCarousel>

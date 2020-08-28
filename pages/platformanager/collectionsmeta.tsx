@@ -143,7 +143,7 @@ const CollectionsMeta: NextPage<{
 											style={{ background: collection.bg || "white" }}
 											hoverable
 											onClick={(): void => onClick(collection._id, "open")}
-											cover={<Image nolazy src={collection.cdnThumbnail} />}
+											cover={<Image onClick={e => e.stopPropagation()} src={collection.cdnThumbnail} preview />}
 										>
 											<Card.Meta title={collection.name} />
 										</Card>

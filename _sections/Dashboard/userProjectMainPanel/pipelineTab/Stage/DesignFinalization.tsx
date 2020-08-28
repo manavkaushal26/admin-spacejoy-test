@@ -5,7 +5,7 @@ import {
 	DesignerImageComments,
 	DesignImagesInterface,
 	DesignImgTypes,
-	DetailedDesign,
+	DetailedDesign
 } from "@customTypes/dashboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
@@ -132,13 +132,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 								<Col key={image._id} sm={24} md={12} lg={8}>
 									<Row>
 										<Col span={24}>
-											<Image
-												width="100%"
-												onClick={(): void => {
-													previewImage(image.cdn);
-												}}
-												src={`q_80,w_400/${image.cdn}`}
-											/>
+											<Image width='100%' preview src={`q_80/${image.cdn}`} />
 										</Col>
 										<Col span={24}>
 											<CustomDiv>
@@ -185,7 +179,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 				cdn={preview.cdn}
 				previewVisible={preview.previewVisible}
 				handleCancel={handleCancel}
-				altText="Render Image"
+				altText='Render Image'
 			/>
 		</StepDiv>
 	);

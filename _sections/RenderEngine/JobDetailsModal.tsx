@@ -1,12 +1,12 @@
 import { getSingleJobs } from "@api/renderEngineApi";
+import Image from "@components/Image";
 import { DetailedJob } from "@customTypes/renderEngineTypes";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
-import fetcher from "@utils/fetcher";
-import { notification, Row, Spin, Col, Typography } from "antd";
-import React, { useEffect, useState } from "react";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
-import Image from "@components/Image";
+import fetcher from "@utils/fetcher";
+import { Col, notification, Row, Spin, Typography } from "antd";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
 import DetailText from "./DetailText";
 
 const { Text } = Typography;
@@ -75,7 +75,7 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 											(image): JSX.Element => (
 												<Row key={image._id} gutter={[16, 16]}>
 													<Col span={24}>
-														<Image width='100%' src={image.url} />
+														<Image preview width='100%' src={image.url} />
 													</Col>
 													<Col span={24}>
 														<Row justify='space-around'>

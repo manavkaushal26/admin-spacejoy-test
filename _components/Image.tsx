@@ -97,13 +97,23 @@
 
 // export default React.memo(Image);
 
-import { cloudinary } from "@utils/config";
-import PropTypes from "prop-types";
-import React, { useState, useEffect } from "react";
-import { LazyLoadImage, trackWindowScroll } from "react-lazy-load-image-component";
 import FallbackImage from "@static/images/fallback-background.svg";
+import { cloudinary } from "@utils/config";
+import { Image as AntdImage } from "antd";
+import React, { useEffect, useState } from "react";
 
-function Image({ src, height, width, alt, nolazy, className, caption, scrollPosition, autoAdjust, ...props }) {
+interface Image {
+	src: string;
+	height?: number | string;
+	width?: number | string;
+	alt?: string;
+	caption?: string;
+	autoAdjust?: boolean;
+	preview?: boolean;
+	onClick?: (e?: any) => void;
+}
+
+const Image: React.FC<Image> = ({ src, height, width, alt, caption, autoAdjust, preview = false, ...props }) => {
 	const [source, setSource] = useState("");
 
 	const [imgHeight, setImageHeight] = useState(height);
@@ -137,22 +147,25 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 	};
 
 	const onError = () => {
-		setSource(FallbackImage);
+		setImageHeight("100%");
+		setImageWidth("100%");
 	};
 
 	const renderLazyImage = (
-		<LazyLoadImage
-			{...props}
-			src={source}
-			onError={onError}
-			alt={alt}
-			{...(autoAdjust ? { onLoad: setDimensions } : {})}
-			width={imgWidth}
-			height={imgHeight}
-			scrollPosition={scrollPosition}
-			visibleByDefault={nolazy}
-			className={className}
-		/>
+		<>
+			<AntdImage
+				onError={onError}
+				alt={alt}
+				width={imgWidth}
+				{...(autoAdjust ? { onLoad: setDimensions } : {})}
+				height={imgHeight}
+				src={source}
+				fallback={FallbackImage}
+				placeholder={<img src={FallbackImage} />}
+				preview={preview}
+				{...props}
+			/>
+		</>
 	);
 	if (caption) {
 		return (
@@ -163,29 +176,6 @@ function Image({ src, height, width, alt, nolazy, className, caption, scrollPosi
 		);
 	}
 	return <>{renderLazyImage}</>;
-}
-
-Image.defaultProps = {
-	alt: "spacejoy",
-	width: "auto",
-	height: "auto",
-	nolazy: false,
-	className: "",
-	caption: "",
-	autoAdjust: false,
-	scrollPosition: {},
 };
 
-Image.propTypes = {
-	src: PropTypes.string.isRequired,
-	alt: PropTypes.string,
-	width: PropTypes.string,
-	height: PropTypes.string,
-	className: PropTypes.string,
-	caption: PropTypes.string,
-	nolazy: PropTypes.bool,
-	autoAdjust: PropTypes.bool,
-	scrollPosition: PropTypes.shape({}),
-};
-
-export default React.memo(trackWindowScroll(Image));
+export default React.memo(Image);

@@ -30,7 +30,7 @@ const HeaderBody: React.FC<HeaderBody> = ({ pageName }) => {
 	const Router = useRouter();
 	return (
 		<PaddedDiv>
-			<Row>
+			<Row style={{ height: "62px" }}>
 				<MobileHiddenStyled>
 					<Row justify='space-around' align='middle'>
 						<Col span={8}>

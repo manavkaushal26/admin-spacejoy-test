@@ -67,8 +67,8 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 												(record?.product?.productImages && record?.product?.productImages[0]?.cdn) ||
 												record?.product?.cdn
 											}
+											preview
 											width='50px'
-											nolazy
 										/>
 									</Col>
 								)}

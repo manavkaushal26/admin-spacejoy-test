@@ -1,9 +1,8 @@
 import { getAssetsInDesignApi } from "@api/designApi";
 import Image from "@components/Image";
 import fetcher from "@utils/fetcher";
-import { Card, Col, notification, Row, Typography, Spin, Skeleton, Empty } from "antd";
-import React, { useEffect, useState, useMemo } from "react";
-import { getValueSafely } from "@utils/commonUtils";
+import { Card, Col, Empty, notification, Row, Skeleton, Spin, Typography } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 
 const { Text } = Typography;
@@ -73,11 +72,11 @@ const DesignWiseSelectedProductCards: React.FC<{
 
 	return !retainedProducts.length ? (
 		<Col span={24}>
-			<Row justify="center">
+			<Row justify='center'>
 				<Spin spinning={loading}>
 					<Col span={24}>
-						<Row justify="center">
-							<Empty description="No Products Selected from design" />
+						<Row justify='center'>
+							<Empty description='No Products Selected from design' />
 						</Row>
 					</Col>
 				</Spin>
@@ -90,26 +89,13 @@ const DesignWiseSelectedProductCards: React.FC<{
 					const { name, price, cdn, _id } = assetList[assetId];
 					return (
 						<Col sm={12} lg={12} xl={6}>
-							<ModifiedCard
-								key={_id}
-								cover={
-									<Image
-										src={getValueSafely(
-											() => cdn,
-											process.env.NODE_ENV !== "production"
-												? "v1581080070/admin/productImagePlaceholder.jpg"
-												: "v1581080111/admin/productImagePlaceholder.jpg"
-										)}
-										autoAdjust
-									/>
-								}
-							>
+							<ModifiedCard key={_id} cover={<Image src={`q_80,h_250,w_250,c_pad,b_white${cdn}`} />}>
 								<Card.Meta
 									title={name}
 									description={
 										<Row>
 											<Col span={24}>
-												<Text type="secondary">Price:</Text>
+												<Text type='secondary'>Price:</Text>
 											</Col>
 											<Col span={24}>
 												<Text strong>{price}</Text>
@@ -121,7 +107,7 @@ const DesignWiseSelectedProductCards: React.FC<{
 						</Col>
 					);
 				}
-				return <Skeleton key="skeleton" active />;
+				return <Skeleton key='skeleton' active />;
 			})}
 		</>
 	);

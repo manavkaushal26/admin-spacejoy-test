@@ -103,7 +103,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 						.map(image => (
 							<Row key={image._id}>
 								<Col span={24}>
-									<Image width='100%' src={`${image.cdn}`} />
+									<Image width='100%' src={`${image.cdn}`} preview />
 								</Col>
 								<Col span={24}>
 									<Row justify='space-around'>
