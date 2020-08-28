@@ -2,9 +2,6 @@ import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import AssetCartModal from "@sections/AssetStore/assetCart";
-import AssetMainPanel from "@sections/AssetStore/assetMainpanel";
-import Sidebar from "@sections/AssetStore/assetSidepanel";
-import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { PaddedDiv } from "@sections/Header/styled";
@@ -13,12 +10,26 @@ import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, message, Row, Spin } from "antd";
+import { Button, Col, message, Row, Skeleton, Spin } from "antd";
 import { GetServerSideProps, NextPage } from "next";
+import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useReducer, useState } from "react";
+import React, { useEffect, useMemo, useReducer } from "react";
 import styled from "styled-components";
+
+const DynamicSidepanel = dynamic(() => import("@sections/AssetStore/assetSidepanel"), {
+	loading: function loader() {
+		return <Skeleton avatar={false} />;
+	},
+});
+
+const DynamicMainPanel = dynamic(() => import("@sections/AssetStore/assetMainpanel"), {
+	loading: function loader() {
+		return <Skeleton avatar={false} />;
+	},
+});
+
 interface AssetStoreProps {
 	designId: string;
 	assetEntryId: string;
@@ -78,7 +89,7 @@ const FAB = styled.button`
 const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntryId }): JSX.Element => {
 	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
-	const [editAssetData, setEditAssetData] = useState<AssetType>(null);
+	// const [editAssetData, setEditAssetData] = useState<AssetType>(null);
 	const fetchMetaData = async (): Promise<void> => {
 		const endpoint = getMetaDataApi();
 		const response = await fetcher({ endPoint: endpoint, method: "GET" });
@@ -261,7 +272,12 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 									</Row>
 								</Col>
 								<Col span={24}>
-									<Sidebar state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
+									<DynamicSidepanel
+										state={state}
+										dispatch={dispatch}
+										metaData={state.metaData}
+										categoryMap={categoryMap}
+									/>
 								</Col>
 							</Row>
 						</MaxHeightDiv>
@@ -269,7 +285,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 					<MainContentContainer>
 						<MaxHeightDiv>
 							<PaddedDiv>
-								<AssetMainPanel
+								<DynamicMainPanel
 									themeIdToNameMap={themeIdToNameMap}
 									editAsset={editAsset}
 									projectId={projectId}
@@ -289,7 +305,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 				</FAB>
 			</Spin>
 
-			<NewAssetModal
+			{/* <NewAssetModal
 				dispatchAssetStore={dispatch}
 				assetData={editAssetData}
 				setAssetData={setEditAssetData}
@@ -297,7 +313,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 				categoryMap={categoryMap}
 				toggleNewAssetModal={toggleNewAssetModal}
 				isOpen={state.newAssetModalVisible}
-			/>
+			/> */}
 			{state.moodboard && (
 				<AssetCartModal
 					designId={designId}

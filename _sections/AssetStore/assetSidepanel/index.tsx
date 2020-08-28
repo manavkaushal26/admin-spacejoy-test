@@ -2,15 +2,23 @@ import { InfoCircleOutlined } from "@ant-design/icons";
 import { MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus } from "@customTypes/userType";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
+import {
+	colorsExamples,
+	combinationExamples,
+	nameExamples,
+	retailerExamples,
+	shapeExamples,
+} from "@sections/AssetStore/exampleConstants";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { Col, Input, Radio, Row, Tooltip, Tree, Typography } from "antd";
+import { Avatar, Col, Input, List, Popover, Radio, Row, Tabs, Tree, Typography } from "antd";
 import { DataNode } from "antd/lib/tree";
 import React, { useEffect, useMemo, useState } from "react";
 import { FilterCard } from "../styled";
 import SliderFilter from "./filters/SliderFilter";
 
 const { Title, Text } = Typography;
+const { TabPane } = Tabs;
 
 interface CategoryMap {
 	key: string;
@@ -202,6 +210,77 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 	const [widthMin, widthMax] = width;
 	const [heightMin, heightMax] = height;
 	const [depthMin, depthMax] = depth;
+	// function callback(key: any) {
+	// 	//console.log(key);
+	// }
+
+	const SearchExamples = () => (
+		<Tabs defaultActiveKey='1'>
+			<TabPane tab='By Name' key='1'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={nameExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='By Color' key='2'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={colorsExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta
+								avatar={<Avatar style={{ backgroundColor: item.color }} />}
+								title={<Text copyable>{item.title}</Text>}
+							/>
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='By Retailer' key='3'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={retailerExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='By Shape' key='4'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={shapeExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='Or Combinations' key='5'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={combinationExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+		</Tabs>
+	);
 	return (
 		<>
 			{metaData && (
@@ -212,17 +291,22 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 								<Col span={24}>
 									<Row gutter={[2, 2]}>
 										<Col span={24}>
-											<Text strong>Search by Name</Text>
+											<Text strong>Search</Text>
 										</Col>
 										<Col span={24}>
 											<Row gutter={[4, 4]} align='middle'>
 												<Col style={{ flexGrow: 1 }}>
-													<Input allowClear value={state.searchText} onChange={onSearchInput} />
+													<Input
+														allowClear
+														value={state.searchText}
+														onChange={onSearchInput}
+														placeholder='Search by Name, Retailer, Color, Shape etc.,'
+													/>
 												</Col>
 												<Col>
-													<Tooltip title='Search by Name, Retailer, Color, Shape etc.,'>
+													<Popover content={SearchExamples} title='Examples'>
 														<InfoCircleOutlined />
-													</Tooltip>
+													</Popover>
 												</Col>
 											</Row>
 										</Col>

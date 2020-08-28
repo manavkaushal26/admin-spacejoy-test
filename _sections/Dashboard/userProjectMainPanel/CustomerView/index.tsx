@@ -58,11 +58,11 @@ const PackageDetails: React.FC<{
 		return (
 			<>
 				<Col>
-					<CloseOutlined style={{ color: "red" }} />
+					<CheckOutlined style={{ color: "green" }} />
 					<Text strong> Paint Recommendations </Text>
 				</Col>
 				<Col>
-					<CheckOutlined style={{ color: "green" }} />
+					<CloseOutlined style={{ color: "red" }} />
 					<Text strong> Window Treatment </Text>
 				</Col>
 			</>
@@ -148,7 +148,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 			<Col span={24}>
 				<SectionHeader size={0} hgroup={3} mini title={designData.name} description={projectName} />
 			</Col>
-			{designData.description !== "" && (
+			{designData.description !== "" && designData.description !== undefined && (
 				<Col span={24}>
 					<FlatCard noMargin noShadow full bg='red'>
 						<div className='grid'>

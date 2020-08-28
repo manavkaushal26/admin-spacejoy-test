@@ -60,7 +60,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
 		body: {
-			searchText: state.searchText,
+			searchText: state.searchText.trim(),
 			sort: "createdAt",
 			filters: {
 				retailer: state.retailerFilter,
