@@ -7,7 +7,7 @@ import {
 	combinationExamples,
 	nameExamples,
 	retailerExamples,
-	shapeExamples,
+	shapeExamples
 } from "@sections/AssetStore/exampleConstants";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
@@ -38,6 +38,75 @@ interface AssetSidePanelProps {
 
 const addLevel = (level: string, elem): string => {
 	return `${elem}-${level}`;
+};
+const SearchExamples = () => {
+	return (
+		<Tabs defaultActiveKey='1'>
+			<TabPane tab='By Name' key='1'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={nameExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='By Color' key='2'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={colorsExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta
+								avatar={<Avatar style={{ backgroundColor: item.color }} />}
+								title={<Text copyable>{item.title}</Text>}
+							/>
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='By Retailer' key='3'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={retailerExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='By Shape' key='4'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={shapeExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+			<TabPane tab='Or Combinations' key='5'>
+				<List
+					grid={{ gutter: 8, column: 3 }}
+					itemLayout='horizontal'
+					dataSource={combinationExamples}
+					renderItem={item => (
+						<List.Item>
+							<List.Item.Meta title={item.title} />
+						</List.Item>
+					)}
+				/>
+			</TabPane>
+		</Tabs>
+	);
 };
 
 const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state, categoryMap }): JSX.Element => {
@@ -210,77 +279,6 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 	const [widthMin, widthMax] = width;
 	const [heightMin, heightMax] = height;
 	const [depthMin, depthMax] = depth;
-	// function callback(key: any) {
-	// 	//console.log(key);
-	// }
-
-	const SearchExamples = () => (
-		<Tabs defaultActiveKey='1'>
-			<TabPane tab='By Name' key='1'>
-				<List
-					grid={{ gutter: 8, column: 3 }}
-					itemLayout='horizontal'
-					dataSource={nameExamples}
-					renderItem={item => (
-						<List.Item>
-							<List.Item.Meta title={item.title} />
-						</List.Item>
-					)}
-				/>
-			</TabPane>
-			<TabPane tab='By Color' key='2'>
-				<List
-					grid={{ gutter: 8, column: 3 }}
-					itemLayout='horizontal'
-					dataSource={colorsExamples}
-					renderItem={item => (
-						<List.Item>
-							<List.Item.Meta
-								avatar={<Avatar style={{ backgroundColor: item.color }} />}
-								title={<Text copyable>{item.title}</Text>}
-							/>
-						</List.Item>
-					)}
-				/>
-			</TabPane>
-			<TabPane tab='By Retailer' key='3'>
-				<List
-					grid={{ gutter: 8, column: 3 }}
-					itemLayout='horizontal'
-					dataSource={retailerExamples}
-					renderItem={item => (
-						<List.Item>
-							<List.Item.Meta title={item.title} />
-						</List.Item>
-					)}
-				/>
-			</TabPane>
-			<TabPane tab='By Shape' key='4'>
-				<List
-					grid={{ gutter: 8, column: 3 }}
-					itemLayout='horizontal'
-					dataSource={shapeExamples}
-					renderItem={item => (
-						<List.Item>
-							<List.Item.Meta title={item.title} />
-						</List.Item>
-					)}
-				/>
-			</TabPane>
-			<TabPane tab='Or Combinations' key='5'>
-				<List
-					grid={{ gutter: 8, column: 3 }}
-					itemLayout='horizontal'
-					dataSource={combinationExamples}
-					renderItem={item => (
-						<List.Item>
-							<List.Item.Meta title={item.title} />
-						</List.Item>
-					)}
-				/>
-			</TabPane>
-		</Tabs>
-	);
 	return (
 		<>
 			{metaData && (
