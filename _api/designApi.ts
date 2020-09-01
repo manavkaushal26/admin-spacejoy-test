@@ -1,6 +1,6 @@
-import { page } from "@utils/config";
 import { Model3DFiles } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
+import { page } from "@utils/config";
 
 export const designApi: (designId: string | string[]) => string = designId => {
 	return `/admin/design/${designId}`;
@@ -31,26 +31,26 @@ export const getAssetApi: () => string = () => {
 };
 
 export const getAssetElasticSearchApi: () => string = () => {
-	return "v1/products/search";
+	return "v1/assets/search";
 };
 
 export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "source" | "sourceHighPoly") => string = (
 	assetId,
 	filetype = Model3DFiles.Glb
 ) => {
-	return `${page.apiBaseUrl}/v1/products/${assetId}/3d-file?fileType=${filetype}`;
+	return `${page.apiBaseUrl}/v1/assets/${assetId}/3d-file?fileType=${filetype}`;
 };
 
 export const uploadAssetImageApi: (assetId: string) => string = assetId => {
 	return `${page.apiBaseUrl}/admin/asset/${assetId}/image`;
 };
 
-export const deleteUploadedImageApi = (designId: string, imageId: string) => {
+export const deleteUploadedImageApi = (designId: string, imageId: string): string => {
 	return `/admin/design/${designId}/image/${imageId}`;
 };
 
 export const getSingleAssetApi: (assetId: string) => string = assetId => {
-	return `/v1/products/${assetId}`;
+	return `/asset/${assetId}`;
 };
 
 export const getMoodboardApi: (designId: string, assetEntryId?: string) => string = (designId, assetEntryId) => {
