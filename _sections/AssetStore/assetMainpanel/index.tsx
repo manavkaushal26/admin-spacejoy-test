@@ -56,12 +56,13 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetElasticSearchApi();
 	const queryParams = `?skip=${(pageCount - 1) * 36}&limit=36`;
-	const responseData = await fetcher({
+	const requestData = await fetcher({
 		endPoint: `/${endPoint}${queryParams}`,
 		method: "POST",
 		body: {
 			searchText: state.searchText.trim(),
 			sort: "createdAt",
+			wildcard: state.wildcard,
 			filters: {
 				retailer: state.retailerFilter,
 				category: state.checkedKeys.category,
@@ -76,9 +77,9 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 		},
 	});
 
-	if (responseData.statusCode <= 300) {
-		if (responseData.data.hits) {
-			const assetData: AssetType[] = responseData.data.hits.map((asset: AssetStoreSearchResponse) => {
+	if (requestData.statusCode <= 300) {
+		if (requestData.data.hits) {
+			const assetData: AssetType[] = requestData.data.hits.map((asset: AssetStoreSearchResponse) => {
 				return {
 					name: asset.name,
 					price: asset.price,
@@ -123,13 +124,13 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 				};
 			});
 			setAssetData(assetData);
-			setTotalCount(responseData.data.total);
+			setTotalCount(requestData.data.total);
 		}
 	}
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
 };
 
-const debouncedFetchAsset = debounce(fetchAndPopulate, 500);
+const debouncedFetchAsset = debounce(fetchAndPopulate, 800);
 
 const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	editAsset,
@@ -197,6 +198,10 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	]);
 
 	const scrollParentRef = useRef();
+
+	useEffect(() => {
+		if (state.searchText !== "") debouncedFetchAsset(state, pageCount, setAssetData, setTotalCount, dispatch);
+	}, [state.wildcard]);
 
 	useEffect(() => {
 		debouncedFetchAsset(state, pageCount, setAssetData, setTotalCount, dispatch);

@@ -11,7 +11,7 @@ import {
 } from "@sections/AssetStore/exampleConstants";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { Avatar, Col, Input, List, Popover, Radio, Row, Tabs, Tree, Typography } from "antd";
+import { Avatar, Col, Input, List, Popover, Radio, Row, Switch, Tabs, Tree, Typography } from "antd";
 import { DataNode } from "antd/lib/tree";
 import React, { useEffect, useMemo, useState } from "react";
 import { FilterCard } from "../styled";
@@ -275,6 +275,10 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		});
 	};
 
+	const onChange = value => {
+		dispatch({ type: ASSET_ACTION_TYPES.WILD_CARD, value });
+	};
+
 	const [priceMin, priceMax] = priceRange;
 	const [widthMin, widthMax] = width;
 	const [heightMin, heightMax] = height;
@@ -289,7 +293,19 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 								<Col span={24}>
 									<Row gutter={[2, 2]}>
 										<Col span={24}>
-											<Text strong>Search</Text>
+											<Row gutter={[8, 8]}>
+												<Col>
+													<Text strong>Search</Text>
+												</Col>
+												<Col>
+													<Switch
+														onChange={onChange}
+														checkedChildren='Similar'
+														unCheckedChildren='Exact'
+														checked={state.wildcard}
+													/>
+												</Col>
+											</Row>
 										</Col>
 										<Col span={24}>
 											<Row gutter={[4, 4]} align='middle'>
@@ -310,6 +326,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 										</Col>
 									</Row>
 								</Col>
+
 								<Col span={24}>
 									<Row gutter={[2, 2]}>
 										<Col span={24}>
@@ -329,6 +346,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 							</Row>
 						</FilterCard>
 					</Col>
+
 					<Col span={24}>
 						<FilterCard>
 							<Row gutter={[4, 4]}>

@@ -17,6 +17,7 @@ export interface AssetStoreState {
 		subCategory: string[];
 		verticals: string[];
 	};
+	wildcard: boolean;
 	selectedAsset: string;
 	cartOpen: boolean;
 	newAssetModalVisible: boolean;
@@ -32,6 +33,7 @@ export const assetStoreInitialState: AssetStoreState = {
 	heightRange: [0, 30],
 	widthRange: [0, 30],
 	depthRange: [0, 30],
+	wildcard: false,
 	searchText: "",
 	checkedKeys: {
 		category: [],
@@ -60,6 +62,7 @@ export enum ASSET_ACTION_TYPES {
 	SELECTED_ASSET = "SELECTED_ASSET",
 	TOGGLE_CART = "TOGGLE_CART",
 	RESET_FILTERS = "RESET_FILTERS",
+	WILD_CARD = "WILD_CARD",
 	NEW_ASSET_MODAL_VISIBLE = "NEW_ASSET_MODAL_VISIBLE",
 }
 export interface AssetAction {
@@ -131,6 +134,11 @@ export const reducer: AssetReducerType = (state, action) => {
 			return {
 				...state,
 				loading: action.value,
+			};
+		case ASSET_ACTION_TYPES.WILD_CARD:
+			return {
+				...state,
+				wildcard: action.value,
 			};
 		case ASSET_ACTION_TYPES.RETAILER:
 			return {
