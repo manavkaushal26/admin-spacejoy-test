@@ -83,11 +83,15 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 									<Row justify='center' gutter={[4, 4]}>
 										<Col>
 											<a
-												href={`${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`}
-												rel='noopener noreferrer'
-												target='_blank'
+												{...(isImage
+													? {
+															href: `${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`,
+															rel: "noopener noreferrer",
+															target: "_blank",
+													  }
+													: {})}
 											>
-												{isImage ? <Image src={file.cdn} width='150px' /> : file.cdn}
+												{isImage ? <Image preview src={file.cdn} width='150px' /> : file.cdn}
 											</a>
 										</Col>
 										<Col span={24}>
@@ -109,11 +113,6 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 			);
 		}
 		default:
-			return (
-				<Col>
-					<Text>Unknown Error</Text>
-				</Col>
-			);
 	}
 };
 

@@ -4,11 +4,12 @@ import { QuizDiscussion } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
-import { getValueSafely } from "@utils/commonUtils";
+import { getValueSafely, stringToUrl } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { getLocalStorageValue } from "@utils/storageUtils";
 import { Button, Card, Col, Comment, List, notification, Row, Typography, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
+import parse from "html-react-parser";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 
@@ -59,7 +60,7 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 									: []
 							}
 							author={`${item.user?.profile?.firstName}`}
-							content={item.comments}
+							content={parse(stringToUrl(item.comments))}
 							datetime={moment(item.createdAt).fromNow()}
 						/>
 					</li>
