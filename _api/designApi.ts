@@ -38,7 +38,7 @@ export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "s
 	assetId,
 	filetype = Model3DFiles.Glb
 ) => {
-	return `${page.apiBaseUrl}/v1/assets/${assetId}/3d-file?fileType=${filetype}`;
+	return `${page.apiBaseUrl}/v1/products/${assetId}/3d-file?fileType=${filetype}`;
 };
 
 export const uploadAssetImageApi: (assetId: string) => string = assetId => {
@@ -50,7 +50,7 @@ export const deleteUploadedImageApi = (designId: string, imageId: string): strin
 };
 
 export const getSingleAssetApi: (assetId: string) => string = assetId => {
-	return `/asset/${assetId}`;
+	return `/v1/products/${assetId}`;
 };
 
 export const getMoodboardApi: (designId: string, assetEntryId?: string) => string = (designId, assetEntryId) => {
