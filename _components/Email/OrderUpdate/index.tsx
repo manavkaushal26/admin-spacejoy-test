@@ -32,12 +32,16 @@ const OrderUpdate: React.FC<OrderUpdate> = ({
 	const unconfirmedProducts = selectedProducts.filter(
 		item =>
 			item.status === OrderItemStatuses.pending ||
-			item.status === OrderItemStatuses.cancellationApproved ||
-			item.status === OrderItemStatuses.cancellationInitiated ||
-			item.status === OrderItemStatuses.cancellationDeclined ||
 			item.status === OrderItemStatuses.returnApproved ||
 			item.status === OrderItemStatuses.returnDeclined ||
 			item.status === OrderItemStatuses.returnInitiated
+	);
+
+	const cancelledProducts = selectedProducts.filter(
+		item =>
+			item.status === OrderItemStatuses.cancellationApproved ||
+			item.status === OrderItemStatuses.cancellationInitiated ||
+			item.status === OrderItemStatuses.cancellationDeclined
 	);
 
 	return (
@@ -168,15 +172,75 @@ const OrderUpdate: React.FC<OrderUpdate> = ({
 																			<br />
 																			<span>Status: {item.status}</span>
 																			<br />
+																			{item.return && (
+																				<span>
+																					Reason:
+																					{item.return ? (
+																						item.return.reason
+																					) : item.comments.length ? (
+																						item.comments[0].quote
+																					) : (
+																						<></>
+																					)}
+																				</span>
+																			)}
+																		</td>
+																		<td width='20%'>Qty: {item.quantity}</td>
+																	</tr>
+																);
+															})}
+														</tbody>
+													</table>
+													<hr className='hr-full' style={{ marginBottom: "10px" }} />
+													<br />
+												</td>
+											</tr>
+										)}
+										{cancelledProducts.length !== 0 && (
+											<tr>
+												<td>
+													<p>
+														The following items from your order are <strong>cancelled or are out of stock.</strong> When
+														you place an order on Spacejoy, we execute a back to back order with the retailer. In
+														certain cases, the product goes out of stock before our order is registered or it may get
+														cancelled on the retailers end. We apologize for the inconvenience.
+													</p>
+													<hr className='hr-full' style={{ marginTop: "0" }} />
+													<br />
+													<table
+														className='order-tables products'
+														width='100%'
+														style={{ borderCollapse: "collapse" }}
+														cellSpacing='0'
+														cellPadding='2'
+													>
+														<tbody className='right-align'>
+															{cancelledProducts.map(item => {
+																return (
+																	<tr key={item._id}>
+																		<td width='20%'>
+																			<a href={`https://www.spacejoy.com/product-view/${item._id}`}>
+																				<Image src={item.product.cdn} width='64' height='64' alt='' />
+																			</a>
+																		</td>
+																		<td width='60%' align='left'>
 																			<span>
-																				Reason:{" "}
+																				<strong>{item.product.name}</strong>
+																			</span>
+																			<br />
+																			<span>Price: ${item.price}</span>
+																			<br />
+																			<span>Status: {item.status}</span>
+																			<br />
+																			<span>
+																				Reason:
 																				{item.cancellation ? (
 																					item.cancellation.reason
 																				) : item.comments.length ? (
 																					item.comments[0].quote
 																				) : (
 																					<></>
-																				)}{" "}
+																				)}
 																			</span>
 																		</td>
 																		<td width='20%'>Qty: {item.quantity}</td>
@@ -190,91 +254,6 @@ const OrderUpdate: React.FC<OrderUpdate> = ({
 												</td>
 											</tr>
 										)}
-										<tr>
-											<td>
-												<p className='heading'>
-													<strong>Billing Summary </strong>{" "}
-												</p>
-												<div
-													className=''
-													style={{
-														display: "inline-block",
-														width: "38%",
-														verticalAlign: "top",
-													}}
-												>
-													<p>
-														<strong>Billing Address:</strong>
-														<br />
-														{address}
-														<br />
-													</p>
-												</div>
-												<div className='' style={{ display: "inline-block", width: "58%" }}>
-													<table className='bill-summary' width='100%' cellSpacing='0'>
-														<tr>
-															<td width='60%'>Estimated Product Total:</td>
-															<td>${productTotal}</td>
-														</tr>
-														<tr>
-															<td width='60%'>Estimated Shipping:</td>
-															<td>${shippingCharge}</td>
-														</tr>
-														<tr>
-															<td width='60%'>
-																Estimated Tax:
-																<br />
-															</td>
-															<td>${tax}</td>
-														</tr>
-														<tr>
-															<td width='60%' style={{ paddingTop: "10px" }}>
-																<strong>Estimated Sub Total:</strong>
-															</td>
-															<td style={{ paddingTop: "10px" }}>
-																<strong> ${subTotal}</strong>
-															</td>
-														</tr>
-														<tr>
-															<td width='60%'>
-																<strong>Discount:</strong>
-															</td>
-															<td>
-																<strong> ${discount}</strong>
-															</td>
-														</tr>
-														<tr>
-															<td width='60%'>
-																<strong>Estimated Total:</strong>
-															</td>
-															<td>
-																<strong> ${amount}</strong>
-															</td>
-														</tr>
-													</table>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<p>
-													What’s next? Your designer will reach out to you with handpicked alternatives that are within
-													your budget and fit perfectly in your design.
-												</p>
-												<p>
-													If you have additional questions for us please write to
-													<a
-														style={{ color: "#f5296e", textDecoration: "none" }}
-														href='mailto:hello@spacejoy.com'
-														target='_blank'
-														rel='noopener noreferrer'
-													>
-														hello@spacejoy.com
-													</a>
-													and we’ll be with you right away.
-												</p>
-											</td>
-										</tr>
 									</table>
 								</td>
 								<td className='right-align' style={{ verticalAlign: "top" }}>

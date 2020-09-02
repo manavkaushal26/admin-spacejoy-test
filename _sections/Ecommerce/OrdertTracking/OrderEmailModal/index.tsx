@@ -53,7 +53,7 @@ const OrderEmailModal: React.FC<OrderEmailModal> = ({ open, onClose, orderId, or
 				method: "POST",
 				body: {
 					type: formData.type,
-					...{ ...(formData.type !== "confirmed" ? { selectedItems: reducedOrderItems } : {}) },
+					selectedItems: reducedOrderItems,
 				},
 			});
 			if (response.data === "success") {
