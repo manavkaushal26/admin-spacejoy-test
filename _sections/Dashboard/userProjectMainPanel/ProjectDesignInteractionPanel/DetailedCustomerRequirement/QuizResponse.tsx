@@ -83,7 +83,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 									<Row justify='center' gutter={[4, 4]}>
 										<Col>
 											<a
-												{...(isImage
+												{...(!isImage
 													? {
 															href: `${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`,
 															rel: "noopener noreferrer",
