@@ -42,7 +42,7 @@ export const uploadAssetModelApi: (assetId: string, filetype?: Model3DFiles | "s
 };
 
 export const uploadAssetImageApi: (assetId: string) => string = assetId => {
-	return `${page.apiBaseUrl}/admin/asset/${assetId}/image`;
+	return `${page.apiBaseUrl}/admin/products/${assetId}/image`;
 };
 
 export const deleteUploadedImageApi = (designId: string, imageId: string): string => {
