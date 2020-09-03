@@ -6,7 +6,9 @@ import {
 	DragOutlined,
 	EditOutlined,
 	FileImageOutlined,
+	HeatMapOutlined,
 	LinkOutlined,
+	RedoOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
 import { getSingleAssetApi } from "@api/designApi";
@@ -16,6 +18,7 @@ import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
+import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import { Button, Col, message, notification, Popconfirm, Result, Row, Skeleton, Typography } from "antd";
 import moment from "moment";
@@ -88,6 +91,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		moodboard,
 		assetEntryId,
 	]);
+
+	const { scrapedData, triggerScraping, scraping } = useScraper(selectedAssetId, [selectedAssetId], true);
 
 	const [historyOpen, setHistoryOpen] = useState(false);
 
@@ -199,12 +204,12 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 					/>
 				)}
 				{selectedAssetData && (
-					<Row gutter={[0, 10]}>
+					<Row gutter={[8, 8]}>
 						{pathToFile && (
 							<Col span={24}>
-								<Row justify='center' gutter={[0, 10]}>
+								<Row justify='center' gutter={[8, 8]}>
 									<Col span={24}>
-										<Row gutter={[10, 0]}>
+										<Row gutter={[8, 8]}>
 											<Col>
 												<CodeSandboxOutlined />
 											</Col>
@@ -221,9 +226,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						)}
 
 						<Col span={24}>
-							<Row justify='center' gutter={[0, 10]}>
+							<Row justify='center' gutter={[8, 8]}>
 								<Col span={24}>
-									<Row gutter={[10, 0]}>
+									<Row gutter={[8, 8]}>
 										<Col>
 											<FileImageOutlined />
 										</Col>
@@ -252,7 +257,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						<Col span={24}>
 							<Row align='middle' justify='space-between'>
 								<Col>
-									<Row gutter={[10, 0]}>
+									<Row gutter={[8, 8]}>
 										<Col>
 											<DollarCircleFilled />
 										</Col>
@@ -263,7 +268,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								</Col>
 
 								<Col>
-									<Row gutter={[10, 0]}>
+									<Row gutter={[8, 8]}>
 										<Col>
 											<LinkOutlined />
 										</Col>
@@ -296,9 +301,90 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
-							<Row gutter={[0, 10]}>
+							<Row gutter={[8, 8]} justify='space-between'>
 								<Col span={24}>
-									<Row gutter={[10, 0]}>
+									<Row justify='space-between' align='top'>
+										<Col>
+											<Row gutter={[8, 8]}>
+												<Col>
+													<HeatMapOutlined />
+												</Col>
+												<Col>
+													<Text type='secondary'>Scraped data</Text>
+												</Col>
+											</Row>
+										</Col>
+										<Col>
+											<Button
+												size='small'
+												type='link'
+												onClick={triggerScraping}
+												icon={<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />}
+											>
+												{scrapedData ? "Refetch Data" : "Fetch Data"}
+											</Button>
+										</Col>
+									</Row>
+								</Col>
+								<Col span={24}>
+									<Row gutter={[8, 8]}>
+										<Col>
+											<Text strong>Current Price:</Text>
+										</Col>
+										<Col>
+											<Text>
+												{scrapedData ? (
+													scrapedData[selectedAssetData?._id] ? (
+														scrapedData[selectedAssetData?._id]?.scrape?.price ? (
+															<>${scrapedData[selectedAssetData?._id]?.scrape?.price}</>
+														) : (
+															<>${scrapedData[selectedAssetData?._id]?.scrape?.prices?.join("-")}</>
+														)
+													) : (
+														"-"
+													)
+												) : (
+													"Not Scraped Yet"
+												)}
+											</Text>
+										</Col>
+									</Row>
+								</Col>
+								<Col>
+									<Row gutter={[8, 8]}>
+										<Col>
+											<Text strong>Availability</Text>:
+										</Col>
+
+										<Col>
+											<Text>
+												{scrapedData ? (
+													scrapedData[selectedAssetData?._id] ? (
+														scrapedData[selectedAssetData?._id]?.scrape?.available ? (
+															<>Available</>
+														) : (
+															<>Out Of Stock</>
+														)
+													) : (
+														"-"
+													)
+												) : (
+													"Not Scraped Yet"
+												)}
+											</Text>
+										</Col>
+									</Row>
+								</Col>
+							</Row>
+						</Col>
+
+						<Col span={24}>
+							<SilentDivider />
+						</Col>
+						<Col span={24}>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<Row gutter={[8, 8]}>
 										<Col>
 											<AlignLeftOutlined />
 										</Col>
@@ -316,9 +402,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
-							<Row gutter={[0, 10]}>
+							<Row gutter={[8, 8]}>
 								<Col>
-									<Row gutter={[10, 0]}>
+									<Row gutter={[8, 8]}>
 										<Col>
 											<DragOutlined />
 										</Col>
@@ -379,7 +465,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									</Row>
 								</Col>
 								<Col>
-									<Row gutter={[0, 10]}>
+									<Row gutter={[8, 8]}>
 										<Col span={24}>
 											<Text strong>Category: </Text>
 											<CapitalizedText>
@@ -436,7 +522,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 									</Row>
 								</Col>
 								<Col span={24}>
-									<Row gutter={[0, 10]}>
+									<Row gutter={[8, 8]}>
 										<Col span={24}>
 											<Text strong>Created by: </Text>
 											<CapitalizedText>
@@ -471,7 +557,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 						</Col>
 						{designId && (
 							<Col span={24}>
-								<Row gutter={[0, 10]}>
+								<Row gutter={[8, 8]}>
 									{assetInMoodboard && (
 										<Col>
 											<Popconfirm title='Are you sure?' onConfirm={onRemoveClick} okText='Yes' cancelText='Cancel'>

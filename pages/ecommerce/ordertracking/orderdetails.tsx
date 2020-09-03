@@ -1,8 +1,6 @@
 import { ArrowLeftOutlined, RedoOutlined } from "@ant-design/icons";
 import { getOrderApi } from "@api/ecommerceApi";
-import { scrapeAssetById } from "@api/scraperApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
-import { ScrapedAssetType } from "@customTypes/moodboardTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import CommentsList from "@sections/Ecommerce/OrdertTracking/CommentsList";
 import OrderEditDrawer from "@sections/Ecommerce/OrdertTracking/OrderEditDrawer";
@@ -12,9 +10,8 @@ import OrderItemTable from "@sections/Ecommerce/OrdertTracking/OrderItemTable";
 import PaymentsDrawer from "@sections/Ecommerce/OrdertTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
-import { getValueSafely } from "@utils/commonUtils";
-import { company, page } from "@utils/config";
-import { useLocalStorage } from "@utils/customHooks/useLocalStorage";
+import { company } from "@utils/config";
+import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
@@ -25,7 +22,6 @@ import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
-import useWebSocket from "react-use-websocket";
 
 const { Text, Link, Title } = Typography;
 
@@ -35,11 +31,6 @@ interface OrderTracking {
 	orderData?: EcommOrder;
 }
 
-const returnSocketId = (lastMessage: MessageEvent) => {
-	if (lastMessage.data.includes("42")) return getValueSafely(() => JSON.parse(lastMessage.data.replace("42", "")), "");
-	return [];
-};
-
 const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderData }) => {
 	const [order, setOrder] = useState<EcommOrder>(orderData);
 	const [orderItem, setOrderItem] = useState<OrderItems>();
@@ -48,12 +39,17 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	const [editOrder, setEditOrder] = useState<boolean>(false);
 	const [paymentDrawerOpen, setPaymentDrawerOpen] = useState<boolean>(false);
 	const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
-	const [requestId, setRequestId] = useState("");
-	const [scrapedData, setScrapedData] = useLocalStorage<Record<string, ScrapedAssetType>>(orderId, null);
-	const [scraping, setScraping] = useState<boolean>(false);
-	const [scrapeURL, setScrapeURL] = useState(null);
+
+	const { scrapedData, error: scrapingError, scraping, triggerScraping } = useScraper(
+		orderId,
+		order?.orderItems.map(item => item?.product?._id)
+	);
+
+	useEffect(() => {
+		scrapingError;
+	}, [scrapingError]);
+
 	const Router = useRouter();
-	const { lastMessage } = useWebSocket(scrapeURL);
 
 	useEffect(() => {
 		if (order && orderItemId) {
@@ -85,57 +81,6 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 			notification.error({ message: "Failed to fetch order" });
 		}
 		setLoading(false);
-	};
-
-	const fetchCurrentDataForAssets = async () => {
-		setScraping(true);
-		const assetIds = order?.orderItems.map(orderItem => {
-			return orderItem?.product?._id;
-		});
-
-		const endPoint = scrapeAssetById();
-		try {
-			if (assetIds.length) {
-				const response = await fetcher({ endPoint, method: "POST", body: { ids: assetIds, requestId } });
-				if (response.statusCode <= 300) {
-					notification.info({ message: "Scraping products data. This might take a while" });
-				} else {
-					throw new Error();
-				}
-			}
-		} catch (e) {
-			notification.error({ message: "Failed to get scraped data" });
-			setScraping(false);
-		}
-	};
-
-	useEffect(() => {
-		try {
-			if (!!order && !!order?.orderItems && !!lastMessage && scrapeURL !== "") {
-				const [event, data] = returnSocketId(lastMessage);
-				if (event === "OAuthCrossLogin.CONNECTION") {
-					setRequestId(prevState => data?.id || prevState);
-				} else if (event === "Scrape:Response") {
-					setScrapedData(data);
-					setScrapeURL(null);
-					setScraping(false);
-				} else if (event === "Scrape:Error") {
-					setScraping(false);
-				}
-			}
-		} catch (e) {
-			setScrapeURL(null);
-
-			notification.error({ message: "Scraping Socket Error" });
-		}
-	}, [order, lastMessage]);
-
-	useEffect(() => {
-		if (requestId) fetchCurrentDataForAssets();
-	}, [requestId]);
-
-	const triggerScraping = () => {
-		setScrapeURL(page.WssUrl);
 	};
 
 	const toggleOrderItemDrawer = (orderItemToSet?: OrderItems) => {
