@@ -1,5 +1,5 @@
-import { Role } from "@customTypes/userType";
 import { MountTypes } from "@customTypes/assetInfoTypes";
+import { Role } from "@customTypes/userType";
 
 export const allowedRoles = [
 	Role.Admin,
@@ -10,6 +10,8 @@ export const allowedRoles = [
 	Role.BlogAuthor,
 	Role.BlogAdmin,
 	Role.seoTeam,
+	Role.Analyst,
+	Role["Senior 3D Artist"],
 ];
 
 export const AvatarColorsList = [

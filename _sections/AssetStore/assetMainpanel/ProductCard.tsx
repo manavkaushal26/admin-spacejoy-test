@@ -1,9 +1,9 @@
 import { DollarCircleFilled, LinkOutlined } from "@ant-design/icons";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
-import { AssetType } from "@customTypes/moodboardTypes";
+import { AssetType, ScrapedAssetType } from "@customTypes/moodboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
-import { Col, Row, Typography } from "antd";
+import { Col, Row, Tooltip, Typography } from "antd";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { AssetCard } from "../styled";
@@ -19,6 +19,7 @@ interface AssetCards {
 	width?: string;
 	verticalMap?: Record<string, string>;
 	actions?: ReactNode[];
+	scrapedData?: ScrapedAssetType;
 }
 
 const CardPadding = styled.div`
@@ -32,12 +33,45 @@ const ImageContainer = styled.div`
 	align-items: center;
 `;
 
+const PriceData = ({ scrapedData }: { scrapedData: ScrapedAssetType }) => {
+	if (scrapedData?.scrape?.available) {
+		if (scrapedData?.scrape?.price) {
+			return <> ${scrapedData?.scrape?.price}</>;
+		} else if (scrapedData?.scrape?.prices) {
+			return <> ${scrapedData?.scrape?.prices?.join("-")}</>;
+		}
+	} else {
+		return (
+			<Tooltip title='No Information'>
+				<span>-</span>
+			</Tooltip>
+		);
+	}
+};
+
+const Availability = ({ scrapedData }: { scrapedData: ScrapedAssetType }) => {
+	if (scrapedData?.scrape) {
+		if (scrapedData.scrape?.available) {
+			return <>Available</>;
+		} else {
+			return <>Out Of Stock</>;
+		}
+	} else {
+		return (
+			<Tooltip title='No Information'>
+				<span>-</span>
+			</Tooltip>
+		);
+	}
+};
+
 const ProductCard: (props: AssetCards) => JSX.Element = ({
 	asset,
 	onCardClick,
 	hoverable = true,
 	noVertical,
 	actions,
+	scrapedData,
 }) => {
 	return (
 		<AssetCard
@@ -126,6 +160,27 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 							</Col>
 							<Col>
 								<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
+							</Col>
+						</Row>
+						<Row gutter={[10, 0]}>
+							<Col>
+								<Text strong>Current Price:</Text>
+							</Col>
+							<Col>
+								<Text strong>
+									<PriceData scrapedData={scrapedData} />
+								</Text>
+							</Col>
+						</Row>
+						<Row gutter={[10, 0]}>
+							<Col>
+								<Text strong>Availability:</Text>
+							</Col>
+
+							<Col>
+								<Text strong>
+									<Availability scrapedData={scrapedData} />
+								</Text>
 							</Col>
 						</Row>
 					</CardPadding>

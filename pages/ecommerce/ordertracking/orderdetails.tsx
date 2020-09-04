@@ -46,7 +46,11 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	);
 
 	useEffect(() => {
-		scrapingError;
+		if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
+	}, [scraping]);
+
+	useEffect(() => {
+		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
 	}, [scrapingError]);
 
 	const Router = useRouter();

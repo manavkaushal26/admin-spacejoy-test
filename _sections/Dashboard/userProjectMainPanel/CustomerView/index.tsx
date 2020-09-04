@@ -1,4 +1,4 @@
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { CheckOutlined, CloseOutlined, RedoOutlined } from "@ant-design/icons";
 import Card from "@components/Card";
 import Image from "@components/Image";
 import { DesignImgTypes, DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
@@ -7,12 +7,13 @@ import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
 import { getValueSafely } from "@utils/commonUtils";
 import config, { cloudinary } from "@utils/config";
-import { Button, Card as AntdCard, Col, Divider, Row, Typography } from "antd";
-import React, { useMemo } from "react";
+import { useScraper } from "@utils/customHooks/useScraper";
+import { Button, Card as AntdCard, Col, Divider, notification, Row, Typography } from "antd";
+import React, { useEffect, useMemo } from "react";
 import ReactPannellum from "react-pannellum";
 import styled from "styled-components";
 
-const { Text } = Typography;
+const { Text, Title } = Typography;
 interface CustomerView {
 	designData: DetailedDesign;
 	projectName: string;
@@ -35,9 +36,10 @@ const PannellumOptions = {
 		uiText: {
 			loadButtonLabel: "Start",
 		},
-		hfov: 70,
+		hfov: 60,
 	},
 };
+
 const PackageDetails: React.FC<{
 	items: string;
 }> = ({ items }) => {
@@ -85,6 +87,21 @@ const PackageDetails: React.FC<{
 const CustomerView: React.FC<CustomerView> = ({ designData, projectName, projectData }) => {
 	const pannelumImage = designData.designImages.find(image => image.imgType === DesignImgTypes.Panorama);
 	const { order } = projectData;
+	const { scrapedData, scraping, triggerScraping, error: scrapingError } = useScraper(
+		designData._id,
+		designData?.assets?.map(asset => asset?.asset?._id)
+	);
+
+	const nonBillableAssets = useMemo(() => designData.assets.filter(asset => !asset.billable), [designData?.assets]);
+
+	useEffect(() => {
+		if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
+	}, [scraping]);
+
+	useEffect(() => {
+		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
+	}, [scrapingError]);
+
 	const items = useMemo(
 		() =>
 			order.items
@@ -168,9 +185,26 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 				</AntdCard>
 			</Col>
 			<Col span={24}>
-				<Row>
+				<Divider />
+			</Col>
+			<Col span={24}>
+				<Row gutter={[8, 16]}>
 					<Col span={24}>
-						<Divider>Your Shopping List</Divider>
+						<Row justify='space-between'>
+							<Col>
+								<Title level={4}>Shopping List</Title>
+							</Col>
+							<Col>
+								<Button
+									size='small'
+									type='link'
+									onClick={triggerScraping}
+									icon={<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />}
+								>
+									{scrapedData ? "Refetch Data" : "Fetch Data"}
+								</Button>
+							</Col>
+						</Row>
 					</Col>
 					<Col span={24}>
 						<Row gutter={[8, 8]}>
@@ -178,7 +212,14 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 								if (asset.billable) {
 									return (
 										<Col sm={12} md={8} lg={6} key={asset._id}>
-											<ProductCard hoverable={false} asset={asset?.asset} noVertical />
+											<ProductCard
+												{...(scrapedData && scrapedData[asset?.asset?._id]
+													? { scrapedData: scrapedData[asset?.asset?._id] }
+													: {})}
+												hoverable={false}
+												asset={asset?.asset}
+												noVertical
+											/>
 										</Col>
 									);
 								}
@@ -189,27 +230,29 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 				</Row>
 			</Col>
 
-			<Col span={24}>
-				<Row>
-					<Col span={24}>
-						<Divider>Non Billable Assets (Designer&apos;s use)</Divider>
-					</Col>
-					<Col span={24}>
-						<Row gutter={[8, 8]}>
-							{designData.assets.map(asset => {
-								if (!asset.billable) {
-									return (
-										<Col sm={12} md={8} lg={6} key={asset._id}>
-											<ProductCard hoverable={false} asset={asset?.asset} noVertical />
-										</Col>
-									);
-								}
-								return <></>;
-							})}
-						</Row>
-					</Col>
-				</Row>
-			</Col>
+			{nonBillableAssets.length > 0 && (
+				<Col span={24}>
+					<Row gutter={[0, 16]}>
+						<Col span={24}>
+							<Title level={4}>Non-Billable Assets</Title>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[8, 8]}>
+								{nonBillableAssets.map(asset => {
+									if (!asset.billable) {
+										return (
+											<Col sm={12} md={8} lg={6} key={asset._id}>
+												<ProductCard hoverable={false} asset={asset?.asset} noVertical />
+											</Col>
+										);
+									}
+									return <></>;
+								})}
+							</Row>
+						</Col>
+					</Row>
+				</Col>
+			)}
 		</Row>
 	);
 };

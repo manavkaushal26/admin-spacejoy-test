@@ -37,9 +37,7 @@ export const useScraper: useScraper = (key, assetIds, immediate) => {
 		try {
 			if (assetIds.length) {
 				const response = await fetcher({ endPoint, method: "POST", body: { ids: assetIds, requestId } });
-				if (response.statusCode <= 300) {
-					notification.info({ message: "Scraping products data. This might take a while" });
-				} else {
+				if (response.statusCode > 300) {
 					throw new Error();
 				}
 			}

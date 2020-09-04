@@ -13,6 +13,7 @@ export enum Role {
 	BlogAuthor = "blogAuthor",
 	BlogAdmin = "blogAdmin",
 	seoTeam = "seoTeam",
+	"Senior 3D Artist" = "senior3dArtist",
 }
 
 export enum ProjectRoles {
@@ -20,6 +21,7 @@ export enum ProjectRoles {
 	"Account Manager" = "account manager",
 	Administrator = "admin",
 	"3D Artist" = "3d artist",
+	"Senior 3D Artist" = "senior3dArtist",
 }
 
 export enum Status {

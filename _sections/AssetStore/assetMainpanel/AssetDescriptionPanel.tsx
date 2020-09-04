@@ -92,7 +92,19 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		assetEntryId,
 	]);
 
-	const { scrapedData, triggerScraping, scraping } = useScraper(selectedAssetId, [selectedAssetId], true);
+	const { scrapedData, triggerScraping, scraping, error: scrapingError } = useScraper(
+		selectedAssetId,
+		[selectedAssetId],
+		true
+	);
+
+	useEffect(() => {
+		if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
+	}, [scraping]);
+
+	useEffect(() => {
+		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
+	}, [scrapingError]);
 
 	const [historyOpen, setHistoryOpen] = useState(false);
 
