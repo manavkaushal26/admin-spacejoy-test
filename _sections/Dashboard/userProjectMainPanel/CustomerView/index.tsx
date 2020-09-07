@@ -86,7 +86,6 @@ const PackageDetails: React.FC<{
 
 const CustomerView: React.FC<CustomerView> = ({ designData, projectName, projectData }) => {
 	const pannelumImage = designData.designImages.find(image => image.imgType === DesignImgTypes.Panorama);
-	const { order } = projectData;
 	const { scrapedData, scraping, triggerScraping, error: scrapingError } = useScraper(
 		designData._id,
 		designData?.assets?.map(asset => asset?.asset?._id)
@@ -101,10 +100,10 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 	useEffect(() => {
 		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
 	}, [scrapingError]);
-
+	const { order } = projectData;
 	const items = useMemo(
 		() =>
-			order.items
+			order?.items
 				.map(item => {
 					return getValueSafely(() => item.name, "");
 				})
@@ -160,8 +159,8 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 					/>
 				</Col>
 			) : (
-				<></>
-			)}
+					<></>
+				)}
 			<Col span={24}>
 				<SectionHeader size={0} hgroup={3} mini title={designData.name} description={projectName} />
 			</Col>
