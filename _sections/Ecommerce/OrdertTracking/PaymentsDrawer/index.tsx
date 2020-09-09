@@ -97,7 +97,7 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 				body: {
 					orderId,
 					paymentId,
-					...data,
+					...{ ...(data.amount === originalAmount ? {} : data) },
 				},
 			});
 			if (response.statusCode < 300) {
@@ -195,9 +195,9 @@ const PaymentsDrawer: React.FC<PaymentsDrawer> = ({ orderId, open, toggleDrawer,
 							<Table.Column
 								title='Expires'
 								render={(_, record: OrderPayments) => {
-									const createdAt = moment(record.createdAt);
+									const createdAt = moment.utc(record.createdAt);
 									const endDate = createdAt.clone().add(7, "days");
-									const duration = moment.duration(endDate.diff(moment())).asDays();
+									const duration = moment.duration(endDate.diff(moment.utc())).asDays();
 
 									return (
 										<Text type={duration <= 3 && !record.capture ? "danger" : undefined}>{endDate.fromNow()}</Text>

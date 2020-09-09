@@ -18,6 +18,8 @@ import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
+import AssetAvailability from "@utils/componentUtils/AssetAvailable";
+import PriceData from "@utils/componentUtils/AssetPrice";
 import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import { Button, Col, message, notification, Popconfirm, Result, Row, Skeleton, Typography } from "antd";
@@ -346,15 +348,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										<Col>
 											<Text>
 												{scrapedData ? (
-													scrapedData[selectedAssetData?._id] ? (
-														scrapedData[selectedAssetData?._id]?.scrape?.price ? (
-															<>${scrapedData[selectedAssetData?._id]?.scrape?.price}</>
-														) : (
-															<>${scrapedData[selectedAssetData?._id]?.scrape?.prices?.join("-")}</>
-														)
-													) : (
-														"-"
-													)
+													<PriceData scrapedData={scrapedData[selectedAssetData?._id]} />
 												) : (
 													"Not Scraped Yet"
 												)}
@@ -371,15 +365,7 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										<Col>
 											<Text>
 												{scrapedData ? (
-													scrapedData[selectedAssetData?._id] ? (
-														scrapedData[selectedAssetData?._id]?.scrape?.available ? (
-															<>Available</>
-														) : (
-															<>Out Of Stock</>
-														)
-													) : (
-														"-"
-													)
+													<AssetAvailability scrapedData={scrapedData[selectedAssetData?._id]} />
 												) : (
 													"Not Scraped Yet"
 												)}

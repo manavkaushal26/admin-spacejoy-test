@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable no-param-reassign */
 import { CloseOutlined, LoadingOutlined } from "@ant-design/icons";
 import { OrbitControls } from "@utils/OrbitControls";
 import React, { useEffect, useRef, useState } from "react";

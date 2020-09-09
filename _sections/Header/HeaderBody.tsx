@@ -30,88 +30,84 @@ const HeaderBody: React.FC<HeaderBody> = ({ pageName }) => {
 	const Router = useRouter();
 	return (
 		<PaddedDiv>
-			<Row style={{ height: "62px" }}>
-				<MobileHiddenStyled>
-					<Row justify='space-around' align='middle'>
-						<Col span={8}>
-							<ActiveLink href='/launchpad' as='/launchpad'>
-								<Row align='middle' gutter={[4, 0]}>
-									<Col>
-										<Logo md />
-									</Col>
-									{pageName && (
-										<>
-											<Col>
-												<Text type='secondary'>|</Text>
-											</Col>
-											<Col>
-												<Text type='secondary'>{pageName}</Text>
-											</Col>
-										</>
-									)}
-								</Row>
-							</ActiveLink>
-						</Col>
-						<Col span={16}>
-							<Row justify='end' gutter={[32, 0]}>
-								<Col>{navCenter(authVerification, Router.pathname)}</Col>
+			<MobileHiddenStyled>
+				<Row justify='space-around' align='middle'>
+					<Col span={8}>
+						<ActiveLink href='/launchpad' as='/launchpad'>
+							<Row align='middle' gutter={[4, 0]}>
 								<Col>
-									<NavRight authVerification={authVerification} logout={logout} />
+									<Logo md />
 								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</MobileHiddenStyled>
-			</Row>
-			<Row>
-				<Col span={24}>
-					<MobileVisibleStyled>
-						<Row justify='space-around'>
-							<Col span={20}>
-								<ActiveLink href='/launchpad' as='/launchpad'>
-									<Row align='middle' gutter={[4, 0]}>
+								{pageName && (
+									<>
 										<Col>
-											<Logo md />
+											<Text type='secondary'>|</Text>
 										</Col>
-										{pageName && (
-											<>
-												<Col>
-													<Text type='secondary'>|</Text>
-												</Col>
-												<Col>
-													<Text type='secondary'>{pageName}</Text>
-												</Col>
-											</>
-										)}
-									</Row>
-								</ActiveLink>
-							</Col>
-							<Col span={4}>
-								<Row justify='end'>
-									<HorizontalListStyled align='right'>
-										<PaddedButton variant='clean' size='xs' fill='clean' onClick={handleClick}>
-											<SVGIcon name='menu' width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
-										</PaddedButton>
-									</HorizontalListStyled>
-								</Row>
+										<Col>
+											<Text type='secondary'>{pageName}</Text>
+										</Col>
+									</>
+								)}
+							</Row>
+						</ActiveLink>
+					</Col>
+					<Col span={16}>
+						<Row justify='end' gutter={[32, 0]}>
+							<Col>{navCenter(authVerification, Router.pathname)}</Col>
+							<Col>
+								<NavRight authVerification={authVerification} logout={logout} />
 							</Col>
 						</Row>
-					</MobileVisibleStyled>
-				</Col>
-				<MobileNavVisibleStyled className={`${mobileNavStatus ? "active" : ""}`}>
-					<Row>
-						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
-							{navCenter(authVerification, Router.pathname)}
-						</Col>
-						<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
-							<NavRight authVerification={authVerification} logout={logout} />
-						</Col>
-					</Row>
-				</MobileNavVisibleStyled>
-
-				<Row>
-					<OverlayStyled className={mobileNavStatus ? "active" : ""} onClick={handleClick} />
+					</Col>
 				</Row>
+			</MobileHiddenStyled>
+
+			<MobileVisibleStyled>
+				<Row justify='space-around'>
+					<Col span={20}>
+						<ActiveLink href='/launchpad' as='/launchpad'>
+							<Row align='middle' gutter={[4, 0]}>
+								<Col>
+									<Logo md />
+								</Col>
+								{pageName && (
+									<>
+										<Col>
+											<Text type='secondary'>|</Text>
+										</Col>
+										<Col>
+											<Text type='secondary'>{pageName}</Text>
+										</Col>
+									</>
+								)}
+							</Row>
+						</ActiveLink>
+					</Col>
+					<Col span={4}>
+						<Row justify='end'>
+							<HorizontalListStyled align='right'>
+								<PaddedButton variant='clean' size='xs' fill='clean' onClick={handleClick}>
+									<SVGIcon name='menu' width={20} height={20} fill={mobileNavStatus ? "#e84393" : ""} />
+								</PaddedButton>
+							</HorizontalListStyled>
+						</Row>
+					</Col>
+				</Row>
+			</MobileVisibleStyled>
+
+			<MobileNavVisibleStyled className={`${mobileNavStatus ? "active" : ""}`}>
+				<Row>
+					<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
+						{navCenter(authVerification, Router.pathname)}
+					</Col>
+					<Col span={24} className={`${mobileNavStatus ? "active" : ""}`}>
+						<NavRight authVerification={authVerification} logout={logout} />
+					</Col>
+				</Row>
+			</MobileNavVisibleStyled>
+
+			<Row>
+				<OverlayStyled className={mobileNavStatus ? "active" : ""} onClick={handleClick} />
 			</Row>
 		</PaddedDiv>
 	);

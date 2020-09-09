@@ -403,8 +403,8 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 									<Descriptions.Item label='Payment Id'>
 										<Text strong>{order?.payment}</Text>
 									</Descriptions.Item>
-									<Descriptions.Item label='Created At'>
-										<Text strong>{moment(order?.createdAt).format("MM-DD-YYYY")}</Text>
+									<Descriptions.Item label='Created At (UTC)'>
+										<Text strong>{moment.utc(order?.createdAt).format("MM-DD-YYYY")}</Text>
 									</Descriptions.Item>
 
 									<Descriptions.Item label='Address'>

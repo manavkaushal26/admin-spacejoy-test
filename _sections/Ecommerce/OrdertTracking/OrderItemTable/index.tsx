@@ -2,6 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
 import { ScrapedAssetType } from "@customTypes/moodboardTypes";
+import PriceData from "@utils/componentUtils/AssetPrice";
 import { company } from "@utils/config";
 import { Button, Col, Input, Row, Table, Tooltip, Typography } from "antd";
 import React, { useState } from "react";
@@ -16,11 +17,28 @@ interface OrderItemTable {
 	scrapedData?: Record<string, ScrapedAssetType>;
 }
 
+const Availability = ({ scrapedData }: { scrapedData: ScrapedAssetType }) => {
+	if (scrapedData?.scrape) {
+		if (scrapedData.scrape?.available) {
+			return <>Available</>;
+		} else {
+			return <>Out Of Stock</>;
+		}
+	} else {
+		return (
+			<Tooltip title='Not Available'>
+				<span>N/A</span>
+			</Tooltip>
+		);
+	}
+};
+
 const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemDrawer, orderId, scrapedData }) => {
 	const [searchText, setSearchText] = useState("");
 	const [singleScrapedData, setSingleScrapedData] = useState<ScrapedAssetType>(undefined);
 	const [modalVisible, setModalVisible] = useState<boolean>(false);
 	const [assetName, setAssetName] = useState<string>("");
+
 	const toggleModal = (data?: ScrapedAssetType, name?: string) => {
 		setModalVisible(!!data);
 		setAssetName(name);
@@ -108,19 +126,7 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 						key='_id'
 						title='Retailer Price'
 						render={(_, record: OrderItems) => {
-							if (scrapedData[record?.product?._id]?.scrape?.available) {
-								if (scrapedData[record?.product?._id]?.scrape?.price) {
-									return <>${scrapedData[record?.product?._id]?.scrape?.price}</>;
-								} else if (scrapedData[record?.product?._id]?.scrape?.prices) {
-									return <>${scrapedData[record?.product?._id]?.scrape?.prices?.join("-")}</>;
-								}
-							} else {
-								return (
-									<Tooltip title='No Information'>
-										<>-</>
-									</Tooltip>
-								);
-							}
+							return <PriceData scrapedData={scrapedData[record?.product?._id]} />;
 						}}
 					/>
 				)}
@@ -143,8 +149,8 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 								return <>${priceRange}</>;
 							} else {
 								return (
-									<Tooltip title='No Information'>
-										<>-</>
+									<Tooltip title='Not Available'>
+										<>N/A</>
 									</Tooltip>
 								);
 							}
@@ -155,9 +161,7 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 					<Table.Column
 						key='_id'
 						title='Availability'
-						render={(_, record: OrderItems) => (
-							<>{scrapedData[record?.product?._id]?.scrape?.available ? "Available" : "Out of Stock"}</>
-						)}
+						render={(_, record: OrderItems) => <Availability scrapedData={scrapedData[record?.product?._id]} />}
 					/>
 				)}
 				<Table.Column

@@ -3,7 +3,9 @@ import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
 import { AssetType, ScrapedAssetType } from "@customTypes/moodboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
-import { Col, Row, Tooltip, Typography } from "antd";
+import AssetAvailability from "@utils/componentUtils/AssetAvailable";
+import PriceData from "@utils/componentUtils/AssetPrice";
+import { Col, Row, Typography } from "antd";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { AssetCard } from "../styled";
@@ -32,38 +34,6 @@ const ImageContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 `;
-
-const PriceData = ({ scrapedData }: { scrapedData: ScrapedAssetType }) => {
-	if (scrapedData?.scrape?.available) {
-		if (scrapedData?.scrape?.price) {
-			return <> ${scrapedData?.scrape?.price}</>;
-		} else if (scrapedData?.scrape?.prices) {
-			return <> ${scrapedData?.scrape?.prices?.join("-")}</>;
-		}
-	} else {
-		return (
-			<Tooltip title='No Information'>
-				<span>-</span>
-			</Tooltip>
-		);
-	}
-};
-
-const Availability = ({ scrapedData }: { scrapedData: ScrapedAssetType }) => {
-	if (scrapedData?.scrape) {
-		if (scrapedData.scrape?.available) {
-			return <>Available</>;
-		} else {
-			return <>Out Of Stock</>;
-		}
-	} else {
-		return (
-			<Tooltip title='No Information'>
-				<span>-</span>
-			</Tooltip>
-		);
-	}
-};
 
 const ProductCard: (props: AssetCards) => JSX.Element = ({
 	asset,
@@ -179,7 +149,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 
 							<Col>
 								<Text strong>
-									<Availability scrapedData={scrapedData} />
+									<AssetAvailability scrapedData={scrapedData} />
 								</Text>
 							</Col>
 						</Row>

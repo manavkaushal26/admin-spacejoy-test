@@ -44,7 +44,14 @@ const launchpadLocations: LaunchpadLocations[] = [
 		icon: <ProfileTwoTone style={{ fontSize: "3rem" }} twoToneColor='#4d2aac' />,
 		color: "#4d2aac",
 		backgroundColor: "#e3ddeb",
-		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
+		allowedRoles: [
+			Role["3D Artist"],
+			Role["Account Manager"],
+			Role.Admin,
+			Role.Designer,
+			Role.Owner,
+			Role["Senior 3D Artist"],
+		],
 	},
 	{
 		title: "Product Store",
@@ -53,7 +60,14 @@ const launchpadLocations: LaunchpadLocations[] = [
 		icon: <AppstoreTwoTone style={{ fontSize: "3rem" }} twoToneColor='#e66b8b' />,
 		color: "#e66b8b",
 		backgroundColor: "#fff0f1",
-		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
+		allowedRoles: [
+			Role["3D Artist"],
+			Role["Account Manager"],
+			Role.Admin,
+			Role.Designer,
+			Role.Owner,
+			Role["Senior 3D Artist"],
+		],
 	},
 	{
 		title: "Design Examples",
@@ -63,7 +77,15 @@ const launchpadLocations: LaunchpadLocations[] = [
 		color: "#1d39c4",
 		backgroundColor: "#f0f5ff",
 		notActive: false,
-		allowedRoles: [Role["3D Artist"], Role["Account Manager"], Role.Admin, Role.Designer, Role.Owner],
+		allowedRoles: [
+			Role["3D Artist"],
+			Role["Account Manager"],
+			Role.Admin,
+			Role.Designer,
+			Role.Owner,
+			Role["Senior 3D Artist"],
+			Role.Analyst,
+		],
 	},
 	{
 		title: "Blog Platform",
@@ -73,7 +95,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		color: "#FA8C16",
 		backgroundColor: "#FFF7E6",
 		notActive: false,
-		allowedRoles: [Role.Admin, Role.Owner, Role.BlogAuthor, Role.BlogAdmin],
+		allowedRoles: [Role.Admin, Role.Owner, Role.BlogAuthor, Role.BlogAdmin, Role.Analyst],
 	},
 	{
 		title: "Platform Manager",
@@ -82,7 +104,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		icon: <DatabaseTwoTone style={{ fontSize: "3rem" }} />,
 		backgroundColor: "#e6f7ff",
 		notActive: false,
-		allowedRoles: [Role.Admin, Role.Owner, Role.seoTeam, Role.Team],
+		allowedRoles: [Role.Admin, Role.Owner, Role.seoTeam, Role.Team, Role.Analyst],
 	},
 	{
 		title: "Ecommerce",
@@ -92,7 +114,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		color: "#fa541c",
 		backgroundColor: "#fff2e8",
 		notActive: false,
-		allowedRoles: [Role.Admin, Role.Owner],
+		allowedRoles: [Role.Admin, Role.Owner, Role.Analyst],
 	},
 ];
 
@@ -111,7 +133,7 @@ const CapitalizedTitle = styled(Title)`
 `;
 
 const GreyMaxHeightDiv = styled.div`
-	height: calc(100vh - 62px);
+	height: calc(100vh - 70px);
 	background-image: linear-gradient(to bottom, white, #fafafa);
 `;
 

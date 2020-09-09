@@ -1,7 +1,7 @@
-import { Divider, Tag, Typography, Col, Button, Input, Carousel } from "antd";
-import styled, { css, FlattenSimpleInterpolation } from "styled-components";
-import { Status } from "@customTypes/userType";
 import { PhaseInternalNames } from "@customTypes/dashboardTypes";
+import { Status } from "@customTypes/userType";
+import { Button, Carousel, Col, Divider, Input, Tag, Typography } from "antd";
+import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 
 const { Text, Paragraph } = Typography;
 
@@ -61,7 +61,7 @@ export const BiggerButtonCarousel = styled(Carousel)`
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
-	height: calc(100vh - 62px);
+	height: calc(100vh -70px);
 	overflow-y: scroll !important;
 `;
 
@@ -300,13 +300,13 @@ export const ShadowDiv = styled.div<{ active?: boolean }>`
 	background: #fafafa;
 	transition: all 0.3s;
 	${({ active }): FlattenSimpleInterpolation => {
-			return active
-				? css`
-						box-shadow: 0px 4px 32px #999ba85f;
-				  `
-				: null;
-		}}
-		:hover {
+		return active
+			? css`
+					box-shadow: 0px 4px 32px #999ba85f;
+			  `
+			: null;
+	}}
+	:hover {
 		cursor: pointer;
 		box-shadow: 0px 4px 32px #999ba85f;
 	}

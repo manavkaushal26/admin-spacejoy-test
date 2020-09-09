@@ -43,7 +43,33 @@ const PannellumOptions = {
 const PackageDetails: React.FC<{
 	items: string;
 }> = ({ items }) => {
-	if (items === "delight")
+	if (items.includes("euphoria"))
+		return (
+			<>
+				<Col>
+					<CheckOutlined style={{ color: "green" }} />
+					<Text strong> Paint Recommendations </Text>
+				</Col>
+				<Col>
+					<CheckOutlined style={{ color: "green" }} />
+					<Text strong> Window Treatment </Text>
+				</Col>
+			</>
+		);
+	if (items.includes("bliss"))
+		return (
+			<>
+				<Col>
+					<CheckOutlined style={{ color: "green" }} />
+					<Text strong> Paint Recommendations </Text>
+				</Col>
+				<Col>
+					<CloseOutlined style={{ color: "red" }} />
+					<Text strong> Window Treatment </Text>
+				</Col>
+			</>
+		);
+	if (items.includes("delight"))
 		return (
 			<>
 				<Col>
@@ -52,32 +78,6 @@ const PackageDetails: React.FC<{
 				</Col>
 				<Col>
 					<CloseOutlined style={{ color: "red" }} />
-					<Text strong> Window Treatment </Text>
-				</Col>
-			</>
-		);
-	if (items === "bliss")
-		return (
-			<>
-				<Col>
-					<CheckOutlined style={{ color: "green" }} />
-					<Text strong> Paint Recommendations </Text>
-				</Col>
-				<Col>
-					<CloseOutlined style={{ color: "red" }} />
-					<Text strong> Window Treatment </Text>
-				</Col>
-			</>
-		);
-	if (items === "euphoria")
-		return (
-			<>
-				<Col>
-					<CheckOutlined style={{ color: "green" }} />
-					<Text strong> Paint Recommendations </Text>
-				</Col>
-				<Col>
-					<CheckOutlined style={{ color: "green" }} />
 					<Text strong> Window Treatment </Text>
 				</Col>
 			</>

@@ -25,6 +25,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ isServer }) => {
 	const [orders, setOrders] = useState<EcommOrder[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [searchValues, setSearchValues] = useSessionStorage("searchOrders", {
+		name: "",
 		email: "",
 		status: "",
 	});
@@ -35,11 +36,12 @@ const OrderTracking: NextPage<OrderTracking> = ({ isServer }) => {
 	const fetchAndPopulateOrders = async () => {
 		setLoading(true);
 		const endPoint = `${searchOrdersApi()}?skip=${(pageNo - 1) * pageSize}&limit=${pageSize}`;
+		const [firstName, lastName] = searchValues.name.split(" ");
 		const response = await fetcher({
 			endPoint,
 			method: "POST",
 			body: {
-				filters: { ...searchValues },
+				filters: { ...searchValues, firstName, lastName },
 			},
 		});
 		setOrders(response.data.orders);
@@ -84,17 +86,22 @@ const OrderTracking: NextPage<OrderTracking> = ({ isServer }) => {
 											onFinish={fetchAndPopulateOrders}
 										>
 											<Row gutter={[8, 0]}>
-												<Col sm={24} md={12}>
+												<Col sm={12} md={6}>
+													<Form.Item label='Name' name='name' normalize={(value: string) => value.trim()}>
+														<Input placeholder='Name' />
+													</Form.Item>
+												</Col>
+												<Col sm={12} md={6}>
 													<Form.Item label='Email' name='email' normalize={(value: string) => value.trim()}>
 														<Input placeholder='Email' />
 													</Form.Item>
 												</Col>
-												<Col sm={24} md={6}>
+												<Col sm={12} md={6}>
 													<Form.Item label='Order Id' name='orderId' normalize={(value: string) => value.trim()}>
 														<Input placeholder='Order Id' />
 													</Form.Item>
 												</Col>
-												<Col sm={24} md={6}>
+												<Col sm={12} md={6}>
 													<Form.Item label='Status' name='status'>
 														<Select>
 															{Object.entries(EcommerceOrderStatus).map(([key, value]) => {

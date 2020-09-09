@@ -87,10 +87,10 @@ const AllOrderTable: React.FC<AllOrderTable> = ({
 			<Table.Column key='_id' title='Status' dataIndex='status' />
 			<Table.Column
 				key='_id'
-				title='Created At'
+				title='Created At (UTC)'
 				dataIndex='createdAt'
 				render={text => {
-					const formattedTime = moment(text).format("YYYY-MM-DD hh:mm");
+					const formattedTime = moment.utc(text).format("YYYY-MM-DD hh:mm a");
 					return formattedTime;
 				}}
 			/>
