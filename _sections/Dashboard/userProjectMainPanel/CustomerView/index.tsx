@@ -100,16 +100,17 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 	useEffect(() => {
 		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
 	}, [scrapingError]);
-	const { order } = projectData;
-	const items = useMemo(
-		() =>
-			order?.items
+
+	const items = useMemo(() => {
+		if (projectData?.order) {
+			return projectData?.order?.items
 				.map(item => {
 					return getValueSafely(() => item.name, "");
 				})
-				.join(","),
-		[projectData.order]
-	);
+				.join(",");
+		}
+		return "";
+	}, [projectData?.order]);
 	return (
 		<Row gutter={[4, 16]}>
 			<Col sm={24} {...(pannelumImage ? { md: 18 } : {})} style={{ marginBottom: "1rem" }}>
@@ -159,8 +160,8 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 					/>
 				</Col>
 			) : (
-					<></>
-				)}
+				<></>
+			)}
 			<Col span={24}>
 				<SectionHeader size={0} hgroup={3} mini title={designData.name} description={projectName} />
 			</Col>
@@ -176,13 +177,15 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 			<Col span={24}>
 				<Divider />
 			</Col>
-			<Col span={24}>
-				<AntdCard size='small'>
-					<Row gutter={[8, 8]} justify='space-around' align='middle'>
-						<PackageDetails items={items} />
-					</Row>
-				</AntdCard>
-			</Col>
+			{projectData && (
+				<Col span={24}>
+					<AntdCard size='small'>
+						<Row gutter={[8, 8]} justify='space-around' align='middle'>
+							<PackageDetails items={items} />
+						</Row>
+					</AntdCard>
+				</Col>
+			)}
 			<Col span={24}>
 				<Divider />
 			</Col>
