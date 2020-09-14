@@ -7,7 +7,7 @@ import {
 	HumanizeDesignPhases,
 	PhaseCustomerNames,
 	PhaseInternalNames,
-	RevisionForm
+	RevisionForm,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
@@ -225,17 +225,17 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							{...(projectData
 								? null
 								: {
-									extra: [
-										publishButtonText !== "Published" ? (
-											<Button
-												key='publish'
-												onClick={toggleEditDesignModal}
-												type='primary'
-												disabled={publishButtonDisabled}
-											>
-												{publishButtonText}
-											</Button>
-										) : (
+										extra: [
+											publishButtonText !== "Published" ? (
+												<Button
+													key='publish'
+													onClick={toggleEditDesignModal}
+													type='primary'
+													disabled={publishButtonDisabled}
+												>
+													{publishButtonText}
+												</Button>
+											) : (
 												<Popconfirm
 													title='Are you sure?'
 													key='popConfirm'
@@ -246,8 +246,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 													</Button>
 												</Popconfirm>
 											),
-									],
-								})}
+										],
+								  })}
 							onBack={(): void => onSelectDesign()}
 						/>
 					</Col>
@@ -290,7 +290,11 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							</TabPane>
 							{designData.assets.length && (
 								<TabPane tab='Customer View' key='cust_view'>
-									<CustomerView projectName={getValueSafely(() => projectData.name, "")} designData={designData} projectData={projectData} />
+									<CustomerView
+										projectName={getValueSafely(() => projectData.name, "")}
+										designData={designData}
+										projectData={projectData}
+									/>
 								</TabPane>
 							)}
 							{feedback.length && (
@@ -324,19 +328,19 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					/>
 				</Row>
 			) : (
-					<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
-						{!!projectData && (
-							<ProjectDesignInteractionPanel
-								updateRevisionData={updateRevisionData}
-								revisionFormData={revisionFormData}
-								refetchData={refetchData}
-								setProjectData={setProjectData}
-								projectData={projectData}
-								onSelectDesign={onSelectDesign}
-							/>
-						)}
-					</Spin>
-				)}
+				<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
+					{!!projectData && (
+						<ProjectDesignInteractionPanel
+							updateRevisionData={updateRevisionData}
+							revisionFormData={revisionFormData}
+							refetchData={refetchData}
+							setProjectData={setProjectData}
+							projectData={projectData}
+							onSelectDesign={onSelectDesign}
+						/>
+					)}
+				</Spin>
+			)}
 		</>
 	);
 };

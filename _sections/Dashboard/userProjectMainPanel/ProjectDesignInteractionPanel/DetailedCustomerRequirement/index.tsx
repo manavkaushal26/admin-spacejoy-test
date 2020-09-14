@@ -1,8 +1,11 @@
+import { editProjectApi } from "@api/projectApi";
 import { getQuizSectionsApi } from "@api/quizApi";
 import { QuizAnswerFieldType, QuizSectionInterface } from "@customTypes/dashboardTypes";
+import { Role } from "@customTypes/userType";
+import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, notification, Row, Tabs } from "antd";
+import { Button, Card, Col, Modal, notification, Row, Tabs } from "antd";
 import React, { useEffect, useState } from "react";
 import QuizDiscussions from "./QuizDiscussions";
 import QuizResponse from "./QuizResponse";
@@ -121,13 +124,59 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 		}
 	}, []);
 
+	const auth = useAuth();
+
+	const resetQuiz = async () => {
+		const endPoint = editProjectApi(projectId);
+
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: "PUT",
+				body: {
+					data: {
+						quizStatus: {
+							currentState: "inProgress",
+							noOfQuestionsCompleted: 0,
+							pendingSections: ["usage", "style-and-color", "existing-products", "room-images", "personalize"],
+						},
+					},
+				},
+			});
+			if (response.statusCode <= 300) {
+				notification.success({ message: "Successfully reset Customer Quiz" });
+			} else {
+				throw new Error();
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to reset Quiz" });
+		}
+	};
+
+	const confirmReset = () => {
+		Modal.confirm({
+			title: "This will reset the quiz progress for the user. Do you want to Continue?",
+			onOk: () => resetQuiz(),
+		});
+	};
+
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
-				<Row justify='end'>
-					<Button type='primary' onClick={downloadCSV}>
-						Download as JSON
-					</Button>
+				<Row justify='end' gutter={[8, 8]}>
+					<Col>
+						<Button type='primary' onClick={downloadCSV}>
+							Download as JSON
+						</Button>
+					</Col>
+
+					{[Role["Account Manager"], Role.Admin, Role.Owner].includes(auth?.user?.role) && (
+						<Col>
+							<Button onClick={confirmReset} danger>
+								Reset Quiz
+							</Button>
+						</Col>
+					)}
 				</Row>
 			</Col>
 			<Col span={24}>

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { getValueSafely } from "@utils/commonUtils";
 import { DetailedProject } from "@customTypes/dashboardTypes";
 import CustomerResponses from "@sections/Dashboard/userProjectMainPanel/CustomerResponses";
-import { Radio, Row, Col } from "antd";
+import { getValueSafely } from "@utils/commonUtils";
+import { Col, Radio, Row } from "antd";
+import React, { useState } from "react";
 import DetailedCustomerRequirement from "../DetailedCustomerRequirement";
 
 interface CustomerResponsesTab {
@@ -15,15 +15,15 @@ const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData }) =
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
-				<Row justify="center">
+				<Row justify='center'>
 					<Radio.Group
 						value={currentTab}
 						onChange={(e): void => {
 							setCurrentTab(e.target.value);
 						}}
 					>
-						<Radio.Button value="quiz1">Initial Quiz</Radio.Button>
-						<Radio.Button value="quiz2">Requirement Quiz</Radio.Button>
+						<Radio.Button value='quiz1'>Initial Quiz</Radio.Button>
+						<Radio.Button value='quiz2'>Requirement Quiz</Radio.Button>
 					</Radio.Group>
 				</Row>
 			</Col>
