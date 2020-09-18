@@ -3,11 +3,14 @@ import moment from "moment";
 
 const allFilterNames = {
 	moodboardsToBeCreated: "Moodboards to be created",
+	designsToBeCompleted: "Designs to be completed",
 	rendersToBeReviewed: "Renders to be reviewed",
 	inProgress: "All Projects in Progress",
+	designsInRevision: "Designs in Revision",
 	quizNotStarted: "Projects where Quiz has Not Started",
 	quizUnderReview: "Projects where Quiz is Under Review",
-	quizInProgress: "Projects where Quiz is  In Progress",
+	quizInProgress: "Projects where Quiz is In Progress",
+	quizCompleted: "Projects where Quiz is Completed",
 	delayed: "All Delayed Projects",
 	dueThisWeek: "All Projects due this Week",
 	dueIn3Days: "All Projects due in next 3 Days",
@@ -18,7 +21,7 @@ const allFilterNames = {
 
 const timeBasedFilters = ["delayed", "dueIn3Days", "dueThisWeek", "dueIn4InModelling", "dueIn3daysAndInRender"];
 
-const quizStatusBasedFilters = ["quizNotStarted", "quizInProgress", "quizUnderReview"];
+const quizStatusBasedFilters = ["quizNotStarted", "quizInProgress", "quizUnderReview", "quizCompleted"];
 
 const phaseBasedFilters = [
 	"moodboardsToBeCreated",
@@ -101,7 +104,19 @@ const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<
 			designerSearchText: "",
 			data: [],
 			pageCount: 0,
-			phase: ["requirement", "designConcept", "modelling", "design3D", "designRender", "designsInRevision"],
+			phase: [
+				PhaseInternalNames.requirement,
+				PhaseInternalNames.designConcept,
+				PhaseInternalNames.design3D,
+				PhaseInternalNames.designRender,
+				PhaseInternalNames.designsInRevision,
+				"requirement",
+				"designConcept",
+				"modelling",
+				"design3D",
+				"designRender",
+				"designsInRevision",
+			],
 			name: "",
 			sortBy: "endedAt",
 			hasMore: true,
@@ -120,7 +135,7 @@ const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<
 			designerSearchText: "",
 			data: [],
 			pageCount: 0,
-			phase: ["designReady", "designsInRevision", "shop"],
+			phase: [PhaseInternalNames.designReady, PhaseInternalNames.designsInRevision, PhaseInternalNames.shop],
 			name: "",
 			sortBy: "endedAt",
 			hasMore: true,
@@ -139,7 +154,7 @@ const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<
 			designerSearchText: "",
 			data: [],
 			pageCount: 0,
-			phase: ["modelling", "designConcept", "requirement"],
+			phase: [PhaseInternalNames.modelling],
 			name: "",
 			sortBy: "endedAt",
 			hasMore: true,
@@ -158,7 +173,7 @@ const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<
 			designerSearchText: "",
 			data: [],
 			pageCount: 0,
-			phase: ["modelling", "designConcept", "requirement"],
+			phase: [PhaseInternalNames.designRender],
 			name: "",
 			sortBy: "endedAt",
 			hasMore: true,
@@ -231,6 +246,32 @@ const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<
 			minMax: [null, null],
 			quizStatus: QuizState.inProgress,
 		};
+	if (type === "quizCompleted")
+		return {
+			nameSearchText: "",
+			designerSearchText: "",
+			data: [
+				PhaseInternalNames.requirement,
+				PhaseInternalNames.designConcept,
+				PhaseInternalNames.design3D,
+				PhaseInternalNames.designRender,
+				PhaseInternalNames.designsInRevision,
+			],
+			pageCount: 0,
+			phase: [],
+			name: "",
+			sortBy: "endedAt",
+			hasMore: true,
+			currentTab: "active",
+			status: "active",
+			searchResults: [],
+			sortOrder: 1,
+			count: 0,
+			startedAt: [],
+			endedAt: [],
+			minMax: [null, null],
+			quizStatus: QuizState.closed,
+		};
 	if (type === "rendersToBeReviewed")
 		return {
 			nameSearchText: "",
@@ -276,6 +317,44 @@ const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<
 			data: [],
 			pageCount: 0,
 			phase: [PhaseInternalNames.modelling],
+			name: "",
+			sortBy: "endedAt",
+			hasMore: true,
+			currentTab: "active",
+			status: "active",
+			searchResults: [],
+			sortOrder: 1,
+			count: 0,
+			startedAt: [],
+			endedAt: [],
+			minMax: [null, null],
+		};
+	if (type === "designsToBeCompleted")
+		return {
+			nameSearchText: "",
+			designerSearchText: "",
+			data: [],
+			pageCount: 0,
+			phase: [PhaseInternalNames.design3D],
+			name: "",
+			sortBy: "endedAt",
+			hasMore: true,
+			currentTab: "active",
+			status: "active",
+			searchResults: [],
+			sortOrder: 1,
+			count: 0,
+			startedAt: [],
+			endedAt: [],
+			minMax: [null, null],
+		};
+	if (type === "designsInRevision")
+		return {
+			nameSearchText: "",
+			designerSearchText: "",
+			data: [],
+			pageCount: 0,
+			phase: [PhaseInternalNames.designsInRevision],
 			name: "",
 			sortBy: "endedAt",
 			hasMore: true,
