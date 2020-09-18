@@ -22,9 +22,11 @@ const quizStatusBasedFilters = ["quizNotStarted", "quizInProgress", "quizUnderRe
 
 const phaseBasedFilters = [
 	"moodboardsToBeCreated",
-	"rendersToBeReviewed",
-	"inProgress",
 	"modelsToBeCompleted",
+	"designsToBeCompleted",
+	"rendersToBeReviewed",
+	"designsInRevision",
+	"inProgress",
 	// "deliveredBtwXAndY",
 ];
 
@@ -35,7 +37,7 @@ interface searchFiltersPresets {
 }
 
 const searchFiltersPresets = ({ type, from, to }: searchFiltersPresets): Record<string, any> => {
-	const today = moment();
+	const today = moment().utc().startOf("day");
 	if (type === "delayed")
 		return {
 			nameSearchText: "",
