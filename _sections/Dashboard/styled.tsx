@@ -61,7 +61,7 @@ export const BiggerButtonCarousel = styled(Carousel)`
 
 export const MaxHeightDiv = styled.div`
 	min-height: 20vh;
-	height: calc(100vh -70px);
+	height: calc(100vh - 70px);
 	overflow-y: scroll !important;
 `;
 

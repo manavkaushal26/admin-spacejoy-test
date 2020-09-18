@@ -74,6 +74,13 @@ export enum QuizState {
 	underReview = "underReview",
 }
 
+export const QuizStateArray: QuizState[] = [
+	QuizState.open,
+	QuizState.closed,
+	QuizState.inProgress,
+	QuizState.underReview,
+];
+
 export enum QuizStateLabels {
 	open = "Not Started",
 	closed = "Completed",

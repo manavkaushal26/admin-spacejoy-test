@@ -24,6 +24,10 @@ export const searchProjectsApi = (): string => {
 	return "/admin/projects/search";
 };
 
+export const searchProjectsCountApi = (): string => {
+	return "/v1/projects/count";
+};
+
 /**
  * Returns endpoint to retrieve revision form for a project
  * @param projectId Project Id for which form will be fetched

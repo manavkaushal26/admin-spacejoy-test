@@ -7,7 +7,7 @@ const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled.main<{ isServer: boolean }>`
 	padding-top: 70px;
-	min-height: calc(100vh - 70px);
+	height: calc(100vh - 70px);
 	position: relative;
 	&.client-server-identifier {
 		&:after {

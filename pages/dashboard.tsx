@@ -2,6 +2,7 @@ import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@custom
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
 import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
+import { UserProjectSidePanelInitialState } from "@sections/Dashboard/UserProjectSidepanel/reducer";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
@@ -46,8 +47,10 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 	const [dates, setDates] = useState<Partial<UserProjectType>>(null);
 
 	const [collapsed, setCollapsed] = useState<boolean>(false);
-
 	const [isDesktop, setIsDesktop] = useState<boolean>(true);
+
+	const [searchFilters, setSearchFilters] = useState(UserProjectSidePanelInitialState);
+	const [searchFiltersChanged, setSearchFiltersChanged] = useState(null);
 
 	const onResize = (): void => debouncedHandleResize(setIsDesktop);
 
@@ -129,14 +132,14 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 				<title>Dashboard | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
-			<GreyDiv>
+			<MaxHeightDiv>
 				<Spin spinning={loading}>
 					<Layout hasSider>
 						<Layout.Sider
 							style={{ backgroundColor: "white" }}
 							collapsed={collapsed}
 							onCollapse={(collapsedState): void => {
-								setCollapsed(collapsedState && !!projectId);
+								setCollapsed(collapsedState);
 							}}
 							zeroWidthTriggerStyle={{ top: "1.8rem", borderRadius: "0 2px 2px 0" }}
 							breakpoint='lg'
@@ -150,6 +153,10 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 								setCollapsed={setCollapsed}
 								updateStartDateInMainPanel={updateStartDateInMainPanel}
 								selectedUser={selectedUser}
+								state={searchFilters}
+								setState={setSearchFilters}
+								changedState={searchFiltersChanged}
+								setChangedState={setSearchFiltersChanged}
 								handleSelectCard={handleSelectCard}
 								projectPhaseUpdateValue={projectPhaseUpdateValue}
 								setProjectPhaseUpdateValue={setProjectPhaseUpdateValue}
@@ -165,13 +172,14 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 										dates={dates}
 										setDates={setDates}
 										currentTab={currentTab}
+										setSearchFiltersChanged={setSearchFiltersChanged}
 									/>
 								</PaddedDiv>
 							</WhiteBorderMaxHeightDiv>
 						</Layout>
 					</Layout>
 				</Spin>
-			</GreyDiv>
+			</MaxHeightDiv>
 		</PageLayout>
 	);
 };

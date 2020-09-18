@@ -1,9 +1,14 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { HumanizePhaseInternalNames, RoomNameSearch } from "@customTypes/dashboardTypes";
+import {
+	HumanizePhaseInternalNames,
+	QuizStateArray,
+	QuizStateLabels,
+	RoomNameSearch,
+} from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Typography } from "antd";
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
 import {
 	phaseDefaultValues,
@@ -23,14 +28,10 @@ const TabSearch: React.FC<{
 	setState: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
 	state: UserProjectSidePanelState;
 	onSearchSubmit: () => void;
-}> = ({ setState: updateState, state: initialState, onSearchSubmit }): JSX.Element => {
-	const [state, setState] = useState<UserProjectSidePanelState>(UserProjectSidePanelInitialState);
+}> = ({ setState, state, onSearchSubmit }): JSX.Element => {
+	// const [state, setState] = useState<UserProjectSidePanelState>(UserProjectSidePanelInitialState);
 	const [selectedSort, setSelectedSort] = useState(SortOptions["Created At - Newest First"]);
 	const [minMax, setMinMax] = useState<number[]>([]);
-
-	useEffect(() => {
-		setState(initialState);
-	}, []);
 
 	const handleSearch = (value: string | number, type: string): void => {
 		if (type === "email") {
@@ -108,7 +109,7 @@ const TabSearch: React.FC<{
 		document.body.removeChild(a);
 	};
 
-	const handleSelectFilter = (value, type: "phase" | "name" | "sort" | "status"): void => {
+	const handleSelectFilter = (value, type: "phase" | "name" | "sort" | "status" | "quizStatus"): void => {
 		if (type === "sort") {
 			setSelectedSort(JSON.parse(value));
 			setState({
@@ -132,21 +133,6 @@ const TabSearch: React.FC<{
 			[field]: value,
 		});
 	};
-
-	useEffect(() => {
-		updateState(state);
-	}, [
-		state.nameSearchText,
-		state.designerSearchText,
-		state.phase,
-		state.sortBy,
-		state.sortOrder,
-		state.status,
-		state.name,
-		state.endedAt,
-		state.startedAt,
-		state.email,
-	]);
 
 	return (
 		<Row gutter={[8, 8]}>
@@ -261,6 +247,30 @@ const TabSearch: React.FC<{
 										return (
 											<Option key={roomName} value={roomName}>
 												{roomName}
+											</Option>
+										);
+									})}
+								</Select>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={12}>
+						<Row gutter={[0, 4]}>
+							<Col span={24}>
+								<Text strong>Quiz Status</Text>
+							</Col>
+							<Col span={24}>
+								<Select
+									value={state.quizStatus}
+									style={{ width: "100%" }}
+									defaultValue={null}
+									onChange={(value): void => handleSelectFilter(value, "quizStatus")}
+								>
+									<Option value=''>Filter by Quiz Status</Option>
+									{QuizStateArray.map(quizState => {
+										return (
+											<Option key={quizState} value={quizState}>
+												{QuizStateLabels[quizState]}
 											</Option>
 										);
 									})}

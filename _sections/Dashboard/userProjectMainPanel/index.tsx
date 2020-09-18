@@ -9,14 +9,16 @@ import {
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, Empty, notification, Row, Spin, Typography } from "antd";
+import { Col, notification, Row, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { MaxHeightDiv, VerticalPaddedDiv } from "../styled";
+import { VerticalPaddedDiv } from "../styled";
+import { UserProjectSidePanelState } from "../UserProjectSidepanel/reducer";
+import ActionView from "./ActionView";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
 
-const { Text } = Typography;
+const { Title } = Typography;
 
 const userProjectMainPanel: React.FC<{
 	updateProjectPhaseInSidepanel: (
@@ -31,7 +33,16 @@ const userProjectMainPanel: React.FC<{
 	designId: string;
 	dates: Partial<UserProjectType>;
 	setDates: React.Dispatch<React.SetStateAction<Partial<DetailedProject>>>;
-}> = ({ updateProjectPhaseInSidepanel, userProjectId, designId, dates, setDates, currentTab }): JSX.Element => {
+	setSearchFiltersChanged: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
+}> = ({
+	updateProjectPhaseInSidepanel,
+	userProjectId,
+	designId,
+	dates,
+	setDates,
+	currentTab,
+	setSearchFiltersChanged,
+}): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const Router = useRouter();
@@ -157,15 +168,9 @@ const userProjectMainPanel: React.FC<{
 					</>
 				) : (
 					<Col span={24}>
-						<MaxHeightDiv>
-							<VerticalPaddedDiv>
-								<Row justify='center'>
-									<Col>
-										<Empty description={<Text>Select a Project to work on!</Text>} />
-									</Col>
-								</Row>
-							</VerticalPaddedDiv>
-						</MaxHeightDiv>
+						<VerticalPaddedDiv>
+							<ActionView setSearchFiltersChanged={setSearchFiltersChanged} />
+						</VerticalPaddedDiv>
 					</Col>
 				)}
 			</Row>

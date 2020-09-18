@@ -1,4 +1,4 @@
-import { PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
+import { PhaseInternalNames, QuizState, UserProjectType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import moment from "moment";
 
@@ -19,6 +19,7 @@ export interface UserProjectSidePanelState {
 	startedAt: [moment.Moment, moment.Moment];
 	endedAt: [moment.Moment, moment.Moment];
 	email: string;
+	quizStatus: QuizState;
 }
 
 export enum UserProjectSidePanelActionTypes {
@@ -36,6 +37,7 @@ export enum UserProjectSidePanelActionTypes {
 	CLEAR_DATA,
 	UPDATE_PROJECT_START_DATE,
 	UPDATE_PROJECT_END_DATE,
+	QUIZ_STATUS,
 }
 
 export interface UserProjectSidePanelAction {
@@ -75,6 +77,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	startedAt: [null, null],
 	endedAt: [null, null],
 	email: "",
+	quizStatus: null,
 };
 
 export const UserProjectSidePanelActionCreator = (
@@ -130,6 +133,11 @@ export const UserProjectSidePanelReducer = (
 			return {
 				...state,
 				hasMore: action.value.hasMore,
+			};
+		case UserProjectSidePanelActionTypes.QUIZ_STATUS:
+			return {
+				...state,
+				quizStatus: action.value.quizStatus,
 			};
 		case UserProjectSidePanelActionTypes.LOAD_USER_DATA: {
 			const dataToUpdate =

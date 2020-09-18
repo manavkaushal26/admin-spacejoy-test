@@ -46,6 +46,7 @@ import "antd/lib/tooltip/style";
 import "antd/lib/tree/style";
 import "antd/lib/typography/style";
 import "antd/lib/upload/style";
+import moment from "moment-timezone";
 import App from "next/app";
 import Router from "next/router";
 import React from "react";
@@ -77,6 +78,7 @@ export default class MyApp extends App {
 	componentDidMount(): void {
 		Router.router.events.on("routeChangeStart", () => this.setState({ loading: true }));
 		Router.router.events.on("routeChangeComplete", () => this.setState({ loading: false }));
+		moment.tz.setDefault("utc");
 	}
 
 	render(): JSX.Element {

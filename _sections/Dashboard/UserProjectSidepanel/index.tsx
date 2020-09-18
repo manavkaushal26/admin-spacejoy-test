@@ -2,7 +2,6 @@ import { searchProjectsApi } from "@api/projectApi";
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
-import { useSessionStorage } from "@utils/customHooks/useSessionStorage";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Drawer, Row } from "antd";
 import { Moment } from "moment";
@@ -11,10 +10,10 @@ import LoadingCard from "../LoadingCard";
 import { MaxHeightDiv } from "../styled";
 import UserProjectCard from "../UserProjectCards";
 import ProjectInfiniteLoaderWrapper from "./ProjectInfiniteLoaderWrapper";
-import { SortFields, UserProjectSidePanelInitialState } from "./reducer";
+import { SortFields, UserProjectSidePanelState } from "./reducer";
 import TabSearch from "./TabSearch";
 
-const getRequestBody = (
+export const getProjectSearchBody = (
 	nameSearchText: string,
 	designerSearchText: string,
 	phase: PhaseInternalNames[],
@@ -24,7 +23,8 @@ const getRequestBody = (
 	startedAt: [Moment, Moment],
 	endedAt: [Moment, Moment],
 	status: Status,
-	email: string
+	email: string,
+	quizStatus: string
 ): Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string> => {
 	const startedAtMap = startedAt?.map(value => {
 		if (value !== null) {
@@ -62,6 +62,7 @@ const getRequestBody = (
 			value: endedAtMap,
 		},
 		"email": email,
+		...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
 	};
 	return body;
 };
@@ -77,6 +78,8 @@ interface SidebarProps {
 			customerName: PhaseCustomerNames;
 		};
 	};
+	state: UserProjectSidePanelState;
+	setState: React.Dispatch<UserProjectSidePanelState>;
 	collapsed: boolean;
 	setCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 	setProjectPhaseUpdateValue: React.Dispatch<
@@ -88,6 +91,8 @@ interface SidebarProps {
 			};
 		}>
 	>;
+	changedState: UserProjectSidePanelState;
+	setChangedState: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
 }
 
 const UserProjectSidePanel: React.FC<SidebarProps> = ({
@@ -95,10 +100,13 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	selectedUser,
 	projectPhaseUpdateValue,
 	setProjectPhaseUpdateValue,
+	state,
+	setState,
+	changedState,
+	setChangedState,
 }) => {
 	const [data, setData] = useState<UserProjectType[]>([]);
 	const [count, setCount] = useState(1000);
-	const [state, setState] = useSessionStorage("tabSearch", UserProjectSidePanelInitialState);
 	const [loading, setLoading] = useState(false);
 	const [hasNextPage, setHasNextPage] = useState<boolean>(true);
 	const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
@@ -110,7 +118,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	const loadMoreItems = async (startIndex, endIndex): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${searchProjectsApi()}?skip=${startIndex}&limit=${endIndex - startIndex + 1}`;
-		const body = getRequestBody(
+		const body = getProjectSearchBody(
 			state.nameSearchText,
 			state.designerSearchText,
 			state.phase,
@@ -120,7 +128,8 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			state.startedAt,
 			state.endedAt,
 			state.status,
-			state.email
+			state.email,
+			state.quizStatus
 		);
 		const resData = await fetcher({
 			endPoint,
@@ -162,6 +171,19 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 		loadMoreItems(0, 299);
 		toggleDrawer();
 	};
+
+	useEffect(() => {
+		if (changedState) {
+			setState(changedState);
+			setChangedState(null);
+		} else {
+			if (!loading) {
+				setCount(0);
+				setData([]);
+				loadMoreItems(0, 299);
+			}
+		}
+	}, [changedState]);
 
 	useEffect(() => {
 		if (projectPhaseUpdateValue) {
