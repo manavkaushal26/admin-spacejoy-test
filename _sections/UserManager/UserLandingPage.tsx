@@ -14,15 +14,15 @@ const UserLandingPage: React.FC = () => {
 	const [pageNo, setPageNo] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(12);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [searchItems, setSearchItems] = useSessionStorage<{ name: string; role: Role }>("userSearchParams", {
+	const [searchItems, setSearchItems] = useSessionStorage<{ name: string; role: Role | "" }>("userSearchParams", {
 		name: "",
-		role: null,
+		role: "",
 	});
 
 	const [userId, setUserId] = useSessionStorage("selectedUserId", "");
 	const [visible, setVisible] = useState<boolean>(false);
 
-	const fetchUserList = async (searchText?: string, searchRole?: Role) => {
+	const fetchUserList = async (searchText?: string, searchRole?: Role | "") => {
 		setLoading(true);
 		const endPoint = `${userApi()}?skip=${(pageNo - 1) * limit}&limit=${limit}`;
 		const body = {
@@ -52,12 +52,15 @@ const UserLandingPage: React.FC = () => {
 		setLimit(pageSize);
 	};
 
-	const onSearch = formData => {
-		setSearchItems(formData);
+	useEffect(() => {
 		setPageNo(1);
 		if (pageNo === 1) {
-			fetchUserList(formData.name, formData.role);
+			fetchUserList();
 		}
+	}, [searchItems]);
+
+	const onSearch = formData => {
+		setSearchItems(formData);
 	};
 
 	const toggleUserDrawer = (userId?: string) => {
