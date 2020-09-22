@@ -104,7 +104,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 		icon: <DatabaseTwoTone style={{ fontSize: "3rem" }} />,
 		backgroundColor: "#e6f7ff",
 		notActive: false,
-		allowedRoles: [Role.Admin, Role.Owner, Role["Seo Team"], Role.Team, Role.Analyst],
+		allowedRoles: [Role.Admin, Role.Owner, Role["Seo Team"], Role.Team, Role.Analyst, Role["Account Manager"]],
 	},
 	{
 		title: "Ecommerce",
