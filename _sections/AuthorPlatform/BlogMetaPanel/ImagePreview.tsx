@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Modal, Row, Col, Button, notification, Typography } from "antd";
-import { ImageInterface, DesignImgTypes } from "@customTypes/dashboardTypes";
-import styled from "styled-components";
-import Image from "@components/Image";
-import { getValueSafely } from "@utils/commonUtils";
-import fetcher from "@utils/fetcher";
 import { deleteUploadedBlogImage } from "@api/blogApi";
+import Image from "@components/Image";
+import { DesignImgTypes, ImageInterface } from "@customTypes/dashboardTypes";
+import { getValueSafely } from "@utils/commonUtils";
 import { cloudinary } from "@utils/config";
+import fetcher from "@utils/fetcher";
+import { Button, Col, Modal, notification, Row, Typography } from "antd";
+import React, { useState } from "react";
+import styled from "styled-components";
 import { AuthorPlatformProps } from "..";
 import { AUTHOR_ACTIONS } from "../reducer";
 
@@ -102,6 +102,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 
 	const imageCdn = getValueSafely(() => image.cdn, "");
 	const imageType = getValueSafely(() => image.imgType, DesignImgTypes.Render);
+	console.log("imageCdn, imageType", imageCdn, imageType);
 	return (
 		<StyledBorderlessModal
 			visible={!!image}
@@ -113,7 +114,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 		>
 			<Row>
 				<Col sm={24} md={16}>
-					<Image width='100%' alt='Blog Image' src={`${imageCdn}`} />
+					{imageCdn && <Image width='100%' alt='Blog Image' src={imageCdn} />}
 				</Col>
 				<Col sm={24} md={8}>
 					<FullHeightRight>

@@ -6,6 +6,7 @@ export const EcommerceOrderStatus = {
 	Pending: "pending",
 	Confirmed: "confirmed",
 	Complete: "completed",
+	Cancelled: "cancelled",
 };
 
 export const EcommerceOrderStatusReverseMap = {

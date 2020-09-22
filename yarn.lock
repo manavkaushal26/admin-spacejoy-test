@@ -8314,14 +8314,6 @@ react@^16.13.1:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
 
-reactjs-places-autocomplete@^7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/reactjs-places-autocomplete/-/reactjs-places-autocomplete-7.2.1.tgz#1589de12eeba0353ebb4eb3dc9bcb676cccc9fd0"
-  integrity sha512-pyLskVdZ6EkwuGiMk2PV2zvris9lG9nAmcM2o13QdGMV3U1+pFwD03nWlP2saPFtSypdyYkIwVLY00wL/QOj+A==
-  dependencies:
-    lodash.debounce "^4.0.8"
-    prop-types "^15.5.8"
-
 read-pkg@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-5.2.0.tgz#7bf295438ca5a33e56cd30e053b34ee7250c93cc"

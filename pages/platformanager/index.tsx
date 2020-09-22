@@ -31,7 +31,7 @@ const MetaCards = [
 		to: "/platformanager/collectionsmeta",
 		url: "/platformanager/collectionsmeta",
 		query: {},
-		allowedRoles: [Role.seoTeam, Role.Admin, Role.Owner, Role.Analyst],
+		allowedRoles: [Role["Seo Team"], Role.Admin, Role.Owner, Role.Analyst],
 	},
 	{
 		name: "Package Manager",
@@ -51,12 +51,20 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.Admin, Role.Owner],
 	},
+	{
+		name: "User Manager",
+		description: "Manage Users in platform",
+		action: "redirect",
+		to: "/platformanager/usermanagement",
+		url: "/platformanager/usermanagement",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner, Role["Account Manager"]],
+	},
 ];
 
 const Platformanager: NextPage = () => {
 	const Router = useRouter();
 	const [searchText, setSearchText] = useState("");
-
 	const { user: authVerification } = useAuth();
 
 	const onSearchChange = (e): void => {

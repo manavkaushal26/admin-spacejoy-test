@@ -101,6 +101,13 @@ function pageRoute(app, router) {
 
 	// ************************************************** platformanager *******************************************************
 
+	router.get("/platformanager/usermanagement", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager/usermanagement", {
+			...query,
+		});
+	});
+
 	router.get("/platformanager/couponmanager", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager/couponmanager", {

@@ -9,7 +9,7 @@ export const allowedRoles = [
 	Role["3D Artist"],
 	Role.BlogAuthor,
 	Role.BlogAdmin,
-	Role.seoTeam,
+	Role["Seo Team"],
 	Role.Analyst,
 	Role["Senior 3D Artist"],
 ];

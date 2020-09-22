@@ -3,28 +3,7 @@ import Checkbox from "@components/Checkbox";
 import Radio from "@components/Radio";
 import PropTypes from "prop-types";
 import React from "react";
-import PlacesAutocomplete from "reactjs-places-autocomplete";
 import styled from "styled-components";
-
-const AutoCompleteStyled = styled.div`
-	background: white;
-	position: relative;
-	top: -2rem;
-	&.loading {
-		background: ${({ theme }) => theme.colors.bg.dark2};
-	}
-`;
-
-const SuggestionStyled = styled.div`
-	cursor: pointer;
-	padding: 0.5rem 1rem;
-	border-top: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	border-left: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	border-right: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	&:last-child {
-		border-bottom: 1px solid ${({ theme }) => theme.colors.bg.dark2};
-	}
-`;
 
 const FieldWrapperStyled = styled.div`
 	color: ${({ hasError, theme }) => (hasError ? theme.colors.red : theme.colors.fc.dark1)};
@@ -75,7 +54,6 @@ function Field({
 	data,
 	readonly,
 	onchange,
-	handleAddressChange,
 	name,
 	type,
 	label,
@@ -117,44 +95,6 @@ function Field({
 						</div>
 					</div>
 				</LabelStyled>
-			)}
-			{type === "addressAutoSuggest" && (
-				<PlacesAutocomplete
-					readonly={readonly}
-					value={data.value || ""}
-					name={name}
-					id={name}
-					onChange={handleAddressChange}
-					onSelect={handleAddressChange}
-				>
-					{({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-						<>
-							<LabelStyled htmlFor='address'>
-								<span className='styled'>{label}</span>
-								<InputStyled
-									autoComplete='false'
-									{...getInputProps({
-										name: "address",
-										id: "address",
-										placeholder: "Search Places ...",
-										className: "input-field",
-									})}
-								/>
-							</LabelStyled>
-							<AutoCompleteStyled className={loading ? "loading" : ""}>
-								{suggestions.map(suggestion => (
-									<SuggestionStyled
-										key={suggestion.description.length}
-										{...getSuggestionItemProps(suggestion)}
-										active={suggestion.active}
-									>
-										{suggestion.description}
-									</SuggestionStyled>
-								))}
-							</AutoCompleteStyled>
-						</>
-					)}
-				</PlacesAutocomplete>
 			)}
 			{type === "radio" && (
 				<RadioWrapperStyled>

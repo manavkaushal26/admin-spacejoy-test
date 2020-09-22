@@ -40,7 +40,7 @@ const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Pr
 		method: "POST",
 		body: {
 			data: {
-				role: {
+				"role": {
 					search: "single",
 					value: state.role,
 				},
@@ -208,9 +208,9 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 							return (
 								<Col key={teamMember._id} span={8}>
 									<Card
-										size="small"
+										size='small'
 										title={
-											<Row align="middle" gutter={[8, 8]}>
+											<Row align='middle' gutter={[8, 8]}>
 												<Col>
 													<Avatar>
 														{getValueSafely<string>(() => {
@@ -220,7 +220,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 												</Col>
 												<Col>
 													<Text style={{ width: "100%" }} ellipsis strong>
-														<CustomDiv width="100%" textTransform="capitalize" overflow="hidden">
+														<CustomDiv width='100%' textTransform='capitalize' overflow='hidden'>
 															{getValueSafely<string>(() => {
 																return teamMember.profile.name;
 															}, "N/A")}
@@ -246,11 +246,11 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 						})
 					) : (
 						<Col span={24}>
-							<Empty description="No Users found" />
+							<Empty description='No Users found' />
 						</Col>
 					)}
 					<Col span={24}>
-						<Row justify="center">
+						<Row justify='center'>
 							<Pagination
 								pageSize={6}
 								hideOnSinglePage

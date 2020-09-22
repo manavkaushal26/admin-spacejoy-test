@@ -75,7 +75,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 
 	return (
 		<SizeAdjustedModal
-			title="Blog Image Console"
+			title='Blog Image Console'
 			visible={imageConsoleVisible}
 			footer={null}
 			centered
@@ -86,7 +86,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 					<Dragger
 						disabled={!state.activeBlogId}
 						supportServerRender
-						name="file"
+						name='file'
 						multiple
 						fileList={coverImageFileList}
 						action={imageUploadUrl}
@@ -94,15 +94,15 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 						onChange={onChange}
 						headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 						data={{ imgType: imageType }}
-						accept="images/*"
+						accept='images/*'
 					>
-						<p className="ant-upload-drag-icon">
+						<p className='ant-upload-drag-icon'>
 							<InboxOutlined />
 						</p>
-						<p className="ant-upload-text">Type of Blog Image</p>
+						<p className='ant-upload-text'>Type of Blog Image</p>
 
 						<p
-							className="ant-upload-text"
+							className='ant-upload-text'
 							onClick={(e): void => {
 								e.stopPropagation();
 							}}
@@ -118,12 +118,12 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 							</Select>
 						</p>
 
-						<p className="ant-upload-text">Click or drag files to this area to upload</p>
-						<p className="ant-upload-hint">Support for a single or bulk upload.</p>
+						<p className='ant-upload-text'>Click or drag files to this area to upload</p>
+						<p className='ant-upload-hint'>Support for a single or bulk upload.</p>
 					</Dragger>
 				</Col>
 				<Col span={24}>
-					<Row style={{ justifyItems: "stretch" }} align="stretch" gutter={[4, 4]}>
+					<Row style={{ justifyItems: "stretch" }} align='stretch' gutter={[4, 4]}>
 						{state.activeBlog.images.length ? (
 							state.activeBlog.images.map(image => {
 								return (
@@ -132,12 +132,12 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 											<ModifiedCard
 												onClick={(): void => openImagePreview(image)}
 												style={{ height: "100%" }}
-												size="small"
+												size='small'
 												bordered={false}
 												hoverable
 											>
-												<Row style={{ height: "100%" }} justify="center" align="middle">
-													<Image src={`q_60,w_300/${image.cdn}`} width="100%" />
+												<Row style={{ height: "100%" }} justify='center' align='middle'>
+													<Image src={`q_60,w_300/${image.cdn}`} width='100%' />
 												</Row>
 											</ModifiedCard>
 										</Row>
@@ -146,8 +146,8 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 							})
 						) : (
 							<Col span={24}>
-								<Row justify="center">
-									<Empty description="No Images uploaded yet" />
+								<Row justify='center'>
+									<Empty description='No Images uploaded yet' />
 								</Row>
 							</Col>
 						)}

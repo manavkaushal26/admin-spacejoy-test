@@ -35,7 +35,6 @@ class MyDocument extends Document {
 					<link rel='preload' href='/static/styles/style.css?v1.0.4' as='style' />
 					<link rel='manifest' href='/manifest.json' />
 					<link href='/static/styles/style.css?v1.0.4' rel='stylesheet' />
-					{/* <script src={`https://maps.googleapis.com/maps/api/js?key=${page.placeKey}&libraries=places&language=en`} async/> */}
 				</Head>
 				<body>
 					<Main />
