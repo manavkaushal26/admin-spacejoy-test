@@ -19,6 +19,7 @@ import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { convertToFeet, convertToInches, getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, company, cookieNames } from "@utils/config";
+import { MountAndClampValuesForVerticals } from "@utils/constants";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import IndexPageMeta from "@utils/meta";
@@ -80,6 +81,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 	const [imageFile, setImageFile] = useState<UploadFile<any>[]>([]);
 	const [imageFilesToUpload, setImageFilesToUpload] = useState([]);
+	const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
 	const [preview, setPreview] = useState<{ previewImage: string; previewVisible: boolean }>({
 		previewImage: "",
@@ -159,6 +161,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	const onFieldsChange = changedFieldsData => {
+		console.log("changedFieldsData", changedFieldsData);
 		if (changedFieldsData.length) {
 			if (changedFieldsData[0].name.length > 1) {
 				setChangedState({
@@ -602,7 +605,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	};
 
-	const onFinish = async (): Promise<void> => {
+	const onFinish = async (): Promise<number> => {
 		const endPoint = assetCreateOrUpdationApi(state._id);
 
 		const currentDimensions = formatdimensionForSending({
@@ -672,8 +675,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				if (mai && designId) {
 					markAssetAsComplete(responseAssetData._id, responseAssetData.status);
 				}
+				return 1;
 			} else {
-				notification.error({ message: "Failed to save Product", description: response.message });
+				throw new Error();
 			}
 		} catch (e) {
 			if (e.message === "Failed to fetch") {
@@ -681,8 +685,48 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			} else {
 				notification.error({ message: "Failed to save Product" });
 			}
+			return 0;
 		}
 	};
+
+	useEffect(() => {
+		if ((state.price === 0 || Number.isNaN(state.price)) && !state) {
+			if (state.shoppable !== false) {
+				setState({ ...state, shoppable: false });
+				notification.info({ message: "Item has been marked as not shoppable" });
+			}
+		}
+		setFirstLoad(false);
+	}, [state.price]);
+
+	useEffect(() => {
+		console.log("changedState['meta.vertical'], firstLoad", changedState["meta.vertical"], firstLoad);
+		if (changedState["meta.vertical"] && !firstLoad) {
+			const mountAndClampValue = MountAndClampValuesForVerticals[changedState["meta.vertical"]];
+			if (mountAndClampValue) {
+				if (mountAndClampValue.clampValue >= 0) {
+					setChangedState({
+						...changedState,
+						"spatialData.clampValue": 1,
+
+						...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
+					});
+				} else {
+					setChangedState({
+						...changedState,
+						"spatialData.clampValue": 0,
+						...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
+					});
+				}
+			} else {
+				setChangedState({ ...changedState, "spatialData.clampValue": 0 });
+			}
+			console.log("changedState", changedState);
+			form.setFieldsValue({ ...state, ...changedState });
+			notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
+		}
+		setFirstLoad(false);
+	}, [changedState["meta.vertical"]]);
 
 	return (
 		<PageLayout pageName='Asset Editing'>

@@ -87,11 +87,9 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 							<Col span={24}>
 								<Link
 									onClick={e => e.stopPropagation()}
-									target='_blank'
-									rel='noopener noreferrer'
 									ellipsis
 									strong
-									href={getValueSafely(() => `${config.company.url}/assetstore/assetdetails?assetId=${asset._id}`, "#")}
+									href={getValueSafely(() => `/assetstore/assetdetails?assetId=${asset._id}`, "#")}
 								>
 									{getValueSafely(() => asset.name, "N/A")}
 								</Link>
