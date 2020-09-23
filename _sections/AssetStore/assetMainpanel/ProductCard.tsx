@@ -5,12 +5,13 @@ import { AssetType, ScrapedAssetType } from "@customTypes/moodboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
 import AssetAvailability from "@utils/componentUtils/AssetAvailable";
 import PriceData from "@utils/componentUtils/AssetPrice";
+import config from "@utils/config";
 import { Col, Row, Typography } from "antd";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { AssetCard } from "../styled";
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 interface AssetCards {
 	asset: Partial<AssetType>;
@@ -71,17 +72,29 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 							</Col>
 							<Col>
 								<Text style={{ width: "100%" }} ellipsis type='secondary'>
-									<a target='_blank' rel='noopener noreferrer' href={getValueSafely(() => asset.retailLink, "#")}>
+									<a
+										onClick={e => e.stopPropagation()}
+										target='_blank'
+										rel='noopener noreferrer'
+										href={getValueSafely(() => `${config.company.customerPortalLink}/product-view/${asset._id}`, "#")}
+									>
 										{getValueSafely(() => asset.retailer.name, "N/A")}
 									</a>
 								</Text>
 							</Col>
 						</Row>
 						<Row>
-							<Col>
-								<Text style={{ width: "100%" }} ellipsis strong>
+							<Col span={24}>
+								<Link
+									onClick={e => e.stopPropagation()}
+									target='_blank'
+									rel='noopener noreferrer'
+									ellipsis
+									strong
+									href={getValueSafely(() => `${config.company.url}/assetstore/assetdetails?assetId=${asset._id}`, "#")}
+								>
 									{getValueSafely(() => asset.name, "N/A")}
-								</Text>
+								</Link>
 							</Col>
 						</Row>
 

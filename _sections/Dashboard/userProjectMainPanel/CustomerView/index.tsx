@@ -91,7 +91,10 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 		designData?.assets?.map(asset => asset?.asset?._id)
 	);
 
-	const nonBillableAssets = useMemo(() => designData.assets.filter(asset => !asset.billable), [designData?.assets]);
+	const nonBillableAssets = useMemo(
+		() => designData.assets.filter(asset => !asset.billable || !asset.asset?.shoppable),
+		[designData?.assets]
+	);
 
 	useEffect(() => {
 		if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
@@ -211,7 +214,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 					<Col span={24}>
 						<Row gutter={[8, 8]}>
 							{designData.assets.map(asset => {
-								if (asset.billable) {
+								if (asset.billable && asset.asset?.shoppable) {
 									return (
 										<Col sm={12} md={8} lg={6} key={asset._id}>
 											<ProductCard
@@ -241,7 +244,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 						<Col span={24}>
 							<Row gutter={[8, 8]}>
 								{nonBillableAssets.map(asset => {
-									if (!asset.billable) {
+									if (!asset.billable || !asset.asset?.shoppable) {
 										return (
 											<Col sm={12} md={8} lg={6} key={asset._id}>
 												<ProductCard hoverable={false} asset={asset?.asset} noVertical />

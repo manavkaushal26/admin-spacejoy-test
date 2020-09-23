@@ -89,7 +89,7 @@ const DesignWiseSelectedProductCards: React.FC<{
 					const { name, price, cdn, _id } = assetList[assetId];
 					return (
 						<Col sm={12} lg={12} xl={6}>
-							<ModifiedCard key={_id} cover={<Image src={`q_80,h_250,w_250,c_pad,b_white${cdn}`} />}>
+							<ModifiedCard key={_id} cover={<Image src={`q_80,h_250,w_250,c_pad,b_white/${cdn}`} />}>
 								<Card.Meta
 									title={name}
 									description={

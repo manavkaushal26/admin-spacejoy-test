@@ -1,8 +1,8 @@
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { getMoodboardApi } from "@api/designApi";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, notification, Popconfirm, Row, Tooltip, Typography } from "antd";
 import React from "react";
-import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 
@@ -39,33 +39,33 @@ const RequestProductCard: React.FC<{
 	return (
 		<Card
 			actions={[
-				<Popconfirm key="missing" title="Are you sure?" onConfirm={addAsset}>
-					<Tooltip title="Add as Missing asset">
+				<Popconfirm key='missing' title='Are you sure?' onConfirm={addAsset}>
+					<Tooltip title='Add as Missing asset'>
 						<Button
 							onClick={(e): void => {
 								e.stopPropagation();
 							}}
 							block
-							type="link"
+							type='link'
 							icon={<PlusOutlined />}
 						/>
 					</Tooltip>
 				</Popconfirm>,
 				<Popconfirm
-					title="Are you sure?"
-					key="delete"
+					title='Are you sure?'
+					key='delete'
 					onConfirm={(e): void => {
 						e.stopPropagation();
 						deleteCard(id);
 					}}
 				>
-					<Tooltip title="Delete">
+					<Tooltip title='Delete'>
 						<Button
 							block
 							onClick={(e): void => {
 								e.stopPropagation();
 							}}
-							type="link"
+							type='link'
 							icon={<DeleteOutlined />}
 						/>
 					</Tooltip>
@@ -77,12 +77,12 @@ const RequestProductCard: React.FC<{
 					<>
 						<Row gutter={[4, 4]}>
 							<Col>
-								<Text type="secondary">
+								<Text type='secondary'>
 									<small>URL:</small>
 								</Text>
 							</Col>
 							<Col>
-								<a target="_blank" rel="noopener noreferrer" href={url}>
+								<a target='_blank' rel='noopener noreferrer' href={url}>
 									{url}
 								</a>
 							</Col>
@@ -92,7 +92,7 @@ const RequestProductCard: React.FC<{
 				description={
 					<Row gutter={[4, 4]}>
 						<Col>
-							<Text type="secondary">
+							<Text type='secondary'>
 								<small>Comment:</small>
 							</Text>
 						</Col>

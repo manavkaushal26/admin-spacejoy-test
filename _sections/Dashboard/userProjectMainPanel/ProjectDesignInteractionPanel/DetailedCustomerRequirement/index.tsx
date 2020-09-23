@@ -170,7 +170,7 @@ const DetailedCustomerRequirements: React.FC<{ projectId: string }> = ({ project
 						</Button>
 					</Col>
 
-					{[Role["Account Manager"], Role.Admin, Role.Owner].includes(auth?.user?.role) && (
+					{[Role["Account Manager"], Role.Admin, Role.Owner, Role.Designer].includes(auth?.user?.role) && (
 						<Col>
 							<Button onClick={confirmReset} danger>
 								Reset Quiz
