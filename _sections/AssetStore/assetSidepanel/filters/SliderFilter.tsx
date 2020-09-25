@@ -16,26 +16,26 @@ export default function SliderFilter({ min, max, range, onChange, onAfterChange,
 	const [minVal, maxVal] = range;
 	return (
 		<>
-			<CustomDiv flexBasis="5ch">
+			<CustomDiv flexBasis='5ch'>
 				<StyledInput
 					error={min > max}
 					value={min}
 					min={minVal}
 					max={maxVal}
-					type="number"
+					type='number'
 					onChange={e => onValueEntry(e, "min")}
 				/>
 			</CustomDiv>
 			<CustomDiv flexGrow={999}>
 				<MarginCorrectedSlider range max={maxVal} value={value} onChange={onChange} onAfterChange={onAfterChange} />
 			</CustomDiv>
-			<CustomDiv flexBasis="5ch">
+			<CustomDiv flexBasis='5ch'>
 				<StyledInput
 					error={min > max}
 					value={max}
 					min={minVal}
 					max={maxVal}
-					type="number"
+					type='number'
 					onChange={e => onValueEntry(e, "max")}
 				/>
 			</CustomDiv>

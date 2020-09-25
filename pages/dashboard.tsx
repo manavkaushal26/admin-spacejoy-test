@@ -85,9 +85,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 	}>(null);
 
 	useEffect(() => {
-		if (projectId) {
-			setSelectedUser(projectId);
-		}
+		setSelectedUser(projectId);
 	}, [projectId]);
 
 	useEffect(() => {

@@ -7,7 +7,7 @@ import {
 	combinationExamples,
 	nameExamples,
 	retailerExamples,
-	shapeExamples
+	shapeExamples,
 } from "@sections/AssetStore/exampleConstants";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
@@ -62,7 +62,7 @@ const SearchExamples = () => {
 					renderItem={item => (
 						<List.Item>
 							<List.Item.Meta
-								avatar={<Avatar style={{ backgroundColor: item.color }} />}
+								avatar={<Avatar shape='square' style={{ backgroundColor: item.color }} />}
 								title={<Text copyable>{item.title}</Text>}
 							/>
 						</List.Item>

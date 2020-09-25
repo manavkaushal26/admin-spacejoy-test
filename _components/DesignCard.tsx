@@ -44,7 +44,7 @@ const topRightTick = css`
 
 const StateAwareCards = styled(Card)<{ state: DesignState; revisionDesign: boolean }>`
 	${({ state }): FlattenSimpleInterpolation | null => (state === DesignState.Finalized ? topRightTick : null)}
-	background-color: ${({ revisionDesign }): string | null => (revisionDesign ? "#fff7e6" : null)};
+	background-color: ${({ revisionDesign }): string | null => (revisionDesign ? "#472e16" : null)};
 	> .ant-card-body {
 		flex-grow: 1;
 	}

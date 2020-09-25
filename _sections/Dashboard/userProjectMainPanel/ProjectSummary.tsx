@@ -6,11 +6,12 @@ import {
 	convertDaysToMilliseconds,
 	convertMillisecondsToDays,
 	getColorsForPackages,
-	getValueSafely
+	getValueSafely,
 } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Avatar, Button, Col, Input, notification, Popconfirm, Radio, Row, Spin, Tag, Typography } from "antd";
 import moment from "moment";
+import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { getTagColor, StyledTag } from "../styled";
@@ -46,6 +47,8 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 	} = projectData;
 
 	const [roomNameLoading, setRoomNameLoading] = useState<boolean>(false);
+
+	const router = useRouter();
 
 	const [delayValue, setDelayValue] = useState<{
 		min: number;
@@ -187,7 +190,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		<VerticallyPaddedDiv>
 			<Row justify='space-between' align='middle' gutter={[8, 8]}>
 				<Col offset={1}>
-					<Row gutter={[16, 8]}>
+					<Row gutter={[16, 8]} align='middle'>
 						<Col>
 							<Avatar size={48} style={getColorsForPackages(items)}>
 								{displayName[0].toUpperCase()}
@@ -298,6 +301,17 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 						)}
 					</Col>
 				)}
+				<Col>
+					<Text>
+						<CloseCircleTwoTone
+							style={{ fontSize: "2.5rem" }}
+							onClick={() => {
+								router.push("/dashboard");
+								setProjectData(null);
+							}}
+						/>
+					</Text>
+				</Col>
 			</Row>
 		</VerticallyPaddedDiv>
 	);

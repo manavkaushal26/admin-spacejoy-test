@@ -1,4 +1,4 @@
-import { Card, Divider, Drawer, Modal, Slider, Spin } from "antd";
+import { Card, Divider, Drawer, Input, Modal, Slider, Spin } from "antd";
 import styled, { css } from "styled-components";
 
 export const ModifiedDivider = styled(Divider)`
@@ -42,7 +42,7 @@ export const GreyDrawer = styled(Drawer)`
 	}
 `;
 
-export const StyledInput = styled.input<{ error: boolean }>`
+export const StyledInput = styled(Input)<{ error: boolean }>`
 	::-webkit-inner-spin-button,
 	::-webkit-outer-spin-button {
 		-webkit-appearance: none;
