@@ -351,7 +351,6 @@ const TabSearch: React.FC<{
 											borderRadius: "0px",
 
 											pointerEvents: "none",
-											backgroundColor: "#fff",
 										}}
 										placeholder='~'
 										disabled

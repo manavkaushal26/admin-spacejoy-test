@@ -34,7 +34,6 @@ const OrderDelivered: React.FC<OrderDelivered> = ({
 			style={{
 				fontFamily:
 					"Open Sans, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, Helvetica, Arial, sans-serif",
-				background: "#eeeeee",
 				color: "rgba(0, 0, 0, 0.85)",
 			}}
 		>
@@ -46,7 +45,6 @@ const OrderDelivered: React.FC<OrderDelivered> = ({
 								margin: "auto",
 								borderSpacing: "0px",
 								boxShadow: "0 3px 6px rgba(0, 0, 0, 0.02), 0 3px 6px rgba(0, 0, 0, 0.035)",
-								backgroundColor: "#ffffff",
 								borderRadius: "4px",
 							}}
 							className='tables'

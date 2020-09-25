@@ -1,4 +1,4 @@
-import { Card, Divider, Drawer, Spin, Slider, Modal } from "antd";
+import { Card, Divider, Drawer, Modal, Slider, Spin } from "antd";
 import styled, { css } from "styled-components";
 
 export const ModifiedDivider = styled(Divider)`
@@ -32,11 +32,7 @@ export const FullheightSpin = styled(Spin)`
 `;
 
 export const GreyDrawer = styled(Drawer)`
-	.ant-drawer-content {
-		background: white;
-	}
 	.ant-drawer-wrapper-body {
-		background: white;
 		display: flex;
 		flex-direction: column;
 		height: 100%;

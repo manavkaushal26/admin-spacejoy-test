@@ -136,7 +136,6 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 				<Spin spinning={loading}>
 					<Layout hasSider>
 						<Layout.Sider
-							style={{ backgroundColor: "white" }}
 							collapsed={collapsed}
 							onCollapse={(collapsedState): void => {
 								setCollapsed(collapsedState);
@@ -162,8 +161,8 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 								setProjectPhaseUpdateValue={setProjectPhaseUpdateValue}
 							/>
 						</Layout.Sider>
-						<Layout style={{ background: "#fafafa" }}>
-							<WhiteBorderMaxHeightDiv>
+						<Layout>
+							<MaxHeightDiv>
 								<PaddedDiv>
 									<UserProjectMainPanel
 										updateProjectPhaseInSidepanel={updateProjectPhaseInSidepanel}
@@ -175,7 +174,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 										setSearchFiltersChanged={setSearchFiltersChanged}
 									/>
 								</PaddedDiv>
-							</WhiteBorderMaxHeightDiv>
+							</MaxHeightDiv>
 						</Layout>
 					</Layout>
 				</Spin>

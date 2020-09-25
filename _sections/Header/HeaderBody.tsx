@@ -1,4 +1,3 @@
-import Logo from "@components/Logo";
 import SVGIcon from "@components/SVGIcon";
 import useAuth from "@utils/authContext";
 import { Col, Row, Typography } from "antd";
@@ -34,9 +33,9 @@ const HeaderBody: React.FC<HeaderBody> = ({ pageName }) => {
 				<Row justify='space-around' align='middle'>
 					<Col span={8}>
 						<ActiveLink href='/launchpad' as='/launchpad'>
-							<Row align='middle' gutter={[4, 0]}>
+							<Row align='middle' gutter={[4, 0]} style={{ height: "70px" }}>
 								<Col>
-									<Logo md />
+									<Text strong>Spacejoy</Text>
 								</Col>
 								{pageName && (
 									<>
@@ -66,9 +65,9 @@ const HeaderBody: React.FC<HeaderBody> = ({ pageName }) => {
 				<Row justify='space-around'>
 					<Col span={20}>
 						<ActiveLink href='/launchpad' as='/launchpad'>
-							<Row align='middle' gutter={[4, 0]}>
+							<Row align='middle' gutter={[4, 0]} style={{ height: "70px" }}>
 								<Col>
-									<Logo md />
+									<Text strong>Spacejoy</Text>
 								</Col>
 								{pageName && (
 									<>

@@ -27,7 +27,7 @@ export const useScraper: useScraper = (key, assetIds, immediate) => {
 	const [scrapedData, setScrapedData] = useLocalStorage<Record<string, ScrapedAssetType>>(key, null);
 	const [scraping, setScraping] = useState(false);
 	const [error, setError] = useState(false);
-
+	const [startScraping, setStartScraping] = useState<boolean>(false);
 	const { lastMessage } = useWebSocket(scrapeURL);
 
 	const fetchCurrentDataForAssets = async () => {
@@ -51,39 +51,49 @@ export const useScraper: useScraper = (key, assetIds, immediate) => {
 		if (requestId) fetchCurrentDataForAssets();
 	}, [requestId]);
 
+	useEffect(() => {
+		if (startScraping) {
+			setScrapeURL(page.WssUrl);
+			setStartScraping(false);
+		}
+	}, [startScraping]);
+
 	const triggerScraping = () => {
-		setScrapeURL(page.WssUrl);
+		setScrapeURL(null);
+		setStartScraping(true);
 	};
 	useEffect(() => {
 		if (immediate && !scrapedData) triggerScraping();
 	}, [immediate]);
 
 	useEffect(() => {
+		let timer = null;
 		try {
-			if (!!assetIds && !!lastMessage && scrapeURL !== "") {
+			if (!!assetIds && lastMessage !== null && scrapeURL !== "") {
 				const [event, data] = returnSocketId(lastMessage);
 				if (event === "OAuthCrossLogin.CONNECTION") {
 					setRequestId(prevState => data?.id || prevState);
-				} else if (event === "Scrape:Response") {
-					setScrapedData(data);
-					setScrapeURL(null);
-					setRequestId(null);
-					setScraping(false);
+				} else if (event === "Scrape:Response:Single") {
+					setScrapedData(prevData => ({ ...prevData, [data._id]: data }));
+					timer = setTimeout(() => {
+						setScraping(false);
+					}, 5000);
 				} else if (event === "Scrape:Error") {
 					setRequestId(null);
-
 					setScraping(false);
 					setError(true);
 				}
 			}
 		} catch (e) {
 			setRequestId(null);
-
 			setScrapeURL(null);
 			setScraping(false);
 			setError(true);
 		}
-	}, [assetIds, lastMessage]);
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [lastMessage]);
 
 	return { scrapedData, error, scraping, triggerScraping };
 };

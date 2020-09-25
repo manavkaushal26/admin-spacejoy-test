@@ -16,7 +16,6 @@ import React, { useEffect, useReducer } from "react";
 import styled from "styled-components";
 
 const BackgroundDiv = styled.div`
-	background-color: #fff;
 	margin: auto;
 	padding: 1.5rem 0px;
 `;

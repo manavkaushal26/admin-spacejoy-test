@@ -1,3 +1,3 @@
 export const scrapeAssetById = (): string => {
-	return "/asset/stock/available";
+	return "/asset/stock/v2/available";
 };

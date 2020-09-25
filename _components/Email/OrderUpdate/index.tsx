@@ -62,7 +62,6 @@ const OrderUpdate: React.FC<OrderUpdate> = ({
 							style={{
 								borderSpacing: "0px",
 								boxShadow: "0 3px 6px rgba(0, 0, 0, 0.02),  0 3px 6px rgba(0, 0, 0, 0.035)",
-								backgroundColor: "#ffffff",
 								borderRadius: "4px",
 							}}
 							className='tables'

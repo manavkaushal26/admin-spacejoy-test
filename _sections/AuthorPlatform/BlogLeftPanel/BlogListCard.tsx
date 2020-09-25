@@ -1,8 +1,8 @@
-import React from "react";
-import { Card, Row, Col, Typography, Tag } from "antd";
 import { Blog } from "@customTypes/blogTypes";
-import styled, { css, FlattenInterpolation, ThemeProps } from "styled-components";
 import { getTimeSince, getValueSafely } from "@utils/commonUtils";
+import { Card, Col, Row, Tag, Typography } from "antd";
+import React from "react";
+import styled, { css, FlattenInterpolation, ThemeProps } from "styled-components";
 import { getBlogTagColor, getBlogTextColor } from "../utils";
 
 const { Text, Paragraph } = Typography;
@@ -21,12 +21,15 @@ const StyledCard = styled(Card)<{ active: boolean }>`
 	${({ active }): FlattenInterpolation<ThemeProps<string>> =>
 		active &&
 		css`
-			background: ${({ theme }): string => theme.colors.mild.antblue};
+			background: ${({ theme }): string => theme.colors.dark};
 			border-right: 3px solid ${({ theme }): string => theme.colors.antblue};
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+			:hover {
+				border-right: 5px solid ${({ theme }): string => theme.colors.blue};
+			}
 		`};
 	:hover {
-		background: ${({ theme }): string => theme.colors.mild.antblue};
+		background: ${({ theme }): string => theme.colors.dark};
 	}
 `;
 
@@ -41,12 +44,12 @@ const BlogListCard: React.FC<BlogListCard> = ({ blog, onCardClick, activeBlogId 
 		>
 			<Row gutter={[4, 4]}>
 				<Col span={24}>
-					<Row justify="space-between">
+					<Row justify='space-between'>
 						<Col>
-							<Text type="secondary">{getValueSafely(() => blog.category.title, "No Category")}</Text>
+							<Text type='secondary'>{getValueSafely(() => blog.category.title, "No Category")}</Text>
 						</Col>
 						<Col>
-							<Text type="secondary">{getTimeSince(blog.publishDate || blog.createdAt)}</Text>
+							<Text type='secondary'>{getTimeSince(blog.publishDate || blog.createdAt)}</Text>
 						</Col>
 					</Row>
 				</Col>

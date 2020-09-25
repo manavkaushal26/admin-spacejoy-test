@@ -18,9 +18,8 @@ export const useLocalStorage: useLocalStorage = (key, initialValue) => {
 	const setLocalStorage = value => {
 		try {
 			const valueToStore = value instanceof Function ? value(storedValue) : value;
-
 			setStoredValue(valueToStore);
-			setLocalStorageValue(key, value);
+			setLocalStorageValue(key, valueToStore);
 		} catch (e) {
 			console.log(e);
 		}

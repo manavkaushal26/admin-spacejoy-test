@@ -1,13 +1,14 @@
 import GlobalStyle from "@theme/globalStyle";
+import { Layout as AntdLayout } from "antd";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import Header from "../Header";
 
 const dev = process.env.NODE_ENV !== "production";
 
-const MainStyled = styled.main<{ isServer: boolean }>`
+const MainStyled = styled(AntdLayout)<{ isServer: boolean }>`
 	padding-top: 70px;
-	height: calc(100vh - 70px);
+	height: calc(100vh);
 	position: relative;
 	&.client-server-identifier {
 		&:after {

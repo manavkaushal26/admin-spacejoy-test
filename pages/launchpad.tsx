@@ -134,7 +134,6 @@ const CapitalizedTitle = styled(Title)`
 
 const GreyMaxHeightDiv = styled.div`
 	height: calc(100vh - 70px);
-	background-image: linear-gradient(to bottom, white, #fafafa);
 `;
 
 const IconBackground = styled.div<{ color: string }>`
@@ -155,7 +154,7 @@ const LandingPage: NextPage<LandingPageProps> = () => {
 			<GreyMaxHeightDiv>
 				<LoudPaddingDiv>
 					<Row gutter={[0, 16]}>
-						<Col style={{ backgroundColor: "white" }} span={24}>
+						<Col span={24}>
 							<CapitalizedTitle level={2}>Hey {getValueSafely(() => user.name, "")},</CapitalizedTitle>
 							<h2 style={{ margin: 0 }}>Welcome to the Spacejoy Launchpad</h2>
 						</Col>

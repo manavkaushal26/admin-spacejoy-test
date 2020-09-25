@@ -3,7 +3,7 @@ const withOffline = require("next-offline");
 const path = require("path");
 const fs = require("fs");
 const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
-
+const darkTheme = require("@ant-design/dark-theme");
 const withLess = require("@zeit/next-less");
 const lessToJS = require("less-vars-to-js");
 
@@ -68,7 +68,7 @@ const nextConfig = {
 	},
 	lessLoaderOptions: {
 		javascriptEnabled: true,
-		modifyVars: themeVariables, // make your antd custom effective
+		modifyVars: { ...darkTheme.default, ...themeVariables }, // make your antd custom effective
 	},
 	webpack: (config, { isServer }) => {
 		config.plugins.push(

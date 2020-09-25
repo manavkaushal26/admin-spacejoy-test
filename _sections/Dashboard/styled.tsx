@@ -296,19 +296,18 @@ export const StatusButton = styled(Button)<{ status: Status }>`
 	}
 `;
 export const ShadowDiv = styled.div<{ active?: boolean }>`
-	box-shadow: 0px 2px 16px #999ba81f;
-	background: #fafafa;
+	box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.4);
 	transition: all 0.3s;
 	${({ active }): FlattenSimpleInterpolation => {
 		return active
 			? css`
-					box-shadow: 0px 4px 32px #999ba85f;
+					box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.4);
 			  `
 			: null;
 	}}
 	:hover {
 		cursor: pointer;
-		box-shadow: 0px 4px 32px #999ba85f;
+		box-shadow: 0px 4px 32px rgba(0, 0, 0, 0.4);
 	}
 	> * {
 		cursor: default;

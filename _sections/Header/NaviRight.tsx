@@ -2,9 +2,12 @@ import Button from "@components/Button";
 import DropMenu from "@components/DropMenu";
 import User from "@customTypes/userType";
 import { allowedRoles } from "@utils/constants";
+import { Typography } from "antd";
 import React from "react";
 import ActiveLink from "./ActiveLink";
 import { HorizontalListStyled } from "./styled";
+
+const { Text } = Typography;
 
 interface NavRight {
 	authVerification: Partial<User>;
@@ -19,7 +22,7 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 						<DropMenu>
 							<DropMenu.Header>
 								<ActiveLink href='/dashboard' as='/dashboard'>
-									{authVerification.name}
+									<Text>{authVerification.name}</Text>
 								</ActiveLink>
 							</DropMenu.Header>
 							<DropMenu.Body>

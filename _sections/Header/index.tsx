@@ -3,8 +3,8 @@ import styled from "styled-components";
 import HeaderBody from "./HeaderBody";
 
 const HeaderStyled = styled.div`
-	border-bottom: 1px #eaeaea solid;
-	background: ${({ theme }) => theme.colors.white};
+	border-bottom: 1px #303030 solid;
+	background: #1a1c1d;
 	position: fixed;
 	top: 0;
 	left: 0;

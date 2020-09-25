@@ -50,15 +50,14 @@ const CyanButton = styled(Button)`
 `;
 
 const HoverCard = styled.div`
-	border: 1px solid #e8e8e8;
+	border: 1px solid rgba(0, 0, 0, 0.09);
 	height: 100%;
 	padding: 24px;
-	background: white;
 
 	:hover {
 		cursor: pointer;
 
-		border-color: rgba(0, 0, 0, 0.09);
+		border-color: #e8e8e8;
 		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 	}
 `;

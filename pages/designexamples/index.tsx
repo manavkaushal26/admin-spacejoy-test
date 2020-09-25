@@ -21,6 +21,7 @@ import styled from "styled-components";
 const { Title } = Typography;
 
 const MaxWidthDesignPage = styled.div`
+	width: 100%;
 	max-width: calc(1200px + 1rem);
 	margin: auto;
 `;

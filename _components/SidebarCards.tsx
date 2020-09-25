@@ -10,7 +10,7 @@ import { SilentDivider } from "@sections/Dashboard/styled";
 import { Avatar, Card, Col, Row, Tooltip, Typography } from "antd";
 import { Moment } from "moment";
 import React from "react";
-import styled, { css, ThemedCssFunction, DefaultTheme } from "styled-components";
+import styled, { css } from "styled-components";
 import { CapitalizedText } from "./CommonStyledComponents";
 
 interface SidebarCard {
@@ -70,17 +70,17 @@ const SidebarCards = styled(Card)<{ active: boolean; leftBorder: string }>`
 	${({ active }) =>
 		active &&
 		css`
-			background: ${({ theme }): string => theme.colors.mild.antblue};
-			border-right: 3px solid ${({ theme }): string => theme.colors.antblue};
+			background: ${({ theme }): string => theme.colors.dark};
+			border-right: 3px solid ${({ theme }): string => theme.colors.blue};
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 			:hover {
-				border-right: 5px solid ${({ theme }): string => theme.colors.antblue};
+				border-right: 5px solid ${({ theme }): string => theme.colors.blue};
 			}
 		`};
 	:hover {
-		background: ${({ theme }): string => theme.colors.mild.antblue};
+		background: ${({ theme }): string => theme.colors.dark};
 		border-left: 5px solid ${({ leftBorder }): string => leftBorder};
-		border-right: 5px solid ${({ theme }): string => theme.colors.antblue};
+		border-right: 5px solid ${({ theme }): string => theme.colors.blue};
 	}
 `;
 
@@ -106,10 +106,10 @@ const SidebarCard: React.FC<SidebarCard> = ({
 					daysLeft,
 					!endTime || phase === PhaseInternalNames.designReady || phase === PhaseInternalNames.shop
 				)}
-				size="small"
+				size='small'
 				active={selectedId === uniqueId}
 				hoverable
-				style={{ width: "100%", backgroundColor: "#F2F4F6" }}
+				style={{ width: "100%" }}
 				onClick={(e): void => {
 					e.preventDefault();
 					onClick(uniqueId);
@@ -117,14 +117,14 @@ const SidebarCard: React.FC<SidebarCard> = ({
 			>
 				<Row gutter={[8, 8]}>
 					<Col span={24}>
-						<Row gutter={[4, 4]} align="middle">
+						<Row gutter={[4, 4]} align='middle'>
 							<Col span={3}>
 								<Avatar style={avatarStyle}>
 									<CapitalizedText>{avatarText}</CapitalizedText>
 								</Avatar>
 							</Col>
 							<Col span={17}>
-								<Row justify="space-between" align="middle" gutter={[4, 4]}>
+								<Row justify='space-between' align='middle' gutter={[4, 4]}>
 									<Col span={24}>
 										<CapitalizedText strong>{title}</CapitalizedText>
 									</Col>
@@ -143,9 +143,9 @@ const SidebarCard: React.FC<SidebarCard> = ({
 							</Col>
 							<Col span={4}>
 								{!endTime ? (
-									<Row justify="center" align="middle">
+									<Row justify='center' align='middle'>
 										<Text>
-											<Tooltip title="Not started">
+											<Tooltip title='Not started'>
 												<small>N/S</small>
 											</Tooltip>
 										</Text>
@@ -177,7 +177,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 								<Col span={4}>
 									<Row>
 										<Col span={24}>
-											<Row justify="center">
+											<Row justify='center'>
 												<Text>
 													<small>
 														<small>Delay</small>
@@ -186,8 +186,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 											</Row>
 										</Col>
 										<Col span={24}>
-											<Row justify="center">
-												<HighlightSpan type="danger">
+											<Row justify='center'>
+												<HighlightSpan type='danger'>
 													<Text strong>
 														<small>{delayText}</small>
 													</Text>

@@ -278,7 +278,9 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 									<Col>
 										<Row gutter={[8, 0]} align='middle'>
 											<Col>
-												<ArrowLeftOutlined onClick={goBack} />
+												<Text>
+													<ArrowLeftOutlined onClick={goBack} />
+												</Text>
 											</Col>
 											<Col>
 												<Text strong>Order Details ({order?.orderId})</Text>
