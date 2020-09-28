@@ -70,7 +70,9 @@ const SidebarCards = styled(Card)<{ active: boolean; leftBorder: string }>`
 	${({ active }) =>
 		active &&
 		css`
-			background: ${({ theme }): string => theme.colors.dark};
+			/* background: ${({ theme }): string => theme.colors.dark}; */
+			background: ${({ theme }): string => theme.colors.mild.antBlue};
+
 			border-right: 3px solid ${({ theme }): string => theme.colors.blue};
 			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
 			:hover {
@@ -78,7 +80,7 @@ const SidebarCards = styled(Card)<{ active: boolean; leftBorder: string }>`
 			}
 		`};
 	:hover {
-		background: ${({ theme }): string => theme.colors.dark};
+		background: ${({ theme }): string => theme.colors.mild.antBlue};
 		border-left: 5px solid ${({ leftBorder }): string => leftBorder};
 		border-right: 5px solid ${({ theme }): string => theme.colors.blue};
 	}

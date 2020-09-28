@@ -208,6 +208,7 @@ export const SilentDivider = styled(Divider)`
 `;
 
 export const StepsContainer = styled(CustomDiv)`
+	background: #fff;
 	> * + * {
 		margin-top: 2rem;
 	}

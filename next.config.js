@@ -68,7 +68,7 @@ const nextConfig = {
 	},
 	lessLoaderOptions: {
 		javascriptEnabled: true,
-		modifyVars: { ...darkTheme.default, ...themeVariables }, // make your antd custom effective
+		modifyVars: { ...themeVariables }, // make your antd custom effective
 	},
 	webpack: (config, { isServer }) => {
 		config.plugins.push(

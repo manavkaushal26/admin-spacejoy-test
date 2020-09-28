@@ -224,7 +224,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	};
 
 	return (
-		<MaxHeightDiv style={{ position: "relative", overflow: "hidden" }} ref={scrollRef}>
+		<MaxHeightDiv style={{ position: "relative", overflow: "hidden", backgroundColor: "#f2f4f6" }} ref={scrollRef}>
 			<Row gutter={[8, 8]}>
 				<Col span={24}>
 					<Button block type='primary' onClick={toggleDrawer}>
