@@ -26,6 +26,11 @@ const page = {
 		: "wss://api-staging.spacejoy.com/socket.io/?EIO=4&transport=websocket",
 };
 
+const pusherConfig = {
+	key: isProduction ? "7eb73052d6fa4a2a9b93" : "314266fb5ade06ca76e1",
+	cluster: "ap2",
+};
+
 const projectConfig = {
 	lifetime: 7,
 };
@@ -100,4 +105,5 @@ module.exports = {
 	company,
 	cloudinary: isProduction ? cloudinary : stagingCloudinary,
 	projectConfig,
+	pusherConfig,
 };
