@@ -9,7 +9,7 @@ const PriceData: React.FC<{ scrapedData: ScrapedAssetType }> = ({ scrapedData })
 		} else if (scrapedData?.scrape?.prices) {
 			return <> ${scrapedData?.scrape?.prices?.join("-")}</>;
 		} else {
-			return "-";
+			return <>N/A</>;
 		}
 	} else {
 		return (
