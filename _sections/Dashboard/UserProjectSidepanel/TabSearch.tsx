@@ -1,12 +1,14 @@
 import { SearchOutlined } from "@ant-design/icons";
+import { userApi } from "@api/userApi";
 import {
 	HumanizePhaseInternalNames,
 	QuizStateArray,
 	QuizStateLabels,
-	RoomNameSearch,
+	RoomNameSearch
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Typography } from "antd";
+import fetcher from "@utils/fetcher";
+import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Typography } from "antd";
 import moment from "moment";
 import React, { useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
@@ -14,7 +16,7 @@ import {
 	phaseDefaultValues,
 	SortOptions,
 	UserProjectSidePanelInitialState,
-	UserProjectSidePanelState,
+	UserProjectSidePanelState
 } from "./reducer";
 
 const { RangePicker } = DatePicker;
@@ -32,6 +34,32 @@ const TabSearch: React.FC<{
 	// const [state, setState] = useState<UserProjectSidePanelState>(UserProjectSidePanelInitialState);
 	const [selectedSort, setSelectedSort] = useState(SortOptions["Created At - Newest First"]);
 	const [minMax, setMinMax] = useState<number[]>([]);
+	const [designerNames, setDesignerNames] = useState([]);
+	const [fetching, setFetching] = useState<boolean>(false);
+	const [selectDesigner, setSelectDesigner] = useState<string>();
+
+	const fetchDesignerNames = async (): Promise<void> => {
+		const endPoint = `${userApi()}?limit=50`;
+		setFetching(true);
+		try {
+			const response = await fetcher({
+				endPoint,
+				method: "POST",
+				body: {
+					"data": {
+						"role": { "search": "array", "value": ["designer"] }
+					}
+				}
+			});
+			setDesignerNames(response.data.data.map(designer => ({
+				"name": `${designer.profile.name}`
+			})));
+		}
+		catch (e) {
+
+		}
+		setFetching(false);
+	};
 
 	const handleSearch = (value: string | number, type: string): void => {
 		if (type === "email") {
@@ -134,6 +162,13 @@ const TabSearch: React.FC<{
 		});
 	};
 
+	const handleChange = (value) => {
+		console.log('designer search value', value);
+		setFetching(false);
+		setSelectDesigner(value);
+		handleSearch(value, "designer");
+	}
+
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
@@ -188,21 +223,24 @@ const TabSearch: React.FC<{
 								<Text strong>Designer Name</Text>
 							</Col>
 							<Col span={24}>
-								<Input
-									value={state.designerSearchText}
-									style={{ width: "100%" }}
-									onChange={(e): void => {
-										e.persist();
-										const {
-											target: { value },
-										} = e;
-										handleSearch(value, "designer");
-									}}
-									onPressEnter={onSearchSubmit}
-									placeholder='Designer Name'
+								<Select
 									allowClear
-									prefix={<SearchOutlined />}
-								/>
+									defaultActiveFirstOption={false}
+									showArrow={false}
+									style={{ width: "100%" }}
+									placeholder="Designer Name"
+									value={selectDesigner}
+									onChange={handleChange}
+									showSearch
+									onSearch={fetchDesignerNames}
+									notFoundContent={fetching ? <Spin size="small" /> : null}
+								>
+									{
+										designerNames.map(designerName =>
+											<Option key={designerName.name} value={designerName.name}> {designerName.name} </Option>
+										)
+									}
+								</Select>
 							</Col>
 						</Row>
 					</Col>
