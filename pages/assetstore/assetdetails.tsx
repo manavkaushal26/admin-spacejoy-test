@@ -5,7 +5,7 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import { assetCreateOrUpdationApi, markMissingAssetAsComplete, uploadProductImagesApi } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
@@ -40,7 +40,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload,
+	Upload
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -112,9 +112,8 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			redirectToLocation({
 				pathname: "/assetstore/assetdetails",
 				query: { assetId: state._id, mai: mai, designId: designId, entry },
-				url: `/assetstore/assetdetails?assetId=${state._id}${mai ? `&mai=${mai}` : ""}${
-					designId ? `&did=${designId}` : ""
-				}${entry ? `&entry=${entry}` : ""}`,
+				url: `/assetstore/assetdetails?assetId=${state._id}${mai ? `&mai=${mai}` : ""}${designId ? `&did=${designId}` : ""
+					}${entry ? `&entry=${entry}` : ""}`,
 				options: { shallow: true },
 			});
 		}
@@ -145,10 +144,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				},
 				"retailer": getValueSafely(() => response.data.retailer._id, ""),
 				"spatialData.mountType": response.data.spatialData.mountType,
-				"spatialData.clampValue": getValueSafely<number>(
-					() => (response.data.spatialData.clampValue < 0 ? 0 : response.data.spatialData.clampValue),
-					0
-				),
+				"spatialData.clampValue": getValueSafely<-1 | 1>(
+					() => (response.data.spatialData.clampValue < 0 ? -1 : response.data.spatialData.clampValue),
+					1),
 				"weight": parseFloat(response.data.weight || 0),
 				"price": parseFloat(response.data.price || 0),
 			});
@@ -622,25 +620,25 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 
 		const metaToSend = state._id
 			? {
-					...{
-						...(changedState?.meta?.category ? { "meta.category": changedState?.["meta.category"] } : {}),
-					},
-					...{
-						...(changedState?.meta?.subcategory ? { "meta.subcategory": changedState?.["meta.category"] } : {}),
-					},
-					...{
-						...(changedState?.meta?.vertical ? { "meta.vertical": changedState?.["meta.category"] } : {}),
-					},
-			  }
+				...{
+					...(changedState?.meta?.category ? { "meta.category": changedState?.["meta.category"] } : {}),
+				},
+				...{
+					...(changedState?.meta?.subcategory ? { "meta.subcategory": changedState?.["meta.category"] } : {}),
+				},
+				...{
+					...(changedState?.meta?.vertical ? { "meta.vertical": changedState?.["meta.category"] } : {}),
+				},
+			}
 			: {
-					meta: {
-						...{ ...(changedState?.["meta.category"] ? { category: changedState?.["meta.category"] } : {}) },
-						...{
-							...(changedState?.["meta.subcategory"] ? { subcategory: changedState?.["meta.subcategory"] } : {}),
-						},
-						...{ ...(changedState?.["meta.vertical"] ? { vertical: changedState?.["meta.vertical"] } : {}) },
+				meta: {
+					...{ ...(changedState?.["meta.category"] ? { category: changedState?.["meta.category"] } : {}) },
+					...{
+						...(changedState?.["meta.subcategory"] ? { subcategory: changedState?.["meta.subcategory"] } : {}),
 					},
-			  };
+					...{ ...(changedState?.["meta.vertical"] ? { vertical: changedState?.["meta.vertical"] } : {}) },
+				},
+			};
 
 		const changedStateToSend = {
 			...changedState,
@@ -997,7 +995,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														>
 															<Select>
 																<Select.Option value={1}>Yes</Select.Option>
-																<Select.Option value={0}>No</Select.Option>
+																<Select.Option value={-1}>No</Select.Option>
 															</Select>
 														</Form.Item>
 													</Col>
