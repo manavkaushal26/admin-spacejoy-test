@@ -347,7 +347,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					<Col sm={12} md={8}>
 						<Row justify='center'>
 							<CyanButton
-								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
+								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady && false}
 								onClick={warnUser}
 							>
 								Email Customer
