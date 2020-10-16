@@ -7,6 +7,7 @@ import {
 	RoomNameSearch
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
+import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Typography } from "antd";
 import moment from "moment";
@@ -47,7 +48,7 @@ const TabSearch: React.FC<{
 				method: "POST",
 				body: {
 					"data": {
-						"role": { "search": "array", "value": ["designer"] }
+						"role": { "search": "array", "value": ["designer", "account manager"] }
 					}
 				}
 			});
@@ -60,6 +61,8 @@ const TabSearch: React.FC<{
 		}
 		setFetching(false);
 	};
+
+	const debouncefetchDesignerNames = debounce(() => fetchDesignerNames(), 500);
 
 	const handleSearch = (value: string | number, type: string): void => {
 		if (type === "email") {
@@ -163,7 +166,6 @@ const TabSearch: React.FC<{
 	};
 
 	const handleChange = (value) => {
-		console.log('designer search value', value);
 		setFetching(false);
 		setSelectDesigner(value);
 		handleSearch(value, "designer");
@@ -232,7 +234,7 @@ const TabSearch: React.FC<{
 									value={selectDesigner}
 									onChange={handleChange}
 									showSearch
-									onSearch={fetchDesignerNames}
+									onSearch={debouncefetchDesignerNames}
 									notFoundContent={fetching ? <Spin size="small" /> : null}
 								>
 									{
