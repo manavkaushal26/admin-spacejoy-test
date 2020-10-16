@@ -33,3 +33,7 @@ export const startRenderJob = (sourceId: string, jobId: string): string => {
 export const getSourceCount = (): string => {
 	return "https://krmasternode.spacejoy.com/api/v1/sources/count";
 };
+
+export const getPresignedURLForSourceUpload = (sourceId: string): string => {
+	return `https://krmasternode.spacejoy.com/api/v1/source/${sourceId}/file/presigned`;
+};

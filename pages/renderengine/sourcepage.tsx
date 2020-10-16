@@ -1,10 +1,16 @@
-import { CheckCircleFilled, CloseCircleFilled, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
+import {
+	CheckCircleFilled,
+	CheckCircleTwoTone,
+	CloseCircleFilled,
+	LoadingOutlined,
+	UploadOutlined,
+} from "@ant-design/icons";
 import {
 	createJobApi,
 	getAllJobs,
+	getPresignedURLForSourceUpload,
 	getSingleJobs,
 	getSingleSource,
-	sourceUploadFileApi,
 	startRenderJob,
 } from "@api/renderEngineApi";
 import { AllJobs, DetailedSource, RenderEngineStatus } from "@customTypes/renderEngineTypes";
@@ -318,6 +324,90 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 		} = e;
 		setSearchText(value.toLowerCase());
 	};
+
+	const beforeUploadSourceFile = async file => {
+		const endPoint = getPresignedURLForSourceUpload(sourceData._id);
+		try {
+			notification.open({
+				key: "getpresigned",
+				message: "Getting presigned url for upload",
+				icon: <LoadingOutlined spin={true} />,
+				duration: 5000,
+			});
+			const response = await fetcher({ endPoint, method: "POST", body: {}, hasBaseURL: true });
+
+			if (response.statusCode <= 300) {
+				notification.open({
+					key: "getpresigned",
+					message: "Received Presigned URL",
+					icon: <CheckCircleTwoTone />,
+					duration: 3000,
+				});
+				const endPoint = response.data.data.url;
+				const data = new FormData();
+				Object.entries(response.data.data.fields).map(([name, value]: [string, string]) => {
+					data.append(name, value);
+				});
+				data.append("file", file, file.fileName);
+				notification.close("getpresigned");
+
+				notification.open({ key: "upload", message: "Uploading file" });
+				const uploadResponse = await fetcher({
+					endPoint,
+					method: "POST",
+					body: data,
+					isMultipartForm: true,
+					hasBaseURL: true,
+					noAuthorization: true,
+				});
+				if (uploadResponse.statusCode <= 300) {
+					notification.open({
+						key: "upload",
+						message: "Uploaded file",
+						icon: <CheckCircleTwoTone />,
+						duration: 3000,
+					});
+
+					const endPoint = `${getSingleSource(sourceData._id)}/file`;
+					notification.close("upload");
+
+					notification.open({
+						key: "camera",
+						message: "Initiate fetching camera",
+						icon: <CheckCircleTwoTone />,
+						duration: 5000,
+					});
+					const cameraResponse = await fetcher({ endPoint, method: "PATCH", hasBaseURL: true });
+
+					if (cameraResponse.statusCode <= 300) {
+						notification.open({
+							key: "camera",
+							message: "Successfully initiated Camera fetch",
+							icon: <CheckCircleTwoTone />,
+							duration: 3000,
+						});
+						setSourceData({
+							...sourceData,
+							storage: {
+								key: response.data.data.fields.key,
+								bucket: response.data.data.fields.bucket,
+								url: `${response.data.data.url}/${response.data.data.fields.key}`,
+							},
+							job: cameraResponse.data.data.job,
+						});
+						notification.close("camera");
+					}
+				} else {
+					throw new Error("Failed to Upload File");
+				}
+			} else {
+				throw new Error("Failed to get Presigned link");
+			}
+		} catch (e) {
+			notification.error({ key: "getpresigned", message: e.message, duration: 5000 });
+		}
+	};
+
 	return (
 		<PageLayout pageName='Render Engine'>
 			<Head>
@@ -343,7 +433,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 												accept='.blend'
 												fileList={uploadedFile}
 												onChange={handleFileChange}
-												action={sourceUploadFileApi(sourceData._id)}
+												beforeUpload={beforeUploadSourceFile}
 											>
 												<Button type='primary'>
 													<UploadOutlined />
@@ -377,7 +467,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 																accept='.blend'
 																fileList={uploadedFile}
 																onChange={handleFileChange}
-																action={sourceUploadFileApi(sourceData._id)}
+																beforeUpload={beforeUploadSourceFile}
 															>
 																<Button type='ghost'>
 																	<UploadOutlined /> Re-upload
@@ -441,7 +531,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 													accept='.blend'
 													fileList={uploadedFile}
 													onChange={handleFileChange}
-													action={sourceUploadFileApi(sourceData._id)}
+													beforeUpload={beforeUploadSourceFile}
 												>
 													<Result
 														style={{ cursor: "pointer" }}

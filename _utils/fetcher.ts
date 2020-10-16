@@ -6,13 +6,22 @@ import getCookie from "./getCookie";
 interface FetcherParams {
 	ctx?: NextPageContext | GetServerSidePropsContext;
 	endPoint: string;
-	method: "GET" | "POST" | "PUT" | "DELETE";
+	method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 	body?: any;
 	hasBaseURL?: boolean;
 	isMultipartForm?: boolean;
+	noAuthorization?: boolean;
 }
 
-async function fetcher({ ctx, endPoint, method, body, hasBaseURL, isMultipartForm }: FetcherParams): Promise<any> {
+async function fetcher({
+	ctx,
+	endPoint,
+	method,
+	body,
+	hasBaseURL,
+	isMultipartForm,
+	noAuthorization,
+}: FetcherParams): Promise<any> {
 	const JWT = getCookie(ctx, cookieNames.authToken);
 	const isServer = ctx && ctx?.req && !!ctx?.req;
 	let apiURL = endPoint;
@@ -22,12 +31,14 @@ async function fetcher({ ctx, endPoint, method, body, hasBaseURL, isMultipartFor
 			apiURL = `${page.localApiBaseUrl}${endPoint}`;
 		}
 	}
-	const headers = JWT
-		? {
-				"Content-Type": "application/json",
-				"Authorization": JWT,
-		  }
-		: { "Content-Type": "application/json" };
+
+	const headers =
+		JWT && !noAuthorization
+			? {
+					"Content-Type": "application/json",
+					"Authorization": JWT,
+			  }
+			: { "Content-Type": "application/json" };
 	const options =
 		method === "GET"
 			? {
