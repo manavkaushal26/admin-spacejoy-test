@@ -1,6 +1,7 @@
 import { editPackageApi } from "@api/metaApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import InputField from "@components/Inputs/InputField";
+import { DetailedPriceData } from "@customTypes/pricesTypes";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, Drawer, Input, notification, Row, Spin, Switch, Typography } from "antd";
 import React, { useEffect, useState } from "react";
@@ -89,8 +90,9 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 			...prevState,
 			savings: {
 				inAmount: prevState?.price?.value - prevState?.salePrice?.value,
-				inPercent: (((prevState?.price?.value - prevState?.salePrice?.value) / prevState?.price?.value) * 100).toFixed(
-					0
+				inPercent: parseInt(
+					(((prevState?.price?.value - prevState?.salePrice?.value) / prevState?.price?.value) * 100).toFixed(0),
+					10
 				),
 			},
 		}));

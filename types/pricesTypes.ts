@@ -2,8 +2,8 @@ import { RevisionMeta } from "./dashboardTypes";
 import { Status } from "./userType";
 
 export interface PriceEntry {
-	label: string;
-	value: number;
+	label?: string;
+	value?: number;
 	inPercent?: number;
 	inAmount?: number;
 }
