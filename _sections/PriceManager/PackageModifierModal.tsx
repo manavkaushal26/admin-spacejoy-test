@@ -1,10 +1,9 @@
 import { editPackageApi } from "@api/metaApi";
-import { DetailedPriceData } from "@customTypes/pricesTypes";
-import fetcher from "@utils/fetcher";
-import { Button, Col, Drawer, Input, notification, Row, Switch, Typography, Card, Spin } from "antd";
-import React, { useEffect, useState } from "react";
-import InputField from "@components/Inputs/InputField";
 import { CapitalizedText } from "@components/CommonStyledComponents";
+import InputField from "@components/Inputs/InputField";
+import fetcher from "@utils/fetcher";
+import { Button, Card, Col, Drawer, Input, notification, Row, Spin, Switch, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import MultiInputField from "../collections/MultiInputField";
 
 const { Text } = Typography;
@@ -86,6 +85,18 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 	};
 
 	useEffect(() => {
+		setEditPackage(prevState => ({
+			...prevState,
+			savings: {
+				inAmount: prevState?.price?.value - prevState?.salePrice?.value,
+				inPercent: (((prevState?.price?.value - prevState?.salePrice?.value) / prevState?.price?.value) * 100).toFixed(
+					0
+				),
+			},
+		}));
+	}, [editPackage?.price?.value, editPackage?.salePrice?.value]);
+
+	useEffect(() => {
 		if (editRecordId) {
 			fetchAndPopulatePackage();
 		}
@@ -93,27 +104,32 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 
 	return (
 		<>
-			<Drawer width={360} visible={!!editRecordId} title="Edit Package" onClose={toggleDrawer}>
+			<Drawer width={360} visible={!!editRecordId} title='Edit Package' onClose={toggleDrawer}>
 				<Spin spinning={loading}>
 					<Row gutter={[8, 8]}>
 						<Col span={24}>
 							<CapitalizedText strong>{editPackage?.slug} Package Details</CapitalizedText>
 						</Col>
 						<Col span={24}>
-							<Card size="small">
+							<Card size='small'>
 								<Row>
 									<Col span={24}>
-										<InputField onChange={onChange} name="slug" label="Slug" value={editPackage?.slug} />
-									</Col>
-									<Col span={24}>
-										<InputField onChange={onChange} name="price.value" label="Price" value={editPackage?.price.value} />
+										<InputField onChange={onChange} name='slug' label='Slug' value={editPackage?.slug} />
 									</Col>
 									<Col span={24}>
 										<InputField
 											onChange={onChange}
-											name="salePrice.value"
-											label="Sale Price"
-											value={editPackage?.salePrice.value}
+											name='price.value'
+											label='Price'
+											value={editPackage?.price?.value}
+										/>
+									</Col>
+									<Col span={24}>
+										<InputField
+											onChange={onChange}
+											name='salePrice.value'
+											label='Sale Price'
+											value={editPackage?.salePrice?.value}
 										/>
 									</Col>
 									<Col span={24}>
@@ -124,10 +140,10 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 											<Col span={24}>
 												<Row gutter={[4, 4]}>
 													<Col span={12}>
-														<Input prefix="$" disabled name="salePrice.value" value={editPackage?.savings?.inAmount} />
+														<Input prefix='$' disabled name='savings.value' value={editPackage?.savings?.inAmount} />
 													</Col>
 													<Col span={12}>
-														<Input prefix="%" disabled name="salePrice.value" value={editPackage?.savings?.inPercent} />
+														<Input prefix='%' disabled name='savings.value' value={editPackage?.savings?.inPercent} />
 													</Col>
 												</Row>
 											</Col>
@@ -136,8 +152,8 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 									<Col span={24}>
 										<InputField
 											onChange={onChange}
-											name="turnAroundTime"
-											label="Turn Around time"
+											name='turnAroundTime'
+											label='Turn Around time'
 											value={editPackage?.turnAroundTime}
 										/>
 									</Col>
@@ -148,13 +164,13 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 							<CapitalizedText strong>{editPackage?.slug} Revision Details</CapitalizedText>
 						</Col>
 						<Col span={24}>
-							<Card size="small">
+							<Card size='small'>
 								<Row>
 									<Col span={24}>
 										<InputField
 											onChange={onChange}
-											name="revisionMeta.maxRevisionsAllowed"
-											label="Max revisons in package"
+											name='revisionMeta.maxRevisionsAllowed'
+											label='Max revisons in package'
 											value={editPackage?.revisionMeta?.maxRevisionsAllowed}
 										/>
 									</Col>
@@ -162,8 +178,8 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 										<Row>
 											<InputField
 												onChange={onChange}
-												name="revisionMeta.maxRevisionTat"
-												label="Max Revision TAT"
+												name='revisionMeta.maxRevisionTat'
+												label='Max Revision TAT'
 												value={editPackage?.revisionMeta?.maxRevisionTat}
 											/>
 										</Row>
@@ -172,8 +188,8 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 										<Row>
 											<InputField
 												onChange={onChange}
-												name="revisionMeta.minRevisionTat"
-												label="Min Revision TAT"
+												name='revisionMeta.minRevisionTat'
+												label='Min Revision TAT'
 												value={editPackage?.revisionMeta?.minRevisionTat}
 											/>
 										</Row>
@@ -182,8 +198,8 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 										<Row>
 											<InputField
 												onChange={onChange}
-												name="revisionMeta.maxProductRequestsAllowed"
-												label="Max Product requests"
+												name='revisionMeta.maxProductRequestsAllowed'
+												label='Max Product requests'
 												value={editPackage?.revisionMeta?.maxProductRequestsAllowed}
 											/>
 										</Row>
@@ -192,18 +208,18 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 							</Card>
 						</Col>
 						<Col span={24}>
-							<Card size="small">
+							<Card size='small'>
 								<Row gutter={[4, 4]}>
 									<Col span={24}>
 										<Text strong>Features</Text>
 									</Col>
 									<Col span={24}>
-										<Button type="primary" block onClick={(): void => toggleFeatureDrawer("included")}>
+										<Button type='primary' block onClick={(): void => toggleFeatureDrawer("included")}>
 											Edit Included Features
 										</Button>
 									</Col>
 									<Col span={24}>
-										<Button type="primary" block onClick={(): void => toggleFeatureDrawer("excluded")}>
+										<Button type='primary' block onClick={(): void => toggleFeatureDrawer("excluded")}>
 											Edit Excluded Features
 										</Button>
 									</Col>
@@ -211,7 +227,7 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 							</Card>
 						</Col>
 						<Col span={24}>
-							<Card size="small">
+							<Card size='small'>
 								<Row>
 									<Col span={24}>
 										<Text strong>Is Sale Active?</Text>
@@ -220,8 +236,8 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 										<Switch
 											onChange={(checked): void => onChange("isSaleActive", checked)}
 											checked={editPackage?.isSaleActive}
-											checkedChildren="Yes"
-											unCheckedChildren="No"
+											checkedChildren='Yes'
+											unCheckedChildren='No'
 										/>
 									</Col>
 								</Row>
@@ -229,8 +245,8 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 						</Col>
 
 						<Col span={24}>
-							<Row justify="end">
-								<Button loading={loading} type="primary" onClick={saveRecord}>
+							<Row justify='end'>
+								<Button loading={loading} type='primary' onClick={saveRecord}>
 									Save
 								</Button>
 							</Row>
@@ -239,21 +255,21 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 				</Spin>
 				<Drawer
 					destroyOnClose
-					title="Included features"
+					title='Included features'
 					width={360}
 					visible={openIncludedFeatures}
 					onClose={(): void => toggleFeatureDrawer("included")}
 				>
-					<MultiInputField list={editPackage?.includedFeatures || []} onChange={onChange} name="includedFeatures" />
+					<MultiInputField list={editPackage?.includedFeatures || []} onChange={onChange} name='includedFeatures' />
 				</Drawer>
 				<Drawer
 					destroyOnClose
-					title="Excluded features"
+					title='Excluded features'
 					width={360}
 					visible={openExcludedFeatures}
 					onClose={(): void => toggleFeatureDrawer("excluded")}
 				>
-					<MultiInputField list={editPackage?.excludedFeatures || []} onChange={onChange} name="excludedFeatures" />
+					<MultiInputField list={editPackage?.excludedFeatures || []} onChange={onChange} name='excludedFeatures' />
 				</Drawer>
 			</Drawer>
 		</>

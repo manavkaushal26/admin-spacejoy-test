@@ -14,6 +14,10 @@ export const suspendUserApi = (id: string): string => {
 	return `/auth/account/${id}/suspend`;
 };
 
+export const statusChangeApi = (id: string): string => {
+	return `/auth/account/${id}/status`;
+};
+
 export const teamAssignApi: (id: string, type: "project" | "design", action: "add" | "remove") => string = (
 	id,
 	type,

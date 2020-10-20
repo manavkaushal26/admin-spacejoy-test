@@ -254,6 +254,7 @@ export interface TeamMember {
 	};
 	role: ProjectRoles;
 	email: string;
+	status: Status;
 }
 
 export interface FormType {

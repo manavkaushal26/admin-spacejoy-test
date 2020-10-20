@@ -1,6 +1,6 @@
-import { getSingleUserApi, registerAnyUserApi, suspendUserApi, userApi } from "@api/userApi";
+import { getSingleUserApi, registerAnyUserApi, statusChangeApi, userApi } from "@api/userApi";
 import { TeamMember } from "@customTypes/dashboardTypes";
-import { Role } from "@customTypes/userType";
+import { Role, Status } from "@customTypes/userType";
 import { useSessionStorage } from "@utils/customHooks/useSessionStorage";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, Form, Input, Modal, notification, Row, Select, Table } from "antd";
@@ -102,14 +102,15 @@ const UserLandingPage: React.FC = () => {
 		}
 	};
 
-	const suspendUser = async userId => {
-		const endPoint = suspendUserApi(userId);
+	const changeUserStatus = async (userId, status) => {
+		const endPoint = statusChangeApi(userId);
 		try {
-			const response = await fetcher({ endPoint, method: "POST", body: {} });
+			const response = await fetcher({ endPoint, method: "POST", body: { data: { status } } });
+			fetchUserList();
 			if (response.statusCode <= 300) {
-				notification.success({ message: "User has been suspended" });
+				notification.success({ message: "User status changed" });
 			} else {
-				throw new Error("Failed to suspend user");
+				throw new Error("Failed to change status");
 			}
 		} catch (err) {
 			notification.error({ message: err.message });
@@ -117,7 +118,17 @@ const UserLandingPage: React.FC = () => {
 	};
 
 	const confirmSuspend = id => {
-		Modal.confirm({ title: "This user will be suspended. Do you want to continue?", onOk: () => suspendUser(id) });
+		Modal.confirm({
+			title: "This user will be suspended. Do you want to continue?",
+			onOk: () => changeUserStatus(id, Status.suspended),
+		});
+	};
+
+	const activateUsers = id => {
+		Modal.confirm({
+			title: "This will activate the user account. Do you want to continue?",
+			onOk: () => changeUserStatus(id, Status.active),
+		});
 	};
 
 	return (
@@ -211,9 +222,15 @@ const UserLandingPage: React.FC = () => {
 									<Button type='link' onClick={() => toggleUserDrawer(record._id)}>
 										Edit
 									</Button>
-									<Button type='link' danger onClick={() => confirmSuspend(record._id)}>
-										Suspend User
-									</Button>
+									{record?.status === Status.active ? (
+										<Button type='link' danger onClick={() => confirmSuspend(record._id)}>
+											Suspend User
+										</Button>
+									) : (
+										<Button type='link' onClick={() => activateUsers(record?._id)}>
+											Activate User
+										</Button>
+									)}
 								</>
 							);
 						}}
