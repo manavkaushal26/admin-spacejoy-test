@@ -299,6 +299,7 @@ export interface DetailedProject {
 	endedAt: string;
 	updatedAt: string;
 	startedAt: string;
+	isDelivered: boolean;
 	delay: {
 		isDelayed: boolean;
 		minDurationInMs: number;

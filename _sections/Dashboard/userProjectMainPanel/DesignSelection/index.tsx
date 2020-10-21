@@ -145,6 +145,10 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		const endPoint = notifyCustomerApi(projectData._id);
 		const response = await fetcher({ endPoint, method: "POST" });
 		if (response.statusCode <= 300) {
+			setProjectData(prevState => ({
+				...prevState,
+				isDelivered: true,
+			}));
 			message.success(`Email sent to ${projectData.customer.profile.name}`);
 		}
 	};
@@ -350,7 +354,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady && false}
 								onClick={warnUser}
 							>
-								Email Customer
+								Email Customer {projectData?.isDelivered ? "(Already Notified)" : ""}
 							</CyanButton>
 						</Row>
 					</Col>
