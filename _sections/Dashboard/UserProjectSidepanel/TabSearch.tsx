@@ -53,7 +53,8 @@ const TabSearch: React.FC<{
 				}
 			});
 			setDesignerNames(response.data.data.map(designer => ({
-				"name": `${designer.profile.name}`
+				"name": `${designer.profile.name}`,
+				"id": `${designer.id}`
 			})));
 		}
 		catch (e) {
@@ -239,7 +240,7 @@ const TabSearch: React.FC<{
 								>
 									{
 										designerNames.map(designerName =>
-											<Option key={designerName.name} value={designerName.name}> {designerName.name} </Option>
+											<Option key={designerName.name} value={designerName.id}> {designerName.name} </Option>
 										)
 									}
 								</Select>
