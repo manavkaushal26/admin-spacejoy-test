@@ -89,6 +89,7 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 		setEditPackage(prevState => ({
 			...prevState,
 			savings: {
+				label: "You Save",
 				inAmount: prevState?.price?.value - prevState?.salePrice?.value,
 				inPercent: parseInt(
 					(((prevState?.price?.value - prevState?.salePrice?.value) / prevState?.price?.value) * 100).toFixed(0),
