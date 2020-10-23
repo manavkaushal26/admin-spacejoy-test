@@ -3,7 +3,7 @@ import {
 	CheckCircleTwoTone,
 	CloseCircleFilled,
 	LoadingOutlined,
-	UploadOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import {
 	createJobApi,
@@ -11,7 +11,7 @@ import {
 	getPresignedURLForSourceUpload,
 	getSingleJobs,
 	getSingleSource,
-	startRenderJob,
+	startRenderJob
 } from "@api/renderEngineApi";
 import { AllJobs, DetailedSource, RenderEngineStatus } from "@customTypes/renderEngineTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
@@ -35,7 +35,7 @@ import {
 	Row,
 	Spin,
 	Typography,
-	Upload,
+	Upload
 } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import moment from "moment";
@@ -335,7 +335,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 				duration: 5000,
 			});
 			const response = await fetcher({ endPoint, method: "POST", body: {}, hasBaseURL: true });
-
 			if (response.statusCode <= 300) {
 				notification.open({
 					key: "getpresigned",
@@ -348,10 +347,18 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 				Object.entries(response.data.data.fields).map(([name, value]: [string, string]) => {
 					data.append(name, value);
 				});
-				data.append("file", file, file.fileName);
-				notification.close("getpresigned");
 
-				notification.open({ key: "upload", message: "Uploading file" });
+				// data.append("file", file, file.fileName);
+				data.append("file", file, file.name);
+				notification.close("getpresigned");
+				notification.open(
+					{
+						key: "upload",
+						message: "Uploading file",
+						duration: 0,
+						icon: <LoadingOutlined />
+					}
+				);
 				const uploadResponse = await fetcher({
 					endPoint,
 					method: "POST",
@@ -360,6 +367,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 					hasBaseURL: true,
 					noAuthorization: true,
 				});
+
 				if (uploadResponse.statusCode <= 300) {
 					notification.open({
 						key: "upload",
@@ -384,7 +392,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 							key: "camera",
 							message: "Successfully initiated Camera fetch",
 							icon: <CheckCircleTwoTone />,
-							duration: 3000,
+							duration: 0,
 						});
 						setSourceData({
 							...sourceData,
@@ -395,7 +403,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 							},
 							job: cameraResponse.data.data.job,
 						});
-						notification.close("camera");
 					}
 				} else {
 					throw new Error("Failed to Upload File");
@@ -406,6 +413,7 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 		} catch (e) {
 			notification.error({ key: "getpresigned", message: e.message, duration: 5000 });
 		}
+		return Promise.reject(false);
 	};
 
 	return (
@@ -429,18 +437,18 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 												Create new Job
 											</Button>
 										) : (
-											<Upload
-												accept='.blend'
-												fileList={uploadedFile}
-												onChange={handleFileChange}
-												beforeUpload={beforeUploadSourceFile}
-											>
-												<Button type='primary'>
-													<UploadOutlined />
+												<Upload
+													accept='.blend'
+													fileList={uploadedFile}
+													onChange={handleFileChange}
+													beforeUpload={beforeUploadSourceFile}
+												>
+													<Button type='primary'>
+														<UploadOutlined />
 													Click to upload
 												</Button>
-											</Upload>
-										),
+												</Upload>
+											),
 									]}
 								/>
 							</Col>
@@ -457,12 +465,12 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 											{getValueSafely(
 												() => (
 													<Row gutter={[4, 4]} align='middle'>
-														<Col>
+														<Col span={24}>
 															<Link target='_blank' href={`${sourceData.storage.url}`}>
 																{sourceData.storage.key.split("/").pop()}
 															</Link>
 														</Col>
-														<Col>
+														<Col span={24}>
 															<Upload
 																accept='.blend'
 																fileList={uploadedFile}
@@ -503,27 +511,27 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 								<Row gutter={[8, 8]}>
 									{jobs.length !== 0 && sourceData.cameras.length !== 0
 										? jobs
-												.filter(job => {
-													return job.name.toLowerCase().includes(searchText);
-												})
-												.map(job => {
-													return (
-														<JobCard
-															key={`${job._id}-${job.status}`}
-															job={job}
-															onDelete={deleteJob}
-															onClick={toggleJobDetails}
-															startJob={onStartJobClick}
-															socket={socket}
-															cancelJob={cancelJob}
-														/>
-													);
-												})
+											.filter(job => {
+												return job.name.toLowerCase().includes(searchText);
+											})
+											.map(job => {
+												return (
+													<JobCard
+														key={`${job._id}-${job.status}`}
+														job={job}
+														onDelete={deleteJob}
+														onClick={toggleJobDetails}
+														startJob={onStartJobClick}
+														socket={socket}
+														cancelJob={cancelJob}
+													/>
+												);
+											})
 										: !!sourceData.storage && (
-												<Col span={24}>
-													<Result status='404' title='No Jobs' subTitle='Create a new Job to see it here' />
-												</Col>
-										  )}
+											<Col span={24}>
+												<Result status='404' title='No Jobs' subTitle='Create a new Job to see it here' />
+											</Col>
+										)}
 									{!sourceData.storage && sourceData.cameras.length === 0 && (
 										<Col span={24}>
 											<Row justify='space-around'>
