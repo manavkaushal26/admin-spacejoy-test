@@ -42,7 +42,7 @@ export const getProjectSearchBody = (
 
 	const body = {
 		"customerName": { search: "single", value: nameSearchText },
-		"team.memberName": { search: "single", value: designerSearchText },
+		"team.member": { search: "single", value: designerSearchText },
 		"currentPhase.name.internalName": { search: "array", value: phase },
 		"status": { search: "single", value: status },
 		"name": {

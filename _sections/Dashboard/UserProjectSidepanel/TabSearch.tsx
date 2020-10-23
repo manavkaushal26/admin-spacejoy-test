@@ -185,6 +185,7 @@ const TabSearch: React.FC<{
 						<SilentButton
 							onClick={(): void => {
 								setState({ ...UserProjectSidePanelInitialState });
+								setSelectDesigner("");
 								setMinMax([]);
 								setSelectedSort(SortOptions["Created At - Newest First"]);
 							}}
@@ -237,6 +238,8 @@ const TabSearch: React.FC<{
 									showSearch
 									onSearch={debouncefetchDesignerNames}
 									notFoundContent={fetching ? <Spin size="small" /> : null}
+									optionFilterProp="children"
+									filterOption={(input, option) => option.props.key.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 								>
 									{
 										designerNames.map(designerName =>
