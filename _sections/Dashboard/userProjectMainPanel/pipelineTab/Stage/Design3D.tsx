@@ -1,11 +1,55 @@
+import { editDesignApi } from "@api/designApi";
 import Image from "@components/Image";
-import { Col, Row, Typography } from "antd";
-import React from "react";
+import { DetailedDesign } from "@customTypes/dashboardTypes";
+import fetcher from "@utils/fetcher";
+import { Button, Col, Input, notification, Row, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import { StepDiv } from "../styled";
 
 const { Text } = Typography;
 
-const Design3D: React.FC = () => {
+interface Design3DStage {
+	designData: DetailedDesign;
+	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+}
+
+const Design3D: React.FC<Design3DStage> = ({ designData, setDesignData }) => {
+	const [designerNote, setDesignerNote] = useState<string>(null);
+
+	useEffect(() => {
+		if (designData) {
+			setDesignerNote(designData.description);
+		}
+	}, [designData.description]);
+
+	const handleTextChange = (e): void => {
+		const {
+			target: { value },
+		} = e;
+		setDesignerNote(value);
+	};
+
+	const saveDesignerNote = async (): Promise<void> => {
+		const endpoint = editDesignApi(designData._id);
+
+		const response = await fetcher({
+			endPoint: endpoint,
+			method: "PUT",
+			body: {
+				data: {
+					description: designerNote,
+				},
+			},
+		});
+
+		if (response.statusCode <= 300) {
+			setDesignData(response.data);
+			notification.success({ message: "Description Added successfully" });
+		} else {
+			notification.error({ message: response.message });
+		}
+	};
+
 	return (
 		<StepDiv>
 			<Row gutter={[8, 8]}>
@@ -45,6 +89,29 @@ const Design3D: React.FC = () => {
 									width='284px'
 								/>
 							</a>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
+					<Row gutter={[8, 8]}>
+						<Col span={24}>
+							<Text strong>Design Note</Text>
+							<Text> (Please note this will be displayed to customer)</Text>
+						</Col>
+						<Col span={24}>
+							<Input.TextArea
+								placeholder='Please enter a design note'
+								value={designerNote}
+								autoSize={{ minRows: 2 }}
+								onChange={handleTextChange}
+							/>
+						</Col>
+						<Col span={24}>
+							<Row justify='end'>
+								<Button type='primary' onClick={saveDesignerNote}>
+									Add Description
+								</Button>
+							</Row>
 						</Col>
 					</Row>
 				</Col>

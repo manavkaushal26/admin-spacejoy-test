@@ -1,16 +1,14 @@
-import { editDesignApi } from "@api/pipelineApi";
 import Image from "@components/Image";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import {
 	DesignerImageComments,
 	DesignImagesInterface,
 	DesignImgTypes,
-	DetailedDesign
+	DetailedDesign,
 } from "@customTypes/dashboardTypes";
 import { CustomDiv } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import fetcher from "@utils/fetcher";
-import { Button, Col, Input, message, Row, Typography } from "antd";
+import { Button, Col, Row, Typography } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import { StepDiv } from "../styled";
 import ImageCommentDrawer from "./Components/ImageCommentsDrawer";
@@ -19,11 +17,9 @@ const { Text } = Typography;
 
 interface DesignFinalization {
 	designData: DetailedDesign;
-	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 }
 
-const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesignData }) => {
-	const [designerNote, setDesignerNote] = useState<string>(null);
+const DesignFinalization: React.FC<DesignFinalization> = ({ designData }) => {
 	const [designImages, setDesignImages] = useState<DesignImagesInterface[]>([]);
 	const [imageId, setImageId] = useState<string>(null);
 
@@ -50,19 +46,6 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 		}
 	}, [designData.designImages]);
 
-	useEffect(() => {
-		if (designData) {
-			setDesignerNote(designData.description);
-		}
-	}, [designData.description]);
-
-	const handleTextChange = (e): void => {
-		const {
-			target: { value },
-		} = e;
-		setDesignerNote(value);
-	};
-
 	const selectedImageComments: DesignerImageComments[] = useMemo(() => {
 		return getValueSafely(
 			() => [
@@ -78,26 +61,6 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 		const selectedDesignIndex = designImages.map(image => image._id).indexOf(imageId);
 		designImages[selectedDesignIndex].comments = comments;
 		setDesignImages([...designImages]);
-	};
-
-	const saveDesignerNote = async (): Promise<void> => {
-		const endpoint = editDesignApi(designData._id);
-
-		const response = await fetcher({
-			endPoint: endpoint,
-			method: "PUT",
-			body: {
-				data: {
-					description: designerNote,
-				},
-			},
-		});
-		if (response.statusCode <= 300) {
-			setDesignData(response.data);
-			message.success("Description Added successfully");
-		} else {
-			message.error(response.message);
-		}
 	};
 
 	const previewImage = (cdn): void => {
@@ -154,25 +117,6 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData, setDesig
 					imageComments={selectedImageComments}
 					setImageComments={setImageComments}
 				/>
-
-				<Col span={24}>
-					<Row>
-						<Col span={24}>
-							<Text strong>Design Note</Text>
-						</Col>
-						<Col span={24}>
-							<Input.TextArea
-								style={{ marginBottom: "1rem" }}
-								value={designerNote}
-								autoSize={{ minRows: 2 }}
-								onChange={handleTextChange}
-							/>
-						</Col>
-						<Col span={24}>
-							<Button onClick={saveDesignerNote}>Add Description</Button>
-						</Col>
-					</Row>
-				</Col>
 			</Row>
 			<ImageDisplayModal
 				previewImage={preview.previewImage}

@@ -41,11 +41,11 @@ export default function Stage(props: Stage): JSX.Element {
 				/>
 			);
 		case "design3D":
-			return <Design3D />;
+			return <Design3D designData={designData} setDesignData={setDesignData} />;
 		case "render":
 			return <RenderStep designData={designData} setDesignData={setDesignData} phaseData={phaseData} />;
 		case "revision":
-			return <DesignFinalization designData={designData} setDesignData={setDesignData} />;
+			return <DesignFinalization designData={designData} />;
 		default:
 			return (
 				<StepDiv>
