@@ -106,13 +106,13 @@ const ProjectTeamTab: React.FC<DesignerTabInterface> = ({ type, projectId }): JS
 				type: DesignerTabActionType.UPDATE_ASSIGNED_DESIGNERS,
 				value:
 					type === "revisionTeam"
-						? response.data?.project?.revisionTeam.map(detail => detail.member) || []
-						: response.data?.project?.team.map(detail => detail.member) || [],
+						? response.data?.project?.revisionTeam?.map(detail => detail.member) || []
+						: response.data?.project?.team?.map(detail => detail.member) || [],
 			});
 			setAssignedMembers(
 				type === "revisionTeam"
-					? response.data?.project?.revisionTeam.map(detail => detail.member) || []
-					: response.data?.project?.team.map(detail => detail.member) || []
+					? response.data?.project?.revisionTeam?.map(detail => detail.member) || []
+					: response.data?.project?.team?.map(detail => detail.member) || []
 			);
 		} catch (e) {
 			notification.error({ message: e.message });
