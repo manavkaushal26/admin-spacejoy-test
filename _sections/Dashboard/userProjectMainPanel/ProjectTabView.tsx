@@ -256,19 +256,21 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					</Col>
 					<Col span={24}>
 						<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey='pipeline'>
-							<TabPane tab='Team' key='team'>
-								<TeamTab
-									designData={designData}
-									projectData={projectData}
-									setProjectData={setProjectData}
-									setDesignData={setDesignData}
-									setLoading={setLoading}
-									projectId={id}
-									assignedTeam={assignedTeam.map(memberData => {
-										return memberData.member;
-									})}
-								/>
-							</TabPane>
+							{!projectData && (
+								<TabPane tab='Team' key='team'>
+									<TeamTab
+										designData={designData}
+										projectData={projectData}
+										setProjectData={setProjectData}
+										setDesignData={setDesignData}
+										setLoading={setLoading}
+										projectId={id}
+										assignedTeam={assignedTeam.map(memberData => {
+											return memberData.member;
+										})}
+									/>
+								</TabPane>
+							)}
 							<TabPane tab='Moodboard' key='moodboard'>
 								<MoodboardTab
 									setDesignData={setDesignData}

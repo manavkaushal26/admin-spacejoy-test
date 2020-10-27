@@ -13,12 +13,13 @@ const { Text } = Typography;
 const { Option } = Select;
 
 interface DesignerTabInterface {
+	type?: string;
 	projectId: string;
-	designData: DetailedDesign;
+	designData?: DetailedDesign;
 	assignedTeam: TeamMember[];
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
-	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
+	setDesignData?: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 	projectData: DetailedProject;
 }
 
@@ -73,6 +74,7 @@ const morphTeamMemberForApi = (member: TeamMember) => {
 const debouncedFetchDesigners = debounce(fetchDesigners, 500);
 
 const TeamTab: React.FC<DesignerTabInterface> = ({
+	type,
 	projectId,
 	assignedTeam,
 	designData,
@@ -137,7 +139,7 @@ const TeamTab: React.FC<DesignerTabInterface> = ({
 					memberList: addedMembers,
 				},
 			};
-			response = await fetcher({ endPoint: addMemberEndpoint, method: "PUT", body });
+			response = await fetcher({ endPoint: addMemberEndpoint, method: projectId ? "POST" : "PUT", body });
 		}
 		if (removedMembers.length > 0) {
 			const body = {

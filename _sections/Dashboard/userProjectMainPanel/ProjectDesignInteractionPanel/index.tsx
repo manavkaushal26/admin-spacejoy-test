@@ -4,6 +4,7 @@ import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSele
 import { PaddedDiv } from "@sections/Header/styled";
 import { Tabs } from "antd";
 import React from "react";
+import ProjectTeamTab from "../ProjectTeamTab";
 import CustomerFeedbackTab from "./CustomerFeedbackTab";
 import CustomerResponsesTab from "./CustomerResponesTab";
 import CustomerRevisionData from "./CustomerRevisionData";
@@ -56,6 +57,16 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 						currentPhase={projectData?.currentPhase}
 					/>
 				</PaddedDiv>
+			</Tabs.TabPane>
+			<Tabs.TabPane tab='Project team' key='team'>
+				<Tabs type='card'>
+					<Tabs.TabPane tab='Base team' key='team'>
+						<ProjectTeamTab type='team' projectId={projectData?._id} />
+					</Tabs.TabPane>
+					<Tabs.TabPane tab='Revision team' key='revisionTeam'>
+						<ProjectTeamTab type='revisionTeam' projectId={projectData?._id} />
+					</Tabs.TabPane>
+				</Tabs>
 			</Tabs.TabPane>
 		</Tabs>
 	);

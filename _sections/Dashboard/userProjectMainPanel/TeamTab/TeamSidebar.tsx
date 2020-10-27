@@ -1,10 +1,9 @@
 import { ProjectRoles } from "@customTypes/userType";
 import { CustomDiv, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Avatar, Checkbox, Empty, Typography, Row, Col } from "antd";
+import { Avatar, Checkbox, Col, Empty, Row, Typography } from "antd";
 import React, { useMemo } from "react";
-import styled from "styled-components";
-import { GreyColumn, NoBodyCard, StyledButton } from "./styled";
+import { NoBodyCard, StyledButton } from "./styled";
 import { DesignerTabState } from "./teamTabReducer";
 
 const { Text, Title } = Typography;
@@ -18,13 +17,6 @@ interface TeamSidebarProps {
 	}[];
 	assignDesigners: () => void;
 }
-
-const CardContainer = styled(CustomDiv)`
-	> * {
-		margin-top: 0.5rem;
-		margin-right: 0.5rem;
-	}
-`;
 
 export default function TeamSidebar({
 	state,
@@ -75,11 +67,11 @@ export default function TeamSidebar({
 									<Col lg={6} md={8} sm={12} key={teamMember._id}>
 										<NoBodyCard
 											key={teamMember._id}
-											size="small"
+											size='small'
 											title={
 												<Row>
 													<Col span={24}>
-														<Row justify="center">
+														<Row justify='center'>
 															<Avatar>
 																{getValueSafely<string>(() => {
 																	return teamMember.profile.name[0];
@@ -88,8 +80,8 @@ export default function TeamSidebar({
 														</Row>
 													</Col>
 													<Col span={24}>
-														<Row justify="center">
-															<ModifiedText textTransform="capitalize">
+														<Row justify='center'>
+															<ModifiedText textTransform='capitalize'>
 																{getValueSafely<string>(() => {
 																	return teamMember.profile.firstName;
 																}, "N/A")}
@@ -114,8 +106,8 @@ export default function TeamSidebar({
 									</Col>
 								))
 							) : (
-								<CustomDiv py="1rem" width="100%">
-									<Empty description="No Account Managers Assigned" />
+								<CustomDiv py='1rem' width='100%'>
+									<Empty description='No Account Managers Assigned' />
 								</CustomDiv>
 							)}
 						</Row>
@@ -139,11 +131,11 @@ export default function TeamSidebar({
 								assignedDesigners.map(teamMember => (
 									<Col lg={6} md={8} sm={12} key={teamMember._id}>
 										<NoBodyCard
-											size="small"
+											size='small'
 											title={
 												<Row>
 													<Col span={24}>
-														<Row justify="center">
+														<Row justify='center'>
 															<Avatar>
 																{getValueSafely<string>(() => {
 																	return teamMember.profile.name[0];
@@ -152,8 +144,8 @@ export default function TeamSidebar({
 														</Row>
 													</Col>
 													<Col>
-														<Row justify="center">
-															<ModifiedText textTransform="capitalize">
+														<Row justify='center'>
+															<ModifiedText textTransform='capitalize'>
 																{getValueSafely<string>(() => {
 																	return teamMember.profile.firstName;
 																}, "N/A")}
@@ -178,8 +170,8 @@ export default function TeamSidebar({
 									</Col>
 								))
 							) : (
-								<Row justify="center">
-									<Empty description="No Designers Assigned" />
+								<Row justify='center'>
+									<Empty description='No Designers Assigned' />
 								</Row>
 							)}
 						</Row>
@@ -200,11 +192,11 @@ export default function TeamSidebar({
 								assignedArtists.map(teamMember => (
 									<Col lg={6} md={8} sm={12} key={teamMember._id}>
 										<NoBodyCard
-											size="small"
+											size='small'
 											title={
 												<Row>
 													<Col span={24}>
-														<Row justify="center">
+														<Row justify='center'>
 															<Avatar>
 																{getValueSafely<string>(() => {
 																	return teamMember.profile.name[0];
@@ -213,8 +205,8 @@ export default function TeamSidebar({
 														</Row>
 													</Col>
 													<Col>
-														<Row justify="center">
-															<ModifiedText textTransform="capitalize">
+														<Row justify='center'>
+															<ModifiedText textTransform='capitalize'>
 																{getValueSafely<string>(() => {
 																	return teamMember.profile.firstName;
 																}, "N/A")}
@@ -239,8 +231,8 @@ export default function TeamSidebar({
 									</Col>
 								))
 							) : (
-								<Row justify="center">
-									<Empty description="No Designers Assigned" />
+								<Row justify='center'>
+									<Empty description='No Designers Assigned' />
 								</Row>
 							)}
 						</Row>
@@ -249,7 +241,7 @@ export default function TeamSidebar({
 			</Col>
 
 			<Col>
-				<StyledButton fullwidth type="primary" onClick={assignDesigners}>
+				<StyledButton fullwidth type='primary' onClick={assignDesigners}>
 					Update Team
 				</StyledButton>
 			</Col>

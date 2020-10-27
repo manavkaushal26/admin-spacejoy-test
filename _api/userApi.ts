@@ -28,3 +28,7 @@ export const teamAssignApi: (id: string, type: "project" | "design", action: "ad
 	}
 	return `/admin/design/${id}/team/${action}`;
 };
+
+export const newTeamAssignApi = (id: string): string => {
+	return `/v2/projects/${id}/teams`;
+};

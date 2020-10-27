@@ -283,6 +283,7 @@ export interface ProjectFeedback {
 export interface DetailedProject {
 	projectScope?: ProjectScope;
 	team: DetailedProjectTeamMember[];
+	revisionTeam: DetailedProjectTeamMember[];
 	status: Status;
 	onTrial: boolean;
 	chat: [];
