@@ -4,7 +4,7 @@ import {
 	PhaseCustomerNames,
 	PhaseInternalNames,
 	RevisionForm,
-	UserProjectType,
+	UserProjectType
 } from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
@@ -73,6 +73,11 @@ const userProjectMainPanel: React.FC<{
 		} catch (e) {
 			notification.error({ message: "Failed to load revision form" });
 		}
+	};
+
+	const refetchAllData = async () => {
+		await fetchAndPopulateProjectData();
+		await fetchAndPopulateRevisionForm();
 	};
 
 	useEffect(() => {
@@ -156,7 +161,7 @@ const userProjectMainPanel: React.FC<{
 								updateRevisionData={updateRevisionData}
 								onTabChangeCallback={onTabChange}
 								currentTab={currentTab}
-								refetchData={fetchAndPopulateProjectData}
+								refetchData={refetchAllData}
 								setLoading={setLoading}
 								projectData={projectData}
 								onSelectDesign={onSelectDesign}

@@ -106,11 +106,11 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 				/>
 			}
 		>
-			<Row>
-				<Col>
+			<Row gutter={[8, 8]}>
+				<Col span={24}>
 					<Text>Design</Text>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Select placeholder='Select a Design' style={{ width: "100%" }} onSelect={onSelect}>
 						<Option key={Math.random()} value={null}>
 							Select Design
@@ -125,12 +125,11 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 					</Select>
 				</Col>
 			</Row>
-			<Row style={{ height: "1rem" }} />
 			<Row>
-				<Col>
+				<Col span={24}>
 					<Text>Design Name</Text>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Input value={roomName} placeholder={placeholderText} onChange={onChange} />
 				</Col>
 			</Row>

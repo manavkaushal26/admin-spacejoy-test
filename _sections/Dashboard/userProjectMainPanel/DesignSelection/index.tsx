@@ -1,6 +1,6 @@
 import { FileAddOutlined } from "@ant-design/icons";
 import { deleteDesignApi, designCopyApi } from "@api/designApi";
-import { editProjectApi, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
+import { editProjectApi, editRevisionFormAPI, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import DesignCard from "@components/DesignCard";
 import EditDesignModal from "@components/EditDesignModal";
@@ -236,6 +236,25 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		return {};
 	}, [projectData]);
 
+	const onDesignMarkedAsRevision = async (id: string) => {
+		const endPoint = editRevisionFormAPI(projectData?._id);
+		const body = { revisedDesignId: id };
+		try {
+			const response = await fetcher({ endPoint, method: "PUT", body });
+			if (response.statusCode <= 300) {
+				refetchData();
+			} else {
+				throw new Error("Failed to set as revision design");
+			}
+		} catch (e) {
+			notification.error(e.message);
+		}
+	};
+
+	const confirmMarkAsRevision = id => {
+		Modal.confirm({ title: "Mark design As revision?", onOk: () => onDesignMarkedAsRevision(id) });
+	};
+
 	const onOkClickInCopyDesignModal = async (data): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${designCopyApi(designToBeCopied._id)}?designScope=portfolio`;
@@ -262,11 +281,13 @@ const DesignSelection: React.FC<DesignSelection> = ({
 						return (
 							<DesignCard
 								key={design._id}
+								projectPhase={projectData?.currentPhase.name.internalName}
 								uniqueId={design.design._id}
 								onSelectCard={onSelectDesign}
 								feedbackPresent={!!feedback.length}
 								role={userRole}
 								creatorRole={design.design?.owner?.role}
+								confirmMarkAsRevision={confirmMarkAsRevision}
 								onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
 								coverImage={getValueSafely(
 									() => {
@@ -297,6 +318,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								onDelete={confirmDelete}
 								designName={design.design.name}
 								state={design.state}
+								operationState={design.operationState}
 								parentDesign={getValueSafely(() => designIdToNameMap[design.parent], undefined)}
 								revisionDesignId={revisionDesign}
 								phase={getHumanizedActivePhase(design.design.phases)}

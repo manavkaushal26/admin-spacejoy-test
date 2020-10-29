@@ -1,5 +1,5 @@
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
-import { DesignImagesInterface, DesignState } from "@customTypes/dashboardTypes";
+import { DesignImagesInterface, DesignState, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import { Role } from "@customTypes/userType";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import { Card, Col, Row, Tag, Typography } from "antd";
@@ -21,6 +21,9 @@ interface DesignCardProps {
 	revisionDesignId?: string;
 	onCopyAsDesignExampleClick?: (data: string) => void;
 	parentDesign?: string;
+	confirmMarkAsRevision?: (id: string) => void;
+	projectPhase?: PhaseInternalNames;
+	operationState?: string;
 }
 
 const topRightTick = css`
@@ -52,7 +55,7 @@ const StateAwareCards = styled(Card)<{ state: DesignState; revisionDesign: boole
 
 const { Meta } = Card;
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 
 const CopyDesignAsDesignExampleRoles = [Role.Admin, Role.Owner, Role.Designer, Role["Account Manager"]];
 
@@ -70,6 +73,9 @@ const DesignCard: React.FC<DesignCardProps> = ({
 	role,
 	revisionDesignId,
 	parentDesign,
+	projectPhase,
+	operationState,
+	confirmMarkAsRevision,
 }) => {
 	const [actions, setActions] = useState<ReactNode[]>([]);
 
@@ -98,6 +104,20 @@ const DesignCard: React.FC<DesignCardProps> = ({
 				/>
 			);
 		}
+
+		if (projectPhase === PhaseInternalNames.designsInRevision && operationState !== "default") {
+			listOfActions.push(
+				<Link
+					onClick={e => {
+						e.stopPropagation();
+						confirmMarkAsRevision(uniqueId);
+					}}
+				>
+					Revision
+				</Link>
+			);
+		}
+
 		setActions(listOfActions);
 		return (): void => {
 			setActions([]);

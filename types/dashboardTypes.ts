@@ -295,6 +295,7 @@ export interface DetailedProject {
 	form: FormType[];
 	completedPhases: Phase[];
 	designs: DesignInterface[];
+	currentRevisionDesign: string;
 	feedback: ProjectFeedback[];
 	createdAt: string;
 	endedAt: string;
