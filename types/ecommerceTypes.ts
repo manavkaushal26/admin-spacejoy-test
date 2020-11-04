@@ -98,7 +98,12 @@ export interface ReturnCancelledInterface {
 	status: EcommerceStatus;
 	declineComment: string;
 }
-
+export interface DesignProjectInfo {
+	designId: string;
+	projectId: string;
+	projectName: string;
+	deisgnName: string;
+}
 export interface OrderItemComments {
 	_id: string;
 	orderItem: string;
@@ -165,6 +170,7 @@ export interface OrderItems {
 	tracking: Tracking[];
 	return: ReturnCancelledInterface;
 	cancellation: ReturnCancelledInterface;
+	designProjectInfo: DesignProjectInfo;
 }
 
 export interface EcommOrder {

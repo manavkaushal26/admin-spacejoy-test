@@ -19,6 +19,9 @@ export const getOrderApi = (orderId: string): string => {
 export const getOrderItemApi = (orderItemId: string): string => {
 	return `/v1/orderItems/${orderItemId}`;
 };
+export const getDesignMapping = (): string => {
+	return "/v1/orderItems/designMappings";
+};
 
 // ===================================================================================================
 

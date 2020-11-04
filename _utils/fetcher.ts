@@ -31,7 +31,6 @@ async function fetcher({
 			apiURL = `${page.localApiBaseUrl}${endPoint}`;
 		}
 	}
-
 	const headers =
 		JWT && !noAuthorization
 			? {

@@ -1,5 +1,5 @@
 import { ArrowLeftOutlined, RedoOutlined } from "@ant-design/icons";
-import { getOrderApi } from "@api/ecommerceApi";
+import { getDesignMapping, getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import CommentsList from "@sections/Ecommerce/OrdertTracking/CommentsList";
@@ -207,6 +207,9 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 		data.push([]);
 		data.push([]);
 
+		// order item columns
+
+		const { orderItems = [] } = order || {};
 		data.push([
 			"Product Name",
 			"Order Item Id",
@@ -224,6 +227,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 			"Return Reason",
 			"Cancellation Status",
 			"Cancellation Reason",
+			"Design Project Link",
 		]);
 
 		order?.orderItems?.map(item => {
@@ -240,21 +244,24 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 				(item.price * item.quantity).toFixed(2),
 				item.tracking
 					? item.tracking.reduce(
-							(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
-							""
-					  )
+						(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
+						""
+					)
 					: "",
 				item.comments
 					? item.comments.reduce(
-							(acc, curr) =>
-								acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
-							""
-					  )
+						(acc, curr) =>
+							acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
+						""
+					)
 					: "",
 				item?.return?.status || "",
 				item?.return?.reason || item?.return?.declineComment || item?.return?.comment || "",
 				item?.cancellation?.status || "",
 				item?.cancellation?.reason || item?.cancellation?.declineComment || item?.cancellation?.comment || "",
+				item?.designProjectInfo?.projectId
+					? `${company.url}/dashboard/pid/${item.designProjectInfo.projectId}/did/${item.designProjectInfo.designId}`
+					: "No mapping available",
 			]);
 		});
 		return data;
@@ -434,12 +441,12 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 											</Link>
 										</Col>
 									) : (
-										<Col>
-											<Button type='link' onClick={triggerScraping}>
-												Fetch Asset Data
+											<Col>
+												<Button type='link' onClick={triggerScraping}>
+													Fetch Asset Data
 											</Button>
-										</Col>
-									)}
+											</Col>
+										)}
 								</Row>
 							</Col>
 							<Col span={24}>
@@ -500,9 +507,56 @@ export const getServerSideProps: GetServerSideProps<OrderTracking> = async ctx =
 			method: "GET",
 		});
 		if (response.statusCode <= 200) {
-			return {
-				props: { orderId, orderItemId, orderData: response.data },
-			};
+			const { data: { orderItems = [] } = {} } = response;
+			const itemsArray = orderItems.map(item => item._id);
+			const itemDesignMappingEndPoint = getDesignMapping();
+			try {
+				const resData = await fetcher({
+					ctx,
+					endPoint: itemDesignMappingEndPoint,
+					method: "POST",
+					body: {
+						orderItemIds: itemsArray,
+					},
+				});
+				if (resData.statusCode <= 200) {
+					const { data: { mappings = [] } = {} } = resData;
+					const itemDesignMap = {};
+
+					mappings.forEach(mapping => {
+						itemDesignMap[mapping.orderItem] = {};
+						itemDesignMap[mapping.orderItem].projectId = mapping.project._id;
+						itemDesignMap[mapping.orderItem].projectName = mapping.project.name;
+						itemDesignMap[mapping.orderItem].designId = mapping.design._id;
+						itemDesignMap[mapping.orderItem].designName = mapping.design.name;
+					});
+					const orderData = {
+						...response.data,
+						orderItems: [...response.data.orderItems].map(k => {
+							if (itemDesignMap[k._id]) {
+								return { ...k, designProjectInfo: itemDesignMap[k._id] };
+							}
+							return { ...k, designProjectInfo: {} };
+						}),
+					};
+
+					return {
+						props: { orderId, orderItemId, orderData },
+					};
+				} else {
+					return {
+						props: {
+							orderId,
+							orderItemId,
+							orderData: response.data,
+						},
+					};
+				}
+			} catch {
+				return {
+					props: { orderId, orderItemId, orderData: response.data },
+				};
+			}
 		} else {
 			throw new Error();
 		}
