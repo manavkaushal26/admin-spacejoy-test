@@ -256,8 +256,8 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										width='100%'
 										src={getValueSafely(
 											() =>
-												selectedAssetData.productImages
-													? selectedAssetData.productImages[0].cdn
+												selectedAssetData?.productImages
+													? selectedAssetData?.productImages[0].cdn
 													: undefined || selectedAssetData.cdn,
 											process.env.NODE_ENV === "production"
 												? "v1581080070/admin/productImagePlaceholder.jpg"

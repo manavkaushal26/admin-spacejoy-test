@@ -331,7 +331,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 
 	useEffect(() => {
 		if (state) {
-			if (state.productImages) {
+			if (state?.productImages) {
 				setImageFile(
 					state?.productImages?.map((image, index) => {
 						return {

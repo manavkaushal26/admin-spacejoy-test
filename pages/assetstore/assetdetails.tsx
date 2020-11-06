@@ -197,7 +197,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 
 	useEffect(() => {
 		if (state) {
-			if (state.productImages) {
+			if (state?.productImages) {
 				setImageFile(
 					state?.productImages?.map(image => {
 						return {
