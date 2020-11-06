@@ -333,7 +333,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		if (state) {
 			if (state.productImages) {
 				setImageFile(
-					state.productImages.map((image, index) => {
+					state?.productImages?.map((image, index) => {
 						return {
 							uid: index.toString(),
 							name: image.cdn.split("/").pop(),
@@ -687,7 +687,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				body: formData,
 			});
 			if (response.statusCode <= 300) {
-				const productImageFileList = response.data.productImages.map((image, index) => {
+				const productImageFileList = response.data?.productImages?.map((image, index) => {
 					return {
 						uid: index.toString(),
 						name: image.cdn.split("/").pop(),

@@ -331,8 +331,8 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 											height='200px'
 											src={getValueSafely(
 												() =>
-													primaryAsset.productImages
-														? primaryAsset.productImages[0]?.cdn
+													primaryAsset?.productImages
+														? primaryAsset?.productImages[0]?.cdn
 														: undefined || primaryAsset.cdn,
 												""
 											)}
