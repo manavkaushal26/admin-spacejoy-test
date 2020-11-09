@@ -12,7 +12,6 @@ export enum Role {
 	"3D Artist" = "3d artist",
 	BlogAuthor = "blogAuthor",
 	BlogAdmin = "blogAdmin",
-	"Seo Team" = "seoTeam",
 	"Senior 3D Artist" = "senior3dArtist",
 }
 

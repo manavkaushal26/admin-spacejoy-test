@@ -31,7 +31,7 @@ const MetaCards = [
 		to: "/platformanager/collectionsmeta",
 		url: "/platformanager/collectionsmeta",
 		query: {},
-		allowedRoles: [Role["Seo Team"], Role.Admin, Role.Owner, Role.Analyst],
+		allowedRoles: [Role.Admin, Role.Owner, Role.BlogAuthor, Role.BlogAdmin, Role.Analyst],
 	},
 	{
 		name: "Package Manager",
