@@ -32,11 +32,11 @@ export const isAssetInMoodboard: (moodboard: MoodboardAsset[], assetId: string, 
 	if (moodboard) {
 		if (assetEntryId) {
 			return moodboard
-				.filter(asset => asset.isExistingAsset)
+				.filter(asset => asset.isExistingAsset && asset.asset !== null)
 				.find(asset => asset.asset._id === assetEntryId)
 				.recommendations.some(asset => asset._id === assetId);
 		}
-		return moodboard.filter(asset => asset.isExistingAsset).some(asset => asset.asset._id === assetId);
+		return moodboard.filter(asset => asset.isExistingAsset).some(asset => asset?.asset?._id === assetId);
 	}
 	return false;
 };

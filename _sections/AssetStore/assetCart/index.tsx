@@ -44,7 +44,7 @@ const AssetCartModal = ({
 	const costOfMoodboard = useMemo(() => {
 		if (moodboard)
 			return moodboard
-				.filter(asset => asset.isExistingAsset)
+				.filter(asset => asset.isExistingAsset && asset.asset !== null)
 				.reduce((acc, asset) => {
 					return acc + asset.asset.price;
 				}, 0);
@@ -54,7 +54,7 @@ const AssetCartModal = ({
 	const selectedAsset = useMemo(() => {
 		if (moodboard) {
 			const assetEntry = moodboard
-				.filter(asset => asset.isExistingAsset)
+				.filter(asset => asset.isExistingAsset && asset.asset !== null)
 				.find(asset => {
 					return asset.asset._id === selectedEntry;
 				});
@@ -88,7 +88,7 @@ const AssetCartModal = ({
 				<Row gutter={[4, 4]}>
 					{getValueSafely<boolean>(() => moodboard.length > 0, false) ? (
 						moodboard
-							.filter(assetEntry => assetEntry.isExistingAsset)
+							.filter(assetEntry => assetEntry.isExistingAsset && assetEntry.asset !== null)
 							.map(assetEntry => {
 								return (
 									<Col key={assetEntry.asset._id} span={24}>
@@ -97,7 +97,7 @@ const AssetCartModal = ({
 											designId={designId}
 											addRemoveAsset={addRemoveAsset}
 											onRecommendationClick={onRecomendationClick}
-											type="primary"
+											type='primary'
 											currentlySelectingRecommendation={selectedAssetId === assetEntry.asset._id}
 											asset={assetEntry.asset}
 											entryId={assetEntry.asset._id}
@@ -107,8 +107,8 @@ const AssetCartModal = ({
 							})
 					) : (
 						<Col span={24}>
-							<Row justify="center">
-								<Empty description="Add some products as recommendation" />
+							<Row justify='center'>
+								<Empty description='Add some products as recommendation' />
 							</Row>
 						</Col>
 					)}
@@ -116,14 +116,14 @@ const AssetCartModal = ({
 						<GreyDrawer
 							title={
 								<>
-									<Row justify="center" align="middle">
+									<Row justify='center' align='middle'>
 										<Col span={24}>
-											<Row justify="center" align="middle">
-												<Image width="40%" src={`/q_80/${selectedAsset.asset.cdn}`} />
+											<Row justify='center' align='middle'>
+												<Image width='40%' src={`/q_80/${selectedAsset.asset.cdn}`} />
 											</Row>
 										</Col>
 										<Col span={24}>
-											<Row justify="center" align="middle">
+											<Row justify='center' align='middle'>
 												{getValueSafely(() => `${selectedAsset.asset.name} Recommendation`, "Recommendations")}
 											</Row>
 										</Col>
@@ -146,7 +146,7 @@ const AssetCartModal = ({
 														designId={designId}
 														entryId={selectedAsset.asset._id}
 														addRemoveAsset={addRemoveAsset}
-														type="recommendation"
+														type='recommendation'
 														asset={asset}
 													/>
 												</Col>
@@ -154,8 +154,8 @@ const AssetCartModal = ({
 										})
 									) : (
 										<Col span={24}>
-											<Row justify="center">
-												<Empty description="Add some products as recommendation" />
+											<Row justify='center'>
+												<Empty description='Add some products as recommendation' />
 											</Row>
 										</Col>
 									)}

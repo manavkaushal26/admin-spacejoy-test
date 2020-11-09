@@ -143,27 +143,31 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 								<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
 							</Col>
 						</Row>
-						<Row gutter={[10, 0]}>
-							<Col>
-								<Text strong>Current Price:</Text>
-							</Col>
-							<Col>
-								<Text strong>
-									<PriceData scrapedData={scrapedData} />
-								</Text>
-							</Col>
-						</Row>
-						<Row gutter={[10, 0]}>
-							<Col>
-								<Text strong>Availability:</Text>
-							</Col>
+						{scrapedData && (
+							<>
+								<Row gutter={[10, 0]}>
+									<Col>
+										<Text strong>Current Price:</Text>
+									</Col>
+									<Col>
+										<Text strong>
+											<PriceData scrapedData={scrapedData} />
+										</Text>
+									</Col>
+								</Row>
+								<Row gutter={[10, 0]}>
+									<Col>
+										<Text strong>Availability:</Text>
+									</Col>
 
-							<Col>
-								<Text strong>
-									<AssetAvailability scrapedData={scrapedData} />
-								</Text>
-							</Col>
-						</Row>
+									<Col>
+										<Text strong>
+											<AssetAvailability scrapedData={scrapedData} />
+										</Text>
+									</Col>
+								</Row>
+							</>
+						)}
 					</CardPadding>
 				</Col>
 			</Row>
