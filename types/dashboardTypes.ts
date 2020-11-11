@@ -435,6 +435,7 @@ export interface DetailedDesign {
 	room: RoomType;
 	theme: string;
 	tags: string[];
+	publishedDate: string;
 	attributeList: { text: string }[];
 	longDescription: string;
 	team?: DetailedProjectTeamMember[];

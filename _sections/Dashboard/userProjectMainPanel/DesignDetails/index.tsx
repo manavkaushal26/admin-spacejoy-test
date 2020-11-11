@@ -1,15 +1,12 @@
-import { LinkOutlined } from "@ant-design/icons";
+import { LinkOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { editDesignApi, getThemes } from "@api/designApi";
 import { DetailedDesign, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
-import { Status } from "@customTypes/userType";
-import { getValueSafely } from "@utils/commonUtils";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Input, notification, Row, Select, Tooltip, Typography } from "antd";
+import { Button, Col, DatePicker, Form, Input, notification, Row, Select } from "antd";
+import { useForm } from "antd/lib/form/Form";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-
-const { Text } = Typography;
-
 interface DesignDetails {
 	designData: Partial<DetailedDesign>;
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
@@ -17,16 +14,12 @@ interface DesignDetails {
 }
 
 const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, setDesignLoading }) => {
-	const [title, setTitle] = useState<string>();
-	const [description, setDescription] = useState<string>();
-	const [longDescription, setLongDescription] = useState<string>();
-	const [tags, setTags] = useState<string[]>([]);
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
-	const [selectedTheme, setSelectedTheme] = useState<string>("");
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
-	const [attributeList, setAttributeList] = useState<string[]>([]);
 
-	const onClickOk = async (): Promise<void> => {
+	const [form] = useForm();
+
+	const onClickOk = async (formData): Promise<void> => {
 		setDesignLoading(true);
 		const endPoint = editDesignApi(designData._id);
 		const response = await fetcher({
@@ -34,17 +27,11 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			method: "PUT",
 			body: {
 				data: {
-					name: title,
-					description,
-					tags,
-					theme: selectedTheme,
-					longDescription,
-					searchKey: {
-						roomType,
-					},
-					attributeList: attributeList.map(elem => ({
-						text: elem,
+					...formData,
+					attributeList: formData.attributeList.map(attribute => ({
+						text: attribute,
 					})),
+					publishedDate: formData.publishedDate?.toISOString(),
 				},
 			},
 		});
@@ -59,13 +46,11 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 
 	useEffect(() => {
 		if (designData) {
-			setTitle(designData.name);
-			setDescription(designData.description);
-			setSelectedTheme(designData.theme);
-			setTags(designData.tags);
-			setAttributeList(designData.attributeList.map(elem => elem.text));
-			setLongDescription(designData.longDescription);
-			setRoomType(getValueSafely(() => designData.searchKey.roomType, RoomTypes.LivingRoom));
+			form.setFieldsValue({
+				...designData,
+				attributeList: designData.attributeList.map(elem => elem.text),
+				publishedDate: moment(designData.publishedDate),
+			});
 		}
 	}, [designData]);
 
@@ -85,102 +70,77 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 		fetchThemes();
 	}, []);
 
-	const handleChange = (e): void => {
-		const {
-			target: { name, value },
-		} = e;
-		if (name === "longDescription") {
-			setLongDescription(value);
-			return;
+	const openInNewWindow = (roomType, slug): void => {
+		if (slug && roomType) {
+			const roomName = roomType.toLowerCase().split(" ").join("-");
+			const url = `${company.customerPortalLink}/interior-designs/${roomName}-ideas/${slug}`;
+			window.open(url, "_blank", "noopener");
 		}
-		if (name === "description") {
-			setDescription(value);
-			return;
-		}
-		if (name === "title") {
-			setTitle(value);
-		}
-	};
-
-	const handleSelect = (value, type): void => {
-		if (type === "tags") {
-			setTags(value);
-		} else if (type === "attributeList") {
-			setAttributeList(value);
-		} else {
-			setSelectedTheme(value);
-		}
-	};
-
-	const openInNewWindow = (): void => {
-		const roomName = designData.room.roomType.toLowerCase().split(" ").join("-");
-		const url = `${company.customerPortalLink}/interior-designs/${roomName}-ideas/${designData.slug}`;
-		window.open(url, "_blank", "noopener");
 	};
 
 	return (
-		<Row gutter={[8, 8]}>
-			{designData.slug && (
+		<Form labelCol={{ span: 24 }} form={form} onFinish={onClickOk}>
+			<Row gutter={[8, 8]}>
 				<Col span={24}>
-					<Row gutter={[4, 4]}>
-						<Col span={24}>
-							<Text strong>Slug</Text>
-						</Col>
-						<Col span={24}>
-							<Input
-								name='slug'
-								disabled
-								value={designData.slug}
-								addonAfter={
-									<Tooltip placement='top' title='Open URL'>
-										<LinkOutlined onClick={openInNewWindow} />
-									</Tooltip>
-								}
-							/>
-						</Col>
-					</Row>
+					<Form.Item noStyle shouldUpdate>
+						{({ getFieldValue }) => {
+							return (
+								<Form.Item name='slug' label='Slug'>
+									<Input
+										suffix={
+											<LinkOutlined
+												onClick={() => openInNewWindow(getFieldValue(["searchKey", "roomType"]), getFieldValue("slug"))}
+											/>
+										}
+									/>
+								</Form.Item>
+							);
+						}}
+					</Form.Item>
 				</Col>
-			)}
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Title</Text>
-					</Col>
-					<Col span={24}>
-						<Input onChange={handleChange} placeholder='Title' value={title} name='title' />
-					</Col>
-				</Row>
-			</Col>
-			<Col span={12}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Theme</Text>
-					</Col>
-					<Col span={24}>
-						<Select
-							showSearch
-							optionFilterProp='children'
-							value={selectedTheme}
-							onChange={handleSelect}
-							style={{ width: "100%" }}
-						>
-							{themes.map(theme => {
-								return (
-									<Select.Option key={theme._id} value={theme._id}>
-										{theme.name}
-									</Select.Option>
-								);
-							})}
-						</Select>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={12}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Room Type</Text>
-					</Col>
-					<Col span={24}>
+				<Col span={12}>
+					<Form.Item name='name' label='Title'>
+						<Input />
+					</Form.Item>
+				</Col>
+				<Col span={12}>
+					<Form.Item name='metaTitle' label='Meta title'>
+						<Input />
+					</Form.Item>
+				</Col>
+				<Col span={24}>
+					<Form.Item name='headingOneTag' label='H1 text'>
+						<Input />
+					</Form.Item>
+				</Col>
+				<Col span={24}>
+					<Form.Item name='description' label='Designer Description'>
+						<Input.TextArea />
+					</Form.Item>
+				</Col>
+				<Col span={24}>
+					<Form.Item name='longDescription' label='Long Description'>
+						<Input.TextArea />
+					</Form.Item>
+				</Col>
+				<Col span={24}>
+					<Form.Item name='metaDescription' label='Meta Description'>
+						<Input.TextArea />
+					</Form.Item>
+				</Col>
+
+				<Col span={8}>
+					<Form.Item name='altTag' label='Image Alt tag'>
+						<Input />
+					</Form.Item>
+				</Col>
+				<Col span={8}>
+					<Form.Item name='publishedDate' label='Published Date'>
+						<DatePicker style={{ width: "100%" }} />
+					</Form.Item>
+				</Col>
+				<Col span={8}>
+					<Form.Item name={["searchKey", "roomType"]} label='Room Type'>
 						<Select style={{ width: "100%" }} onChange={(value): void => setRoomType(value)} value={roomType}>
 							{Object.keys(RoomTypes).map(key => {
 								return (
@@ -190,78 +150,77 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 								);
 							})}
 						</Select>
-					</Col>
-				</Row>
-			</Col>
-			<Col sm={24} md={24}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Tags</Text>
-					</Col>
-					<Col span={24}>
-						<Select
-							open={false}
-							style={{ width: "100%" }}
-							value={tags}
-							onChange={(value): void => handleSelect(value, "tags")}
-							mode='tags'
-							tokenSeparators={[","]}
-						/>
-					</Col>
-				</Row>
-			</Col>
-
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Designer Description</Text>
-					</Col>
-					<Col span={24}>
-						<Input.TextArea onChange={handleChange} placeholder='Description' value={description} name='description' />
-					</Col>
-				</Row>
-			</Col>
-
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Long Description</Text>
-					</Col>
-					<Col span={24}>
-						<Input.TextArea
-							onChange={handleChange}
-							placeholder='Long Description'
-							value={longDescription}
-							name='longDescription'
-						/>
-					</Col>
-				</Row>
-			</Col>
-			<Col sm={24} md={24}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text strong>Bullet points</Text>
-					</Col>
-					<Col span={24}>
-						<Select
-							open={false}
-							style={{ width: "100%" }}
-							value={attributeList}
-							onChange={(value: string[]): void => handleSelect(value, "attributeList")}
-							tokenSeparators={["["]}
-							mode='tags'
-						/>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Row justify='end'>
-					<Button onClick={onClickOk} type='primary' disabled={designData.status === Status.active}>
-						Save Data
-					</Button>
-				</Row>
-			</Col>
-		</Row>
+					</Form.Item>
+				</Col>
+				<Col span={8}>
+					<Form.Item name='theme' label='Theme'>
+						<Select showSearch optionFilterProp='children' style={{ width: "100%" }}>
+							{themes.map(theme => {
+								return (
+									<Select.Option key={theme._id} value={theme._id}>
+										{theme.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</Form.Item>
+				</Col>
+				<Col span={8}>
+					<Form.Item name='tags' label='Tags'>
+						<Select open={false} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]} />
+					</Form.Item>
+				</Col>
+				<Col span={24}>
+					<Form.List name='attributeList'>
+						{(fields, { add, remove }, { errors }) => {
+							return (
+								<Row gutter={[8, 8]}>
+									{fields.map((field, index) => {
+										return (
+											<Col key={field.key} span={24}>
+												<Form.Item
+													label={index === 0 ? "Bullet Points" : ""}
+													required={false}
+													rules={[{ required: true }]}
+												>
+													<Form.Item
+														rules={[{ required: true, message: "Enter a value or delete this entry" }]}
+														{...field}
+														noStyle
+													>
+														<Input
+															placeholder='Bullet Points'
+															suffix={<MinusCircleOutlined onClick={() => remove(field.name)} />}
+														/>
+													</Form.Item>
+												</Form.Item>
+											</Col>
+										);
+									})}
+									<Col span={24}>
+										<Form.ErrorList errors={errors} />
+									</Col>
+									<Col span={24}>
+										<Form.Item>
+											<Button style={{ width: "100%" }} onClick={() => add()}>
+												Add Bullet Point
+											</Button>
+										</Form.Item>
+									</Col>
+								</Row>
+							);
+						}}
+					</Form.List>
+				</Col>
+				<Col span={24}>
+					<Form.Item>
+						<Button block type='primary' htmlType='submit'>
+							Save
+						</Button>
+					</Form.Item>
+				</Col>
+			</Row>
+		</Form>
 	);
 };
 

@@ -1,3 +1,4 @@
+import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import ProjectTabView from "@sections/Dashboard/userProjectMainPanel/ProjectTabView";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
@@ -53,19 +54,21 @@ const DesignExamples: NextPage<DesignExampleViewProps> = ({ designId, currentTab
 				</title>
 				{IndexPageMeta}
 			</Head>
-			<MaxWidthDesignPage>
-				<Spin spinning={loading}>
-					<Padding>
-						<ProjectTabView
-							onTabChangeCallback={onTabChange}
-							currentTab={currentTab}
-							onSelectDesign={goBack}
-							designId={designId}
-							setLoading={setLoading}
-						/>
-					</Padding>
-				</Spin>
-			</MaxWidthDesignPage>
+			<MaxHeightDiv>
+				<MaxWidthDesignPage>
+					<Spin spinning={loading}>
+						<Padding>
+							<ProjectTabView
+								onTabChangeCallback={onTabChange}
+								currentTab={currentTab}
+								onSelectDesign={goBack}
+								designId={designId}
+								setLoading={setLoading}
+							/>
+						</Padding>
+					</Spin>
+				</MaxWidthDesignPage>
+			</MaxHeightDiv>
 		</PageLayout>
 	);
 };

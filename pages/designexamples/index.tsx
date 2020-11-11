@@ -1,6 +1,7 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { DesignPhases, HumanizeDesignPhases, RoomLabels, RoomTypes } from "@customTypes/dashboardTypes";
 import { AssetStatus } from "@customTypes/userType";
+import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import CreateDesignModal from "@sections/DesignExamples/CreateNewDesign";
 import DesignListDisplay from "@sections/DesignExamples/DesignListDisplay";
 import {
@@ -98,116 +99,118 @@ const DesignExamples: NextPage = () => {
 				<title>Design Examples | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
-			<MaxWidthDesignPage>
-				<Padding>
-					<Row gutter={[16, 16]}>
-						<Col span={24}>
-							<Row style={{ padding: "2rem 0rem" }} justify='space-between'>
-								<Col>
-									<Title level={3}>
+			<MaxHeightDiv>
+				<MaxWidthDesignPage>
+					<Padding>
+						<Row gutter={[16, 16]}>
+							<Col span={24}>
+								<Row style={{ padding: "2rem 0rem" }} justify='space-between'>
+									<Col>
+										<Title level={3}>
+											<Row gutter={[8, 8]}>
+												<Col>
+													<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/launchpad" })} />
+												</Col>
+												<Col>Design Examples</Col>
+											</Row>
+										</Title>
+									</Col>
+									<Col>
+										<Button type='primary' onClick={toggleModal}>
+											Create new Design
+										</Button>
+									</Col>
+								</Row>
+							</Col>
+							<Col span={24}>
+								<Collapse>
+									<Collapse.Panel header='Filters' key={1}>
 										<Row gutter={[8, 8]}>
-											<Col>
-												<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/launchpad" })} />
+											<Col sm={24} md={8}>
+												<Row>
+													<Col>Search by Name</Col>
+													<Col span={24}>
+														<Input.Search
+															onChange={(e): void => debouncedHandleSearch(e.target.value)}
+															onSearch={handleSearchInput}
+														/>
+													</Col>
+												</Row>
 											</Col>
-											<Col>Design Examples</Col>
+											<Col sm={12} md={8}>
+												<Row>
+													<Col>Filter by Room Type</Col>
+													<Col span={24}>
+														<Select
+															mode='multiple'
+															maxTagCount={2}
+															value={state.roomTypeFilter}
+															onChange={(value): void => handleSelect(value, DesignListAction.ROOM_TYPE_FILTER)}
+															style={{ width: "100%" }}
+														>
+															{Object.keys(RoomTypes).map(key => {
+																return (
+																	<Select.Option key={key} value={RoomTypes[key]}>
+																		{RoomLabels[key]}
+																	</Select.Option>
+																);
+															})}
+														</Select>
+													</Col>
+												</Row>
+											</Col>
+											<Col sm={12} md={8}>
+												<Row>
+													<Col>Filter by Status</Col>
+													<Col span={24}>
+														<Select
+															onChange={(value): void => handleSelect(value, DesignListAction.STATUS_FILTER)}
+															style={{ width: "100%" }}
+														>
+															{Object.keys(AssetStatus).map(key => {
+																return (
+																	<Select.Option key={key} value={AssetStatus[key]}>
+																		{key}
+																	</Select.Option>
+																);
+															})}
+														</Select>
+													</Col>
+												</Row>
+											</Col>
+											<Col sm={24} md={12}>
+												<Row>
+													<Col>Filter by Phase</Col>
+													<Col span={24}>
+														<Select
+															mode='multiple'
+															value={state.phaseFilter}
+															maxTagCount={5}
+															onChange={(value): void => handleSelect(value, DesignListAction.PHASE_FILTER)}
+															style={{ width: "100%" }}
+														>
+															{Object.keys(DesignPhases).map(key => {
+																return (
+																	<Select.Option key={key} value={key}>
+																		{HumanizeDesignPhases[key]}
+																	</Select.Option>
+																);
+															})}
+														</Select>
+													</Col>
+												</Row>
+											</Col>
 										</Row>
-									</Title>
-								</Col>
-								<Col>
-									<Button type='primary' onClick={toggleModal}>
-										Create new Design
-									</Button>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Collapse>
-								<Collapse.Panel header='Filters' key={1}>
-									<Row gutter={[8, 8]}>
-										<Col sm={24} md={8}>
-											<Row>
-												<Col>Search by Name</Col>
-												<Col span={24}>
-													<Input.Search
-														onChange={(e): void => debouncedHandleSearch(e.target.value)}
-														onSearch={handleSearchInput}
-													/>
-												</Col>
-											</Row>
-										</Col>
-										<Col sm={12} md={8}>
-											<Row>
-												<Col>Filter by Room Type</Col>
-												<Col span={24}>
-													<Select
-														mode='multiple'
-														maxTagCount={2}
-														value={state.roomTypeFilter}
-														onChange={(value): void => handleSelect(value, DesignListAction.ROOM_TYPE_FILTER)}
-														style={{ width: "100%" }}
-													>
-														{Object.keys(RoomTypes).map(key => {
-															return (
-																<Select.Option key={key} value={RoomTypes[key]}>
-																	{RoomLabels[key]}
-																</Select.Option>
-															);
-														})}
-													</Select>
-												</Col>
-											</Row>
-										</Col>
-										<Col sm={12} md={8}>
-											<Row>
-												<Col>Filter by Status</Col>
-												<Col span={24}>
-													<Select
-														onChange={(value): void => handleSelect(value, DesignListAction.STATUS_FILTER)}
-														style={{ width: "100%" }}
-													>
-														{Object.keys(AssetStatus).map(key => {
-															return (
-																<Select.Option key={key} value={AssetStatus[key]}>
-																	{key}
-																</Select.Option>
-															);
-														})}
-													</Select>
-												</Col>
-											</Row>
-										</Col>
-										<Col sm={24} md={12}>
-											<Row>
-												<Col>Filter by Phase</Col>
-												<Col span={24}>
-													<Select
-														mode='multiple'
-														value={state.phaseFilter}
-														maxTagCount={5}
-														onChange={(value): void => handleSelect(value, DesignListAction.PHASE_FILTER)}
-														style={{ width: "100%" }}
-													>
-														{Object.keys(DesignPhases).map(key => {
-															return (
-																<Select.Option key={key} value={key}>
-																	{HumanizeDesignPhases[key]}
-																</Select.Option>
-															);
-														})}
-													</Select>
-												</Col>
-											</Row>
-										</Col>
-									</Row>
-								</Collapse.Panel>
-							</Collapse>
-						</Col>
-						<Col span={24}>
-							<DesignListDisplay state={state} dispatch={dispatch} />
-						</Col>
-					</Row>
-				</Padding>
-			</MaxWidthDesignPage>
+									</Collapse.Panel>
+								</Collapse>
+							</Col>
+							<Col span={24}>
+								<DesignListDisplay state={state} dispatch={dispatch} />
+							</Col>
+						</Row>
+					</Padding>
+				</MaxWidthDesignPage>
+			</MaxHeightDiv>
 			<CreateDesignModal
 				createDesignModalVisible={createDesignModalVisible}
 				toggleModal={toggleModal}
