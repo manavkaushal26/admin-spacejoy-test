@@ -43,8 +43,9 @@ export default function ImageList({ query }) {
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
+	const [defaultStyleName, setDefaultStyleName] = useState("");
 	const Router = useRouter();
-	console.log(query);
+
 	const fetchResources = async endPoint => {
 		try {
 			const resData = await fetcher({ endPoint, method: "GET" });
@@ -76,10 +77,16 @@ export default function ImageList({ query }) {
 		styleFetcher("/quiz/admin/v1/styles", "GET")
 			.then(res => {
 				setStylesData(res.data);
+				Router.push(
+					{ pathname: "/stylequiz/imageList", query: { styleId: res.data[0]?.id } },
+					`/stylequiz/imageList/${res.data[0]?.id}`
+				);
 			})
-			.catch(err => console.log(err))
-			.finally(() => {});
-		getLatestImages(styleId);
+			.catch(err => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		getLatestImages(Router?.query?.styleId);
 	}, [Router]);
 
 	useEffect(() => {
@@ -87,7 +94,8 @@ export default function ImageList({ query }) {
 	}, [selectedProductId]);
 
 	const deleteImage = async id => {
-		deleteResource(adminImageEndpoint, { imageId: id });
+		await deleteResource(adminImageEndpoint, { imageId: id });
+		getLatestImages(styleId);
 	};
 
 	const handleUpload = e => {
@@ -130,7 +138,6 @@ export default function ImageList({ query }) {
 	const getStyleName = id => {
 		const style = styles.filter(item => item.id === id)[0];
 		if (style) {
-			console.log(style);
 			return style.name;
 		}
 		return "";
@@ -147,7 +154,7 @@ export default function ImageList({ query }) {
 		});
 		setScores(data);
 	};
-
+	console.log(defaultStyleName);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -162,6 +169,7 @@ export default function ImageList({ query }) {
 											filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 											style={{ width: "100%" }}
 											onChange={handleChange}
+											defaultValue={defaultStyleName}
 										>
 											<Select.Option value='all'>All</Select.Option>
 											{styles.map((style, index) => {

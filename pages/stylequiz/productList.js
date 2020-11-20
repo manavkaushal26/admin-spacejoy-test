@@ -50,10 +50,16 @@ export default function ProductsList({ query }) {
 		styleFetcher("/quiz/admin/v1/styles/active", "GET")
 			.then(res => {
 				setStylesData(res.data);
-				getLatestProducts(styleId);
+				Router.push(
+					{ pathname: "/stylequiz/productList", query: { styleId: res.data[0]?.id } },
+					`/stylequiz/productList/${res.data[0]?.id}`
+				);
 			})
-			.catch(err => console.log(err))
-			.finally(() => {});
+			.catch(err => console.log(err));
+	}, []);
+
+	useEffect(() => {
+		getLatestProducts(Router?.query?.styleId);
 	}, [Router]);
 
 	const handleChange = value => {
