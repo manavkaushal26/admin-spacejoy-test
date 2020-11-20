@@ -4,11 +4,11 @@ import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin } from "antd";
+import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { createResource, deleteResource, styleFetcher } from "./helper";
-
 const StyledInput = styled(Input)`
 	opacity: 0;
 	position: absolute;
@@ -26,14 +26,15 @@ const Wrapper = styled.div`
 	}
 `;
 
-export default function ProductsList() {
+export default function ProductsList({ query }) {
+	const { styleId } = query;
 	const [products, setProducts] = useState([]);
 	const [styles, setStylesData] = useState([]);
-	const [styleId, setStyleId] = useState("");
 	const [isLoading, setLoader] = useState(false);
-	const fetchProducts = async id => {
+	const Router = useRouter();
+	const fetchResources = async endPoint => {
 		try {
-			const resData = await fetcher({ endPoint: `/quiz/admin/v1/products/${id}`, method: "GET" });
+			const resData = await fetcher({ endPoint: endPoint, method: "GET" });
 			const { data, statusCode } = resData;
 			if (statusCode && statusCode <= 201) {
 				return data;
@@ -49,18 +50,18 @@ export default function ProductsList() {
 		styleFetcher("/quiz/admin/v1/styles/active", "GET")
 			.then(res => {
 				setStylesData(res.data);
+				getLatestProducts(styleId);
 			})
 			.catch(err => console.log(err))
 			.finally(() => {});
-	}, []);
+	}, [Router]);
 
 	const handleChange = value => {
-		setStyleId(value);
-		getLatestProducts(value);
+		Router.push({ pathname: "/stylequiz/productList", query: { styleId: value } }, `/stylequiz/productList/${value}`);
 	};
 
 	const getLatestProducts = id => {
-		fetchProducts(id)
+		fetchResources(`/quiz/admin/v1/products/${id}`)
 			.then(res => {
 				setProducts(res.products);
 			})
@@ -68,8 +69,8 @@ export default function ProductsList() {
 			.finally(() => {});
 	};
 
-	const deleteProduct = id => {
-		deleteResource("/quiz/admin/v1/product", { productId: id });
+	const deleteProduct = async id => {
+		await deleteResource("/quiz/admin/v1/product", { productId: id });
 		getLatestProducts(styleId);
 	};
 
@@ -82,11 +83,11 @@ export default function ProductsList() {
 		const endPoint = `/quiz/admin/v1/product/${styleId}`;
 		const formData = new FormData();
 		formData.append("image", image, image.fileName);
-		createResource(endPoint, formData);
+		await createResource(endPoint, formData);
 		getLatestProducts(styleId);
 		setLoader(false);
 	};
-
+	// console.log(scores, styles);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -163,3 +164,7 @@ export default function ProductsList() {
 		</PageLayout>
 	);
 }
+
+ProductsList.getInitialProps = ({ query }) => {
+	return { query };
+};

@@ -190,17 +190,19 @@ function pageRoute(app, router) {
 		});
 	});
 
-	router.get("/stylequiz/imageList", TokenCheckMiddleware, (req, res) => {
-		const { query } = req;
+	router.get("/stylequiz/imageList/:styleId", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
 		app.render(req, res, "/stylequiz/imageList", {
 			...query,
+			...params,
 		});
 	});
 
-	router.get("/stylequiz/productList", TokenCheckMiddleware, (req, res) => {
-		const { query } = req;
+	router.get("/stylequiz/productList/:styleId", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
 		app.render(req, res, "/stylequiz/productList", {
 			...query,
+			...params,
 		});
 	});
 

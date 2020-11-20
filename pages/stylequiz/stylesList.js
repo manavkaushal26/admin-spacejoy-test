@@ -2,13 +2,15 @@ import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Row, Switch, Table } from "antd";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import { styleFetcher } from "./helper";
 export default function StylesList() {
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
-
+	const Router = useRouter();
 	useEffect(() => {
 		setLoader(true);
 		styleFetcher("/quiz/admin/v1/styles", "GET")
@@ -36,7 +38,7 @@ export default function StylesList() {
 			await fetcher({
 				endPoint: "/quiz/admin/v1/styles/active",
 				method: "POST",
-				body: { styleId: id, active: checked.toString() },
+				body: { styleId: id, active: checked ? "yes" : "no" },
 			});
 		} catch {
 			throw new Error();
@@ -48,6 +50,7 @@ export default function StylesList() {
 		updateStyleStatus(checked, id);
 	};
 
+	console.log(styles);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -77,14 +80,30 @@ export default function StylesList() {
 									key='id'
 									title='Is Active'
 									dataIndex='id'
-									render={text => <Switch defaultChecked={false} onChange={checked => handleToggle(checked, text)} />}
+									render={(text, record) => (
+										<Switch defaultChecked={record.active} onChange={checked => handleToggle(checked, text)} />
+									)}
 								/>
 								<Table.Column
-									key='_id'
+									key='id'
 									title=''
-									dataIndex='mongoId'
-									render={text => <Button type='link'>Products</Button>}
-								/>{" "}
+									dataIndex='id'
+									render={(text, record) => (
+										<Link href={`/stylequiz/productList/${record.id}`} type='link'>
+											Products
+										</Link>
+									)}
+								/>
+								<Table.Column
+									key='id'
+									title=''
+									dataIndex='id'
+									render={(text, record) => (
+										<Link href={`/stylequiz/imageList/${record.id}`} type='link'>
+											Images
+										</Link>
+									)}
+								/>
 							</Table>
 						</Col>
 					</Row>

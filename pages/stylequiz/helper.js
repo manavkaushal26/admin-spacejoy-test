@@ -31,4 +31,19 @@ const createResource = async (endPoint, body) => {
 	}
 };
 
+const handleScores = async (method, body) => {
+	try {
+		const resData = await fetcher({ endPoint: "/quiz/admin/v1/image/score", method: method, body: body });
+		const { data, statusCode } = resData;
+		if (statusCode && statusCode <= 201) {
+			return data;
+		} else {
+			throw new Error();
+		}
+	} catch {
+		throw new Error();
+	} finally {
+	}
+};
+
 module.exports = { styleFetcher, deleteResource, createResource };

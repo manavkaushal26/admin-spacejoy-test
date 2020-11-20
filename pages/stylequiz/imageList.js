@@ -1,9 +1,9 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin } from "antd";
+import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Spin, Table } from "antd";
+import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -25,16 +25,29 @@ const Wrapper = styled.div`
 	}
 `;
 
+const ScoreBox = styled.p`
+	padding: 5px;
+	border: 1px solid #efefef;
+	/* width: 40px; */
+	max-width: 40px;
+	margin: 0 auto;
+`;
+
 const adminImageEndpoint = "/quiz/admin/v1/image";
 
-export default function ProductsList() {
+export default function ImageList({ query }) {
+	const { styleId } = query;
+	const [selectedProductId, setSelectedProductId] = useState([]);
+	const [scores, setScores] = useState([]);
 	const [images, setImages] = useState([]);
+	const [isModalVisible, setModalVisibility] = useState(false);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
-	const [styleId, setStyleId] = useState("");
-	const fetchImages = async id => {
+	const Router = useRouter();
+	console.log(query);
+	const fetchResources = async endPoint => {
 		try {
-			const resData = await fetcher({ endPoint: `/quiz/admin/v1/images/${id}`, method: "GET" });
+			const resData = await fetcher({ endPoint, method: "GET" });
 			const { data, statusCode } = resData;
 			if (statusCode && statusCode <= 201) {
 				return data;
@@ -47,7 +60,7 @@ export default function ProductsList() {
 	};
 
 	const getLatestImages = id => {
-		fetchImages(id)
+		fetchResources(`/quiz/admin/v1/images/${id}`)
 			.then(res => {
 				setImages(res.images);
 			})
@@ -56,8 +69,7 @@ export default function ProductsList() {
 	};
 
 	const handleChange = value => {
-		setStyleId(value);
-		getLatestImages(value);
+		Router.push({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/${value}`);
 	};
 
 	useEffect(() => {
@@ -68,7 +80,11 @@ export default function ProductsList() {
 			.catch(err => console.log(err))
 			.finally(() => {});
 		getLatestImages(styleId);
-	}, []);
+	}, [Router]);
+
+	useEffect(() => {
+		getLatestScores();
+	}, [selectedProductId]);
 
 	const deleteImage = async id => {
 		deleteResource(adminImageEndpoint, { imageId: id });
@@ -82,9 +98,54 @@ export default function ProductsList() {
 		setLoader(true);
 		const formData = new FormData();
 		formData.append("image", image, image.fileName);
-		createResource(adminImageEndpoint, formData);
+		await createResource(adminImageEndpoint, formData);
 		getLatestImages(styleId);
 		setLoader(false);
+	};
+
+	const getLatestScores = () => {
+		// const endPoint = `/quiz/admin/v1/image/scores/${selectedProductId}`;
+		const endPoint = `/quiz/admin/v1/image/scores/1`;
+		fetchResources(endPoint)
+			.then(res => {
+				filterScoresData(res.scores);
+			})
+			.catch(err => console.log(err))
+			.finally(() => {});
+	};
+
+	const showModal = id => {
+		setSelectedProductId(id);
+		setModalVisibility(true);
+	};
+
+	const handleModalOk = e => {
+		setModalVisibility(false);
+	};
+
+	const handleModalCancel = e => {
+		setModalVisibility(false);
+	};
+
+	const getStyleName = id => {
+		const style = styles.filter(item => item.id === id)[0];
+		if (style) {
+			console.log(style);
+			return style.name;
+		}
+		return "";
+	};
+
+	const filterScoresData = scores => {
+		const data = scores.map(item => {
+			return {
+				name: getStyleName(item.style_id),
+				score: item.score,
+				id: item.id,
+				styleId: item.style_id,
+			};
+		});
+		setScores(data);
 	};
 
 	return (
@@ -102,6 +163,7 @@ export default function ProductsList() {
 											style={{ width: "100%" }}
 											onChange={handleChange}
 										>
+											<Select.Option value='all'>All</Select.Option>
 											{styles.map((style, index) => {
 												return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
 											})}
@@ -122,7 +184,6 @@ export default function ProductsList() {
 										<Col sm={12} md={8} lg={6}>
 											<Card
 												actions={[
-													<Button type='link'>Score</Button>,
 													<Popconfirm
 														placement='top'
 														onConfirm={() => deleteImage(item?.id)}
@@ -133,9 +194,18 @@ export default function ProductsList() {
 													>
 														<DeleteOutlined />
 													</Popconfirm>,
+													<Button type='link' onClick={() => showModal(item?.id)}>
+														Set Score
+													</Button>,
 												]}
 												hoverable
-												cover={<Image height={164} height={164} src={item?.url} />}
+												cover={
+													<img
+														height={164}
+														height={164}
+														src='https://static-staging.spacejoy.com/style-quiz/images/6a5a2cd6-be64-47cf-9f13-a9ec0b794858.jpg'
+													/>
+												}
 											></Card>
 										</Col>
 									);
@@ -143,8 +213,46 @@ export default function ProductsList() {
 							</Row>
 						</Wrapper>
 					</Spin>
+					<Modal
+						title='Basic Modal'
+						visible={isModalVisible}
+						onOk={handleModalOk}
+						onCancel={handleModalCancel}
+						width={1000}
+					>
+						<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={scores}>
+							<Table.Column
+								key='_id'
+								title='Style Name'
+								render={scores => {
+									return (
+										<Row>
+											<Col span={24}>{scores.name}</Col>
+										</Row>
+									);
+								}}
+							/>
+							<Table.Column
+								key='id'
+								title='Score'
+								dataIndex='id'
+								render={(text, record) => <ScoreBox contentEditable={true}>{record.score}</ScoreBox>}
+							/>
+							<Table.Column
+								key='id'
+								title=''
+								dataIndex='id'
+								render={(text, record) => <Button onClick={() => handleEdit(record.id)}>Edit</Button>}
+							/>
+							<Table.Column key='id' title='' dataIndex='id' render={(text, record) => <Button>Delete</Button>} />
+						</Table>
+					</Modal>
 				</LoudPaddingDiv>
 			</MaxHeightDiv>
 		</PageLayout>
 	);
 }
+
+ImageList.getInitialProps = ({ query }) => {
+	return { query };
+};
