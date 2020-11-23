@@ -1,7 +1,7 @@
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Row, Switch, Table } from "antd";
+import { Col, Row, Switch, Table } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
@@ -25,7 +25,7 @@ export default function StylesList() {
 	}, []);
 
 	const getLatestStyles = () => {
-		styleFetcher("POST")
+		styleFetcher("/quiz/admin/v1/styles", "POST")
 			.then(res => {
 				setStylesData([...res.data, ...styles]);
 			})
@@ -57,9 +57,9 @@ export default function StylesList() {
 				<LoudPaddingDiv>
 					<Row gutter={[4, 16]}>
 						<Col sm={24} align='right'>
-							<Button type='primary' onClick={getLatestStyles}>
+							{/* <Button type='primary' onClick={getLatestStyles}>
 								Resync
-							</Button>
+							</Button> */}
 						</Col>
 					</Row>
 					<Row gutter={[0, 16]}>

@@ -1,5 +1,4 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
@@ -31,6 +30,7 @@ export default function ProductsList({ query }) {
 	const [products, setProducts] = useState([]);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
+	const [defaultStyleName, setDefaultStyleName] = useState("");
 	const Router = useRouter();
 	const fetchResources = async endPoint => {
 		try {
@@ -58,7 +58,13 @@ export default function ProductsList({ query }) {
 			.catch(err => console.log(err));
 	}, []);
 
+	const getDefaultStyleName = () => {
+		const defaultStyle = styles.filter(item => item.id == parseInt(Router?.query?.styleId));
+		return defaultStyle[0]?.name || "";
+	};
+
 	useEffect(() => {
+		setDefaultStyleName(getDefaultStyleName());
 		getLatestProducts(Router?.query?.styleId);
 	}, [Router]);
 
@@ -93,7 +99,7 @@ export default function ProductsList({ query }) {
 		getLatestProducts(styleId);
 		setLoader(false);
 	};
-	// console.log(scores, styles);
+	console.log("defaultStyleName", defaultStyleName);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -108,6 +114,7 @@ export default function ProductsList({ query }) {
 											filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 											style={{ width: "100%" }}
 											onChange={handleChange}
+											defaultValue={defaultStyleName}
 										>
 											{styles.map((style, index) => {
 												return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
@@ -142,13 +149,7 @@ export default function ProductsList({ query }) {
 														</Popconfirm>,
 													]}
 													hoverable
-													cover={
-														<Image
-															height={164}
-															height={164}
-															src='/_next/static/images/fallback-background-8bbb1ffdd871f26e713e31927f48a6ff.svg'
-														/>
-													}
+													cover={<img height={164} height={164} src={item?.image} />}
 												></Card>
 											</Col>
 										);

@@ -2,12 +2,13 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Spin, Table } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { createResource, deleteResource, styleFetcher } from "./helper";
+import ScoreModal from "./scoreModal";
 const StyledInput = styled(Input)`
 	opacity: 0;
 	position: absolute;
@@ -38,7 +39,6 @@ const adminImageEndpoint = "/quiz/admin/v1/image";
 export default function ImageList({ query }) {
 	const { styleId } = query;
 	const [selectedProductId, setSelectedProductId] = useState([]);
-	const [scores, setScores] = useState([]);
 	const [images, setImages] = useState([]);
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [styles, setStylesData] = useState([]);
@@ -61,7 +61,7 @@ export default function ImageList({ query }) {
 	};
 
 	const getLatestImages = id => {
-		fetchResources(`/quiz/admin/v1/images/${id}`)
+		fetchResources(`/quiz/v1/images`)
 			.then(res => {
 				setImages(res.images);
 			})
@@ -89,10 +89,6 @@ export default function ImageList({ query }) {
 		getLatestImages(Router?.query?.styleId);
 	}, [Router]);
 
-	useEffect(() => {
-		getLatestScores();
-	}, [selectedProductId]);
-
 	const deleteImage = async id => {
 		await deleteResource(adminImageEndpoint, { imageId: id });
 		getLatestImages(styleId);
@@ -111,17 +107,6 @@ export default function ImageList({ query }) {
 		setLoader(false);
 	};
 
-	const getLatestScores = () => {
-		// const endPoint = `/quiz/admin/v1/image/scores/${selectedProductId}`;
-		const endPoint = `/quiz/admin/v1/image/scores/1`;
-		fetchResources(endPoint)
-			.then(res => {
-				filterScoresData(res.scores);
-			})
-			.catch(err => console.log(err))
-			.finally(() => {});
-	};
-
 	const showModal = id => {
 		setSelectedProductId(id);
 		setModalVisibility(true);
@@ -135,26 +120,6 @@ export default function ImageList({ query }) {
 		setModalVisibility(false);
 	};
 
-	const getStyleName = id => {
-		const style = styles.filter(item => item.id === id)[0];
-		if (style) {
-			return style.name;
-		}
-		return "";
-	};
-
-	const filterScoresData = scores => {
-		const data = scores.map(item => {
-			return {
-				name: getStyleName(item.style_id),
-				score: item.score,
-				id: item.id,
-				styleId: item.style_id,
-			};
-		});
-		setScores(data);
-	};
-	console.log(defaultStyleName);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -207,13 +172,7 @@ export default function ImageList({ query }) {
 													</Button>,
 												]}
 												hoverable
-												cover={
-													<img
-														height={164}
-														height={164}
-														src='https://static-staging.spacejoy.com/style-quiz/images/6a5a2cd6-be64-47cf-9f13-a9ec0b794858.jpg'
-													/>
-												}
+												cover={<img height={164} height={164} src={item?.url} />}
 											></Card>
 										</Col>
 									);
@@ -221,40 +180,13 @@ export default function ImageList({ query }) {
 							</Row>
 						</Wrapper>
 					</Spin>
-					<Modal
-						title='Basic Modal'
-						visible={isModalVisible}
-						onOk={handleModalOk}
-						onCancel={handleModalCancel}
-						width={1000}
-					>
-						<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={scores}>
-							<Table.Column
-								key='_id'
-								title='Style Name'
-								render={scores => {
-									return (
-										<Row>
-											<Col span={24}>{scores.name}</Col>
-										</Row>
-									);
-								}}
-							/>
-							<Table.Column
-								key='id'
-								title='Score'
-								dataIndex='id'
-								render={(text, record) => <ScoreBox contentEditable={true}>{record.score}</ScoreBox>}
-							/>
-							<Table.Column
-								key='id'
-								title=''
-								dataIndex='id'
-								render={(text, record) => <Button onClick={() => handleEdit(record.id)}>Edit</Button>}
-							/>
-							<Table.Column key='id' title='' dataIndex='id' render={(text, record) => <Button>Delete</Button>} />
-						</Table>
-					</Modal>
+					<ScoreModal
+						isModalVisible={isModalVisible}
+						selectedProductId={selectedProductId}
+						handleModalOk={handleModalOk}
+						handleModalCancel={handleModalCancel}
+						styles={styles}
+					/>
 				</LoudPaddingDiv>
 			</MaxHeightDiv>
 		</PageLayout>

@@ -46,4 +46,4 @@ const handleScores = async (method, body) => {
 	}
 };
 
-module.exports = { styleFetcher, deleteResource, createResource };
+module.exports = { styleFetcher, deleteResource, createResource, handleScores };
