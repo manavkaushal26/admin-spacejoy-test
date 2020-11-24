@@ -1,4 +1,5 @@
 import fetcher from "@utils/fetcher";
+import { notification } from "antd";
 const styleFetcher = async (endPoint, method) => {
 	try {
 		const resData = await fetcher({ endPoint, method: method });
@@ -16,17 +17,32 @@ const styleFetcher = async (endPoint, method) => {
 
 const deleteResource = async (endPoint, body) => {
 	try {
-		await fetcher({ endPoint, method: "DELETE", body });
-	} catch (err) {
-		throw new err();
+		const resData = await fetcher({ endPoint, method: "DELETE", body });
+		const { data, statusCode } = resData;
+		if (statusCode && statusCode <= 201) {
+			notification.success({ message: "Successfully deleted" });
+			return data;
+		} else {
+			throw new Error();
+		}
+	} catch {
+		throw new Error();
+	} finally {
 	}
 };
 
 const createResource = async (endPoint, body) => {
 	try {
-		await fetcher({ isMultipartForm: true, endPoint, method: "POST", body });
-	} catch (err) {
-		throw new err();
+		const resData = await fetcher({ isMultipartForm: true, endPoint, method: "POST", body });
+		const { data, statusCode } = resData;
+		if (statusCode && statusCode <= 201) {
+			notification.success({ message: "Upload successful" });
+			return data;
+		} else {
+			throw new Error();
+		}
+	} catch {
+		throw new Error();
 	} finally {
 	}
 };

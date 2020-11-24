@@ -71,6 +71,7 @@ export default function ImageList({ query }) {
 		styleFetcher("/quiz/admin/v1/styles", "GET")
 			.then(res => {
 				setStylesData(res.data);
+				setDefaultStyleName(res.data.filter(item => item.id === res.data[0]?.id)[0].name);
 				Router.push(
 					{ pathname: "/stylequiz/imageList", query: { styleId: res.data[0]?.id } },
 					`/stylequiz/imageList/${res.data[0]?.id}`
@@ -141,7 +142,6 @@ export default function ImageList({ query }) {
 											onChange={handleChange}
 											defaultValue={defaultStyleName}
 										>
-											<Select.Option value='all'>All</Select.Option>
 											{styles.map((style, index) => {
 												return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
 											})}
@@ -157,31 +157,41 @@ export default function ImageList({ query }) {
 							</Card>
 							<br></br>
 							<Row gutter={[0, 16]}>
-								{images.map(item => {
-									return (
-										<Col sm={12} md={8} lg={6}>
-											<Card
-												actions={[
-													<Popconfirm
-														placement='top'
-														onConfirm={() => deleteImage(item?.id)}
-														title='Are you sure you want to delete?'
-														okText='Yes'
-														disabled={false}
-														cancelText='Cancel'
-													>
-														<DeleteOutlined />
-													</Popconfirm>,
-													<Button type='link' onClick={() => showModal(item?.id)}>
-														Add Scores
-													</Button>,
-												]}
-												hoverable
-												cover={<img height={164} height={164} src={item?.url} />}
-											></Card>
-										</Col>
-									);
-								})}
+								{images.length ? (
+									images.map(item => {
+										return (
+											<Col sm={12} md={8} lg={6}>
+												<Card
+													actions={[
+														<Popconfirm
+															placement='top'
+															onConfirm={() => deleteImage(item?.id)}
+															title='Are you sure you want to delete?'
+															okText='Yes'
+															disabled={false}
+															cancelText='Cancel'
+														>
+															<DeleteOutlined />
+														</Popconfirm>,
+														<Button type='link' onClick={() => showModal(item?.id)}>
+															Add Scores
+														</Button>,
+													]}
+													hoverable
+													cover={<img height={164} height={164} src={item?.url} />}
+												></Card>
+											</Col>
+										);
+									})
+								) : (
+									<Card style={{ width: "100%" }} align='center'>
+										<Row gutter={[4, 16]}>
+											<Col sm={24} md={24} lg={24}>
+												<p>No Images to show.</p>
+											</Col>
+										</Row>
+									</Card>
+								)}
 							</Row>
 						</Wrapper>
 					</Spin>
