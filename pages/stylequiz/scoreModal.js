@@ -1,6 +1,7 @@
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Modal, notification, Row, Select, Table } from "antd";
+import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { handleScores } from "./helper";
@@ -256,3 +257,19 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		</Modal>
 	);
 }
+
+ScoreModal.defaultProps = {
+	styles: [],
+	isModalVisible: false,
+	selectedProductId: "",
+	handleModalOk: () => {},
+	handleModalCancel: () => {},
+};
+
+ScoreModal.propTypes = {
+	styles: PropTypes.arrayOf(PropTypes.shape({})),
+	isModalVisible: PropTypes.bool,
+	selectedProductId: PropTypes.string,
+	handleModalOk: PropTypes.func,
+	handleModalCancel: PropTypes.func,
+};
