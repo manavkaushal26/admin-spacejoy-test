@@ -34,7 +34,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 					setProjectData={setProjectData}
 					projectData={projectData}
 					onSelectDesign={onSelectDesign}
-					revisionDesign={revisionFormData.revisedDesign ? revisionFormData?.revisedDesign?._id : null}
+					revisionDesign={revisionFormData?.revisedDesign ? revisionFormData?.revisedDesign?._id : null}
 				/>
 			</Tabs.TabPane>
 			<Tabs.TabPane tab='Quiz Responses' key='customerResponses'>
