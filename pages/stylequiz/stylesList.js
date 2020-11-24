@@ -1,12 +1,15 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
+import { redirectToLocation } from "@utils/authContext";
 import fetcher from "@utils/fetcher";
-import { Col, Row, Switch, Table } from "antd";
+import { Col, Row, Switch, Table, Typography } from "antd";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import { styleFetcher } from "./helper";
+const { Title, Text } = Typography;
 export default function StylesList() {
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
@@ -50,11 +53,21 @@ export default function StylesList() {
 		updateStyleStatus(checked, id);
 	};
 
-	console.log(styles);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
+					<Col span={24}>
+						<Title level={3}>
+							<Row gutter={[8, 8]}>
+								<Col>
+									<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/stylequiz" })} />
+								</Col>
+								<Col>Style Quiz</Col>
+							</Row>
+						</Title>
+					</Col>
+					<br></br>
 					<Row gutter={[4, 16]}>
 						<Col sm={24} align='right'>
 							{/* <Button type='primary' onClick={getLatestStyles}>
@@ -86,22 +99,20 @@ export default function StylesList() {
 								/>
 								<Table.Column
 									key='id'
-									title=''
+									title='Go to'
 									dataIndex='id'
+									align='right'
 									render={(text, record) => (
-										<Link href={`/stylequiz/productList/${record.id}`} type='link'>
-											Products
-										</Link>
-									)}
-								/>
-								<Table.Column
-									key='id'
-									title=''
-									dataIndex='id'
-									render={(text, record) => (
-										<Link href={`/stylequiz/imageList/${record.id}`} type='link'>
-											Images
-										</Link>
+										<>
+											<Link href={`/stylequiz/productList/${record.id}`} type='link'>
+												Products
+											</Link>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<Link href={`/stylequiz/imageList/${record.id}`} type='link'>
+												Images
+											</Link>
+											&nbsp;&nbsp;
+										</>
 									)}
 								/>
 							</Table>

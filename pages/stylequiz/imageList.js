@@ -1,14 +1,16 @@
-import { DeleteOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
+import { redirectToLocation } from "@utils/authContext";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { createResource, deleteResource, styleFetcher } from "./helper";
 import ScoreModal from "./scoreModal";
+const { Title } = Typography;
 const StyledInput = styled(Input)`
 	opacity: 0;
 	position: absolute;
@@ -24,14 +26,6 @@ const Wrapper = styled.div`
 		cursor: pointer;
 		z-index: 12;
 	}
-`;
-
-const ScoreBox = styled.p`
-	padding: 5px;
-	border: 1px solid #efefef;
-	/* width: 40px; */
-	max-width: 40px;
-	margin: 0 auto;
 `;
 
 const adminImageEndpoint = "/quiz/admin/v1/image";
@@ -124,6 +118,17 @@ export default function ImageList({ query }) {
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
+					<Col span={24}>
+						<Title level={3}>
+							<Row gutter={[8, 8]}>
+								<Col>
+									<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/stylequiz" })} />
+								</Col>
+								<Col>Style Quiz</Col>
+							</Row>
+						</Title>
+					</Col>
+					<br></br>
 					<Spin spinning={isLoading}>
 						<Wrapper>
 							<Card>
@@ -168,7 +173,7 @@ export default function ImageList({ query }) {
 														<DeleteOutlined />
 													</Popconfirm>,
 													<Button type='link' onClick={() => showModal(item?.id)}>
-														Set Score
+														Add Scores
 													</Button>,
 												]}
 												hoverable
