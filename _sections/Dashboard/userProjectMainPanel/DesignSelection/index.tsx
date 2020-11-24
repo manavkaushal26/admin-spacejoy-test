@@ -18,7 +18,7 @@ import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
+import { Alert, Button, Col, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CopyDesignModal from "./CopyDesignModal";
@@ -175,11 +175,18 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		refetchData();
 	};
 	const confirmDelete = (id: string): void => {
-		Modal.confirm({
-			title: "Are you sure?",
-			content: "This action is irreversible",
-			onOk: () => deleteDesign(id),
-		});
+		if (id === revisionDesign) {
+			Modal.warning({
+				title: "Cannot delete the design since it belongs to current revision version",
+				content: "Please create a new design and mark it as revision to delete this design",
+			});
+		} else {
+			Modal.confirm({
+				title: "Are you sure?",
+				content: "This action is irreversible",
+				onOk: () => deleteDesign(id),
+			});
+		}
 	};
 
 	const userRole: Role = getCookie(null, cookieNames.userRole) as Role;
@@ -270,6 +277,15 @@ const DesignSelection: React.FC<DesignSelection> = ({
 
 	return (
 		<Row gutter={[0, 16]}>
+			<Col span={24}>
+				{!revisionDesign && projectData?.currentPhase?.name?.internalName === PhaseInternalNames.designsInRevision && (
+					<Alert
+						message='No Revision Design Found'
+						description='Please mark one of the created designs as the revision design'
+						type='error'
+					/>
+				)}
+			</Col>
 			<Col span={24}>
 				<Row align='stretch' gutter={[8, 8]}>
 					{projectData.designs.map(design => {
