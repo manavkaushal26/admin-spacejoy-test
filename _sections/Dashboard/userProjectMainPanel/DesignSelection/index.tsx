@@ -276,6 +276,9 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	};
 
 	const isRevisionDesignPresentInProject: boolean = useMemo(() => {
+		if (revisionDesign === null) {
+			return true;
+		}
 		try {
 			return Boolean(
 				projectData.designs.find(design => {
