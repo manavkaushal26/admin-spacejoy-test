@@ -654,9 +654,9 @@ export enum DisplayDARStatus {
 }
 
 export enum HumanizeDARStatus {
-	"pending" = "Revision request Initiated",
-	"accepted" = "Revision Accepted by Customer",
-	"submitted" = "Revision Request has been submitted ",
+	"pending" = "Request initiated by customer",
+	"accepted" = "Accepted by Customer",
+	"submitted" = "Request has been submitted by customer",
 	"completed" = "Revision Complete",
 }
 

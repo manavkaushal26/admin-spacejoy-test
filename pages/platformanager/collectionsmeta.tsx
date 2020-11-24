@@ -5,6 +5,7 @@ import Image from "@components/Image";
 import { CollectionBase } from "@customTypes/collectionTypes";
 import { MetaDataType } from "@customTypes/moodboardTypes";
 import CreateEditCollection from "@sections/collections/CreateEditCollection";
+import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
@@ -113,61 +114,63 @@ const CollectionsMeta: NextPage<{
 				<title>Collections | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
-			<LoudPaddingDiv>
-				<Row gutter={[8, 8]}>
-					<Col span={24}>
-						<Row justify='space-between'>
-							<Col>
-								<Title level={3}>
-									<Row gutter={[8, 8]}>
-										<Col>
-											<ArrowLeftOutlined onClick={() => router.back()} />
+			<MaxHeightDiv>
+				<LoudPaddingDiv>
+					<Row gutter={[8, 8]}>
+						<Col span={24}>
+							<Row justify='space-between'>
+								<Col>
+									<Title level={3}>
+										<Row gutter={[8, 8]}>
+											<Col>
+												<ArrowLeftOutlined onClick={() => router.back()} />
+											</Col>
+											<Col>Collections</Col>
+										</Row>
+									</Title>
+								</Col>
+								<Col>
+									<Button type='primary' onClick={(): void => onClick()}>
+										Create New Collection
+									</Button>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row gutter={[8, 8]}>
+								{collections.map(collection => {
+									return (
+										<Col key={collection._id} sm={12} md={8} lg={6}>
+											<Card
+												style={{ background: collection.bg || "white" }}
+												hoverable
+												onClick={(): void => onClick(collection._id, "open")}
+												cover={<Image onClick={e => e.stopPropagation()} src={collection.cdnThumbnail} preview />}
+											>
+												<Card.Meta title={collection.name} />
+											</Card>
 										</Col>
-										<Col>Collections</Col>
-									</Row>
-								</Title>
-							</Col>
-							<Col>
-								<Button type='primary' onClick={(): void => onClick()}>
-									Create New Collection
-								</Button>
-							</Col>
-						</Row>
-					</Col>
-					<Col span={24}>
-						<Row gutter={[8, 8]}>
-							{collections.map(collection => {
-								return (
-									<Col key={collection._id} sm={12} md={8} lg={6}>
-										<Card
-											style={{ background: collection.bg || "white" }}
-											hoverable
-											onClick={(): void => onClick(collection._id, "open")}
-											cover={<Image onClick={e => e.stopPropagation()} src={collection.cdnThumbnail} preview />}
-										>
-											<Card.Meta title={collection.name} />
-										</Card>
-									</Col>
-								);
-							})}
-						</Row>
-					</Col>
-					<Col span={24}>
-						<Row justify='center'>
-							<Pagination
-								current={pageNo}
-								total={collectionMeta.count}
-								onChange={setPageNo}
-								hideOnSinglePage
-								pageSize={pageSize}
-								showSizeChanger
-								pageSizeOptions={["12", "24", "36", "48"]}
-								onShowSizeChange={onPageSizeChange}
-							/>
-						</Row>
-					</Col>
-				</Row>
-			</LoudPaddingDiv>
+									);
+								})}
+							</Row>
+						</Col>
+						<Col span={24}>
+							<Row justify='center'>
+								<Pagination
+									current={pageNo}
+									total={collectionMeta.count}
+									onChange={setPageNo}
+									hideOnSinglePage
+									pageSize={pageSize}
+									showSizeChanger
+									pageSizeOptions={["12", "24", "36", "48"]}
+									onShowSizeChange={onPageSizeChange}
+								/>
+							</Row>
+						</Col>
+					</Row>
+				</LoudPaddingDiv>
+			</MaxHeightDiv>
 			<CreateEditCollection
 				onSave={onSave}
 				id={editCollectionId}

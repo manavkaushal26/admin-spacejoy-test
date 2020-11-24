@@ -1,3 +1,5 @@
+// TODO - Convert to separate page
+
 import { CheckCircleTwoTone, CloseCircleTwoTone, LinkOutlined, PlusOutlined } from "@ant-design/icons";
 import { getSingleCollection } from "@api/metaApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
@@ -13,6 +15,7 @@ import getCookie from "@utils/getCookie";
 import { Button, Col, Input, notification, Row, Select, Spin, Tooltip, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
+import CollectionFAQ from "./CollectionFAQ";
 
 const { Text } = Typography;
 
@@ -538,6 +541,16 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 							</Col>
 						</>
 					)}
+					<Col span={24}>
+						<Row gutter={[16, 16]}>
+							<Col span={24}>
+								<Text strong>Collection FAQ&apos;s</Text>
+							</Col>
+							<Col span={24}>
+								<CollectionFAQ id={id} />
+							</Col>
+						</Row>
+					</Col>
 				</Row>
 				<ImageDisplayModal
 					handleCancel={handleCancel}

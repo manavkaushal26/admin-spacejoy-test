@@ -18,7 +18,7 @@ import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import { cookieNames } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
+import { Alert, Button, Col, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CopyDesignModal from "./CopyDesignModal";
@@ -175,11 +175,18 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		refetchData();
 	};
 	const confirmDelete = (id: string): void => {
-		Modal.confirm({
-			title: "Are you sure?",
-			content: "This action is irreversible",
-			onOk: () => deleteDesign(id),
-		});
+		if (id === revisionDesign) {
+			Modal.warning({
+				title: "Cannot delete the design since it belongs to current revision version",
+				content: "Please create a new design and mark it as revision to delete this design",
+			});
+		} else {
+			Modal.confirm({
+				title: "Are you sure?",
+				content: "This action is irreversible",
+				onOk: () => deleteDesign(id),
+			});
+		}
 	};
 
 	const userRole: Role = getCookie(null, cookieNames.userRole) as Role;
@@ -252,7 +259,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	};
 
 	const confirmMarkAsRevision = id => {
-		Modal.confirm({ title: "Mark design As revision?", onOk: () => onDesignMarkedAsRevision(id) });
+		Modal.confirm({ title: "Mark design as revision?", onOk: () => onDesignMarkedAsRevision(id) });
 	};
 
 	const onOkClickInCopyDesignModal = async (data): Promise<void> => {
@@ -268,8 +275,30 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		onCopyAsDesignExampleClick();
 	};
 
+	const isRevisionDesignPresentInProject: boolean = useMemo(() => {
+		try {
+			return Boolean(
+				projectData.designs.find(design => {
+					return design.design._id === revisionDesign;
+				})
+			);
+		} catch {
+			return false;
+		}
+	}, [projectData?.designs, revisionDesign]);
+
 	return (
 		<Row gutter={[0, 16]}>
+			<Col span={24}>
+				{!isRevisionDesignPresentInProject &&
+					projectData?.currentPhase?.name?.internalName === PhaseInternalNames.designsInRevision && (
+						<Alert
+							message='No Revision Design Found'
+							description='Please mark one of the created designs as the revision design'
+							type='error'
+						/>
+					)}
+			</Col>
 			<Col span={24}>
 				<Row align='stretch' gutter={[8, 8]}>
 					{projectData.designs.map(design => {
@@ -349,7 +378,8 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								onClick={onSubmit}
 								disabled={
 									numberOfActiveProjects < numberOfDesigns ||
-									projectData.currentPhase.name.internalName === PhaseInternalNames.designReady
+									projectData.currentPhase.name.internalName === PhaseInternalNames.designReady ||
+									!isRevisionDesignPresentInProject
 								}
 								type='primary'
 							>
@@ -373,7 +403,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					<Col sm={12} md={8}>
 						<Row justify='center'>
 							<CyanButton
-								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady && false}
+								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
 								onClick={warnUser}
 							>
 								Email Customer {projectData?.isDelivered ? "(Already Notified)" : ""}
