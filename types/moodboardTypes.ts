@@ -98,6 +98,7 @@ export interface AssetType {
 	};
 	productImages: ImageType[];
 	status: Status;
+	inStock: boolean;
 	shoppable: boolean;
 	spatialData: {
 		fileUrls: {

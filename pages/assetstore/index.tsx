@@ -2,6 +2,7 @@ import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import AssetCartModal from "@sections/AssetStore/assetCart";
+import NewAssetModal from "@sections/AssetStore/newAssetModal";
 import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { PaddedDiv } from "@sections/Header/styled";
@@ -15,7 +16,7 @@ import { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useMemo, useReducer } from "react";
+import React, { useEffect, useMemo, useReducer, useState } from "react";
 import styled from "styled-components";
 
 const DynamicSidepanel = dynamic(() => import("@sections/AssetStore/assetSidepanel"), {
@@ -89,7 +90,8 @@ const FAB = styled.button`
 const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntryId }): JSX.Element => {
 	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
 	const Router = useRouter();
-	// const [editAssetData, setEditAssetData] = useState<AssetType>(null);
+	const [editAssetData, setEditAssetData] = useState<AssetType>(null);
+
 	const fetchMetaData = async (): Promise<void> => {
 		const endpoint = getMetaDataApi();
 		const response = await fetcher({ endPoint: endpoint, method: "GET" });
@@ -183,24 +185,34 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 	};
 
 	const toggleNewAssetModal = (): void => {
-		redirectToLocation({
-			pathname: "/assetstore/assetdetails",
-			query: {
-				entry: window.location.pathname,
-			},
-			url: `/assetstore/assetdetails?entry=${window.location.pathname}`,
-		});
+		// redirectToLocation({
+		// 	pathname: "/assetstore/assetdetails",
+		// 	query: {
+		// 		entry: window.location.pathname,
+		// 	},
+		// 	url: `/assetstore/assetdetails?entry=${window.location.pathname}`,
+		// });
+
+		dispatch({ type: ASSET_ACTION_TYPES.NEW_ASSET_MODAL_VISIBLE, value: null });
+		if (state.newAssetModalVisible) {
+			setEditAssetData(null);
+		}
 	};
 
-	const editAsset = (assetData: AssetType): void => {
-		redirectToLocation({
-			pathname: "/assetstore/assetdetails",
-			query: {
-				assetId: assetData._id,
-				entry: window.location.pathname,
-			},
-			url: `/assetstore/assetdetails?entry=${window.location.pathname}&assetId=${assetData._id}`,
-		});
+	const editAsset = (assetData: AssetType, redirect?: boolean): void => {
+		if (redirect) {
+			redirectToLocation({
+				pathname: "/assetstore/assetdetails",
+				query: {
+					assetId: assetData._id,
+					entry: window.location.pathname,
+				},
+				url: `/assetstore/assetdetails?entry=${window.location.pathname}&assetId=${assetData._id}`,
+			});
+		}
+
+		dispatch({ type: ASSET_ACTION_TYPES.NEW_ASSET_MODAL_VISIBLE, value: null });
+		setEditAssetData(assetData);
 	};
 
 	const categoryMap: Array<CategoryMap> = useMemo(() => {
@@ -305,15 +317,16 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 				</FAB>
 			</Spin>
 
-			{/* <NewAssetModal
+			<NewAssetModal
 				dispatchAssetStore={dispatch}
 				assetData={editAssetData}
+				editAsset={editAsset}
 				setAssetData={setEditAssetData}
 				metadata={state.metaData}
 				categoryMap={categoryMap}
 				toggleNewAssetModal={toggleNewAssetModal}
 				isOpen={state.newAssetModalVisible}
-			/> */}
+			/>
 			{state.moodboard && (
 				<AssetCartModal
 					designId={designId}
