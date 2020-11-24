@@ -259,7 +259,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 	};
 
 	const confirmMarkAsRevision = id => {
-		Modal.confirm({ title: "Mark design As revision?", onOk: () => onDesignMarkedAsRevision(id) });
+		Modal.confirm({ title: "Mark design as revision?", onOk: () => onDesignMarkedAsRevision(id) });
 	};
 
 	const onOkClickInCopyDesignModal = async (data): Promise<void> => {
@@ -275,16 +275,29 @@ const DesignSelection: React.FC<DesignSelection> = ({
 		onCopyAsDesignExampleClick();
 	};
 
+	const isRevisionDesignPresentInProject: boolean = useMemo(() => {
+		try {
+			return Boolean(
+				projectData.designs.find(design => {
+					return design.design._id === revisionDesign;
+				})
+			);
+		} catch {
+			return false;
+		}
+	}, [projectData?.designs, revisionDesign]);
+
 	return (
 		<Row gutter={[0, 16]}>
 			<Col span={24}>
-				{!revisionDesign && projectData?.currentPhase?.name?.internalName === PhaseInternalNames.designsInRevision && (
-					<Alert
-						message='No Revision Design Found'
-						description='Please mark one of the created designs as the revision design'
-						type='error'
-					/>
-				)}
+				{!isRevisionDesignPresentInProject &&
+					projectData?.currentPhase?.name?.internalName === PhaseInternalNames.designsInRevision && (
+						<Alert
+							message='No Revision Design Found'
+							description='Please mark one of the created designs as the revision design'
+							type='error'
+						/>
+					)}
 			</Col>
 			<Col span={24}>
 				<Row align='stretch' gutter={[8, 8]}>
@@ -365,7 +378,8 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								onClick={onSubmit}
 								disabled={
 									numberOfActiveProjects < numberOfDesigns ||
-									projectData.currentPhase.name.internalName === PhaseInternalNames.designReady
+									projectData.currentPhase.name.internalName === PhaseInternalNames.designReady ||
+									!isRevisionDesignPresentInProject
 								}
 								type='primary'
 							>
@@ -389,7 +403,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					<Col sm={12} md={8}>
 						<Row justify='center'>
 							<CyanButton
-								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady && false}
+								disabled={projectData.currentPhase.name.internalName !== PhaseInternalNames.designReady}
 								onClick={warnUser}
 							>
 								Email Customer {projectData?.isDelivered ? "(Already Notified)" : ""}

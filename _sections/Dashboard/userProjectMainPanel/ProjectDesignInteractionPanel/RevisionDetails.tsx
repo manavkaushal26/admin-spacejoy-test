@@ -1,7 +1,12 @@
+import {
+	DisplayDIYStatus,
+	HumanizeDARStatus,
+	HumanizeDIYStatus,
+	HumanizeMode,
+	RevisionForm,
+} from "@customTypes/dashboardTypes";
+import { Button, Col, Row, Typography } from "antd";
 import React, { useMemo } from "react";
-import { Col, Row, Typography, Button } from "antd";
-import { DisplayDIYStatus, DisplayDARStatus, HumanizeMode, RevisionForm } from "@customTypes/dashboardTypes";
-import { SilentDivider } from "@sections/Dashboard/styled";
 
 const { Text, Title } = Typography;
 
@@ -23,23 +28,23 @@ const RevisionDetails: React.FC<RevisionDetails> = ({ revisionData, toggleEditRe
 
 	const revisionStatus = useMemo(() => {
 		if (revisionData.diy.isActive) {
-			return DisplayDIYStatus[revisionData.diy.status];
+			return HumanizeDIYStatus[DisplayDIYStatus[revisionData.diy.status]];
 		}
 		if (revisionData.dar.isActive) {
-			return DisplayDARStatus[revisionData.dar.status];
+			return HumanizeDARStatus[revisionData.dar.status];
 		}
 		return "Unknown State";
 	}, [revisionData]);
 
 	return (
 		<Col span={24}>
-			<Row justify="space-between" gutter={[8, 8]}>
+			<Row justify='space-between' gutter={[8, 8]}>
 				<Col>
-					<Row justify="space-around" gutter={[24, 8]}>
+					<Row justify='space-around' gutter={[24, 8]}>
 						<Col>
 							<Row>
 								<Col span={24}>
-									<Text type="secondary">Revision Design</Text>
+									<Text type='secondary'>Revision Design</Text>
 								</Col>
 								<Col span={24}>
 									<Title level={4}>
@@ -51,7 +56,7 @@ const RevisionDetails: React.FC<RevisionDetails> = ({ revisionData, toggleEditRe
 						<Col>
 							<Row>
 								<Col span={24}>
-									<Text type="secondary">Revision Version</Text>
+									<Text type='secondary'>Revision Version</Text>
 								</Col>
 								<Col span={24}>
 									<Title level={4}>
@@ -63,7 +68,7 @@ const RevisionDetails: React.FC<RevisionDetails> = ({ revisionData, toggleEditRe
 						<Col>
 							<Row>
 								<Col span={24}>
-									<Text type="secondary">Revision Type</Text>
+									<Text type='secondary'>Revision Type</Text>
 								</Col>
 								<Col span={24}>
 									<Title level={4}>
@@ -75,7 +80,7 @@ const RevisionDetails: React.FC<RevisionDetails> = ({ revisionData, toggleEditRe
 						<Col>
 							<Row>
 								<Col span={24}>
-									<Text type="secondary">Revision Status</Text>
+									<Text type='secondary'>Revision Request Status</Text>
 								</Col>
 								<Col span={24}>
 									<Title level={4}>
@@ -87,12 +92,12 @@ const RevisionDetails: React.FC<RevisionDetails> = ({ revisionData, toggleEditRe
 					</Row>
 				</Col>
 				<Col>
-					<Row gutter={[16, 16]} align="middle">
+					<Row gutter={[16, 16]} align='middle'>
 						{false && (
 							<Col>
 								<Row>
 									<Col span={24}>
-										<Text type="secondary">Mode</Text>
+										<Text type='secondary'>Mode</Text>
 									</Col>
 									<Col span={24}>
 										<Title level={4}>
@@ -103,7 +108,7 @@ const RevisionDetails: React.FC<RevisionDetails> = ({ revisionData, toggleEditRe
 							</Col>
 						)}
 						<Col>
-							<Button onClick={toggleEditRevision} block danger type="primary">
+							<Button onClick={toggleEditRevision} block danger type='primary'>
 								Edit Revision
 							</Button>
 						</Col>
