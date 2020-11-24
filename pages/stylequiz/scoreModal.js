@@ -61,7 +61,9 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	useEffect(() => {
-		getLatestScores();
+		if (selectedProductId) {
+			getLatestScores();
+		}
 	}, [selectedProductId]);
 
 	const getLatestScores = () => {
@@ -123,12 +125,9 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 					handleScores("PUT", {
 						imageId: selectedProductId,
 						styleId: row?.styleId,
-						score: 56,
+						score: row?.score,
 					})
 						.then(data => {
-							// const updatedScores = [...scores, ...payload];
-							// setScores(updatedScores);
-							// setEditModal(false);
 							notification.success({ message: data.message });
 						})
 						.catch(() =>
@@ -142,8 +141,8 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		setScores(updatedScores);
 	};
 
-	const addNewScore = () => {
-		handleScores("POST", {
+	const addNewScore = async () => {
+		await handleScores("POST", {
 			imageId: selectedProductId,
 			styleId: currentSelectedRecord[0]?.id,
 			score: parseInt(inputEl.current.value),
@@ -152,7 +151,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				const payload = [
 					{
 						name: currentSelectedRecord[0]?.name,
-						// id: item.id,
+						id: data?.id,
 						score: parseInt(inputEl.current.value),
 						styleId: currentSelectedRecord[0]?.id,
 						isActive: false,

@@ -32,7 +32,7 @@ const adminImageEndpoint = "/quiz/admin/v1/image";
 
 export default function ImageList({ query }) {
 	const { styleId } = query;
-	const [selectedProductId, setSelectedProductId] = useState([]);
+	const [selectedProductId, setSelectedProductId] = useState("");
 	const [images, setImages] = useState([]);
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [styles, setStylesData] = useState([]);
