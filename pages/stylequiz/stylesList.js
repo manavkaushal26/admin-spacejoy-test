@@ -16,7 +16,7 @@ export default function StylesList() {
 	const Router = useRouter();
 	useEffect(() => {
 		setLoader(true);
-		styleFetcher("/quiz/admin/v1/styles", "GET")
+		styleFetcher("/quiz/admin/v1/styles?limit=100", "GET")
 			.then(res => {
 				setStylesData(res.data);
 				setLoader(false);

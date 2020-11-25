@@ -162,7 +162,7 @@ export default function ImageList({ query }) {
 								</Row>
 							</Card>
 							<br></br>
-							<Row gutter={[0, 16]}>
+							<Row gutter={[12, 16]}>
 								{images.length ? (
 									images.map(item => {
 										return (

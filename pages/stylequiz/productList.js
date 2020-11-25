@@ -73,12 +73,14 @@ export default function ProductsList({ query }) {
 	};
 
 	const getLatestProducts = id => {
-		fetchResources(`/quiz/admin/v1/products/${id}`)
-			.then(res => {
-				setProducts(res.products);
-			})
-			.catch(err => console.log(err))
-			.finally(() => {});
+		if (id) {
+			fetchResources(`/quiz/admin/v1/products/${id}`)
+				.then(res => {
+					setProducts(res.products);
+				})
+				.catch(err => console.log(err))
+				.finally(() => {});
+		}
 	};
 
 	const deleteProduct = async id => {
@@ -145,7 +147,7 @@ export default function ProductsList({ query }) {
 								</Row>
 							</Card>
 							<br></br>
-							<Row gutter={[0, 16]}>
+							<Row gutter={[8, 16]}>
 								{products.length ? (
 									products.map(item => {
 										return (
