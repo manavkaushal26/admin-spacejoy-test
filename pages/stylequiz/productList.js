@@ -32,7 +32,6 @@ export default function ProductsList({ query }) {
 	const [products, setProducts] = useState([]);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
-	const [defaultStyleName, setDefaultStyleName] = useState("");
 	const Router = useRouter();
 	const fetchResources = async endPoint => {
 		try {
@@ -66,7 +65,6 @@ export default function ProductsList({ query }) {
 	};
 
 	useEffect(() => {
-		setDefaultStyleName(getDefaultStyleName());
 		getLatestProducts(Router?.query?.styleId);
 	}, [Router]);
 
@@ -101,7 +99,7 @@ export default function ProductsList({ query }) {
 		getLatestProducts(styleId);
 		setLoader(false);
 	};
-	console.log("defaultStyleName", defaultStyleName);
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -121,18 +119,22 @@ export default function ProductsList({ query }) {
 						<Wrapper>
 							<Card>
 								<Row gutter={[4, 16]}>
-									<Col sm={24} md={6}>
-										<Select
-											showSearch
-											filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-											style={{ width: "100%" }}
-											onChange={handleChange}
-											defaultValue={defaultStyleName}
-										>
-											{styles.map((style, index) => {
-												return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
-											})}
-										</Select>
+									<Col sm={24} md={6} gutter={[4, 16]}>
+										{styles.length && (
+											<Select
+												showSearch
+												filterOption={(input, option) =>
+													option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+												}
+												style={{ width: "100%" }}
+												onChange={handleChange}
+												defaultValue={styles[0]?.id}
+											>
+												{styles.map((style, index) => {
+													return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
+												})}
+											</Select>
+										)}
 									</Col>
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>

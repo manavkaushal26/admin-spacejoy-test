@@ -37,7 +37,6 @@ export default function ImageList({ query }) {
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
-	const [defaultStyleName, setDefaultStyleName] = useState("");
 	const Router = useRouter();
 
 	const fetchResources = async endPoint => {
@@ -71,7 +70,6 @@ export default function ImageList({ query }) {
 		styleFetcher("/quiz/admin/v1/styles", "GET")
 			.then(res => {
 				setStylesData(res.data);
-				setDefaultStyleName(res.data.filter(item => item.id === res.data[0]?.id)[0].name);
 				Router.push(
 					{ pathname: "/stylequiz/imageList", query: { styleId: res.data[0]?.id } },
 					`/stylequiz/imageList/${res.data[0]?.id}`
@@ -114,7 +112,7 @@ export default function ImageList({ query }) {
 	const handleModalCancel = e => {
 		setModalVisibility(false);
 	};
-
+	console.log(styles[0]?.id);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -135,17 +133,25 @@ export default function ImageList({ query }) {
 							<Card>
 								<Row gutter={[4, 16]}>
 									<Col sm={24} md={6}>
-										<Select
-											showSearch
-											filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-											style={{ width: "100%" }}
-											onChange={handleChange}
-											defaultValue={defaultStyleName}
-										>
-											{styles.map((style, index) => {
-												return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
-											})}
-										</Select>
+										{styles.length && (
+											<Select
+												showSearch
+												filterOption={(input, option) =>
+													option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+												}
+												style={{ width: "100%" }}
+												onChange={handleChange}
+												defaultValue={styles[0]?.id}
+											>
+												{styles.map((style, index) => {
+													return (
+														<Select.Option key={style?.id} value={style?.id}>
+															{style?.name}
+														</Select.Option>
+													);
+												})}
+											</Select>
+										)}
 									</Col>
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
