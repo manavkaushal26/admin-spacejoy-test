@@ -176,6 +176,36 @@ function pageRoute(app, router) {
 	});
 	// *************************************************************************************************************************
 
+	router.get("/stylequiz", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/stylequiz", {
+			...query,
+		});
+	});
+
+	router.get("/stylequiz/stylesList", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/stylequiz/stylesList", {
+			...query,
+		});
+	});
+
+	router.get("/stylequiz/imageList/:styleId", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/imageList", {
+			...query,
+			...params,
+		});
+	});
+
+	router.get("/stylequiz/productList/:styleId", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/productList", {
+			...query,
+			...params,
+		});
+	});
+
 	return router;
 }
 

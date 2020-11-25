@@ -7,7 +7,7 @@ import {
 	HumanizeDesignPhases,
 	PhaseCustomerNames,
 	PhaseInternalNames,
-	RevisionForm
+	RevisionForm,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import ChatPanel from "@sections/AdminChatInterface";
@@ -64,7 +64,6 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	updateRevisionData,
 	revisionFormData,
 }): JSX.Element => {
-	console.log("project id", projectData, designId);
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
@@ -226,17 +225,17 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							{...(projectData
 								? null
 								: {
-									extra: [
-										publishButtonText !== "Published" ? (
-											<Button
-												key='publish'
-												onClick={toggleEditDesignModal}
-												type='primary'
-												disabled={publishButtonDisabled}
-											>
-												{publishButtonText}
-											</Button>
-										) : (
+										extra: [
+											publishButtonText !== "Published" ? (
+												<Button
+													key='publish'
+													onClick={toggleEditDesignModal}
+													type='primary'
+													disabled={publishButtonDisabled}
+												>
+													{publishButtonText}
+												</Button>
+											) : (
 												<Popconfirm
 													title='Are you sure?'
 													key='popConfirm'
@@ -247,8 +246,8 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 													</Button>
 												</Popconfirm>
 											),
-									],
-								})}
+										],
+								  })}
 							onBack={(): void => onSelectDesign()}
 						/>
 					</Col>
@@ -335,19 +334,19 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 					/>
 				</Row>
 			) : (
-					<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
-						{!!projectData && (
-							<ProjectDesignInteractionPanel
-								updateRevisionData={updateRevisionData}
-								revisionFormData={revisionFormData}
-								refetchData={refetchData}
-								setProjectData={setProjectData}
-								projectData={projectData}
-								onSelectDesign={onSelectDesign}
-							/>
-						)}
-					</Spin>
-				)}
+				<Spin style={{ padding: "2rem 2rem", width: "100%" }} spinning={designLoading}>
+					{!!projectData && (
+						<ProjectDesignInteractionPanel
+							updateRevisionData={updateRevisionData}
+							revisionFormData={revisionFormData}
+							refetchData={refetchData}
+							setProjectData={setProjectData}
+							projectData={projectData}
+							onSelectDesign={onSelectDesign}
+						/>
+					)}
+				</Spin>
+			)}
 		</>
 	);
 };

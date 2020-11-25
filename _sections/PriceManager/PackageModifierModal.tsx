@@ -115,9 +115,25 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 						</Col>
 						<Col span={24}>
 							<Card size='small'>
-								<Row>
+								<Row gutter={[4, 4]}>
 									<Col span={24}>
 										<InputField onChange={onChange} name='slug' label='Slug' value={editPackage?.slug} />
+									</Col>
+									<Col span={24}>
+										<InputField
+											onChange={onChange}
+											name='description'
+											label='Description'
+											value={editPackage?.description}
+										/>
+									</Col>
+									<Col span={24}>
+										<InputField
+											onChange={onChange}
+											name='price.label'
+											label='Actual Price Label'
+											value={editPackage?.price?.label}
+										/>
 									</Col>
 									<Col span={24}>
 										<InputField
@@ -125,6 +141,14 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 											name='price.value'
 											label='Price'
 											value={editPackage?.price?.value}
+										/>
+									</Col>
+									<Col span={24}>
+										<InputField
+											onChange={onChange}
+											name='salePrice.label'
+											label='Sale Label'
+											value={editPackage?.salePrice?.label}
 										/>
 									</Col>
 									<Col span={24}>

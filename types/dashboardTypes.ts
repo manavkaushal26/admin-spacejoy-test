@@ -470,6 +470,7 @@ export enum RoomTypes {
 	HomeOffice = "home office",
 	FamilyRoom = "family room",
 	Playroom = "playroom",
+	Tablescape = "tablescape",
 	OpenLivingDining = "open living and dining room",
 }
 
@@ -486,6 +487,7 @@ export enum RoomLabels {
 	Window = "Window",
 	Door = "Door",
 	House = "House",
+	Tablescape = "Tablescape",
 	OpenLivingDining = "Open Living and Dining Room",
 }
 
@@ -499,6 +501,7 @@ export const RoomNameSearch = [
 	"Home Office",
 	"Study Room",
 	"Bedroom",
+	"Tablescape",
 ];
 
 export enum RenderImgUploadTypes {
@@ -651,9 +654,9 @@ export enum DisplayDARStatus {
 }
 
 export enum HumanizeDARStatus {
-	"pending" = "Revision request Initiated",
-	"accepted" = "Revision Accepted by Customer",
-	"submitted" = "Revision Request has been submitted ",
+	"pending" = "Request initiated by customer",
+	"accepted" = "Accepted by Customer",
+	"submitted" = "Request has been submitted by customer",
 	"completed" = "Revision Complete",
 }
 

@@ -23,3 +23,13 @@ export interface DetailedCollection extends CollectionBase {
 	designList: Array<any>[];
 	status: Status;
 }
+
+export interface CollectionFAQType {
+	_id: string;
+	question: string;
+	category: "designCollection";
+	answer: string;
+	sequence: number;
+	createdAt: string;
+	updatedAt: string;
+}

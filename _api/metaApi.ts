@@ -6,6 +6,14 @@ export const getSingleCollection = (id: string): string => {
 	return `/designcollection/${id}`;
 };
 
+export const getCollectionFaqApi = (id?: string, type?: "designCollections"): string => {
+	if (id) {
+		return `/v1/faqs/${type}/${id}`;
+	} else {
+		return "/v1/faqs";
+	}
+};
+
 export const getAllCollectionsMeta = (): string => {
 	return "/designcollections/meta";
 };
