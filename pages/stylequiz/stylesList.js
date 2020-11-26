@@ -1,22 +1,43 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, EditOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation } from "@utils/authContext";
+import chatFetcher from "@utils/chatFetcher";
 import fetcher from "@utils/fetcher";
-import { Col, Row, Switch, Table, Typography } from "antd";
+import { Button, Col, Input, Modal, Row, Switch, Table, Typography, Upload } from "antd";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import styled from "styled-components";
 import { styleFetcher } from "./helper";
 const { Title, Text } = Typography;
+const { TextArea } = Input;
+const EditIcon = styled(Button)`
+	cursor: pointer;
+`;
+const ModalContent = styled.div`
+	textarea {
+		resize: none;
+	}
+`;
+
+const endPoints = {
+	getStyles: "/quiz/admin/v1/styles?limit=100",
+	getActiveStyles: "/quiz/admin/v1/styles/active",
+	updateStyle: "/quiz/admin/v1/style/update",
+};
+
 export default function StylesList() {
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
-	const Router = useRouter();
+	const [isModalVisible, setModalVisibility] = useState(false);
+	const [activeStyle, setActiveStyle] = useState({});
+	const [styleImageUrl, setStyleImage] = useState("");
+	const [styleImageObject, setStyleImageObject] = useState({});
+	const textareaRef = useRef(null);
 	useEffect(() => {
 		setLoader(true);
-		styleFetcher("/quiz/admin/v1/styles?limit=100", "GET")
+		styleFetcher(endPoints.getStyles, "GET")
 			.then(res => {
 				setStylesData(res.data);
 				setLoader(false);
@@ -28,7 +49,7 @@ export default function StylesList() {
 	}, []);
 
 	const getLatestStyles = () => {
-		styleFetcher("/quiz/admin/v1/styles", "POST")
+		styleFetcher(endPoints.getStyles, "POST")
 			.then(res => {
 				setStylesData([...res.data, ...styles]);
 			})
@@ -39,7 +60,7 @@ export default function StylesList() {
 	const updateStyleStatus = async (checked, id) => {
 		try {
 			await fetcher({
-				endPoint: "/quiz/admin/v1/styles/active",
+				endPoint: endPoints.getActiveStyles,
 				method: "POST",
 				body: { styleId: id, active: checked ? "yes" : "no" },
 			});
@@ -53,6 +74,54 @@ export default function StylesList() {
 		updateStyleStatus(checked, id);
 	};
 
+	const showModal = row => {
+		setActiveStyle(row);
+		setModalVisibility(true);
+	};
+
+	const handleModalOk = e => {
+		saveStyleInfo();
+		setModalVisibility(false);
+	};
+
+	const getBase64 = (img, callback) => {
+		const reader = new FileReader();
+		reader.addEventListener("load", () => callback(reader.result));
+		reader.readAsDataURL(img);
+	};
+
+	const handleUpload = info => {
+		if (info.file.status === "uploading") {
+			setLoader(true);
+			return;
+		}
+		if (info.file.status === "done") {
+			setStyleImageObject(info?.fileList[0]);
+			getBase64(info.file.originFileObj, imageUrl => {
+				setStyleImage(imageUrl);
+				setLoader(false);
+			});
+		}
+	};
+
+	const saveStyleInfo = async () => {
+		setLoader(true);
+		const formData = new FormData();
+		formData.append("image", styleImageObject);
+		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
+		formData.append("styleId", activeStyle?.id);
+		await chatFetcher({ endPoint: endPoints.updateStyle, method: "POST", body: formData });
+		setStyleImage("");
+		textareaRef.current.state.value = "";
+		setLoader(false);
+	};
+
+	const uploadButton = (
+		<div>
+			{isLoading ? <LoadingOutlined /> : <PlusOutlined />}
+			<div style={{ marginTop: 8 }}>Upload</div>
+		</div>
+	);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -99,10 +168,22 @@ export default function StylesList() {
 								/>
 								<Table.Column
 									key='id'
+									title='Description'
+									dataIndex='description'
+									render={text => (
+										<span>
+											{text || "N/A"}
+											&nbsp;&nbsp;&nbsp;
+										</span>
+									)}
+								/>
+								<Table.Column key='id' title='Image' dataIndex='cdn' render={(text, record) => <img src={text} />} />
+								<Table.Column
+									key='id'
 									title='Go to'
 									dataIndex='id'
 									align='right'
-									render={(text, record) => (
+									render={record => (
 										<>
 											<Link href={`/stylequiz/productList/${record.id}`} type='link'>
 												Products
@@ -115,10 +196,54 @@ export default function StylesList() {
 										</>
 									)}
 								/>
+								<Table.Column
+									key='id'
+									title=''
+									dataIndex=''
+									align='right'
+									render={(text, record) => (
+										<span>
+											<EditIcon type='link' onClick={() => showModal(record)}>
+												<EditOutlined />
+											</EditIcon>
+										</span>
+									)}
+								/>
 							</Table>
 						</Col>
 					</Row>
 				</LoudPaddingDiv>
+				<Modal
+					title='Edit Style'
+					visible={isModalVisible}
+					onOk={handleModalOk}
+					onCancel={() => setModalVisibility(false)}
+					width={1000}
+					okText='Save'
+				>
+					<ModalContent>
+						<div className='flex'>
+							<span>Description</span>
+							<br></br>
+							<TextArea ref={textareaRef} />
+						</div>
+						<br></br>
+						<div className='flex'>
+							<span>Upload Image</span>
+							<br></br>
+							<Upload
+								name='avatar'
+								listType='picture-card'
+								className='avatar-uploader'
+								showUploadList={false}
+								action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+								onChange={handleUpload}
+							>
+								{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
+							</Upload>
+						</div>
+					</ModalContent>
+				</Modal>
 			</MaxHeightDiv>
 		</PageLayout>
 	);
