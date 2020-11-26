@@ -1,15 +1,22 @@
-import { ArrowLeftOutlined, EditOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+	ArrowLeftOutlined,
+	DeleteOutlined,
+	EditOutlined,
+	FileImageOutlined,
+	LoadingOutlined,
+	PlusOutlined,
+} from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation } from "@utils/authContext";
 import chatFetcher from "@utils/chatFetcher";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Input, Modal, Row, Switch, Table, Typography, Upload } from "antd";
+import { Button, Col, Input, Modal, notification, Row, Switch, Table, Typography, Upload } from "antd";
 import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { styleFetcher } from "./helper";
+import { deleteResource, styleFetcher } from "./helper";
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const EditIcon = styled(Button)`
@@ -21,16 +28,33 @@ const ModalContent = styled.div`
 	}
 `;
 
+const StyledInput = styled(Input)`
+	opacity: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
+	cursor: pointer;
+	z-index: 10;
+`;
+
+const StyleIcon = styled(Button)`
+	cursor: pointer;
+`;
+
 const endPoints = {
 	getStyles: "/quiz/admin/v1/styles?limit=100",
 	getActiveStyles: "/quiz/admin/v1/styles/active",
 	updateStyle: "/quiz/admin/v1/style/update",
+	getIcons: "/quiz/v1/style/icons",
+	modifyIcon: "/quiz/admin/v1/style/icon",
 };
 
 export default function StylesList() {
 	const [styles, setStylesData] = useState([]);
+	const [icons, setIcons] = useState([]);
 	const [isLoading, setLoader] = useState(false);
 	const [isModalVisible, setModalVisibility] = useState(false);
+	const [modalType, setModalType] = useState("");
 	const [activeStyle, setActiveStyle] = useState({});
 	const [styleImageUrl, setStyleImage] = useState("");
 	const [styleImageObject, setStyleImageObject] = useState({});
@@ -74,13 +98,21 @@ export default function StylesList() {
 		updateStyleStatus(checked, id);
 	};
 
-	const showModal = row => {
-		setActiveStyle(row);
+	const showModal = (row, type) => {
 		setModalVisibility(true);
+		setActiveStyle(row);
+		if (type === "edit") {
+			setModalType("edit");
+		} else {
+			setModalType("icons");
+			getIcons(row?.id);
+		}
 	};
 
-	const handleModalOk = e => {
-		saveStyleInfo();
+	const handleModalOk = () => {
+		if (modalType === "edit") {
+			saveStyleInfo();
+		}
 		setModalVisibility(false);
 	};
 
@@ -110,7 +142,11 @@ export default function StylesList() {
 		formData.append("image", styleImageObject);
 		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
 		formData.append("styleId", activeStyle?.id);
-		await chatFetcher({ endPoint: endPoints.updateStyle, method: "POST", body: formData });
+		try {
+			await chatFetcher({ endPoint: endPoints.updateStyle, method: "POST", body: formData });
+		} catch (err) {
+			notification.error({ message: err });
+		}
 		setStyleImage("");
 		textareaRef.current.state.value = "";
 		setLoader(false);
@@ -122,6 +158,39 @@ export default function StylesList() {
 			<div style={{ marginTop: 8 }}>Upload</div>
 		</div>
 	);
+
+	const getIcons = id => {
+		styleFetcher(`${endPoints.getIcons}/${id}`, "GET")
+			.then(res => {
+				setIcons(res.data);
+				setLoader(false);
+			})
+			.catch(err => console.log(err))
+			.finally(() => {
+				setLoader(false);
+			});
+	};
+
+	const createIcon = async e => {
+		setLoader(true);
+		const formData = new FormData();
+		formData.append("image", e.target.files[0]);
+		formData.append("text", "test");
+		formData.append("styleId", activeStyle?.id);
+		try {
+			await chatFetcher({ endPoint: endPoints.modifyIcon, method: "POST", body: formData });
+		} catch (err) {
+			notification.error({ message: err });
+		}
+		setLoader(false);
+	};
+
+	const deleteIcon = async id => {
+		setLoader(true);
+		await deleteResource(endPoints.modifyIcon, { styleIconId: id });
+		setLoader(false);
+	};
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -198,12 +267,23 @@ export default function StylesList() {
 								/>
 								<Table.Column
 									key='id'
+									title='Icons'
+									dataIndex=''
+									align='right'
+									render={(text, record) => (
+										<StyleIcon type='link' onClick={() => showModal(record, "icons")}>
+											<FileImageOutlined />
+										</StyleIcon>
+									)}
+								/>
+								<Table.Column
+									key='id'
 									title=''
 									dataIndex=''
 									align='right'
 									render={(text, record) => (
 										<span>
-											<EditIcon type='link' onClick={() => showModal(record)}>
+											<EditIcon type='link' onClick={() => showModal(record, "edit")}>
 												<EditOutlined />
 											</EditIcon>
 										</span>
@@ -216,33 +296,55 @@ export default function StylesList() {
 				<Modal
 					title='Edit Style'
 					visible={isModalVisible}
-					onOk={handleModalOk}
+					onOk={() => handleModalOk("style-modal")}
 					onCancel={() => setModalVisibility(false)}
 					width={1000}
 					okText='Save'
 				>
-					<ModalContent>
-						<div className='flex'>
-							<span>Description</span>
+					{modalType === "edit" ? (
+						<ModalContent>
+							<div className='flex'>
+								<span>Description</span>
+								<br></br>
+								<TextArea ref={textareaRef} />
+							</div>
 							<br></br>
-							<TextArea ref={textareaRef} />
-						</div>
-						<br></br>
-						<div className='flex'>
-							<span>Upload Image</span>
-							<br></br>
-							<Upload
-								name='avatar'
-								listType='picture-card'
-								className='avatar-uploader'
-								showUploadList={false}
-								action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-								onChange={handleUpload}
-							>
-								{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
-							</Upload>
-						</div>
-					</ModalContent>
+							<div className='flex'>
+								<span>Upload Image</span>
+								<br></br>
+								<Upload
+									name='avatar'
+									listType='picture-card'
+									className='avatar-uploader'
+									showUploadList={false}
+									action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+									onChange={handleUpload}
+								>
+									{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
+								</Upload>
+							</div>
+						</ModalContent>
+					) : (
+						<ModalContent>
+							<Row gutter={[4, 16]}>
+								<Col sm={24} align='right'>
+									<Button style={{ position: "relative" }} type='primary'>
+										Add Icon
+										<StyledInput onChange={createIcon} type='file' />
+									</Button>
+								</Col>
+							</Row>
+							<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons}>
+								<Table.Column key='id' title='Icons' dataIndex='' render={(text, record) => <img src={text} />} />
+								<Table.Column
+									key='id'
+									title='Actions'
+									dataIndex=''
+									render={(text, record) => <DeleteOutlined onClick={() => deleteIcon(record?.id)} />}
+								/>
+							</Table>
+						</ModalContent>
+					)}
 				</Modal>
 			</MaxHeightDiv>
 		</PageLayout>
