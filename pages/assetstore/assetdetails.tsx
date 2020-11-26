@@ -81,7 +81,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	const [assetFile, setAssetFile] = useState<UploadFile<any>[]>([]);
 	const [imageFile, setImageFile] = useState<UploadFile<any>[]>([]);
 	const [imageFilesToUpload, setImageFilesToUpload] = useState([]);
-	const [firstLoad, setFirstLoad] = useState<boolean>(true);
 
 	const [preview, setPreview] = useState<{ previewImage: string; previewVisible: boolean }>({
 		previewImage: "",
@@ -421,8 +420,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			notification.success({ message: "Product Saved", description: "File has been uploaded" });
 			if (uploadFileType === "model") {
 				setState({ ...state, ...info.file.response.data });
-				if (state.status !== Status.active) {
-					setState({ ...state, status: Status.active });
+				if (state.status !== Status.active || changedState.status !== Status.active) {
+					notification.info({
+						message: "Can mark asset as active",
+						description: "Asset can be marked as active since a model has been uploaded for it`",
+					});
 				}
 			} else {
 				setState({ ...state, ...info.file.response.data });
@@ -445,7 +447,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		return false;
 	};
 
-	const formatResponseOnRecieve: (dimension: {
+	const formatResponseOnReceive: (dimension: {
 		width: number;
 		height: number;
 		depth: number;
@@ -668,7 +670,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				notification.success({ message: "Product Saved" });
 				const responseAssetData = response.data;
 				responseAssetData.spatialData.clampValue = responseAssetData.spatialData.clampValue !== -1;
-				responseAssetData.dimension = formatResponseOnRecieve(responseAssetData.dimension);
+				responseAssetData.dimension = formatResponseOnReceive(responseAssetData.dimension);
 				setState({ ...responseAssetData, weight: parseFloat(responseAssetData.weight || 0) });
 				setChangedState({});
 				if (mai && designId) {
@@ -688,42 +690,37 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	};
 
-	useEffect(() => {
-		if ((state.price === 0 || Number.isNaN(state.price)) && !state) {
-			if (state.shoppable !== false) {
-				setState({ ...state, shoppable: false });
-				notification.info({ message: "Item has been marked as not shoppable" });
-			}
+	const onPriceChange = value => {
+		if (!value) {
+			form.setFieldsValue({ shoppable: false });
+			notification.info({ message: "Item has been marked as not shoppable" });
 		}
-		setFirstLoad(false);
-	}, [state.price]);
+	};
 
-	useEffect(() => {
-		if (changedState["meta.vertical"] && !firstLoad) {
-			const mountAndClampValue = MountAndClampValuesForVerticals[changedState["meta.vertical"]];
+	const mountAndClampValueAdjustment = verticalId => {
+		if (verticalId) {
+			const mountAndClampValue = MountAndClampValuesForVerticals[verticalId];
 			if (mountAndClampValue) {
 				if (mountAndClampValue.clampValue >= 0) {
-					setChangedState({
-						...changedState,
+					form.setFieldsValue({
 						"spatialData.clampValue": 1,
-
 						...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
 					});
 				} else {
-					setChangedState({
-						...changedState,
-						"spatialData.clampValue": 0,
+					form.setFieldsValue({
+						"spatialData.clampValue": -1,
 						...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
 					});
 				}
+				notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
 			} else {
-				setChangedState({ ...changedState, "spatialData.clampValue": 0 });
+				form.setFieldsValue({
+					"spatialData.clampValue": -1,
+				});
+				notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
 			}
-			form.setFieldsValue({ ...state, ...changedState });
-			notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
 		}
-		setFirstLoad(false);
-	}, [changedState["meta.vertical"]]);
+	};
 
 	const onBackClick = () => {
 		if (entry) {
@@ -776,6 +773,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															name='price'
 															label='Price (USD)'
 															rules={[{ required: true, type: "number", min: 0 }]}
+															normalize={value => {
+																onPriceChange(value);
+																return value;
+															}}
 														>
 															<InputNumber style={{ width: "100%" }} />
 														</Form.Item>
@@ -834,6 +835,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																		label='Category'
 																		labelCol={{ span: 24 }}
 																		rules={[{ required: true }]}
+																		normalize={value => {
+																			form.setFieldsValue({ "meta.vertical": "", "meta.subcategory": "" });
+																			return value;
+																		}}
 																	>
 																		<Select showSearch optionFilterProp='children' placeholder='Select A Category'>
 																			{categoryMap.map(category => (
@@ -856,6 +861,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																		labelCol={{ span: 24 }}
 																		label='Sub Category'
 																		rules={[{ required: true }]}
+																		normalize={value => {
+																			form.setFieldsValue({ "meta.vertical": "" });
+																			return value;
+																		}}
 																	>
 																		<Select
 																			disabled={!getFieldValue(["meta.category"])}
@@ -886,6 +895,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	name={["meta.vertical"]}
 																	label='Vertical'
 																	rules={[{ required: true }]}
+																	normalize={value => {
+																		mountAndClampValueAdjustment(value);
+
+																		return value;
+																	}}
 																>
 																	<Select
 																		disabled={!getFieldValue(["meta.subcategory"])}
@@ -931,7 +945,21 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														</Form.Item>
 													</Col>
 													<Col span={12}>
-														<Form.Item name='status' label='Status'>
+														<Form.Item
+															labelCol={{ span: 24 }}
+															name='status'
+															label='Status'
+															normalize={value => {
+																if (value === AssetStatus.Active && !assetFile?.length) {
+																	notification.warn({
+																		message: "Cannot mark asset active",
+																		description: "Upload a model file before marking asset active",
+																	});
+																	return AssetStatus.Pending;
+																}
+																return value;
+															}}
+														>
 															<Select>
 																{Object.keys(AssetStatus).map(key => (
 																	<Select.Option value={AssetStatus[key]} key={key}>
