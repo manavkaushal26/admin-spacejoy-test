@@ -53,7 +53,7 @@ export default function ImageList({ query }) {
 	};
 
 	const getLatestImages = id => {
-		fetchResources(`/quiz/v1/images`)
+		fetchResources(`/quiz/admin/v1/images/${id}`)
 			.then(res => {
 				setImages(res.images);
 			})
@@ -94,7 +94,9 @@ export default function ImageList({ query }) {
 		setLoader(true);
 		const formData = new FormData();
 		formData.append("image", image, image.fileName);
-		await createResource(adminImageEndpoint, formData);
+		const resData = await createResource(adminImageEndpoint, formData);
+		const { imageId } = resData;
+		showModal(imageId);
 		getLatestImages(styleId);
 		setLoader(false);
 	};

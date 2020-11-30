@@ -62,20 +62,20 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	useEffect(() => {
-		document.addEventListener("keydown", onKeyDown);
+		document.addEventListener("keypress", onKeyDown);
 		if (selectedProductId) {
 			getLatestScores();
 		}
 		return () => {
-			document.removeEventListener("keydown", onKeyDown);
+			document.removeEventListener("keypress", onKeyDown);
 		};
 	}, [selectedProductId]);
 
 	const onKeyDown = e => {
-		if (e.which === 13 && isEditModal) {
+		if (e.which === 13) {
 			handleEditModalOk();
+			setEditModal(false);
 		}
-		setEditModal(false);
 	};
 
 	const getLatestScores = () => {
@@ -126,10 +126,6 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		setEditModal(true);
 		const style = styles.filter(item => item?.id === value);
 		setSelectedRecord(style);
-		if (inputEl?.current) {
-			console.log("inputEl", inputEl);
-			inputEl.current.focus();
-		}
 	};
 
 	const handleEdit = (row, type) => {
@@ -179,7 +175,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				notification.success({ message: data.message });
 			})
 			.catch(() => notification.error({ message: "Score cannot be added. Total score has to be less than 100." }));
-		inputEl.current.value = "";
+		if (inputEl?.current) inputEl.current.value = "";
 	};
 
 	const onScoreChange = (id, e) => {
@@ -261,7 +257,8 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 						<br></br>
 						<span>Add Score</span>
 						&nbsp;&nbsp;
-						<input autoFocus={true} className='score-input' type='number' ref={inputEl} />
+						{console.log("pavlo")}
+						<input className='score-input' type='number' ref={inputEl} autoFocus />
 						<div>
 							<br></br>
 							<span>*Total score has to be less than 100.</span>
