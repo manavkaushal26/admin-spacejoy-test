@@ -62,10 +62,21 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	useEffect(() => {
+		document.addEventListener("keydown", onKeyDown);
 		if (selectedProductId) {
 			getLatestScores();
 		}
+		return () => {
+			document.removeEventListener("keydown", onKeyDown);
+		};
 	}, [selectedProductId]);
+
+	const onKeyDown = e => {
+		if (e.which === 13 && isEditModal) {
+			handleEditModalOk();
+		}
+		setEditModal(false);
+	};
 
 	const getLatestScores = () => {
 		const endPoint = `/quiz/admin/v1/image/scores/${selectedProductId}`;
@@ -115,6 +126,10 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		setEditModal(true);
 		const style = styles.filter(item => item?.id === value);
 		setSelectedRecord(style);
+		if (inputEl?.current) {
+			console.log("inputEl", inputEl);
+			inputEl.current.focus();
+		}
 	};
 
 	const handleEdit = (row, type) => {
@@ -246,7 +261,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 						<br></br>
 						<span>Add Score</span>
 						&nbsp;&nbsp;
-						<input className='score-input' type='number' ref={inputEl} />
+						<input autoFocus={true} className='score-input' type='number' ref={inputEl} />
 						<div>
 							<br></br>
 							<span>*Total score has to be less than 100.</span>

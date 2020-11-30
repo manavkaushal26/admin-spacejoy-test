@@ -201,7 +201,7 @@ export default function StylesList() {
 								<Col>
 									<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/stylequiz" })} />
 								</Col>
-								<Col>Style Quiz</Col>
+								<Col>Go Back</Col>
 							</Row>
 						</Title>
 					</Col>
@@ -231,9 +231,9 @@ export default function StylesList() {
 									key='id'
 									title='Is Active'
 									dataIndex='id'
-									render={(text, record) => (
-										<Switch defaultChecked={record.active} onChange={checked => handleToggle(checked, text)} />
-									)}
+									render={(text, record) => {
+										return <Switch defaultChecked={record.active} onChange={checked => handleToggle(checked, text)} />;
+									}}
 								/>
 								<Table.Column
 									key='id'
@@ -259,7 +259,7 @@ export default function StylesList() {
 											</Link>
 											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 											<Link href={`/stylequiz/imageList/${record.id}`} type='link'>
-												Images
+												Room Designs
 											</Link>
 											&nbsp;&nbsp;
 										</>

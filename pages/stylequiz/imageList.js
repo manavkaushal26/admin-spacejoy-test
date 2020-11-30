@@ -1,7 +1,6 @@
 import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import { redirectToLocation } from "@utils/authContext";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
@@ -121,9 +120,9 @@ export default function ImageList({ query }) {
 						<Title level={3}>
 							<Row gutter={[8, 8]}>
 								<Col>
-									<ArrowLeftOutlined onClick={() => redirectToLocation({ pathname: "/stylequiz" })} />
+									<ArrowLeftOutlined onClick={() => Router.back()} />
 								</Col>
-								<Col>Style Quiz</Col>
+								<Col>Go Back</Col>
 							</Row>
 						</Title>
 					</Col>

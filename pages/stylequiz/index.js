@@ -23,8 +23,8 @@ export const LoudPaddingDiv = styled.div`
 
 const MetaCards = [
 	{
-		name: "Styles",
-		description: "Manage Styles",
+		name: "Design Styles",
+		description: "Manage Design Styles",
 		action: "redirect",
 		to: "/stylequiz/stylesList",
 		url: "/stylequiz/stylesList",
@@ -32,8 +32,8 @@ const MetaCards = [
 		allowedRoles: [Role.Admin, Role.Owner, Role.BlogAuthor, Role.BlogAdmin, Role.Analyst],
 	},
 	{
-		name: "Images",
-		description: "Manage Images",
+		name: "Room Designs",
+		description: "Manage Room Designs",
 		action: "redirect",
 		to: "/stylequiz/imageList",
 		url: "/stylequiz/imageList",
