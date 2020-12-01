@@ -59,12 +59,8 @@ export default function ProductsList({ query }) {
 			.catch(err => console.log(err));
 	}, []);
 
-	const getDefaultStyleName = () => {
-		const defaultStyle = styles.filter(item => item.id == parseInt(Router?.query?.styleId));
-		return defaultStyle[0]?.name || "";
-	};
-
 	useEffect(() => {
+		setProducts([]);
 		getLatestProducts(Router?.query?.styleId);
 	}, [Router]);
 
@@ -170,7 +166,7 @@ export default function ProductsList({ query }) {
 														</Popconfirm>,
 													]}
 													hoverable
-													cover={<Image src={`q_70,w_300/${item?.cdn}`} width='100%' />}
+													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
 												></Card>
 											</Col>
 										);

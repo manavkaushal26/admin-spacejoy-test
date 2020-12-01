@@ -80,6 +80,7 @@ export default function ImageList({ query }) {
 	}, []);
 
 	useEffect(() => {
+		setImages([]);
 		getLatestImages(`${getImagesEndpoint}/${styleId}`);
 	}, [Router]);
 
@@ -190,7 +191,7 @@ export default function ImageList({ query }) {
 														</Button>,
 													]}
 													hoverable
-													cover={<Image src={`q_70,w_300/${item?.cdn}`} width='100%' />}
+													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
 												></Card>
 											</Col>
 										);
