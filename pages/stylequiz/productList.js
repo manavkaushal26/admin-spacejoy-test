@@ -1,4 +1,5 @@
 import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
+import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
@@ -140,7 +141,11 @@ export default function ProductsList({ query }) {
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
 											Add Product
-											<StyledInput onChange={handleUpload} type='file' />
+											<StyledInput
+												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+												onChange={handleUpload}
+												type='file'
+											/>
 										</Button>
 									</Col>
 								</Row>
@@ -165,7 +170,7 @@ export default function ProductsList({ query }) {
 														</Popconfirm>,
 													]}
 													hoverable
-													cover={<img height={164} height={164} src={item?.image} />}
+													cover={<Image src={`q_70,w_300/${item?.cdn}`} width='100%' />}
 												></Card>
 											</Col>
 										);

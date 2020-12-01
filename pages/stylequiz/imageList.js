@@ -1,4 +1,5 @@
 import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
+import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
@@ -67,7 +68,7 @@ export default function ImageList({ query }) {
 	};
 
 	useEffect(() => {
-		styleFetcher("/quiz/admin/v1/styles", "GET")
+		styleFetcher("/quiz/admin/v1/styles/active", "GET")
 			.then(res => {
 				setStylesData(res.data);
 				Router.push(
@@ -157,7 +158,11 @@ export default function ImageList({ query }) {
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
 											Add Image
-											<StyledInput onChange={handleUpload} type='file' />
+											<StyledInput
+												onChange={handleUpload}
+												type='file'
+												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+											/>
 										</Button>
 									</Col>
 								</Row>
@@ -185,7 +190,7 @@ export default function ImageList({ query }) {
 														</Button>,
 													]}
 													hoverable
-													cover={<img height={164} height={164} src={item?.url} />}
+													cover={<Image src={`q_70,w_300/${item?.cdn}`} width='100%' />}
 												></Card>
 											</Col>
 										);
