@@ -11,7 +11,7 @@ import {
 } from "@sections/AssetStore/exampleConstants";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { Avatar, Col, Input, List, Popover, Radio, Row, Switch, Tabs, Tree, Typography } from "antd";
+import { Avatar, Button, Col, Input, List, Popover, Radio, Row, Switch, Tabs, Tree, Typography } from "antd";
 import { DataNode } from "antd/lib/tree";
 import React, { useEffect, useMemo, useState } from "react";
 import { FilterCard } from "../styled";
@@ -19,6 +19,8 @@ import SliderFilter from "./filters/SliderFilter";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
+
+type ValueName = "priceRange" | "heightRange" | "depthRange" | "widthRange";
 
 interface CategoryMap {
 	key: string;
@@ -110,10 +112,18 @@ const SearchExamples = () => {
 };
 
 const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state, categoryMap }): JSX.Element => {
-	const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
-	const [width, setWidthRange] = useState<[number, number]>([0, 30]);
-	const [height, setHeightRange] = useState<[number, number]>([0, 30]);
-	const [depth, setDepthRange] = useState<[number, number]>([0, 30]);
+	const [filterState, setFilterState] = useState<Record<ValueName, [number, number]>>({
+		priceRange: state.priceRange,
+		widthRange: state.widthRange,
+		depthRange: state.depthRange,
+		heightRange: state.heightRange,
+	});
+
+	const { priceRange, widthRange, depthRange, heightRange } = filterState;
+
+	useEffect(() => {
+		dispatch({ type: ASSET_ACTION_TYPES.UPDATE_RANGE_FILTERS, value: filterState });
+	}, [filterState]);
 
 	const mergedArray: string[] = useMemo(
 		() => [
@@ -135,107 +145,15 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		dispatch({ type: ASSET_ACTION_TYPES.SEARCH_TEXT, value });
 	};
 
-	const afterPriceChange = (): void => {
-		const [min, max] = priceRange;
-		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.PRICE_RANGE, value: priceRange });
-	};
+	const onRangeValueChange = (value: number, type: "min" | "max", name: ValueName): void => {
+		const [min, max] = filterState[name];
 
-	useEffect(() => {
-		afterPriceChange();
-	}, priceRange);
-
-	const onPriceRangeChange = (range): void => {
-		setPriceRange(range);
-	};
-
-	const onPriceSliderValueEntry = (e, type): void => {
-		const {
-			target: { value },
-		} = e;
-		const [min, max] = priceRange;
-		let correctedValue = parseInt(value, 10);
-		if (Number.isNaN(correctedValue) || correctedValue < 0) {
-			correctedValue = 0;
-		}
 		if (type === "min") {
-			setPriceRange([correctedValue, max]);
+			setFilterState({ ...filterState, [name]: [value, max] });
 		}
 		if (type === "max") {
-			setPriceRange([min, correctedValue]);
+			setFilterState({ ...filterState, [name]: [min, value] });
 		}
-	};
-
-	const afterHeightChange = (): void => {
-		const [min, max] = height;
-		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.HEIGHT_RANGE, value: height });
-	};
-
-	useEffect(() => {
-		afterHeightChange();
-	}, height);
-
-	const onHeightRangeChange = (range): void => {
-		setHeightRange(range);
-	};
-
-	const onHeightSliderValueEntry = (e, type): void => {
-		const {
-			target: { value },
-		} = e;
-		const [min, max] = priceRange;
-		let correctedValue = parseInt(value, 10);
-		if (Number.isNaN(correctedValue) || correctedValue < 0) {
-			correctedValue = 0;
-		}
-		if (type === "min") {
-			setHeightRange([correctedValue, max]);
-		}
-		if (type === "max") {
-			setHeightRange([min, correctedValue]);
-		}
-	};
-
-	const afterWidthChange = (): void => {
-		const [min, max] = width;
-		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.WIDTH_RANGE, value: width });
-	};
-
-	useEffect(() => {
-		afterWidthChange();
-	}, width);
-
-	const onWidthRangeChange = (range): void => {
-		setWidthRange(range);
-	};
-
-	const onWidthSliderValueEntry = (e, type): void => {
-		const {
-			target: { value },
-		} = e;
-		const [min, max] = width;
-		let correctedValue = parseInt(value, 10);
-		if (Number.isNaN(correctedValue) || correctedValue < 0) {
-			correctedValue = 0;
-		}
-		if (type === "min") {
-			setWidthRange([correctedValue, max]);
-		}
-		if (type === "max") {
-			setWidthRange([min, correctedValue]);
-		}
-	};
-
-	const afterDepthChange = (): void => {
-		const [min, max] = depth;
-		if (min <= max && max !== 0) dispatch({ type: ASSET_ACTION_TYPES.DEPTH_RANGE, value: depth });
-	};
-
-	useEffect(() => {
-		afterDepthChange();
-	}, depth);
-
-	const onDepthRangeChange = (range): void => {
-		setDepthRange(range);
 	};
 
 	const onStatusChange = (e): void => {
@@ -243,23 +161,6 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 			target: { value },
 		} = e;
 		dispatch({ type: ASSET_ACTION_TYPES.STATUS, value });
-	};
-
-	const onDepthSliderValueEntry = (e, type): void => {
-		const {
-			target: { value },
-		} = e;
-		const [min, max] = depth;
-		let correctedValue = parseInt(value, 10);
-		if (Number.isNaN(correctedValue) || correctedValue < 0) {
-			correctedValue = 0;
-		}
-		if (type === "min") {
-			setDepthRange([correctedValue, max]);
-		}
-		if (type === "max") {
-			setDepthRange([min, correctedValue]);
-		}
 	};
 
 	const renderTreeNodes = (options: Array<CategoryMap>): DataNode[] => {
@@ -279,10 +180,16 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		dispatch({ type: ASSET_ACTION_TYPES.WILD_CARD, value });
 	};
 
-	const [priceMin, priceMax] = priceRange;
-	const [widthMin, widthMax] = width;
-	const [heightMin, heightMax] = height;
-	const [depthMin, depthMax] = depth;
+	const resetFilters = () => {
+		dispatch({ type: ASSET_ACTION_TYPES.RESET_FILTERS, value: "" });
+		setFilterState({
+			priceRange: [0, 50000],
+			widthRange: [0, 360],
+			depthRange: [0, 360],
+			heightRange: [0, 360],
+		});
+	};
+
 	return (
 		<>
 			{metaData && (
@@ -293,17 +200,26 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 								<Col span={24}>
 									<Row gutter={[2, 2]}>
 										<Col span={24}>
-											<Row gutter={[8, 8]}>
+											<Row justify='space-between' align='bottom' gutter={[8, 8]}>
 												<Col>
-													<Text strong>Search</Text>
+													<Row gutter={[4, 4]}>
+														<Col>
+															<Text strong>Search</Text>
+														</Col>
+														<Col>
+															<Switch
+																onChange={onChange}
+																checkedChildren='Similar'
+																unCheckedChildren='Exact'
+																checked={state.wildcard}
+															/>
+														</Col>
+													</Row>
 												</Col>
 												<Col>
-													<Switch
-														onChange={onChange}
-														checkedChildren='Similar'
-														unCheckedChildren='Exact'
-														checked={state.wildcard}
-													/>
+													<Button type='link' onClick={resetFilters}>
+														Reset
+													</Button>
 												</Col>
 											</Row>
 										</Col>
@@ -431,13 +347,10 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 										<Col span={24}>
 											<Row gutter={[2, 2]}>
 												<SliderFilter
-													min={priceMin}
-													max={priceMax}
+													name='priceRange'
 													range={[0, 20000]}
 													value={priceRange}
-													onValueEntry={onPriceSliderValueEntry}
-													onChange={onPriceRangeChange}
-													onAfterChange={afterPriceChange}
+													onChange={onRangeValueChange}
 												/>
 											</Row>
 										</Col>
@@ -451,13 +364,10 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 										<Col span={24}>
 											<Row align='middle'>
 												<SliderFilter
-													min={widthMin}
-													max={widthMax}
-													range={[0, 30]}
-													value={width}
-													onValueEntry={onWidthSliderValueEntry}
-													onChange={onWidthRangeChange}
-													onAfterChange={afterWidthChange}
+													name='widthRange'
+													range={[0, 360]}
+													value={widthRange}
+													onChange={onRangeValueChange}
 												/>
 											</Row>
 										</Col>
@@ -471,13 +381,10 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 										<Col span={24}>
 											<Row gutter={[2, 2]}>
 												<SliderFilter
-													min={heightMin}
-													max={heightMax}
-													range={[0, 30]}
-													value={height}
-													onValueEntry={onHeightSliderValueEntry}
-													onChange={onHeightRangeChange}
-													onAfterChange={afterHeightChange}
+													name='heightRange'
+													range={[0, 360]}
+													value={heightRange}
+													onChange={onRangeValueChange}
 												/>
 											</Row>
 										</Col>
@@ -491,13 +398,10 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 										<Col span={24}>
 											<Row align='middle'>
 												<SliderFilter
-													min={depthMin}
-													max={depthMax}
-													range={[0, 30]}
-													value={depth}
-													onValueEntry={onDepthSliderValueEntry}
-													onChange={onDepthRangeChange}
-													onAfterChange={afterDepthChange}
+													name='depthRange'
+													range={[0, 360]}
+													value={depthRange}
+													onChange={onRangeValueChange}
 												/>
 											</Row>
 										</Col>

@@ -24,15 +24,22 @@ interface AssetCards {
 	scrapedData?: ScrapedAssetType;
 }
 
-const CardPadding = styled.div`
-	padding: 0.5rem;
-`;
-
 const ImageContainer = styled.div`
 	text-align: center;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+`;
+
+const ColouredSpan = styled.span<{ bg: string }>`
+	padding: 0.2rem;
+	background: ${({ theme, bg }) => {
+		if (bg === "green") {
+			return theme.colors.mild.green;
+		} else if (bg === "red") {
+			return theme.colors.mild.red;
+		}
+	}};
 `;
 
 const ProductCard: (props: AssetCards) => JSX.Element = ({
@@ -46,16 +53,15 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 	const availability = useMemo(() => {
 		if (asset.inStock !== undefined) {
 			if (asset.inStock) {
-				return <>Available</>;
+				return <ColouredSpan bg='green'>Available</ColouredSpan>;
 			} else {
-				return <>Out Of Stock</>;
+				return <ColouredSpan bg='red'>Out Of Stock</ColouredSpan>;
 			}
 		} else if (scrapedData) {
 			return <AssetAvailability scrapedData={scrapedData} />;
 		}
 		return undefined;
 	}, [scrapedData, asset]);
-
 	return (
 		<Card
 			size='small'
@@ -110,11 +116,13 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 				{!noVertical && (
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
-							<Col>
-								<Text strong>Vertical: </Text>
+							<Col span={8}>
+								<Text style={{ width: "100%", overflow: "hidden" }} ellipsis strong>
+									Vertical:{" "}
+								</Text>
 							</Col>
-							<Col>
-								<CapitalizedText>{` ${getValueSafely<string>(
+							<Col span={16}>
+								<CapitalizedText style={{ width: "100%", overflow: "hidden" }} ellipsis>{` ${getValueSafely<string>(
 									() => asset.meta.vertical,
 									"Undefined"
 								)}`}</CapitalizedText>
@@ -123,12 +131,27 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 					</Col>
 				)}
 				<Col span={24}>
-					<Row gutter={[8, 0]}>
+					<Row gutter={[4, 4]} justify='space-between'>
 						<Col>
-							<DollarCircleFilled />
+							<Row gutter={[4, 4]}>
+								<Col>
+									<DollarCircleFilled />
+								</Col>
+								<Col>
+									<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
+								</Col>
+							</Row>
 						</Col>
 						<Col>
-							<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
+							{availability && (
+								<Col span={24}>
+									<Row>
+										<Col>
+											<Text strong>{availability}</Text>
+										</Col>
+									</Row>
+								</Col>
+							)}
 						</Col>
 					</Row>
 				</Col>
@@ -146,19 +169,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Row>
 					</Col>
 				)}
-				{availability && (
-					<Col span={24}>
-						<Row>
-							<Col>
-								<Text strong>Availability:</Text>
-							</Col>
 
-							<Col>
-								<Text strong>{availability}</Text>
-							</Col>
-						</Row>
-					</Col>
-				)}
 				<Col span={24}>
 					<Row justify='space-between'>
 						<Col span={8}>

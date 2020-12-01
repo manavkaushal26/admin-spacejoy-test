@@ -29,10 +29,10 @@ export const assetStoreInitialState: AssetStoreState = {
 	loading: true,
 	status: AssetStatus.Active,
 	retailerFilter: [],
-	priceRange: [0, 10000],
-	heightRange: [0, 30],
-	widthRange: [0, 30],
-	depthRange: [0, 30],
+	priceRange: [0, 50000],
+	heightRange: [0, 360],
+	widthRange: [0, 360],
+	depthRange: [0, 360],
 	wildcard: false,
 	searchText: "",
 	checkedKeys: {
@@ -46,24 +46,25 @@ export const assetStoreInitialState: AssetStoreState = {
 };
 
 export enum ASSET_ACTION_TYPES {
-	PRICE_RANGE = "PRICE_RANGE",
-	WIDTH_RANGE = "WIDTH_RANGE",
-	HEIGHT_RANGE = "HEIGHT_RANGE",
-	DEPTH_RANGE = "DEPTH_RANGE",
-	RETAILER = "RETAILER",
-	STATUS = "STATUS",
-	SEARCH_TEXT = "SEARCH_TEXT",
-	CATEGORY = "CATEGORY",
-	SUB_CATEGORY = "SUB_CATEGORY",
-	CHECKED_ITEMS = "CHECKED_ITEMS",
-	METADATA = "METADATA",
-	MOODBOARD = "MOODBOARD",
-	LOADING_STATUS = "LOADING_STATUS",
-	SELECTED_ASSET = "SELECTED_ASSET",
-	TOGGLE_CART = "TOGGLE_CART",
-	RESET_FILTERS = "RESET_FILTERS",
-	WILD_CARD = "WILD_CARD",
-	NEW_ASSET_MODAL_VISIBLE = "NEW_ASSET_MODAL_VISIBLE",
+	PRICE_RANGE,
+	WIDTH_RANGE,
+	HEIGHT_RANGE,
+	DEPTH_RANGE,
+	RETAILER,
+	STATUS,
+	SEARCH_TEXT,
+	CATEGORY,
+	SUB_CATEGORY,
+	CHECKED_ITEMS,
+	METADATA,
+	MOODBOARD,
+	LOADING_STATUS,
+	SELECTED_ASSET,
+	TOGGLE_CART,
+	RESET_FILTERS,
+	WILD_CARD,
+	NEW_ASSET_MODAL_VISIBLE,
+	UPDATE_RANGE_FILTERS,
 }
 export interface AssetAction {
 	type: ASSET_ACTION_TYPES;
@@ -78,11 +79,13 @@ export const reducer: AssetReducerType = (state, action) => {
 		case ASSET_ACTION_TYPES.RESET_FILTERS:
 			return {
 				...state,
+				status: AssetStatus.Active,
 				retailerFilter: [],
-				priceRange: [0, 10000],
-				heightRange: [0, 30],
-				widthRange: [0, 30],
-				depthRange: [0, 30],
+				priceRange: [0, 50000],
+				heightRange: [0, 360],
+				widthRange: [0, 360],
+				depthRange: [0, 360],
+				wildcard: false,
 				searchText: "",
 				checkedKeys: {
 					category: [],
@@ -91,6 +94,12 @@ export const reducer: AssetReducerType = (state, action) => {
 				},
 				selectedAsset: "",
 			};
+		case ASSET_ACTION_TYPES.UPDATE_RANGE_FILTERS: {
+			return {
+				...state,
+				...action.value,
+			};
+		}
 		case ASSET_ACTION_TYPES.STATUS:
 			return {
 				...state,

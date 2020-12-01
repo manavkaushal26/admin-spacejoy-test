@@ -1,44 +1,61 @@
-import { MarginCorrectedSlider, StyledInput } from "@sections/AssetStore/styled";
-import { CustomDiv } from "@sections/Dashboard/styled";
+import { Col, Input, InputNumber, Row } from "antd";
 import React from "react";
-
-interface SliderFilter {
-	min: number;
-	max: number;
+type ValueName = "priceRange" | "heightRange" | "depthRange" | "widthRange";
+interface SliderFilterInterface {
 	range: [number, number];
-	onChange: (array: [number, number]) => void;
-	onAfterChange: (array: [number, number]) => void;
 	value: [number, number];
-	onValueEntry: (e: React.ChangeEvent<HTMLInputElement>, type: string) => void;
+	onChange: (updatedValue: number, type: "min" | "max", name: ValueName) => void;
+	name: ValueName;
 }
 
-export default function SliderFilter({ min, max, range, onChange, onAfterChange, value, onValueEntry }: SliderFilter) {
+const SliderFilter: React.FC<SliderFilterInterface> = ({ range, value, onChange, name }) => {
 	const [minVal, maxVal] = range;
+	const [min, max] = value;
+
+	const onValueChange = (value, type) => {
+		let changedValue = value < 0 ? 0 : value;
+
+		if (type === "min") {
+			if (value < max) {
+				changedValue = value;
+			} else {
+				changedValue = max;
+			}
+		} else {
+			if (value > min) {
+				changedValue = value;
+			} else {
+				changedValue = min;
+			}
+		}
+		onChange(changedValue, type, name);
+	};
+
 	return (
-		<>
-			<CustomDiv flexBasis='5ch'>
-				<StyledInput
-					error={min > max}
+		<Row>
+			<Col span={10}>
+				<InputNumber
+					style={{ width: "100%" }}
 					value={min}
 					min={minVal}
 					max={maxVal}
-					type='number'
-					onChange={e => onValueEntry(e, "min")}
+					onChange={value => onValueChange(value, "min")}
 				/>
-			</CustomDiv>
-			<CustomDiv flexGrow={999}>
-				<MarginCorrectedSlider range max={maxVal} value={value} onChange={onChange} onAfterChange={onAfterChange} />
-			</CustomDiv>
-			<CustomDiv flexBasis='5ch'>
-				<StyledInput
-					error={min > max}
+			</Col>
+			<Col span={4}>
+				<Input style={{ textAlign: "center" }} placeholder='~' value='~' disabled />
+			</Col>
+			<Col span={10}>
+				<InputNumber
+					style={{ width: "100%" }}
 					value={max}
 					min={minVal}
 					max={maxVal}
-					type='number'
-					onChange={e => onValueEntry(e, "max")}
+					onChange={value => onValueChange(value, "max")}
 				/>
-			</CustomDiv>
-		</>
+			</Col>
+		</Row>
 	);
-}
+};
+
+export default SliderFilter;

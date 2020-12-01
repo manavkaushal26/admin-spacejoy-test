@@ -52,6 +52,10 @@ const TopMarginTitle = styled(Title)<{ level: number }>`
 	margin-top: 0.5em;
 `;
 
+const convertToFeet = value => {
+	return parseFloat((value / 12).toFixed(8));
+};
+
 const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData, setTotalCount, dispatch) => {
 	dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
 	const endPoint = getAssetElasticSearchApi();
@@ -69,9 +73,9 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 				subcategory: state.checkedKeys.subCategory,
 				vertical: state.checkedKeys.verticals,
 				price: state.priceRange,
-				depth: state.depthRange,
-				width: state.widthRange,
-				height: state.heightRange,
+				depth: state.depthRange.map(convertToFeet),
+				width: state.widthRange.map(convertToFeet),
+				height: state.heightRange.map(convertToFeet),
 				status: state.status,
 			},
 		},
@@ -95,6 +99,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 						mountType: asset.mountType,
 						clampValue: asset.clampValue,
 					},
+					inStock: asset.inStock,
 					dimension: {
 						depth: asset.depth,
 						width: asset.width,
