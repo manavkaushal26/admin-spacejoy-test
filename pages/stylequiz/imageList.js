@@ -64,24 +64,29 @@ export default function ImageList({ query }) {
 	};
 
 	const handleChange = value => {
-		Router.push({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/${value}`);
+		if (value === "all") {
+			Router.push({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/${value}`);
+		} else {
+			Router.push({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/all`);
+		}
 	};
 
 	useEffect(() => {
 		styleFetcher("/quiz/admin/v1/styles/active", "GET")
 			.then(res => {
 				setStylesData(res.data);
-				Router.push(
-					{ pathname: "/stylequiz/imageList", query: { styleId: res.data[0]?.id } },
-					`/stylequiz/imageList/${res.data[0]?.id}`
-				);
+				Router.push({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
 			})
 			.catch(err => console.log(err));
 	}, []);
 
 	useEffect(() => {
 		setImages([]);
-		getLatestImages(`${getImagesEndpoint}/${styleId}`);
+		if (styleId !== "0") {
+			getLatestImages(`${getImagesEndpoint}/${styleId}`);
+		} else {
+			getLatestImages("/quiz/v1/images");
+		}
 	}, [Router]);
 
 	const deleteImage = async id => {
@@ -144,8 +149,11 @@ export default function ImageList({ query }) {
 												}
 												style={{ width: "100%" }}
 												onChange={handleChange}
-												defaultValue={styles[0]?.id}
+												defaultValue='all'
 											>
+												<Select.Option key='all' value='all'>
+													All
+												</Select.Option>
 												{styles.map((style, index) => {
 													return (
 														<Select.Option key={style?.id} value={style?.id}>
