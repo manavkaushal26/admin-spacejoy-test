@@ -62,14 +62,17 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	useEffect(() => {
-		document.addEventListener("keypress", onKeyDown);
 		if (selectedProductId) {
 			getLatestScores();
 		}
+	}, [selectedProductId]);
+
+	useEffect(() => {
+		document.addEventListener("keypress", onKeyDown);
 		return () => {
 			document.removeEventListener("keypress", onKeyDown);
 		};
-	}, [selectedProductId]);
+	}, [currentSelectedRecord]);
 
 	const onKeyDown = e => {
 		if (e.which === 13) {
@@ -154,6 +157,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	const addNewScore = async () => {
+		console.log(currentSelectedRecord[0]?.id);
 		await handleScores("POST", {
 			imageId: selectedProductId,
 			styleId: currentSelectedRecord[0]?.id,

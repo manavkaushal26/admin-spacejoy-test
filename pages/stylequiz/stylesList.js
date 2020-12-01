@@ -94,8 +94,8 @@ export default function StylesList() {
 		}
 	};
 
-	const handleToggle = (checked, id) => {
-		updateStyleStatus(checked, id);
+	const handleToggle = async (checked, id) => {
+		await updateStyleStatus(checked, id);
 	};
 
 	const showModal = (row, type) => {

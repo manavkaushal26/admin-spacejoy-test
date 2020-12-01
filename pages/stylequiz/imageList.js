@@ -28,6 +28,7 @@ const Wrapper = styled.div`
 `;
 
 const adminImageEndpoint = "/quiz/admin/v1/image";
+const getImagesEndpoint = "/quiz/admin/v1/images";
 
 export default function ImageList({ query }) {
 	const { styleId } = query;
@@ -52,8 +53,8 @@ export default function ImageList({ query }) {
 		}
 	};
 
-	const getLatestImages = id => {
-		fetchResources(`/quiz/admin/v1/images/${id}`)
+	const getLatestImages = endPoint => {
+		fetchResources(endPoint)
 			.then(res => {
 				setImages(res.images);
 			})
@@ -78,12 +79,12 @@ export default function ImageList({ query }) {
 	}, []);
 
 	useEffect(() => {
-		getLatestImages(Router?.query?.styleId);
+		getLatestImages(`${getImagesEndpoint}/${styleId}`);
 	}, [Router]);
 
 	const deleteImage = async id => {
 		await deleteResource(adminImageEndpoint, { imageId: id });
-		getLatestImages(styleId);
+		getLatestImages(`${getImagesEndpoint}/${styleId}`);
 	};
 
 	const handleUpload = e => {
@@ -97,7 +98,7 @@ export default function ImageList({ query }) {
 		const resData = await createResource(adminImageEndpoint, formData);
 		const { imageId } = resData;
 		showModal(imageId);
-		getLatestImages(styleId);
+		getLatestImages("/quiz/v1/images");
 		setLoader(false);
 	};
 
@@ -113,7 +114,6 @@ export default function ImageList({ query }) {
 	const handleModalCancel = e => {
 		setModalVisibility(false);
 	};
-	console.log(styles[0]?.id);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
