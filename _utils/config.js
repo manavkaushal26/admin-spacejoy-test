@@ -90,20 +90,11 @@ const cloudinary = {
 	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy",
 };
 
-const stagingCloudinary = {
-	cloudName: "spacejoy-staging",
-	apiKey: "549421365942597",
-	apiSecret: "wzZmzPhV05-eCkbTC0xI2HNKg9Q",
-	environmentVariable: "CLOUDINARY_URL=cloudinary://549421365942597:wzZmzPhV05-eCkbTC0xI2HNKg9Q@spacejoy-staging",
-	baseDeliveryURL: "//res.cloudinary.com/spacejoy-staging",
-	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy-staging",
-};
-
 module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary: isProduction ? cloudinary : stagingCloudinary,
+	cloudinary: cloudinary,
 	projectConfig,
 	pusherConfig,
 };

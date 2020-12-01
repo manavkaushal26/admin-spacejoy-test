@@ -4,12 +4,12 @@ import {
 	PhaseCustomerNames,
 	PhaseInternalNames,
 	RevisionForm,
-	UserProjectType
+	UserProjectType,
 } from "@customTypes/dashboardTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, notification, Row, Spin, Typography } from "antd";
+import { Col, notification, Row, Spin } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { VerticalPaddedDiv } from "../styled";
@@ -17,8 +17,6 @@ import { UserProjectSidePanelState } from "../UserProjectSidepanel/reducer";
 import ActionView from "./ActionView";
 import ProjectSummary from "./ProjectSummary";
 import ProjectTabView from "./ProjectTabView";
-
-const { Title } = Typography;
 
 const userProjectMainPanel: React.FC<{
 	updateProjectPhaseInSidepanel: (

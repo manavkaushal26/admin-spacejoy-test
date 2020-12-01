@@ -6,10 +6,9 @@ import { getValueSafely } from "@utils/commonUtils";
 import AssetAvailability from "@utils/componentUtils/AssetAvailable";
 import PriceData from "@utils/componentUtils/AssetPrice";
 import config from "@utils/config";
-import { Col, Row, Typography } from "antd";
-import React, { ReactNode } from "react";
+import { Card, Col, Row, Typography } from "antd";
+import React, { ReactNode, useMemo } from "react";
 import styled from "styled-components";
-import { AssetCard } from "../styled";
 
 const { Text, Link } = Typography;
 
@@ -44,8 +43,22 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 	actions,
 	scrapedData,
 }) => {
+	const availability = useMemo(() => {
+		if (asset.inStock !== undefined) {
+			if (asset.inStock) {
+				return <>Available</>;
+			} else {
+				return <>Out Of Stock</>;
+			}
+		} else if (scrapedData) {
+			return <AssetAvailability scrapedData={scrapedData} />;
+		}
+		return undefined;
+	}, [scrapedData, asset]);
+
 	return (
-		<AssetCard
+		<Card
+			size='small'
 			cover={
 				<ImageContainer>
 					<Image
@@ -63,115 +76,132 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 			{...(onCardClick ? { onClick: (): void => onCardClick(asset._id) } : {})}
 			hoverable={hoverable}
 		>
-			<Row gutter={[10, 0]}>
+			<Row>
 				<Col span={24}>
-					<CardPadding>
-						<Row gutter={[5, 0]}>
+					<Row gutter={[4, 4]}>
+						<Col>
+							<LinkOutlined />
+						</Col>
+						<Col>
+							<Text style={{ width: "100%", overflow: "hidden" }} ellipsis type='secondary'>
+								<a
+									onClick={e => e.stopPropagation()}
+									target='_blank'
+									rel='noopener noreferrer'
+									href={getValueSafely(() => `${config.company.customerPortalLink}/product-view/${asset._id}`, "#")}
+								>
+									{getValueSafely(() => asset.retailer.name, "N/A")}
+								</a>
+							</Text>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
+					<Link
+						style={{ width: "100%", overflow: "hidden" }}
+						onClick={e => e.stopPropagation()}
+						ellipsis
+						strong
+						href={getValueSafely(() => `/assetstore/assetdetails?assetId=${asset._id}`, "#")}
+					>
+						{getValueSafely(() => asset.name, "N/A")}
+					</Link>
+				</Col>
+				{!noVertical && (
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
 							<Col>
-								<LinkOutlined />
+								<Text strong>Vertical: </Text>
 							</Col>
 							<Col>
-								<Text style={{ width: "100%" }} ellipsis type='secondary'>
-									<a
-										onClick={e => e.stopPropagation()}
-										target='_blank'
-										rel='noopener noreferrer'
-										href={getValueSafely(() => `${config.company.customerPortalLink}/product-view/${asset._id}`, "#")}
-									>
-										{getValueSafely(() => asset.retailer.name, "N/A")}
-									</a>
+								<CapitalizedText>{` ${getValueSafely<string>(
+									() => asset.meta.vertical,
+									"Undefined"
+								)}`}</CapitalizedText>
+							</Col>
+						</Row>
+					</Col>
+				)}
+				<Col span={24}>
+					<Row gutter={[8, 0]}>
+						<Col>
+							<DollarCircleFilled />
+						</Col>
+						<Col>
+							<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
+						</Col>
+					</Row>
+				</Col>
+				{scrapedData && (
+					<Col span={24}>
+						<Row gutter={[10, 0]}>
+							<Col>
+								<Text strong>Current Price:</Text>
+							</Col>
+							<Col>
+								<Text strong>
+									<PriceData scrapedData={scrapedData} />
 								</Text>
 							</Col>
 						</Row>
+					</Col>
+				)}
+				{availability && (
+					<Col span={24}>
 						<Row>
-							<Col span={24}>
-								<Link
-									onClick={e => e.stopPropagation()}
-									ellipsis
-									strong
-									href={getValueSafely(() => `/assetstore/assetdetails?assetId=${asset._id}`, "#")}
-								>
-									{getValueSafely(() => asset.name, "N/A")}
-								</Link>
+							<Col>
+								<Text strong>Availability:</Text>
+							</Col>
+
+							<Col>
+								<Text strong>{availability}</Text>
 							</Col>
 						</Row>
-
-						{!noVertical && (
-							<Row gutter={[5, 0]}>
-								<Col>
-									<Text strong>Vertical: </Text>
+					</Col>
+				)}
+				<Col span={24}>
+					<Row justify='space-between'>
+						<Col span={8}>
+							<Row>
+								<Col span={24}>
+									<Text strong>W</Text>
 								</Col>
-								<Col>
-									<CapitalizedText>{` ${getValueSafely<string>(
-										() => asset.meta.vertical,
-										"Undefined"
-									)}`}</CapitalizedText>
+								<Col span={24}>
+									<CapitalizedText>
+										{getValueSafely<string | number>(() => (asset.dimension.width * 12).toFixed(2), "N/A")}&#34;
+									</CapitalizedText>
 								</Col>
 							</Row>
-						)}
-						<Row gutter={[5, 0]}>
-							<Col>
-								<Text strong>W:</Text>
-							</Col>
-							<Col>
-								<CapitalizedText>
-									{getValueSafely<string | number>(() => (asset.dimension.width * 12).toFixed(2), "N/A")}&#34;
-								</CapitalizedText>
-							</Col>
-							<Col>
-								<Text strong>H:</Text>
-							</Col>
-							<Col>
-								<CapitalizedText>
-									{getValueSafely<string | number>(() => (asset.dimension.height * 12).toFixed(2), "N/A")}&#34;
-								</CapitalizedText>
-							</Col>
-							<Col>
-								<Text strong>D:</Text>
-							</Col>
-							<Col>
-								<CapitalizedText>
-									{getValueSafely<string | number>(() => (asset.dimension.depth * 12).toFixed(2), "N/A")}&#34;
-								</CapitalizedText>
-							</Col>
-						</Row>
-						<Row gutter={[10, 0]}>
-							<Col>
-								<DollarCircleFilled />
-							</Col>
-							<Col>
-								<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
-							</Col>
-						</Row>
-						{scrapedData && (
-							<>
-								<Row gutter={[10, 0]}>
-									<Col>
-										<Text strong>Current Price:</Text>
-									</Col>
-									<Col>
-										<Text strong>
-											<PriceData scrapedData={scrapedData} />
-										</Text>
-									</Col>
-								</Row>
-								<Row gutter={[10, 0]}>
-									<Col>
-										<Text strong>Availability:</Text>
-									</Col>
+						</Col>
 
-									<Col>
-										<Text strong>
-											<AssetAvailability scrapedData={scrapedData} />
-										</Text>
-									</Col>
-								</Row>
-							</>
-						)}
-					</CardPadding>
+						<Col span={8}>
+							<Row>
+								<Col span={24}>
+									<Text strong>H</Text>
+								</Col>
+								<Col span={24}>
+									<CapitalizedText>
+										{getValueSafely<string | number>(() => (asset.dimension.height * 12).toFixed(2), "N/A")}&#34;
+									</CapitalizedText>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row>
+								<Col span={24}>
+									<Text strong>D</Text>
+								</Col>
+								<Col span={24}>
+									<CapitalizedText>
+										{getValueSafely<string | number>(() => (asset.dimension.depth * 12).toFixed(2), "N/A")}&#34;
+									</CapitalizedText>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
 				</Col>
 			</Row>
-		</AssetCard>
+		</Card>
 	);
 };
 

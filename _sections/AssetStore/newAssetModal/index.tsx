@@ -11,7 +11,7 @@ import { uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { Currency, MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
-import { AssetType, MetaDataType, ModeOfOperation } from "@customTypes/moodboardTypes";
+import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus, Status } from "@customTypes/userType";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { convertToFeet, convertToInches, getBase64, getValueSafely } from "@utils/commonUtils";
@@ -22,7 +22,6 @@ import getCookie from "@utils/getCookie";
 import { Button, Col, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import AddRetailerModal from "../addRetailerModal";
 import { AssetAction } from "../reducer";
 import { SizeAdjustedModal } from "../styled";
 import { NewAssetUploadState } from "./reducer";
@@ -42,6 +41,7 @@ interface CategoryMap {
 interface NewAssetModal {
 	isOpen: boolean;
 	toggleNewAssetModal: () => void;
+	editAsset: (assetData: Partial<AssetType>, redirect: boolean) => void;
 	categoryMap: CategoryMap[];
 	metadata: MetaDataType;
 	assetData?: Partial<AssetType>;
@@ -94,10 +94,10 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	categoryMap,
 	metadata,
 	assetData,
-	dispatchAssetStore,
 	onOkComplete,
 	setAssetData,
 	location,
+	editAsset,
 }) => {
 	const [state, setState] = useState<Partial<NewAssetUploadState>>({});
 	const [changedState, setChangedState] = useState<Record<string, any>>({});
@@ -108,7 +108,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 	const [imageFilesToUpload, setImageFilesToUpload] = useState([]);
 
 	const [dimensionInInches, setDimensionInInches] = useState<boolean>(true);
-	const [addRetailerModalVisible, setAddRetailerModalVisible] = useState(false);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 	const [sourceHighPolyFileList, setSourceHighPolyFileList] = useState<UploadFile<any>[]>([]);
 	const [immediateUpdate, setImmediateUpdate] = useState<boolean>(false);
@@ -229,7 +228,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				},
 			};
 			setState({ ...newState });
-			setAssetData(null);
 		}
 	}, [assetData]);
 
@@ -640,10 +638,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		return "Foot";
 	}, [dimensionInInches]);
 
-	const toggleAddRetailerModal = (): void => {
-		setAddRetailerModalVisible(prevState => !prevState);
-	};
-
 	const checkFileExtension = (uploadFileType: "model" | "source", info: RcFile): boolean => {
 		const fileList = [];
 
@@ -795,18 +789,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 													<Col span={24}>{menu}</Col>
 													<Col span={24}>
 														<SilentDivider />
-													</Col>
-													<Col span={24}>
-														<Button
-															onMouseDown={(e): void => e.preventDefault()}
-															onClick={toggleAddRetailerModal}
-															block
-															type='link'
-															size='large'
-															icon={<PlusOutlined />}
-														>
-															Add Retailer
-														</Button>
 													</Col>
 												</Row>
 											)}
@@ -1261,227 +1243,17 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						</Col>
 					)}
 				</Col>
-				<Col span={24}>
-					<Row gutter={[8, 8]}>
-						<Col span={24}>
-							<Title level={4}>Additional Details (For E-commerce)</Title>
-						</Col>
-						<Col span={8}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Estimated Arrival</Text>
-								</Col>
-								<Col span={24}>
-									<Input
-										required
-										onChange={handleChange}
-										name='estimatedArrival'
-										value={state.estimatedArrival}
-										placeholder='Estimated Arrival'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={8}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Estimated Dispatch</Text>
-								</Col>
-								<Col span={24}>
-									<Input
-										required
-										onChange={handleChange}
-										name='estimatedDispatch'
-										value={state.estimatedDispatch}
-										placeholder='Estimated Dispatch'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={8}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Country of Origin</Text>
-								</Col>
-								<Col span={24}>
-									<Input
-										required
-										onChange={handleChange}
-										name='countryOfOrigin'
-										value={state.countryOfOrigin}
-										placeholder='Country of Origin'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={8}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Stock Quantity</Text>
-								</Col>
-								<Col span={24}>
-									<Input
-										required
-										onChange={handleChange}
-										name='stockQty'
-										value={state.stockQty}
-										placeholder='Stock Quantity'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={8}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Mode of Operation</Text>
-								</Col>
-								<Col span={24}>
-									<Select style={{ width: "100%" }}>
-										{Object.entries(ModeOfOperation).map(([label, value]) => {
-											return (
-												<Select.Option key={value} value={value}>
-													{label}
-												</Select.Option>
-											);
-										})}
-									</Select>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={8}>
-							<Row>
-								<Col span={24}>
-									<Row>
-										<Col span={24}>Flat Shopping</Col>
-									</Row>
-								</Col>
-								<Col span={24}>
-									<Input
-										required
-										onChange={handleChange}
-										name='flatShipping'
-										value={state.flatShipping}
-										placeholder='Stock Quantity'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row>
-								<Col span={24}>
-									<Title level={4}>Policies</Title>
-								</Col>
-
-								<Col>
-									<small>Retailer links are preferred for all the fields below</small>
-								</Col>
-							</Row>
-						</Col>
-
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Shipping Policy</Text>
-								</Col>
-								<Col span={24}>
-									<Input.TextArea
-										required
-										onChange={handleChange}
-										name='shippingPolicy'
-										value={state.shippingPolicy}
-										placeholder='Shipping Policy'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Cancellation Policy</Text>
-								</Col>
-								<Col span={24}>
-									<Input.TextArea
-										required
-										onChange={handleChange}
-										name='cancellationPolicy'
-										value={state.cancellationPolicy}
-										placeholder='Cancellation Policy'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Warranty Info</Text>
-								</Col>
-								<Col span={24}>
-									<Input.TextArea
-										required
-										onChange={handleChange}
-										name='warrantyInfo'
-										value={state.warrantyInfo}
-										placeholder='Warranty Info'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Assembly Info</Text>
-								</Col>
-								<Col span={24}>
-									<Input.TextArea
-										required
-										onChange={handleChange}
-										name='assemblyInfo'
-										value={state.assemblyInfo}
-										placeholder='Assembly Info'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Return Policy</Text>
-								</Col>
-								<Col span={24}>
-									<Input.TextArea
-										required
-										onChange={handleChange}
-										name='returnPolicy'
-										value={state.returnPolicy}
-										placeholder='Return Policy'
-									/>
-								</Col>
-							</Row>
-						</Col>
-						<Col span={24}>
-							<Row gutter={[0, 4]}>
-								<Col span={24}>
-									<Text>Refund Policy</Text>
-								</Col>
-								<Col span={24}>
-									<Input.TextArea
-										required
-										onChange={handleChange}
-										name='refundPolicy'
-										value={state.refundPolicy}
-										placeholder='Refund Policy'
-									/>
-								</Col>
-							</Row>
-						</Col>
-					</Row>
-				</Col>
 
 				<Col span={24}>
 					<Row gutter={[8, 0]} justify='end'>
 						<Col>
 							<Button onClick={toggleNewAssetModal}>Cancel</Button>
 						</Col>
+						{state._id && (
+							<Col>
+								<Button onClick={() => editAsset(assetData, true)}>Detailed Asset Edit</Button>
+							</Col>
+						)}
 						<Col>
 							<Button
 								disabled={submitButtonDisabled || !modifiedForm}
@@ -1501,12 +1273,6 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 				previewImage={preview.previewImage}
 				previewVisible={preview.previewVisible}
 				altText='previewImages'
-			/>
-			<AddRetailerModal
-				metadata={metadata}
-				toggleAddRetailerModal={toggleAddRetailerModal}
-				dispatch={dispatchAssetStore}
-				addRetailerModalVisible={addRetailerModalVisible}
 			/>
 		</SizeAdjustedModal>
 	);

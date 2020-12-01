@@ -1,5 +1,4 @@
 import {
-	ArrowLeftOutlined,
 	CheckCircleTwoTone,
 	CloseCircleTwoTone,
 	LinkOutlined,
@@ -33,6 +32,7 @@ import {
 	InputNumber,
 	Modal,
 	notification,
+	PageHeader,
 	Row,
 	Select,
 	Space,
@@ -161,7 +161,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	const onFieldsChange = changedFieldsData => {
-		console.log("changedFieldsData", changedFieldsData);
 		if (changedFieldsData.length) {
 			if (changedFieldsData[0].name.length > 1) {
 				setChangedState({
@@ -700,7 +699,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	}, [state.price]);
 
 	useEffect(() => {
-		console.log("changedState['meta.vertical'], firstLoad", changedState["meta.vertical"], firstLoad);
 		if (changedState["meta.vertical"] && !firstLoad) {
 			const mountAndClampValue = MountAndClampValuesForVerticals[changedState["meta.vertical"]];
 			if (mountAndClampValue) {
@@ -721,12 +719,19 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			} else {
 				setChangedState({ ...changedState, "spatialData.clampValue": 0 });
 			}
-			console.log("changedState", changedState);
 			form.setFieldsValue({ ...state, ...changedState });
 			notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
 		}
 		setFirstLoad(false);
 	}, [changedState["meta.vertical"]]);
+
+	const onBackClick = () => {
+		if (entry) {
+			redirectToLocation({ pathname: entry, query: {}, url: entry });
+		} else {
+			redirectToLocation({ pathname: "/assetstore" });
+		}
+	};
 
 	return (
 		<PageLayout pageName='Asset Editing'>
@@ -737,16 +742,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			<Spin spinning={loading}>
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
-						<Space direction='vertical' size='middle'>
+						<Space direction='vertical' size='middle' style={{ width: "100%" }}>
 							<Row gutter={[4, 4]} align='top'>
-								<Col>
-									<a href={entry}>
-										<ArrowLeftOutlined style={{ fontSize: "2.3rem" }} />
-									</a>
-								</Col>
-								<Col>
-									<Title level={3}>{assetId ? "Asset Updation" : "Asset Creation"}</Title>
-								</Col>
+								<PageHeader onBack={onBackClick} title={assetId ? "Asset Updation" : "Asset Creation"} />
 							</Row>
 							<Form
 								onFieldsChange={onFieldsChange}
