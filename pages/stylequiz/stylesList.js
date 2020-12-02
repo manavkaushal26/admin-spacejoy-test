@@ -95,6 +95,13 @@ export default function StylesList() {
 	};
 
 	const handleToggle = async (checked, id) => {
+		const newState = styles.map(item => {
+			if (item.id === id) {
+				return { ...item, active: checked };
+			}
+			return { ...item };
+		});
+		setStylesData(newState);
 		await updateStyleStatus(checked, id);
 	};
 
@@ -190,7 +197,7 @@ export default function StylesList() {
 		await deleteResource(endPoints.modifyIcon, { styleIconId: id });
 		setLoader(false);
 	};
-
+	console.log(styles);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -232,7 +239,7 @@ export default function StylesList() {
 									title='Is Active'
 									dataIndex='id'
 									render={(text, record) => {
-										return <Switch defaultChecked={record.active} onChange={checked => handleToggle(checked, text)} />;
+										return <Switch checked={record.active} onChange={checked => handleToggle(checked, text)} />;
 									}}
 								/>
 								<Table.Column

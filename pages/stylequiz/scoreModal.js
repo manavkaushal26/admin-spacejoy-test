@@ -74,6 +74,14 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		};
 	}, [currentSelectedRecord]);
 
+	useEffect(() => {
+		if (inputEl?.current) {
+			setTimeout(() => {
+				inputEl.current.focus();
+			});
+		}
+	}, [isEditModal]);
+
 	const onKeyDown = e => {
 		if (e.which === 13) {
 			handleEditModalOk();
@@ -262,7 +270,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 						<span>Add Score</span>
 						&nbsp;&nbsp;
 						{console.log("pavlo")}
-						<input className='score-input' type='number' ref={inputEl} autoFocus />
+						<input className='score-input' type='number' ref={inputEl} />
 						<div>
 							<br></br>
 							<span>*Total score has to be less than 100.</span>
