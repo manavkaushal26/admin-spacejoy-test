@@ -51,7 +51,7 @@ export default function ProductsList({ query }) {
 		styleFetcher("/quiz/admin/v1/styles/active", "GET")
 			.then(res => {
 				setStylesData(res.data);
-				Router.push(
+				Router.replace(
 					{ pathname: "/stylequiz/productList", query: { styleId: res.data[0]?.id } },
 					`/stylequiz/productList/${res.data[0]?.id}`
 				);
@@ -65,7 +65,10 @@ export default function ProductsList({ query }) {
 	}, [Router]);
 
 	const handleChange = value => {
-		Router.push({ pathname: "/stylequiz/productList", query: { styleId: value } }, `/stylequiz/productList/${value}`);
+		Router.replace(
+			{ pathname: "/stylequiz/productList", query: { styleId: value } },
+			`/stylequiz/productList/${value}`
+		);
 	};
 
 	const getLatestProducts = id => {

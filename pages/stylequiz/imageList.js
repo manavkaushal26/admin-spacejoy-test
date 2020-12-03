@@ -65,9 +65,9 @@ export default function ImageList({ query }) {
 
 	const handleChange = value => {
 		if (value === "all") {
-			Router.push({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/${value}`);
+			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/${value}`);
 		} else {
-			Router.push({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/all`);
+			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/all`);
 		}
 	};
 
@@ -75,7 +75,7 @@ export default function ImageList({ query }) {
 		styleFetcher("/quiz/admin/v1/styles/active", "GET")
 			.then(res => {
 				setStylesData(res.data);
-				Router.push({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
+				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
 			})
 			.catch(err => console.log(err));
 	}, []);
