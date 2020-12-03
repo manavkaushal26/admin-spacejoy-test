@@ -11,9 +11,9 @@ import {
 import { Status } from "@customTypes/userType";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Typography } from "antd";
+import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
 import moment from "moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
 import {
 	phaseDefaultValues,
@@ -38,7 +38,7 @@ const TabSearch: React.FC<{
 	const [designerNames, setDesignerNames] = useState([]);
 	const [fetching, setFetching] = useState<boolean>(false);
 	const [selectDesigner, setSelectDesigner] = useState<string>();
-
+	const [isRevisionFilterApplied, setRevisionFilter] = useState<boolean>(false);
 	const fetchDesignerNames = async (): Promise<void> => {
 		const endPoint = `${userApi()}?limit=50`;
 		setFetching(true);
@@ -173,6 +173,23 @@ const TabSearch: React.FC<{
 		setSelectDesigner(value);
 		handleSearch(value, "designer");
 	};
+
+	const handleSwitchChange = value => {
+		setRevisionFilter(value);
+	};
+
+	useEffect(() => {
+		let phase = [];
+		if (isRevisionFilterApplied) {
+			phase.push(PhaseInternalNames.designsInRevision);
+		} else {
+			phase = [];
+		}
+		setState({
+			...state,
+			phase,
+		});
+	}, [isRevisionFilterApplied]);
 
 	return (
 		<Row gutter={[8, 8]}>
@@ -328,30 +345,44 @@ const TabSearch: React.FC<{
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col span={24}>
-								<Text strong>Phases</Text>
-							</Col>
-							<Col span={24}>
-								<Select
-									value={state.phase}
-									style={{ width: "100%" }}
-									defaultValue={phaseDefaultValues}
-									mode='multiple'
-									maxTagCount={2}
-									placeholder='All Phases Shown'
-									onChange={(value): void => handleSelectFilter(value, "phase")}
-								>
-									{Object.keys(HumanizePhaseInternalNames).map(key => {
-										return (
-											<Option key={key} value={key}>
-												{HumanizePhaseInternalNames[key]}
-											</Option>
-										);
-									})}
-								</Select>
+								<Switch
+									onChange={handleSwitchChange}
+									checkedChildren='Revision'
+									unCheckedChildren='New Project'
+									checked={isRevisionFilterApplied}
+								/>
 							</Col>
 						</Row>
 					</Col>
-					{state?.phase.indexOf(PhaseInternalNames.designsInRevision) > -1 && (
+					{!isRevisionFilterApplied && (
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text strong>Phases</Text>
+								</Col>
+								<Col span={24}>
+									<Select
+										value={state.phase}
+										style={{ width: "100%" }}
+										defaultValue={phaseDefaultValues}
+										mode='multiple'
+										maxTagCount={2}
+										placeholder='All Phases Shown'
+										onChange={(value): void => handleSelectFilter(value, "phase")}
+									>
+										{Object.keys(HumanizePhaseInternalNames).map(key => {
+											return (
+												<Option key={key} value={key}>
+													{HumanizePhaseInternalNames[key]}
+												</Option>
+											);
+										})}
+									</Select>
+								</Col>
+							</Row>
+						</Col>
+					)}
+					{isRevisionFilterApplied && (
 						<Col span={24}>
 							<Row gutter={[0, 4]}>
 								<Col span={24}>

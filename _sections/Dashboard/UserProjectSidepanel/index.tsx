@@ -173,7 +173,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	const onSearchSubmit = (): void => {
 		setCount(0);
 		setData([]);
-		loadMoreItems(0, 299);
+		loadMoreItems(0, 29);
 		toggleDrawer();
 	};
 
@@ -185,7 +185,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			if (!loading) {
 				setCount(0);
 				setData([]);
-				loadMoreItems(0, 299);
+				loadMoreItems(0, 29);
 			}
 		}
 	}, [changedState]);
