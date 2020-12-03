@@ -1,10 +1,12 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { userApi } from "@api/userApi";
 import {
+	HumanizeDesignPhases,
 	HumanizePhaseInternalNames,
+	PhaseInternalNames,
 	QuizStateArray,
 	QuizStateLabels,
-	RoomNameSearch
+	RoomNameSearch,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { debounce } from "@utils/commonUtils";
@@ -17,11 +19,9 @@ import {
 	phaseDefaultValues,
 	SortOptions,
 	UserProjectSidePanelInitialState,
-	UserProjectSidePanelState
+	UserProjectSidePanelState,
 } from "./reducer";
-
 const { RangePicker } = DatePicker;
-
 const { Text } = Typography;
 const { Option } = Select;
 
@@ -47,19 +47,18 @@ const TabSearch: React.FC<{
 				endPoint,
 				method: "POST",
 				body: {
-					"data": {
-						"role": { "search": "array", "value": ["designer", "account manager"] }
-					}
-				}
+					data: {
+						role: { search: "array", value: ["designer", "account manager"] },
+					},
+				},
 			});
-			setDesignerNames(response.data.data.map(designer => ({
-				"name": `${designer.profile.name}`,
-				"id": `${designer.id}`
-			})));
-		}
-		catch (e) {
-
-		}
+			setDesignerNames(
+				response.data.data.map(designer => ({
+					name: `${designer.profile.name}`,
+					id: `${designer.id}`,
+				}))
+			);
+		} catch (e) {}
 		setFetching(false);
 	};
 
@@ -141,7 +140,10 @@ const TabSearch: React.FC<{
 		document.body.removeChild(a);
 	};
 
-	const handleSelectFilter = (value, type: "phase" | "name" | "sort" | "status" | "quizStatus"): void => {
+	const handleSelectFilter = (
+		value,
+		type: "phase" | "name" | "sort" | "status" | "quizStatus" | "designPhase"
+	): void => {
 		if (type === "sort") {
 			setSelectedSort(JSON.parse(value));
 			setState({
@@ -166,11 +168,11 @@ const TabSearch: React.FC<{
 		});
 	};
 
-	const handleChange = (value) => {
+	const handleChange = value => {
 		setFetching(false);
 		setSelectDesigner(value);
 		handleSearch(value, "designer");
-	}
+	};
 
 	return (
 		<Row gutter={[8, 8]}>
@@ -232,20 +234,21 @@ const TabSearch: React.FC<{
 									defaultActiveFirstOption={false}
 									showArrow={false}
 									style={{ width: "100%" }}
-									placeholder="Designer Name"
+									placeholder='Designer Name'
 									value={selectDesigner}
 									onChange={handleChange}
 									showSearch
 									onSearch={debouncefetchDesignerNames}
-									notFoundContent={fetching ? <Spin size="small" /> : null}
-									optionFilterProp="children"
+									notFoundContent={fetching ? <Spin size='small' /> : null}
+									optionFilterProp='children'
 									filterOption={(input, option) => option.props.key.toLowerCase().indexOf(input.toLowerCase()) >= 0}
 								>
-									{
-										designerNames.map(designerName =>
-											<Option key={designerName.name} value={designerName.id}> {designerName.name} </Option>
-										)
-									}
+									{designerNames.map(designerName => (
+										<Option key={designerName.name} value={designerName.id}>
+											{" "}
+											{designerName.name}{" "}
+										</Option>
+									))}
 								</Select>
 							</Col>
 						</Row>
@@ -348,6 +351,34 @@ const TabSearch: React.FC<{
 							</Col>
 						</Row>
 					</Col>
+					{state?.phase.indexOf(PhaseInternalNames.designsInRevision) > -1 && (
+						<Col span={24}>
+							<Row gutter={[0, 4]}>
+								<Col span={24}>
+									<Text strong>Revision Phases</Text>
+								</Col>
+								<Col span={24}>
+									<Select
+										value={state.designPhase}
+										style={{ width: "100%" }}
+										defaultValue={phaseDefaultValues}
+										mode='multiple'
+										maxTagCount={2}
+										placeholder='All Revision Phases Shown'
+										onChange={(value): void => handleSelectFilter(value, "designPhase")}
+									>
+										{Object.keys(HumanizeDesignPhases).map(key => {
+											return (
+												<Option key={key} value={key}>
+													{HumanizeDesignPhases[key]}
+												</Option>
+											);
+										})}
+									</Select>
+								</Col>
+							</Row>
+						</Col>
+					)}
 					<Col span={24}>
 						<Row gutter={[8, 0]}>
 							<Col span={24}>

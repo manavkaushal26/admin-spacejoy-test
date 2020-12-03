@@ -17,6 +17,7 @@ export const getProjectSearchBody = (
 	nameSearchText: string,
 	designerSearchText: string,
 	phase: PhaseInternalNames[],
+	designPhase: PhaseInternalNames[],
 	roomName: string,
 	by: SortFields,
 	order: -1 | 1,
@@ -25,7 +26,9 @@ export const getProjectSearchBody = (
 	status: Status,
 	email: string,
 	quizStatus: string
-): Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string> => {
+): {
+	filter: Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string | PhaseInternalNames[]>;
+} => {
 	const startedAtMap = startedAt?.map(value => {
 		if (value !== null) {
 			return value.format();
@@ -41,28 +44,31 @@ export const getProjectSearchBody = (
 	});
 
 	const body = {
-		"customerName": { search: "single", value: nameSearchText },
-		"team.member": { search: "single", value: designerSearchText },
-		"currentPhase.name.internalName": { search: "array", value: phase },
-		"status": { search: "single", value: status },
-		"name": {
-			search: "single",
-			value: roomName,
+		filter: {
+			"designPhases": designPhase,
+			"customerName": { search: "single", value: nameSearchText },
+			"team.member": { search: "single", value: designerSearchText },
+			"currentPhase.name.internalName": { search: "array", value: phase },
+			"status": { search: "single", value: status },
+			"name": {
+				search: "single",
+				value: roomName,
+			},
+			"startedAt": {
+				search: "range",
+				value: startedAtMap,
+			},
+			"endedAt": {
+				search: "range",
+				value: endedAtMap,
+			},
+			"email": email,
+			...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
 		},
-		"sort": {
+		sort: {
 			by,
 			order: order.toString(),
 		},
-		"startedAt": {
-			search: "range",
-			value: startedAtMap,
-		},
-		"endedAt": {
-			search: "range",
-			value: endedAtMap,
-		},
-		"email": email,
-		...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
 	};
 	return body;
 };
@@ -122,6 +128,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			state.nameSearchText,
 			state.designerSearchText,
 			state.phase,
+			state.designPhase,
 			state.name,
 			state.sortBy,
 			state.sortOrder,
@@ -134,9 +141,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 		const resData = await fetcher({
 			endPoint,
 			method: "POST",
-			body: {
-				data: body,
-			},
+			body: body,
 		});
 		const copyData = [...data];
 		if (resData.statusCode <= 300) {

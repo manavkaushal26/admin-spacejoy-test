@@ -13,6 +13,7 @@ export interface UserProjectSidePanelState {
 	currentTab: string;
 	status: Status;
 	phase: PhaseInternalNames[];
+	designPhase: PhaseInternalNames[];
 	name: string;
 	searchResults: UserProjectType[];
 	count: number;
@@ -30,6 +31,7 @@ export enum UserProjectSidePanelActionTypes {
 	UPDATE_HAS_MORE,
 	TAB_CHANGE,
 	PHASE_FILTER,
+	DESIGN_PHASE_FILTER,
 	NAME_FILTER,
 	SORT_ORDER,
 	SORT_BY,
@@ -66,6 +68,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	data: [],
 	pageCount: 0,
 	phase: [],
+	designPhase: [],
 	name: "",
 	sortBy: SortFields["Created At"],
 	hasMore: true,
@@ -172,6 +175,12 @@ export const UserProjectSidePanelReducer = (
 			};
 		case UserProjectSidePanelActionTypes.CLEAR:
 			return { ...UserProjectSidePanelInitialState };
+		case UserProjectSidePanelActionTypes.DESIGN_PHASE_FILTER:
+			return {
+				...state,
+				phase: action.value.designPhase,
+				hasMore: true,
+			};
 		default:
 			return state;
 	}

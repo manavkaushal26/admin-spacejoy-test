@@ -24,6 +24,7 @@ const ProjectCountCard: React.FC<ProjectCountCard> = ({ filterName, setSearchFil
 			searchFilters.nameSearchText,
 			searchFilters.designerSearchText,
 			searchFilters.phase,
+			searchFilters.designPhase,
 			searchFilters.name,
 			searchFilters.sortBy,
 			searchFilters.sortOrder,

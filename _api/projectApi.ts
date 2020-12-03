@@ -21,7 +21,7 @@ export const delayProjectApi = (projectId: string): string => {
 };
 
 export const searchProjectsApi = (): string => {
-	return "/admin/projects/search";
+	return "/v2/projects/search";
 };
 
 export const searchProjectsCountApi = (): string => {
