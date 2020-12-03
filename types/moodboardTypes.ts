@@ -183,6 +183,7 @@ export interface AssetStoreSearchResponse {
 	mountType: string;
 	name: string;
 	price: number;
+	inStock: boolean;
 	retailLink: string;
 	retailer: string;
 	shoppable: true;
