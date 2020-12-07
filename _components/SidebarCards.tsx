@@ -28,6 +28,8 @@ interface SidebarCard {
 	selectedId: string;
 	daysLeft: number;
 	quizCompletionStatus: QuizState;
+	onSelect: (userId: string) => void;
+	projectCustomer: string;
 }
 
 const HighlightedSpan = styled.span<{ type: string }>`
@@ -100,6 +102,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	delayText,
 	quizCompletionStatus,
 	isDelayed,
+	onSelect,
+	projectCustomer,
 }) => {
 	return (
 		<>
@@ -115,6 +119,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 				onClick={(e): void => {
 					e.preventDefault();
 					onClick(uniqueId);
+					onSelect(projectCustomer);
 				}}
 			>
 				<Row gutter={[8, 8]}>

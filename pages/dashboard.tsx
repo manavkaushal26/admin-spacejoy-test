@@ -15,6 +15,7 @@ import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import SQResponse from "@sections/Dashboard/userProjectMainPanel/ProjectDesignInteractionPanel/StyleQuizResponse";
 
 const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};
@@ -51,6 +52,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 
 	const [searchFilters, setSearchFilters] = useState(UserProjectSidePanelInitialState);
 	const [searchFiltersChanged, setSearchFiltersChanged] = useState(null);
+	const [currentUser, setCurrentUser] = useState<string>("");
 
 	const onResize = (): void => debouncedHandleResize(setIsDesktop);
 
@@ -75,7 +77,9 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 		setSelectedUser(user);
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
-
+	const setCurrentUserId = (user: string): void => {
+		setCurrentUser(user);
+	};
 	const [projectPhaseUpdateValue, setProjectPhaseUpdateValue] = useState<{
 		pid: string;
 		projectPhase: {
@@ -123,7 +127,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 			projectPhase: phase,
 		});
 	};
-
+	const UserStyleQuizRes = <SQResponse userId={currentUser} />;
 	return (
 		<PageLayout pageName='Dashboard'>
 			<Head>
@@ -157,6 +161,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 								handleSelectCard={handleSelectCard}
 								projectPhaseUpdateValue={projectPhaseUpdateValue}
 								setProjectPhaseUpdateValue={setProjectPhaseUpdateValue}
+								setCurrentUserId={setCurrentUserId}
 							/>
 						</Layout.Sider>
 						<Layout>
@@ -170,6 +175,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 										setDates={setDates}
 										currentTab={currentTab}
 										setSearchFiltersChanged={setSearchFiltersChanged}
+										userStyleQuizResult={UserStyleQuizRes}
 									/>
 								</PaddedDiv>
 							</MaxHeightDiv>

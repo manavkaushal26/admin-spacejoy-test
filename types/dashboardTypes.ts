@@ -107,14 +107,16 @@ export interface UserProjectType {
 		title: string;
 		message: string;
 	};
-	customer: {
-		_id: string;
-		email: string;
-		profile: {
-			name: string;
-		};
-		id: string;
-	};
+	customer:
+		| {
+				_id: string;
+				email: string;
+				profile: {
+					name: string;
+				};
+				id: string;
+		  }
+		| string;
 	currentPhase: CurrentPhase;
 	order: {
 		paymentStatus: string;

@@ -93,6 +93,7 @@ interface SidebarProps {
 	>;
 	changedState: UserProjectSidePanelState;
 	setChangedState: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
+	setCurrentUserId: (userId: string) => void;
 }
 
 const UserProjectSidePanel: React.FC<SidebarProps> = ({
@@ -104,6 +105,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	setState,
 	changedState,
 	setChangedState,
+	setCurrentUserId,
 }) => {
 	const [data, setData] = useState<UserProjectType[]>([]);
 	const [count, setCount] = useState(1000);
@@ -204,6 +206,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	}, [data]);
 
 	const CardRow = ({ index, style }): JSX.Element => {
+		console.log(index);
 		if (isItemLoaded(index)) {
 			return (
 				<div style={style}>
@@ -212,6 +215,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 						key={data[index]._id}
 						handleSelectCard={handleSelectCard}
 						userProjectData={data[index]}
+						setCurrentUserId={setCurrentUserId}
 					/>
 				</div>
 			);

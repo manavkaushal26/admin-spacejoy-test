@@ -38,6 +38,7 @@ interface ProjectTabViewProps {
 	setProjectData?: React.Dispatch<React.SetStateAction<DetailedProject>>;
 	onTabChangeCallback?: (activeKey: string, pid: string, designId: string) => void;
 	updateRevisionData?: (revisionData: RevisionForm) => void;
+	userStyleQuizResult?: React.ReactNode;
 }
 
 const ScrollableTabs = styled(Tabs)`
@@ -63,6 +64,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	currentTab,
 	updateRevisionData,
 	revisionFormData,
+	userStyleQuizResult
 }): JSX.Element => {
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
@@ -343,6 +345,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							setProjectData={setProjectData}
 							projectData={projectData}
 							onSelectDesign={onSelectDesign}
+							userStyleQuizResult={userStyleQuizResult}
 						/>
 					)}
 				</Spin>
