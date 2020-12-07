@@ -8,8 +8,8 @@ import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { modifyResource, styleFetcher } from "./helper";
-import { getActiveStylesAPI } from "./styleQuizApis";
+import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
+import * as StyleQuizAPI from "./styleQuizApis";
 const { Title } = Typography;
 const { TextArea } = Input;
 const StyledInput = styled(Input)`
@@ -28,7 +28,7 @@ const Wrapper = styled.div`
 		z-index: 12;
 	}
 `;
-
+const endPoint = StyleQuizAPI.paletteAPI();
 export default function TextureList({ query }) {
 	const { styleId } = query;
 	const [palettes, setPalettes] = useState([]);
@@ -50,7 +50,7 @@ export default function TextureList({ query }) {
 	};
 
 	useEffect(() => {
-		styleFetcher(getActiveStylesAPI(), "GET")
+		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				Router.replace(
@@ -75,7 +75,7 @@ export default function TextureList({ query }) {
 
 	const getPalettes = id => {
 		if (id) {
-			fetchResources(`/quiz/admin/v1/palette`)
+			fetchResources(endPoint)
 				.then(res => {
 					setPalettes(res.data);
 				})
@@ -85,20 +85,19 @@ export default function TextureList({ query }) {
 	};
 
 	const deletePalette = async id => {
-		await modifyResource("/quiz/admin/v1/palette", "DELETE", { productId: id });
+		await updateResource(endPoint, "DELETE", { productId: id });
 		getPalettes(styleId);
 	};
 
 	const handleUpload = e => {
-		uploadPalette(e.target.files[0]);
+		uploadPalette(e.target.files);
 	};
 
-	const uploadPalette = async image => {
+	const uploadPalette = async images => {
 		setLoader(true);
-		const endPoint = `/quiz/admin/v1/palette`;
-		const formData = new FormData();
+		const formData = multiFileUploader(images);
 		formData.append("image", image, image.fileName);
-		await modifyResource(endPoint, "POST", formData);
+		await modifyFormDataResource(endPoint, "POST", formData);
 		getPalettes(styleId);
 		setLoader(false);
 	};
@@ -141,7 +140,7 @@ export default function TextureList({ query }) {
 									</Col>
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
-											Add Texture
+											Add Palette
 											<StyledInput
 												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
 												onChange={handleUpload}

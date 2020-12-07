@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { modifyResource, styleFetcher } from "./helper";
+import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
 import ScoreModal from "./scoreModal";
 const { Title } = Typography;
 const StyledInput = styled(Input)`
@@ -90,19 +90,18 @@ export default function ImageList({ query }) {
 	}, [Router]);
 
 	const deleteImage = async id => {
-		await modifyResource(adminImageEndpoint, "DELETE" { imageId: id });
+		await updateResource(adminImageEndpoint, "DELETE", { imageId: id });
 		getLatestImages(`${getImagesEndpoint}/${styleId}`);
 	};
 
 	const handleUpload = e => {
-		uploadImage(e.target.files[0]);
+		uploadImage(e.target.files);
 	};
 
-	const uploadImage = async image => {
+	const uploadImage = async images => {
 		setLoader(true);
-		const formData = new FormData();
-		formData.append("image", image, image.fileName);
-		const resData = await modifyResource(adminImageEndpoint, "POST", formData);
+		const formData = multiFileUploader(images);
+		const resData = await modifyFormDataResource(adminImageEndpoint, "POST", formData);
 		const { imageId } = resData;
 		showModal(imageId);
 		getLatestImages("/quiz/v1/images");

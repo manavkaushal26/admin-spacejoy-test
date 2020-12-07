@@ -4,7 +4,7 @@ import {
 	EditOutlined,
 	FileImageOutlined,
 	LoadingOutlined,
-	PlusOutlined
+	PlusOutlined,
 } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
@@ -16,14 +16,8 @@ import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { modifyResource, styleFetcher } from "./helper";
-import {
-	getActiveStylesAPI,
-	getStyleIconsAPI,
-	getStylesAPI,
-	modifyStyleIconsAPI,
-	updateStyleAPI
-} from "./styleQuizApis";
+import { styleFetcher, updateResource } from "./helper";
+import * as StyleQuizAPI from "./styleQuizApis";
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const EditIcon = styled(Button)`
@@ -60,7 +54,7 @@ export default function StylesList() {
 	const textareaRef = useRef(null);
 	useEffect(() => {
 		setLoader(true);
-		styleFetcher(getStylesAPI(), "GET")
+		styleFetcher(StyleQuizAPI.getStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				setLoader(false);
@@ -74,7 +68,7 @@ export default function StylesList() {
 	const updateStyleStatus = async (checked, id) => {
 		try {
 			await fetcher({
-				endPoint: getActiveStylesAPI(),
+				endPoint: StyleQuizAPI.getActiveStylesAPI(),
 				method: "POST",
 				body: { styleId: id, active: checked ? "yes" : "no" },
 			});
@@ -140,7 +134,7 @@ export default function StylesList() {
 		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
 		formData.append("styleId", activeStyle?.id);
 		try {
-			await chatFetcher({ endPoint: updateStyleAPI(), method: "POST", body: formData });
+			await chatFetcher({ endPoint: StyleQuizAPI.updateStyleAPI(), method: "POST", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -157,7 +151,7 @@ export default function StylesList() {
 	);
 
 	const getIcons = id => {
-		styleFetcher(`${getStyleIconsAPI()}/${id}`, "GET")
+		styleFetcher(`${StyleQuizAPI.getStyleIconsAPI()}/${id}`, "GET")
 			.then(res => {
 				setIcons(res.data);
 				setLoader(false);
@@ -175,7 +169,7 @@ export default function StylesList() {
 		formData.append("text", "test");
 		formData.append("styleId", activeStyle?.id);
 		try {
-			await chatFetcher({ endPoint: modifyStyleIconsAPI(), method: "POST", body: formData });
+			await chatFetcher({ endPoint: StyleQuizAPI.modifyStyleIconsAPI(), method: "POST", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -184,7 +178,7 @@ export default function StylesList() {
 
 	const deleteIcon = async id => {
 		setLoader(true);
-		await modifyResource(modifyStyleIconsAPI(), "DELETE" { styleIconId: id });
+		await updateResource(StyleQuizAPI.modifyStyleIconsAPI(), "DELETE", { styleIconId: id });
 		setLoader(false);
 	};
 	return (

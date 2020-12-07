@@ -9,8 +9,8 @@ import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import EditModal from "./editModal";
-import { modifyResource, styleFetcher } from "./helper";
-import { textureAPI } from "./styleQuizApis";
+import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
+import * as StyleQuizAPI from "./styleQuizApis";
 const { Title } = Typography;
 const { TextArea } = Input;
 const StyledInput = styled(Input)`
@@ -29,7 +29,7 @@ const Wrapper = styled.div`
 		z-index: 12;
 	}
 `;
-
+const endPoint = StyleQuizAPI.textureAPI();
 export default function TextureList({ query }) {
 	const { styleId } = query;
 	const [textures, setTextures] = useState([]);
@@ -88,20 +88,18 @@ export default function TextureList({ query }) {
 	};
 
 	const deleteTexture = async id => {
-		await modifyResource("/quiz/admin/v1/texture", "DELETE", { productId: id });
+		await updateResource(endPoint, "DELETE", { productId: id });
 		getTextures(styleId);
 	};
 
 	const handleUpload = e => {
-		uploadTexture(e.target.files[0]);
+		uploadTexture(e.target.files);
 	};
 
-	const uploadTexture = async image => {
+	const uploadTexture = async images => {
 		setLoader(true);
-		const endPoint = `/quiz/admin/v1/texture`;
-		const formData = new FormData();
-		formData.append("image", image, image.fileName);
-		await modifyResource(endPoint, "POST", formData);
+		const formData = multiFileUploader(images);
+		await modifyFormDataResource(endPoint, "POST", formData);
 		getTextures(styleId);
 		setLoader(false);
 	};
@@ -117,7 +115,7 @@ export default function TextureList({ query }) {
 		formData.append("id", selectedResource?.id);
 		formData.append("desc", desc);
 		formData.append("active", checked ? "yes" : "no");
-		await modifyResource(textureAPI(), "UPDATE", formData);
+		await updateResource(endPoint, "UPDATE", formData);
 	};
 
 	const handleCancel = () => {

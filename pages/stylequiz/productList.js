@@ -8,7 +8,8 @@ import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { modifyResource, styleFetcher } from "./helper";
+import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
+import * as StyleQuizAPI from "./styleQuizApis";
 const { Title } = Typography;
 const StyledInput = styled(Input)`
 	opacity: 0;
@@ -73,7 +74,7 @@ export default function ProductsList({ query }) {
 
 	const getLatestProducts = id => {
 		if (id) {
-			fetchResources(`/quiz/admin/v1/products/${id}`)
+			fetchResources(`${StyleQuizAPI.getProductsAPI()}/${id}`)
 				.then(res => {
 					setProducts(res.products);
 				})
@@ -83,20 +84,19 @@ export default function ProductsList({ query }) {
 	};
 
 	const deleteProduct = async id => {
-		await modifyResource("/quiz/admin/v1/product", "DELETE" { productId: id });
+		await updateResource(`${StyleQuizAPI.postProductsAPI()}`, "DELETE", { productId: id });
 		getLatestProducts(styleId);
 	};
 
 	const handleUpload = e => {
-		uploadProduct(e.target.files[0]);
+		uploadProduct(e.target.files);
 	};
 
-	const uploadProduct = async image => {
+	const uploadProduct = async images => {
 		setLoader(true);
-		const endPoint = `/quiz/admin/v1/product/${styleId}`;
-		const formData = new FormData();
-		formData.append("image", image, image.fileName);
-		await modifyResource(endPoint, "POST", formData);
+		const endPoint = `${StyleQuizAPI.postProductsAPI()}/${styleId}`;
+		const formData = multiFileUploader(images);
+		await modifyFormDataResource(endPoint, "POST", formData);
 		getLatestProducts(styleId);
 		setLoader(false);
 	};
@@ -144,6 +144,7 @@ export default function ProductsList({ query }) {
 												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
 												onChange={handleUpload}
 												type='file'
+												multiple
 											/>
 										</Button>
 									</Col>

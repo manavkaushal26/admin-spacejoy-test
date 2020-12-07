@@ -25,3 +25,11 @@ export const paletteAPI = () => {
 export const textureAPI = () => {
 	return "/quiz/admin/v1/texture";
 };
+
+export const getProductsAPI = () => {
+	return "/quiz/admin/v1/products";
+};
+
+export const postProductsAPI = () => {
+	return "/quiz/admin/v1/product";
+};

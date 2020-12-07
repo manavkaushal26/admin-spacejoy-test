@@ -4,7 +4,7 @@ import { Button, Col, Modal, notification, Row, Select, Table } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { handleScores } from "./helper";
+import { updateResource } from "./helper";
 const ScoreBox = styled.input`
 	padding: 5px;
 	border: 1px solid #efefef;
@@ -57,7 +57,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	const handleDelete = async id => {
-		await handleScores("DELETE", { scoreId: id });
+		await updateResource("/quiz/admin/v1/image/score", "DELETE", { scoreId: id });
 		getLatestScores();
 	};
 
@@ -145,7 +145,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				if (type.toLowerCase() === "edit") {
 					score["isActive"] = true;
 				} else if (type.toLowerCase() === "save") {
-					handleScores("PUT", {
+					updateResource("/quiz/admin/v1/image/score", "PUT", {
 						imageId: selectedProductId,
 						styleId: row?.styleId,
 						score: row?.score,
@@ -165,8 +165,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	const addNewScore = async () => {
-		console.log(currentSelectedRecord[0]?.id);
-		await handleScores("POST", {
+		await updateResource("/quiz/admin/v1/image/score", "POST", {
 			imageId: selectedProductId,
 			styleId: currentSelectedRecord[0]?.id,
 			score: parseInt(inputEl.current.value),

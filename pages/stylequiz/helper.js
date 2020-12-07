@@ -14,7 +14,7 @@ const styleFetcher = async (endPoint, method) => {
 	}
 };
 
-const modifyResource = async (endPoint, method, body) => {
+const modifyFormDataResource = async (endPoint, method, body) => {
 	try {
 		const resData = await fetcher({ isMultipartForm: true, endPoint, method: method, body });
 		const { data, statusCode } = resData;
@@ -29,9 +29,9 @@ const modifyResource = async (endPoint, method, body) => {
 	}
 };
 
-const handleScores = async (method, body) => {
+const updateResource = async (endPoint, method, body) => {
 	try {
-		const resData = await fetcher({ endPoint: "/quiz/admin/v1/image/score", method: method, body: body });
+		const resData = await fetcher({ endPoint, method: method, body });
 		const { data, statusCode } = resData;
 		if (statusCode && statusCode <= 201) {
 			return data;
@@ -44,4 +44,13 @@ const handleScores = async (method, body) => {
 	}
 };
 
-module.exports = { styleFetcher, modifyResource, handleScores };
+const multiFileUploader = files => {
+	const formData = new FormData();
+	for (let i = 0; i < files.length; i++) {
+		formData.append("image", files[i]);
+	}
+	console.log("formData", formData);
+	return formData;
+};
+
+module.exports = { styleFetcher, modifyFormDataResource, multiFileUploader, updateResource };
