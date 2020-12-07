@@ -2,7 +2,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { userApi } from "@api/userApi";
 import {
 	HumanizeDesignPhases,
-	HumanizePhaseInternalNames,
+	HumanizeNewProjectPhaseInternalNames,
 	PhaseInternalNames,
 	QuizStateArray,
 	QuizStateLabels,
@@ -370,10 +370,10 @@ const TabSearch: React.FC<{
 										placeholder='All Phases Shown'
 										onChange={(value): void => handleSelectFilter(value, "phase")}
 									>
-										{Object.keys(HumanizePhaseInternalNames).map(key => {
+										{Object.keys(HumanizeNewProjectPhaseInternalNames).map(key => {
 											return (
 												<Option key={key} value={key}>
-													{HumanizePhaseInternalNames[key]}
+													{HumanizeNewProjectPhaseInternalNames[key]}
 												</Option>
 											);
 										})}

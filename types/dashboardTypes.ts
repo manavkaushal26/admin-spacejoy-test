@@ -53,6 +53,17 @@ export enum HumanizePhaseInternalNames {
 	rejected = "Rejected",
 }
 
+export enum HumanizeNewProjectPhaseInternalNames {
+	requirement = "Requirement",
+	designConcept = "Concept",
+	modelling = "Modelling",
+	design3D = "Design 3D",
+	designRender = "Render",
+	designReady = "Ready",
+	shop = "Shop",
+	deliveryCompleted = "Completed",
+}
+
 export const completedPhases = [
 	PhaseInternalNames.designReady,
 	PhaseInternalNames.shop,
