@@ -49,6 +49,24 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.Admin, Role.Owner],
 	},
+	{
+		name: "Palettes",
+		description: "Manage Palettes",
+		action: "redirect",
+		to: "/stylequiz/paletteList",
+		url: "/stylequiz/paletteList",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
+	{
+		name: "Textures",
+		description: "Manage Textures",
+		action: "redirect",
+		to: "/stylequiz/textureList",
+		url: "/stylequiz/textureList",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
 ];
 
 export default function StyleQuiz() {

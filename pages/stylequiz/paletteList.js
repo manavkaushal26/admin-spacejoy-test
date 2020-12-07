@@ -9,7 +9,9 @@ import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { modifyResource, styleFetcher } from "./helper";
+import { getActiveStylesAPI } from "./styleQuizApis";
 const { Title } = Typography;
+const { TextArea } = Input;
 const StyledInput = styled(Input)`
 	opacity: 0;
 	position: absolute;
@@ -27,9 +29,9 @@ const Wrapper = styled.div`
 	}
 `;
 
-export default function ProductsList({ query }) {
+export default function TextureList({ query }) {
 	const { styleId } = query;
-	const [products, setProducts] = useState([]);
+	const [palettes, setPalettes] = useState([]);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
 	const Router = useRouter();
@@ -48,56 +50,56 @@ export default function ProductsList({ query }) {
 	};
 
 	useEffect(() => {
-		styleFetcher("/quiz/admin/v1/styles/active", "GET")
+		styleFetcher(getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				Router.replace(
-					{ pathname: "/stylequiz/productList", query: { styleId: res.data[0]?.id } },
-					`/stylequiz/productList/${res.data[0]?.id}`
+					{ pathname: "/stylequiz/paletteList", query: { styleId: res.data[0]?.id } },
+					`/stylequiz/paletteList/${res.data[0]?.id}`
 				);
 			})
 			.catch(err => console.log(err));
 	}, []);
 
 	useEffect(() => {
-		setProducts([]);
-		getLatestProducts(Router?.query?.styleId);
+		setPalettes([]);
+		getPalettes(Router?.query?.styleId);
 	}, [Router]);
 
 	const handleChange = value => {
 		Router.replace(
-			{ pathname: "/stylequiz/productList", query: { styleId: value } },
-			`/stylequiz/productList/${value}`
+			{ pathname: "/stylequiz/paletteList", query: { styleId: value } },
+			`/stylequiz/paletteList/${value}`
 		);
 	};
 
-	const getLatestProducts = id => {
+	const getPalettes = id => {
 		if (id) {
-			fetchResources(`/quiz/admin/v1/products/${id}`)
+			fetchResources(`/quiz/admin/v1/palette`)
 				.then(res => {
-					setProducts(res.products);
+					setPalettes(res.data);
 				})
 				.catch(err => console.log(err))
 				.finally(() => {});
 		}
 	};
 
-	const deleteProduct = async id => {
-		await modifyResource("/quiz/admin/v1/product", "DELETE" { productId: id });
-		getLatestProducts(styleId);
+	const deletePalette = async id => {
+		await modifyResource("/quiz/admin/v1/palette", "DELETE", { productId: id });
+		getPalettes(styleId);
 	};
 
 	const handleUpload = e => {
-		uploadProduct(e.target.files[0]);
+		uploadPalette(e.target.files[0]);
 	};
 
-	const uploadProduct = async image => {
+	const uploadPalette = async image => {
 		setLoader(true);
-		const endPoint = `/quiz/admin/v1/product/${styleId}`;
+		const endPoint = `/quiz/admin/v1/palette`;
 		const formData = new FormData();
 		formData.append("image", image, image.fileName);
 		await modifyResource(endPoint, "POST", formData);
-		getLatestProducts(styleId);
+		getPalettes(styleId);
 		setLoader(false);
 	};
 
@@ -139,7 +141,7 @@ export default function ProductsList({ query }) {
 									</Col>
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
-											Add Product
+											Add Texture
 											<StyledInput
 												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
 												onChange={handleUpload}
@@ -151,15 +153,15 @@ export default function ProductsList({ query }) {
 							</Card>
 							<br></br>
 							<Row gutter={[8, 16]}>
-								{products.length ? (
-									products.map(item => {
+								{palettes.length ? (
+									palettes.map(item => {
 										return (
 											<Col sm={12} md={8} lg={6}>
 												<Card
 													actions={[
 														<Popconfirm
 															placement='top'
-															onConfirm={() => deleteProduct(item?.id)}
+															onConfirm={() => deletePalette(item?.id)}
 															title='Are you sure you want to delete?'
 															okText='Yes'
 															disabled={false}
@@ -169,8 +171,10 @@ export default function ProductsList({ query }) {
 														</Popconfirm>,
 													]}
 													hoverable
-													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
-												></Card>
+													cover={<Image src={`q_50,w_300,h_180/${item?.cdn}`} />}
+												>
+													<p>{item?.description}</p>
+												</Card>
 											</Col>
 										);
 									})
@@ -192,6 +196,6 @@ export default function ProductsList({ query }) {
 	);
 }
 
-ProductsList.getInitialProps = ({ query }) => {
+TextureList.getInitialProps = ({ query }) => {
 	return { query };
 };

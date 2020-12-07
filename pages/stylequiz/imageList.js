@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { createResource, deleteResource, styleFetcher } from "./helper";
+import { modifyResource, styleFetcher } from "./helper";
 import ScoreModal from "./scoreModal";
 const { Title } = Typography;
 const StyledInput = styled(Input)`
@@ -90,7 +90,7 @@ export default function ImageList({ query }) {
 	}, [Router]);
 
 	const deleteImage = async id => {
-		await deleteResource(adminImageEndpoint, { imageId: id });
+		await modifyResource(adminImageEndpoint, "DELETE" { imageId: id });
 		getLatestImages(`${getImagesEndpoint}/${styleId}`);
 	};
 
@@ -102,7 +102,7 @@ export default function ImageList({ query }) {
 		setLoader(true);
 		const formData = new FormData();
 		formData.append("image", image, image.fileName);
-		const resData = await createResource(adminImageEndpoint, formData);
+		const resData = await modifyResource(adminImageEndpoint, "POST", formData);
 		const { imageId } = resData;
 		showModal(imageId);
 		getLatestImages("/quiz/v1/images");

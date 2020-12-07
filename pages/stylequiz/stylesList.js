@@ -4,7 +4,7 @@ import {
 	EditOutlined,
 	FileImageOutlined,
 	LoadingOutlined,
-	PlusOutlined,
+	PlusOutlined
 } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
@@ -16,7 +16,14 @@ import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { deleteResource, styleFetcher } from "./helper";
+import { modifyResource, styleFetcher } from "./helper";
+import {
+	getActiveStylesAPI,
+	getStyleIconsAPI,
+	getStylesAPI,
+	modifyStyleIconsAPI,
+	updateStyleAPI
+} from "./styleQuizApis";
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const EditIcon = styled(Button)`
@@ -41,14 +48,6 @@ const StyleIcon = styled(Button)`
 	cursor: pointer;
 `;
 
-const endPoints = {
-	getStyles: "/quiz/admin/v1/styles?limit=100",
-	getActiveStyles: "/quiz/admin/v1/styles/active",
-	updateStyle: "/quiz/admin/v1/style/update",
-	getIcons: "/quiz/v1/style/icons",
-	modifyIcon: "/quiz/admin/v1/style/icon",
-};
-
 export default function StylesList() {
 	const [styles, setStylesData] = useState([]);
 	const [icons, setIcons] = useState([]);
@@ -61,7 +60,7 @@ export default function StylesList() {
 	const textareaRef = useRef(null);
 	useEffect(() => {
 		setLoader(true);
-		styleFetcher(endPoints.getStyles, "GET")
+		styleFetcher(getStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				setLoader(false);
@@ -72,19 +71,10 @@ export default function StylesList() {
 			});
 	}, []);
 
-	const getLatestStyles = () => {
-		styleFetcher(endPoints.getStyles, "POST")
-			.then(res => {
-				setStylesData([...res.data, ...styles]);
-			})
-			.catch(err => console.log(err))
-			.finally(() => {});
-	};
-
 	const updateStyleStatus = async (checked, id) => {
 		try {
 			await fetcher({
-				endPoint: endPoints.getActiveStyles,
+				endPoint: getActiveStylesAPI(),
 				method: "POST",
 				body: { styleId: id, active: checked ? "yes" : "no" },
 			});
@@ -150,7 +140,7 @@ export default function StylesList() {
 		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
 		formData.append("styleId", activeStyle?.id);
 		try {
-			await chatFetcher({ endPoint: endPoints.updateStyle, method: "POST", body: formData });
+			await chatFetcher({ endPoint: updateStyleAPI(), method: "POST", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -167,7 +157,7 @@ export default function StylesList() {
 	);
 
 	const getIcons = id => {
-		styleFetcher(`${endPoints.getIcons}/${id}`, "GET")
+		styleFetcher(`${getStyleIconsAPI()}/${id}`, "GET")
 			.then(res => {
 				setIcons(res.data);
 				setLoader(false);
@@ -185,7 +175,7 @@ export default function StylesList() {
 		formData.append("text", "test");
 		formData.append("styleId", activeStyle?.id);
 		try {
-			await chatFetcher({ endPoint: endPoints.modifyIcon, method: "POST", body: formData });
+			await chatFetcher({ endPoint: modifyStyleIconsAPI(), method: "POST", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -194,10 +184,9 @@ export default function StylesList() {
 
 	const deleteIcon = async id => {
 		setLoader(true);
-		await deleteResource(endPoints.modifyIcon, { styleIconId: id });
+		await modifyResource(modifyStyleIconsAPI(), "DELETE" { styleIconId: id });
 		setLoader(false);
 	};
-	console.log(styles);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -213,13 +202,6 @@ export default function StylesList() {
 						</Title>
 					</Col>
 					<br></br>
-					<Row gutter={[4, 16]}>
-						<Col sm={24} align='right'>
-							{/* <Button type='primary' onClick={getLatestStyles}>
-								Resync
-							</Button> */}
-						</Col>
-					</Row>
 					<Row gutter={[0, 16]}>
 						<Col span={24}>
 							<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={styles}>
