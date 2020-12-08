@@ -13,20 +13,35 @@ import ProjectInfiniteLoaderWrapper from "./ProjectInfiniteLoaderWrapper";
 import { SortFields, UserProjectSidePanelState } from "./reducer";
 import TabSearch from "./TabSearch";
 
-export const getProjectSearchBody = (
-	nameSearchText: string,
-	designerSearchText: string,
-	phase: PhaseInternalNames[],
-	designPhase: PhaseInternalNames[],
-	roomName: string,
-	by: SortFields,
-	order: -1 | 1,
-	startedAt: [Moment, Moment],
-	endedAt: [Moment, Moment],
-	status: Status,
-	email: string,
-	quizStatus: string
-): {
+interface GetProjectSearchBodyType {
+	nameSearchText: string;
+	designerSearchText: string;
+	phase: PhaseInternalNames[];
+	designPhase: PhaseInternalNames[];
+	roomName: string;
+	by: SortFields;
+	order: -1 | 1;
+	startedAt: [Moment, Moment];
+	endedAt: [Moment, Moment];
+	status: Status;
+	email: string;
+	quizStatus: string;
+}
+
+export const getProjectSearchBody = ({
+	nameSearchText,
+	designerSearchText,
+	phase,
+	designPhase,
+	roomName,
+	by,
+	order,
+	startedAt,
+	endedAt,
+	status,
+	email,
+	quizStatus,
+}: GetProjectSearchBodyType): {
 	filter: Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string | PhaseInternalNames[]>;
 } => {
 	const startedAtMap = startedAt?.map(value => {
@@ -42,7 +57,6 @@ export const getProjectSearchBody = (
 		}
 		return null;
 	});
-
 	const body = {
 		filter: {
 			"designPhases": designPhase,
@@ -124,20 +138,21 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	const loadMoreItems = async (startIndex, endIndex): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${searchProjectsApi()}?skip=${startIndex}&limit=${endIndex - startIndex + 1}`;
-		const body = getProjectSearchBody(
-			state.nameSearchText,
-			state.designerSearchText,
-			state.phase,
-			state.designPhase,
-			state.name,
-			state.sortBy,
-			state.sortOrder,
-			state.startedAt,
-			state.endedAt,
-			state.status,
-			state.email,
-			state.quizStatus
-		);
+		const body = getProjectSearchBody({
+			nameSearchText: state.nameSearchText,
+			designerSearchText: state.designerSearchText,
+			phase: state.phase,
+			designPhase: state.designPhase,
+			roomName: state.name,
+			by: state.sortBy,
+			order: state.sortOrder,
+			startedAt: state.startedAt,
+			endedAt: state.endedAt,
+			status: state.status,
+			email: state.email,
+			quizStatus: state.quizStatus,
+		});
+
 		const resData = await fetcher({
 			endPoint,
 			method: "POST",
