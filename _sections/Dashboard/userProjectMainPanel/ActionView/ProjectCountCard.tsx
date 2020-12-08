@@ -20,25 +20,24 @@ const ProjectCountCard: React.FC<ProjectCountCard> = ({ filterName, setSearchFil
 
 		const searchFilters = searchFiltersPresets({ type: filterName, from: 3, to: 5 });
 
-		const body = getProjectSearchBody(
-			searchFilters.nameSearchText,
-			searchFilters.designerSearchText,
-			searchFilters.phase,
-			searchFilters.name,
-			searchFilters.sortBy,
-			searchFilters.sortOrder,
-			searchFilters.startedAt,
-			searchFilters.endedAt,
-			searchFilters.status,
-			searchFilters.email,
-			searchFilters.quizStatus
-		);
+		const body = getProjectSearchBody({
+			nameSearchText: searchFilters.nameSearchText,
+			designerSearchText: searchFilters.designerSearchText,
+			phase: searchFilters.phase,
+			designPhase: searchFilters.designPhase,
+			roomName: searchFilters.name,
+			by: searchFilters.sortBy,
+			order: searchFilters.sortOrder,
+			startedAt: searchFilters.startedAt,
+			endedAt: searchFilters.endedAt,
+			status: searchFilters.status,
+			email: searchFilters.email,
+			quizStatus: searchFilters.quizStatus,
+		});
 		const resData = await fetcher({
 			endPoint,
 			method: "POST",
-			body: {
-				data: body,
-			},
+			body,
 		});
 		if (resData.statusCode <= 300) {
 			setCount(resData.data.count);
