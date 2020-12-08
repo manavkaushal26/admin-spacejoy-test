@@ -26,6 +26,8 @@ interface GetProjectSearchBodyType {
 	status: Status;
 	email: string;
 	quizStatus: string;
+	skip?: number;
+	limit?: number;
 }
 
 export const getProjectSearchBody = ({
@@ -41,6 +43,8 @@ export const getProjectSearchBody = ({
 	status,
 	email,
 	quizStatus,
+	skip,
+	limit,
 }: GetProjectSearchBodyType): {
 	filter: Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string | PhaseInternalNames[]>;
 } => {
@@ -83,6 +87,8 @@ export const getProjectSearchBody = ({
 			by,
 			order: order.toString(),
 		},
+		skip,
+		limit,
 	};
 	return body;
 };
@@ -137,7 +143,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 
 	const loadMoreItems = async (startIndex, endIndex): Promise<void> => {
 		setLoading(true);
-		const endPoint = `${searchProjectsApi()}?skip=${startIndex}&limit=${endIndex - startIndex + 1}`;
+		const endPoint = `${searchProjectsApi()}`;
 		const body = getProjectSearchBody({
 			nameSearchText: state.nameSearchText,
 			designerSearchText: state.designerSearchText,
@@ -151,6 +157,8 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			status: state.status,
 			email: state.email,
 			quizStatus: state.quizStatus,
+			skip: startIndex,
+			limit: endIndex - startIndex + 1,
 		});
 
 		const resData = await fetcher({
