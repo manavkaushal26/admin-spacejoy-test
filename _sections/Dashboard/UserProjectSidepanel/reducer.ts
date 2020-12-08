@@ -70,7 +70,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	phase: [],
 	designPhase: [],
 	name: "",
-	sortBy: SortFields["Created At"],
+	sortBy: SortFields["Create Date"],
 	hasMore: true,
 	currentTab: "active",
 	status: Status.active,
