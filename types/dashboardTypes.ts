@@ -53,6 +53,7 @@ export enum HumanizePhaseInternalNames {
 	rejected = "Rejected",
 }
 
+//TODO - TRY TO COMBINE/EXTEND THE TWO ENUMS
 export enum HumanizeNewProjectPhaseInternalNames {
 	requirement = "Requirement",
 	designConcept = "Concept",
