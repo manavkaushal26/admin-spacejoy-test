@@ -57,7 +57,6 @@ export const getProjectSearchBody = ({
 		}
 		return null;
 	});
-	console.log("by", by);
 	const body = {
 		filter: {
 			"designPhases": designPhase,
