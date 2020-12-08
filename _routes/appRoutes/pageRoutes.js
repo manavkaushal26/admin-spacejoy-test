@@ -206,7 +206,7 @@ function pageRoute(app, router) {
 		});
 	});
 
-	router.get("/stylequiz/textureList/:styleId", TokenCheckMiddleware, (req, res) => {
+	router.get("/stylequiz/textureList", TokenCheckMiddleware, (req, res) => {
 		const { query, params } = req;
 		app.render(req, res, "/stylequiz/textureList", {
 			...query,
@@ -214,7 +214,7 @@ function pageRoute(app, router) {
 		});
 	});
 
-	router.get("/stylequiz/paletteList/:styleId", TokenCheckMiddleware, (req, res) => {
+	router.get("/stylequiz/paletteList", TokenCheckMiddleware, (req, res) => {
 		const { query, params } = req;
 		app.render(req, res, "/stylequiz/paletteList", {
 			...query,

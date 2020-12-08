@@ -3,7 +3,7 @@ import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Typography } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
@@ -82,10 +82,12 @@ export default function ImageList({ query }) {
 
 	useEffect(() => {
 		setImages([]);
-		if (styleId !== "0") {
-			getLatestImages(`${getImagesEndpoint}/${styleId}`);
-		} else {
-			getLatestImages("/quiz/v1/images");
+		if (styleId) {
+			if (styleId !== "0") {
+				getLatestImages(`${getImagesEndpoint}/${styleId}`);
+			} else {
+				getLatestImages("/quiz/v1/images");
+			}
 		}
 	}, [Router]);
 
@@ -180,9 +182,13 @@ export default function ImageList({ query }) {
 								{images.length ? (
 									images.map(item => {
 										return (
-											<Col sm={12} md={8} lg={6}>
+											<Col sm={12} md={8} lg={8}>
 												<Card
 													actions={[
+														<Switch checkedChildren='Active' unCheckedChildren='Inactive' />,
+														<Button type='link' onClick={() => showModal(item?.id)}>
+															Add Scores
+														</Button>,
 														<Popconfirm
 															placement='top'
 															onConfirm={() => deleteImage(item?.id)}
@@ -193,9 +199,6 @@ export default function ImageList({ query }) {
 														>
 															<DeleteOutlined />
 														</Popconfirm>,
-														<Button type='link' onClick={() => showModal(item?.id)}>
-															Add Scores
-														</Button>,
 													]}
 													hoverable
 													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}

@@ -1,13 +1,13 @@
-import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Typography } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import EditModal from "./editModal";
 import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
 import * as StyleQuizAPI from "./styleQuizApis";
 const { Title } = Typography;
@@ -29,64 +29,30 @@ const Wrapper = styled.div`
 	}
 `;
 const endPoint = StyleQuizAPI.paletteAPI();
-export default function TextureList({ query }) {
-	const { styleId } = query;
+export default function TextureList() {
 	const [palettes, setPalettes] = useState([]);
-	const [styles, setStylesData] = useState([]);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [selectedResource, setSelectedResource] = useState({});
 	const [isLoading, setLoader] = useState(false);
 	const Router = useRouter();
-	const fetchResources = async endPoint => {
-		try {
-			const resData = await fetcher({ endPoint: endPoint, method: "GET" });
-			const { data, statusCode } = resData;
-			if (statusCode && statusCode <= 201) {
-				return data;
-			} else {
-				throw new Error();
-			}
-		} catch {
-			throw new Error();
-		}
-	};
-
-	useEffect(() => {
-		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
-			.then(res => {
-				setStylesData(res.data);
-				Router.replace(
-					{ pathname: "/stylequiz/paletteList", query: { styleId: res.data[0]?.id } },
-					`/stylequiz/paletteList/${res.data[0]?.id}`
-				);
-			})
-			.catch(err => console.log(err));
-	}, []);
 
 	useEffect(() => {
 		setPalettes([]);
-		getPalettes(Router?.query?.styleId);
-	}, [Router]);
-
-	const handleChange = value => {
-		Router.replace(
-			{ pathname: "/stylequiz/paletteList", query: { styleId: value } },
-			`/stylequiz/paletteList/${value}`
-		);
-	};
+		getPalettes();
+	}, []);
 
 	const getPalettes = id => {
-		if (id) {
-			fetchResources(endPoint)
-				.then(res => {
-					setPalettes(res.data);
-				})
-				.catch(err => console.log(err))
-				.finally(() => {});
-		}
+		styleFetcher(endPoint)
+			.then(res => {
+				setPalettes(res.data);
+			})
+			.catch(err => console.log(err))
+			.finally(() => {});
 	};
 
 	const deletePalette = async id => {
-		await updateResource(endPoint, "DELETE", { productId: id });
-		getPalettes(styleId);
+		await updateResource(endPoint, "DELETE", { id: id });
+		getPalettes();
 	};
 
 	const handleUpload = e => {
@@ -96,10 +62,29 @@ export default function TextureList({ query }) {
 	const uploadPalette = async images => {
 		setLoader(true);
 		const formData = multiFileUploader(images);
-		formData.append("image", image, image.fileName);
 		await modifyFormDataResource(endPoint, "POST", formData);
-		getPalettes(styleId);
+		getPalettes();
 		setLoader(false);
+	};
+
+	const showModal = item => {
+		setSelectedResource(item);
+		setIsModalVisible(true);
+	};
+
+	const handlModaleOk = async (checked, desc, data) => {
+		setIsModalVisible(false);
+		setPalettes(data);
+		await updateResource(endPoint, "PUT", {
+			id: selectedResource?.id,
+			description: desc,
+			active: checked ? "yes" : "no",
+		});
+		getPalettes();
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
 	};
 
 	return (
@@ -121,25 +106,8 @@ export default function TextureList({ query }) {
 						<Wrapper>
 							<Card>
 								<Row gutter={[4, 16]}>
-									<Col sm={24} md={6} gutter={[4, 16]}>
-										{styles.length && (
-											<Select
-												showSearch
-												filterOption={(input, option) =>
-													option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-												}
-												style={{ width: "100%" }}
-												onChange={handleChange}
-												defaultValue={styles[0]?.id}
-											>
-												{styles.map((style, index) => {
-													return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
-												})}
-											</Select>
-										)}
-									</Col>
-									<Col sm={24} md={18} align='right'>
-										<Button style={{ position: "relative" }} type='primary'>
+									<Col sm={24} md={24} align='right'>
+										<Button style={{ position: "relative" }} type='primary' align='right'>
 											Add Palette
 											<StyledInput
 												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
@@ -158,6 +126,7 @@ export default function TextureList({ query }) {
 											<Col sm={12} md={8} lg={6}>
 												<Card
 													actions={[
+														<EditOutlined onClick={() => showModal(item)} />,
 														<Popconfirm
 															placement='top'
 															onConfirm={() => deletePalette(item?.id)}
@@ -190,11 +159,14 @@ export default function TextureList({ query }) {
 						</Wrapper>
 					</Spin>
 				</LoudPaddingDiv>
+				<EditModal
+					isModalVisible={isModalVisible}
+					handlModaleOk={(checked, desc, data) => handlModaleOk(checked, desc, data)}
+					selectedResource={selectedResource}
+					handleCancel={handleCancel}
+					data={palettes}
+				/>
 			</MaxHeightDiv>
 		</PageLayout>
 	);
 }
-
-TextureList.getInitialProps = ({ query }) => {
-	return { query };
-};

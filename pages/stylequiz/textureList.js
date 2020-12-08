@@ -2,8 +2,7 @@ import { ArrowLeftOutlined, DeleteOutlined, EditOutlined } from "@ant-design/ico
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Typography } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
@@ -30,66 +29,30 @@ const Wrapper = styled.div`
 	}
 `;
 const endPoint = StyleQuizAPI.textureAPI();
-export default function TextureList({ query }) {
-	const { styleId } = query;
+export default function TextureList() {
 	const [textures, setTextures] = useState([]);
-	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
 	const [selectedResource, setSelectedResource] = useState({});
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const Router = useRouter();
-	const fetchResources = async endPoint => {
-		try {
-			const resData = await fetcher({ endPoint: endPoint, method: "GET" });
-			const { data, statusCode } = resData;
-			if (statusCode && statusCode <= 201) {
-				return data;
-			} else {
-				throw new Error();
-			}
-		} catch {
-			throw new Error();
-		}
-	};
-
-	useEffect(() => {
-		styleFetcher("/quiz/admin/v1/styles/active", "GET")
-			.then(res => {
-				setStylesData(res.data);
-				Router.replace(
-					{ pathname: "/stylequiz/textureList", query: { styleId: res.data[0]?.id } },
-					`/stylequiz/textureList/${res.data[0]?.id}`
-				);
-			})
-			.catch(err => console.log(err));
-	}, []);
 
 	useEffect(() => {
 		setTextures([]);
-		getTextures(Router?.query?.styleId);
-	}, [Router]);
-
-	const handleChange = value => {
-		Router.replace(
-			{ pathname: "/stylequiz/textureList", query: { styleId: value } },
-			`/stylequiz/textureList/${value}`
-		);
-	};
+		getTextures();
+	}, []);
 
 	const getTextures = id => {
-		if (id) {
-			fetchResources(`/quiz/admin/v1/texture`)
-				.then(res => {
-					setTextures(res.data);
-				})
-				.catch(err => console.log(err))
-				.finally(() => {});
-		}
+		styleFetcher(endPoint)
+			.then(res => {
+				setTextures(res.data);
+			})
+			.catch(err => console.log(err))
+			.finally(() => {});
 	};
 
 	const deleteTexture = async id => {
-		await updateResource(endPoint, "DELETE", { productId: id });
-		getTextures(styleId);
+		await updateResource(endPoint, "DELETE", { id: id });
+		getTextures();
 	};
 
 	const handleUpload = e => {
@@ -100,7 +63,7 @@ export default function TextureList({ query }) {
 		setLoader(true);
 		const formData = multiFileUploader(images);
 		await modifyFormDataResource(endPoint, "POST", formData);
-		getTextures(styleId);
+		getTextures();
 		setLoader(false);
 	};
 
@@ -109,13 +72,15 @@ export default function TextureList({ query }) {
 		setIsModalVisible(true);
 	};
 
-	const handlModaleOk = async (checked, desc) => {
+	const handlModaleOk = async (checked, desc, data) => {
 		setIsModalVisible(false);
-		const formData = new FormData();
-		formData.append("id", selectedResource?.id);
-		formData.append("desc", desc);
-		formData.append("active", checked ? "yes" : "no");
-		await updateResource(endPoint, "UPDATE", formData);
+		setTextures(data);
+		await updateResource(endPoint, "PUT", {
+			id: selectedResource?.id,
+			description: desc,
+			active: checked ? "yes" : "no",
+		});
+		getTextures();
 	};
 
 	const handleCancel = () => {
@@ -141,24 +106,7 @@ export default function TextureList({ query }) {
 						<Wrapper>
 							<Card>
 								<Row gutter={[4, 16]}>
-									<Col sm={24} md={6} gutter={[4, 16]}>
-										{styles.length && (
-											<Select
-												showSearch
-												filterOption={(input, option) =>
-													option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-												}
-												style={{ width: "100%" }}
-												onChange={handleChange}
-												defaultValue={styles[0]?.id}
-											>
-												{styles.map((style, index) => {
-													return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
-												})}
-											</Select>
-										)}
-									</Col>
-									<Col sm={24} md={18} align='right'>
+									<Col sm={24} md={24} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
 											Add Texture
 											<StyledInput
@@ -213,15 +161,12 @@ export default function TextureList({ query }) {
 				</LoudPaddingDiv>
 				<EditModal
 					isModalVisible={isModalVisible}
-					handlModaleOk={(checked, id) => handlModaleOk(checked, id)}
+					handlModaleOk={(checked, desc, data) => handlModaleOk(checked, desc, data)}
 					selectedResource={selectedResource}
 					handleCancel={handleCancel}
+					data={textures}
 				/>
 			</MaxHeightDiv>
 		</PageLayout>
 	);
 }
-
-TextureList.getInitialProps = ({ query }) => {
-	return { query };
-};

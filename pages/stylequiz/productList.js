@@ -158,6 +158,7 @@ export default function ProductsList({ query }) {
 											<Col sm={12} md={8} lg={6}>
 												<Card
 													actions={[
+														<Switch checkedChildren='Active' unCheckedChildren='Inactive' />,
 														<Popconfirm
 															placement='top'
 															onConfirm={() => deleteProduct(item?.id)}

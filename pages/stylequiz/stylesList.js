@@ -173,6 +173,7 @@ export default function StylesList() {
 		} catch (err) {
 			notification.error({ message: err });
 		}
+		getIcons(activeStyle?.id);
 		setLoader(false);
 	};
 
@@ -302,6 +303,7 @@ export default function StylesList() {
 									showUploadList={false}
 									action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
 									onChange={handleUpload}
+									accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
 								>
 									{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
 								</Upload>
@@ -313,7 +315,7 @@ export default function StylesList() {
 								<Col sm={24} align='right'>
 									<Button style={{ position: "relative" }} type='primary'>
 										Add Icon
-										<StyledInput onChange={createIcon} type='file' />
+										<StyledInput onChange={createIcon} type='file' accept='image/png,image/PNG' />
 									</Button>
 								</Col>
 							</Row>
