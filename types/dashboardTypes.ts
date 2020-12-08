@@ -53,6 +53,18 @@ export enum HumanizePhaseInternalNames {
 	rejected = "Rejected",
 }
 
+//TODO - TRY TO COMBINE/EXTEND THE TWO ENUMS
+export enum HumanizeNewProjectPhaseInternalNames {
+	requirement = "Requirement",
+	designConcept = "Concept",
+	modelling = "Modelling",
+	design3D = "Design 3D",
+	designRender = "Render",
+	designReady = "Ready",
+	shop = "Shop",
+	deliveryCompleted = "Completed",
+}
+
 export const completedPhases = [
 	PhaseInternalNames.designReady,
 	PhaseInternalNames.shop,
