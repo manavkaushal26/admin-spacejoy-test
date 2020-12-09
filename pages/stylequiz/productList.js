@@ -62,7 +62,9 @@ export default function ProductsList({ query }) {
 
 	useEffect(() => {
 		setProducts([]);
-		getLatestProducts(Router?.query?.styleId);
+		if (Router?.query?.styleId) {
+			getLatestProducts(Router?.query?.styleId);
+		}
 	}, [Router]);
 
 	const handleChange = value => {
@@ -85,6 +87,7 @@ export default function ProductsList({ query }) {
 
 	const deleteProduct = async id => {
 		await updateResource(`${StyleQuizAPI.postProductsAPI()}`, "DELETE", { productId: id });
+		setProducts([]);
 		getLatestProducts(styleId);
 	};
 

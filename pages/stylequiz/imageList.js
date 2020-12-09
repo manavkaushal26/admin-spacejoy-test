@@ -2,8 +2,7 @@ import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
+import { Button, Card, Checkbox, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
@@ -35,26 +34,14 @@ export default function ImageList({ query }) {
 	const [images, setImages] = useState([]);
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [styles, setStylesData] = useState([]);
+	const [isTaggedStatus, setIsTaggedStatus] = useState(false);
 	const [isLoading, setLoader] = useState(false);
 	const Router = useRouter();
 
-	const fetchResources = async endPoint => {
-		try {
-			const resData = await fetcher({ endPoint, method: "GET" });
-			const { data, statusCode } = resData;
-			if (statusCode && statusCode <= 201) {
-				return data;
-			} else {
-				throw new Error();
-			}
-		} catch {
-			throw new Error();
-		}
-	};
-
 	const getLatestImages = endPoint => {
-		fetchResources(endPoint)
+		styleFetcher(endPoint)
 			.then(res => {
+				console.log(res);
 				setImages(res.images);
 			})
 			.catch(err => console.log(err))
@@ -91,7 +78,8 @@ export default function ImageList({ query }) {
 
 	const deleteImage = async id => {
 		await updateResource(StyleQuizAPI.adminImageAPI(), "DELETE", { imageId: id });
-		getLatestImages(`${StyleQuizAPI.adminGetImagesAPI()}/${styleId}`);
+		setImages([]);
+		updateImageView();
 	};
 
 	const handleUpload = e => {
@@ -103,7 +91,7 @@ export default function ImageList({ query }) {
 		const formData = multiFileUploader(images);
 		const resData = await modifyFormDataResource(StyleQuizAPI.adminImageAPI(), "POST", formData);
 		const { imageId } = resData;
-		getLatestImages(StyleQuizAPI.getAllImagesAPI());
+		updateImageView();
 		setLoader(false);
 		if (images.length === 1) {
 			showModal(imageId);
@@ -133,6 +121,37 @@ export default function ImageList({ query }) {
 	const handleModalCancel = e => {
 		setModalVisibility(false);
 	};
+
+	const updateImageView = () => {
+		if (styleId === "0") {
+			if (isTaggedStatus) {
+				getLatestImages(StyleQuizAPI.getAllUntaggedImagesAPI());
+			} else {
+				getLatestImages(StyleQuizAPI.getAllImagesAPI());
+			}
+		} else {
+			getLatestImages(`${StyleQuizAPI.adminGetImagesAPI()}/${styleId}`);
+		}
+	};
+
+	const changeTaggedStatus = e => {
+		let endPoint = null;
+		const checked = e.target.checked;
+		setIsTaggedStatus(checked);
+		setImages([]);
+		if (checked) {
+			endPoint = StyleQuizAPI.getAllUntaggedImagesAPI();
+		} else {
+			endPoint = StyleQuizAPI.getAllImagesAPI();
+		}
+		styleFetcher(endPoint, "GET")
+			.then(res => {
+				// console.log("res", res);
+				setImages(res.images);
+			})
+			.catch(err => console.log(err));
+	};
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -176,7 +195,13 @@ export default function ImageList({ query }) {
 											</Select>
 										)}
 									</Col>
-									<Col sm={24} md={18} align='right'>
+									<Col sm={24} md={6} style={{ padding: 15 }}>
+										<Checkbox checked={isTaggedStatus} onChange={changeTaggedStatus}>
+											Show Untagged Images
+										</Checkbox>
+										,
+									</Col>
+									<Col sm={24} md={12} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
 											Add Image
 											<StyledInput
@@ -192,37 +217,39 @@ export default function ImageList({ query }) {
 							<br></br>
 							<Row gutter={[12, 16]}>
 								{images.length ? (
-									images.map(item => {
-										return (
-											<Col sm={12} md={8} lg={8}>
-												<Card
-													actions={[
-														<Switch
-															checked={item?.active}
-															checkedChildren='Active'
-															unCheckedChildren='Inactive'
-															onChange={checked => updateStatus(checked, item?.id)}
-														/>,
-														<Button type='link' onClick={() => showModal(item?.id)}>
-															Add Scores
-														</Button>,
-														<Popconfirm
-															placement='top'
-															onConfirm={() => deleteImage(item?.id)}
-															title='Are you sure you want to delete?'
-															okText='Yes'
-															disabled={false}
-															cancelText='Cancel'
-														>
-															<DeleteOutlined />
-														</Popconfirm>,
-													]}
-													hoverable
-													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
-												></Card>
-											</Col>
-										);
-									})
+									[...images]
+										.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+										.map(item => {
+											return (
+												<Col sm={12} md={8} lg={8}>
+													<Card
+														actions={[
+															<Switch
+																checked={item?.active}
+																checkedChildren='Active'
+																unCheckedChildren='Inactive'
+																onChange={checked => updateStatus(checked, item?.id)}
+															/>,
+															<Button type='link' onClick={() => showModal(item?.id)}>
+																Add Scores
+															</Button>,
+															<Popconfirm
+																placement='top'
+																onConfirm={() => deleteImage(item?.id)}
+																title='Are you sure you want to delete?'
+																okText='Yes'
+																disabled={false}
+																cancelText='Cancel'
+															>
+																<DeleteOutlined />
+															</Popconfirm>,
+														]}
+														hoverable
+														cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
+													></Card>
+												</Col>
+											);
+										})
 								) : (
 									<Card style={{ width: "100%" }} align='center'>
 										<Row gutter={[4, 16]}>

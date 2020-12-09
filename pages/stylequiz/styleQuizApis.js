@@ -11,7 +11,11 @@ export const adminGetImagesAPI = () => {
 };
 
 export const getAllImagesAPI = () => {
-	return "/quiz/v1/images";
+	return "/quiz/admin/v1/images";
+};
+
+export const getAllUntaggedImagesAPI = () => {
+	return "/quiz/admin/v1/images/untagged";
 };
 
 export const getActiveStylesAPI = () => {

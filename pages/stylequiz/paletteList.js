@@ -52,6 +52,7 @@ export default function TextureList() {
 
 	const deletePalette = async id => {
 		await updateResource(endPoint, "DELETE", { id: id });
+		setPalettes([]);
 		getPalettes();
 	};
 
@@ -122,31 +123,33 @@ export default function TextureList() {
 							<br></br>
 							<Row gutter={[8, 16]}>
 								{palettes.length ? (
-									palettes.map(item => {
-										return (
-											<Col sm={12} md={8} lg={6}>
-												<Card
-													actions={[
-														<EditOutlined onClick={() => showModal(item)} />,
-														<Popconfirm
-															placement='top'
-															onConfirm={() => deletePalette(item?.id)}
-															title='Are you sure you want to delete?'
-															okText='Yes'
-															disabled={false}
-															cancelText='Cancel'
-														>
-															<DeleteOutlined />
-														</Popconfirm>,
-													]}
-													hoverable
-													cover={<Image src={`q_50,w_300,h_180/${item?.cdn}`} />}
-												>
-													<p>{item?.description}</p>
-												</Card>
-											</Col>
-										);
-									})
+									[...palettes]
+										.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+										.map(item => {
+											return (
+												<Col sm={12} md={8} lg={6}>
+													<Card
+														actions={[
+															<EditOutlined onClick={() => showModal(item)} />,
+															<Popconfirm
+																placement='top'
+																onConfirm={() => deletePalette(item?.id)}
+																title='Are you sure you want to delete?'
+																okText='Yes'
+																disabled={false}
+																cancelText='Cancel'
+															>
+																<DeleteOutlined />
+															</Popconfirm>,
+														]}
+														hoverable
+														cover={<Image src={`q_50,w_300,h_180/${item?.cdn}`} />}
+													>
+														<p>{item?.description}</p>
+													</Card>
+												</Col>
+											);
+										})
 								) : (
 									<Card style={{ width: "100%" }} align='center'>
 										<Row gutter={[4, 16]}>
