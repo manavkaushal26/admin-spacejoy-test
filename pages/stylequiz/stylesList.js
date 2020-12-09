@@ -16,7 +16,6 @@ import {
 	Button,
 	Col,
 	Input,
-	message,
 	Modal,
 	notification,
 	Popconfirm,
@@ -68,6 +67,9 @@ export default function StylesList() {
 	const textareaRef = useRef(null);
 	const [filteredData, setFilteredData] = useState(null);
 
+	// image filelist
+	const [imageList, setImages] = useState({});
+
 	useEffect(() => {
 		setLoader(true);
 		styleFetcher(StyleQuizAPI.getStylesAPI(), "GET")
@@ -115,8 +117,7 @@ export default function StylesList() {
 	const saveStyleInfo = async () => {
 		setLoader(true);
 		const formData = new FormData();
-		console.log("styleImageObject", styleImageObject);
-		formData.append("image", styleImageObject);
+		formData.append("image", imageList);
 		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
 		formData.append("styleId", activeStyle?.id);
 		try {
@@ -183,16 +184,8 @@ export default function StylesList() {
 		headers: {
 			authorization: "authorization-text",
 		},
-		onChange(info) {
-			if (info.file.status !== "uploading") {
-				console.log(info.file, info.fileList);
-			}
-			if (info.file.status === "done") {
-				setStyleImageObject(info.fileList);
-				message.success(`${info.file.name} file uploaded successfully`);
-			} else if (info.file.status === "error") {
-				message.error(`${info.file.name} file upload failed.`);
-			}
+		onChange({ file }) {
+			setImages(file);
 		},
 		beforeUpload() {
 			return false;
