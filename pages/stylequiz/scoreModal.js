@@ -112,7 +112,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 			addNewScore();
 			setEditModal(false);
 		} else {
-			notification.success({ message: "Score cannot be empty" });
+			notification.error({ message: "Score cannot be empty" });
 		}
 	};
 

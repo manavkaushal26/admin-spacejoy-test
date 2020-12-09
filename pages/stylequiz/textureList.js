@@ -113,6 +113,7 @@ export default function TextureList() {
 												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
 												onChange={handleUpload}
 												type='file'
+												multiple
 											/>
 										</Button>
 									</Col>

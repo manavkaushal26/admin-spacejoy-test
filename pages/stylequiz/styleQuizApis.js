@@ -2,6 +2,18 @@ export const getStylesAPI = () => {
 	return "/quiz/admin/v1/styles?limit=100";
 };
 
+export const adminImageAPI = () => {
+	return "/quiz/admin/v1/image";
+};
+
+export const adminGetImagesAPI = () => {
+	return "/quiz/admin/v1/images";
+};
+
+export const getAllImagesAPI = () => {
+	return "/quiz/v1/images";
+};
+
 export const getActiveStylesAPI = () => {
 	return "/quiz/admin/v1/styles/active";
 };
@@ -11,7 +23,7 @@ export const updateStyleAPI = () => {
 };
 
 export const getStyleIconsAPI = () => {
-	return "/quiz/v1/style/icons";
+	return "/quiz/admin/v1/style/icons";
 };
 
 export const modifyStyleIconsAPI = () => {

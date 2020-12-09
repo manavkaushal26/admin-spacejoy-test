@@ -6,12 +6,25 @@ import {
 	LoadingOutlined,
 	PlusOutlined,
 } from "@ant-design/icons";
+import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation } from "@utils/authContext";
 import chatFetcher from "@utils/chatFetcher";
-import fetcher from "@utils/fetcher";
-import { Button, Col, Input, Modal, notification, Row, Switch, Table, Typography, Upload } from "antd";
+import {
+	Button,
+	Col,
+	Input,
+	Modal,
+	notification,
+	Popconfirm,
+	Row,
+	Spin,
+	Switch,
+	Table,
+	Typography,
+	Upload,
+} from "antd";
 import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
@@ -65,19 +78,6 @@ export default function StylesList() {
 			});
 	}, []);
 
-	const updateStyleStatus = async (checked, id) => {
-		try {
-			await fetcher({
-				endPoint: StyleQuizAPI.getActiveStylesAPI(),
-				method: "POST",
-				body: { styleId: id, active: checked ? "yes" : "no" },
-			});
-		} catch {
-			throw new Error();
-		} finally {
-		}
-	};
-
 	const handleToggle = async (checked, id) => {
 		const newState = styles.map(item => {
 			if (item.id === id) {
@@ -86,10 +86,11 @@ export default function StylesList() {
 			return { ...item };
 		});
 		setStylesData(newState);
-		await updateStyleStatus(checked, id);
+		await updateResource(StyleQuizAPI.getActiveStylesAPI(), "POST", { styleId: id, active: checked ? "yes" : "no" });
 	};
 
 	const showModal = (row, type) => {
+		setLoader(true);
 		setModalVisibility(true);
 		setActiveStyle(row);
 		if (type === "edit") {
@@ -98,6 +99,7 @@ export default function StylesList() {
 			setModalType("icons");
 			getIcons(row?.id);
 		}
+		setLoader(false);
 	};
 
 	const handleModalOk = () => {
@@ -130,6 +132,7 @@ export default function StylesList() {
 	const saveStyleInfo = async () => {
 		setLoader(true);
 		const formData = new FormData();
+		console.log("styleImageObject", styleImageObject);
 		formData.append("image", styleImageObject);
 		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
 		formData.append("styleId", activeStyle?.id);
@@ -181,6 +184,7 @@ export default function StylesList() {
 		setLoader(true);
 		await updateResource(StyleQuizAPI.modifyStyleIconsAPI(), "DELETE", { styleIconId: id });
 		setLoader(false);
+		getIcons(activeStyle?.id);
 	};
 	return (
 		<PageLayout pageName='Styles List'>
@@ -230,7 +234,12 @@ export default function StylesList() {
 										</span>
 									)}
 								/>
-								<Table.Column key='id' title='Image' dataIndex='cdn' render={(text, record) => <img src={text} />} />
+								<Table.Column
+									key='id'
+									title='Image'
+									dataIndex='cdn'
+									render={(text, record) => <Image style={{ maxWidth: 120 }} src={`q_70,w_120/${text}`} />}
+								/>
 								<Table.Column
 									key='id'
 									title='Go to'
@@ -285,51 +294,69 @@ export default function StylesList() {
 					width={1000}
 					okText='Save'
 				>
-					{modalType === "edit" ? (
-						<ModalContent>
-							<div className='flex'>
-								<span>Description</span>
+					<Spin spinning={isLoading}>
+						{modalType === "edit" ? (
+							<ModalContent>
+								<div className='flex'>
+									<span>Description</span>
+									<br></br>
+									<TextArea ref={textareaRef} />
+								</div>
 								<br></br>
-								<TextArea ref={textareaRef} />
-							</div>
-							<br></br>
-							<div className='flex'>
-								<span>Upload Image</span>
-								<br></br>
-								<Upload
-									name='avatar'
-									listType='picture-card'
-									className='avatar-uploader'
-									showUploadList={false}
-									action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-									onChange={handleUpload}
-									accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
-								>
-									{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
-								</Upload>
-							</div>
-						</ModalContent>
-					) : (
-						<ModalContent>
-							<Row gutter={[4, 16]}>
-								<Col sm={24} align='right'>
-									<Button style={{ position: "relative" }} type='primary'>
-										Add Icon
-										<StyledInput onChange={createIcon} type='file' accept='image/png,image/PNG' />
-									</Button>
-								</Col>
-							</Row>
-							<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons}>
-								<Table.Column key='id' title='Icons' dataIndex='' render={(text, record) => <img src={text} />} />
-								<Table.Column
-									key='id'
-									title='Actions'
-									dataIndex=''
-									render={(text, record) => <DeleteOutlined onClick={() => deleteIcon(record?.id)} />}
-								/>
-							</Table>
-						</ModalContent>
-					)}
+								<div className='flex'>
+									<span>Upload Image</span>
+									<br></br>
+									<Upload
+										name='avatar'
+										listType='picture-card'
+										className='avatar-uploader'
+										showUploadList={false}
+										action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+										onChange={handleUpload}
+										accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+									>
+										{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
+									</Upload>
+								</div>
+							</ModalContent>
+						) : (
+							<ModalContent>
+								<Row gutter={[4, 16]}>
+									<Col sm={24} align='right'>
+										<Button style={{ position: "relative" }} type='primary'>
+											Add Icon
+											<StyledInput onChange={createIcon} type='file' accept='image/png,image/PNG' />
+										</Button>
+									</Col>
+								</Row>
+								<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons} isLoading={isLoading}>
+									<Table.Column
+										key='id'
+										title='Icons'
+										dataIndex='cdn'
+										render={(text, record) => <Image src={`q_70,w_75/${text}`} width='75' />}
+									/>
+									<Table.Column
+										key='id'
+										title='Actions'
+										dataIndex=''
+										render={(text, record) => (
+											<Popconfirm
+												placement='top'
+												onConfirm={() => deleteIcon(record?.id)}
+												title='Are you sure you want to delete?'
+												okText='Yes'
+												disabled={false}
+												cancelText='Cancel'
+											>
+												<DeleteOutlined />
+											</Popconfirm>
+										)}
+									/>
+								</Table>
+							</ModalContent>
+						)}
+					</Spin>
 				</Modal>
 			</MaxHeightDiv>
 		</PageLayout>

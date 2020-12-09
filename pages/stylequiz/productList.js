@@ -3,7 +3,7 @@ import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Typography } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
@@ -49,7 +49,7 @@ export default function ProductsList({ query }) {
 	};
 
 	useEffect(() => {
-		styleFetcher("/quiz/admin/v1/styles/active", "GET")
+		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				Router.replace(
@@ -92,6 +92,21 @@ export default function ProductsList({ query }) {
 		uploadProduct(e.target.files);
 	};
 
+	const updateStatus = async (checked, id, mongoId) => {
+		const newState = products.map(item => {
+			if (item.id === id) {
+				return { ...item, active: checked };
+			}
+			return { ...item };
+		});
+		setProducts(newState);
+		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
+			productId: id,
+			active: checked ? "yes" : "no",
+			mongoId,
+		});
+	};
+
 	const uploadProduct = async images => {
 		setLoader(true);
 		const endPoint = `${StyleQuizAPI.postProductsAPI()}/${styleId}`;
@@ -100,7 +115,7 @@ export default function ProductsList({ query }) {
 		getLatestProducts(styleId);
 		setLoader(false);
 	};
-
+	console.log(products);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -158,7 +173,12 @@ export default function ProductsList({ query }) {
 											<Col sm={12} md={8} lg={6}>
 												<Card
 													actions={[
-														<Switch checkedChildren='Active' unCheckedChildren='Inactive' />,
+														<Switch
+															checked={item?.active}
+															checkedChildren='Active'
+															unCheckedChildren='Inactive'
+															onChange={checked => updateStatus(checked, item?.id, item?.mongoId)}
+														/>,
 														<Popconfirm
 															placement='top'
 															onConfirm={() => deleteProduct(item?.id)}

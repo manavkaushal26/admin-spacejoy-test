@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
 import ScoreModal from "./scoreModal";
+import * as StyleQuizAPI from "./styleQuizApis";
 const { Title } = Typography;
 const StyledInput = styled(Input)`
 	opacity: 0;
@@ -27,9 +28,6 @@ const Wrapper = styled.div`
 		z-index: 12;
 	}
 `;
-
-const adminImageEndpoint = "/quiz/admin/v1/image";
-const getImagesEndpoint = "/quiz/admin/v1/images";
 
 export default function ImageList({ query }) {
 	const { styleId } = query;
@@ -65,14 +63,14 @@ export default function ImageList({ query }) {
 
 	const handleChange = value => {
 		if (value === "all") {
-			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/${value}`);
+			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
 		} else {
-			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/all`);
+			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/${value}`);
 		}
 	};
 
 	useEffect(() => {
-		styleFetcher("/quiz/admin/v1/styles/active", "GET")
+		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
@@ -84,16 +82,16 @@ export default function ImageList({ query }) {
 		setImages([]);
 		if (styleId) {
 			if (styleId !== "0") {
-				getLatestImages(`${getImagesEndpoint}/${styleId}`);
+				getLatestImages(`${StyleQuizAPI.adminGetImagesAPI()}/${styleId}`);
 			} else {
-				getLatestImages("/quiz/v1/images");
+				getLatestImages(StyleQuizAPI.getAllImagesAPI());
 			}
 		}
 	}, [Router]);
 
 	const deleteImage = async id => {
-		await updateResource(adminImageEndpoint, "DELETE", { imageId: id });
-		getLatestImages(`${getImagesEndpoint}/${styleId}`);
+		await updateResource(StyleQuizAPI.adminImageAPI(), "DELETE", { imageId: id });
+		getLatestImages(`${StyleQuizAPI.adminGetImagesAPI()}/${styleId}`);
 	};
 
 	const handleUpload = e => {
@@ -103,11 +101,24 @@ export default function ImageList({ query }) {
 	const uploadImage = async images => {
 		setLoader(true);
 		const formData = multiFileUploader(images);
-		const resData = await modifyFormDataResource(adminImageEndpoint, "POST", formData);
+		const resData = await modifyFormDataResource(StyleQuizAPI.adminImageAPI(), "POST", formData);
 		const { imageId } = resData;
-		showModal(imageId);
-		getLatestImages("/quiz/v1/images");
+		getLatestImages(StyleQuizAPI.getAllImagesAPI());
 		setLoader(false);
+		if (images.length === 1) {
+			showModal(imageId);
+		}
+	};
+
+	const updateStatus = async (checked, id) => {
+		const newState = images.map(item => {
+			if (item.id === id) {
+				return { ...item, active: checked };
+			}
+			return { ...item };
+		});
+		setImages(newState);
+		await updateResource(StyleQuizAPI.adminImageAPI(), "PUT", { imageId: id, active: checked ? "yes" : "no" });
 	};
 
 	const showModal = id => {
@@ -172,6 +183,7 @@ export default function ImageList({ query }) {
 												onChange={handleUpload}
 												type='file'
 												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+												multiple
 											/>
 										</Button>
 									</Col>
@@ -185,7 +197,12 @@ export default function ImageList({ query }) {
 											<Col sm={12} md={8} lg={8}>
 												<Card
 													actions={[
-														<Switch checkedChildren='Active' unCheckedChildren='Inactive' />,
+														<Switch
+															checked={item?.active}
+															checkedChildren='Active'
+															unCheckedChildren='Inactive'
+															onChange={checked => updateStatus(checked, item?.id)}
+														/>,
 														<Button type='link' onClick={() => showModal(item?.id)}>
 															Add Scores
 														</Button>,
