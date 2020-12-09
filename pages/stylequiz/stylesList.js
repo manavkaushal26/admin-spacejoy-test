@@ -52,6 +52,8 @@ export default function StylesList() {
 	const [styleImageUrl, setStyleImage] = useState("");
 	const [styleImageObject, setStyleImageObject] = useState({});
 	const textareaRef = useRef(null);
+	const [filteredData, setFilteredData] = useState(null);
+
 	useEffect(() => {
 		setLoader(true);
 		styleFetcher(StyleQuizAPI.getStylesAPI(), "GET")
@@ -59,7 +61,7 @@ export default function StylesList() {
 				setStylesData(res.data);
 				setLoader(false);
 			})
-			.catch(err => console.log(err))
+			.catch(() => notification.error({ message: "Failed to fetch styles" }))
 			.finally(() => {
 				setLoader(false);
 			});
@@ -74,7 +76,6 @@ export default function StylesList() {
 			});
 		} catch {
 			throw new Error();
-		} finally {
 		}
 	};
 
@@ -156,7 +157,7 @@ export default function StylesList() {
 				setIcons(res.data);
 				setLoader(false);
 			})
-			.catch(err => console.log(err))
+			.catch(() => notification.error({ message: "Failed to fetch style quiz icons" }))
 			.finally(() => {
 				setLoader(false);
 			});
@@ -182,6 +183,14 @@ export default function StylesList() {
 		await updateResource(StyleQuizAPI.modifyStyleIconsAPI(), "DELETE", { styleIconId: id });
 		setLoader(false);
 	};
+
+	const search = value => {
+		const filteredList = value
+			? [...styles].filter(style => style.name.toLowerCase().includes(value.toLowerCase()))
+			: null;
+		setFilteredData(filteredList);
+	};
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -199,7 +208,18 @@ export default function StylesList() {
 					<br></br>
 					<Row gutter={[0, 16]}>
 						<Col span={24}>
-							<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={styles}>
+							<Input.Search
+								style={{ border: "2p", margin: "0 0 10px 0" }}
+								placeholder='Search by style name ...'
+								enterButton
+								onSearch={search}
+							/>
+							<Table
+								loading={isLoading}
+								rowKey='_id'
+								scroll={{ x: 768 }}
+								dataSource={filteredData ? filteredData : styles}
+							>
 								<Table.Column
 									key='_id'
 									title='Style Name'
