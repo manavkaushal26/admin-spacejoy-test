@@ -1,10 +1,10 @@
 import SectionHeader from "@sections/SectionHeader";
 import fetcher from "@utils/fetcher";
+import { updateResource } from "@utils/styleQuizHelper";
 import { Button, Col, Modal, notification, Row, Select, Table } from "antd";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { updateResource } from "./helper";
 const ScoreBox = styled.input`
 	padding: 5px;
 	border: 1px solid #efefef;

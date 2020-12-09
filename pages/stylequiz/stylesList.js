@@ -7,11 +7,13 @@ import {
 	PlusOutlined,
 	UploadOutlined,
 } from "@ant-design/icons";
+import * as StyleQuizAPI from "@api/styleQuizApis";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { redirectToLocation } from "@utils/authContext";
 import chatFetcher from "@utils/chatFetcher";
+import { styleFetcher, updateResource } from "@utils/styleQuizHelper";
 import {
 	Button,
 	Col,
@@ -30,8 +32,6 @@ import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { styleFetcher, updateResource } from "./helper";
-import * as StyleQuizAPI from "./styleQuizApis";
 const { Title, Text } = Typography;
 const { TextArea } = Input;
 const EditIcon = styled(Button)`

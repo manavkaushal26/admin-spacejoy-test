@@ -1,15 +1,15 @@
 import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
+import * as StyleQuizAPI from "@api/styleQuizApis";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
+import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "@utils/styleQuizHelper";
 import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "./helper";
-import * as StyleQuizAPI from "./styleQuizApis";
 const { Title } = Typography;
 const StyledInput = styled(Input)`
 	opacity: 0;
