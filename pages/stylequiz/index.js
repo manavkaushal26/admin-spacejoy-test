@@ -2,7 +2,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { Role } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
-import useAuth, { redirectToLocation } from "@utils/authContext";
+import useAuth, { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
 import { Card, Col, Input, notification, Row, Typography } from "antd";
@@ -69,7 +69,7 @@ const MetaCards = [
 	},
 ];
 
-export default function StyleQuiz() {
+function StyleQuiz() {
 	const Router = useRouter();
 	const [searchText, setSearchText] = useState("");
 	const { user: authVerification } = useAuth();
@@ -144,3 +144,4 @@ export default function StyleQuiz() {
 		</PageLayout>
 	);
 }
+export default ProtectRoute(StyleQuiz);

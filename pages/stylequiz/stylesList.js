@@ -5,6 +5,7 @@ import {
 	FileImageOutlined,
 	LoadingOutlined,
 	PlusOutlined,
+	UploadOutlined,
 } from "@ant-design/icons";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
@@ -15,6 +16,7 @@ import {
 	Button,
 	Col,
 	Input,
+	message,
 	Modal,
 	notification,
 	Popconfirm,
@@ -62,9 +64,10 @@ export default function StylesList() {
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [modalType, setModalType] = useState("");
 	const [activeStyle, setActiveStyle] = useState({});
-	const [styleImageUrl, setStyleImage] = useState("");
 	const [styleImageObject, setStyleImageObject] = useState({});
 	const textareaRef = useRef(null);
+	const [filteredData, setFilteredData] = useState(null);
+
 	useEffect(() => {
 		setLoader(true);
 		styleFetcher(StyleQuizAPI.getStylesAPI(), "GET")
@@ -72,7 +75,7 @@ export default function StylesList() {
 				setStylesData(res.data);
 				setLoader(false);
 			})
-			.catch(err => console.log(err))
+			.catch(() => notification.error({ message: "Failed to fetch styles" }))
 			.finally(() => {
 				setLoader(false);
 			});
@@ -109,26 +112,6 @@ export default function StylesList() {
 		setModalVisibility(false);
 	};
 
-	const getBase64 = (img, callback) => {
-		const reader = new FileReader();
-		reader.addEventListener("load", () => callback(reader.result));
-		reader.readAsDataURL(img);
-	};
-
-	const handleUpload = info => {
-		if (info.file.status === "uploading") {
-			setLoader(true);
-			return;
-		}
-		if (info.file.status === "done") {
-			setStyleImageObject(info?.fileList[0]);
-			getBase64(info.file.originFileObj, imageUrl => {
-				setStyleImage(imageUrl);
-				setLoader(false);
-			});
-		}
-	};
-
 	const saveStyleInfo = async () => {
 		setLoader(true);
 		const formData = new FormData();
@@ -141,7 +124,7 @@ export default function StylesList() {
 		} catch (err) {
 			notification.error({ message: err });
 		}
-		setStyleImage("");
+		setStyleImageObject("");
 		textareaRef.current.state.value = "";
 		setLoader(false);
 	};
@@ -159,7 +142,7 @@ export default function StylesList() {
 				setIcons(res.data);
 				setLoader(false);
 			})
-			.catch(err => console.log(err))
+			.catch(() => notification.error({ message: "Failed to fetch style quiz icons" }))
 			.finally(() => {
 				setLoader(false);
 			});
@@ -186,6 +169,36 @@ export default function StylesList() {
 		setLoader(false);
 		getIcons(activeStyle?.id);
 	};
+
+	const search = value => {
+		const filteredList = value
+			? [...styles].filter(style => style.name.toLowerCase().includes(value.toLowerCase()))
+			: null;
+		setFilteredData(filteredList);
+	};
+
+	const props = {
+		name: "file",
+		action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+		headers: {
+			authorization: "authorization-text",
+		},
+		onChange(info) {
+			if (info.file.status !== "uploading") {
+				console.log(info.file, info.fileList);
+			}
+			if (info.file.status === "done") {
+				setStyleImageObject(info.fileList);
+				message.success(`${info.file.name} file uploaded successfully`);
+			} else if (info.file.status === "error") {
+				message.error(`${info.file.name} file upload failed.`);
+			}
+		},
+		beforeUpload() {
+			return false;
+		},
+	};
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -203,7 +216,18 @@ export default function StylesList() {
 					<br></br>
 					<Row gutter={[0, 16]}>
 						<Col span={24}>
-							<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={styles}>
+							<Input.Search
+								style={{ border: "2p", margin: "0 0 10px 0" }}
+								placeholder='Search by style name ...'
+								enterButton
+								onSearch={search}
+							/>
+							<Table
+								loading={isLoading}
+								rowKey='_id'
+								scroll={{ x: 768 }}
+								dataSource={filteredData ? filteredData : styles}
+							>
 								<Table.Column
 									key='_id'
 									title='Style Name'
@@ -306,17 +330,10 @@ export default function StylesList() {
 								<div className='flex'>
 									<span>Upload Image</span>
 									<br></br>
-									<Upload
-										name='avatar'
-										listType='picture-card'
-										className='avatar-uploader'
-										showUploadList={false}
-										action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
-										onChange={handleUpload}
-										accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
-									>
-										{styleImageUrl ? <img src={styleImageUrl} alt='avatar' style={{ width: "100%" }} /> : uploadButton}
+									<Upload {...props}>
+										<Button icon={<UploadOutlined />}>Click to Upload</Button>
 									</Upload>
+									,
 								</div>
 							</ModalContent>
 						) : (
