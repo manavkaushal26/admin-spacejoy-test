@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import Image from "@components/Image";
 import fetcher from "@utils/fetcher";
 import { Card } from "antd";
-import Image from "@components/Image";
+import React, { useEffect, useState } from "react";
 
 interface LogObject {
 	isActive: boolean;
@@ -53,11 +53,13 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 	const fetchResults = async (userId: string): Promise<void> => {
 		const userStyleQuizResponse = await fetchUserStyleResponse(userId);
 		if (userStyleQuizResponse) {
+			console.log(userStyleQuizResponse);
 			const quizResultLog = await fetchUserQuizLog(userStyleQuizResponse);
 			setUserStyleLogs(quizResultLog);
 		}
 	};
 	useEffect(() => {
+		console.log("user id", userId);
 		if (userId) {
 			fetchResults(userId);
 		}

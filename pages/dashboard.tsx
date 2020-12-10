@@ -1,6 +1,7 @@
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
+import SQResponse from "@sections/Dashboard/userProjectMainPanel/ProjectDesignInteractionPanel/StyleQuizResponse";
 import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
 import { UserProjectSidePanelInitialState } from "@sections/Dashboard/UserProjectSidepanel/reducer";
 import { PaddedDiv } from "@sections/Header/styled";
@@ -15,7 +16,6 @@ import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import SQResponse from "@sections/Dashboard/userProjectMainPanel/ProjectDesignInteractionPanel/StyleQuizResponse";
 
 const GreyDiv = styled.div`
 	background-color: ${({ theme }) => theme.colors.bg.light1};
@@ -78,6 +78,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
 	const setCurrentUserId = (user: string): void => {
+		console.log("user id is ---", user);
 		setCurrentUser(user);
 	};
 	const [projectPhaseUpdateValue, setProjectPhaseUpdateValue] = useState<{

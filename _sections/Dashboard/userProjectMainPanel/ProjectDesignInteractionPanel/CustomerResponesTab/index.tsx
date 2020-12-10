@@ -8,7 +8,6 @@ import DetailedCustomerRequirement from "../DetailedCustomerRequirement";
 interface CustomerResponsesTab {
 	projectData: DetailedProject;
 	userStyleQuizResult?: React.ReactNode;
-
 }
 
 const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData, userStyleQuizResult }) => {
