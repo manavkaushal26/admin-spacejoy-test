@@ -49,7 +49,6 @@ const multiFileUploader = files => {
 	for (let i = 0; i < files.length; i++) {
 		formData.append("image", files[i]);
 	}
-	console.log("formData", formData);
 	return formData;
 };
 

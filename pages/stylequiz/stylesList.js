@@ -63,15 +63,15 @@ export default function StylesList() {
 	const [isModalVisible, setModalVisibility] = useState(false);
 	const [modalType, setModalType] = useState("");
 	const [activeStyle, setActiveStyle] = useState({});
-	const [styleImageObject, setStyleImageObject] = useState({});
 	const textareaRef = useRef(null);
 	const [filteredData, setFilteredData] = useState(null);
 
 	// image filelist
 	const [imageList, setImages] = useState({});
 
-	useEffect(() => {
+	const getStyles = () => {
 		setLoader(true);
+		setStylesData([]);
 		styleFetcher(StyleQuizAPI.getStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
@@ -81,6 +81,10 @@ export default function StylesList() {
 			.finally(() => {
 				setLoader(false);
 			});
+	};
+
+	useEffect(() => {
+		getStyles();
 	}, []);
 
 	const handleToggle = async (checked, id) => {
@@ -125,9 +129,14 @@ export default function StylesList() {
 		} catch (err) {
 			notification.error({ message: err });
 		}
-		setStyleImageObject("");
-		textareaRef.current.state.value = "";
+		flushData();
 		setLoader(false);
+	};
+
+	const flushData = () => {
+		textareaRef.current.state.value = "";
+		setImages({});
+		getStyles();
 	};
 
 	const uploadButton = (
@@ -250,6 +259,7 @@ export default function StylesList() {
 											&nbsp;&nbsp;&nbsp;
 										</span>
 									)}
+									width='10%'
 								/>
 								<Table.Column
 									key='id'
@@ -304,7 +314,7 @@ export default function StylesList() {
 					</Row>
 				</LoudPaddingDiv>
 				<Modal
-					title='Edit Style'
+					title={activeStyle ? `Edit Style for ${activeStyle?.name}` : ""}
 					visible={isModalVisible}
 					onOk={() => handleModalOk("style-modal")}
 					onCancel={() => setModalVisibility(false)}

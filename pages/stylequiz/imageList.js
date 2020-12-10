@@ -1,10 +1,10 @@
-import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, DeleteOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import * as StyleQuizAPI from "@api/styleQuizApis";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "@utils/styleQuizHelper";
-import { Button, Card, Checkbox, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
+import { Button, Card, Checkbox, Col, Input, Popconfirm, Row, Select, Spin, Switch, Tooltip, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
@@ -36,33 +36,40 @@ export default function ImageList({ query }) {
 	const [styles, setStylesData] = useState([]);
 	const [isTaggedStatus, setIsTaggedStatus] = useState(false);
 	const [isLoading, setLoader] = useState(false);
+	const [isCheckboxVisible, setCheckboxVisibility] = useState(false);
 	const Router = useRouter();
 
 	const getLatestImages = endPoint => {
 		styleFetcher(endPoint)
 			.then(res => {
-				console.log(res);
 				setImages(res.images);
 			})
-			.catch(err => console.log(err))
-			.finally(() => {});
+			.catch(err => {
+				throw new Error();
+			});
 	};
 
 	const handleChange = value => {
 		if (value === "all") {
 			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
+			setCheckboxVisibility(true);
+			setIsTaggedStatus(false);
 		} else {
 			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: value } }, `/stylequiz/imageList/${value}`);
+			setCheckboxVisibility(false);
 		}
 	};
 
 	useEffect(() => {
+		setCheckboxVisibility(true);
 		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
 				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
 			})
-			.catch(err => console.log(err));
+			.catch(err => {
+				throw new Error();
+			});
 	}, []);
 
 	useEffect(() => {
@@ -146,10 +153,11 @@ export default function ImageList({ query }) {
 		}
 		styleFetcher(endPoint, "GET")
 			.then(res => {
-				// console.log("res", res);
 				setImages(res.images);
 			})
-			.catch(err => console.log(err));
+			.catch(err => {
+				throw new Error();
+			});
 	};
 
 	return (
@@ -196,10 +204,16 @@ export default function ImageList({ query }) {
 										)}
 									</Col>
 									<Col sm={24} md={6} style={{ padding: 15 }}>
-										<Checkbox checked={isTaggedStatus} onChange={changeTaggedStatus}>
-											Show Untagged Images
-										</Checkbox>
-										,
+										{isCheckboxVisible ? (
+											<>
+												<Checkbox checked={isTaggedStatus} onChange={changeTaggedStatus}>
+													Show Untagged Images
+												</Checkbox>
+												<Tooltip title='See all the room images without scores.'>
+													<InfoCircleOutlined></InfoCircleOutlined>
+												</Tooltip>
+											</>
+										) : null}
 									</Col>
 									<Col sm={24} md={12} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
@@ -221,7 +235,7 @@ export default function ImageList({ query }) {
 										.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
 										.map(item => {
 											return (
-												<Col sm={12} md={8} lg={8}>
+												<Col sm={12} md={8} lg={8} key={item?.id}>
 													<Card
 														actions={[
 															<Switch

@@ -1,14 +1,14 @@
-import { ArrowLeftOutlined, DeleteOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import * as StyleQuizAPI from "@api/styleQuizApis";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import fetcher from "@utils/fetcher";
 import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "@utils/styleQuizHelper";
-import { Button, Card, Col, Input, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
+import { Button, Card, Col, Input, Modal, Popconfirm, Row, Select, Spin, Switch, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 const { Title } = Typography;
 const StyledInput = styled(Input)`
@@ -33,6 +33,10 @@ export default function ProductsList({ query }) {
 	const [products, setProducts] = useState([]);
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
+	const [selectedProduct, setSelectedProduct] = useState({});
+	const [isChecked, setChecked] = useState(false);
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const inputAreaRef = useRef(null);
 	const Router = useRouter();
 	const fetchResources = async endPoint => {
 		try {
@@ -95,21 +99,6 @@ export default function ProductsList({ query }) {
 		uploadProduct(e.target.files);
 	};
 
-	const updateStatus = async (checked, id, mongoId) => {
-		const newState = products.map(item => {
-			if (item.id === id) {
-				return { ...item, active: checked };
-			}
-			return { ...item };
-		});
-		setProducts(newState);
-		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
-			productId: id,
-			active: checked ? "yes" : "no",
-			mongoId,
-		});
-	};
-
 	const uploadProduct = async images => {
 		setLoader(true);
 		const endPoint = `${StyleQuizAPI.postProductsAPI()}/${styleId}`;
@@ -118,6 +107,39 @@ export default function ProductsList({ query }) {
 		getLatestProducts(styleId);
 		setLoader(false);
 	};
+
+	const handleToggle = (checked, id) => {
+		const newState = products.map(item => {
+			if (item.id === id) {
+				return { ...item, active: checked };
+			}
+			return { ...item };
+		});
+		setProducts(newState);
+		setChecked(checked);
+	};
+
+	const showModal = item => {
+		setIsModalVisible(true);
+		setSelectedProduct(item);
+	};
+
+	const onOk = () => {
+		updateProductDetails();
+		setIsModalVisible(false);
+	};
+
+	const updateProductDetails = async () => {
+		console.log("isChecked", isChecked);
+		const mongoId = inputAreaRef?.current?.value ? inputAreaRef.current.value : "";
+
+		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
+			productId: selectedProduct?.id,
+			active: isChecked ? "yes" : "no",
+			mongoId,
+		});
+	};
+
 	console.log(products);
 	return (
 		<PageLayout pageName='Styles List'>
@@ -176,12 +198,7 @@ export default function ProductsList({ query }) {
 											<Col sm={12} md={8} lg={6}>
 												<Card
 													actions={[
-														<Switch
-															checked={item?.active}
-															checkedChildren='Active'
-															unCheckedChildren='Inactive'
-															onChange={checked => updateStatus(checked, item?.id, item?.mongoId)}
-														/>,
+														<EditOutlined onClick={() => showModal(item)} />,
 														<Popconfirm
 															placement='top'
 															onConfirm={() => deleteProduct(item?.id)}
@@ -212,6 +229,25 @@ export default function ProductsList({ query }) {
 						</Wrapper>
 					</Spin>
 				</LoudPaddingDiv>
+				<Modal
+					title='Edit Description'
+					visible={isModalVisible}
+					onOk={onOk}
+					onCancel={() => setIsModalVisible(false)}
+					okText='Save'
+				>
+					<Input placeholder='Link/Add product ID' ref={inputAreaRef} />
+					<br></br>
+					<br></br>
+					<div>
+						<p>Is Active</p>
+						{console.log(selectedProduct)}
+						<Switch
+							checked={selectedProduct?.active}
+							onChange={checked => handleToggle(checked, selectedProduct?.id)}
+						/>
+					</div>
+				</Modal>
 			</MaxHeightDiv>
 		</PageLayout>
 	);

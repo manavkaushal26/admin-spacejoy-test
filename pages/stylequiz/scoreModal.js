@@ -95,8 +95,9 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 			.then(res => {
 				filterScoresData(res.scores);
 			})
-			.catch(err => console.log(err))
-			.finally(() => {});
+			.catch(err => {
+				throw new Error();
+			});
 	};
 
 	const getStyleName = id => {
@@ -199,7 +200,14 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		setScores(updatedScores);
 	};
 	return (
-		<Modal title='Scores' visible={isModalVisible} onOk={handleModalOk} onCancel={handleModalCancel} width={1000}>
+		<Modal
+			title='Scores'
+			visible={isModalVisible}
+			onOk={handleModalOk}
+			onCancel={handleModalCancel}
+			width={1000}
+			footer={null}
+		>
 			<Wrapper>
 				<Table rowKey='_id' scroll={{ x: 768 }} dataSource={scores}>
 					<Table.Column
@@ -257,9 +265,14 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 					style={{ width: "100%" }}
 					onChange={record => handleChange(record)}
 					defaultValue='--'
+					onSelect={record => handleChange(record)}
 				>
 					{styles.map((style, index) => {
-						return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
+						return (
+							<Select.Option key={style?.id} value={style?.id}>
+								{style?.name}
+							</Select.Option>
+						);
 					})}
 				</Select>
 				<Modal visible={isEditModal} onOk={handleEditModalOk} onCancel={handleEditModalCancel}>
@@ -268,7 +281,6 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 						<br></br>
 						<span>Add Score</span>
 						&nbsp;&nbsp;
-						{console.log("pavlo")}
 						<input className='score-input' type='number' ref={inputEl} />
 						<div>
 							<br></br>
