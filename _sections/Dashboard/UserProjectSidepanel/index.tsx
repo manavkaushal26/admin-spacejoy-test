@@ -13,19 +13,41 @@ import ProjectInfiniteLoaderWrapper from "./ProjectInfiniteLoaderWrapper";
 import { SortFields, UserProjectSidePanelState } from "./reducer";
 import TabSearch from "./TabSearch";
 
-export const getProjectSearchBody = (
-	nameSearchText: string,
-	designerSearchText: string,
-	phase: PhaseInternalNames[],
-	roomName: string,
-	by: SortFields,
-	order: -1 | 1,
-	startedAt: [Moment, Moment],
-	endedAt: [Moment, Moment],
-	status: Status,
-	email: string,
-	quizStatus: string
-): Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string> => {
+interface GetProjectSearchBodyType {
+	nameSearchText: string;
+	designerSearchText: string;
+	phase: PhaseInternalNames[];
+	designPhase: PhaseInternalNames[];
+	roomName: string;
+	by: SortFields;
+	order: -1 | 1;
+	startedAt: [Moment, Moment];
+	endedAt: [Moment, Moment];
+	status: Status;
+	email: string;
+	quizStatus: string;
+	skip?: number;
+	limit?: number;
+}
+
+export const getProjectSearchBody = ({
+	nameSearchText,
+	designerSearchText,
+	phase,
+	designPhase,
+	roomName,
+	by,
+	order,
+	startedAt,
+	endedAt,
+	status,
+	email,
+	quizStatus,
+	skip,
+	limit,
+}: GetProjectSearchBodyType): {
+	filter: Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string | PhaseInternalNames[]>;
+} => {
 	const startedAtMap = startedAt?.map(value => {
 		if (value !== null) {
 			return value.format();
@@ -39,30 +61,34 @@ export const getProjectSearchBody = (
 		}
 		return null;
 	});
-
 	const body = {
-		"customerName": { search: "single", value: nameSearchText },
-		"team.member": { search: "single", value: designerSearchText },
-		"currentPhase.name.internalName": { search: "array", value: phase },
-		"status": { search: "single", value: status },
-		"name": {
-			search: "single",
-			value: roomName,
+		filter: {
+			"designPhases": designPhase,
+			"customerName": { search: "single", value: nameSearchText },
+			"team.member": { search: "single", value: designerSearchText },
+			"currentPhase.name.internalName": { search: "array", value: phase },
+			"status": { search: "single", value: status },
+			"name": {
+				search: "single",
+				value: roomName,
+			},
+			"startedAt": {
+				search: "range",
+				value: startedAtMap,
+			},
+			"endedAt": {
+				search: "range",
+				value: endedAtMap,
+			},
+			"email": email,
+			...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
 		},
-		"sort": {
+		sort: {
 			by,
 			order: order.toString(),
 		},
-		"startedAt": {
-			search: "range",
-			value: startedAtMap,
-		},
-		"endedAt": {
-			search: "range",
-			value: endedAtMap,
-		},
-		"email": email,
-		...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
+		skip,
+		limit,
 	};
 	return body;
 };
@@ -119,26 +145,28 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 
 	const loadMoreItems = async (startIndex, endIndex): Promise<void> => {
 		setLoading(true);
-		const endPoint = `${searchProjectsApi()}?skip=${startIndex}&limit=${endIndex - startIndex + 1}`;
-		const body = getProjectSearchBody(
-			state.nameSearchText,
-			state.designerSearchText,
-			state.phase,
-			state.name,
-			state.sortBy,
-			state.sortOrder,
-			state.startedAt,
-			state.endedAt,
-			state.status,
-			state.email,
-			state.quizStatus
-		);
+		const endPoint = `${searchProjectsApi()}`;
+		const body = getProjectSearchBody({
+			nameSearchText: state.nameSearchText,
+			designerSearchText: state.designerSearchText,
+			phase: state.phase,
+			designPhase: state.designPhase,
+			roomName: state.name,
+			by: state.sortBy,
+			order: state.sortOrder,
+			startedAt: state.startedAt,
+			endedAt: state.endedAt,
+			status: state.status,
+			email: state.email,
+			quizStatus: state.quizStatus,
+			skip: startIndex,
+			limit: endIndex - startIndex + 1,
+		});
+
 		const resData = await fetcher({
 			endPoint,
 			method: "POST",
-			body: {
-				data: body,
-			},
+			body: body,
 		});
 		const copyData = [...data];
 		if (resData.statusCode <= 300) {
@@ -170,7 +198,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	const onSearchSubmit = (): void => {
 		setCount(0);
 		setData([]);
-		loadMoreItems(0, 299);
+		loadMoreItems(0, 149);
 		toggleDrawer();
 	};
 
@@ -182,7 +210,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			if (!loading) {
 				setCount(0);
 				setData([]);
-				loadMoreItems(0, 299);
+				loadMoreItems(0, 149);
 			}
 		}
 	}, [changedState]);
