@@ -314,6 +314,7 @@ export interface DetailedProject {
 	updatedAt: string;
 	startedAt: string;
 	isDelivered: boolean;
+	pause: boolean;
 	delay: {
 		isDelayed: boolean;
 		minDurationInMs: number;

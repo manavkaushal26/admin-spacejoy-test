@@ -11,7 +11,7 @@ import {
 import { Status } from "@customTypes/userType";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
+import { Button, Checkbox, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
@@ -39,6 +39,8 @@ const TabSearch: React.FC<{
 	const [fetching, setFetching] = useState<boolean>(false);
 	const [selectDesigner, setSelectDesigner] = useState<string>();
 	const [isRevisionFilterApplied, setRevisionFilter] = useState<boolean>(false);
+	const [pausedProjectFilter, setPausedProjectFilter] = useState<boolean>(false);
+
 	const fetchDesignerNames = async (): Promise<void> => {
 		const endPoint = `${userApi()}?limit=50`;
 		setFetching(true);
@@ -176,6 +178,15 @@ const TabSearch: React.FC<{
 
 	const handleSwitchChange = value => {
 		setRevisionFilter(value);
+	};
+
+	const handleProjectFilterChange = e => {
+		const currValue = e.target.checked;
+		setPausedProjectFilter(currValue);
+		setState({
+			...state,
+			pause: currValue as boolean,
+		});
 	};
 
 	useEffect(() => {
@@ -344,13 +355,18 @@ const TabSearch: React.FC<{
 					</Col>
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
-							<Col span={24}>
+							<Col span={12}>
 								<Switch
 									onChange={handleSwitchChange}
 									checkedChildren='Revision'
 									unCheckedChildren='New Project'
 									checked={isRevisionFilterApplied}
 								/>
+							</Col>
+							<Col span={12}>
+								<Checkbox onChange={e => handleProjectFilterChange(e)} checked={pausedProjectFilter}>
+									Paused Projects
+								</Checkbox>
 							</Col>
 						</Row>
 					</Col>

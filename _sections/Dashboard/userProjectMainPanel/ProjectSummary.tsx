@@ -1,7 +1,14 @@
-import { CheckCircleTwoTone, CloseCircleTwoTone, LoadingOutlined } from "@ant-design/icons";
+import {
+	CheckCircleTwoTone,
+	CloseCircleTwoTone,
+	LoadingOutlined,
+	PauseCircleOutlined,
+	PlayCircleOutlined,
+} from "@ant-design/icons";
 import { delayProjectApi, editProjectApi, startProjectApi } from "@api/projectApi";
 import ProgressBar from "@components/ProgressBar";
 import { DetailedProject, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import PauseProjectModal from "@sections/Dashboard/ProjectPauseModal";
 import {
 	convertDaysToMilliseconds,
 	convertMillisecondsToDays,
@@ -14,8 +21,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { getTagColor, StyledTag } from "../styled";
-
+import { getTagColor, StyledTag, StyledTagInteractive } from "../styled";
 const { Title, Text } = Typography;
 
 interface ProjectSummaryProps {
@@ -34,6 +40,55 @@ const VerticallyPaddedDiv = styled.div`
 
 const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProjectData }): JSX.Element => {
 	// const { phase, task, status, avatar, name } = userProjectData;
+	const [projectPauseStatus, setProjectPauseStatus] = useState(false);
+	const [isPauseModalOpen, setPauseModalFlag] = useState(false);
+	const togglePauseModal = () => {
+		setPauseModalFlag(!isPauseModalOpen);
+	};
+	const closePauseModal = () => {
+		setPauseModalFlag(false);
+	};
+	const updateProjectStatus = async (designerComment: string) => {
+		const { _id: id } = projectData;
+		const endPoint = `/v1/projects/${id}/pauseEvents`;
+		const body = {
+			...(designerComment.length && { comment: designerComment }),
+			pause: !projectPauseStatus,
+			adjustDelivery: true,
+		};
+		try {
+			const res = await fetcher({ endPoint, method: "POST", body });
+
+			const { data, statusCode } = res;
+			if (statusCode <= 301) {
+				setProjectPauseStatus(!projectPauseStatus);
+				const successText = projectPauseStatus ? "resume" : "pause";
+				notification.open({
+					key: "Pause",
+					message: "Successful",
+					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
+					description: `Project ${successText}d successfully`,
+				});
+			} else {
+				const { message } = data;
+				throw new Error(message);
+			}
+		} catch (e) {
+			notification.open({
+				key: "Pause",
+				message: "Failure",
+				icon: <CloseCircleTwoTone twoToneColor='#f5222d' />,
+				description: e.message,
+			});
+		} finally {
+			setPauseModalFlag(false);
+		}
+	};
+
+	useEffect(() => {
+		setProjectPauseStatus(projectData.pause);
+	}, [projectData.pause]);
+
 	const {
 		name: room,
 		status,
@@ -46,7 +101,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		},
 		isDelivered,
 	} = projectData;
-
+	console.log(projectData);
 	const [roomNameLoading, setRoomNameLoading] = useState<boolean>(false);
 
 	const router = useRouter();
@@ -213,6 +268,28 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 						</Col>
 					</Row>
 				</Col>
+				{endTime && (
+					<Col>
+						<Row gutter={[4, 4]}>
+							<Col>
+								<div onClick={togglePauseModal}>
+									{projectPauseStatus ? (
+										<StyledTagInteractive>
+											<PlayCircleOutlined />
+											<span>Resume Project</span>
+										</StyledTagInteractive>
+									) : (
+										<StyledTagInteractive>
+											<PauseCircleOutlined />
+											<span>Pause Project</span>
+										</StyledTagInteractive>
+									)}
+								</div>
+							</Col>
+						</Row>
+					</Col>
+				)}
+
 				<Col>
 					<Row gutter={[4, 4]}>
 						<Col>
@@ -223,6 +300,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 						</Col>
 					</Row>
 				</Col>
+
 				<Col>
 					{endTime ? (
 						<Row align='middle' gutter={[16, 8]}>
@@ -314,6 +392,12 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					</Text>
 				</Col>
 			</Row>
+			<PauseProjectModal
+				visible={isPauseModalOpen}
+				onOk={updateProjectStatus}
+				onCancel={closePauseModal}
+				currentPauseStatus={projectPauseStatus}
+			/>
 		</VerticallyPaddedDiv>
 	);
 };

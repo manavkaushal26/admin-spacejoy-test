@@ -69,6 +69,16 @@ export const StyledTag = styled(Tag)`
 	text-transform: capitalize;
 	text-align: center;
 `;
+export const StyledTagInteractive = styled(StyledTag)`
+	cursor: pointer;
+	displa: flex;
+	align-items: center;
+	border-radius: 4px;
+	span {
+		display: inline-block;
+		margin-left: 4px;
+	}
+`;
 
 export const VerticalPaddedDiv = styled.div`
 	padding: 1rem 0;

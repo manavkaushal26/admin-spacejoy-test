@@ -28,6 +28,7 @@ interface GetProjectSearchBodyType {
 	quizStatus: string;
 	skip?: number;
 	limit?: number;
+	pause?: boolean;
 }
 
 export const getProjectSearchBody = ({
@@ -45,8 +46,12 @@ export const getProjectSearchBody = ({
 	quizStatus,
 	skip,
 	limit,
+	pause,
 }: GetProjectSearchBodyType): {
-	filter: Record<string, Record<string, string | PhaseInternalNames[] | string[]> | string | PhaseInternalNames[]>;
+	filter: Record<
+		string,
+		Record<string, string | PhaseInternalNames[] | string[] | boolean> | string | PhaseInternalNames[]
+	>;
 } => {
 	const startedAtMap = startedAt?.map(value => {
 		if (value !== null) {
@@ -79,6 +84,10 @@ export const getProjectSearchBody = ({
 			"endedAt": {
 				search: "range",
 				value: endedAtMap,
+			},
+			"pause": {
+				search: "single",
+				value: pause,
 			},
 			"email": email,
 			...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
@@ -159,6 +168,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			quizStatus: state.quizStatus,
 			skip: startIndex,
 			limit: endIndex - startIndex + 1,
+			pause: state.pause,
 		});
 
 		const resData = await fetcher({

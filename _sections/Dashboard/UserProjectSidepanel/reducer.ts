@@ -21,6 +21,7 @@ export interface UserProjectSidePanelState {
 	endedAt: [moment.Moment, moment.Moment];
 	email: string;
 	quizStatus: QuizState;
+	pause: boolean;
 }
 
 export enum UserProjectSidePanelActionTypes {
@@ -81,6 +82,7 @@ export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	endedAt: [null, null],
 	email: "",
 	quizStatus: null,
+	pause: false,
 };
 
 export const UserProjectSidePanelActionCreator = (
