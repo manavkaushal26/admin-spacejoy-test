@@ -76,7 +76,7 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 					{viewImages.map(image => (
 						<Row key={image}>
 							<Col span={24}>
-								<Image preview width='100%' src={image} />
+								<Image preview width='100%' src={`w_auto/${image}`} />
 							</Col>
 							<Col span={24}>
 								<Row justify='center' gutter={[4, 4]}>

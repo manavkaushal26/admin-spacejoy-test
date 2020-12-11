@@ -114,7 +114,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 		>
 			<Row>
 				<Col sm={24} md={16}>
-					{imageCdn && <Image width='100%' alt='Blog Image' src={imageCdn} />}
+					{imageCdn && <Image width='100%' alt='Blog Image' src={`${imageCdn}`} />}
 				</Col>
 				<Col sm={24} md={8}>
 					<FullHeightRight>

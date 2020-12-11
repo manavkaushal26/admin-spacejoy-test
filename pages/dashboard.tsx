@@ -14,20 +14,12 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Router from "next/router";
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 
-const GreyDiv = styled.div`
-	background-color: ${({ theme }) => theme.colors.bg.light1};
-`;
 interface DashboardProps {
 	projectId: string;
 	designId: string;
 	currentTab: string;
 }
-
-const WhiteBorderMaxHeightDiv = styled(MaxHeightDiv)`
-	border-left: 1px solid white;
-`;
 
 const handleResize = (setIsDesktop): void => {
 	if (typeof window !== "undefined") {

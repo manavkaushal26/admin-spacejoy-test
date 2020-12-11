@@ -2,7 +2,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import { searchOrdersApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatus, EcommOrder } from "@customTypes/ecommerceTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
-import AllOrderTable from "@sections/Ecommerce/OrdertTracking/AllOrderTable";
+import AllOrderTable from "@sections/Ecommerce/OrderTracking/AllOrderTable";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";

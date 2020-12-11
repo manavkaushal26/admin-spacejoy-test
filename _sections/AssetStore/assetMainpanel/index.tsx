@@ -334,13 +334,13 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 									<Col>
 										<Image
 											height='200px'
-											src={getValueSafely(
+											src={`h_200,c_pad,ar_1/${getValueSafely(
 												() =>
 													primaryAsset?.productImages
 														? primaryAsset?.productImages[0]?.cdn
 														: undefined || primaryAsset.cdn,
 												""
-											)}
+											)}`}
 										/>
 									</Col>
 									<Col>

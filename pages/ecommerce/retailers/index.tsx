@@ -134,7 +134,9 @@ const Retailer: NextPage = () => {
 												<Link href={`/ecommerce/retailers/modifyretailer?id=${retailer._id}&mode=edit`}>
 													<Card
 														hoverable
-														cover={<Image height={164} src={retailer.logoCdn || ""} alt={retailer.name} />}
+														cover={
+															<Image height={164} src={`h_164,c_pad/${retailer.logoCdn || ""}`} alt={retailer.name} />
+														}
 													>
 														<Card.Meta title={retailer.name} />
 													</Card>

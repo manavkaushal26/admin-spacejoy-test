@@ -95,7 +95,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData }) => {
 								<Col key={image._id} sm={24} md={12} lg={8}>
 									<Row>
 										<Col span={24}>
-											<Image width='100%' preview src={`q_80/${image.cdn}`} />
+											<Image width='100%' preview src={`w_300/${image.cdn}`} />
 										</Col>
 										<Col span={24}>
 											<CustomDiv>

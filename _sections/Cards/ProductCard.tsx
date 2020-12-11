@@ -1,11 +1,11 @@
 import Button from "@components/Button";
+import { Assets } from "@customTypes/dashboardTypes";
+import { getValueSafely } from "@utils/commonUtils";
 import { removeSpaces } from "@utils/helper";
+import { Col, Row } from "antd";
 import Link from "next/link";
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Assets } from "@customTypes/dashboardTypes";
-import { Col, Row } from "antd";
-import { getValueSafely } from "@utils/commonUtils";
 
 const ProductCardRow = styled(Row)`
 	> * + * {
@@ -98,7 +98,7 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 						<Row align='middle'>
 							<Col span={24}>
 								<ProductImageWrapperStyled
-									url={`//res.cloudinary.com/spacejoy/image/upload/q_100,w_300/${getValueSafely(
+									url={`//res.cloudinary.com/spacejoy/image/upload/w_300/${getValueSafely(
 										() => item.asset.cdn,
 										"N/A"
 									)}`}

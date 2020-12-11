@@ -215,7 +215,7 @@ const RenderEngine: NextPage = () => {
 																		preview
 																		height='157.47px'
 																		width='100%'
-																		src={renders[0]}
+																		src={`h_157.47,c_pad/${renders[0]}`}
 																	/>
 																</Col>
 															</Row>
