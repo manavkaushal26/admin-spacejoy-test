@@ -121,23 +121,29 @@ export default function StylesList() {
 	const saveStyleInfo = async () => {
 		setLoader(true);
 		const formData = new FormData();
-		formData.append("image", imageList);
+		formData.append("image", Object.keys(imageList).length ? imageList : JSON.stringify([]));
 		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
 		formData.append("styleId", activeStyle?.id);
 		try {
-			await chatFetcher({ endPoint: StyleQuizAPI.updateStyleAPI(), method: "POST", body: formData });
+			await chatFetcher({ endPoint: StyleQuizAPI.getStylesAPI(), method: "PUT", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
 		flushData();
+		getStyles();
 		setLoader(false);
 	};
 
 	const flushData = () => {
-		textareaRef.current.state.value = "";
+		if (textareaRef?.current?.state) {
+			textareaRef.current.state.value = "";
+		}
 		setImages({});
-		getStyles();
 	};
+
+	useEffect(() => {
+		flushData();
+	}, [isModalVisible]);
 
 	const uploadButton = (
 		<div>
@@ -147,7 +153,7 @@ export default function StylesList() {
 	);
 
 	const getIcons = id => {
-		styleFetcher(`${StyleQuizAPI.getStyleIconsAPI()}/${id}`, "GET")
+		styleFetcher(`${StyleQuizAPI.getStyleIconsAPI(id)}`, "GET")
 			.then(res => {
 				setIcons(res.data);
 				setLoader(false);
@@ -201,6 +207,10 @@ export default function StylesList() {
 		},
 	};
 
+	const sortByDate = data => {
+		return [...data].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+	};
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -228,7 +238,7 @@ export default function StylesList() {
 								loading={isLoading}
 								rowKey='_id'
 								scroll={{ x: 768 }}
-								dataSource={filteredData ? filteredData : styles}
+								dataSource={filteredData ? sortByDate(filteredData) : sortByDate(styles)}
 							>
 								<Table.Column
 									key='_id'
@@ -336,7 +346,6 @@ export default function StylesList() {
 									<Upload {...props}>
 										<Button icon={<UploadOutlined />}>Click to Upload</Button>
 									</Upload>
-									,
 								</div>
 							</ModalContent>
 						) : (

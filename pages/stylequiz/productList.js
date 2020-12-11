@@ -61,7 +61,9 @@ export default function ProductsList({ query }) {
 					`/stylequiz/productList/${res.data[0]?.id}`
 				);
 			})
-			.catch(err => console.log(err));
+			.catch(err => {
+				throw new Error();
+			});
 	}, []);
 
 	useEffect(() => {
@@ -79,13 +81,15 @@ export default function ProductsList({ query }) {
 	};
 
 	const getLatestProducts = id => {
-		if (id) {
-			fetchResources(`${StyleQuizAPI.getProductsAPI()}/${id}`)
+		console.log(id);
+		if (id && id !== "undefined") {
+			fetchResources(`${StyleQuizAPI.getProductsAPI(id)}`)
 				.then(res => {
 					setProducts(res.products);
 				})
-				.catch(err => console.log(err))
-				.finally(() => {});
+				.catch(err => {
+					throw new Error();
+				});
 		}
 	};
 
@@ -101,7 +105,7 @@ export default function ProductsList({ query }) {
 
 	const uploadProduct = async images => {
 		setLoader(true);
-		const endPoint = `${StyleQuizAPI.postProductsAPI()}/${styleId}`;
+		const endPoint = `${StyleQuizAPI.getProductsAPI(styleId)}`;
 		const formData = multiFileUploader(images);
 		await modifyFormDataResource(endPoint, "POST", formData);
 		getLatestProducts(styleId);
@@ -129,18 +133,21 @@ export default function ProductsList({ query }) {
 		setIsModalVisible(false);
 	};
 
-	const updateProductDetails = async () => {
-		console.log("isChecked", isChecked);
-		const mongoId = inputAreaRef?.current?.value ? inputAreaRef.current.value : "";
+	useEffect(() => {
+		if (inputAreaRef?.current?.state) {
+			inputAreaRef.current.state.value = "";
+		}
+	}, [isModalVisible]);
 
+	const updateProductDetails = async () => {
+		const mongoId = inputAreaRef?.current?.state?.value ? inputAreaRef.current.state.value : "";
 		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
 			productId: selectedProduct?.id,
 			active: isChecked ? "yes" : "no",
 			mongoId,
 		});
 	};
-
-	console.log(products);
+	const activeCheckedProduct = products.filter(item => item.id === selectedProduct.id);
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -171,8 +178,12 @@ export default function ProductsList({ query }) {
 												onChange={handleChange}
 												defaultValue={styles[0]?.id}
 											>
-												{styles.map((style, index) => {
-													return <Select.Option value={style?.id}>{style?.name}</Select.Option>;
+												{styles.map(style => {
+													return (
+														<Select.Option key={style?.id} value={style?.id}>
+															{style?.name}
+														</Select.Option>
+													);
 												})}
 											</Select>
 										)}
@@ -195,7 +206,7 @@ export default function ProductsList({ query }) {
 								{products.length ? (
 									products.map(item => {
 										return (
-											<Col sm={12} md={8} lg={6}>
+											<Col sm={12} md={8} lg={6} key={item?.id}>
 												<Card
 													actions={[
 														<EditOutlined onClick={() => showModal(item)} />,
@@ -236,14 +247,13 @@ export default function ProductsList({ query }) {
 					onCancel={() => setIsModalVisible(false)}
 					okText='Save'
 				>
-					<Input placeholder='Link/Add product ID' ref={inputAreaRef} />
+					<Input placeholder='Link/Add product ID' ref={inputAreaRef} required />
 					<br></br>
 					<br></br>
 					<div>
 						<p>Is Active</p>
-						{console.log(selectedProduct)}
 						<Switch
-							checked={selectedProduct?.active}
+							checked={activeCheckedProduct[0]?.active}
 							onChange={checked => handleToggle(checked, selectedProduct?.id)}
 						/>
 					</div>

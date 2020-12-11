@@ -49,6 +49,16 @@ export default function ImageList({ query }) {
 			});
 	};
 
+	const getImagesById = endPoint => {
+		styleFetcher(endPoint)
+			.then(res => {
+				setImages(res.products);
+			})
+			.catch(err => {
+				throw new Error();
+			});
+	};
+
 	const handleChange = value => {
 		if (value === "all") {
 			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
@@ -74,9 +84,10 @@ export default function ImageList({ query }) {
 
 	useEffect(() => {
 		setImages([]);
-		if (styleId) {
-			if (styleId !== "0") {
-				getLatestImages(`${StyleQuizAPI.adminGetImagesAPI()}/${styleId}`);
+		if (styleId && styleId !== "undefined") {
+			console.log("pavlo");
+			if (styleId !== "0" && styleId !== "all") {
+				getImagesById(`${StyleQuizAPI.adminGetImagesAPI(styleId)}`);
 			} else {
 				getLatestImages(StyleQuizAPI.getAllImagesAPI());
 			}
@@ -84,7 +95,7 @@ export default function ImageList({ query }) {
 	}, [Router]);
 
 	const deleteImage = async id => {
-		await updateResource(StyleQuizAPI.adminImageAPI(), "DELETE", { imageId: id });
+		await updateResource(StyleQuizAPI.getAllImagesAPI(), "DELETE", { imageId: id });
 		setImages([]);
 		updateImageView();
 	};
@@ -96,7 +107,7 @@ export default function ImageList({ query }) {
 	const uploadImage = async images => {
 		setLoader(true);
 		const formData = multiFileUploader(images);
-		const resData = await modifyFormDataResource(StyleQuizAPI.adminImageAPI(), "POST", formData);
+		const resData = await modifyFormDataResource(StyleQuizAPI.getAllImagesAPI(), "POST", formData);
 		const { imageId } = resData;
 		updateImageView();
 		setLoader(false);
@@ -113,7 +124,7 @@ export default function ImageList({ query }) {
 			return { ...item };
 		});
 		setImages(newState);
-		await updateResource(StyleQuizAPI.adminImageAPI(), "PUT", { imageId: id, active: checked ? "yes" : "no" });
+		await updateResource(StyleQuizAPI.getAllImagesAPI(), "PUT", { imageId: id, active: checked ? "yes" : "no" });
 	};
 
 	const showModal = id => {
@@ -130,14 +141,14 @@ export default function ImageList({ query }) {
 	};
 
 	const updateImageView = () => {
-		if (styleId === "0") {
+		if (styleId === "0" && styleId !== "undefined") {
 			if (isTaggedStatus) {
 				getLatestImages(StyleQuizAPI.getAllUntaggedImagesAPI());
 			} else {
 				getLatestImages(StyleQuizAPI.getAllImagesAPI());
 			}
 		} else {
-			getLatestImages(`${StyleQuizAPI.adminGetImagesAPI()}/${styleId}`);
+			getImagesById(`${StyleQuizAPI.adminGetImagesAPI(styleId)}`);
 		}
 	};
 

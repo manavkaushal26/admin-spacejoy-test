@@ -57,7 +57,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	const handleDelete = async id => {
-		await updateResource("/quiz/admin/v1/image/score", "DELETE", { scoreId: id });
+		await updateResource("/v1/quizImages/scores", "DELETE", { scoreId: id });
 		getLatestScores();
 	};
 
@@ -72,7 +72,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		return () => {
 			document.removeEventListener("keypress", onKeyDown);
 		};
-	}, [currentSelectedRecord]);
+	}, [isEditModal]);
 
 	useEffect(() => {
 		if (inputEl?.current) {
@@ -90,7 +90,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	const getLatestScores = () => {
-		const endPoint = `/quiz/admin/v1/image/scores/${selectedProductId}`;
+		const endPoint = `/v1/quizImages/${selectedProductId}/scores`;
 		fetchResources(endPoint)
 			.then(res => {
 				filterScoresData(res.scores);
@@ -146,7 +146,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				if (type.toLowerCase() === "edit") {
 					score["isActive"] = true;
 				} else if (type.toLowerCase() === "save") {
-					updateResource("/quiz/admin/v1/image/score", "PUT", {
+					updateResource("/v1/quizImages/scores", "PUT", {
 						imageId: selectedProductId,
 						styleId: row?.styleId,
 						score: row?.score,
@@ -166,7 +166,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	};
 
 	const addNewScore = async () => {
-		await updateResource("/quiz/admin/v1/image/score", "POST", {
+		await updateResource("/v1/quizImages/scores", "POST", {
 			imageId: selectedProductId,
 			styleId: currentSelectedRecord[0]?.id,
 			score: parseInt(inputEl.current.value),

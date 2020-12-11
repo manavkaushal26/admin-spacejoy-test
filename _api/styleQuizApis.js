@@ -1,51 +1,47 @@
 export const getStylesAPI = () => {
-	return "/quiz/admin/v1/styles?limit=100";
+	return "/v1/quizStyles";
 };
 
-export const adminImageAPI = () => {
-	return "/quiz/admin/v1/image";
-};
-
-export const adminGetImagesAPI = () => {
-	return "/quiz/admin/v1/images";
+export const adminGetImagesAPI = id => {
+	return `/v1/quizStyles/${id}/products`;
 };
 
 export const getAllImagesAPI = () => {
-	return "/quiz/admin/v1/images";
+	return "/v1/quizImages";
 };
 
 export const getAllUntaggedImagesAPI = () => {
-	return "/quiz/admin/v1/images/untagged";
+	return "/v1/quizStyles/untagged/images";
 };
 
 export const getActiveStylesAPI = () => {
-	return "/quiz/admin/v1/styles/active";
+	return "/v1/quizStyles/active";
 };
 
 export const updateStyleAPI = () => {
 	return "/quiz/admin/v1/style/update";
 };
 
-export const getStyleIconsAPI = () => {
-	return "/quiz/admin/v1/style/icons";
+export const getStyleIconsAPI = id => {
+	return `/v1/quizStyles/${id}/icons`;
 };
 
 export const modifyStyleIconsAPI = () => {
-	return "/quiz/admin/v1/style/icon";
+	return "/v1/quizStyles/icon";
 };
 
 export const paletteAPI = () => {
-	return "/quiz/admin/v1/palette";
+	return "/v1/quizPalettes";
 };
 
 export const textureAPI = () => {
-	return "/quiz/admin/v1/texture";
+	return "/v1/quizTextures";
 };
 
-export const getProductsAPI = () => {
-	return "/quiz/admin/v1/products";
+export const getProductsAPI = id => {
+	return `/v1/quizStyles/${id}/products`;
 };
 
 export const postProductsAPI = () => {
-	return "/quiz/admin/v1/product";
+	return "/v1/quizProducts";
 };
