@@ -82,6 +82,10 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		}
 	}, [isEditModal]);
 
+	useEffect(() => {
+		setScores([]);
+	}, [isModalVisible]);
+
 	const onKeyDown = e => {
 		if (e.which === 13) {
 			handleEditModalOk();
@@ -131,6 +135,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				isActive: false,
 			};
 		});
+		console.log("asdasdasd");
 		setScores(data);
 	};
 
@@ -199,6 +204,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		});
 		setScores(updatedScores);
 	};
+
 	return (
 		<Modal
 			title='Scores'

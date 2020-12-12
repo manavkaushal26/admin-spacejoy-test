@@ -190,7 +190,7 @@ function pageRoute(app, router) {
 		});
 	});
 
-	router.get("/stylequiz/imageList/:styleId", TokenCheckMiddleware, (req, res) => {
+	router.get("/stylequiz/imageList/:styleId?", TokenCheckMiddleware, (req, res) => {
 		const { query, params } = req;
 		app.render(req, res, "/stylequiz/imageList", {
 			...query,
@@ -198,7 +198,7 @@ function pageRoute(app, router) {
 		});
 	});
 
-	router.get("/stylequiz/productList/:styleId", TokenCheckMiddleware, (req, res) => {
+	router.get("/stylequiz/productList/:styleId?", TokenCheckMiddleware, (req, res) => {
 		const { query, params } = req;
 		app.render(req, res, "/stylequiz/productList", {
 			...query,

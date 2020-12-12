@@ -247,7 +247,7 @@ export default function ProductsList({ query }) {
 					onCancel={() => setIsModalVisible(false)}
 					okText='Save'
 				>
-					<Input placeholder='Link/Add product ID' ref={inputAreaRef} required />
+					<Input placeholder='Asset ID' ref={inputAreaRef} required />
 					<br></br>
 					<br></br>
 					<div>

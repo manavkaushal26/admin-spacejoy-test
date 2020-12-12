@@ -186,13 +186,6 @@ export default function StylesList() {
 		getIcons(activeStyle?.id);
 	};
 
-	const search = value => {
-		const filteredList = value
-			? [...styles].filter(style => style.name.toLowerCase().includes(value.toLowerCase()))
-			: null;
-		setFilteredData(filteredList);
-	};
-
 	const props = {
 		name: "file",
 		action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -228,12 +221,6 @@ export default function StylesList() {
 					<br></br>
 					<Row gutter={[0, 16]}>
 						<Col span={24}>
-							<Input.Search
-								style={{ border: "2p", margin: "0 0 10px 0" }}
-								placeholder='Search by style name ...'
-								enterButton
-								onSearch={search}
-							/>
 							<Table
 								loading={isLoading}
 								rowKey='_id'
@@ -258,18 +245,6 @@ export default function StylesList() {
 									render={(text, record) => {
 										return <Switch checked={record.active} onChange={checked => handleToggle(checked, text)} />;
 									}}
-								/>
-								<Table.Column
-									key='id'
-									title='Description'
-									dataIndex='description'
-									render={text => (
-										<span>
-											{text || "N/A"}
-											&nbsp;&nbsp;&nbsp;
-										</span>
-									)}
-									width='10%'
 								/>
 								<Table.Column
 									key='id'
