@@ -209,7 +209,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			}),
 		[]
 	);
-
+	const { pause = false } = projectData;
 	return (
 		<>
 			{designData !== null ? (
@@ -288,6 +288,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 									designData={designData}
 									projectId={id}
 									setDesignData={setDesignData}
+									pause={pause}
 								/>
 							</TabPane>
 							<TabPane tab='Chat' key='Chat'>

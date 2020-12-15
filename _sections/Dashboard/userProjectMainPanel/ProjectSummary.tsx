@@ -27,6 +27,7 @@ const { Title, Text } = Typography;
 interface ProjectSummaryProps {
 	projectData?: DetailedProject;
 	setProjectData?: React.Dispatch<React.SetStateAction<DetailedProject>>;
+	fetchAndPopulateProjectData?: () => void;
 }
 
 const SilentTitle = styled(Title)`
@@ -38,7 +39,11 @@ const VerticallyPaddedDiv = styled.div`
 	padding: 1.5rem 0 0 0;
 `;
 
-const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProjectData }): JSX.Element => {
+const ProjectSummary: React.FC<ProjectSummaryProps> = ({
+	projectData,
+	setProjectData,
+	fetchAndPopulateProjectData,
+}): JSX.Element => {
 	// const { phase, task, status, avatar, name } = userProjectData;
 	const [projectPauseStatus, setProjectPauseStatus] = useState(false);
 	const [isPauseModalOpen, setPauseModalFlag] = useState(false);
@@ -69,6 +74,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 					description: `Project ${successText}d successfully`,
 				});
+				fetchAndPopulateProjectData();
 			} else {
 				const { message } = data;
 				throw new Error(message);
@@ -101,7 +107,6 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({ projectData, setProject
 		},
 		isDelivered,
 	} = projectData;
-	console.log(projectData);
 	const [roomNameLoading, setRoomNameLoading] = useState<boolean>(false);
 
 	const router = useRouter();

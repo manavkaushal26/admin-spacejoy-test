@@ -165,6 +165,7 @@ interface CustomDivProps {
 	minWidth?: string;
 	maxWidth?: string;
 	cursor?: string;
+	disabled?: string;
 }
 
 export const CustomDiv = styled.div<CustomDivProps>`
@@ -228,7 +229,19 @@ export const StepsContainer = styled(CustomDiv)`
 		margin-bottom: 2em;
 	}
 `;
-
+export const Tile = styled(CustomDiv)`
+	pointer-events: ${props => (props.disabled ? "none" : "all")};
+	div {
+		cursor: ${props => (props.disabled ? "none" : "all")};
+	}
+`;
+export const DisabledLabel = styled(CustomDiv)`
+	padding: 8px;
+	border-radius: 4px;
+	background-color: red;
+	color: white;
+	width: auto;
+`;
 export const Form = styled.div`
 	> * + * {
 		margin-top: 1rem;
