@@ -257,18 +257,22 @@ export default function StylesList() {
 									title='Go to'
 									dataIndex='id'
 									align='right'
-									render={record => (
-										<>
-											<Link href={`/stylequiz/productList/${record.id}`} type='link'>
-												Products
-											</Link>
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-											<Link href={`/stylequiz/imageList/${record.id}`} type='link'>
-												Room Designs
-											</Link>
-											&nbsp;&nbsp;
-										</>
-									)}
+									render={(id, record) => {
+										return (
+											record.active && (
+												<>
+													<Link href={`/stylequiz/productList/${id}`} type='link'>
+														Products
+													</Link>
+													&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<Link href={`/stylequiz/imageList/${id}`} type='link'>
+														Room Designs
+													</Link>
+													&nbsp;&nbsp;
+												</>
+											)
+										);
+									}}
 								/>
 								<Table.Column
 									key='id'

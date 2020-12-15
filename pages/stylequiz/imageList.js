@@ -190,7 +190,7 @@ export default function ImageList({ query }) {
 							<Card>
 								<Row gutter={[4, 16]}>
 									<Col sm={24} md={6}>
-										{styles.length && (
+										{styles.length ? (
 											<Select
 												showSearch
 												filterOption={(input, option) =>
@@ -211,7 +211,7 @@ export default function ImageList({ query }) {
 													);
 												})}
 											</Select>
-										)}
+										) : null}
 									</Col>
 									<Col sm={24} md={6} style={{ padding: 15 }}>
 										{isCheckboxVisible ? (

@@ -56,10 +56,8 @@ export default function ProductsList({ query }) {
 		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
-				Router.replace(
-					{ pathname: "/stylequiz/productList", query: { styleId: res.data[0]?.id } },
-					`/stylequiz/productList/${res.data[0]?.id}`
-				);
+				const id = Router?.query?.styleId ? Router?.query?.styleId : res.data[0]?.id;
+				Router.replace({ pathname: "/stylequiz/productList", query: { styleId: id } }, `/stylequiz/productList/${id}`);
 			})
 			.catch(() => {
 				throw new Error();
@@ -111,7 +109,7 @@ export default function ProductsList({ query }) {
 		setLoader(false);
 	};
 
-	const handleToggle = (checked, id) => {
+	const handleToggle = async (checked, id) => {
 		const newState = products.map(item => {
 			if (item.id === id) {
 				return { ...item, active: checked };
@@ -120,6 +118,10 @@ export default function ProductsList({ query }) {
 		});
 		setProducts(newState);
 		setChecked(checked);
+		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
+			productId: id,
+			active: checked ? "yes" : "no",
+		});
 	};
 
 	const showModal = item => {
@@ -140,13 +142,23 @@ export default function ProductsList({ query }) {
 
 	const updateProductDetails = async () => {
 		const mongoId = inputAreaRef?.current?.state?.value ? inputAreaRef.current.state.value : "";
+		const newState = products.map(item => {
+			if (item.id === selectedProduct?.id) {
+				return { ...item, mongoId };
+			}
+			return { ...item };
+		});
+		setProducts(newState);
 		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
 			productId: selectedProduct?.id,
-			active: isChecked ? "yes" : "no",
 			mongoId,
 		});
 	};
-	const activeCheckedProduct = products.filter(item => item.id === selectedProduct.id);
+
+	const defaultStyleValue = Router?.query?.styleId
+		? styles.filter(style => style?.id === parseInt(Router?.query?.styleId))[0]?.id
+		: styles[0]?.id;
+
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -167,7 +179,7 @@ export default function ProductsList({ query }) {
 							<Card>
 								<Row gutter={[4, 16]}>
 									<Col sm={24} md={6} gutter={[4, 16]}>
-										{styles.length && (
+										{styles.length ? (
 											<Select
 												showSearch
 												filterOption={(input, option) =>
@@ -175,7 +187,7 @@ export default function ProductsList({ query }) {
 												}
 												style={{ width: "100%" }}
 												onChange={handleChange}
-												defaultValue={styles[0]?.id}
+												defaultValue={defaultStyleValue}
 											>
 												{styles.map(style => {
 													return (
@@ -185,7 +197,7 @@ export default function ProductsList({ query }) {
 													);
 												})}
 											</Select>
-										)}
+										) : null}
 									</Col>
 									<Col sm={24} md={18} align='right'>
 										<Button style={{ position: "relative" }} type='primary'>
@@ -208,6 +220,11 @@ export default function ProductsList({ query }) {
 											<Col sm={12} md={8} lg={6} key={item?.id}>
 												<Card
 													actions={[
+														<Switch
+															key={item?.id}
+															checked={item?.active}
+															onChange={checked => handleToggle(checked, item?.id)}
+														/>,
 														<EditOutlined onClick={() => showModal(item)} key={item?.id} />,
 														<Popconfirm
 															placement='top'
@@ -223,7 +240,9 @@ export default function ProductsList({ query }) {
 													]}
 													hoverable
 													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
-												></Card>
+												>
+													<span>Asset ID : {item?.mongoId ? item?.mongoId : "N/A"}</span>
+												</Card>
 											</Col>
 										);
 									})
@@ -250,13 +269,6 @@ export default function ProductsList({ query }) {
 					<Input placeholder='Asset ID' ref={inputAreaRef} required />
 					<br></br>
 					<br></br>
-					<div>
-						<p>Is Active</p>
-						<Switch
-							checked={activeCheckedProduct[0]?.active}
-							onChange={checked => handleToggle(checked, selectedProduct?.id)}
-						/>
-					</div>
 				</Modal>
 			</MaxHeightDiv>
 		</PageLayout>
