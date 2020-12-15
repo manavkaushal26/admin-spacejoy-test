@@ -135,7 +135,6 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				isActive: false,
 			};
 		});
-		console.log("asdasdasd");
 		setScores(data);
 	};
 
@@ -303,8 +302,12 @@ ScoreModal.defaultProps = {
 	styles: [],
 	isModalVisible: false,
 	selectedProductId: "",
-	handleModalOk: () => {},
-	handleModalCancel: () => {},
+	handleModalOk: () => {
+		/**/
+	},
+	handleModalCancel: () => {
+		/**/
+	},
 };
 
 ScoreModal.propTypes = {

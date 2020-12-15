@@ -61,7 +61,7 @@ export default function ProductsList({ query }) {
 					`/stylequiz/productList/${res.data[0]?.id}`
 				);
 			})
-			.catch(err => {
+			.catch(() => {
 				throw new Error();
 			});
 	}, []);
@@ -81,7 +81,6 @@ export default function ProductsList({ query }) {
 	};
 
 	const getLatestProducts = id => {
-		console.log(id);
 		if (id && id !== "undefined") {
 			fetchResources(`${StyleQuizAPI.getProductsAPI(id)}`)
 				.then(res => {
@@ -209,7 +208,7 @@ export default function ProductsList({ query }) {
 											<Col sm={12} md={8} lg={6} key={item?.id}>
 												<Card
 													actions={[
-														<EditOutlined onClick={() => showModal(item)} />,
+														<EditOutlined onClick={() => showModal(item)} key={item?.id} />,
 														<Popconfirm
 															placement='top'
 															onConfirm={() => deleteProduct(item?.id)}
@@ -217,6 +216,7 @@ export default function ProductsList({ query }) {
 															okText='Yes'
 															disabled={false}
 															cancelText='Cancel'
+															key={item?.id}
 														>
 															<DeleteOutlined />
 														</Popconfirm>,

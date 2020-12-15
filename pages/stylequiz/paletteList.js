@@ -46,8 +46,9 @@ export default function TextureList() {
 			.then(res => {
 				setPalettes(res.data);
 			})
-			.catch(err => console.log(err))
-			.finally(() => {});
+			.catch(err => {
+				throw new Error();
+			});
 	};
 
 	const deletePalette = async id => {
@@ -127,10 +128,11 @@ export default function TextureList() {
 										.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
 										.map(item => {
 											return (
-												<Col sm={12} md={8} lg={6}>
+												<Col sm={12} md={8} lg={6} key={item?.id}>
 													<Card
+														key={item?.id}
 														actions={[
-															<EditOutlined onClick={() => showModal(item)} />,
+															<EditOutlined onClick={() => showModal(item)} key={item?.id} />,
 															<Popconfirm
 																placement='top'
 																onConfirm={() => deletePalette(item?.id)}
@@ -138,8 +140,9 @@ export default function TextureList() {
 																okText='Yes'
 																disabled={false}
 																cancelText='Cancel'
+																key={item?.id}
 															>
-																<DeleteOutlined />
+																<DeleteOutlined key={item?.id} />
 															</Popconfirm>,
 														]}
 														hoverable

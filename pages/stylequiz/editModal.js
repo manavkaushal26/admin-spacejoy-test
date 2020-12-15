@@ -7,7 +7,6 @@ export default function EditModal({ isModalVisible, handlModaleOk, selectedResou
 	useEffect(() => {
 		setChecked(selectedResource?.isActive);
 	}, [selectedResource]);
-	console.log("selectedResource", selectedResource);
 	const { TextArea } = Input;
 	const handleToggle = (checked, id) => {
 		data.forEach(el => {
@@ -21,7 +20,6 @@ export default function EditModal({ isModalVisible, handlModaleOk, selectedResou
 
 	const onOk = () => {
 		const desc = textareaRef?.current?.state?.value ? textareaRef.current.state.value : "";
-		console.log("data", data);
 		handlModaleOk(isChecked, desc, data);
 		textareaRef.current.state.value = "";
 	};

@@ -61,7 +61,7 @@ export default function ImageList({ query }) {
 
 	const handleChange = value => {
 		if (value === "all") {
-			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
+			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, "/stylequiz/imageList/all");
 			setCheckboxVisibility(true);
 			setIsTaggedStatus(false);
 		} else {
@@ -75,7 +75,7 @@ export default function ImageList({ query }) {
 		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
 				setStylesData(res.data);
-				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, `/stylequiz/imageList/all`);
+				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, "/stylequiz/imageList/all");
 			})
 			.catch(err => {
 				throw new Error();
@@ -85,7 +85,6 @@ export default function ImageList({ query }) {
 	useEffect(() => {
 		setImages([]);
 		if (styleId && styleId !== "undefined") {
-			console.log("pavlo");
 			if (styleId !== "0" && styleId !== "all") {
 				getImagesById(`${StyleQuizAPI.adminGetImagesAPI(styleId)}`);
 			} else {
@@ -254,8 +253,9 @@ export default function ImageList({ query }) {
 																checkedChildren='Active'
 																unCheckedChildren='Inactive'
 																onChange={checked => updateStatus(checked, item?.id)}
+																key={item?.id}
 															/>,
-															<Button type='link' onClick={() => showModal(item?.id)}>
+															<Button type='link' onClick={() => showModal(item?.id)} key={item?.id}>
 																Add Scores
 															</Button>,
 															<Popconfirm
@@ -265,6 +265,7 @@ export default function ImageList({ query }) {
 																okText='Yes'
 																disabled={false}
 																cancelText='Cancel'
+																key={item?.id}
 															>
 																<DeleteOutlined />
 															</Popconfirm>,
