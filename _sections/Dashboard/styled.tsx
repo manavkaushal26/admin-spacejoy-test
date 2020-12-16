@@ -69,6 +69,15 @@ export const StyledTag = styled(Tag)`
 	text-transform: capitalize;
 	text-align: center;
 `;
+export const StyledTagInteractive = styled(StyledTag)`
+	cursor: pointer;
+	align-items: center;
+	border-radius: 4px;
+	span {
+		display: inline-block;
+		margin-left: 4px;
+	}
+`;
 
 export const VerticalPaddedDiv = styled.div`
 	padding: 1rem 0;
@@ -155,6 +164,7 @@ interface CustomDivProps {
 	minWidth?: string;
 	maxWidth?: string;
 	cursor?: string;
+	disabled?: string;
 }
 
 export const CustomDiv = styled.div<CustomDivProps>`
@@ -218,7 +228,19 @@ export const StepsContainer = styled(CustomDiv)`
 		margin-bottom: 2em;
 	}
 `;
-
+export const Tile = styled.div`
+	pointer-events: ${props => (props["data-disabled"] ? "none" : "all")};
+	div {
+		cursor: ${props => (props["data-disabled"] ? "none" : "all")};
+	}
+`;
+export const DisabledLabel = styled(CustomDiv)`
+	background-color: red;
+	color: white;
+	width: auto;
+	padding: 12px;
+	font-size: 0.9rem;
+`;
 export const Form = styled.div`
 	> * + * {
 		margin-top: 1rem;

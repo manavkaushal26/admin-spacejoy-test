@@ -149,7 +149,11 @@ const userProjectMainPanel: React.FC<{
 				{projectData ? (
 					<>
 						<Col span={24}>
-							<ProjectSummary projectData={projectData} setProjectData={setProjectData} />
+							<ProjectSummary
+								projectData={projectData}
+								setProjectData={setProjectData}
+								fetchAndPopulateProjectData={fetchAndPopulateProjectData}
+							/>
 						</Col>
 						<Col span={24}>
 							<BasicDetails projectData={projectData} />
