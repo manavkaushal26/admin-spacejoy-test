@@ -210,7 +210,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 			}),
 		[]
 	);
-	const { pause = false } = projectData;
+	const { pause = false } = projectData || {};
 	return (
 		<>
 			{designData !== null ? (
