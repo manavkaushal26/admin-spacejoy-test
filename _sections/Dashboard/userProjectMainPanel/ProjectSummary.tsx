@@ -76,7 +76,6 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 
 			const { data, statusCode } = res;
 			if (statusCode <= 301) {
-				setProjectPauseStatus(!projectPauseStatus);
 				const successText = projectPauseStatus ? "resume" : "pause";
 				notification.open({
 					key: "Pause",
@@ -84,6 +83,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 					icon: <CheckCircleTwoTone twoToneColor='#52c41a' />,
 					description: `Project ${successText}d successfully`,
 				});
+				setProjectPauseStatus(!projectPauseStatus);
 				fetchAndPopulateProjectData();
 			} else {
 				const { message } = data;

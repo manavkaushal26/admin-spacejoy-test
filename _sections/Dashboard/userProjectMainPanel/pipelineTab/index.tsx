@@ -150,7 +150,7 @@ export default function PipelineTab({
 		setUpdationPhase(null);
 	};
 	const disabled = {
-		disabled: pause ? "disabled" : "",
+		"data-disabled": pause ? "disabled" : "",
 	};
 	const styleObj = {
 		...(pause && { cursor: "not-allowed" }),

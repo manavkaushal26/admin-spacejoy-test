@@ -71,7 +71,6 @@ export const StyledTag = styled(Tag)`
 `;
 export const StyledTagInteractive = styled(StyledTag)`
 	cursor: pointer;
-	displa: flex;
 	align-items: center;
 	border-radius: 4px;
 	span {
@@ -229,10 +228,10 @@ export const StepsContainer = styled(CustomDiv)`
 		margin-bottom: 2em;
 	}
 `;
-export const Tile = styled(CustomDiv)`
-	pointer-events: ${props => (props.disabled ? "none" : "all")};
+export const Tile = styled.div`
+	pointer-events: ${props => (props["data-disabled"] ? "none" : "all")};
 	div {
-		cursor: ${props => (props.disabled ? "none" : "all")};
+		cursor: ${props => (props["data-disabled"] ? "none" : "all")};
 	}
 `;
 export const DisabledLabel = styled(CustomDiv)`
