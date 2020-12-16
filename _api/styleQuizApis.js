@@ -49,3 +49,7 @@ export const getProductsAPI = id => {
 export const postProductsAPI = () => {
 	return "/v1/quizProducts";
 };
+
+export const descriptionsAPI = () => {
+	return "/v1/quizStyles/description";
+};

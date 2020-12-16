@@ -222,6 +222,14 @@ function pageRoute(app, router) {
 		});
 	});
 
+	router.get("/stylequiz/styleDescription", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/styleDescription", {
+			...query,
+			...params,
+		});
+	});
+
 	return router;
 }
 

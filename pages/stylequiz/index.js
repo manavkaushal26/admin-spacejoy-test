@@ -67,6 +67,15 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.Admin, Role.Owner],
 	},
+	{
+		name: "Style Descriptions",
+		description: "Manage Style Descriptions",
+		action: "redirect",
+		to: "/stylequiz/styleDescription",
+		url: "/stylequiz/styleDescription",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
 ];
 
 function StyleQuiz() {
