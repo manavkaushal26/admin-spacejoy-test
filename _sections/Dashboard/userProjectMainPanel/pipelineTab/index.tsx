@@ -1,3 +1,4 @@
+import { CheckOutlined, RollbackOutlined } from "@ant-design/icons";
 import { updateDesignPhase } from "@api/pipelineApi";
 import {
 	DesignPhases,
@@ -7,12 +8,11 @@ import {
 	PhaseType,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { ShadowDiv, StatusButton, StepsContainer } from "@sections/Dashboard/styled";
+import { ShadowDiv, StatusButton, StepsContainer, Tile } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Avatar, Button, Col, message, Popconfirm, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
-import { RollbackOutlined, CheckOutlined } from "@ant-design/icons";
 import Stage from "./Stage";
 
 const { Title, Text } = Typography;
@@ -22,6 +22,7 @@ interface PipelineTab {
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 	projectId: string;
 	setProjectPhase: (phase: { internalName: PhaseInternalNames; customerName: PhaseCustomerNames }) => void;
+	pause?: boolean;
 }
 
 const getButtonText = (status: Status): string => {
@@ -88,6 +89,7 @@ export default function PipelineTab({
 	setDesignData,
 	setProjectPhase,
 	projectId,
+	pause,
 }: PipelineTab): JSX.Element {
 	const [stage, setStage] = useState<string>(null);
 	const [updationPhase, setUpdationPhase] = useState<string>(null);
@@ -147,14 +149,19 @@ export default function PipelineTab({
 		}
 		setUpdationPhase(null);
 	};
-
+	const disabled = {
+		"data-disabled": pause ? "disabled" : "",
+	};
+	const styleObj = {
+		...(pause && { cursor: "not-allowed" }),
+	};
 	return (
 		<div>
 			<Title level={2}>Task Overview</Title>
-			<StepsContainer>
+			<StepsContainer style={styleObj}>
 				{steps.map(step => {
 					return (
-						<div key={step.phaseName}>
+						<Tile key={step.phaseName} {...disabled}>
 							<ShadowDiv active={step.phaseName === stage} onClick={(): void => onClick(step.phaseName)}>
 								<Row style={{ padding: "1rem 1rem" }} justify='space-between' gutter={[16, 16]}>
 									<Col>
@@ -221,7 +228,7 @@ export default function PipelineTab({
 									updateDesignState={updateDesignState}
 								/>
 							)}
-						</div>
+						</Tile>
 					);
 				})}
 			</StepsContainer>
