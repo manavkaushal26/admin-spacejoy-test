@@ -1,26 +1,12 @@
-import { Input, Modal, Switch } from "antd";
-import React, { useEffect, useRef, useState } from "react";
-export default function EditModal({ isModalVisible, handlModaleOk, selectedResource, handleCancel, data }) {
+import { Input, Modal } from "antd";
+import React, { useRef } from "react";
+export default function EditModal({ isModalVisible, handlModaleOk, handleCancel }) {
 	const textareaRef = useRef(null);
-	const [isChecked, setChecked] = useState(false);
-
-	useEffect(() => {
-		setChecked(selectedResource?.isActive);
-	}, [selectedResource]);
 	const { TextArea } = Input;
-	const handleToggle = (checked, id) => {
-		data.forEach(el => {
-			if (id === el.id) {
-				el.isActive = checked;
-			}
-		});
-
-		setChecked(checked);
-	};
 
 	const onOk = () => {
 		const desc = textareaRef?.current?.state?.value ? textareaRef.current.state.value : "";
-		handlModaleOk(isChecked, desc, data);
+		handlModaleOk(desc);
 		textareaRef.current.state.value = "";
 	};
 
@@ -29,10 +15,6 @@ export default function EditModal({ isModalVisible, handlModaleOk, selectedResou
 			<TextArea placeholder='Add your description...' ref={textareaRef} />
 			<br></br>
 			<br></br>
-			<div>
-				<p>Is Active</p>
-				<Switch checked={isChecked} onChange={checked => handleToggle(checked, selectedResource?.id)} />
-			</div>
 		</Modal>
 	);
 }

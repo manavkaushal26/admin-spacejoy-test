@@ -64,7 +64,6 @@ export default function StylesList() {
 	const [modalType, setModalType] = useState("");
 	const [activeStyle, setActiveStyle] = useState({});
 	const textareaRef = useRef(null);
-	const [filteredData, setFilteredData] = useState(null);
 
 	// image filelist
 	const [imageList, setImages] = useState({});
@@ -221,12 +220,7 @@ export default function StylesList() {
 					<br></br>
 					<Row gutter={[0, 16]}>
 						<Col span={24}>
-							<Table
-								loading={isLoading}
-								rowKey='_id'
-								scroll={{ x: 768 }}
-								dataSource={filteredData ? sortByDate(filteredData) : sortByDate(styles)}
-							>
+							<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={sortByDate(styles)}>
 								<Table.Column
 									key='_id'
 									title='Style Name'
@@ -313,16 +307,17 @@ export default function StylesList() {
 					<Spin spinning={isLoading}>
 						{modalType === "edit" ? (
 							<ModalContent>
-								<div className='flex'>
+								{/* <div className='flex'>
 									<span>Description</span>
 									<br></br>
 									<TextArea ref={textareaRef} />
-								</div>
-								<br></br>
+								</div> */}
+
 								<div className='flex'>
 									<span>Upload Image</span>
 									<br></br>
-									<Upload {...props}>
+									<br></br>
+									<Upload {...props} accept='image/jpeg,image/jpg,image/JPEG,image/JPG'>
 										<Button icon={<UploadOutlined />}>Click to Upload</Button>
 									</Upload>
 								</div>

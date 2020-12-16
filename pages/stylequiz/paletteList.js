@@ -4,7 +4,7 @@ import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { modifyFormDataResource, multiFileUploader, styleFetcher, updateResource } from "@utils/styleQuizHelper";
-import { Button, Card, Col, Input, Popconfirm, Row, Spin, Typography } from "antd";
+import { Button, Card, Col, Input, Popconfirm, Row, Spin, Switch, Typography } from "antd";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
@@ -28,6 +28,14 @@ const Wrapper = styled.div`
 		z-index: 12;
 	}
 `;
+const DescriptionText = styled.p`
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+`;
+
 const endPoint = StyleQuizAPI.paletteAPI();
 export default function TextureList() {
 	const [palettes, setPalettes] = useState([]);
@@ -74,13 +82,25 @@ export default function TextureList() {
 		setIsModalVisible(true);
 	};
 
-	const handlModaleOk = async (checked, desc, data) => {
+	const handleToggle = async (checked, id) => {
+		const newState = palettes.map(item => {
+			if (item.id === id) {
+				return { ...item, isActive: checked };
+			}
+			return { ...item };
+		});
+		setPalettes(newState);
+		await updateResource(endPoint, "PUT", {
+			id: id,
+			active: checked ? "yes" : "no",
+		});
+	};
+
+	const handlModaleOk = async desc => {
 		setIsModalVisible(false);
-		setPalettes(data);
 		await updateResource(endPoint, "PUT", {
 			id: selectedResource?.id,
 			description: desc,
-			active: checked ? "yes" : "no",
 		});
 		getPalettes();
 	};
@@ -132,6 +152,11 @@ export default function TextureList() {
 													<Card
 														key={item?.id}
 														actions={[
+															<Switch
+																checked={item?.isActive}
+																onChange={checked => handleToggle(checked, item?.id)}
+																key={item?.id}
+															/>,
 															<EditOutlined onClick={() => showModal(item)} key={item?.id} />,
 															<Popconfirm
 																placement='top'
@@ -148,7 +173,9 @@ export default function TextureList() {
 														hoverable
 														cover={<Image src={`q_50,w_300,h_180/${item?.cdn}`} />}
 													>
-														<p>{item?.description}</p>
+														<DescriptionText>
+															Description : {item?.description ? item?.description : "N/A"}
+														</DescriptionText>
 													</Card>
 												</Col>
 											);
@@ -168,7 +195,7 @@ export default function TextureList() {
 				</LoudPaddingDiv>
 				<EditModal
 					isModalVisible={isModalVisible}
-					handlModaleOk={(checked, desc, data) => handlModaleOk(checked, desc, data)}
+					handlModaleOk={desc => handlModaleOk(desc)}
 					selectedResource={selectedResource}
 					handleCancel={handleCancel}
 					data={palettes}
