@@ -155,7 +155,6 @@ export default function PipelineTab({
 	const styleObj = {
 		...(pause && { cursor: "not-allowed" }),
 	};
-	console.log(disabled, styleObj);
 	return (
 		<div>
 			<Title level={2}>Task Overview</Title>
