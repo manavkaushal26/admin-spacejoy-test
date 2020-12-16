@@ -66,7 +66,7 @@ export default function StylesList() {
 	const textareaRef = useRef(null);
 
 	// image filelist
-	const [imageList, setImages] = useState({});
+	const [imageList, setImages] = useState([]);
 
 	const getStyles = () => {
 		setLoader(true);
@@ -137,7 +137,7 @@ export default function StylesList() {
 		if (textareaRef?.current?.state) {
 			textareaRef.current.state.value = "";
 		}
-		setImages({});
+		setImages([]);
 	};
 
 	useEffect(() => {
@@ -226,8 +226,9 @@ export default function StylesList() {
 		formData.append("image", []);
 		formData.append("text", row?.text);
 		formData.append("styleId", activeStyle?.id);
+		formData.append("id", row?.id);
 		try {
-			await chatFetcher({ endPoint: StyleQuizAPI.modifyStyleIconsAPI(), method: "POST", body: formData });
+			await chatFetcher({ endPoint: StyleQuizAPI.getAllIcons(), method: "PUT", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -378,7 +379,7 @@ export default function StylesList() {
 										title='Description'
 										dataIndex='text'
 										render={(text, record) => (
-											<TextArea
+											<Input
 												value={text}
 												onChange={e => onDescriptionChange(e, record?.id)}
 												disabled={record?.isActive ? false : true}

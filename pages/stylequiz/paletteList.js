@@ -30,10 +30,11 @@ const Wrapper = styled.div`
 `;
 const DescriptionText = styled.p`
 	display: -webkit-box;
-	-webkit-line-clamp: 3;
+	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-height: 45px;
 `;
 
 const endPoint = StyleQuizAPI.paletteAPI();

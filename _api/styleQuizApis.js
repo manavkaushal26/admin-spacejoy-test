@@ -3,7 +3,7 @@ export const getStylesAPI = () => {
 };
 
 export const adminGetImagesAPI = id => {
-	return `/v1/quizStyles/${id}/products`;
+	return `/v1/quizStyles/${id}/images`;
 };
 
 export const getAllImagesAPI = () => {

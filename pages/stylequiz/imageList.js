@@ -52,7 +52,7 @@ export default function ImageList({ query }) {
 	const getImagesById = endPoint => {
 		styleFetcher(endPoint)
 			.then(res => {
-				setImages(res.products);
+				setImages(res.images);
 			})
 			.catch(err => {
 				throw new Error();
@@ -74,7 +74,7 @@ export default function ImageList({ query }) {
 		setCheckboxVisibility(true);
 		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
-				const id = Router?.query?.styleId ? Router?.query?.styleId : res.data[0]?.id;
+				const id = Router?.query?.styleId ? Router?.query?.styleId : "all";
 				setStylesData(res.data);
 				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: id } }, `/stylequiz/imageList/${id}`);
 			})
