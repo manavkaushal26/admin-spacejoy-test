@@ -8,7 +8,7 @@ import {
 	PhaseType,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { DisabledLabel, ShadowDiv, StatusButton, StepsContainer, Tile } from "@sections/Dashboard/styled";
+import { ShadowDiv, StatusButton, StepsContainer, Tile } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Avatar, Button, Col, message, Popconfirm, Row, Typography } from "antd";
@@ -22,7 +22,7 @@ interface PipelineTab {
 	setDesignData: React.Dispatch<React.SetStateAction<DetailedDesign>>;
 	projectId: string;
 	setProjectPhase: (phase: { internalName: PhaseInternalNames; customerName: PhaseCustomerNames }) => void;
-	pause: boolean;
+	pause?: boolean;
 }
 
 const getButtonText = (status: Status): string => {
@@ -155,10 +155,10 @@ export default function PipelineTab({
 	const styleObj = {
 		...(pause && { cursor: "not-allowed" }),
 	};
+	console.log(disabled, styleObj);
 	return (
 		<div>
 			<Title level={2}>Task Overview</Title>
-			{pause ? <DisabledLabel>This project is currently paused</DisabledLabel> : null}
 			<StepsContainer style={styleObj}>
 				{steps.map(step => {
 					return (

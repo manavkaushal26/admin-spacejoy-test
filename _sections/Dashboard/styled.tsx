@@ -236,11 +236,11 @@ export const Tile = styled(CustomDiv)`
 	}
 `;
 export const DisabledLabel = styled(CustomDiv)`
-	padding: 8px;
-	border-radius: 4px;
 	background-color: red;
 	color: white;
 	width: auto;
+	padding: 12px;
+	font-size: 0.9rem;
 `;
 export const Form = styled.div`
 	> * + * {

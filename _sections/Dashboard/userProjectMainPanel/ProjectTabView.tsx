@@ -11,6 +11,7 @@ import {
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import ChatPanel from "@sections/AdminChatInterface";
+import { DisabledLabel } from "@sections/Dashboard/styled";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
@@ -255,6 +256,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						<SilentDivider />
 					</Col>
 					<Col span={24}>
+						{pause ? <DisabledLabel>This project is currently paused</DisabledLabel> : null}
 						<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey='pipeline'>
 							{!projectData && (
 								<TabPane tab='Team' key='team'>

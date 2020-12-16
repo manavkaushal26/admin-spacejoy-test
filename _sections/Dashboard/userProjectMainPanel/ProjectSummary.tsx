@@ -1,4 +1,5 @@
 import {
+	AlertOutlined,
 	CheckCircleTwoTone,
 	CloseCircleTwoTone,
 	LoadingOutlined,
@@ -38,7 +39,15 @@ const SilentTitle = styled(Title)`
 const VerticallyPaddedDiv = styled.div`
 	padding: 1.5rem 0 0 0;
 `;
-
+const Comment = styled.div`
+	font-size: 0.8rem;
+	margin-top: 8px;
+	max-width: 210px;
+	padding: 8px;
+	border-radius: 4px;
+	background-color: #ffdddd;
+	border: 1px solid red;
+`;
 const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 	projectData,
 	setProjectData,
@@ -47,6 +56,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 	// const { phase, task, status, avatar, name } = userProjectData;
 	const [projectPauseStatus, setProjectPauseStatus] = useState(false);
 	const [isPauseModalOpen, setPauseModalFlag] = useState(false);
+	const [pauseComments, setPauseComments] = useState("");
 	const togglePauseModal = () => {
 		setPauseModalFlag(!isPauseModalOpen);
 	};
@@ -90,9 +100,22 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 			setPauseModalFlag(false);
 		}
 	};
-
+	const getPauseDataForProject = async (projectId: string) => {
+		const endPoint = `/v1/projects/${projectId}/pauseEvents`;
+		const res = await fetcher({ endPoint, method: "GET" });
+		const { data, statusCode } = res;
+		if (statusCode <= 301) {
+			const { pauseEvent: { comments = [] } = {} } = data;
+			setPauseComments(comments[0] || "");
+		} else {
+			throw new Error();
+		}
+	};
 	useEffect(() => {
 		setProjectPauseStatus(projectData.pause);
+		if (projectData.pause) {
+			getPauseDataForProject(projectData._id);
+		}
 	}, [projectData.pause]);
 
 	const {
@@ -245,13 +268,13 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 		}
 		setRoomNameLoading(false);
 	};
-
+	const alignVal = projectPauseStatus ? "top" : "middle";
 	const isDelayed = getValueSafely(() => projectData.delay.isDelayed, false);
 	return (
 		<VerticallyPaddedDiv>
-			<Row justify='space-between' align='middle' gutter={[8, 8]}>
+			<Row justify='space-between' align={alignVal} gutter={[8, 8]}>
 				<Col offset={1}>
-					<Row gutter={[16, 8]} align='middle'>
+					<Row gutter={[16, 8]} align='top'>
 						<Col>
 							<Avatar size={48} style={getColorsForPackages(items)}>
 								{displayName[0].toUpperCase()}
@@ -279,10 +302,16 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 							<Col>
 								<div onClick={togglePauseModal}>
 									{projectPauseStatus ? (
-										<StyledTagInteractive>
-											<PlayCircleOutlined />
-											<span>Resume Project</span>
-										</StyledTagInteractive>
+										<>
+											<StyledTagInteractive>
+												<PlayCircleOutlined />
+												<span>Resume Project</span>
+											</StyledTagInteractive>
+											<Comment>
+												<AlertOutlined />
+												<span style={{ paddingLeft: "8px", verticalAlign: "middle" }}>{pauseComments}</span>
+											</Comment>
+										</>
 									) : (
 										<StyledTagInteractive>
 											<PauseCircleOutlined />
