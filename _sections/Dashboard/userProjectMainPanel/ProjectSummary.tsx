@@ -302,16 +302,12 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 							<Col>
 								<div onClick={togglePauseModal}>
 									{projectPauseStatus ? (
-										<>
+										<div>
 											<StyledTagInteractive>
 												<PlayCircleOutlined />
 												<span>Resume Project</span>
 											</StyledTagInteractive>
-											<Comment>
-												<AlertOutlined />
-												<span style={{ paddingLeft: "8px", verticalAlign: "middle" }}>{pauseComments}</span>
-											</Comment>
-										</>
+										</div>
 									) : (
 										<StyledTagInteractive>
 											<PauseCircleOutlined />
@@ -319,6 +315,12 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 										</StyledTagInteractive>
 									)}
 								</div>
+								{projectPauseStatus ? (
+									<Comment>
+										<AlertOutlined />
+										<span style={{ paddingLeft: "8px", verticalAlign: "middle" }}>{pauseComments}</span>
+									</Comment>
+								) : null}
 							</Col>
 						</Row>
 					</Col>
