@@ -37,7 +37,7 @@ const MetaCards = [
 		action: "redirect",
 		to: "/stylequiz/imageList",
 		url: "/stylequiz/imageList",
-		query: {},
+		query: { styleId: "all" },
 		allowedRoles: [Role.Admin, Role.Owner],
 	},
 	{

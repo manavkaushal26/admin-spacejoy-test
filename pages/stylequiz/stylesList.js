@@ -273,6 +273,8 @@ export default function StylesList() {
 									key='id'
 									title='Is Active'
 									dataIndex='id'
+									defaultSortOrder='descend'
+									sorter={(a, b) => a.active - b.active}
 									render={(text, record) => {
 										return <Switch checked={record.active} onChange={checked => handleToggle(checked, text)} />;
 									}}

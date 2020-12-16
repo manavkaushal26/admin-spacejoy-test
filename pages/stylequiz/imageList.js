@@ -61,7 +61,7 @@ export default function ImageList({ query }) {
 
 	const handleChange = value => {
 		if (value === "all") {
-			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, "/stylequiz/imageList/all");
+			Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: "all" } }, "/stylequiz/imageList/all");
 			setCheckboxVisibility(true);
 			setIsTaggedStatus(false);
 		} else {
@@ -74,8 +74,9 @@ export default function ImageList({ query }) {
 		setCheckboxVisibility(true);
 		styleFetcher(StyleQuizAPI.getActiveStylesAPI(), "GET")
 			.then(res => {
+				const id = Router?.query?.styleId ? Router?.query?.styleId : res.data[0]?.id;
 				setStylesData(res.data);
-				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: 0 } }, "/stylequiz/imageList/all");
+				Router.replace({ pathname: "/stylequiz/imageList", query: { styleId: id } }, `/stylequiz/imageList/${id}`);
 			})
 			.catch(err => {
 				throw new Error();
@@ -85,7 +86,7 @@ export default function ImageList({ query }) {
 	useEffect(() => {
 		setImages([]);
 		if (styleId && styleId !== "undefined") {
-			if (styleId !== "0" && styleId !== "all") {
+			if (styleId !== "all") {
 				getImagesById(`${StyleQuizAPI.adminGetImagesAPI(styleId)}`);
 			} else {
 				getLatestImages(StyleQuizAPI.getAllImagesAPI());
@@ -140,7 +141,7 @@ export default function ImageList({ query }) {
 	};
 
 	const updateImageView = () => {
-		if (styleId === "0" && styleId !== "undefined") {
+		if (styleId === "all") {
 			if (isTaggedStatus) {
 				getLatestImages(StyleQuizAPI.getAllUntaggedImagesAPI());
 			} else {
@@ -170,6 +171,10 @@ export default function ImageList({ query }) {
 			});
 	};
 
+	const defaultStyleValue =
+		Router?.query?.styleId !== "all"
+			? styles.filter(style => style?.id === parseInt(Router?.query?.styleId))[0]?.id
+			: "all";
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -198,7 +203,7 @@ export default function ImageList({ query }) {
 												}
 												style={{ width: "100%" }}
 												onChange={handleChange}
-												defaultValue='all'
+												defaultValue={defaultStyleValue}
 											>
 												<Select.Option key='all' value='all'>
 													All
