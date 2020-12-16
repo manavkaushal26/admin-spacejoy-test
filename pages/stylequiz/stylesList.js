@@ -144,13 +144,6 @@ export default function StylesList() {
 		flushData();
 	}, [isModalVisible]);
 
-	const uploadButton = (
-		<div>
-			{isLoading ? <LoadingOutlined /> : <PlusOutlined />}
-			<div style={{ marginTop: 8 }}>Upload</div>
-		</div>
-	);
-
 	const getIcons = id => {
 		styleFetcher(`${StyleQuizAPI.getStyleIconsAPI(id)}`, "GET")
 			.then(res => {
@@ -167,10 +160,10 @@ export default function StylesList() {
 		setLoader(true);
 		const formData = new FormData();
 		formData.append("image", e.target.files[0]);
-		formData.append("text", "test");
+		formData.append("text", "");
 		formData.append("styleId", activeStyle?.id);
 		try {
-			await chatFetcher({ endPoint: StyleQuizAPI.modifyStyleIconsAPI(), method: "POST", body: formData });
+			await chatFetcher({ endPoint: StyleQuizAPI.getAllIcons(), method: "POST", body: formData });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -202,6 +195,50 @@ export default function StylesList() {
 	const sortByDate = data => {
 		return [...data].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 	};
+
+	const onDescriptionChange = async (e, id) => {
+		const newState = icons.map(item => {
+			if (item.id === id) {
+				return { ...item, text: e.target.value };
+			}
+			return { ...item };
+		});
+		setIcons(newState);
+	};
+
+	const handleSave = async (row, type) => {
+		const newState = icons.map(icon => {
+			if (icon?.id === row?.id) {
+				if (type.toLowerCase() === "edit") {
+					icon["isActive"] = true;
+				} else if (type.toLowerCase() === "save") {
+					updateDescription(row);
+					icon["isActive"] = false;
+				}
+			}
+			return icon;
+		});
+		setIcons(newState);
+	};
+
+	const updateDescription = async row => {
+		const formData = new FormData();
+		formData.append("image", []);
+		formData.append("text", row?.text);
+		formData.append("styleId", activeStyle?.id);
+		try {
+			await chatFetcher({ endPoint: StyleQuizAPI.modifyStyleIconsAPI(), method: "POST", body: formData });
+		} catch (err) {
+			notification.error({ message: err });
+		}
+	};
+
+	const uploadButton = (
+		<div>
+			{isLoading ? <LoadingOutlined /> : <PlusOutlined />}
+			<div style={{ marginTop: 8 }}>Upload</div>
+		</div>
+	);
 
 	return (
 		<PageLayout pageName='Styles List'>
@@ -302,17 +339,11 @@ export default function StylesList() {
 					onOk={() => handleModalOk("style-modal")}
 					onCancel={() => setModalVisibility(false)}
 					width={1000}
-					okText='Save'
+					footer={false}
 				>
 					<Spin spinning={isLoading}>
 						{modalType === "edit" ? (
 							<ModalContent>
-								{/* <div className='flex'>
-									<span>Description</span>
-									<br></br>
-									<TextArea ref={textareaRef} />
-								</div> */}
-
 								<div className='flex'>
 									<span>Upload Image</span>
 									<br></br>
@@ -332,12 +363,25 @@ export default function StylesList() {
 										</Button>
 									</Col>
 								</Row>
-								<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons} isLoading={isLoading}>
+								<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons} isLoading={isLoading} pagination={false}>
 									<Table.Column
 										key='id'
 										title='Icons'
 										dataIndex='cdn'
-										render={(text, record) => <Image src={`q_70,w_75/${text}`} width='75' />}
+										render={(text, record) => <Image style={{ maxWidth: 40 }} src={`q_70,w_40/${text}`} width='75' />}
+									/>
+
+									<Table.Column
+										key='id'
+										title='Description'
+										dataIndex='text'
+										render={(text, record) => (
+											<TextArea
+												value={text}
+												onChange={e => onDescriptionChange(e, record?.id)}
+												disabled={record?.isActive ? false : true}
+											/>
+										)}
 									/>
 									<Table.Column
 										key='id'
@@ -355,6 +399,16 @@ export default function StylesList() {
 												<DeleteOutlined />
 											</Popconfirm>
 										)}
+									/>
+									<Table.Column
+										key='id'
+										title=''
+										dataIndex='text'
+										render={(text, record) => {
+											const isEditing = record?.isActive;
+											const type = isEditing ? "Save" : "Edit";
+											return <Button onClick={e => handleSave(record, type)}>{type}</Button>;
+										}}
 									/>
 								</Table>
 							</ModalContent>

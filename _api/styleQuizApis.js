@@ -22,6 +22,10 @@ export const updateStyleAPI = () => {
 	return "/quiz/admin/v1/style/update";
 };
 
+export const getAllIcons = () => {
+	return "/v1/quizStyles/icons";
+};
+
 export const getStyleIconsAPI = id => {
 	return `/v1/quizStyles/${id}/icons`;
 };
