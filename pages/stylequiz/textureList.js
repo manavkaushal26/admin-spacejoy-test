@@ -84,13 +84,7 @@ export default function TextureList() {
 	};
 
 	const handleToggle = async (checked, id) => {
-		const newState = textures.map(item => {
-			if (item.id === id) {
-				return { ...item, isActive: checked };
-			}
-			return { ...item };
-		});
-		setTextures(newState);
+		updateStates("isActive", checked, id);
 		await updateResource(endPoint, "PUT", {
 			id: id,
 			active: checked ? "yes" : "no",
@@ -108,6 +102,20 @@ export default function TextureList() {
 
 	const handleCancel = () => {
 		setIsModalVisible(false);
+	};
+
+	const handleDescChange = desc => {
+		updateStates("description", desc, selectedResource?.id);
+	};
+
+	const updateStates = (key, value, id) => {
+		const newState = textures.map(item => {
+			if (item.id === id) {
+				return { ...item, [key]: value };
+			}
+			return { ...item };
+		});
+		setTextures(newState);
 	};
 
 	return (
@@ -173,11 +181,7 @@ export default function TextureList() {
 														]}
 														hoverable
 														cover={<Image src={`q_50,w_300,h_180/${item?.cdn}`} />}
-													>
-														<DescriptionText>
-															Description : {item?.description ? item?.description : "N/A"}
-														</DescriptionText>
-													</Card>
+													></Card>
 												</Col>
 											);
 										})
@@ -199,6 +203,8 @@ export default function TextureList() {
 					handlModaleOk={desc => handlModaleOk(desc)}
 					selectedResource={selectedResource}
 					handleCancel={handleCancel}
+					data={textures}
+					handleDescChange={desc => handleDescChange(desc)}
 				/>
 			</MaxHeightDiv>
 		</PageLayout>

@@ -1,4 +1,5 @@
 import fetcher from "@utils/fetcher";
+import { notification } from "antd";
 const styleFetcher = async (endPoint, method) => {
 	try {
 		const resData = await fetcher({ endPoint, method: method });
@@ -8,9 +9,8 @@ const styleFetcher = async (endPoint, method) => {
 		} else {
 			throw new Error();
 		}
-	} catch {
-		throw new Error();
-	} finally {
+	} catch (err) {
+		notification.error({ message: "Server timeout. Please refresh the page once" });
 	}
 };
 
@@ -21,11 +21,10 @@ const modifyFormDataResource = async (endPoint, method, body) => {
 		if (statusCode && statusCode <= 201) {
 			return data;
 		} else {
-			throw new Error();
+			notification.error({ message: "Server timeout. Please refresh the page once to see the uploaded images" });
 		}
 	} catch {
-		throw new Error();
-	} finally {
+		notification.error({ message: "Server timeout. Please refresh the page once to see the uploaded images" });
 	}
 };
 
@@ -38,9 +37,8 @@ const updateResource = async (endPoint, method, body) => {
 		} else {
 			throw new Error();
 		}
-	} catch {
-		throw new Error();
-	} finally {
+	} catch (err) {
+		notification.error({ message: "Server timeout. Please refresh the page once" });
 	}
 };
 

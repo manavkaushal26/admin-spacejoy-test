@@ -1,4 +1,11 @@
-import { ArrowLeftOutlined, DeleteOutlined, FileImageOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+	ArrowLeftOutlined,
+	DeleteOutlined,
+	FileImageOutlined,
+	LoadingOutlined,
+	PlusOutlined,
+	UploadOutlined,
+} from "@ant-design/icons";
 import * as StyleQuizAPI from "@api/styleQuizApis";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
@@ -47,6 +54,7 @@ const UploadButton = styled.span`
 
 const StyleIcon = styled(Button)`
 	cursor: pointer;
+	padding: 0;
 `;
 
 export default function StylesList() {
@@ -110,6 +118,7 @@ export default function StylesList() {
 		formData.append("styleId", id);
 		try {
 			await chatFetcher({ endPoint: StyleQuizAPI.getStylesAPI(), method: "PUT", body: formData });
+			notification.success({ message: "Upload Successful" });
 		} catch (err) {
 			notification.error({ message: err });
 		}
@@ -261,6 +270,33 @@ export default function StylesList() {
 								/>
 								<Table.Column
 									key='id'
+									title='Icons'
+									dataIndex=''
+									align='left'
+									render={(text, record) => (
+										<StyleIcon type='link' onClick={() => showModal(record, "icons")}>
+											<FileImageOutlined style={{ fontSize: 20 }} />
+										</StyleIcon>
+									)}
+								/>
+								<Table.Column
+									key='id'
+									title='Upload Image'
+									dataIndex='id'
+									align='left'
+									render={(text, record) => (
+										<UploadButton>
+											<UploadOutlined style={{ fontSize: 20 }} />
+											<StyledInput
+												onChange={e => createImage(e, text)}
+												type='file'
+												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+											/>
+										</UploadButton>
+									)}
+								/>
+								<Table.Column
+									key='id'
 									title='Go to'
 									dataIndex='id'
 									align='left'
@@ -280,33 +316,6 @@ export default function StylesList() {
 											)
 										);
 									}}
-								/>
-								<Table.Column
-									key='id'
-									title='Icons'
-									dataIndex=''
-									align='left'
-									render={(text, record) => (
-										<StyleIcon type='link' onClick={() => showModal(record, "icons")}>
-											<FileImageOutlined />
-										</StyleIcon>
-									)}
-								/>
-								<Table.Column
-									key='id'
-									title='Upload Image'
-									dataIndex='id'
-									align='left'
-									render={(text, record) => (
-										<UploadButton>
-											Upload
-											<StyledInput
-												onChange={e => createImage(e, text)}
-												type='file'
-												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
-											/>
-										</UploadButton>
-									)}
 								/>
 							</Table>
 						</Col>
