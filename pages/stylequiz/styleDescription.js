@@ -2,6 +2,7 @@ import { ArrowLeftOutlined } from "@ant-design/icons";
 import * as StyleQuizAPI from "@api/styleQuizApis";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
+import { debounce } from "@utils/commonUtils";
 import { styleFetcher, updateResource } from "@utils/styleQuizHelper";
 import { Button, Card, Col, Input, notification, Row, Select, Spin, Typography } from "antd";
 import { useRouter } from "next/router";
@@ -33,7 +34,9 @@ export default function StyleDescription() {
 	}, []);
 
 	useEffect(() => {
-		setDescription("");
+		if (primaryStyleId !== "" && secondaryStyleId !== "") {
+			fetchDescriptions();
+		}
 	}, [primaryStyleId, secondaryStyleId]);
 
 	const fetchStyles = () => {
@@ -56,13 +59,16 @@ export default function StyleDescription() {
 
 	const fetchDescriptions = async () => {
 		if (primaryStyleId && secondaryStyleId) {
+			setLoader(true);
 			const resData = await updateResource(StyleQuizAPI.descriptionsAPI(), "POST", {
 				primaryId: primaryStyleId,
 				secondaryId: secondaryStyleId,
 			});
 			setDescription(resData.description);
+			setLoader(false);
 		} else {
 			notification.error({ message: "Please choose valid styles" });
+			setLoader(false);
 		}
 	};
 
@@ -72,6 +78,7 @@ export default function StyleDescription() {
 
 	const updateDescription = async () => {
 		if (primaryStyleId && secondaryStyleId && description !== "") {
+			setLoader(true);
 			await updateResource(StyleQuizAPI.descriptionsAPI(), "PUT", {
 				primaryId: primaryStyleId,
 				secondaryId: secondaryStyleId,
@@ -81,25 +88,27 @@ export default function StyleDescription() {
 		} else {
 			notification.error({ message: "Please choose valid styles/Check for empty description" });
 		}
-		fetchStyles();
+		setLoader(false);
 	};
+
+	const debounceHandleClick = debounce(updateDescription, 300);
 
 	return (
 		<PageLayout pageName='Styles List'>
-			<MaxHeightDiv>
-				<LoudPaddingDiv>
-					<Col span={24}>
-						<Title level={3}>
-							<Row gutter={[8, 8]}>
-								<Col>
-									<ArrowLeftOutlined onClick={() => Router.back()} />
-								</Col>
-								<Col>Go Back</Col>
-							</Row>
-						</Title>
-					</Col>
-					<br></br>
-					<Spin spinning={isLoading}>
+			<Spin spinning={isLoading}>
+				<MaxHeightDiv>
+					<LoudPaddingDiv>
+						<Col span={24}>
+							<Title level={3}>
+								<Row gutter={[8, 8]}>
+									<Col>
+										<ArrowLeftOutlined onClick={() => Router.back()} />
+									</Col>
+									<Col>Go Back</Col>
+								</Row>
+							</Title>
+						</Col>
+						<br></br>
 						<Wrapper>
 							<Card>
 								<Row gutter={[8, 16]} type='flex' style={{ alignItems: "center" }}>
@@ -119,7 +128,7 @@ export default function StyleDescription() {
 															}
 															style={{ width: "100%" }}
 															onChange={value => handleSelection(value, item)}
-															defaultValue='all'
+															defaultValue='--'
 														>
 															{styles.map(style => {
 																return (
@@ -133,9 +142,6 @@ export default function StyleDescription() {
 												);
 										  })
 										: null}
-									<Col sm={8} md={8} lg={8} align='right'>
-										<Button onClick={fetchDescriptions}>Get Description</Button>
-									</Col>
 								</Row>
 								<Row gutter={[8, 16]}>
 									<Col span={24}>
@@ -144,18 +150,21 @@ export default function StyleDescription() {
 												onChange={handleDescriptionChange}
 												value={description}
 												placeholder='Add description...'
+												style={{ height: 200 }}
 											></TextArea>
 											<br></br>
 											<br></br>
-											<Button onClick={updateDescription}>Save</Button>
+											<Button style={{ width: 200 }} onClick={debounceHandleClick}>
+												Save
+											</Button>
 										</Card>
 									</Col>
 								</Row>
 							</Card>
 						</Wrapper>
-					</Spin>
-				</LoudPaddingDiv>
-			</MaxHeightDiv>
+					</LoudPaddingDiv>
+				</MaxHeightDiv>
+			</Spin>
 		</PageLayout>
 	);
 }

@@ -1,12 +1,4 @@
-import {
-	ArrowLeftOutlined,
-	DeleteOutlined,
-	EditOutlined,
-	FileImageOutlined,
-	LoadingOutlined,
-	PlusOutlined,
-	UploadOutlined,
-} from "@ant-design/icons";
+import { ArrowLeftOutlined, DeleteOutlined, FileImageOutlined, LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import * as StyleQuizAPI from "@api/styleQuizApis";
 import Image from "@components/Image";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
@@ -14,20 +6,7 @@ import PageLayout from "@sections/Layout";
 import { redirectToLocation } from "@utils/authContext";
 import chatFetcher from "@utils/chatFetcher";
 import { styleFetcher, updateResource } from "@utils/styleQuizHelper";
-import {
-	Button,
-	Col,
-	Input,
-	Modal,
-	notification,
-	Popconfirm,
-	Row,
-	Spin,
-	Switch,
-	Table,
-	Typography,
-	Upload,
-} from "antd";
+import { Button, Col, Input, Modal, notification, Popconfirm, Row, Spin, Switch, Table, Typography } from "antd";
 import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
@@ -52,6 +31,20 @@ const StyledInput = styled(Input)`
 	z-index: 10;
 `;
 
+const UploadButton = styled.span`
+	span {
+		cursor: pointer;
+	}
+	text-align: center;
+	color: #1890ff;
+	position: relative;
+	input[type="file"],
+	input[type="file"]::-webkit-file-upload-button {
+		cursor: pointer;
+		z-index: 12;
+	}
+`;
+
 const StyleIcon = styled(Button)`
 	cursor: pointer;
 `;
@@ -61,12 +54,8 @@ export default function StylesList() {
 	const [icons, setIcons] = useState([]);
 	const [isLoading, setLoader] = useState(false);
 	const [isModalVisible, setModalVisibility] = useState(false);
-	const [modalType, setModalType] = useState("");
 	const [activeStyle, setActiveStyle] = useState({});
 	const textareaRef = useRef(null);
-
-	// image filelist
-	const [imageList, setImages] = useState([]);
 
 	const getStyles = () => {
 		setLoader(true);
@@ -101,28 +90,24 @@ export default function StylesList() {
 		setLoader(true);
 		setModalVisibility(true);
 		setActiveStyle(row);
-		if (type === "edit") {
-			setModalType("edit");
-		} else {
-			setModalType("icons");
-			getIcons(row?.id);
-		}
+		getIcons(row?.id);
 		setLoader(false);
 	};
 
 	const handleModalOk = () => {
-		if (modalType === "edit") {
-			saveStyleInfo();
-		}
 		setModalVisibility(false);
 	};
 
-	const saveStyleInfo = async () => {
+	const createImage = (e, id) => {
+		saveStyleInfo(e.target.files[0], id);
+	};
+
+	const saveStyleInfo = async (image, id) => {
 		setLoader(true);
 		const formData = new FormData();
-		formData.append("image", Object.keys(imageList).length ? imageList : JSON.stringify([]));
-		formData.append("desc", textareaRef?.current?.state?.value ? textareaRef.current.state.value : "");
-		formData.append("styleId", activeStyle?.id);
+		formData.append("image", image);
+		formData.append("desc", "");
+		formData.append("styleId", id);
 		try {
 			await chatFetcher({ endPoint: StyleQuizAPI.getStylesAPI(), method: "PUT", body: formData });
 		} catch (err) {
@@ -137,7 +122,6 @@ export default function StylesList() {
 		if (textareaRef?.current?.state) {
 			textareaRef.current.state.value = "";
 		}
-		setImages([]);
 	};
 
 	useEffect(() => {
@@ -176,20 +160,6 @@ export default function StylesList() {
 		await updateResource(StyleQuizAPI.modifyStyleIconsAPI(), "DELETE", { styleIconId: id });
 		setLoader(false);
 		getIcons(activeStyle?.id);
-	};
-
-	const props = {
-		name: "file",
-		action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-		headers: {
-			authorization: "authorization-text",
-		},
-		onChange({ file }) {
-			setImages(file);
-		},
-		beforeUpload() {
-			return false;
-		},
 	};
 
 	const sortByDate = data => {
@@ -262,6 +232,7 @@ export default function StylesList() {
 								<Table.Column
 									key='_id'
 									title='Style Name'
+									align='left'
 									render={styles => {
 										return (
 											<Row>
@@ -274,6 +245,7 @@ export default function StylesList() {
 									key='id'
 									title='Is Active'
 									dataIndex='id'
+									align='left'
 									defaultSortOrder='descend'
 									sorter={(a, b) => a.active - b.active}
 									render={(text, record) => {
@@ -284,13 +256,14 @@ export default function StylesList() {
 									key='id'
 									title='Image'
 									dataIndex='cdn'
+									align='left'
 									render={(text, record) => <Image style={{ maxWidth: 120 }} src={`q_70,w_120/${text}`} />}
 								/>
 								<Table.Column
 									key='id'
 									title='Go to'
 									dataIndex='id'
-									align='right'
+									align='left'
 									render={(id, record) => {
 										return (
 											record.active && (
@@ -312,7 +285,7 @@ export default function StylesList() {
 									key='id'
 									title='Icons'
 									dataIndex=''
-									align='right'
+									align='left'
 									render={(text, record) => (
 										<StyleIcon type='link' onClick={() => showModal(record, "icons")}>
 											<FileImageOutlined />
@@ -321,15 +294,18 @@ export default function StylesList() {
 								/>
 								<Table.Column
 									key='id'
-									title=''
-									dataIndex=''
-									align='right'
+									title='Upload Image'
+									dataIndex='id'
+									align='left'
 									render={(text, record) => (
-										<span>
-											<EditIcon type='link' onClick={() => showModal(record, "edit")}>
-												<EditOutlined />
-											</EditIcon>
-										</span>
+										<UploadButton>
+											Upload
+											<StyledInput
+												onChange={e => createImage(e, text)}
+												type='file'
+												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+											/>
+										</UploadButton>
 									)}
 								/>
 							</Table>
@@ -337,7 +313,7 @@ export default function StylesList() {
 					</Row>
 				</LoudPaddingDiv>
 				<Modal
-					title={activeStyle ? `Edit Style for ${activeStyle?.name}` : ""}
+					title={activeStyle ? `Upload Image for ${activeStyle?.name}` : ""}
 					visible={isModalVisible}
 					onOk={() => handleModalOk("style-modal")}
 					onCancel={() => setModalVisibility(false)}
@@ -345,77 +321,64 @@ export default function StylesList() {
 					footer={false}
 				>
 					<Spin spinning={isLoading}>
-						{modalType === "edit" ? (
-							<ModalContent>
-								<div className='flex'>
-									<span>Upload Image</span>
-									<br></br>
-									<br></br>
-									<Upload {...props} accept='image/jpeg,image/jpg,image/JPEG,image/JPG'>
-										<Button icon={<UploadOutlined />}>Click to Upload</Button>
-									</Upload>
-								</div>
-							</ModalContent>
-						) : (
-							<ModalContent>
-								<Row gutter={[4, 16]}>
-									<Col sm={24} align='right'>
-										<Button style={{ position: "relative" }} type='primary'>
-											Add Icon
-											<StyledInput onChange={createIcon} type='file' accept='image/png,image/PNG' />
-										</Button>
-									</Col>
-								</Row>
-								<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons} isLoading={isLoading} pagination={false}>
-									<Table.Column
-										key='id'
-										title='Icons'
-										dataIndex='cdn'
-										render={(text, record) => <Image style={{ maxWidth: 40 }} src={`q_70,w_40/${text}`} width='75' />}
-									/>
+						<ModalContent>
+							<Row gutter={[4, 16]}>
+								<Col sm={24} align='right'>
+									<Button style={{ position: "relative" }} type='primary'>
+										Add Icon
+										<StyledInput onChange={createIcon} type='file' accept='image/png,image/PNG' />
+									</Button>
+								</Col>
+							</Row>
+							<Table rowKey='_id' scroll={{ x: 768 }} dataSource={icons} isLoading={isLoading} pagination={false}>
+								<Table.Column
+									key='id'
+									title='Icons'
+									dataIndex='cdn'
+									render={(text, record) => <Image style={{ maxWidth: 40 }} src={`q_70,w_40/${text}`} width='75' />}
+								/>
 
-									<Table.Column
-										key='id'
-										title='Description'
-										dataIndex='text'
-										render={(text, record) => (
-											<Input
-												value={text}
-												onChange={e => onDescriptionChange(e, record?.id)}
-												disabled={record?.isActive ? false : true}
-											/>
-										)}
-									/>
-									<Table.Column
-										key='id'
-										title='Actions'
-										dataIndex=''
-										render={(text, record) => (
-											<Popconfirm
-												placement='top'
-												onConfirm={() => deleteIcon(record?.id)}
-												title='Are you sure you want to delete?'
-												okText='Yes'
-												disabled={false}
-												cancelText='Cancel'
-											>
-												<DeleteOutlined />
-											</Popconfirm>
-										)}
-									/>
-									<Table.Column
-										key='id'
-										title=''
-										dataIndex='text'
-										render={(text, record) => {
-											const isEditing = record?.isActive;
-											const type = isEditing ? "Save" : "Edit";
-											return <Button onClick={e => handleSave(record, type)}>{type}</Button>;
-										}}
-									/>
-								</Table>
-							</ModalContent>
-						)}
+								<Table.Column
+									key='id'
+									title='Description'
+									dataIndex='text'
+									render={(text, record) => (
+										<Input
+											value={text}
+											onChange={e => onDescriptionChange(e, record?.id)}
+											disabled={record?.isActive ? false : true}
+										/>
+									)}
+								/>
+								<Table.Column
+									key='id'
+									title='Actions'
+									dataIndex=''
+									render={(text, record) => (
+										<Popconfirm
+											placement='top'
+											onConfirm={() => deleteIcon(record?.id)}
+											title='Are you sure you want to delete?'
+											okText='Yes'
+											disabled={false}
+											cancelText='Cancel'
+										>
+											<DeleteOutlined />
+										</Popconfirm>
+									)}
+								/>
+								<Table.Column
+									key='id'
+									title=''
+									dataIndex='text'
+									render={(text, record) => {
+										const isEditing = record?.isActive;
+										const type = isEditing ? "Save" : "Edit";
+										return <Button onClick={e => handleSave(record, type)}>{type}</Button>;
+									}}
+								/>
+							</Table>
+						</ModalContent>
 					</Spin>
 				</Modal>
 			</MaxHeightDiv>

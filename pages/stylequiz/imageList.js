@@ -87,6 +87,7 @@ export default function ImageList({ query }) {
 		setImages([]);
 		if (styleId && styleId !== "undefined") {
 			if (styleId !== "all") {
+				setCheckboxVisibility(false);
 				getImagesById(`${StyleQuizAPI.adminGetImagesAPI(styleId)}`);
 			} else {
 				getLatestImages(StyleQuizAPI.getAllImagesAPI());
@@ -108,10 +109,11 @@ export default function ImageList({ query }) {
 		setLoader(true);
 		const formData = multiFileUploader(images);
 		const resData = await modifyFormDataResource(StyleQuizAPI.getAllImagesAPI(), "POST", formData);
-		const { imageId } = resData;
+
 		updateImageView();
 		setLoader(false);
 		if (images.length === 1) {
+			const { imageId } = resData?.data[0];
 			showModal(imageId);
 		}
 	};
@@ -231,15 +233,17 @@ export default function ImageList({ query }) {
 										) : null}
 									</Col>
 									<Col sm={24} md={12} align='right'>
-										<Button style={{ position: "relative" }} type='primary'>
-											Add Image
-											<StyledInput
-												onChange={handleUpload}
-												type='file'
-												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
-												multiple
-											/>
-										</Button>
+										{Router?.query?.styleId === "all" ? (
+											<Button style={{ position: "relative" }} type='primary'>
+												Add Image
+												<StyledInput
+													onChange={handleUpload}
+													type='file'
+													accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+													multiple
+												/>
+											</Button>
+										) : null}
 									</Col>
 								</Row>
 							</Card>
@@ -255,8 +259,6 @@ export default function ImageList({ query }) {
 														actions={[
 															<Switch
 																checked={item?.active}
-																checkedChildren='Active'
-																unCheckedChildren='Inactive'
 																onChange={checked => updateStatus(checked, item?.id)}
 																key={item?.id}
 															/>,
@@ -293,13 +295,15 @@ export default function ImageList({ query }) {
 							</Row>
 						</Wrapper>
 					</Spin>
-					<ScoreModal
-						isModalVisible={isModalVisible}
-						selectedProductId={selectedProductId}
-						handleModalOk={handleModalOk}
-						handleModalCancel={handleModalCancel}
-						styles={styles}
-					/>
+					{isModalVisible ? (
+						<ScoreModal
+							isModalVisible={isModalVisible}
+							selectedProductId={selectedProductId}
+							handleModalOk={handleModalOk}
+							handleModalCancel={handleModalCancel}
+							styles={styles}
+						/>
+					) : null}
 				</LoudPaddingDiv>
 			</MaxHeightDiv>
 		</PageLayout>
