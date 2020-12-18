@@ -10,7 +10,7 @@ const styleFetcher = async (endPoint, method) => {
 			throw new Error();
 		}
 	} catch (err) {
-		notification.error({ message: "Server timeout. Please refresh the page once" });
+		throw new Error();
 	}
 };
 
@@ -38,7 +38,7 @@ const updateResource = async (endPoint, method, body) => {
 			throw new Error();
 		}
 	} catch (err) {
-		notification.error({ message: "Server timeout. Please refresh the page once" });
+		return Promise.reject("Error");
 	}
 };
 

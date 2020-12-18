@@ -40,7 +40,6 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	const [scores, setScores] = useState([]);
 	const [isEditModal, setEditModal] = useState(false);
 	const [currentSelectedRecord, setSelectedRecord] = useState([]);
-	const [isLoading, setLoader] = useState(false);
 	const inputEl = useRef(null);
 	const fetchResources = async endPoint => {
 		try {
@@ -67,12 +66,12 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		}
 	}, [selectedProductId]);
 
-	useEffect(() => {
-		document.addEventListener("keypress", onKeyDown);
-		return () => {
-			document.removeEventListener("keypress", onKeyDown);
-		};
-	}, [isEditModal]);
+	const handleKeyDown = e => {
+		if (e.which === 13) {
+			handleEditModalOk();
+			setEditModal(false);
+		}
+	};
 
 	useEffect(() => {
 		if (inputEl?.current) {
@@ -85,13 +84,6 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 	useEffect(() => {
 		setScores([]);
 	}, [isModalVisible]);
-
-	const onKeyDown = e => {
-		if (e.which === 13) {
-			handleEditModalOk();
-			setEditModal(false);
-		}
-	};
 
 	const getLatestScores = () => {
 		const endPoint = `/v1/quizImages/${selectedProductId}/scores`;
@@ -144,29 +136,41 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		setSelectedRecord(style);
 	};
 
-	const handleEdit = (row, type) => {
-		const updatedScores = scores.map(score => {
-			if (score?.id === row?.id) {
-				if (type.toLowerCase() === "edit") {
-					score["isActive"] = true;
-				} else if (type.toLowerCase() === "save") {
-					updateResource("/v1/quizImages/scores", "PUT", {
-						imageId: selectedProductId,
-						styleId: row?.styleId,
-						score: row?.score,
-					})
-						.then(data => {
-							notification.success({ message: data.message });
-						})
-						.catch(() =>
-							notification.error({ message: "Score cannot be added. Total score has to be less than 100." })
-						);
-					score["isActive"] = false;
+	const handleEdit = async (row, type) => {
+		if (type.toLowerCase() === "edit") {
+			const scoresCopy = scores.map(item => {
+				if (item?.id === row?.id) {
+					return {
+						...item,
+						isActive: true,
+					};
 				}
+				return { ...item };
+			});
+			setScores(scoresCopy);
+		} else if (type.toLowerCase() === "save") {
+			try {
+				await updateResource("/v1/quizImages/scores", "PUT", {
+					imageId: selectedProductId,
+					styleId: row?.styleId,
+					score: row?.score,
+				});
+				const scoresCopy = scores.map(item => {
+					if (item?.id === row?.id) {
+						return {
+							...item,
+							isActive: false,
+							score: row?.score,
+						};
+					}
+					return { ...item, isActive: false };
+				});
+				notification.success({ message: "Score updated." });
+				setScores(scoresCopy);
+			} catch {
+				notification.error({ message: "Failed to updated score. Total score has to be less than 100." });
 			}
-			return score;
-		});
-		setScores(updatedScores);
+		}
 	};
 
 	const addNewScore = async () => {
@@ -190,16 +194,21 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 				setEditModal(false);
 				notification.success({ message: data.message });
 			})
-			.catch(() => notification.error({ message: "Score cannot be added. Total score has to be less than 100." }));
+			.catch(err => {
+				notification.error({ message: "Score cannot be added. Total score has to be less than 100." });
+			});
 		if (inputEl?.current) inputEl.current.value = "";
 	};
 
 	const onScoreChange = (id, e) => {
 		const updatedScores = scores.map(score => {
 			if (score.id === id) {
-				score["score"] = parseInt(e.target.value);
+				return {
+					...score,
+					score: parseInt(e.target.value),
+				};
 			}
-			return score;
+			return { ...score };
 		});
 		setScores(updatedScores);
 	};
@@ -286,7 +295,7 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 						<br></br>
 						<span>Add Score</span>
 						&nbsp;&nbsp;
-						<input className='score-input' type='number' ref={inputEl} />
+						<input onKeyDown={handleKeyDown} className='score-input' type='number' ref={inputEl} />
 						<div>
 							<br></br>
 							<span>*Total score has to be less than 100.</span>
@@ -297,7 +306,6 @@ export default function ScoreModal({ isModalVisible, selectedProductId, handleMo
 		</Modal>
 	);
 }
-
 ScoreModal.defaultProps = {
 	styles: [],
 	isModalVisible: false,
