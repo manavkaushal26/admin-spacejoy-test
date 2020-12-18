@@ -237,7 +237,13 @@ export default function StylesList() {
 					<br></br>
 					<Row gutter={[0, 16]}>
 						<Col span={24}>
-							<Table loading={isLoading} rowKey='_id' scroll={{ x: 768 }} dataSource={sortByDate(styles)}>
+							<Table
+								loading={isLoading}
+								rowKey='_id'
+								scroll={{ x: 768 }}
+								dataSource={sortByDate(styles)}
+								pagination={{ pageSize: 15 }}
+							>
 								<Table.Column
 									key='_id'
 									title='Style Name'
@@ -349,7 +355,7 @@ export default function StylesList() {
 
 								<Table.Column
 									key='id'
-									title='Description'
+									title='Text'
 									dataIndex='text'
 									render={(text, record) => (
 										<Input

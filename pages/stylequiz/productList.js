@@ -34,7 +34,6 @@ export default function ProductsList({ query }) {
 	const [styles, setStylesData] = useState([]);
 	const [isLoading, setLoader] = useState(false);
 	const [selectedProduct, setSelectedProduct] = useState({});
-	const [isChecked, setChecked] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const inputAreaRef = useRef(null);
 	const Router = useRouter();
@@ -117,7 +116,6 @@ export default function ProductsList({ query }) {
 			return { ...item };
 		});
 		setProducts(newState);
-		setChecked(checked);
 		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
 			productId: id,
 			active: checked ? "yes" : "no",
@@ -142,23 +140,26 @@ export default function ProductsList({ query }) {
 
 	const updateProductDetails = async () => {
 		const mongoId = inputAreaRef?.current?.state?.value ? inputAreaRef.current.state.value : "";
-		const newState = products.map(item => {
-			if (item.id === selectedProduct?.id) {
-				return { ...item, mongoId };
-			}
-			return { ...item };
-		});
-		setProducts(newState);
 		await updateResource(StyleQuizAPI.postProductsAPI(), "PUT", {
 			productId: selectedProduct?.id,
 			mongoId,
 		});
 	};
 
+	const handleAssetIdChange = e => {
+		const newState = products.map(item => {
+			if (item.id === selectedProduct?.id) {
+				return { ...item, mongoId: e.target.value };
+			}
+			return { ...item };
+		});
+		setProducts(newState);
+	};
+
 	const defaultStyleValue = Router?.query?.styleId
 		? styles.filter(style => style?.id === parseInt(Router?.query?.styleId))[0]?.id
 		: styles[0]?.id;
-
+	const currValue = products?.filter(item => item?.id === selectedProduct?.id)[0]?.mongoId || "";
 	return (
 		<PageLayout pageName='Styles List'>
 			<MaxHeightDiv>
@@ -215,37 +216,37 @@ export default function ProductsList({ query }) {
 							<br></br>
 							<Row gutter={[8, 16]}>
 								{products.length ? (
-									products.map(item => {
-										return (
-											<Col sm={12} md={8} lg={6} key={item?.id}>
-												<Card
-													actions={[
-														<Switch
-															key={item?.id}
-															checked={item?.active}
-															onChange={checked => handleToggle(checked, item?.id)}
-														/>,
-														<EditOutlined onClick={() => showModal(item)} key={item?.id} />,
-														<Popconfirm
-															placement='top'
-															onConfirm={() => deleteProduct(item?.id)}
-															title='Are you sure you want to delete?'
-															okText='Yes'
-															disabled={false}
-															cancelText='Cancel'
-															key={item?.id}
-														>
-															<DeleteOutlined />
-														</Popconfirm>,
-													]}
-													hoverable
-													cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
-												>
-													<span>Asset ID : {item?.mongoId ? item?.mongoId : "N/A"}</span>
-												</Card>
-											</Col>
-										);
-									})
+									[...products]
+										.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+										.map(item => {
+											return (
+												<Col sm={12} md={8} lg={6} key={item?.id}>
+													<Card
+														actions={[
+															<Switch
+																key={item?.id}
+																checked={item?.active}
+																onChange={checked => handleToggle(checked, item?.id)}
+															/>,
+															<EditOutlined onClick={() => showModal(item)} key={item?.id} />,
+															<Popconfirm
+																placement='top'
+																onConfirm={() => deleteProduct(item?.id)}
+																title='Are you sure you want to delete?'
+																okText='Yes'
+																disabled={false}
+																cancelText='Cancel'
+																key={item?.id}
+															>
+																<DeleteOutlined />
+															</Popconfirm>,
+														]}
+														hoverable
+														cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
+													></Card>
+												</Col>
+											);
+										})
 								) : (
 									<Card style={{ width: "100%" }} align='center'>
 										<Row gutter={[4, 16]}>
@@ -266,7 +267,7 @@ export default function ProductsList({ query }) {
 					onCancel={() => setIsModalVisible(false)}
 					okText='Save'
 				>
-					<Input placeholder='Asset ID' ref={inputAreaRef} required />
+					<Input placeholder='Asset ID' value={currValue} ref={inputAreaRef} onChange={handleAssetIdChange} required />
 					<br></br>
 					<br></br>
 				</Modal>
