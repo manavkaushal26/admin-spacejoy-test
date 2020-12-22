@@ -74,17 +74,12 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 
 	return (
 		<Col onClick={(e): void => redirect(e, type)}>
-			<BorderlessAssetCard id="cartCard" hoverable={type === "primary"} active={currentlySelectingRecommendation}>
-				<Row gutter={[8, 4]} align="middle">
+			<BorderlessAssetCard id='cartCard' hoverable={type === "primary"} active={currentlySelectingRecommendation}>
+				<Row gutter={[8, 4]} align='middle'>
 					<Col span={8}>
 						<Image
-							width="100%"
-							src={`q_80,h_185/${getValueSafely(
-								() => asset.cdn,
-								process.env.NODE_ENV === "production"
-									? "v1581080070/admin/productImagePlaceholder.jpg"
-									: "v1581080111/admin/productImagePlaceholder.jpg"
-							)}`}
+							width='100%'
+							src={`h_185,c_fill/${getValueSafely(() => asset.cdn, "v1581080070/admin/productImagePlaceholder.jpg")}`}
 						/>
 					</Col>
 					<Col span={16} style={{ padding: "1rem 0px" }}>
@@ -100,8 +95,8 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 										<LinkOutlined />
 									</Col>
 									<Col>
-										<Text type="secondary">
-											<a target="_blank" rel="noopener noreferrer" href={getValueSafely(() => asset.retailLink, "#")}>
+										<Text type='secondary'>
+											<a target='_blank' rel='noopener noreferrer' href={getValueSafely(() => asset.retailLink, "#")}>
 												{getValueSafely(() => asset.retailer.name, "N/A")}
 											</a>
 										</Text>
@@ -133,19 +128,19 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 							</Col>
 							<Col span={5}>
 								<Popconfirm
-									placement="left"
+									placement='left'
 									onConfirm={onClick}
-									title="Are you sure?"
-									okText="Yes"
+									title='Are you sure?'
+									okText='Yes'
 									disabled={currentlySelectingRecommendation}
-									cancelText="Cancel"
+									cancelText='Cancel'
 								>
 									<StyledButton
 										disabled={currentlySelectingRecommendation}
 										loading={loading}
 										icon={<DeleteOutlined />}
 										onClick={(e): void => e.stopPropagation()}
-										type="primary"
+										type='primary'
 										danger
 										block
 									/>

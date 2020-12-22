@@ -128,7 +128,7 @@ const Image: React.FC<Image> = ({ src, height, width, alt, caption, autoAdjust, 
 		) {
 			setSource(src);
 		} else {
-			setSource(`${cloudinary.baseDeliveryURL}/image/upload/${src}`);
+			setSource(`${cloudinary.baseDeliveryURL}/image/upload/f_auto,q_auto/${src}`);
 		}
 	}, []);
 

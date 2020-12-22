@@ -119,7 +119,7 @@ const AssetCartModal = ({
 									<Row justify='center' align='middle'>
 										<Col span={24}>
 											<Row justify='center' align='middle'>
-												<Image width='40%' src={`/q_80/${selectedAsset.asset.cdn}`} />
+												<Image width='40%' src={`w_100,c_fill/${selectedAsset.asset.cdn}`} />
 											</Row>
 										</Col>
 										<Col span={24}>

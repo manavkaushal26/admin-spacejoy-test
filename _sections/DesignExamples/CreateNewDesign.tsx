@@ -205,7 +205,7 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 												return (
 													<Col key={room._id} sm={12} md={8} lg={6}>
 														<StyledRadio style={{ width: "100%" }} value={room._id}>
-															<Card cover={<Image src={getValueSafely(() => room.coverImageCdn, "")} />}>
+															<Card cover={<Image src={`w_300/${getValueSafely(() => room.coverImageCdn, "")}`} />}>
 																<Row>
 																	<Col span={24}>
 																		<Text style={{ width: "100%" }} ellipsis>

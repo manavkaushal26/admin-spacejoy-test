@@ -1,10 +1,10 @@
-import { DetailedProject, PaymentStatus } from "@customTypes/dashboardTypes";
+import { DetailedProject, DetailedProjectTeamMember, PaymentStatus } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import { Col, Collapse, Row, Tooltip, Typography } from "antd";
 import moment from "moment";
 import React, { useMemo } from "react";
-import { ModifiedText } from "../styled";
+import { ModifiedText, SilentDivider } from "../styled";
 
 const { Text } = Typography;
 
@@ -13,15 +13,95 @@ interface BasicDetailsProps {
 }
 
 const TeamTooltip: React.FC<{
-	accountManagers: string;
-	artists: string;
-	designerTeam: string;
-}> = ({ accountManagers, artists, designerTeam }) => {
+	team: DetailedProjectTeamMember[];
+}> = ({ team }) => {
+	const designerTeam = useMemo(
+		() =>
+			team
+				.filter(member => {
+					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
+				})
+				.map(teamMember => {
+					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
+				})
+				.join(", "),
+		[team]
+	);
+
+	const accountManagers = useMemo(
+		() =>
+			team
+				.filter(member => {
+					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles["Account Manager"];
+				})
+				.map(manager => {
+					return getValueSafely(() => manager.member.profile.name, manager.memberName);
+				})
+				.join(", "),
+		[team]
+	);
+
+	const artistTeam = useMemo(
+		() =>
+			team
+				.filter(member => {
+					getValueSafely(() => member.member.role, ProjectRoles["3D Artist"]) === ProjectRoles["3d Artist"];
+				})
+				.map(teamMember => {
+					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
+				})
+				.join(", "),
+		[team]
+	);
+
+	const revisionDesignerTeam = useMemo(
+		() =>
+			team
+				.filter(member => {
+					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
+				})
+				.map(teamMember => {
+					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
+				})
+				.join(", "),
+		[team]
+	);
+
+	const revisionArtistTeam = useMemo(
+		() =>
+			team
+				.filter(member => {
+					getValueSafely(() => member.member.role, ProjectRoles["3D Artist"]) === ProjectRoles["3d Artist"];
+				})
+				.map(teamMember => {
+					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
+				})
+				.join(", "),
+		[team]
+	);
+	const revisionAccountManagers = useMemo(
+		() =>
+			team
+				.filter(member => {
+					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles["Account Manager"];
+				})
+				.map(manager => {
+					return getValueSafely(() => manager.member.profile.name, manager.memberName);
+				})
+				.join(", "),
+		[team]
+	);
+
 	return (
 		<Row gutter={[8, 8]}>
-			<Col>
+			<Col span={24}>
+				<Text strong style={{ color: "white" }}>
+					Base Team
+				</Text>
+			</Col>
+			<Col span={24}>
 				<Row gutter={[4, 4]}>
-					<Col>
+					<Col span={24}>
 						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
 							Account Managers:
 						</Text>
@@ -33,9 +113,9 @@ const TeamTooltip: React.FC<{
 					</Col>
 				</Row>
 			</Col>
-			<Col>
+			<Col span={24}>
 				<Row gutter={[4, 4]}>
-					<Col>
+					<Col span={24}>
 						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
 							Designers:
 						</Text>
@@ -47,16 +127,66 @@ const TeamTooltip: React.FC<{
 					</Col>
 				</Row>
 			</Col>
-			<Col>
+			<Col span={24}>
 				<Row gutter={[4, 4]}>
-					<Col>
+					<Col span={24}>
 						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
 							3D Artists:
 						</Text>
 					</Col>
 					<Col>
 						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{artists.length ? artists : "Not Assigned"}
+							{artistTeam.length ? artistTeam : "Not Assigned"}
+						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<SilentDivider style={{ borderColor: "white" }} />
+			</Col>
+			<Col span={24}>
+				<Text strong style={{ color: "white" }}>
+					Revision Team
+				</Text>
+			</Col>
+			<Col span={24}>
+				<Row gutter={[4, 4]}>
+					<Col span={24}>
+						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+							Account Managers:
+						</Text>
+					</Col>
+					<Col>
+						<Text style={{ textTransform: "capitalize", color: "white" }}>
+							{revisionAccountManagers.length ? revisionAccountManagers : "Not Assigned"}
+						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row gutter={[4, 4]}>
+					<Col span={24}>
+						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+							Designers:
+						</Text>
+					</Col>
+					<Col>
+						<Text style={{ textTransform: "capitalize", color: "white" }}>
+							{revisionDesignerTeam.length ? revisionDesignerTeam : "Not Assigned"}
+						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row gutter={[4, 4]}>
+					<Col span={24}>
+						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+							3D Artists:
+						</Text>
+					</Col>
+					<Col>
+						<Text style={{ textTransform: "capitalize", color: "white" }}>
+							{revisionArtistTeam.length ? revisionArtistTeam : "Not Assigned"}
 						</Text>
 					</Col>
 				</Row>
@@ -76,8 +206,6 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		[]
 	);
 
-	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, PaymentStatus.pending);
-
 	const designerTeam = useMemo(
 		() =>
 			team
@@ -88,21 +216,9 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
 				})
 				.join(", "),
-		[projectData.team]
+		[team]
 	);
 
-	const artistTeam = useMemo(
-		() =>
-			team
-				.filter(member => {
-					getValueSafely(() => member.member.role, ProjectRoles["3D Artist"]) === ProjectRoles["3d Artist"];
-				})
-				.map(teamMember => {
-					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
-				})
-				.join(", "),
-		[projectData.team]
-	);
 	const accountManagers = useMemo(
 		() =>
 			team
@@ -113,8 +229,11 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 					return getValueSafely(() => manager.member.profile.name, manager.memberName);
 				})
 				.join(", "),
-		[projectData.team]
+		[team]
 	);
+
+	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, PaymentStatus.pending);
+
 	return (
 		<Collapse>
 			<Collapse.Panel header='Project Details' key='projectDetails'>
@@ -171,12 +290,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								<Text strong>Assigned Team:</Text>
 							</Col>
 							<Col>
-								<Tooltip
-									color='geekblue'
-									title={
-										<TeamTooltip artists={artistTeam} designerTeam={designerTeam} accountManagers={accountManagers} />
-									}
-								>
+								<Tooltip color='#006d75' title={<TeamTooltip team={team} />}>
 									<ModifiedText textTransform='capitalize' type='secondary'>
 										{designerTeam || "Not assigned"}
 									</ModifiedText>

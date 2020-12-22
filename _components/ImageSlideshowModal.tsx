@@ -29,7 +29,7 @@ const ImageSlideshowModal: React.FC<ImageSlideshowModal> = ({
 			<BiggerButtonCarousel slidesToShow={1} slidesToScroll={1} autoplay>
 				{previewImages.map(image => {
 					return cdn ? (
-						<Image width='100%' key={image} alt={altText} src={`q_100/${image}`} />
+						<Image width='100%' key={image} alt={altText} src={`${image}`} />
 					) : (
 						<img alt={altText} key={image} style={{ width: "100%" }} src={image} />
 					);
