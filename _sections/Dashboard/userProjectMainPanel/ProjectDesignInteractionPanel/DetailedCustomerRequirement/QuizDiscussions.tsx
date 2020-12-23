@@ -19,9 +19,17 @@ interface QuizDiscussions {
 	projectId: string;
 }
 
-const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[] }): JSX.Element => {
+const DiscussionView = ({
+	quizDiscussions,
+	deleteQuizDiscussions,
+}: {
+	quizDiscussions: QuizDiscussion[];
+	deleteQuizDiscussions: (id: string) => Promise<void>;
+}): JSX.Element => {
 	const [visible, setVisible] = useState<boolean>(false);
 	const [viewImages, setImages] = useState<string[]>([]);
+
+	const [loading, setLoading] = useState(false);
 
 	const openImages = (images?: string[]): void => {
 		if (images) {
@@ -30,6 +38,17 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 		} else {
 			setImages([]);
 			setVisible(false);
+		}
+	};
+
+	const onDelete = async id => {
+		setLoading(true);
+		try {
+			deleteQuizDiscussions(id);
+		} catch (e) {
+			notification.error({ message: "Failed to delete discussions", description: e?.message });
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -56,8 +75,15 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 													</Button>
 												</Text>
 											</span>,
+											<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
+												Delete
+											</Button>,
 									  ]
-									: []
+									: [
+											<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
+												Delete
+											</Button>,
+									  ]
 							}
 							author={`${item.user?.profile?.firstName}`}
 							content={parse(stringToUrl(item.comments))}
@@ -118,6 +144,16 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 		} catch (_e) {
 			notification.error({ message: "Failed to fetch discussions" });
 		}
+	};
+
+	const deleteQuizDiscussions = async id => {
+		const endPoint = `${getQuizDiscussions(projectId)}/${id}`;
+
+		const response = await fetcher({ endPoint, method: "DELETE" });
+		if (!(response.statusCode <= 300)) {
+			throw new Error(response.message || response.data.message);
+		}
+		setQuizDiscussions(prevState => prevState.filter(entry => entry?._id !== id));
 	};
 
 	const authVerification: User = getLocalStorageValue("authVerification");
@@ -189,7 +225,7 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
 				<Card size='small'>
-					<DiscussionView quizDiscussions={quizDiscussions} />
+					<DiscussionView quizDiscussions={quizDiscussions} deleteQuizDiscussions={deleteQuizDiscussions} />
 				</Card>
 			</Col>
 			<Col span={24}>
