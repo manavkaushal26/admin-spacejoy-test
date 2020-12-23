@@ -10,7 +10,6 @@ import {
 	RevisionForm,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import ChatPanel from "@sections/AdminChatInterface";
 import { DisabledLabel } from "@sections/Dashboard/styled";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
@@ -293,9 +292,9 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 									pause={pause}
 								/>
 							</TabPane>
-							<TabPane tab='Chat' key='Chat'>
+							{/* <TabPane tab='Chat' key='Chat'>
 								<ChatPanel projectId={id} designID={designId} />
-							</TabPane>
+							</TabPane> */}
 
 							{designData.assets.length && (
 								<TabPane tab='Customer View' key='cust_view'>

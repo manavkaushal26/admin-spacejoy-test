@@ -1,5 +1,6 @@
 import PhaseTimeline from "@components/PhaseTimeline";
 import { DetailedProject, RevisionForm } from "@customTypes/dashboardTypes";
+import ChatWrapper from "@sections/AdminChatInterface/ChatOverView";
 import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
 import { PaddedDiv } from "@sections/Header/styled";
 import { Tabs } from "antd";
@@ -26,6 +27,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	revisionFormData,
 	updateRevisionData,
 }) => {
+	const { id: projectId, designs } = projectData;
 	return (
 		<Tabs>
 			<Tabs.TabPane tab='Designs' key='designSelection'>
@@ -67,6 +69,9 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 						<ProjectTeamTab type='revisionTeam' projectId={projectData?._id} />
 					</Tabs.TabPane>
 				</Tabs>
+			</Tabs.TabPane>
+			<Tabs.TabPane tab='Chat' key='chat'>
+				<ChatWrapper projectId={projectId} designs={designs}></ChatWrapper>
 			</Tabs.TabPane>
 		</Tabs>
 	);
