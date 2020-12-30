@@ -204,7 +204,7 @@ export default function ProductsList({ query }) {
 										<Button style={{ position: "relative" }} type='primary'>
 											Add Product
 											<StyledInput
-												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+												accept='image/jpeg,image/jpg,image/JPEG,image/JPG, image/png, image/PNG, .svg'
 												onChange={handleUpload}
 												type='file'
 												multiple

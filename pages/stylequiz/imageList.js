@@ -239,7 +239,7 @@ export default function ImageList({ query }) {
 												<StyledInput
 													onChange={handleUpload}
 													type='file'
-													accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+													accept='image/jpeg,image/jpg,image/JPEG,image/JPG,image/png,image/PNG,.svg'
 													multiple
 												/>
 											</Button>

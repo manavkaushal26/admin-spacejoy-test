@@ -296,7 +296,7 @@ export default function StylesList() {
 											<StyledInput
 												onChange={e => createImage(e, text)}
 												type='file'
-												accept='image/jpeg,image/jpg,image/JPEG,image/JPG'
+												accept='image/x-png,image/png,image/jpeg,.svg'
 											/>
 										</UploadButton>
 									)}
@@ -341,7 +341,7 @@ export default function StylesList() {
 								<Col sm={24} align='right'>
 									<Button style={{ position: "relative" }} type='primary'>
 										Add Icon
-										<StyledInput onChange={createIcon} type='file' accept='image/png,image/PNG' />
+										<StyledInput onChange={createIcon} type='file' accept='image/x-png,image/png,image/jpeg,.svg' />
 									</Button>
 								</Col>
 							</Row>
