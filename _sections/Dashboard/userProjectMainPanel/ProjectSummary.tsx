@@ -128,7 +128,6 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 			name: { internalName: phase },
 			startTime: phaseStartTime,
 		},
-		isDelivered,
 	} = projectData;
 	const [roomNameLoading, setRoomNameLoading] = useState<boolean>(false);
 

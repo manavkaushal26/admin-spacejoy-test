@@ -79,17 +79,17 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 							<Row gutter={[8, 8]} align='middle'>
 								{((record?.product?.productImages && record?.product?.productImages[0]?.cdn) ||
 									record?.product?.cdn) && (
-										<Col>
-											<Image
-												src={
-													(record?.product?.productImages && record?.product?.productImages[0]?.cdn) ||
-													record?.product?.cdn
-												}
-												preview
-												width='50px'
-											/>
-										</Col>
-									)}
+									<Col>
+										<Image
+											src={`w_300,ar_1,c_fill/${
+												(record?.product?.productImages && record?.product?.productImages[0]?.cdn) ||
+												record?.product?.cdn
+											}`}
+											preview
+											width='50px'
+										/>
+									</Col>
+								)}
 								<Col>
 									<Row>
 										<Col span={24}>
@@ -131,10 +131,10 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 								{record.designProjectInfo.projectName}
 							</Link>
 						) : (
-								<span>No mapping found</span>
-								// eslint-disable-next-line prettier/prettier
-								//TODO
-							)
+							<span>No mapping found</span>
+							// eslint-disable-next-line prettier/prettier
+							//TODO
+						)
 					}
 				/>
 
@@ -204,12 +204,12 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 											Modify Order Item
 										</Button>
 									) : (
-											<Link
-												href={`/ecommerce/ordertracking/orderdetails?orderId=${orderId}&orderItemId=${record.orderItemId}`}
-											>
-												Modify Order Item
-											</Link>
-										)}
+										<Link
+											href={`/ecommerce/ordertracking/orderdetails?orderId=${orderId}&orderItemId=${record.orderItemId}`}
+										>
+											Modify Order Item
+										</Link>
+									)}
 								</Col>
 								{scrapedData && !!scrapedData[record?.product?._id] && (
 									<Col>

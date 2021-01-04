@@ -152,7 +152,12 @@ const OrderDelivered: React.FC<OrderDelivered> = ({
 																<tr key={item._id}>
 																	<td width='20%'>
 																		<a href={`https://www.spacejoy.com/product-view/${item.product._id}`}>
-																			<Image src={item?.product?.cdn} width='64' height='64' alt='' />
+																			<Image
+																				src={`w_64,h_64,c_fill/${item?.product?.cdn}`}
+																				width='64'
+																				height='64'
+																				alt=''
+																			/>
 																		</a>
 																	</td>
 																	<td width='60%' align='left'>

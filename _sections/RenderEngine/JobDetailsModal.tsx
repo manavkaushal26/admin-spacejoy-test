@@ -75,7 +75,7 @@ const JobDetailsModal: React.FC<JobDetailsModal> = ({ sourceId, jobId, closeModa
 											(image): JSX.Element => (
 												<Row key={image._id} gutter={[16, 16]}>
 													<Col span={24}>
-														<Image preview width='100%' src={image.url} />
+														<Image preview width='100%' src={`w_auto/${image.url}`} />
 													</Col>
 													<Col span={24}>
 														<Row justify='space-around'>

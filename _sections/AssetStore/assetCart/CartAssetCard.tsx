@@ -79,12 +79,7 @@ const CartAssetCard: (props: CartAssetCard) => JSX.Element = ({
 					<Col span={8}>
 						<Image
 							width='100%'
-							src={`q_80,h_185/${getValueSafely(
-								() => asset.cdn,
-								process.env.NODE_ENV === "production"
-									? "v1581080070/admin/productImagePlaceholder.jpg"
-									: "v1581080111/admin/productImagePlaceholder.jpg"
-							)}`}
+							src={`h_185,c_fill/${getValueSafely(() => asset.cdn, "v1581080070/admin/productImagePlaceholder.jpg")}`}
 						/>
 					</Col>
 					<Col span={16} style={{ padding: "1rem 0px" }}>
