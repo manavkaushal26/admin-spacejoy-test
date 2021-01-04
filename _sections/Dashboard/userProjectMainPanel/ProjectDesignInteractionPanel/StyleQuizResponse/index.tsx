@@ -1,8 +1,7 @@
-import Image from "@components/Image";
 import fetcher from "@utils/fetcher";
+import { Image } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
 const Heading = styled.h1`
 	font-size: 24px;
 	text-transform: capitalize;
@@ -10,6 +9,7 @@ const Heading = styled.h1`
 
 const StyledImage = styled(Image)`
 	max-width: 300px;
+	cursor: pointer;
 `;
 
 interface LogObject {
@@ -24,6 +24,11 @@ interface ActiveStyleObject {
 	name: string;
 }
 
+interface SecondaryStyleObject {
+	cdn?: string;
+	name: string;
+}
+
 interface LogShape {
 	[key: string]: Array<LogObject>;
 }
@@ -34,7 +39,10 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 		name: "",
 		cdn: "",
 	});
-
+	const [secondaryStyle, setSecondaryStyle] = useState<SecondaryStyleObject>({
+		name: "",
+		cdn: "",
+	});
 	const fetchUserStyleResponse = async (userId: string): Promise<string> => {
 		const endPoint = `/v1/quizUsers/${userId}/results`;
 		let err;
@@ -45,7 +53,9 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 				statusCode,
 			} = res;
 			if (statusCode <= 300) {
+				console.log(data);
 				setActiveStyle(data[0]?.styleIds[0]);
+				setSecondaryStyle(data[0]?.styleIds[1]);
 				return data[0].quizId || "";
 			} else {
 				throw new Error("");
@@ -82,10 +92,18 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 			fetchResults(userId);
 		}
 	}, [userId]);
+
 	return (
 		<div>
 			<div>
-				{activeStyle?.name && <Heading>Style - {activeStyle?.name || ""}</Heading>}
+				<br></br>
+				{activeStyle?.name && (
+					<Heading>
+						Style - {activeStyle?.name || ""}
+						&nbsp;
+						{secondaryStyle ? <span>and {secondaryStyle?.name || ""}</span> : null}
+					</Heading>
+				)}
 				{activeStyle?.cdn && (
 					<span>
 						<StyledImage src={`q_70,w_300,h_180/${activeStyle?.cdn}`} width='100%' />
@@ -104,7 +122,10 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 								(value: LogObject): JSX.Element => {
 									return (
 										<>
-											<StyledImage src={`q_70,w_300,h_180/${value?.cdn}`} width='100%' />
+											<StyledImage
+												src={`//res.cloudinary.com/spacejoy/image/upload/q_70,w_300/${value?.cdn}`}
+												width='100%'
+											/>
 											&nbsp;
 										</>
 									);
