@@ -1,7 +1,8 @@
+import { TeamMember } from "@customTypes/dashboardTypes";
 import { ProjectRoles } from "@customTypes/userType";
-import { CustomDiv, ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
+import { ModifiedText, SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import { Avatar, Checkbox, Col, Empty, Row, Typography } from "antd";
+import { Avatar, Checkbox, Col, Empty, Row, Tooltip, Typography } from "antd";
 import React, { useMemo } from "react";
 import { NoBodyCard, StyledButton } from "./styled";
 import { DesignerTabState } from "./teamTabReducer";
@@ -18,31 +19,80 @@ interface TeamSidebarProps {
 	assignDesigners: () => void;
 }
 
+const SelectedTeamMemberCard = ({ teamMember }: { teamMember: TeamMember }) => {
+	return (
+		<Row>
+			<Col span={24}>
+				<Row justify='center'>
+					<Avatar>
+						{getValueSafely<string>(() => {
+							return teamMember.profile.name[0];
+						}, "N/A")}
+					</Avatar>
+				</Row>
+			</Col>
+			<Col>
+				<Row justify='center'>
+					<Tooltip
+						title={
+							<span style={{ textTransform: "capitalize" }}>
+								{getValueSafely<string>(() => {
+									return `${teamMember.profile.firstName} ${teamMember.profile.lastName}`;
+								}, "N/A")}
+							</span>
+						}
+					>
+						<ModifiedText textTransform='capitalize'>
+							{getValueSafely<string>(() => {
+								return teamMember.profile.firstName;
+							}, "N/A")}
+						</ModifiedText>
+					</Tooltip>
+				</Row>
+			</Col>
+		</Row>
+	);
+};
+
 export default function TeamSidebar({
 	state,
 	onDesignerSelect,
 	selectedDesignersId,
 	assignDesigners,
 }: TeamSidebarProps): JSX.Element {
-	const assignedAccountManagers = useMemo(
+	const groupedTeam = useMemo(
 		() =>
-			state.assignedTeam.filter(member => {
-				return member.role === ProjectRoles["Account Manager"];
-			}),
+			state.assignedTeam.reduce((acc, currentMember) => {
+				if (acc[currentMember?.role]) {
+					return {
+						...acc,
+						[currentMember?.role]: [...acc[currentMember?.role], currentMember],
+					};
+				}
+				return {
+					...acc,
+					[currentMember?.role]: [currentMember],
+				};
+			}, {}),
 		[state.assignedTeam]
 	);
 
-	const assignedDesigners = useMemo(() => {
-		return state.assignedTeam.filter(member => {
-			return member.role === ProjectRoles.Designer;
-		});
-	}, [state.assignedTeam]);
+	const assignedAccountManagers = useMemo(
+		() => getValueSafely(() => groupedTeam[ProjectRoles["Account Manager"]], []),
+		[state.assignedTeam]
+	);
 
-	const assignedArtists = useMemo(() => {
-		return state.assignedTeam.filter(member => {
-			return member.role === ProjectRoles["3D Artist"];
-		});
-	}, [state.assignedTeam]);
+	const assignedDesigners = useMemo(() => getValueSafely(() => groupedTeam[ProjectRoles.Designer], []), [
+		state.assignedTeam,
+	]);
+
+	const assignedSeniorArtists = useMemo(() => getValueSafely(() => groupedTeam[ProjectRoles["Senior 3D Artist"]], []), [
+		state.assignedTeam,
+	]);
+
+	const assignedArtists = useMemo(() => getValueSafely(() => groupedTeam[ProjectRoles["3D Artist"]], []), [
+		state.assignedTeam,
+	]);
 
 	return (
 		<Row>
@@ -68,28 +118,7 @@ export default function TeamSidebar({
 										<NoBodyCard
 											key={teamMember._id}
 											size='small'
-											title={
-												<Row>
-													<Col span={24}>
-														<Row justify='center'>
-															<Avatar>
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.name[0];
-																}, "N/A")}
-															</Avatar>
-														</Row>
-													</Col>
-													<Col span={24}>
-														<Row justify='center'>
-															<ModifiedText textTransform='capitalize'>
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.firstName;
-																}, "N/A")}
-															</ModifiedText>
-														</Row>
-													</Col>
-												</Row>
-											}
+											title={<SelectedTeamMemberCard teamMember={teamMember} />}
 											extra={
 												<Checkbox
 													onChange={e => {
@@ -106,9 +135,11 @@ export default function TeamSidebar({
 									</Col>
 								))
 							) : (
-								<CustomDiv py='1rem' width='100%'>
-									<Empty description='No Account Managers Assigned' />
-								</CustomDiv>
+								<Col span={24}>
+									<Row justify='center'>
+										<Empty description='No Account Managers Assigned' />
+									</Row>
+								</Col>
 							)}
 						</Row>
 					</Col>
@@ -132,28 +163,7 @@ export default function TeamSidebar({
 									<Col lg={6} md={8} sm={12} key={teamMember._id}>
 										<NoBodyCard
 											size='small'
-											title={
-												<Row>
-													<Col span={24}>
-														<Row justify='center'>
-															<Avatar>
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.name[0];
-																}, "N/A")}
-															</Avatar>
-														</Row>
-													</Col>
-													<Col>
-														<Row justify='center'>
-															<ModifiedText textTransform='capitalize'>
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.firstName;
-																}, "N/A")}
-															</ModifiedText>
-														</Row>
-													</Col>
-												</Row>
-											}
+											title={<SelectedTeamMemberCard teamMember={teamMember} />}
 											extra={
 												<Checkbox
 													onChange={e => {
@@ -170,14 +180,59 @@ export default function TeamSidebar({
 									</Col>
 								))
 							) : (
-								<Row justify='center'>
-									<Empty description='No Designers Assigned' />
-								</Row>
+								<Col span={24}>
+									<Row justify='center'>
+										<Empty description='No Designers Assigned' />
+									</Row>
+								</Col>
 							)}
 						</Row>
 					</Col>
 				</Row>
 			</Col>
+			<Col span={24}>
+				<Row>
+					<Col span={24}>
+						<Text strong>Senior 3D Artists</Text>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							{assignedSeniorArtists.length ? (
+								assignedSeniorArtists.map(teamMember => (
+									<Col lg={6} md={8} sm={12} key={teamMember._id}>
+										<NoBodyCard
+											size='small'
+											title={<SelectedTeamMemberCard teamMember={teamMember} />}
+											extra={
+												<Checkbox
+													onChange={e => {
+														onDesignerSelect(teamMember._id, e.target.checked);
+													}}
+													checked={selectedDesignersId
+														.map(member => {
+															return member._id;
+														})
+														.includes(teamMember._id)}
+												/>
+											}
+										/>
+									</Col>
+								))
+							) : (
+								<Col span={24}>
+									<Row justify='center' align='middle'>
+										<Empty description='No Senior Designers Assigned' />
+									</Row>
+								</Col>
+							)}
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+
 			<Col span={24}>
 				<Row>
 					<Col span={24}>
@@ -193,28 +248,7 @@ export default function TeamSidebar({
 									<Col lg={6} md={8} sm={12} key={teamMember._id}>
 										<NoBodyCard
 											size='small'
-											title={
-												<Row>
-													<Col span={24}>
-														<Row justify='center'>
-															<Avatar>
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.name[0];
-																}, "N/A")}
-															</Avatar>
-														</Row>
-													</Col>
-													<Col>
-														<Row justify='center'>
-															<ModifiedText textTransform='capitalize'>
-																{getValueSafely<string>(() => {
-																	return teamMember.profile.firstName;
-																}, "N/A")}
-															</ModifiedText>
-														</Row>
-													</Col>
-												</Row>
-											}
+											title={<SelectedTeamMemberCard teamMember={teamMember} />}
 											extra={
 												<Checkbox
 													onChange={e => {
@@ -231,9 +265,11 @@ export default function TeamSidebar({
 									</Col>
 								))
 							) : (
-								<Row justify='center'>
-									<Empty description='No Designers Assigned' />
-								</Row>
+								<Col span={24}>
+									<Row justify='center'>
+										<Empty description='No Designers Assigned' />
+									</Row>
+								</Col>
 							)}
 						</Row>
 					</Col>

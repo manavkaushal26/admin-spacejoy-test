@@ -57,40 +57,42 @@ const DiscussionView = ({
 			<List
 				itemLayout='horizontal'
 				dataSource={quizDiscussions}
-				renderItem={(item: QuizDiscussion): JSX.Element => (
-					<li>
-						<Comment
-							actions={
-								item?.images?.length !== 0
-									? [
-											<span key='view'>
-												<Text>
-													<Button
-														onClick={(): void => openImages(item.images)}
-														style={{ padding: "0px" }}
-														size='small'
-														type='link'
-													>
-														<small>View Photos</small>
-													</Button>
-												</Text>
-											</span>,
-											<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
-												Delete
-											</Button>,
-									  ]
-									: [
-											<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
-												Delete
-											</Button>,
-									  ]
-							}
-							author={`${item.user?.profile?.firstName}`}
-							content={parse(stringToUrl(item.comments))}
-							datetime={moment(item.createdAt).fromNow()}
-						/>
-					</li>
-				)}
+				renderItem={(item: QuizDiscussion): JSX.Element => {
+					return (
+						<li>
+							<Comment
+								actions={
+									item?.images?.length !== 0
+										? [
+												<span key='view'>
+													<Text>
+														<Button
+															onClick={(): void => openImages(item.images)}
+															style={{ padding: "0px" }}
+															size='small'
+															type='link'
+														>
+															<small>View Photos</small>
+														</Button>
+													</Text>
+												</span>,
+												<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
+													Delete
+												</Button>,
+										  ]
+										: [
+												<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
+													Delete
+												</Button>,
+										  ]
+								}
+								author={`${item.user?.profile?.firstName}`}
+								content={parse(stringToUrl(item.comments))}
+								datetime={moment(item.createdAt).fromNow()}
+							/>
+						</li>
+					);
+				}}
 			/>
 			<SizeAdjustedModal
 				style={{ top: "20px" }}
@@ -102,7 +104,7 @@ const DiscussionView = ({
 					{viewImages.map(image => (
 						<Row key={image}>
 							<Col span={24}>
-								<Image preview width='100%' src={`w_auto/${image}`} />
+								<Image preview width='100%' src={`${image}`} />
 							</Col>
 							<Col span={24}>
 								<Row justify='center' gutter={[4, 4]}>
