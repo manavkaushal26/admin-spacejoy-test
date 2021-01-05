@@ -3,8 +3,9 @@ import { Image } from "antd";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 const Heading = styled.h1`
-	font-size: 24px;
+	font-size: 26px;
 	text-transform: capitalize;
+	text-decoration: underline;
 `;
 
 const StyledImage = styled(Image)`
@@ -99,9 +100,9 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 				<br></br>
 				{activeStyle?.name && (
 					<Heading>
-						Style - {activeStyle?.name || ""}
+						Style - <i>{activeStyle?.name || ""}</i>
 						&nbsp;
-						{secondaryStyle ? <span>and {secondaryStyle?.name || ""}</span> : null}
+						<i>{secondaryStyle ? <span>and {secondaryStyle?.name || ""}</span> : null}</i>
 					</Heading>
 				)}
 				{activeStyle?.cdn && (
