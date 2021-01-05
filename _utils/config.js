@@ -94,7 +94,7 @@ module.exports = {
 	page,
 	cookieNames,
 	company,
-	cloudinary: cloudinary,
+	cloudinary,
 	projectConfig,
 	pusherConfig,
 };

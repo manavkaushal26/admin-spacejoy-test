@@ -72,8 +72,8 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						height='250px'
 						src={
 							asset?.productImages
-								? `q_80,h_250,w_250,c_pad,b_white/${asset.productImages[0]?.cdn}`
-								: undefined || `q_80,h_250,w_250,c_pad,b_white/${asset?.cdn}`
+								? `h_250,w_250,c_pad,b_white/${asset.productImages[0]?.cdn}`
+								: undefined || `h_250,ar_1,c_pad,b_white/${asset?.cdn}`
 						}
 					/>
 				</ImageContainer>

@@ -66,7 +66,7 @@ const RearrangeImageList: React.FC<RearrangeImageList> = ({
 															<DetailText name='Position' value={index + 1} />
 														</Col>
 														<Col span={24}>
-															<Image alt={file.fileName} width='100%' src={file.url} />
+															<Image alt={file.fileName} width='100%' src={`${file.url}`} />
 														</Col>
 													</Row>
 												</Container>

@@ -137,7 +137,7 @@ const ImageManagementConsole: React.FC<ImageManagementConsole> = ({
 												hoverable
 											>
 												<Row style={{ height: "100%" }} justify='center' align='middle'>
-													<Image src={`q_60,w_300/${image.cdn}`} width='100%' />
+													<Image src={`w_300,ar_1,c_pad/${image.cdn}`} width='100%' />
 												</Row>
 											</ModifiedCard>
 										</Row>

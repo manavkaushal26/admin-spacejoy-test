@@ -1,22 +1,22 @@
-import { blogApi, getBlogCategories, publishBlog, createBlogCategoryApi, slugCheckApi } from "@api/blogApi";
+import { blogApi, createBlogCategoryApi, getBlogCategories, publishBlog, slugCheckApi } from "@api/blogApi";
 import Image from "@components/Image";
-import { Category, BlogTypes } from "@customTypes/blogTypes";
+import { BlogTypes, Category } from "@customTypes/blogTypes";
+import { Role, Status } from "@customTypes/userType";
 import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import { debounce, getValueSafely } from "@utils/commonUtils";
-import fetcher from "@utils/fetcher";
-import { Button, Col, Collapse, Input, notification, Row, Select, Spin, Typography } from "antd";
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import styled from "styled-components";
-import { Status, Role } from "@customTypes/userType";
 import { cookieNames } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { useRouter } from "next/router";
+import { Button, Col, Collapse, Input, notification, Row, Select, Spin, Typography } from "antd";
 import hotkeys from "hotkeys-js";
+import { useRouter } from "next/router";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import styled from "styled-components";
 import { AuthorPlatformProps } from "..";
-import { AUTHOR_ACTIONS, AuthorActionType, AuthorState } from "../reducer";
-import ImageManagementConsole from "./ImageManagementConsole";
-import AddCategoryModal, { AddCategoryModalState } from "./AddCategoryModal";
+import { AuthorActionType, AuthorState, AUTHOR_ACTIONS } from "../reducer";
 import { getQueryObject, getQueryString } from "../utils";
+import AddCategoryModal, { AddCategoryModalState } from "./AddCategoryModal";
+import ImageManagementConsole from "./ImageManagementConsole";
 
 const { Panel } = Collapse;
 const { Text } = Typography;
@@ -314,7 +314,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 					<Button
 						onClick={saveBlogButtonClicked}
 						disabled={!!state.activeBlog.publishDate || state.activeBlog.status === Status.active}
-						type="primary"
+						type='primary'
 						loading={loading}
 						block
 					>
@@ -323,7 +323,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 				</Col>
 				<Col span={24}>
 					<Collapse onChange={(key): void => setActiveKey(key)} activeKey={activeKey}>
-						<Panel key="1" header="General">
+						<Panel key='1' header='General'>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>
 									<Row gutter={[8, 8]}>
@@ -331,7 +331,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 											<Text>Title</Text>
 										</Col>
 										<Col span={24}>
-											<Input ref={titleRef} onChange={handleChange} name="title" value={state.activeBlog.title} />
+											<Input ref={titleRef} onChange={handleChange} name='title' value={state.activeBlog.title} />
 										</Col>
 									</Row>
 								</Col>
@@ -344,7 +344,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 											<Input.TextArea
 												rows={2}
 												onChange={handleChange}
-												name="description"
+												name='description'
 												value={state.activeBlog.description}
 											/>
 										</Col>
@@ -375,7 +375,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 								<Col span={24}>
 									<Button
 										disabled={!state.activeBlog._id}
-										type="ghost"
+										type='ghost'
 										block
 										onClick={(): void => setImageConsoleVisible(true)}
 									>
@@ -387,13 +387,15 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 								</Col>
 								<Col span={24}>
 									<Image
-										width="100%"
-										src={state.activeBlog.coverImgCdn || "v1581080070/admin/productImagePlaceholder.jpg"}
+										width='100%'
+										src={`w_300,c_pad,ar_1/${
+											state.activeBlog.coverImgCdn || "v1581080070/admin/productImagePlaceholder.jpg"
+										}`}
 									/>
 								</Col>
 							</Row>
 						</Panel>
-						<Panel key="2" header="Categories">
+						<Panel key='2' header='Categories'>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>
 									<Row gutter={[8, 8]}>
@@ -405,7 +407,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 												onSearch={onSearch}
 												showSearch
 												notFoundContent={
-													<Row justify="center">{fetching ? <Spin spinning /> : "No Category Found"}</Row>
+													<Row justify='center'>{fetching ? <Spin spinning /> : "No Category Found"}</Row>
 												}
 												dropdownRender={(menu): JSX.Element => {
 													return (
@@ -416,7 +418,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 															</Col>
 															<Col>
 																<Button
-																	type="ghost"
+																	type='ghost'
 																	block
 																	onMouseDown={(e): void => e.preventDefault()}
 																	onClick={toggleAddCategoryModal}
@@ -451,7 +453,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 												tokenSeparators={[","]}
 												value={state.activeBlog.tags}
 												style={{ width: "100%" }}
-												mode="tags"
+												mode='tags'
 												onChange={(value): void => handleSelect(value, "tags")}
 											/>
 										</Col>
@@ -459,13 +461,13 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 								</Col>
 							</Row>
 						</Panel>
-						<Panel key="3" header="SEO">
+						<Panel key='3' header='SEO'>
 							<Row>
 								<Col span={24}>
 									<Row gutter={[8, 8]}>
 										<Col span={24}>Meta Title</Col>
 										<Col span={24}>
-											<Input onChange={handleChange} name="metaTitle" value={state.activeBlog.metaTitle} />
+											<Input onChange={handleChange} name='metaTitle' value={state.activeBlog.metaTitle} />
 										</Col>
 									</Row>
 								</Col>
@@ -473,7 +475,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 									<Row gutter={[8, 8]}>
 										<Col span={24}>Meta Description</Col>
 										<Col span={24}>
-											<Input onChange={handleChange} name="metaDescription" value={state.activeBlog.metaDescription} />
+											<Input onChange={handleChange} name='metaDescription' value={state.activeBlog.metaDescription} />
 										</Col>
 									</Row>
 								</Col>
@@ -481,7 +483,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 									<Row gutter={[8, 8]}>
 										<Col span={24}>What&apos;s the blog URL?</Col>
 										<Col span={24}>
-											<Input onChange={handleChange} name="slug" value={state.activeBlog.slug} />
+											<Input onChange={handleChange} name='slug' value={state.activeBlog.slug} />
 										</Col>
 									</Row>
 								</Col>
@@ -494,7 +496,7 @@ const BlogMetaPanel: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 						disabled={(state.activeBlog.status === Status.active && role === Role.BlogAuthor) || !state.activeBlogId}
 						onClick={onPublish}
 						block
-						type="primary"
+						type='primary'
 						danger
 						loading={loading}
 					>

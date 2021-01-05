@@ -141,7 +141,7 @@ const OrderEmailModal: React.FC<OrderEmailModal> = ({ open, onClose, orderId, or
 													<Checkbox style={{ display: "flex", alignItems: "center", width: "100%" }} value={item._id}>
 														<Row gutter={[8, 4]} style={{ flexWrap: "nowrap", overflow: "hidden" }} align='middle'>
 															<Col>
-																<Image width='50px' src={item.product.cdn} />
+																<Image width='50px' src={`w_50,c_pad,ar_1/${item.product.cdn}`} />
 															</Col>
 															<Col>
 																<Row>

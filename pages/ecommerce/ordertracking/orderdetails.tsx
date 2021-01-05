@@ -2,12 +2,12 @@ import { ArrowLeftOutlined, RedoOutlined } from "@ant-design/icons";
 import { getDesignMapping, getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
-import CommentsList from "@sections/Ecommerce/OrdertTracking/CommentsList";
-import OrderEditDrawer from "@sections/Ecommerce/OrdertTracking/OrderEditDrawer";
-import OrderEmailModal from "@sections/Ecommerce/OrdertTracking/OrderEmailModal";
-import OrderItemDrawer from "@sections/Ecommerce/OrdertTracking/OrderItemDrawer";
-import OrderItemTable from "@sections/Ecommerce/OrdertTracking/OrderItemTable";
-import PaymentsDrawer from "@sections/Ecommerce/OrdertTracking/PaymentsDrawer";
+import CommentsList from "@sections/Ecommerce/OrderTracking/CommentsList";
+import OrderEditDrawer from "@sections/Ecommerce/OrderTracking/OrderEditDrawer";
+import OrderEmailModal from "@sections/Ecommerce/OrderTracking/OrderEmailModal";
+import OrderItemDrawer from "@sections/Ecommerce/OrderTracking/OrderItemDrawer";
+import OrderItemTable from "@sections/Ecommerce/OrderTracking/OrderItemTable";
+import PaymentsDrawer from "@sections/Ecommerce/OrderTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
@@ -244,16 +244,16 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 				(item.price * item.quantity).toFixed(2),
 				item.tracking
 					? item.tracking.reduce(
-						(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
-						""
-					)
+							(acc, curr) => acc.concat(`${curr.vendor}-${curr.trackingNumber}-${curr.trackingUrl}\n`),
+							""
+					  )
 					: "",
 				item.comments
 					? item.comments.reduce(
-						(acc, curr) =>
-							acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
-						""
-					)
+							(acc, curr) =>
+								acc.concat(`${curr.quote}-${curr.description}-${moment(curr?.createdAt).format("MM-DD-YYYY")}\n`),
+							""
+					  )
 					: "",
 				item?.return?.status || "",
 				item?.return?.reason || item?.return?.declineComment || item?.return?.comment || "",
@@ -441,12 +441,12 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 											</Link>
 										</Col>
 									) : (
-											<Col>
-												<Button type='link' onClick={triggerScraping}>
-													Fetch Asset Data
+										<Col>
+											<Button type='link' onClick={triggerScraping}>
+												Fetch Asset Data
 											</Button>
-											</Col>
-										)}
+										</Col>
+									)}
 								</Row>
 							</Col>
 							<Col span={24}>

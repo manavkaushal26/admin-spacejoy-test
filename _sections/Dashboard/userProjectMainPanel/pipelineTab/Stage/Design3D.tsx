@@ -74,7 +74,7 @@ const Design3D: React.FC<Design3DStage> = ({ designData, setDesignData }) => {
 								rel='noopener noreferrer'
 								href='https://apps.apple.com/us/app/spacejoy/id1489951014?ls=1&mt=12'
 							>
-								<Image src='fl_lossy,q_auto,/v1579933196/shared/app-store_v5bgni.svg' alt='macStore' width='284px' />
+								<Image src='fl_lossy,w_284/v1579933196/shared/app-store_v5bgni.svg' alt='macStore' width='284px' />
 							</a>
 						</Col>
 						<Col>
@@ -84,7 +84,7 @@ const Design3D: React.FC<Design3DStage> = ({ designData, setDesignData }) => {
 								href='//www.microsoft.com/store/apps/9n954dnxj4zx?cid=storebadge&ocid=badge'
 							>
 								<Image
-									src='fl_lossy,q_auto,/v1579933196/shared/ms-store_ufzpuj.svg'
+									src='fl_lossy,w_284/v1579933196/shared/ms-store_ufzpuj.svg'
 									alt='Microsoft Store'
 									width='284px'
 								/>

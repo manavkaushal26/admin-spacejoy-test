@@ -77,6 +77,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 								file.cdn.endsWith("jpg") ||
 								file.cdn.endsWith("jpeg") ||
 								file.cdn.endsWith("png") ||
+								file.cdn.endsWith("heic") ||
 								file.cdn.endsWith("gif");
 							return (
 								<Col {...(isImage ? { sm: 12, md: 8, lg: 6 } : {})} key={file._id}>
@@ -91,7 +92,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 													  }
 													: {})}
 											>
-												{isImage ? <Image preview src={file.cdn} width='150px' /> : file.cdn}
+												{isImage ? <Image preview src={`w_auto/${file.cdn}`} width='150px' /> : file.cdn}
 											</a>
 										</Col>
 										<Col span={24}>
