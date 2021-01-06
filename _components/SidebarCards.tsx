@@ -1,5 +1,6 @@
 import ProgressBar from "@components/ProgressBar";
 import {
+	CustomerType,
 	HumanizePhaseInternalNames,
 	PhaseInternalNames,
 	QuizState,
@@ -28,8 +29,8 @@ interface SidebarCard {
 	selectedId: string;
 	daysLeft: number;
 	quizCompletionStatus: QuizState;
-	onSelect: (userId: string) => void;
-	projectCustomer: string;
+	onSelect: (userId: CustomerType | string) => void;
+	projectCustomer: CustomerType | string;
 }
 
 const HighlightedSpan = styled.span<{ type: string }>`
