@@ -67,6 +67,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 			searchText: state.searchText.trim(),
 			sort: "createdAt",
 			wildcard: state.wildcard,
+			...{ ...(state.preferredRetailer ? { projectId: "randomString" } : {}) },
 			filters: {
 				retailer: state.retailerFilter,
 				category: state.checkedKeys.category,
@@ -222,6 +223,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.status.length,
 		state.heightRange,
 		pageCount,
+		state.preferredRetailer,
 	]);
 	const Router = useRouter();
 

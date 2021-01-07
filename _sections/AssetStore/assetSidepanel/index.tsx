@@ -280,6 +280,11 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 											<Filter
 												value={state.retailerFilter}
 												name={{ categoryName: "Retailer", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
+												extra={{
+													name: ASSET_ACTION_TYPES.PREFERRED_RETAILER,
+													value: state.preferredRetailer,
+													type: "switch",
+												}}
 												options={metaData.retailers.list
 													.sort((a, b) => {
 														if (a.name.toLowerCase() > b.name.toLowerCase()) {
