@@ -237,6 +237,7 @@ const Index = ({ projectId, designID }) => {
 					setChatAssets([...chatAssets, payload]);
 					setComment("");
 					setDesignImages([]);
+					refreshChat("Message posted");
 				});
 			} catch (e) {
 				setChatAssets(chatAssets.filter((_, i) => i !== chatAssets.length - 1));
