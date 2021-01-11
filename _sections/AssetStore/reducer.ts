@@ -20,6 +20,7 @@ export interface AssetStoreState {
 	wildcard: boolean;
 	selectedAsset: string;
 	cartOpen: boolean;
+	preferredRetailer: boolean;
 	newAssetModalVisible: boolean;
 }
 
@@ -42,6 +43,7 @@ export const assetStoreInitialState: AssetStoreState = {
 	},
 	selectedAsset: "",
 	cartOpen: false,
+	preferredRetailer: true,
 	newAssetModalVisible: false,
 };
 
@@ -65,6 +67,7 @@ export enum ASSET_ACTION_TYPES {
 	WILD_CARD,
 	NEW_ASSET_MODAL_VISIBLE,
 	UPDATE_RANGE_FILTERS,
+	PREFERRED_RETAILER,
 }
 export interface AssetAction {
 	type: ASSET_ACTION_TYPES;
@@ -133,6 +136,11 @@ export const reducer: AssetReducerType = (state, action) => {
 			return {
 				...state,
 				widthRange: action.value,
+			};
+		case ASSET_ACTION_TYPES.PREFERRED_RETAILER:
+			return {
+				...state,
+				preferredRetailer: action.value,
 			};
 		case ASSET_ACTION_TYPES.PRICE_RANGE:
 			return {

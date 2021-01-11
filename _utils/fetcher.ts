@@ -71,6 +71,13 @@ async function fetcher({
 			statusCode: response.status,
 		};
 	}
+
+	if (response.status === 502) {
+		return {
+			statusCode: response.status,
+		};
+	}
+
 	if (response.status) {
 		const resData = await response.json();
 		if (!resData.statusCode) {

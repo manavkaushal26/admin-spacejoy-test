@@ -122,6 +122,16 @@ const launchpadLocations: LaunchpadLocations[] = [
 		notActive: false,
 		allowedRoles: [Role.Admin, Role.Owner, Role.Analyst],
 	},
+	{
+		title: "Style Quiz",
+		description: "All things Style Quiz",
+		url: "/stylequiz",
+		icon: <ShopTwoTone style={{ fontSize: "3rem" }} twoToneColor='#fa541c' />,
+		color: "#fa541c",
+		backgroundColor: "#fff2e8",
+		notActive: false,
+		allowedRoles: [Role.Admin, Role.Owner, Role.Analyst],
+	},
 ];
 
 const LoudPaddingDiv = styled.div`

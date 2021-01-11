@@ -1,5 +1,6 @@
 import ProgressBar from "@components/ProgressBar";
 import {
+	CustomerType,
 	HumanizePhaseInternalNames,
 	PhaseInternalNames,
 	QuizState,
@@ -28,6 +29,8 @@ interface SidebarCard {
 	selectedId: string;
 	daysLeft: number;
 	quizCompletionStatus: QuizState;
+	onSelect: (userId: CustomerType | string) => void;
+	projectCustomer: CustomerType | string;
 }
 
 const HighlightedSpan = styled.span<{ type: string }>`
@@ -100,6 +103,8 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	delayText,
 	quizCompletionStatus,
 	isDelayed,
+	onSelect,
+	projectCustomer,
 }) => {
 	return (
 		<>
@@ -115,6 +120,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 				onClick={(e): void => {
 					e.preventDefault();
 					onClick(uniqueId);
+					onSelect(projectCustomer);
 				}}
 			>
 				<Row gutter={[8, 8]}>

@@ -17,6 +17,7 @@ interface ProjectDesignInteractionPanel {
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
 	revisionFormData: RevisionForm;
 	updateRevisionData: (revisionForm: RevisionForm) => void;
+	userStyleQuizResult?: React.ReactNode;
 }
 
 const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = ({
@@ -26,6 +27,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	onSelectDesign,
 	revisionFormData,
 	updateRevisionData,
+	userStyleQuizResult
 }) => {
 	const { id: projectId, designs } = projectData;
 	return (
@@ -40,7 +42,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 				/>
 			</Tabs.TabPane>
 			<Tabs.TabPane tab='Quiz Responses' key='customerResponses'>
-				<CustomerResponsesTab projectData={projectData} />
+				<CustomerResponsesTab projectData={projectData} userStyleQuizResult={userStyleQuizResult} />
 			</Tabs.TabPane>
 			{projectData.feedback.length && (
 				<Tabs.TabPane tab='Customer Feedback (Deprecated)' key='customerFeedbackDeprecated'>

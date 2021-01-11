@@ -14,82 +14,87 @@ interface BasicDetailsProps {
 
 const TeamTooltip: React.FC<{
 	team: DetailedProjectTeamMember[];
-}> = ({ team }) => {
-	const designerTeam = useMemo(
+	revisionTeam: DetailedProjectTeamMember[];
+}> = ({ team, revisionTeam }) => {
+	const groupedTeam = useMemo(
 		() =>
-			team
-				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
-				})
-				.map(teamMember => {
-					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
-				})
-				.join(", "),
+			team.reduce((acc, currentMember) => {
+				if (acc[currentMember?.member?.role]) {
+					return {
+						...acc,
+						[currentMember?.member?.role]: [
+							...acc[currentMember?.member?.role],
+							getValueSafely(() => currentMember.member.profile.name, currentMember.memberName),
+						],
+					};
+				}
+				return {
+					...acc,
+					[currentMember?.member?.role]: [
+						getValueSafely(() => currentMember.member.profile.name, currentMember.memberName),
+					],
+				};
+			}, {}),
 		[team]
 	);
 
+	const groupedRevisionTeam = useMemo(
+		() =>
+			revisionTeam.reduce((acc, currentMember) => {
+				if (acc[currentMember?.member?.role]) {
+					return {
+						...acc,
+						[currentMember?.member?.role]: [
+							...acc[currentMember?.member?.role],
+							getValueSafely(() => currentMember.member.profile.name, currentMember.memberName),
+						],
+					};
+				}
+				return {
+					...acc,
+					[currentMember?.member?.role]: [
+						getValueSafely(() => currentMember.member.profile.name, currentMember.memberName),
+					],
+				};
+			}, {}),
+		[revisionTeam]
+	);
+
+	const designerTeam = useMemo(() => getValueSafely(() => groupedTeam[ProjectRoles.Designer].join(", "), ""), [
+		groupedTeam,
+	]);
 	const accountManagers = useMemo(
-		() =>
-			team
-				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles["Account Manager"];
-				})
-				.map(manager => {
-					return getValueSafely(() => manager.member.profile.name, manager.memberName);
-				})
-				.join(", "),
-		[team]
+		() => getValueSafely(() => groupedTeam[ProjectRoles["Account Manager"]].join(", "), ""),
+		[groupedTeam]
 	);
 
-	const artistTeam = useMemo(
-		() =>
-			team
-				.filter(member => {
-					getValueSafely(() => member.member.role, ProjectRoles["3D Artist"]) === ProjectRoles["3d Artist"];
-				})
-				.map(teamMember => {
-					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
-				})
-				.join(", "),
-		[team]
+	const seniorArtistsTeam = useMemo(
+		() => getValueSafely(() => groupedTeam[ProjectRoles["Senior 3D Artist"]].join(", "), ""),
+		[groupedTeam]
 	);
+
+	const artistTeam = useMemo(() => getValueSafely(() => groupedTeam[ProjectRoles["3D Artist"]].join(", "), ""), [
+		groupedTeam,
+	]);
 
 	const revisionDesignerTeam = useMemo(
-		() =>
-			team
-				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
-				})
-				.map(teamMember => {
-					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
-				})
-				.join(", "),
-		[team]
+		() => getValueSafely(() => groupedRevisionTeam[ProjectRoles.Designer].join(", "), ""),
+		[groupedRevisionTeam]
 	);
 
 	const revisionArtistTeam = useMemo(
-		() =>
-			team
-				.filter(member => {
-					getValueSafely(() => member.member.role, ProjectRoles["3D Artist"]) === ProjectRoles["3d Artist"];
-				})
-				.map(teamMember => {
-					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
-				})
-				.join(", "),
-		[team]
+		() => getValueSafely(() => groupedRevisionTeam[ProjectRoles["3D Artist"]].join(", "), ""),
+		[groupedRevisionTeam]
 	);
+
+	const revisionSeniorArtistTeam = useMemo(
+		() => getValueSafely(() => groupedRevisionTeam[ProjectRoles["Senior 3D Artist"]].join(", "), ""),
+		[groupedRevisionTeam]
+	);
+
 	const revisionAccountManagers = useMemo(
-		() =>
-			team
-				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles["Account Manager"];
-				})
-				.map(manager => {
-					return getValueSafely(() => manager.member.profile.name, manager.memberName);
-				})
-				.join(", "),
-		[team]
+		() => getValueSafely(() => groupedRevisionTeam[ProjectRoles["Account Manager"]].join(", "), ""),
+		[groupedRevisionTeam]
 	);
 
 	return (
@@ -123,6 +128,20 @@ const TeamTooltip: React.FC<{
 					<Col>
 						<Text style={{ textTransform: "capitalize", color: "white" }}>
 							{designerTeam.length ? designerTeam : "Not Assigned"}
+						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row gutter={[4, 4]}>
+					<Col span={24}>
+						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+							Senior 3D Artists:
+						</Text>
+					</Col>
+					<Col>
+						<Text style={{ textTransform: "capitalize", color: "white" }}>
+							{seniorArtistsTeam.length ? seniorArtistsTeam : "Not Assigned"}
 						</Text>
 					</Col>
 				</Row>
@@ -181,6 +200,20 @@ const TeamTooltip: React.FC<{
 				<Row gutter={[4, 4]}>
 					<Col span={24}>
 						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+							Senior 3D Artists:
+						</Text>
+					</Col>
+					<Col>
+						<Text style={{ textTransform: "capitalize", color: "white" }}>
+							{revisionSeniorArtistTeam.length ? revisionSeniorArtistTeam : "Not Assigned"}
+						</Text>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<Row gutter={[4, 4]}>
+					<Col span={24}>
+						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
 							3D Artists:
 						</Text>
 					</Col>
@@ -196,7 +229,7 @@ const TeamTooltip: React.FC<{
 };
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
-	const { _id, name, createdAt, team, customer, startedAt } = projectData;
+	const { _id, name, createdAt, team, customer, startedAt, revisionTeam } = projectData;
 
 	const items = getValueSafely(
 		() =>
@@ -290,7 +323,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								<Text strong>Assigned Team:</Text>
 							</Col>
 							<Col>
-								<Tooltip color='#006d75' title={<TeamTooltip team={team} />}>
+								<Tooltip color='#006d75' title={<TeamTooltip team={team} revisionTeam={revisionTeam} />}>
 									<ModifiedText textTransform='capitalize' type='secondary'>
 										{designerTeam || "Not assigned"}
 									</ModifiedText>

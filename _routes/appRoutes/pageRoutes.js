@@ -176,6 +176,60 @@ function pageRoute(app, router) {
 	});
 	// *************************************************************************************************************************
 
+	router.get("/stylequiz", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/stylequiz", {
+			...query,
+		});
+	});
+
+	router.get("/stylequiz/stylesList", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/stylequiz/stylesList", {
+			...query,
+		});
+	});
+
+	router.get("/stylequiz/imageList/:styleId?", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/imageList", {
+			...query,
+			...params,
+		});
+	});
+
+	router.get("/stylequiz/productList/:styleId?", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/productList", {
+			...query,
+			...params,
+		});
+	});
+
+	router.get("/stylequiz/textureList", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/textureList", {
+			...query,
+			...params,
+		});
+	});
+
+	router.get("/stylequiz/paletteList", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/paletteList", {
+			...query,
+			...params,
+		});
+	});
+
+	router.get("/stylequiz/styleDescription", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/stylequiz/styleDescription", {
+			...query,
+			...params,
+		});
+	});
+
 	return router;
 }
 

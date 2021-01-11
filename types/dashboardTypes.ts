@@ -100,6 +100,15 @@ export enum QuizStateLabels {
 	underReview = "Under Review",
 }
 
+export interface CustomerType {
+	_id: string;
+	email: string;
+	profile: {
+		name: string;
+	};
+	id: string;
+}
+
 export interface UserProjectType {
 	createdAt: string;
 	endedAt: string;
@@ -119,14 +128,7 @@ export interface UserProjectType {
 		title: string;
 		message: string;
 	};
-	customer: {
-		_id: string;
-		email: string;
-		profile: {
-			name: string;
-		};
-		id: string;
-	};
+	customer: CustomerType | string;
 	currentPhase: CurrentPhase;
 	order: {
 		paymentStatus: string;

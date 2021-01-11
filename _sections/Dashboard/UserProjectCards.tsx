@@ -8,7 +8,8 @@ const UserProjectCard: React.FC<{
 	userProjectData: UserProjectType;
 	handleSelectCard: (user: string) => void;
 	selectedUser: string;
-}> = ({ userProjectData, handleSelectCard, selectedUser }) => {
+	setCurrentUserId: (userId: string) => void;
+}> = ({ userProjectData, handleSelectCard, selectedUser, setCurrentUserId }) => {
 	const {
 		_id: projectId,
 		name: room,
@@ -22,8 +23,8 @@ const UserProjectCard: React.FC<{
 		delay: { isDelayed, minDurationInMs, maxDurationInMs },
 		endedAt,
 		status,
+		customer: customerId,
 	} = userProjectData;
-
 	const items = getValueSafely(() => userProjectData.order.items, []);
 	const minDelay = convertMillisecondsToDays(minDurationInMs);
 	const maxDelay = convertMillisecondsToDays(maxDurationInMs);
@@ -64,8 +65,10 @@ const UserProjectCard: React.FC<{
 			daysLeft={daysLeft}
 			status={status}
 			onClick={handleSelectCard}
+			onSelect={setCurrentUserId}
 			selectedId={selectedUser}
 			quizCompletionStatus={quizCompletionStatus}
+			projectCustomer={customerId}
 		/>
 	);
 };

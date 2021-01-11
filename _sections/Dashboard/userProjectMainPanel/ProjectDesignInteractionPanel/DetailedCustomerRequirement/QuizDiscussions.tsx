@@ -19,9 +19,17 @@ interface QuizDiscussions {
 	projectId: string;
 }
 
-const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[] }): JSX.Element => {
+const DiscussionView = ({
+	quizDiscussions,
+	deleteQuizDiscussions,
+}: {
+	quizDiscussions: QuizDiscussion[];
+	deleteQuizDiscussions: (id: string) => Promise<void>;
+}): JSX.Element => {
 	const [visible, setVisible] = useState<boolean>(false);
 	const [viewImages, setImages] = useState<string[]>([]);
+
+	const [loading, setLoading] = useState(false);
 
 	const openImages = (images?: string[]): void => {
 		if (images) {
@@ -33,38 +41,58 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 		}
 	};
 
+	const onDelete = async id => {
+		setLoading(true);
+		try {
+			deleteQuizDiscussions(id);
+		} catch (e) {
+			notification.error({ message: "Failed to delete discussions", description: e?.message });
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<>
 			<List
 				itemLayout='horizontal'
 				dataSource={quizDiscussions}
-				renderItem={(item: QuizDiscussion): JSX.Element => (
-					<li>
-						<Comment
-							actions={
-								item?.images?.length !== 0
-									? [
-											<span key='view'>
-												<Text>
-													<Button
-														onClick={(): void => openImages(item.images)}
-														style={{ padding: "0px" }}
-														size='small'
-														type='link'
-													>
-														<small>View Photos</small>
-													</Button>
-												</Text>
-											</span>,
-									  ]
-									: []
-							}
-							author={`${item.user?.profile?.firstName}`}
-							content={parse(stringToUrl(item.comments))}
-							datetime={moment(item.createdAt).fromNow()}
-						/>
-					</li>
-				)}
+				renderItem={(item: QuizDiscussion): JSX.Element => {
+					return (
+						<li>
+							<Comment
+								actions={
+									item?.images?.length !== 0
+										? [
+												<span key='view'>
+													<Text>
+														<Button
+															onClick={(): void => openImages(item.images)}
+															style={{ padding: "0px" }}
+															size='small'
+															type='link'
+														>
+															<small>View Photos</small>
+														</Button>
+													</Text>
+												</span>,
+												<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
+													Delete
+												</Button>,
+										  ]
+										: [
+												<Button key='delete' type='link' danger loading={loading} onClick={() => onDelete(item._id)}>
+													Delete
+												</Button>,
+										  ]
+								}
+								author={`${item.user?.profile?.firstName}`}
+								content={parse(stringToUrl(item.comments))}
+								datetime={moment(item.createdAt).fromNow()}
+							/>
+						</li>
+					);
+				}}
 			/>
 			<SizeAdjustedModal
 				style={{ top: "20px" }}
@@ -76,7 +104,7 @@ const DiscussionView = ({ quizDiscussions }: { quizDiscussions: QuizDiscussion[]
 					{viewImages.map(image => (
 						<Row key={image}>
 							<Col span={24}>
-								<Image preview width='100%' src={`w_auto/${image}`} />
+								<Image preview width='100%' src={`${image}`} />
 							</Col>
 							<Col span={24}>
 								<Row justify='center' gutter={[4, 4]}>
@@ -118,6 +146,16 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 		} catch (_e) {
 			notification.error({ message: "Failed to fetch discussions" });
 		}
+	};
+
+	const deleteQuizDiscussions = async id => {
+		const endPoint = `${getQuizDiscussions(projectId)}/${id}`;
+
+		const response = await fetcher({ endPoint, method: "DELETE" });
+		if (!(response.statusCode <= 300)) {
+			throw new Error(response.message || response.data.message);
+		}
+		setQuizDiscussions(prevState => prevState.filter(entry => entry?._id !== id));
 	};
 
 	const authVerification: User = getLocalStorageValue("authVerification");
@@ -189,7 +227,7 @@ const QuizDiscussions: React.FC<QuizDiscussions> = ({ projectId }) => {
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
 				<Card size='small'>
-					<DiscussionView quizDiscussions={quizDiscussions} />
+					<DiscussionView quizDiscussions={quizDiscussions} deleteQuizDiscussions={deleteQuizDiscussions} />
 				</Card>
 			</Col>
 			<Col span={24}>
