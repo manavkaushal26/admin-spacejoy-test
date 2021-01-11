@@ -9,12 +9,18 @@ const ChatWrapper = ({ projectId, designs }) => {
 				const {
 					design: { name, id },
 				} = designItem;
+
 				return (
-					<Tabs.TabPane tab={name} key={id}>
-						<ChatPanel projectId={projectId} designID={id} />
-					</Tabs.TabPane>
+					<>
+						<Tabs.TabPane tab={name} key={id}>
+							<ChatPanel projectId={projectId} designID={id} />
+						</Tabs.TabPane>
+					</>
 				);
 			})}
+			<Tabs.TabPane tab='General'>
+				<ChatPanel projectId={projectId} designID={null} />
+			</Tabs.TabPane>
 		</Tabs>
 	);
 };
