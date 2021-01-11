@@ -56,6 +56,20 @@ const ReloadChat = styled.span`
 	left: 50%;
 `;
 
+const ResolveChat = styled.span`
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	display: inline-block;
+	padding: 8px 15px;
+	font-size: 13px;
+	cursor: pointer;
+	position: absolute;
+	bottom: 45px;
+	z-index: 999;
+	right: 0%;
+`;
+
 const DisabledUploadBtn = styled.div`
 	position: absolute;
 	top: 0;
@@ -284,8 +298,33 @@ const Index = ({ projectId, designID }) => {
 	const handleCancel = () => {
 		setPreviewVisible(false);
 	};
+
+	const resolveChat = async () => {
+		const latestAssetId = chatAssets[chatAssets.length - 1]?._id;
+		const endPoint = `/v1/userProjectDiscussions/${latestAssetId}`;
+		const payload = {
+			resolved: "true",
+		};
+		if (latestAssetId) {
+			try {
+				const resData = await fetcher({ endPoint: endPoint, method: "PUT", body: payload });
+				const { data, statusCode } = resData;
+				if (statusCode && statusCode <= 201) {
+					return data;
+				} else {
+					throw new Error();
+				}
+			} catch {
+				throw new Error();
+			}
+		}
+	};
+
 	return (
 		<ChatBoxContainer className='container admin-chat-container' onScroll={handleScroll} ref={chatBoxRef}>
+			{chatAssets.length && !chatAssets[chatAssets.length - 1]?.resolved ? (
+				<ResolveChat onClick={() => resolveChat()}>Resolve chat</ResolveChat>
+			) : null}
 			<ReloadChat onClick={refreshChat}>
 				<ReloadOutlined></ReloadOutlined>
 				<span style={{ paddingLeft: "4px" }}>Refresh Chat</span>
