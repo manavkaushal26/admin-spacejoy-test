@@ -239,7 +239,7 @@ const Index = ({ projectId, designID }) => {
 					setChatAssets([...chatAssets, payload]);
 					setComment("");
 					setDesignImages([]);
-					refreshChat("Message posted");
+					refreshChat();
 				});
 			} catch (e) {
 				setChatAssets(chatAssets.filter((_, i) => i !== chatAssets.length - 1));
@@ -288,7 +288,7 @@ const Index = ({ projectId, designID }) => {
 				const sortedArray = [...chatData].sort((a, b) => moment(a.createdAt) - moment(b.createdAt));
 				setChatAssets(sortedArray);
 				setCurrentoffset(0);
-				notification.success({ message: msg });
+				if (msg) notification.success({ message: msg });
 			})
 			.catch(() => notification.error({ message: "Failed to older messages" }))
 			.finally(() => {
