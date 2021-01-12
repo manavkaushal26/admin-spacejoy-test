@@ -215,7 +215,9 @@ const Index = ({ projectId, designID }) => {
 			formData.append("message", currentComment);
 			formData.append("type", "project");
 			formData.append("project", projectId);
-			formData.append("design", designID || null);
+			if (designID) {
+				formData.append("design", designID);
+			}
 			formData.append("userType", "team");
 			// const res = await chatFetcher({ endPoint: "/v1/userProjectDiscussions", method: "POST", body: formData });
 			try {
@@ -371,7 +373,7 @@ const Index = ({ projectId, designID }) => {
 				</div>
 			</ChatViewActions>
 			{!isChatActive ? (
-				<ResolvedMessage>This chat is closed. Send a new message to reopen the chat.</ResolvedMessage>
+				<ResolvedMessage>This chat is closed. Send a new message to open the chat.</ResolvedMessage>
 			) : null}
 		</ChatBoxContainer>
 	);

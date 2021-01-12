@@ -5,6 +5,9 @@ import React from "react";
 const ChatWrapper = ({ projectId, designs }) => {
 	return (
 		<Tabs>
+			<Tabs.TabPane tab='General'>
+				<ChatPanel projectId={projectId} designID={null} />
+			</Tabs.TabPane>
 			{designs.map(designItem => {
 				const {
 					design: { name, id },
@@ -18,9 +21,6 @@ const ChatWrapper = ({ projectId, designs }) => {
 					</>
 				);
 			})}
-			<Tabs.TabPane tab='General'>
-				<ChatPanel projectId={projectId} designID={null} />
-			</Tabs.TabPane>
 		</Tabs>
 	);
 };
