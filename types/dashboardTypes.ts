@@ -295,6 +295,7 @@ export interface ProjectFeedback {
 }
 
 export interface DetailedProject {
+	id: string;
 	projectScope?: ProjectScope;
 	team: DetailedProjectTeamMember[];
 	revisionTeam: DetailedProjectTeamMember[];
