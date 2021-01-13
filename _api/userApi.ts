@@ -33,5 +33,9 @@ export const newTeamAssignApi = (id: string): string => {
 	return `/v2/projects/${id}/teams`;
 };
 export const fetchChatAssets = (project: string, design: string): string => {
-	return `/v1/userProjectDiscussions?project=${project}&design=${design}`;
+	if (design) {
+		return `/v1/userProjectDiscussions/designChat?project=${project}&design=${design}`;
+	} else {
+		return `/v1/userProjectDiscussions/projectChat?project=${project}`;
+	}
 };

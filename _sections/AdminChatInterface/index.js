@@ -56,12 +56,26 @@ const ReloadChat = styled.span`
 	left: 50%;
 `;
 
-const DisabledUploadBtn = styled.div`
+const ResolveChat = styled.span`
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+	display: inline-block;
+	padding: 8px 15px;
+	font-size: 13px;
+	cursor: pointer;
 	position: absolute;
-	top: 0;
-	height: 100% !important;
-	width: 50px !important;
-	top: -40px;
+	bottom: auto;
+	top: 10px;
+	z-index: 999;
+	right: 0%;
+	color: #52c41a;
+`;
+
+const ResolvedMessage = styled.div`
+	text-align: center;
+	font-size: 16px;
+	font-weight: bold;
 `;
 
 const Index = ({ projectId, designID }) => {
@@ -93,7 +107,7 @@ const Index = ({ projectId, designID }) => {
 			const resData = await fetcher({ endPoint: currentChatData, method: "GET" });
 			const { data, statusCode } = resData;
 			if (statusCode && statusCode <= 201) {
-				return data;
+				return data?.data;
 			} else {
 				throw new Error();
 			}
@@ -115,7 +129,7 @@ const Index = ({ projectId, designID }) => {
 	}, [chatBoxRef]);
 
 	useEffect(() => {
-		const endPoint = fetchChatAssets(projectId.toString(), designID.toString());
+		const endPoint = fetchChatAssets(projectId.toString(), designID?.toString());
 
 		setLoadingStatus(true);
 		fetchCustomerChatData(endPoint, currentLimit, currentOffset)
@@ -131,10 +145,9 @@ const Index = ({ projectId, designID }) => {
 	}, []);
 
 	useEffect(() => {
-		const endPoint = fetchChatAssets(projectId.toString(), designID.toString());
+		const endPoint = fetchChatAssets(projectId.toString(), designID?.toString());
 		if (currentOffset !== 0) {
 			setIsFetchingOldMessages(true);
-
 			fetchCustomerChatData(endPoint, currentLimit, currentOffset)
 				.then(chatData => {
 					const sortedArray = [...chatData].sort((a, b) => moment(a.createdAt) - moment(b.createdAt));
@@ -202,7 +215,9 @@ const Index = ({ projectId, designID }) => {
 			formData.append("message", currentComment);
 			formData.append("type", "project");
 			formData.append("project", projectId);
-			formData.append("design", designID);
+			if (designID) {
+				formData.append("design", designID);
+			}
 			formData.append("userType", "team");
 			// const res = await chatFetcher({ endPoint: "/v1/userProjectDiscussions", method: "POST", body: formData });
 			try {
@@ -224,6 +239,7 @@ const Index = ({ projectId, designID }) => {
 					setChatAssets([...chatAssets, payload]);
 					setComment("");
 					setDesignImages([]);
+					refreshChat();
 				});
 			} catch (e) {
 				setChatAssets(chatAssets.filter((_, i) => i !== chatAssets.length - 1));
@@ -265,14 +281,14 @@ const Index = ({ projectId, designID }) => {
 			setCurrentoffset(currentOffset + currentLimit);
 		}
 	};
-	const refreshChat = () => {
-		const endPoint = fetchChatAssets(projectId.toString(), designID.toString());
+	const refreshChat = msg => {
+		const endPoint = fetchChatAssets(projectId.toString(), designID?.toString());
 		fetchCustomerChatData(endPoint, currentLimit, 0)
 			.then(chatData => {
 				const sortedArray = [...chatData].sort((a, b) => moment(a.createdAt) - moment(b.createdAt));
 				setChatAssets(sortedArray);
 				setCurrentoffset(0);
-				notification.success({ message: "Chat has been refreshed" });
+				if (msg) notification.success({ message: msg });
 			})
 			.catch(() => notification.error({ message: "Failed to older messages" }))
 			.finally(() => {
@@ -284,9 +300,33 @@ const Index = ({ projectId, designID }) => {
 	const handleCancel = () => {
 		setPreviewVisible(false);
 	};
+
+	const resolveChat = async () => {
+		const latestAssetId = chatAssets[chatAssets.length - 1]?._id;
+		const endPoint = `/v1/userProjectDiscussions/${latestAssetId}`;
+		const payload = {
+			resolved: "true",
+		};
+		if (latestAssetId) {
+			try {
+				const resData = await fetcher({ endPoint: endPoint, method: "PUT", body: payload });
+				const { data, statusCode } = resData;
+				if (statusCode && statusCode <= 201) {
+					refreshChat("Chat has been resolved.");
+					return data;
+				} else {
+					throw new Error();
+				}
+			} catch {
+				throw new Error();
+			}
+		}
+	};
+	const isChatActive = chatAssets.length && !chatAssets[chatAssets.length - 1]?.resolved;
 	return (
 		<ChatBoxContainer className='container admin-chat-container' onScroll={handleScroll} ref={chatBoxRef}>
-			<ReloadChat onClick={refreshChat}>
+			{isChatActive ? <ResolveChat onClick={() => resolveChat()}>Resolve chat</ResolveChat> : null}
+			<ReloadChat onClick={() => refreshChat("Chat has been refreshed.")}>
 				<ReloadOutlined></ReloadOutlined>
 				<span style={{ paddingLeft: "4px" }}>Refresh Chat</span>
 			</ReloadChat>
@@ -310,7 +350,6 @@ const Index = ({ projectId, designID }) => {
 					readOnly={isLoading ? true : false}
 					ref={inputRef}
 				/>
-
 				<SubmitContainer onClick={submitChat}>
 					<SendOutlined style={{ color: "#1890ff" }} />
 				</SubmitContainer>
@@ -333,6 +372,9 @@ const Index = ({ projectId, designID }) => {
 					</Modal>
 				</div>
 			</ChatViewActions>
+			{!isChatActive ? (
+				<ResolvedMessage>This chat is closed. Send a new message to open the chat.</ResolvedMessage>
+			) : null}
 		</ChatBoxContainer>
 	);
 };
