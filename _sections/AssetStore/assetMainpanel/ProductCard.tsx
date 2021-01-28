@@ -108,6 +108,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						onClick={e => e.stopPropagation()}
 						ellipsis
 						strong
+						target='_blank'
 						href={getValueSafely(() => `/assetstore/assetdetails?assetId=${asset._id}`, "#")}
 					>
 						{getValueSafely(() => asset.name, "N/A")}
