@@ -16,7 +16,7 @@ interface DesignDetails {
 const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, setDesignLoading }) => {
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
-
+	const [seoKeywords, setSeoKeywords] = useState<Array<string>>([]);
 	const [form] = useForm();
 
 	const onClickOk = async (formData): Promise<void> => {
@@ -76,6 +76,21 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			const url = `${company.customerPortalLink}/interior-designs/${roomName}-ideas/${slug}`;
 			window.open(url, "_blank", "noopener");
 		}
+	};
+
+	const fetchKeywords = async (): Promise<void> => {
+		// try {
+		// 	const resData = await fetcher({ endPoint: "/v1/seoKeywords", method: "GET"});
+		// 	const { data, statusCode } = resData;
+		// 	if (statusCode && statusCode <= 201) {
+		// 		return data;
+		// 	} else {
+		// 		throw new Error();
+		// 	}
+		// } catch {
+		// 	throw new Error();
+		// }
+		setSeoKeywords(["boho", "traditional", "simple", "test"]);
 	};
 
 	return (
@@ -168,6 +183,16 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 				<Col span={8}>
 					<Form.Item name='tags' label='Tags'>
 						<Select open={false} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]} />
+					</Form.Item>
+				</Col>
+				<Col span={8}>
+					<Form.Item name='keywords' label='Keywords'>
+						<Select allowClear onFocus={fetchKeywords} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]}>
+							{console.log("seoKeywords", seoKeywords)}
+							{seoKeywords.map(item => (
+								<Select.Option value={item}>{item}</Select.Option>
+							))}
+						</Select>
 					</Form.Item>
 				</Col>
 				<Col span={24}>
