@@ -53,7 +53,6 @@ const EditComment: React.FC<{ comment: Comments; onDeleteDone: (id: string) => v
 		const endPoint = `${commentApi()}/${comment._id}`;
 
 		const body = {
-			resourceType: comment.resourceType,
 			resourceId: comment.resourceId,
 			text: data.text,
 		};
@@ -143,7 +142,7 @@ const CommentsList: React.FC<CommentsList> = ({ id, type }) => {
 	};
 
 	const fetchComments = async () => {
-		const endPoint = `${commentApi()}?resourceType=${type}&resourceId=${id}`;
+		const endPoint = `${commentApi()}?resourceId=${id}`;
 
 		try {
 			const response = await fetcher({ endPoint, method: "GET" });
@@ -168,7 +167,6 @@ const CommentsList: React.FC<CommentsList> = ({ id, type }) => {
 	useEffect(() => {
 		if (id) fetchComments();
 	}, [id]);
-
 	return (
 		<Row>
 			<Col span={24}>
