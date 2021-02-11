@@ -25,10 +25,12 @@ const convertFormat = (data, type = "fromState") => {
 				maxDiscount: data.maxDiscount,
 				validity: [moment(data.startedAt), moment(data.endedAt)],
 				maxUsePerUser: data.maxUsePerUser,
+				globalUsageLimit: data.globalUsageLimit,
 				status: data.status,
 				category: data.category,
 				code: data.code,
 				type: data.type,
+				packageType: data.packageType,
 				constraints: {
 					minAmount: data?.constraints.minAmount,
 					maxAmount: data?.constraints.maxAmount,
@@ -187,8 +189,15 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
-					label='Max no of times the Coupon can be used'
+					label='Max no of times the Coupon can be used per account'
 					name='maxUsePerUser'
+					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
+				>
+					<InputNumber style={{ width: "100%" }} />
+				</Form.Item>
+				<Form.Item
+					label='Max no of times the Coupon can be used'
+					name='globalUsageLimit'
 					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
 				>
 					<InputNumber style={{ width: "100%" }} />
@@ -200,6 +209,18 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					<Select style={{ width: "100%" }}>
 						<Select.Option value='product'>Product Coupon</Select.Option>
 						<Select.Option value='designPackage'>Design Package Coupon</Select.Option>
+					</Select>
+				</Form.Item>
+				<Form.Item
+					label='Package Type'
+					name='packageType'
+					rules={[{ required: true, message: "Please select a value" }]}
+				>
+					<Select style={{ width: "100%" }}>
+						<Select.Option value='all'>All</Select.Option>
+						<Select.Option value='delight'>Delight</Select.Option>
+						<Select.Option value='bliss'>Bliss</Select.Option>
+						<Select.Option value='euphoria'>Euphoria</Select.Option>
 					</Select>
 				</Form.Item>
 				<Form.Item label='Visibility' name='category' rules={[{ required: true, message: "Please select a value" }]}>
