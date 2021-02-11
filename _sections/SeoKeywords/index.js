@@ -1,5 +1,5 @@
 import fetcher from "@utils/fetcher";
-import { Button, Input } from "antd";
+import { Button, Input, notification } from "antd";
 import React from "react";
 import styled from "styled-components";
 const SeoKeywordWrapper = styled.div`
@@ -20,16 +20,19 @@ const FileUpload = styled(Input)`
 
 export default function index() {
 	const uploadKeywords = async e => {
-		const payload = {
-			file: e.target.files[0],
-		};
 		try {
-			const resData = await fetcher({ endPoint: "/v1/seoKeywords", method: "POST", body: payload });
+			const resData = await fetcher({
+				endPoint: "/v1/seoKeywordDesignMappings",
+				method: "POST",
+				body: {
+					file: e.target.files[0],
+				},
+			});
 			const { data, statusCode } = resData;
 			if (statusCode && statusCode <= 201) {
-				return data;
+				notification.success({ message: "File successfully uploaded" });
 			} else {
-				throw new Error();
+				notification.error({ message: "Failed to upload file" });
 			}
 		} catch {
 			throw new Error();

@@ -79,18 +79,18 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 	};
 
 	const fetchKeywords = async (): Promise<void> => {
-		// try {
-		// 	const resData = await fetcher({ endPoint: "/v1/seoKeywords", method: "GET"});
-		// 	const { data, statusCode } = resData;
-		// 	if (statusCode && statusCode <= 201) {
-		// 		return data;
-		// 	} else {
-		// 		throw new Error();
-		// 	}
-		// } catch {
-		// 	throw new Error();
-		// }
-		setSeoKeywords(["boho", "traditional", "simple", "test"]);
+		try {
+			const response = await fetcher({ endPoint: "/v1/seoKeywords", method: "GET" });
+			const { data, statusCode } = response;
+			if (statusCode && statusCode <= 201) {
+				console.log(data);
+				setSeoKeywords(data);
+			} else {
+				throw new Error();
+			}
+		} catch {
+			throw new Error();
+		}
 	};
 
 	return (
@@ -190,7 +190,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 						<Select allowClear onFocus={fetchKeywords} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]}>
 							{console.log("seoKeywords", seoKeywords)}
 							{seoKeywords.map(item => (
-								<Select.Option value={item}>{item}</Select.Option>
+								<Select.Option value={item?.name}>{item?.name}</Select.Option>
 							))}
 						</Select>
 					</Form.Item>
