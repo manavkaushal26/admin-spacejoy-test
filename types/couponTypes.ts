@@ -7,6 +7,7 @@ export interface BasicCoupon {
 	status: string;
 	isPercent: boolean;
 	maxUsePerUser: number;
+	globalUsageLimit: number;
 	minDiscount: number;
 	maxDiscount: number;
 	category: string;
@@ -20,4 +21,5 @@ export interface BasicCoupon {
 	createdAt: string;
 	updatedAt: string;
 	type: "product" | "designPackage";
+	packageType: "all" | "delight" | "bliss" | "euphoria";
 }
