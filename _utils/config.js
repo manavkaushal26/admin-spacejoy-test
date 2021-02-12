@@ -2,7 +2,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const page = {
 	appName: "SpaceJoyWeb",
-	apiBaseUrl: isProduction ? "https://api.spacejoy.com/api" : "http://staging1.spacejoy.com/api",
+	apiBaseUrl: isProduction ? "https://api.spacejoy.com/api" : "https://staging1.spacejoy.com/api",
 	localApiBaseUrl: "172.20.10.111:3000",
 	placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
