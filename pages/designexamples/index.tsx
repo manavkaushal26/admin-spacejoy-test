@@ -10,7 +10,6 @@ import {
 	DesignListDisplayReducer,
 } from "@sections/DesignExamples/DesignListDisplay/reducer";
 import PageLayout from "@sections/Layout";
-import SeoKeywords from "@sections/SeoKeywords";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { debounce } from "@utils/commonUtils";
 import { company } from "@utils/config";
@@ -116,9 +115,9 @@ const DesignExamples: NextPage = () => {
 											</Row>
 										</Title>
 									</Col>
-									<Col>
+									{/* <Col>
 										<SeoKeywords />
-									</Col>
+									</Col> */}
 									<Col>
 										<Button type='primary' onClick={toggleModal}>
 											Create new Design
