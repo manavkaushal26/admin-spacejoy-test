@@ -68,15 +68,24 @@ export default function index({ designData }) {
 		<div>
 			<Row gutter={[8, 8]}>
 				<Col span={8}>
-					<Select showSearch onChange={value => handleCategory(value)} style={{ width: "100%" }} value={category}>
+					<label>Category</label>
+					<Select
+						showSearch
+						onChange={value => handleCategory(value)}
+						style={{ width: "100%" }}
+						value={category || "Select Category"}
+					>
 						<Select.Option value='special'>Special</Select.Option>
 						<Select.Option value='featured'>Featured</Select.Option>
 					</Select>
 				</Col>
 				<Col span={8}>
+					<label>Custom Design Name</label>
 					<Input onChange={handleCustomName} value={customName} />
 				</Col>
 				<Col span={8}>
+					<label>Is Active</label>
+					<br></br>
 					<Switch checked={isActive} onChange={handleIsActive} />
 				</Col>
 				<Col span={8}>
