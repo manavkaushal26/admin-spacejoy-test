@@ -8,6 +8,7 @@ import { RoomTypes } from "@customTypes/dashboardTypes";
 import { MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus, Status } from "@customTypes/userType";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
+import DesignFooter from "@sections/Dashboard/userProjectMainPanel/DesignFooter.js";
 import { getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, company, cookieNames, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -16,7 +17,6 @@ import { Button, Col, Input, notification, Row, Select, Spin, Tooltip, Typograph
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
 import CollectionFAQ from "./CollectionFAQ";
-
 const { Text } = Typography;
 
 const initialState: DetailedCollection = {
@@ -550,6 +550,9 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 								<CollectionFAQ id={id} />
 							</Col>
 						</Row>
+					</Col>
+					<Col span={24}>
+						<DesignFooter designData={collectionData} />
 					</Col>
 				</Row>
 				<ImageDisplayModal
