@@ -328,7 +328,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 								</TabPane>
 							)}
 							<TabPane tab='Design Footer' key='design_footer'>
-								<DesignFooter data={designData} />
+								<DesignFooter designData={designData} />
 							</TabPane>
 						</ScrollableTabs>
 					</Col>
