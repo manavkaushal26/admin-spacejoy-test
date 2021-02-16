@@ -1,6 +1,7 @@
 import { LinkOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { editDesignApi, getThemes } from "@api/designApi";
 import { DetailedDesign, KeywordInterface, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
+import { Editor } from "@tinymce/tinymce-react";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Col, DatePicker, Form, Input, notification, Row, Select } from "antd";
@@ -15,6 +16,7 @@ interface DesignDetails {
 
 const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, setDesignLoading }) => {
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
+	const [richSeoHtml, setRichSeoHtml] = useState<String>();
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [seoKeywords, setSeoKeywords] = useState<KeywordInterface[]>([]);
 	const [form] = useForm();
@@ -32,6 +34,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 						text: attribute,
 					})),
 					publishedDate: formData.publishedDate?.toISOString(),
+					body: richSeoHtml,
 				},
 			},
 		});
@@ -92,6 +95,10 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 		}
 	};
 
+	const onEditorChange = (body): void => {
+		setRichSeoHtml(body);
+	};
+
 	return (
 		<Form labelCol={{ span: 24 }} form={form} onFinish={onClickOk}>
 			<Row gutter={[8, 8]}>
@@ -142,7 +149,20 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 						<Input.TextArea />
 					</Form.Item>
 				</Col>
-
+				<Col span={24}>
+					<Form.Item label='Seo rich text'>
+						<Editor
+							apiKey='nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq'
+							onEditorChange={(body): void => onEditorChange(body)}
+							init={{
+								menubar: "file edit insert view format table tools help",
+								toolbar:
+									" undo redo | pagebreak | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
+								br_in_pre: false,
+							}}
+						/>
+					</Form.Item>
+				</Col>
 				<Col span={8}>
 					<Form.Item name='altTag' label='Image Alt tag'>
 						<Input />
