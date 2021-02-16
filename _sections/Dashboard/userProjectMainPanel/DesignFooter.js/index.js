@@ -43,7 +43,7 @@ export default function index({ designData }) {
 				? {
 						active: isActive,
 						document: designData?._id,
-						documentModel: designData?.designImages ? "Design" : "Collection",
+						documentModel: designData?.designImages ? "Design" : "DesignCollection",
 						footerCategory: category,
 						footerCustomName: customName,
 				  }
