@@ -1,6 +1,6 @@
 import { LinkOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { editDesignApi, getThemes } from "@api/designApi";
-import { DetailedDesign, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
+import { DetailedDesign, KeywordInterface, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Col, DatePicker, Form, Input, notification, Row, Select } from "antd";
@@ -16,7 +16,7 @@ interface DesignDetails {
 const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, setDesignLoading }) => {
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
-	const [seoKeywords, setSeoKeywords] = useState<Array<string>>([]);
+	const [seoKeywords, setSeoKeywords] = useState<KeywordInterface[]>([]);
 	const [form] = useForm();
 
 	const onClickOk = async (formData): Promise<void> => {
@@ -79,17 +79,16 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 	};
 
 	const fetchKeywords = async (): Promise<void> => {
-		try {
-			const response = await fetcher({ endPoint: "/v1/seoKeywords", method: "GET" });
+		if (seoKeywords.length) {
+			setSeoKeywords(seoKeywords);
+		} else {
+			const response = await fetcher({ endPoint: "/v1/seoKeywords?skip=0&limit=1500", method: "GET" });
 			const { data, statusCode } = response;
 			if (statusCode && statusCode <= 201) {
-				console.log(data);
 				setSeoKeywords(data);
 			} else {
 				throw new Error();
 			}
-		} catch {
-			throw new Error();
 		}
 	};
 
@@ -187,10 +186,11 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 				</Col>
 				<Col span={8}>
 					<Form.Item name='keywords' label='Keywords'>
-						<Select allowClear onFocus={fetchKeywords} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]}>
-							{console.log("seoKeywords", seoKeywords)}
+						<Select onFocus={fetchKeywords} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]}>
 							{seoKeywords.map(item => (
-								<Select.Option value={item?.name}>{item?.name}</Select.Option>
+								<Select.Option key={item?._id} value={item?.name}>
+									{item?.name}
+								</Select.Option>
 							))}
 						</Select>
 					</Form.Item>
