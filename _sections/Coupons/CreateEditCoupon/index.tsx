@@ -196,7 +196,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
-					label='Max no of times the Coupon can be used'
+					label='Max no of times the Coupon can be used - Globally'
 					name='globalUsageLimit'
 					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
 				>
