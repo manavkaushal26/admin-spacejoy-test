@@ -45,7 +45,6 @@ interface CreateEditCollection {
 	onSave?: (data: DetailedCollection, newEntry: boolean) => void;
 	onClose: (id: string, type: "open" | "close") => void;
 	metadata: MetaDataType;
-	designData: MetaDataType;
 }
 
 const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSave, onClose, metadata }) => {

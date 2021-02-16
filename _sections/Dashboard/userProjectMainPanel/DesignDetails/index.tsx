@@ -136,7 +136,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 					</Form.Item>
 				</Col>
 				<Col span={24}>
-					<Form.Item name='body' label='Seo rich text'>
+					<Form.Item label='Seo rich text'>
 						<Editor
 							apiKey='nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq'
 							onEditorChange={(body): void => onEditorChange(body)}
