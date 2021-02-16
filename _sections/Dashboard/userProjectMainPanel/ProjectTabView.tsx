@@ -21,6 +21,7 @@ import styled from "styled-components";
 import { SilentDivider } from "../styled";
 import CustomerView from "./CustomerView";
 import DesignDetails from "./DesignDetails";
+import DesignFooter from "./DesignFooter.js";
 import NotesTab from "./NotesTab";
 import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
 import CustomerFeedbackTab from "./ProjectDesignInteractionPanel/CustomerFeedbackTab";
@@ -64,7 +65,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	currentTab,
 	updateRevisionData,
 	revisionFormData,
-	userStyleQuizResult
+	userStyleQuizResult,
 }): JSX.Element => {
 	const id = getValueSafely(() => projectData._id, null);
 	const [designData, setDesignData] = useState<DetailedDesign>(null);
@@ -326,6 +327,9 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 									/>
 								</TabPane>
 							)}
+							<TabPane tab='Design Footer' key='design_footer'>
+								<DesignFooter designData={designData} />
+							</TabPane>
 						</ScrollableTabs>
 					</Col>
 					<EditDesignModal
