@@ -553,7 +553,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						</Row>
 					</Col>
 					<Col span={24}>
-						<DesignFooter designData={{ _id: id }} />
+						<DesignFooter designData={collectionData} />
 					</Col>
 				</Row>
 				<ImageDisplayModal

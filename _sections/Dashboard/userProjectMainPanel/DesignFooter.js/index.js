@@ -45,12 +45,12 @@ export default function index({ designData }) {
 						document: designData?._id,
 						documentModel: designData?.designImages ? "Design" : "DesignCollection",
 						footerCategory: category,
-						footerCustomName: customName,
+						footerCustomName: customName || designData?.name,
 				  }
 				: {
 						active: isActive,
 						footerCategory: category,
-						footerCustomName: customName,
+						footerCustomName: customName || designData?.name,
 				  };
 		const method = type === "create" ? "POST" : "PUT";
 		const endPoint = type === "create" ? "/v1/footer" : `/v1/footer/model/${designData?._id}`;
