@@ -27,6 +27,11 @@ export interface ThemeInterface {
 	description: string;
 }
 
+export interface KeywordInterface {
+	_id: string;
+	name: string;
+}
+
 export enum PhaseCustomerNames {
 	requirement = "requirement",
 	brief = "brief",
@@ -451,6 +456,7 @@ export interface DetailedDesign {
 	room: RoomType;
 	theme: string;
 	tags: string[];
+	keywords: string[];
 	publishedDate: string;
 	attributeList: { text: string }[];
 	longDescription: string;

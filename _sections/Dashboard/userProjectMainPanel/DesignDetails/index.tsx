@@ -1,6 +1,6 @@
 import { LinkOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { editDesignApi, getThemes } from "@api/designApi";
-import { DetailedDesign, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
+import { DetailedDesign, KeywordInterface, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
 import { Editor } from "@tinymce/tinymce-react";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -18,7 +18,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
 	const [richSeoHtml, setRichSeoHtml] = useState<String>();
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
-
+	const [seoKeywords, setSeoKeywords] = useState<KeywordInterface[]>([]);
 	const [form] = useForm();
 
 	const onClickOk = async (formData): Promise<void> => {
@@ -78,6 +78,20 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 			const roomName = roomType.toLowerCase().split(" ").join("-");
 			const url = `${company.customerPortalLink}/interior-designs/${roomName}-ideas/${slug}`;
 			window.open(url, "_blank", "noopener");
+		}
+	};
+
+	const fetchKeywords = async (): Promise<void> => {
+		if (seoKeywords.length) {
+			setSeoKeywords(seoKeywords);
+		} else {
+			const response = await fetcher({ endPoint: "/v1/seoKeywords?skip=0&limit=1500", method: "GET" });
+			const { data, statusCode } = response;
+			if (statusCode && statusCode <= 201) {
+				setSeoKeywords(data);
+			} else {
+				throw new Error();
+			}
 		}
 	};
 
@@ -188,6 +202,17 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 				<Col span={8}>
 					<Form.Item name='tags' label='Tags'>
 						<Select open={false} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]} />
+					</Form.Item>
+				</Col>
+				<Col span={8}>
+					<Form.Item name='keywords' label='Keywords'>
+						<Select onFocus={fetchKeywords} style={{ width: "100%" }} mode='tags' tokenSeparators={[","]}>
+							{seoKeywords.map(item => (
+								<Select.Option key={item?._id} value={item?.name}>
+									{item?.name}
+								</Select.Option>
+							))}
+						</Select>
 					</Form.Item>
 				</Col>
 				<Col span={24}>

@@ -115,6 +115,9 @@ const DesignExamples: NextPage = () => {
 											</Row>
 										</Title>
 									</Col>
+									{/* <Col>
+										<SeoKeywords />
+									</Col> */}
 									<Col>
 										<Button type='primary' onClick={toggleModal}>
 											Create new Design
