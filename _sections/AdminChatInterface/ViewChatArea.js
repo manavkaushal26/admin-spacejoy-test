@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable no-useless-escape */
 import { Image } from "antd";
 import moment from "moment";
 import React from "react";
+import ReactHtmlParser from "react-html-parser";
 import styled from "styled-components";
 const MessageRow = styled.div`
 	display: flex;
@@ -15,6 +17,10 @@ const MessageBubble = styled.div`
 	padding: 8px 12px;
 	border-radius: 20px;
 	word-break: break-word;
+	a {
+		color: #ffc53d;
+		font-weight: bold;
+	}
 `;
 const MessageWrapper = styled.div`
 	display: block;
@@ -55,6 +61,24 @@ const ViewChatArea = ({ chatData }) => {
 			</div>
 		));
 	};
+
+	const checkIfUrl = text => {
+		let replacedText = "";
+		let replacePattern1 = "";
+		let replacePattern2 = "";
+		let replacePattern3 = "";
+
+		replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+		replacedText = text.replace(replacePattern1, "<a href='$1' target='_blank'>$1</a>");
+
+		replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+		replacedText = replacedText.replace(replacePattern2, "$1<a href='http://$2' target='_blank'>$2</a>");
+
+		replacePattern3 = /(([a-zA-Z0-9\-\_\.])+@[a-zA-Z\_]+?(\.[a-zA-Z]{2,6})+)/gim;
+		replacedText = replacedText.replace(replacePattern3, "<a href='mailto:$1'>$1</a>");
+		return ReactHtmlParser(replacedText);
+	};
+
 	const renderChatViewArea = chatData => {
 		return chatData.map(chatItem => {
 			return (
@@ -64,7 +88,7 @@ const ViewChatArea = ({ chatData }) => {
 							<ImageWrapper>{renderChatImages(chatItem.images)}</ImageWrapper>
 							{chatItem.message.length ? (
 								<MessageBubble userType={chatItem.userType}>
-									<TextWrapper>{chatItem.message}</TextWrapper>
+									<TextWrapper>{checkIfUrl(chatItem.message)}</TextWrapper>
 								</MessageBubble>
 							) : null}
 						</FlexWrapper>
