@@ -85,10 +85,12 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 
 		try {
 			const response = await fetcher({ endPoint, method: couponData ? "PUT" : "POST", body: { data: values } });
-			if (response.status !== "error") {
+			if (response.statusCode <= 300) {
 				modifyCouponValue(response.data.data, !couponData);
 				toggleCreateEditCoupon();
 				notification.success({ message: couponData ? "Saved Coupon successfully" : "Created coupon successfully" });
+			} else {
+				notification.error({ message: response.data?.data?.msg || "Failed to save coupon" });
 			}
 		} catch (e) {
 			notification.error({ message: "Failed to Save Coupon" });
