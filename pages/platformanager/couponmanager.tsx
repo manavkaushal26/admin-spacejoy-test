@@ -42,7 +42,7 @@ const CouponManager: NextPage<{
 	const fetchAndPopulateCoupons = async (): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${getAllCoupons(searchKey.searchText !== "")}?limit=${limit}&skip=${(pageNumber - 1) * limit}${
-			searchKey.searchText !== "" ? `&keyword=${searchKey.searchedColumn}:${searchKey.searchText.trim()}` : ""
+			searchKey.searchText !== "" ? `&keyword=${searchKey.searchedColumn}:${searchKey?.searchText?.trim()}` : ""
 		}`;
 
 		try {
@@ -51,7 +51,7 @@ const CouponManager: NextPage<{
 				method: "GET",
 			});
 			if (response.statusCode <= "300") {
-				setCoupons(response.data.data.data || response.data);
+				setCoupons(response.data.data.data || response.data.data);
 				setTotal(response.data.data.count || response.data.length);
 			} else {
 				notification.error({ message: "Failed to fetch Coupons" });
