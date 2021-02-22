@@ -12,6 +12,7 @@ interface CreateEditCoupon {
 	modifyCouponValue: (value: BasicCoupon, isNewCoupon: boolean) => void;
 	toggleCreateEditCoupon: () => void;
 	createEditCouponVisible: boolean;
+	isDuplicateActive: boolean;
 }
 
 const convertFormat = (data, type = "fromState") => {
@@ -59,10 +60,27 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 	modifyCouponValue,
 	toggleCreateEditCoupon,
 	createEditCouponVisible,
+	isDuplicateActive,
 }) => {
 	const [coupon, setCoupon] = useState({});
 
 	const [form] = Form.useForm();
+
+	const duplicateCoupon = async values => {
+		const endPoint = createEditCouponApi("");
+		try {
+			const response = await fetcher({ endPoint, method: "POST", body: { data: values } });
+			if (response.statusCode <= 300) {
+				modifyCouponValue(response.data.data, true);
+				toggleCreateEditCoupon();
+				notification.success({ message: "Created coupon successfully" });
+			} else {
+				notification.error({ message: response.data?.data?.msg || "Failed to create coupon" });
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to Create Coupon" });
+		}
+	};
 
 	useEffect(() => {
 		if (couponData) {
@@ -98,8 +116,11 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 	};
 
 	const onFinish = values => {
-		// console.log("values", values);
-		saveCoupon(convertFormat(values));
+		if (isDuplicateActive) {
+			duplicateCoupon(convertFormat(values));
+		} else {
+			saveCoupon(convertFormat(values));
+		}
 	};
 
 	return (
@@ -107,7 +128,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 			destroyOnClose
 			visible={createEditCouponVisible}
 			width='400px'
-			title='Coupon'
+			title={isDuplicateActive ? "Duplicate Coupon" : "Coupon"}
 			onClose={toggleCreateEditCoupon}
 		>
 			<Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} form={form} onFinish={onFinish}>
