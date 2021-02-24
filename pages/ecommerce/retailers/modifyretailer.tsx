@@ -31,6 +31,7 @@ import { FormInstance } from "antd/lib/form";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -202,7 +203,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 				<MaxHeightDiv>
 					<LoudPaddingDiv>
 						<Row>
-							<Col>
+							<Col span={5}>
 								<Col>
 									<Title level={3}>
 										<Row gutter={[8, 8]}>
@@ -215,6 +216,11 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 										</Row>
 									</Title>
 								</Col>
+							</Col>
+							<Col span={19}>
+								<Link href={`/ecommerce/retailers/modifycoupon?id=${retailer._id}`}>
+									<Button type='primary'>Manage Coupons</Button>
+								</Link>
 							</Col>
 						</Row>
 						<Row>
