@@ -1,26 +1,42 @@
+import fetcher from "@utils/fetcher";
 import { Button, DatePicker, Drawer, Form, InputNumber, notification, Select } from "antd";
+import moment from "moment";
 import React, { useEffect, useState } from "react";
-
 const { RangePicker } = DatePicker;
 
-export default function EditCreateCoupon({ isDrawerVisible, modifyCouponValue, couponData }) {
+export default function EditCreateCoupon({
+	isDrawerVisible,
+	modifyCouponValue,
+	couponData,
+	toggleCouponDrawer,
+	retailerId,
+}) {
 	const [form] = Form.useForm();
 	const [coupon, setCoupon] = useState({});
 
 	const saveCoupon = async values => {
-		const endPoint = "/v1/offer";
-		console.log("values", values);
-		const payload = {};
+		const endPoint = couponData ? `/v1/offer/${couponData?._id}` : "/v1/offer";
+		const payload = createFormData(values);
 		try {
 			const response = await fetcher({ endPoint, method: couponData ? "PUT" : "POST", body: payload });
-			if (response.status !== "error") {
+			if (response.statusCode <= 300) {
 				modifyCouponValue(response.data, !couponData);
 				notification.success({ message: couponData ? "Saved Coupon successfully" : "Created coupon successfully" });
+			} else {
+				notification.error({ message: couponData ? "Failed to Save Coupon" : "Failed to Create Coupon" });
 			}
 		} catch (e) {
 			notification.error({ message: "Failed to Save Coupon" });
 		}
 	};
+
+	useEffect(() => {
+		if (couponData) {
+			setCoupon(retrieveFormData(couponData));
+		} else {
+			setCoupon({});
+		}
+	}, [couponData]);
 
 	useEffect(() => {
 		if (couponData) {
@@ -30,19 +46,47 @@ export default function EditCreateCoupon({ isDrawerVisible, modifyCouponValue, c
 		}
 	}, [coupon]);
 
+	const createFormData = data => {
+		const payload = {
+			retailer: retailerId,
+			isActive: data?.isActive === "true" ? true : false,
+			discount: data?.discount,
+			startTime: data.validity ? data.validity[0]?.toISOString() : undefined,
+			endTime: data.validity ? data.validity[1]?.toISOString() : undefined,
+			discountType: data?.discountType,
+			constraints: {
+				minAmount: data?.constraints?.minAmount,
+				maxAmount: data?.constraints?.maxAmount,
+			},
+			maxDiscount: data?.maxDiscount,
+		};
+
+		return payload;
+	};
+
+	const retrieveFormData = data => {
+		const payload = {
+			retailer: retailerId,
+			isActive: data?.isActive ? "true" : "false",
+			discount: data?.discount,
+			validity: [moment(data.startTime), moment(data.endTime)],
+			discountType: data?.discountType,
+			constraints: {
+				minAmount: data?.constraints?.minAmount,
+				maxAmount: data?.constraints?.maxAmount,
+			},
+			maxDiscount: data?.maxDiscount,
+		};
+
+		return payload;
+	};
+
 	const onFinish = values => {
-		// console.log("values", values);
 		saveCoupon(values);
 	};
 
 	return (
-		<Drawer
-			destroyOnClose
-			visible={isDrawerVisible}
-			width='400px'
-			title='Coupon'
-			// onClose={toggleCreateEditCoupon}
-		>
+		<Drawer destroyOnClose visible={isDrawerVisible} width='400px' title='Coupon' onClose={toggleCouponDrawer}>
 			<Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} form={form} onFinish={onFinish}>
 				<Form.Item
 					label='Discount'

@@ -5,7 +5,7 @@ import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, Row, Table } from "antd";
+import { Button, Col, notification, Row, Table } from "antd";
 import Title from "antd/lib/skeleton/Title";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -18,14 +18,14 @@ function ModifyRetailerCoupon({ retailerId }) {
 	const [coupons, setCoupons] = useState([]);
 	const [loading, setIsLoading] = useState(false);
 	const [isDrawerVisible, setDrawerVisibility] = useState(false);
-	const [selectedCoupon, setSelectedCoupon] = useState({});
+	const [selectedCoupon, setSelectedCoupon] = useState(null);
 	const getCoupons = async () => {
 		const response = await fetcher({
 			endPoint: `/v1/offers/${retailerId}`,
 			method: "GET",
 		});
 		if (response.statusCode <= "300") {
-			setCoupons();
+			setCoupons(response?.data?.data);
 		} else {
 			throw new Error();
 		}
@@ -33,10 +33,11 @@ function ModifyRetailerCoupon({ retailerId }) {
 
 	const toggleCouponDrawer = () => {
 		setDrawerVisibility(!isDrawerVisible);
+		setSelectedCoupon(null);
 	};
 
 	useEffect(() => {
-		//getCoupons();
+		getCoupons();
 	}, []);
 
 	const onCouponValueChange = (newValue, isNewCoupon) => {
@@ -51,6 +52,22 @@ function ModifyRetailerCoupon({ retailerId }) {
 					return coupon;
 				})
 			);
+		}
+	};
+
+	const onEditClick = record => {
+		setSelectedCoupon(record);
+		setDrawerVisibility(true);
+	};
+
+	const onDeleteClick = async record => {
+		try {
+			const response = await fetcher({ endPoint: `/v1/offer/${record?._id}`, method: "DEL" });
+			if (response.statusCode <= 300) {
+				notification.success({ message: "Deleted coupon" });
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to Delete Coupon" });
 		}
 	};
 
@@ -71,28 +88,85 @@ function ModifyRetailerCoupon({ retailerId }) {
 											<Col>
 												<ArrowLeftOutlined onClick={() => router.back()} />
 											</Col>
-											<Col>Coupon Manager</Col>
+											<Col>Offers Manager</Col>
 										</Row>
 									</Title>
 								</Col>
 								<Col>
 									<Button type='primary' onClick={toggleCouponDrawer}>
-										Create New Coupon
+										Create New Offer
 									</Button>
 								</Col>
 							</Row>
 						</Col>
+						<br></br>
+						<br></br>
 						<Col span={24}>
 							<Table
 								size='middle'
 								loading={loading}
-								// rowKey={(record): string => record._id}
-								dataSource={[]}
+								rowKey={record => record._id}
+								dataSource={coupons}
 								scroll={{ x: 1024 }}
 							>
-								<Table.Column title='Title' dataIndex='title' key='title' />
-								<Table.Column title='Title' dataIndex='title' key='title' />
-								<Table.Column title='Title' dataIndex='title' key='title' />
+								<Table.Column
+									title='Discount'
+									dataIndex='discount'
+									key='discount'
+									render={_text => {
+										return _text;
+									}}
+								/>
+								<Table.Column
+									title='Discount Type'
+									dataIndex='discountType'
+									key='discountType'
+									render={_text => {
+										return _text;
+									}}
+								/>
+								<Table.Column
+									title='Start Date'
+									dataIndex='startTime'
+									key='startTime'
+									render={_text => {
+										return _text;
+									}}
+								/>
+								<Table.Column
+									title='End Date'
+									dataIndex='endTime'
+									key='endTime'
+									render={_text => {
+										return _text;
+									}}
+								/>
+								<Table.Column
+									title='Max Discount'
+									dataIndex='maxDiscount'
+									key='maxDiscount'
+									render={_text => {
+										return _text;
+									}}
+								/>
+								<Table.Column
+									title='Actions'
+									key='actions'
+									fixed='right'
+									width='300'
+									render={(_text, record) => {
+										return (
+											<>
+												<Button type='link' onClick={() => onEditClick(record)}>
+													Edit
+												</Button>
+												<Button type='link' onClick={() => onDeleteClick(record)}>
+													Delete
+												</Button>
+											</>
+										);
+									}}
+								/>
 							</Table>
 						</Col>
 					</Row>
@@ -102,6 +176,8 @@ function ModifyRetailerCoupon({ retailerId }) {
 				couponData={selectedCoupon}
 				modifyCouponValue={onCouponValueChange}
 				isDrawerVisible={isDrawerVisible}
+				retailerId={retailerId}
+				toggleCouponDrawer={toggleCouponDrawer}
 			/>
 		</PageLayout>
 	);
@@ -110,33 +186,11 @@ function ModifyRetailerCoupon({ retailerId }) {
 export async function getServerSideProps(ctx) {
 	const { query } = ctx;
 	const retailerId = query.id || "";
-	const endPoint = `/v1/offers/${retailerId}`;
 	return {
 		props: {
 			retailerId,
 		},
 	};
-	// try {
-	// 	const response = await fetcher({
-	// 		ctx,
-	// 		endPoint,
-	// 		method: "GET",
-	// 	});
-	// 	if (response.statusCode <= "300") {
-	// 		return {
-	// 			props: {
-	// 				couponData: response.data,
-	// 				// serverTotal: response.data.data.data.count || response.data.length || 0,
-	// 			},
-	// 		};
-	// 	} else {
-	// 		throw new Error();
-	// 	}
-	// } catch (e) {
-	// 	return {
-	// 		props: {},
-	// 	};
-	// }
 }
 
 export default ProtectRoute(ModifyRetailerCoupon);
