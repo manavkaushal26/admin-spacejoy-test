@@ -12,6 +12,7 @@ interface CreateEditCoupon {
 	modifyCouponValue: (value: BasicCoupon, isNewCoupon: boolean) => void;
 	toggleCreateEditCoupon: () => void;
 	createEditCouponVisible: boolean;
+	isDuplicateActive: boolean;
 }
 
 const convertFormat = (data, type = "fromState") => {
@@ -23,7 +24,7 @@ const convertFormat = (data, type = "fromState") => {
 				amount: data.amount,
 				isPercent: data.isPercent,
 				maxDiscount: data.maxDiscount,
-				validity: [moment(data.startedAt), moment(data.endedAt)],
+				validity: [moment(data?.startTime, "YYYY-MM-DD HH:mm"), moment(data?.endTime, "YYYY-MM-DD HH:mm")],
 				maxUsePerUser: data.maxUsePerUser,
 				globalUsageLimit: data.globalUsageLimit,
 				status: data.status,
@@ -59,10 +60,27 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 	modifyCouponValue,
 	toggleCreateEditCoupon,
 	createEditCouponVisible,
+	isDuplicateActive,
 }) => {
 	const [coupon, setCoupon] = useState({});
 
 	const [form] = Form.useForm();
+
+	const duplicateCoupon = async values => {
+		const endPoint = createEditCouponApi("");
+		try {
+			const response = await fetcher({ endPoint, method: "POST", body: { data: values } });
+			if (response.statusCode <= 300) {
+				modifyCouponValue(response.data.data, true);
+				toggleCreateEditCoupon();
+				notification.success({ message: "Created coupon successfully" });
+			} else {
+				notification.error({ message: response.data?.data?.msg || "Failed to create coupon" });
+			}
+		} catch (e) {
+			notification.error({ message: "Failed to Create Coupon" });
+		}
+	};
 
 	useEffect(() => {
 		if (couponData) {
@@ -85,10 +103,12 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 
 		try {
 			const response = await fetcher({ endPoint, method: couponData ? "PUT" : "POST", body: { data: values } });
-			if (response.status !== "error") {
+			if (response.statusCode <= 300) {
 				modifyCouponValue(response.data.data, !couponData);
 				toggleCreateEditCoupon();
 				notification.success({ message: couponData ? "Saved Coupon successfully" : "Created coupon successfully" });
+			} else {
+				notification.error({ message: response.data?.data?.msg || "Failed to save coupon" });
 			}
 		} catch (e) {
 			notification.error({ message: "Failed to Save Coupon" });
@@ -96,8 +116,11 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 	};
 
 	const onFinish = values => {
-		// console.log("values", values);
-		saveCoupon(convertFormat(values));
+		if (isDuplicateActive) {
+			duplicateCoupon(convertFormat(values));
+		} else {
+			saveCoupon(convertFormat(values));
+		}
 	};
 
 	return (
@@ -105,18 +128,14 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 			destroyOnClose
 			visible={createEditCouponVisible}
 			width='400px'
-			title='Coupon'
+			title={isDuplicateActive ? "Duplicate Coupon" : "Coupon"}
 			onClose={toggleCreateEditCoupon}
 		>
 			<Form labelCol={{ span: 24 }} wrapperCol={{ span: 24 }} form={form} onFinish={onFinish}>
 				<Form.Item label='Title' name='title' rules={[{ required: true, message: "Please Enter Title" }]}>
 					<Input />
 				</Form.Item>
-				<Form.Item
-					label='Description'
-					name='description'
-					rules={[{ required: true, message: "Please Enter Description" }]}
-				>
+				<Form.Item label='Description' name='description' rules={[{ message: "Please Enter Description" }]}>
 					<Input.TextArea />
 				</Form.Item>
 				<Form.Item label='Code' name='code' rules={[{ required: true, message: "Please Enter Title" }]}>
@@ -203,7 +222,7 @@ const CreateEditCoupon: React.FC<CreateEditCoupon> = ({
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item label='Coupon Validity' name='validity' rules={[{ required: true, message: "Please Enter value" }]}>
-					<RangePicker showTime allowEmpty={[false, true]} format='YYYY-MM-DD HH:mm' />
+					<RangePicker showTime allowEmpty={[false, true]} />
 				</Form.Item>
 				<Form.Item label='Coupon Type' name='type' rules={[{ required: true, message: "Please select a value" }]}>
 					<Select style={{ width: "100%" }}>
