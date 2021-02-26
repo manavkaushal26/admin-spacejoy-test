@@ -1027,6 +1027,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															</Select>
 														</Form.Item>
 													</Col>
+													<Col>
+														<Form.Item name='color' label='Color' rules={[{ required: true }]}>
+															<Input />
+														</Form.Item>
+													</Col>
 												</Row>
 											</Col>
 										</Row>
