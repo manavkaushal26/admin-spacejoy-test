@@ -60,6 +60,15 @@ const MetaCards = [
 		query: {},
 		allowedRoles: [Role.Admin, Role.Owner, Role["Account Manager"]],
 	},
+	{
+		name: "Sitemap Manager",
+		description: "Manage Sitemap in platform",
+		action: "redirect",
+		to: "/platformanager/sitemapmanager",
+		url: "/platformanager/sitemapmanager",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner, Role["Account Manager"]],
+	},
 ];
 
 const Platformanager: NextPage = () => {
