@@ -1028,7 +1028,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														</Form.Item>
 													</Col>
 													<Col span={12}>
-														<Form.Item name='color' label='Color' rules={[{ required: true }]}>
+														<Form.Item name='colors' label='Color' rules={[{ required: true }]}>
 															<Select mode='tags' open={false} tokenSeparators={[","]} />
 														</Form.Item>
 													</Col>
