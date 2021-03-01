@@ -1,3 +1,4 @@
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
@@ -10,7 +11,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { LoudPaddingDiv } from ".";
-
 const { Title } = Typography;
 
 interface SitemapData {
@@ -83,6 +83,16 @@ const SitemapManager: NextPage<{
 					<br></br>
 					<LoudPaddingDiv>
 						<Row>
+							<Col>
+								<Title level={3}>
+									<Row gutter={[8, 8]}>
+										<Col>
+											<ArrowLeftOutlined onClick={() => router.back()} />
+										</Col>
+										<Col>Platform Manager</Col>
+									</Row>
+								</Title>
+							</Col>
 							<Col span={24}>
 								<Button style={{ float: "right" }} type='primary' onClick={openModal}>
 									Create
