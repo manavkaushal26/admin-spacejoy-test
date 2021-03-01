@@ -37,6 +37,7 @@ export enum AssetStatus {
 	Pending = "pending",
 	Suspended = "suspended",
 	Inactive = "inactive",
+	Discontinued = "discontinued",
 }
 
 interface User {
