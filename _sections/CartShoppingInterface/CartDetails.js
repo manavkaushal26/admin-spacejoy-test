@@ -217,7 +217,7 @@ export default function CartDetails({ id }) {
 		const response = await fetcher({ endPoint: `/v1/carts/userCart?userId=${id}`, method: "GET" });
 
 		if (response.statusCode <= 300) {
-			setCartData(response?.data?.data);
+			setCartData(response?.data);
 		} else {
 			notification.error({ message: "Failed to fetch cart data" });
 		}
