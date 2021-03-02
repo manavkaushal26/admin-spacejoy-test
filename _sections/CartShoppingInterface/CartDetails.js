@@ -1,11 +1,10 @@
 import Card from "@components/Card";
 import Image from "@components/Image";
 import fetcher from "@utils/fetcher";
-import { notification, Typography } from "antd";
+import { notification } from "antd";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-const { Text, Title } = Typography;
 
 const OutOfStock = css`
 	background-color: ${({ theme }) => theme.colors.mild.red};
@@ -212,15 +211,15 @@ const BrandArea = styled.div`
 `;
 
 export default function CartDetails({ id }) {
-	const [cartData, setcartData] = useState({});
+	const [cartData, setCartData] = useState({});
 
 	const getCartDetails = async () => {
 		const response = await fetcher({ endPoint: `/v1/carts/userCart?userId=${id}`, method: "GET" });
 
-		if (response.status === "success") {
-			setcartData(response.data.data);
+		if (response.statusCode <= 300) {
+			setCartData(response?.data?.data);
 		} else {
-			notification.error({ message: "Failed to fetch Themes" });
+			notification.error({ message: "Failed to fetch cart data" });
 		}
 	};
 
@@ -230,7 +229,7 @@ export default function CartDetails({ id }) {
 
 	return (
 		<div>
-			{cartData &&
+			{cartData?.cartItems &&
 				Object.entries(cartData?.cartItems).map(brand => (
 					<BrandArea key={brand[0]}>
 						{brand[1].name ? (
