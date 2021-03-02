@@ -1,6 +1,7 @@
 import PhaseTimeline from "@components/PhaseTimeline";
 import { DetailedProject, RevisionForm } from "@customTypes/dashboardTypes";
 import ChatWrapper from "@sections/AdminChatInterface/ChatOverView";
+import CartDetails from "@sections/CartShoppingInterface/CartDetails";
 import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
 import { PaddedDiv } from "@sections/Header/styled";
 import { Tabs } from "antd";
@@ -9,7 +10,6 @@ import ProjectTeamTab from "../ProjectTeamTab";
 import CustomerFeedbackTab from "./CustomerFeedbackTab";
 import CustomerResponsesTab from "./CustomerResponesTab";
 import CustomerRevisionData from "./CustomerRevisionData";
-
 interface ProjectDesignInteractionPanel {
 	projectData: DetailedProject;
 	onSelectDesign: (id: string) => void;
@@ -27,9 +27,9 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	onSelectDesign,
 	revisionFormData,
 	updateRevisionData,
-	userStyleQuizResult
+	userStyleQuizResult,
 }) => {
-	const { id: projectId, designs } = projectData;
+	const { id: projectId, designs, customer } = projectData;
 	return (
 		<Tabs>
 			<Tabs.TabPane tab='Designs' key='designSelection'>
@@ -74,6 +74,12 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 			</Tabs.TabPane>
 			<Tabs.TabPane tab='Chat' key='chat'>
 				<ChatWrapper projectId={projectId} designs={designs}></ChatWrapper>
+			</Tabs.TabPane>
+			<Tabs.TabPane tab='Cart Data' key='cart-data'>
+				<CartDetails id={customer?._id}></CartDetails>
+			</Tabs.TabPane>
+			<Tabs.TabPane tab='Shopping Data' key='shopping-data'>
+				{/* <ShoppingDataWrapper ></ShoppingDataWrapper> */}
 			</Tabs.TabPane>
 		</Tabs>
 	);
