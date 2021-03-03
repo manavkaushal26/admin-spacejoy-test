@@ -173,6 +173,7 @@ const Wrapper = styled(Card)`
 const BrandArea = styled.div`
 	position: relative;
 	padding-left: 1rem;
+	margin-left: 1rem;
 	@media (max-width: 576px) {
 		padding-left: 0;
 	}
