@@ -9,6 +9,7 @@ import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
 import { debounce } from "@utils/commonUtils";
 import { company } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Layout, Spin } from "antd";
 import { GetServerSideProps, NextPage } from "next";
@@ -44,6 +45,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 
 	const [searchFilters, setSearchFilters] = useState(UserProjectSidePanelInitialState);
 	const [searchFiltersChanged, setSearchFiltersChanged] = useState(null);
+	const [customerRatings, setCustomerRatings] = useState(null);
 	const [currentUser, setCurrentUser] = useState<string>("");
 
 	const onResize = (): void => debouncedHandleResize(setIsDesktop);
@@ -65,8 +67,20 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 		};
 	});
 
+	const getCustomerRatings = async (): Promise<void> => {
+		const response = await fetcher({
+			endPoint: `/projects/${projectId}/userFeedback`,
+			method: "GET",
+		});
+
+		if (response.statusCode <= 300) {
+			setCustomerRatings(response?.data?.feedback);
+		}
+	};
+
 	const handleSelectCard = (user: string): void => {
 		setSelectedUser(user);
+		getCustomerRatings();
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
 	const setCurrentUserId = (user: string): void => {
@@ -169,6 +183,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 										currentTab={currentTab}
 										setSearchFiltersChanged={setSearchFiltersChanged}
 										userStyleQuizResult={UserStyleQuizRes}
+										customerRatings={customerRatings}
 									/>
 								</PaddedDiv>
 							</MaxHeightDiv>
