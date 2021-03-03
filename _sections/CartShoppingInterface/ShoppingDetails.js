@@ -40,7 +40,14 @@ export default function ShoppingDetails({ id }) {
 			{shopData.map(item => {
 				return (
 					<Col span={24} key={item?._id}>
+						<h3>
+							Order ID - {item?.orderId}&nbsp;&nbsp; <br></br>Total Amount - $ {item?.amount}
+						</h3>
+						<br></br>
 						<OrderItemTable orderItems={item?.orderItems} />
+						<br></br>
+						<hr></hr>
+						<br></br>
 					</Col>
 				);
 			})}
