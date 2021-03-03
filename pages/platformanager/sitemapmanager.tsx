@@ -60,7 +60,7 @@ const SitemapManager: NextPage<{
 		if (response.statusCode <= 300) {
 			notification.success({ message: "URL Saved" });
 		} else {
-			notification.error({ message: response?.data?.error });
+			notification.error({ message: response?.data?.message });
 		}
 		setLoading(false);
 		setModalVisibility(false);
