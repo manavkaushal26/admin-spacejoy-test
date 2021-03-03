@@ -69,11 +69,12 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 
 	const getCustomerRatings = async (): Promise<void> => {
 		const response = await fetcher({
-			endPoint: `/user-feedback/scope/project/${projectId}`,
+			endPoint: `/projects/${projectId}/userFeedback`,
 			method: "GET",
 		});
+
 		if (response.statusCode <= 300) {
-			setCustomerRatings(response.data);
+			setCustomerRatings(response?.data?.feedback);
 		}
 	};
 
