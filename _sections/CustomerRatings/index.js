@@ -12,7 +12,7 @@ export default function index({ data }) {
 			<Rating>
 				Customer Feedback -{" "}
 				<b>
-					{data.responses.length
+					{data?.responses?.length
 						? data.responses.map(item => {
 								return item?.answer.length ? item?.answer?.map(ans => <span key={ans}>&nbsp;{ans}&nbsp;,</span>) : null;
 						  })
