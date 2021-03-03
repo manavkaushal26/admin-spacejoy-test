@@ -72,7 +72,6 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 			endPoint: `/user-feedback/scope/project/${projectId}`,
 			method: "GET",
 		});
-		console.log(response);
 		if (response.statusCode <= 300) {
 			setCustomerRatings(response.data);
 		}
