@@ -13,7 +13,9 @@ export default function index({ data }) {
 				<b>
 					{data?.responses.length
 						? data.responses.map(item => {
-								return item?.answer.length ? item?.answer?.map(ans => <span key={ans}>&nbsp;{ans}&nbsp;,</span>) : null;
+								return item?.answer.length && typeof item?.answer === "object"
+									? item?.answer?.map(ans => <span key={ans}>&nbsp;{ans}&nbsp;,</span>)
+									: null;
 						  })
 						: null}
 				</b>
