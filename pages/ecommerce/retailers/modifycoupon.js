@@ -64,17 +64,17 @@ function ModifyRetailerCoupon({ retailerId }) {
 		try {
 			const response = await fetcher({ endPoint: `/v1/offer/${record?._id}`, method: "DEL" });
 			if (response.statusCode <= 300) {
-				notification.success({ message: "Deleted coupon" });
+				notification.success({ message: "Deleted offer" });
 			}
 		} catch (e) {
-			notification.error({ message: "Failed to Delete Coupon" });
+			notification.error({ message: "Failed to Delete Offer" });
 		}
 	};
 
 	return (
-		<PageLayout pageName='Coupon Manager'>
+		<PageLayout pageName='Brand Offers Manager'>
 			<Head>
-				<title>Coupon Manager | {company.product}</title>
+				<title>Brand Offers Manager | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
 			<MaxHeightDiv>

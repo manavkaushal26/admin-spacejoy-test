@@ -96,6 +96,16 @@ export default function EditCreateCoupon({
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
+					label='Discount Type'
+					name='discountType'
+					rules={[{ required: true, message: "Please select a value" }]}
+				>
+					<Select style={{ width: "100%" }}>
+						<Select.Option value='flat'>Flat</Select.Option>
+						<Select.Option value='percent'>Percent</Select.Option>
+					</Select>
+				</Form.Item>
+				<Form.Item
 					label='Min Amount Coupon can be applied for'
 					dependencies={[["constraints", "maxAmount"]]}
 					name={["constraints", "minAmount"]}
@@ -143,16 +153,6 @@ export default function EditCreateCoupon({
 				</Form.Item>
 				<Form.Item label='Coupon Validity' name='validity' rules={[{ required: true, message: "Please Enter value" }]}>
 					<RangePicker showTime allowEmpty={[false, true]} format='YYYY-MM-DD HH:mm' />
-				</Form.Item>
-				<Form.Item
-					label='Discount Type'
-					name='discountType'
-					rules={[{ required: true, message: "Please select a value" }]}
-				>
-					<Select style={{ width: "100%" }}>
-						<Select.Option value='flat'>Flat</Select.Option>
-						<Select.Option value='percent'>Percent</Select.Option>
-					</Select>
 				</Form.Item>
 
 				<Form.Item label='Status' name='isActive' rules={[{ required: true, message: "Please select a value" }]}>
