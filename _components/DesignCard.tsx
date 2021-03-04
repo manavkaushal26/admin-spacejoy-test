@@ -93,7 +93,7 @@ const DesignCard: React.FC<DesignCardProps> = ({
 				/>
 			);
 		}
-		if (onCopyAsDesignExampleClick && CopyDesignAsDesignExampleRoles.includes(role)) {
+		if (onCopyAsDesignExampleClick) {
 			listOfActions.push(
 				<CopyOutlined
 					key='copy'
