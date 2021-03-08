@@ -129,6 +129,13 @@ function pageRoute(app, router) {
 		});
 	});
 
+	router.get("/platformanager/sitemapmanager", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager/sitemapmanager", {
+			...query,
+		});
+	});
+
 	router.get("/platformanager", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager", {

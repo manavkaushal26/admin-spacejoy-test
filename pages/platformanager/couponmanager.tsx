@@ -31,6 +31,7 @@ const CouponManager: NextPage<{
 	const [createEditCouponVisible, setCreateEditCouponVisible] = useState<boolean>(false);
 	const [total, setTotal] = useState<number>(serverTotal || 0);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [isDuplicateActive, setIsDuplicateActive] = useState<boolean>(false);
 	const [pageNumber, setPageNumber] = useState<number>(1);
 	const [limit, setLimit] = useState<number>(10);
 
@@ -42,7 +43,7 @@ const CouponManager: NextPage<{
 	const fetchAndPopulateCoupons = async (): Promise<void> => {
 		setLoading(true);
 		const endPoint = `${getAllCoupons(searchKey.searchText !== "")}?limit=${limit}&skip=${(pageNumber - 1) * limit}${
-			searchKey.searchText !== "" ? `&keyword=${searchKey.searchedColumn}:${searchKey.searchText.trim()}` : ""
+			searchKey.searchText !== "" ? `&keyword=${searchKey.searchedColumn}:${searchKey?.searchText?.trim()}` : ""
 		}`;
 
 		try {
@@ -51,7 +52,7 @@ const CouponManager: NextPage<{
 				method: "GET",
 			});
 			if (response.statusCode <= "300") {
-				setCoupons(response.data.data.data || response.data);
+				setCoupons(response.data.data.data || response.data.data);
 				setTotal(response.data.data.count || response.data.length);
 			} else {
 				notification.error({ message: "Failed to fetch Coupons" });
@@ -78,9 +79,23 @@ const CouponManager: NextPage<{
 		toggleCreateEditCoupon();
 	};
 
+	const onDuplicateClick = couponData => {
+		const editedCouponData = { ...couponData, ...{ code: "" } };
+		setSelectedCoupon(editedCouponData);
+		setIsDuplicateActive(true);
+		toggleCreateEditCoupon();
+	};
+
+	useEffect(() => {
+		if (!createEditCouponVisible) {
+			setIsDuplicateActive(false);
+		}
+	}, [createEditCouponVisible]);
+
 	const onCouponValueChange = (newValue: BasicCoupon, isNewCoupon) => {
 		if (isNewCoupon) {
 			setCoupons([newValue, ...coupons]);
+			setIsDuplicateActive(false);
 		} else {
 			setCoupons(
 				coupons.map(coupon => {
@@ -363,9 +378,14 @@ const CouponManager: NextPage<{
 									width='300'
 									render={(_text, record): JSX.Element => {
 										return (
-											<Button type='link' onClick={() => onEditClick(record)}>
-												Edit
-											</Button>
+											<>
+												<Button type='link' onClick={() => onEditClick(record)}>
+													Edit
+												</Button>
+												<Button type='link' onClick={() => onDuplicateClick(record)}>
+													Duplicate
+												</Button>
+											</>
 										);
 									}}
 								/>
@@ -379,6 +399,7 @@ const CouponManager: NextPage<{
 				modifyCouponValue={onCouponValueChange}
 				toggleCreateEditCoupon={toggleCreateEditCoupon}
 				createEditCouponVisible={createEditCouponVisible}
+				isDuplicateActive={isDuplicateActive}
 			/>
 		</PageLayout>
 	);

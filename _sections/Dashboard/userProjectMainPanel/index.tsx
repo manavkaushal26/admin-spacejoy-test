@@ -6,6 +6,7 @@ import {
 	RevisionForm,
 	UserProjectType,
 } from "@customTypes/dashboardTypes";
+import CustomerRatings from "@sections/CustomerRatings";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
@@ -33,6 +34,7 @@ const userProjectMainPanel: React.FC<{
 	setDates: React.Dispatch<React.SetStateAction<Partial<DetailedProject>>>;
 	setSearchFiltersChanged: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
 	userStyleQuizResult?: React.ReactNode;
+	customerRatings: Partial<{}>;
 }> = ({
 	updateProjectPhaseInSidepanel,
 	userProjectId,
@@ -41,7 +43,8 @@ const userProjectMainPanel: React.FC<{
 	setDates,
 	currentTab,
 	setSearchFiltersChanged,
-	userStyleQuizResult
+	userStyleQuizResult,
+	customerRatings,
 }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -156,6 +159,7 @@ const userProjectMainPanel: React.FC<{
 								setProjectData={setProjectData}
 								fetchAndPopulateProjectData={fetchAndPopulateProjectData}
 							/>
+							<CustomerRatings data={customerRatings} />
 						</Col>
 						<Col span={24}>
 							<BasicDetails projectData={projectData} />
