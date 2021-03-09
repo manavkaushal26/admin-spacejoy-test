@@ -3,13 +3,13 @@ import Image from "@components/Image";
 import { DetailedDesign, RoomLabels, RoomType, RoomTypes } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
-import RoomUploads from "@sections/RoomUploads";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, Input, message, Pagination, Radio, Row, Select, Typography } from "antd";
 import { RadioChangeEvent } from "antd/lib/radio";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+
 const { Option } = Select;
 const { Text } = Typography;
 
@@ -73,7 +73,6 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 	const [pageNo, setPageNo] = useState<number>(1);
 	const [noOfRooms, setNoOfRooms] = useState<number>(0);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [createRoomModalVisible, setCreateRoomModalVisible] = useState<boolean>();
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 		const {
 			target: { value },
@@ -147,123 +146,101 @@ const CreateDesignModal: React.FC<CreateDesignModal> = ({
 		setSelectedRoomId(value);
 	};
 
-	const toggleRoomModal = (id): void => {
-		setCreateRoomModalVisible(!createRoomModalVisible);
-		if (id) setSelectedRoomId(id);
-	};
-
 	return (
-		<>
-			<SizeAdjustedModal
-				destroyOnClose
-				visible={createDesignModalVisible}
-				title='Create Design'
-				onCancel={toggleModal}
-				footer={
-					<Footer
-						roomName={roomName}
-						selectedRoomId={selectedRoomId}
-						toggleModal={toggleModal}
-						onSubmit={onSubmit}
-						loading={loading}
-					/>
-				}
-			>
-				<Row gutter={[16, 16]}>
-					<Col md={12}>
-						<Row>
-							<Col span={24}>
-								<Text>Design Name</Text>
-							</Col>
-							<Col span={24}>
-								<Input value={roomName} placeholder='Design Name' onChange={onChange} />
-							</Col>
-						</Row>
-					</Col>
-					<Col md={12}>
-						<Row>
-							<Col span={224}>
-								<Text>Room Type</Text>
-							</Col>
-							<Col span={24}>
-								<Select style={{ width: "100%" }} onChange={onSelect} value={roomType}>
-									{Object.keys(RoomTypes).map(key => {
-										return (
-											<Option key={key} value={RoomTypes[key]}>
-												{RoomLabels[key]}
-											</Option>
-										);
-									})}
-								</Select>
-							</Col>
-						</Row>
-					</Col>
-					<Col md={24}>
-						<Row>
-							<Col span={12}>
-								<Text>Room Layout</Text>
-							</Col>
-							<Col span={12}>
-								<Button style={{ float: "right" }} type='primary' onClick={toggleRoomModal}>
-									Create New Room
-								</Button>
-							</Col>
-							<br></br>
-							<br></br>
-							<Col span={24}>
-								<Radio.Group onChange={handleRadio}>
-									<Row gutter={[16, 16]}>
-										<Col span={24}>
-											<Row gutter={[8, 8]}>
-												{roomData.map(room => {
-													return (
-														<Col key={room._id} sm={12} md={8} lg={6}>
-															<StyledRadio style={{ width: "100%" }} value={room._id}>
-																<Card cover={<Image src={`w_300/${getValueSafely(() => room.coverImageCdn, "")}`} />}>
-																	<Row>
-																		<Col span={24}>
-																			<Text style={{ width: "100%" }} ellipsis>
-																				{room.name}
-																			</Text>
-																		</Col>
-																		<Col span={24}>
-																			<small>{room.roomType}</small>
-																		</Col>
-																	</Row>
-																	<Button onClick={() => toggleRoomModal(room?._id)}>Edit</Button>
-																</Card>
-															</StyledRadio>
-														</Col>
-													);
-												})}
-											</Row>
-										</Col>
-									</Row>
-								</Radio.Group>
-							</Col>
-						</Row>
-					</Col>
-					<Col span={24}>
-						<Row justify='center'>
-							<Pagination
-								hideOnSinglePage
-								onChange={(number): void => setPageNo(number)}
-								total={noOfRooms}
-								pageSize={12}
-								current={pageNo}
-							/>
-						</Row>
-					</Col>
-				</Row>
-			</SizeAdjustedModal>
-			<RoomUploads
-				createRoomModalVisible={createRoomModalVisible}
-				setCreateRoomModalVisible={setCreateRoomModalVisible}
-				roomType={roomType}
-				fetchRoomData={fetchRoomData}
-				roomData={roomData.filter(item => item?._id === selectedRoomId)?.[0] || {}}
-			></RoomUploads>
-		</>
+		<SizeAdjustedModal
+			destroyOnClose
+			visible={createDesignModalVisible}
+			title='Create Design'
+			onCancel={toggleModal}
+			footer={
+				<Footer
+					roomName={roomName}
+					selectedRoomId={selectedRoomId}
+					toggleModal={toggleModal}
+					onSubmit={onSubmit}
+					loading={loading}
+				/>
+			}
+		>
+			<Row gutter={[16, 16]}>
+				<Col md={12}>
+					<Row>
+						<Col span={24}>
+							<Text>Design Name</Text>
+						</Col>
+						<Col span={24}>
+							<Input value={roomName} placeholder='Design Name' onChange={onChange} />
+						</Col>
+					</Row>
+				</Col>
+				<Col md={12}>
+					<Row>
+						<Col span={224}>
+							<Text>Room Type</Text>
+						</Col>
+						<Col span={24}>
+							<Select style={{ width: "100%" }} onChange={onSelect} value={roomType}>
+								{Object.keys(RoomTypes).map(key => {
+									return (
+										<Option key={key} value={RoomTypes[key]}>
+											{RoomLabels[key]}
+										</Option>
+									);
+								})}
+							</Select>
+						</Col>
+					</Row>
+				</Col>
+				<Col md={24}>
+					<Row>
+						<Col span={24}>
+							<Text>Room Layout</Text>
+						</Col>
+						<Col span={24}>
+							<Radio.Group onChange={handleRadio}>
+								<Row gutter={[16, 16]}>
+									<Col span={24}>
+										<Row gutter={[8, 8]}>
+											{roomData.map(room => {
+												return (
+													<Col key={room._id} sm={12} md={8} lg={6}>
+														<StyledRadio style={{ width: "100%" }} value={room._id}>
+															<Card cover={<Image src={`w_300/${getValueSafely(() => room.coverImageCdn, "")}`} />}>
+																<Row>
+																	<Col span={24}>
+																		<Text style={{ width: "100%" }} ellipsis>
+																			{room.name}
+																		</Text>
+																	</Col>
+																	<Col span={24}>
+																		<small>{room.roomType}</small>
+																	</Col>
+																</Row>
+															</Card>
+														</StyledRadio>
+													</Col>
+												);
+											})}
+										</Row>
+									</Col>
+								</Row>
+							</Radio.Group>
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
+					<Row justify='center'>
+						<Pagination
+							hideOnSinglePage
+							onChange={(number): void => setPageNo(number)}
+							total={noOfRooms}
+							pageSize={12}
+							current={pageNo}
+						/>
+					</Row>
+				</Col>
+			</Row>
+		</SizeAdjustedModal>
 	);
 };
 
