@@ -22,6 +22,11 @@ function pageRoute(app, router) {
 		app.render(req, res, "/designexamples", params);
 	});
 
+	router.get("/roomupload", TokenCheckMiddleware, (req, res) => {
+		const { params } = req;
+		app.render(req, res, "/roomupload", params);
+	});
+
 	// *************************************************************************************************************************
 
 	// ******************************************************* DASHBOARD *******************************************************
