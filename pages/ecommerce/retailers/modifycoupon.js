@@ -62,13 +62,14 @@ function ModifyRetailerCoupon({ retailerId }) {
 
 	const onDeleteClick = async record => {
 		try {
-			const response = await fetcher({ endPoint: `/v1/offer/${record?._id}`, method: "DEL" });
+			const response = await fetcher({ endPoint: `/v1/offer/${record?._id}`, method: "DELETE" });
 			if (response.statusCode <= 300) {
 				notification.success({ message: "Deleted offer" });
 			}
 		} catch (e) {
 			notification.error({ message: "Failed to Delete Offer" });
 		}
+		getCoupons();
 	};
 
 	return (
