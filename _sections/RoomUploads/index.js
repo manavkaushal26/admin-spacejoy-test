@@ -127,7 +127,7 @@ export default function index({
 			zIndex={9999}
 			footer={[
 				<Button type='primary' onClick={isEditMode ? handleUpload : handleSave} key='button-save'>
-					Create
+					{isEditMode ? "Save" : "Create"}
 				</Button>,
 			]}
 			onCancel={() => setCreateRoomModalVisible(false)}
