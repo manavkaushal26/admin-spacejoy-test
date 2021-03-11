@@ -155,9 +155,9 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 							apiKey='nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq'
 							onEditorChange={(body): void => onEditorChange(body)}
 							init={{
-								menubar: "file edit insert view format table tools help",
-								toolbar:
-									" undo redo | pagebreak | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent ",
+								plugins: ["link", "lists", "anchor", "autolink"],
+								menubar: false,
+								toolbar: " bold italic | bullist numlist | link ",
 								br_in_pre: false,
 							}}
 						/>
