@@ -99,9 +99,9 @@ export default function index({
 	};
 
 	const refreshData = () => {
-		fetchRoomData();
 		setLoader(false);
 		setCreateRoomModalVisible(false);
+		fetchRoomData();
 	};
 
 	const flushLocalData = () => {
