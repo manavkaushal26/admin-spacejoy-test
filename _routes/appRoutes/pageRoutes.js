@@ -180,6 +180,14 @@ function pageRoute(app, router) {
 		});
 	});
 
+	router.get("/ecommerce/retailers/modifycoupon", TokenCheckMiddleware, (req, res) => {
+		const { query, params } = req;
+		app.render(req, res, "/ecommerce/retailers/modifycoupon", {
+			...query,
+			...params,
+		});
+	});
+
 	router.get("/ecommerce", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/ecommerce", {

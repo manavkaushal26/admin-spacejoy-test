@@ -3,10 +3,12 @@ import { getDesignMapping, getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import CommentsList from "@sections/Ecommerce/OrderTracking/CommentsList";
+import OrderCouponTable from "@sections/Ecommerce/OrderTracking/OrderCouponTable";
 import OrderEditDrawer from "@sections/Ecommerce/OrderTracking/OrderEditDrawer";
 import OrderEmailModal from "@sections/Ecommerce/OrderTracking/OrderEmailModal";
 import OrderItemDrawer from "@sections/Ecommerce/OrderTracking/OrderItemDrawer";
 import OrderItemTable from "@sections/Ecommerce/OrderTracking/OrderItemTable";
+import OrderOfferTable from "@sections/Ecommerce/OrderTracking/OrderOfferTable";
 import PaymentsDrawer from "@sections/Ecommerce/OrderTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
@@ -39,7 +41,8 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	const [editOrder, setEditOrder] = useState<boolean>(false);
 	const [paymentDrawerOpen, setPaymentDrawerOpen] = useState<boolean>(false);
 	const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
-
+	const [orderCoupons, setOrderCoupons] = useState<[]>([]);
+	const [orderOffers, setOrderOffers] = useState<[]>([]);
 	const { scrapedData, error: scrapingError, scraping, triggerScraping } = useScraper(
 		orderId,
 		order?.orderItems.map(item => item?.product?._id)
@@ -85,6 +88,30 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 			notification.error({ message: "Failed to fetch order" });
 		}
 		setLoading(false);
+	};
+
+	const fetchOrderOffers = async () => {
+		const response = await fetcher({
+			endPoint: `/v1/orders/${orderId}/orderOffers`,
+			method: "GET",
+		});
+		if (response.statusCode <= 300) {
+			setOrderOffers(response?.data);
+		} else {
+			throw new Error();
+		}
+	};
+
+	const fetchOrderCoupons = async () => {
+		const response = await fetcher({
+			endPoint: `/v1/orders/${orderId}/orderCoupons`,
+			method: "GET",
+		});
+		if (response.statusCode <= 300) {
+			setOrderCoupons(response?.data);
+		} else {
+			throw new Error();
+		}
 	};
 
 	const toggleOrderItemDrawer = (orderItemToSet?: OrderItems) => {
@@ -153,7 +180,11 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	};
 
 	useEffect(() => {
-		if (!orderData) fetchAndPopulateOrder();
+		if (!orderData) {
+			fetchAndPopulateOrder();
+		}
+		fetchOrderOffers();
+		fetchOrderCoupons();
 	}, []);
 
 	const goBack = () => {
@@ -269,7 +300,7 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	const prefix = useMemo(() => {
 		return order?.originalOrder && order?.originalOrder?.amount !== order?.amount ? "Current " : "";
 	}, [order?.originalOrder, order?.amount]);
-
+	console.log(orderCoupons, orderOffers);
 	return (
 		<PageLayout pageName='Order Tracking'>
 			<Head>
@@ -423,6 +454,12 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 							</Col>
 							<Col span={24}>
 								<CommentsList type='Order' id={order?._id} />
+							</Col>
+							<Col span={24}>
+								<OrderCouponTable data={orderCoupons} />
+							</Col>
+							<Col span={24}>
+								<OrderOfferTable data={orderOffers} />
 							</Col>
 							<Col>
 								<Row gutter={[8, 8]} align='top'>
