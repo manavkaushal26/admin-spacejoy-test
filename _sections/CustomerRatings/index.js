@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 export default function index({ data }) {
 	const Rating = styled.div`
-		text-transform: uppercase;
+		text-transform: capitalize;
 		padding: 15px 10px;
 		background: #c6d1d8;
 	`;
