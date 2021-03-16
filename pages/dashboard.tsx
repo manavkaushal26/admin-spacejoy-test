@@ -78,9 +78,12 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 		}
 	};
 
+	useEffect(() => {
+		getCustomerRatings();
+	}, [projectId]);
+
 	const handleSelectCard = (user: string): void => {
 		setSelectedUser(user);
-		getCustomerRatings();
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
 	const setCurrentUserId = (user: string): void => {
