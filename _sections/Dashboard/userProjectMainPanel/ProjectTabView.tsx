@@ -72,7 +72,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	const [designLoading, setDesignLoading] = useState<boolean>(false);
 	const [editModalVisible, setEditModalVisible] = useState<boolean>(false);
 	const [activeTab, setActiveTab] = useState<string>("pipeline");
-
+	const [customerRatings, setCustomerRatings] = useState(null);
 	const setProjectPhase = (projectPhase: {
 		internalName: PhaseInternalNames;
 		customerName: PhaseCustomerNames;
@@ -203,6 +203,21 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 		},
 		[designData]
 	);
+
+	const getCustomerRatings = async (): Promise<void> => {
+		const response = await fetcher({
+			endPoint: `/projects/${id}/userFeedback`,
+			method: "GET",
+		});
+
+		if (response.statusCode <= 300) {
+			setCustomerRatings(response?.data?.feedback);
+		}
+	};
+
+	useEffect(() => {
+		getCustomerRatings();
+	}, [id]);
 
 	const feedback = getValueSafely(
 		() =>
@@ -352,6 +367,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							projectData={projectData}
 							onSelectDesign={onSelectDesign}
 							userStyleQuizResult={userStyleQuizResult}
+							customerRatings={customerRatings}
 						/>
 					)}
 				</Spin>

@@ -8,14 +8,21 @@ export default function index({ data }) {
 	return data?.responses.length ? (
 		<div>
 			<Rating>
-				<b>Customer Feedback - </b>
 				<span>
 					{data?.responses.length
 						? data.responses.map(item => {
 								return item?.answer.length && typeof item?.answer === "object" ? (
-									item?.answer?.map(ans => <span key={ans}>&nbsp;{ans}&nbsp;,</span>)
+									<div>
+										<b>{item?.question?.label || ""}</b>
+										<br></br>
+										{item?.answer?.map(ans => (
+											<span key={ans}>&nbsp;{ans}&nbsp;</span>
+										))}
+									</div>
 								) : (
 									<span>
+										<br></br>
+										<b>{`${item?.question?.label}?` || ""}</b>
 										<br></br>
 										{item?.answer || ""}
 									</span>
