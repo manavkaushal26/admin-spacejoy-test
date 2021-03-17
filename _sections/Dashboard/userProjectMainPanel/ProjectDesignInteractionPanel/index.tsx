@@ -34,7 +34,6 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	customerRatings,
 }) => {
 	const { id: projectId, designs, customer } = projectData;
-	console.log("customerRatings", customerRatings);
 	return (
 		<Tabs>
 			<Tabs.TabPane tab='Designs' key='designSelection'>
