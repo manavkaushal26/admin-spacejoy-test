@@ -74,7 +74,7 @@ interface CategoryMap {
 
 const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, retailLink, entry }) => {
 	const [loading, setLoading] = useState(false);
-	const [state, setState] = useState<Partial<AssetType>>({});
+	const [state, setState] = useState<Partial<AssetType>>({ status: Status.pending });
 	const [metadata, setMetadata] = useState<MetaDataType>();
 	const [model3dFiles, setModel3dFiles] = useState<Model3DFiles>(Model3DFiles.Glb);
 	const [changedState, setChangedState] = useState<Record<string, any>>({});
@@ -690,12 +690,19 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	};
 
-	const onPriceChange = value => {
-		if (!value) {
+	const onPriceChange = () => {
+		if (!changedState?.price) {
+			setChangedState(() => {
+				return { ...changedState, shoppable: false, status: "pending" };
+			});
 			form.setFieldsValue({ shoppable: false });
 			notification.info({ message: "Item has been marked as not shoppable" });
 		}
 	};
+
+	useEffect(() => {
+		onPriceChange();
+	}, [changedState?.price]);
 
 	const mountAndClampValueAdjustment = verticalId => {
 		if (verticalId) {
@@ -773,10 +780,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															name='price'
 															label='Price (USD)'
 															rules={[{ required: true, type: "number", min: 0 }]}
-															normalize={value => {
-																onPriceChange(value);
-																return value;
-															}}
 														>
 															<InputNumber style={{ width: "100%" }} />
 														</Form.Item>
