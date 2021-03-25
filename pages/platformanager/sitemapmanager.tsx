@@ -43,9 +43,9 @@ const SitemapManager: NextPage<{
 		setLoading(false);
 	};
 
-	const deleteUrl = async (id): Promise<void> => {
+	const deleteUrl = async (el): Promise<void> => {
 		setLoading(true);
-		const response = await fetcher({ endPoint: `${endPoint}/${id}`, method: "DELETE" });
+		const response = await fetcher({ endPoint: `${endPoint}/${el?._id}`, method: "DELETE" });
 		getSitemapUrls();
 		setLoading(false);
 	};
@@ -107,8 +107,8 @@ const SitemapManager: NextPage<{
 								key='id'
 								title=''
 								dataIndex='text'
-								render={record => {
-									return <Button onClick={() => deleteUrl(record?._id)}>Delete</Button>;
+								render={(_, record) => {
+									return <Button onClick={() => deleteUrl(record)}>Delete</Button>;
 								}}
 							/>
 						</Table>

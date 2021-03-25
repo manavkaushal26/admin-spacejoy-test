@@ -3,6 +3,7 @@ import { DetailedProject, RevisionForm } from "@customTypes/dashboardTypes";
 import ChatWrapper from "@sections/AdminChatInterface/ChatOverView";
 import CartDetails from "@sections/CartShoppingInterface/CartDetails";
 import ShoppingDetails from "@sections/CartShoppingInterface/ShoppingDetails";
+import CustomerRatings from "@sections/CustomerRatings";
 import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
 import { PaddedDiv } from "@sections/Header/styled";
 import { Tabs } from "antd";
@@ -19,6 +20,7 @@ interface ProjectDesignInteractionPanel {
 	revisionFormData: RevisionForm;
 	updateRevisionData: (revisionForm: RevisionForm) => void;
 	userStyleQuizResult?: React.ReactNode;
+	customerRatings: Partial<{}>;
 }
 
 const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = ({
@@ -29,6 +31,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	revisionFormData,
 	updateRevisionData,
 	userStyleQuizResult,
+	customerRatings,
 }) => {
 	const { id: projectId, designs, customer } = projectData;
 	return (
@@ -81,6 +84,9 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 			</Tabs.TabPane>
 			<Tabs.TabPane tab='Shopping Data' key='shopping-data'>
 				<ShoppingDetails id={customer?.email}></ShoppingDetails>
+			</Tabs.TabPane>
+			<Tabs.TabPane tab='Customer Ratings' key='customer-rating'>
+				<CustomerRatings data={customerRatings}></CustomerRatings>
 			</Tabs.TabPane>
 		</Tabs>
 	);
