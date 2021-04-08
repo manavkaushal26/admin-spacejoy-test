@@ -494,6 +494,7 @@ export enum RoomTypes {
 	Playroom = "playroom",
 	Tablescape = "tablescape",
 	OpenLivingDining = "open living and dining room",
+	BalconyPatioYard = "balcony-patio-yard",
 }
 
 export enum RoomLabels {
@@ -511,6 +512,7 @@ export enum RoomLabels {
 	House = "House",
 	Tablescape = "Tablescape",
 	OpenLivingDining = "Open Living and Dining Room",
+	BalconyPatioYard = "Balcony-Patio-Yard",
 }
 
 export const RoomNameSearch = [
