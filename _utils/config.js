@@ -8,6 +8,7 @@ const page = {
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
 	googleAPIKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
 	googleClientId: "628064588100-islor8kv96kol2rjrocarhqs4d604vec.apps.googleusercontent.com",
+	tinyMceApiKey: "nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq",
 	ga: "UA-145327802-1",
 	gtm: "GTM-WC4HSB6",
 	optimize: "GTM-KKZ3VGJ",

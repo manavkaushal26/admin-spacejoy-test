@@ -9,6 +9,7 @@ import { MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus, Status } from "@customTypes/userType";
 import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import DesignFooter from "@sections/Dashboard/userProjectMainPanel/DesignFooter.js";
+import { Editor } from "@tinymce/tinymce-react";
 import { getBase64, getValueSafely } from "@utils/commonUtils";
 import { cloudinary, company, cookieNames, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
@@ -119,7 +120,6 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 		const {
 			target: { name, value },
 		} = e;
-
 		setCollectionData({
 			...collectionData,
 			[name]: value,
@@ -474,6 +474,25 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 										</Select.Option>
 									))}
 								</Select>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text strong>SEO text</Text>
+							</Col>
+							<Col span={24}>
+								<Editor
+									apiKey={page.tinyMceApiKey}
+									onEditorChange={(body): void => onChange({ target: { name: "body", value: body } })}
+									init={{
+										plugins: ["link", "lists", "anchor", "autolink"],
+										menubar: false,
+										toolbar: " bold italic | formatselect | removeformat | bullist numlist | link ",
+										br_in_pre: false,
+									}}
+								/>
 							</Col>
 						</Row>
 					</Col>

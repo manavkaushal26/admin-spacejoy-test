@@ -1,5 +1,6 @@
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { Editor } from "@tinymce/tinymce-react";
+import { page } from "@utils/config";
 import { useRouter } from "next/router";
 import React from "react";
 import { AuthorPlatformProps } from "..";
@@ -16,7 +17,7 @@ const TinyMCEEditor: React.FC<AuthorPlatformProps> = ({ state, dispatch }) => {
 		<MaxHeightDiv>
 			<Editor
 				value={state.activeBlog.body}
-				apiKey='nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq'
+				apiKey={page.tinyMceApiKey}
 				init={{
 					menubar: "file edit insert view format table tools help",
 					toolbar:

@@ -2,7 +2,7 @@ import { LinkOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { editDesignApi, getThemes } from "@api/designApi";
 import { DetailedDesign, KeywordInterface, RoomLabels, RoomTypes, ThemeInterface } from "@customTypes/dashboardTypes";
 import { Editor } from "@tinymce/tinymce-react";
-import { company } from "@utils/config";
+import { company, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Col, DatePicker, Form, Input, notification, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
@@ -16,7 +16,7 @@ interface DesignDetails {
 
 const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, setDesignLoading }) => {
 	const [themes, setThemes] = useState<ThemeInterface[]>([]);
-	const [richSeoHtml, setRichSeoHtml] = useState<String>();
+	const [richSeoHtml, setRichSeoHtml] = useState<string>();
 	const [roomType, setRoomType] = useState<RoomTypes>(RoomTypes.LivingRoom);
 	const [seoKeywords, setSeoKeywords] = useState<KeywordInterface[]>([]);
 	const [form] = useForm();
@@ -152,7 +152,7 @@ const DesignDetails: React.FC<DesignDetails> = ({ designData, setDesignData, set
 				<Col span={24}>
 					<Form.Item label='Seo rich text' name='body'>
 						<Editor
-							apiKey='nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq'
+							apiKey={page.tinyMceApiKey}
 							onEditorChange={(body): void => onEditorChange(body)}
 							init={{
 								plugins: ["link", "lists", "anchor", "autolink"],
