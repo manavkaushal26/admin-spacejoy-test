@@ -244,7 +244,6 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	}, [data]);
 
 	const CardRow = ({ index, style }): JSX.Element => {
-		console.log(index);
 		if (isItemLoaded(index)) {
 			return (
 				<div style={style}>

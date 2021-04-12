@@ -495,6 +495,7 @@ export enum RoomTypes {
 	Tablescape = "tablescape",
 	OpenLivingDining = "open living and dining room",
 	BalconyPatioYard = "balcony-patio-yard",
+	Outdoor = "outdoor",
 }
 
 export enum RoomLabels {
@@ -513,6 +514,7 @@ export enum RoomLabels {
 	Tablescape = "Tablescape",
 	OpenLivingDining = "Open Living and Dining Room",
 	BalconyPatioYard = "Balcony-Patio-Yard",
+	Outdoor = "Outdoor",
 }
 
 export const RoomNameSearch = [
@@ -526,6 +528,8 @@ export const RoomNameSearch = [
 	"Study Room",
 	"Bedroom",
 	"Tablescape",
+	"Balcony-Patio-Yard",
+	"Outdoor",
 ];
 
 export enum RenderImgUploadTypes {
