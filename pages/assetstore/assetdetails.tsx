@@ -643,9 +643,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 					},
 			  };
 
-		if (!("status" in changedState && assetFile.length === 0)) {
+		if (!("status" in changedState || assetFile.length !== 0)) {
 			changedState.status = Status.pending;
 		}
+
 		const changedStateToSend = {
 			...changedState,
 		};
