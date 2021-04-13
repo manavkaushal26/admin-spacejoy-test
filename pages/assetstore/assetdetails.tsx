@@ -4,7 +4,7 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import { assetCreateOrUpdationApi, markMissingAssetAsComplete, uploadProductImagesApi } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
@@ -40,7 +40,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload,
+	Upload
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -643,9 +643,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 					},
 			  };
 
-		if (!("status" in changedState && assetFile.length === 0)) {
+		if (!("status" in changedState || assetFile.length !== 0)) {
 			changedState.status = Status.pending;
 		}
+
 		const changedStateToSend = {
 			...changedState,
 		};
