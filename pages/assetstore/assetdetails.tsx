@@ -4,7 +4,7 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined
+	UploadOutlined,
 } from "@ant-design/icons";
 import { assetCreateOrUpdationApi, markMissingAssetAsComplete, uploadProductImagesApi } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
@@ -40,7 +40,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload
+	Upload,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -238,7 +238,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 							},
 						]);
 					} else {
-						setAssetFile(null);
+						setAssetFile([]);
 					}
 				} else if (model3dFiles === Model3DFiles.Obj) {
 					if (legacyObj) {
@@ -254,7 +254,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 							},
 						]);
 					} else {
-						setAssetFile(null);
+						setAssetFile([]);
 					}
 				}
 				if (source) {
@@ -717,10 +717,24 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 						"spatialData.clampValue": 1,
 						...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
 					});
+					setChangedState({
+						...changedState,
+						...{
+							"spatialData.clampValue": 1,
+							...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
+						},
+					});
 				} else {
 					form.setFieldsValue({
 						"spatialData.clampValue": -1,
 						...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
+					});
+					setChangedState({
+						...changedState,
+						...{
+							"spatialData.clampValue": -1,
+							...(mountAndClampValue.mountValue ? { "spatialData.mountType": mountAndClampValue.mountValue } : {}),
+						},
 					});
 				}
 				notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
@@ -728,10 +742,22 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				form.setFieldsValue({
 					"spatialData.clampValue": -1,
 				});
+				setChangedState({
+					...changedState,
+					...{
+						"spatialData.clampValue": -1,
+					},
+				});
 				notification.info({ message: "Mount type has changed since the vertical was changed", key: "mountType" });
 			}
 		}
 	};
+
+	useEffect(() => {
+		if ("meta.vertical" in changedState) {
+			mountAndClampValueAdjustment(changedState["meta.vertical"]);
+		}
+	}, [changedState["meta.vertical"]]);
 
 	const onBackClick = () => {
 		if (entry) {
@@ -902,11 +928,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	name={["meta.vertical"]}
 																	label='Vertical'
 																	rules={[{ required: true }]}
-																	normalize={value => {
-																		mountAndClampValueAdjustment(value);
-
-																		return value;
-																	}}
 																>
 																	<Select
 																		disabled={!getFieldValue(["meta.subcategory"])}
