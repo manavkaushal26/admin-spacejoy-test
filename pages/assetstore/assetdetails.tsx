@@ -204,7 +204,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 							status: "done",
 							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
 							size: 0,
-							type: "application/octet-stream",
+							type: "image/*",
 						};
 					})
 				);
@@ -699,6 +699,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			form.setFieldsValue({ shoppable: false });
 			setChangedState({ ...changedState, shoppable: false });
 			notification.info({ message: "Item has been marked as not shoppable" });
+		} else {
+			form.setFieldsValue({ shoppable: true });
+			setChangedState({ ...changedState, shoppable: true });
+			notification.info({ message: "Item has been marked as shoppable" });
 		}
 	};
 

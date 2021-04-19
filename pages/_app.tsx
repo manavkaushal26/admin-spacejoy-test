@@ -78,7 +78,7 @@ export default class MyApp extends App {
 	componentDidMount(): void {
 		Router.router.events.on("routeChangeStart", () => this.setState({ loading: true }));
 		Router.router.events.on("routeChangeComplete", () => this.setState({ loading: false }));
-		moment.tz.setDefault("utc");
+		moment.tz.setDefault("America/Los_Angeles");
 	}
 
 	render(): JSX.Element {
