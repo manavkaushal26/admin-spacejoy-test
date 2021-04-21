@@ -771,6 +771,30 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	};
 
+	const deleteFileFromAsset = async (type: Model3DFiles | "source" | "sourceHighPoly") => {
+		const endPoint = uploadAssetModelApi(state._id, type);
+		const response = await fetcher({ endPoint, method: "DELETE", hasBaseURL: true });
+		if (response.statusCode <= 300) {
+			if (type === "source") {
+				setSourceFileList([]);
+			} else if (type === "sourceHighPoly") {
+				setSourceHighPolyFileList([]);
+			} else {
+				setAssetFile([]);
+			}
+		}
+	};
+
+	const onDeleteFileClick = (type: Model3DFiles | "source" | "sourceHighPoly") => {
+		Modal.confirm({
+			title: "Are you sure?",
+			okButtonProps: { danger: true },
+			onOk: () => {
+				deleteFileFromAsset(type);
+			},
+		});
+	};
+
 	return (
 		<PageLayout pageName='Asset Editing'>
 			<Head>
@@ -1173,7 +1197,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															name='file'
 															fileList={assetFile}
 															action={uploadModelEndpoint}
-															onRemove={(): false => false}
+															onRemove={(): void => onDeleteFileClick(model3dFiles)}
 															onChange={(info): Promise<void> => handleOnFileUploadChange("model", info)}
 															headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 															accept={ModelToExtensionMap[model3dFiles]}
@@ -1196,7 +1220,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															name='file'
 															fileList={sourceFileList}
 															action={uploadModelSourceEndpoint}
-															onRemove={(): false => false}
+															onRemove={(): void => onDeleteFileClick("source")}
 															onChange={(info): Promise<void> => handleOnFileUploadChange("source", info)}
 															headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 															accept='.blend'
@@ -1219,7 +1243,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															name='file'
 															fileList={sourceHighPolyFileList}
 															action={uploadModelHighPolySouceEndpoint}
-															onRemove={(): false => false}
+															onRemove={(): void => onDeleteFileClick("sourceHighPoly")}
 															onChange={(info): Promise<void> => handleOnFileUploadChange("sourceHighPoly", info)}
 															headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
 															accept='.blend'
