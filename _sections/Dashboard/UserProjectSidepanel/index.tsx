@@ -291,7 +291,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 									<Button onClick={toggleDrawer}>Cancel</Button>
 								</Col>
 								<Col>
-									<Button type='primary' onClick={onSearchSubmit}>
+									<Button type='primary' onClick={onSearchSubmit} disabled={loading} loading={loading}>
 										Submit
 									</Button>
 								</Col>
