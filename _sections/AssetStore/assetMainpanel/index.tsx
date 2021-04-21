@@ -308,9 +308,15 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 
 		return actionButtons;
 	};
+	const parentRef = useRef(null);
+	useEffect(() => {
+		if (parentRef !== undefined && parentRef.current !== undefined) {
+			parentRef.current.scrollIntoView();
+		}
+	}, [parentRef, assetData]);
 
 	return (
-		<Row gutter={[12, 12]}>
+		<Row gutter={[12, 12]} ref={parentRef}>
 			{projectId && (
 				<>
 					<Col span={24}>
