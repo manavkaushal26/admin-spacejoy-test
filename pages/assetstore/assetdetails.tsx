@@ -4,7 +4,7 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import { assetCreateOrUpdationApi, markMissingAssetAsComplete, uploadProductImagesApi } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
@@ -40,7 +40,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload,
+	Upload
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -696,13 +696,17 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 
 	const onPriceChange = value => {
 		if (!value) {
-			form.setFieldsValue({ shoppable: false });
-			setChangedState({ ...changedState, shoppable: false });
-			notification.info({ message: "Item has been marked as not shoppable" });
+			if (changedState.shoppable !== false) {
+				form.setFieldsValue({ shoppable: false });
+				setChangedState({ ...changedState, shoppable: false });
+				notification.info({ message: "Item has been marked as not shoppable" });
+			}
 		} else {
-			form.setFieldsValue({ shoppable: true });
-			setChangedState({ ...changedState, shoppable: true });
-			notification.info({ message: "Item has been marked as shoppable" });
+			if (changedState.shoppable !== true) {
+				form.setFieldsValue({ shoppable: true });
+				setChangedState({ ...changedState, shoppable: true });
+				notification.info({ message: "Item has been marked as shoppable" });
+			}
 		}
 	};
 
