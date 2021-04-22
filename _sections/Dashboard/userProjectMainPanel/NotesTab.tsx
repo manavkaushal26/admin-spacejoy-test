@@ -8,7 +8,7 @@ import { getLocalStorageValue } from "@utils/storageUtils";
 import { Avatar, Button, Card, Comment, Form, List, message, Row } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import parse from "html-react-parser";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { CustomDiv } from "../styled";
 
@@ -107,7 +107,7 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 
 	return (
 		designData && (
-			<CustomDiv px="10px" py="10px">
+			<CustomDiv px='10px' py='10px'>
 				<Comment
 					avatar={
 						<Avatar>
@@ -120,8 +120,8 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 								<TextArea rows={4} onChange={onNewNote} value={newNote} />
 							</Form.Item>
 							<Form.Item>
-								<Row justify="end">
-									<Button type="primary" onClick={addNote}>
+								<Row justify='end'>
+									<Button type='primary' onClick={addNote}>
 										Add Comment
 									</Button>
 								</Row>
@@ -137,12 +137,12 @@ const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 								avatar={<Avatar>{getValueSafely(() => note.author.profile.name[0], "")}</Avatar>}
 								datetime={moment(dateFromObjectId(note._id)).fromNow()}
 								author={getValueSafely(() => note.author.profile.name, "")}
-								content={<Card size="small">{parse(stringToUrl(note.text))}</Card>}
+								content={<Card size='small'>{parse(stringToUrl(note.text))}</Card>}
 								actions={[
 									<Button
 										style={{ padding: 0 }}
-										key="delete"
-										type="link"
+										key='delete'
+										type='link'
 										danger
 										onClick={(): Promise<void> => deleteNote(note._id)}
 									>

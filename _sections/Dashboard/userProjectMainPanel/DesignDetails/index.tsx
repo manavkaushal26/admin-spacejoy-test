@@ -6,7 +6,7 @@ import { company, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Col, DatePicker, Form, Input, notification, Row, Select } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 interface DesignDetails {
 	designData: Partial<DetailedDesign>;

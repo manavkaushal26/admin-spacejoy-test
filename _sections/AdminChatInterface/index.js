@@ -7,7 +7,7 @@ import useAuth from "@utils/authContext";
 import chatFetcher from "@utils/chatFetcher";
 import fetcher from "@utils/fetcher";
 import { Input, Modal, notification, Spin, Upload } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 

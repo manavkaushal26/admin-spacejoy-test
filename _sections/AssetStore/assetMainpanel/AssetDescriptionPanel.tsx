@@ -23,7 +23,7 @@ import PriceData from "@utils/componentUtils/AssetPrice";
 import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import { Button, Col, message, notification, Popconfirm, Result, Row, Skeleton, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";

@@ -338,7 +338,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							status: "done",
 							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
 							size: 0,
-							type: "application/octet-stream",
+							type: "image/*",
 						};
 					})
 				);
@@ -350,7 +350,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						status: "done",
 						url: `${cloudinary.baseDeliveryURL}/image/upload/${state.cdn}`,
 						size: 0,
-						type: "application/octet-stream",
+						type: "image/*",
 					},
 				]);
 			}

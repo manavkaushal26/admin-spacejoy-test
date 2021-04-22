@@ -2,7 +2,7 @@ import { createEditCouponApi } from "@api/metaApi";
 import { BasicCoupon } from "@customTypes/couponTypes";
 import fetcher from "@utils/fetcher";
 import { Button, DatePicker, Drawer, Form, Input, InputNumber, notification, Radio, Select } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 
 const { RangePicker } = DatePicker;

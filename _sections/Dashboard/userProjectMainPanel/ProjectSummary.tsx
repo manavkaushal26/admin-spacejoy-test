@@ -18,7 +18,7 @@ import {
 } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Avatar, Button, Col, Input, notification, Popconfirm, Radio, Row, Spin, Tag, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
@@ -344,7 +344,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 							</Col>
 							<Col>
 								<Text>
-									Ends on: {moment(endTime).format("MM-DD-YYYY")} at {moment(endTime).format("HH:mm")}
+									Ends on: {endTime.format("MM-DD-YYYY")} at {endTime.format("HH:mm")}
 								</Text>
 							</Col>
 						</Row>

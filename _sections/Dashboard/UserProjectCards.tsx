@@ -1,7 +1,7 @@
 import SidebarCard from "@components/SidebarCards";
 import { PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import { convertMillisecondsToDays, getColorsForPackages, getValueSafely } from "@utils/commonUtils";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useMemo } from "react";
 
 const UserProjectCard: React.FC<{

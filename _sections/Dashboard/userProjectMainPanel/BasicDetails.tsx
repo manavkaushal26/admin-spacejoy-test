@@ -2,7 +2,7 @@ import { DetailedProject, DetailedProjectTeamMember, PaymentStatus } from "@cust
 import { ProjectRoles } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import { Col, Collapse, Row, Tooltip, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useMemo } from "react";
 import { ModifiedText, SilentDivider } from "../styled";
 

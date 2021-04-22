@@ -1,6 +1,6 @@
 import { EcommOrder } from "@customTypes/ecommerceTypes";
 import { Col, Row, Table, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import Link from "next/link";
 import React from "react";
 import OrderItemTable from "../OrderItemTable";

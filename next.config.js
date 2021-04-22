@@ -6,6 +6,7 @@ const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 const darkTheme = require("@ant-design/dark-theme");
 const withLess = require("@zeit/next-less");
 const lessToJS = require("less-vars-to-js");
+const MomentTimezoneDataPlugin = require("moment-timezone-data-webpack-plugin");
 
 const { ANALYZE } = process.env;
 const prod = process.env.NODE_ENV === "production";
@@ -75,6 +76,9 @@ const nextConfig = {
 			new MomentLocalesPlugin(),
 			new MomentLocalesPlugin({
 				localesToKeep: ["es-us"],
+			}),
+			new MomentTimezoneDataPlugin({
+				matchZones: "America/Los_Angeles",
 			})
 		);
 

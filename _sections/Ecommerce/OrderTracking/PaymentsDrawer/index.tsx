@@ -19,7 +19,7 @@ import {
 	Typography,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import CapturePaymentsModal from "./capturePayments";
 

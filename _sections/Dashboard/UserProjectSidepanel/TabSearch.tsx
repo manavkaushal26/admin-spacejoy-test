@@ -12,7 +12,7 @@ import { Status } from "@customTypes/userType";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Checkbox, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
 import {
