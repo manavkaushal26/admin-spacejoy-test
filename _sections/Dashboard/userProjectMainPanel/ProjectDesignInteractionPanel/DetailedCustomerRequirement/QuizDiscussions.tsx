@@ -10,7 +10,7 @@ import { getLocalStorageValue } from "@utils/storageUtils";
 import { Button, Card, Col, Comment, List, notification, Row, Typography, Upload } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import parse from "html-react-parser";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 
 const { Text } = Typography;

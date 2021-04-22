@@ -17,7 +17,7 @@ import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";

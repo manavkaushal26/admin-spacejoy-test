@@ -5,15 +5,23 @@ import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, notification, Row, Table } from "antd";
-import Title from "antd/lib/skeleton/Title";
+import { Button, Col, notification, Row, Table, Typography } from "antd";
+import moment from "moment-timezone";
+import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import EditCreateCoupon from "./editcreatecoupon";
 
-function ModifyRetailerCoupon({ retailerId }) {
+const { Title } = Typography;
+
+interface ModifyRetailerCouponProps {
+	retailerId: string;
+	retailerName: string;
+}
+
+const ModifyRetailerCoupon: NextPage<ModifyRetailerCouponProps> = ({ retailerId, retailerName }) => {
 	const router = useRouter();
 	const [coupons, setCoupons] = useState([]);
 	const [loading, setIsLoading] = useState(false);
@@ -80,7 +88,7 @@ function ModifyRetailerCoupon({ retailerId }) {
 			</Head>
 			<MaxHeightDiv>
 				<LoudPaddingDiv>
-					<Row>
+					<Row gutter={[8, 8]}>
 						<Col span={24}>
 							<Row justify='space-between'>
 								<Col>
@@ -89,7 +97,7 @@ function ModifyRetailerCoupon({ retailerId }) {
 											<Col>
 												<ArrowLeftOutlined onClick={() => router.back()} />
 											</Col>
-											<Col>Offers Manager</Col>
+											<Col>{retailerName} offers manager</Col>
 										</Row>
 									</Title>
 								</Col>
@@ -100,8 +108,6 @@ function ModifyRetailerCoupon({ retailerId }) {
 								</Col>
 							</Row>
 						</Col>
-						<br></br>
-						<br></br>
 						<Col span={24}>
 							<Table
 								size='middle'
@@ -114,48 +120,54 @@ function ModifyRetailerCoupon({ retailerId }) {
 									title='Discount'
 									dataIndex='discount'
 									key='discount'
-									render={_text => {
-										return _text;
+									render={text => {
+										return text;
 									}}
 								/>
 								<Table.Column
 									title='Discount Type'
 									dataIndex='discountType'
 									key='discountType'
-									render={_text => {
-										return _text;
+									render={text => {
+										return text;
+									}}
+								/>
+								<Table.Column
+									title='Max Discount (in $)'
+									dataIndex='maxDiscount'
+									key='maxDiscount'
+									render={text => {
+										return text;
 									}}
 								/>
 								<Table.Column
 									title='Start Date'
 									dataIndex='startTime'
 									key='startTime'
-									render={_text => {
-										return _text;
+									render={text => {
+										return moment(text).format("MM-DD-YYYY hh:mm a");
 									}}
 								/>
 								<Table.Column
 									title='End Date'
 									dataIndex='endTime'
 									key='endTime'
-									render={_text => {
-										return _text;
+									render={text => {
+										return moment(text).format("MM-DD-YYYY hh:mm a");
 									}}
 								/>
 								<Table.Column
-									title='Max Discount'
-									dataIndex='maxDiscount'
-									key='maxDiscount'
-									render={_text => {
-										return _text;
-									}}
+									title='Is Active?'
+									key='isActive'
+									dataIndex='isActive'
+									render={active => (active ? "Yes" : "No")}
 								/>
 								<Table.Column
 									title='Actions'
 									key='actions'
 									fixed='right'
 									width='300'
-									render={(_text, record) => {
+									render={(_, record) => {
 										return (
 											<>
 												<Button type='link' onClick={() => onEditClick(record)}>
@@ -182,16 +194,21 @@ function ModifyRetailerCoupon({ retailerId }) {
 			/>
 		</PageLayout>
 	);
-}
+};
 
-export async function getServerSideProps(ctx) {
+export const getServerSideProps: GetServerSideProps<
+	ModifyRetailerCouponProps,
+	{ retailerId: string; retailerName: string }
+> = async ctx => {
 	const { query } = ctx;
-	const retailerId = query.id || "";
+	const retailerId = (query.id as string) || "";
+	const retailerName = (query.name as string) || "";
 	return {
 		props: {
 			retailerId,
+			retailerName,
 		},
 	};
-}
+};
 
 export default ProtectRoute(ModifyRetailerCoupon);

@@ -24,7 +24,7 @@ import {
 	Spin,
 	Typography,
 } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";

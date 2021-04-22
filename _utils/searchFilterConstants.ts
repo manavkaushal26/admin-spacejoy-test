@@ -1,5 +1,5 @@
 import { PhaseInternalNames, QuizState } from "@customTypes/dashboardTypes";
-import moment from "moment";
+import moment from "moment-timezone";
 
 const allFilterNames = {
 	moodboardsToBeCreated: "Moodboards to be created",

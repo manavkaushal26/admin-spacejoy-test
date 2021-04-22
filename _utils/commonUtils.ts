@@ -1,6 +1,6 @@
 import { DesignPhases, HumanizeDesignPhases, PackageDetails, Packages, PhaseType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import moment from "moment";
+import moment from "moment-timezone";
 
 interface GetValueFunction {
 	<T>(func: () => T, defaultValue: T): T;

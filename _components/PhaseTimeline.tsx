@@ -2,7 +2,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { HumanizePhaseInternalNames, Phase, PhaseInternalNames } from "@customTypes/dashboardTypes";
 import DetailText from "@sections/RenderEngine/DetailText";
 import { Timeline } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React from "react";
 const PhaseTimeline: React.FC<{ completedPhases: Phase[]; currentPhase?: Phase }> = ({
 	completedPhases,

@@ -218,7 +218,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 								</Col>
 							</Col>
 							<Col span={19}>
-								<Link href={`/ecommerce/retailers/modifycoupon?id=${retailer._id}`}>
+								<Link href={`/ecommerce/retailers/modifycoupon?id=${retailer._id}&name=${retailer.name}`}>
 									<Button type='primary'>Manage Brand Offers</Button>
 								</Link>
 							</Col>

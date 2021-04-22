@@ -17,7 +17,7 @@ import { redirectToLocation } from "@utils/authContext";
 import { dateFromObjectId, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Badge, Button, Col, List, notification, Popconfirm, Row, Spin, Tooltip, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 

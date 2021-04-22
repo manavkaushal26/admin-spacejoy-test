@@ -1,6 +1,6 @@
 import { PhaseInternalNames, QuizState, UserProjectType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import moment from "moment";
+import moment from "moment-timezone";
 
 export interface UserProjectSidePanelState {
 	nameSearchText: string;

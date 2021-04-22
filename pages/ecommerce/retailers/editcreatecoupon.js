@@ -1,6 +1,6 @@
 import fetcher from "@utils/fetcher";
 import { Button, DatePicker, Drawer, Form, InputNumber, notification, Select } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 const { RangePicker } = DatePicker;
 
@@ -83,6 +83,7 @@ export default function EditCreateCoupon({
 
 	const onFinish = values => {
 		saveCoupon(values);
+		toggleCouponDrawer();
 	};
 
 	return (
@@ -145,7 +146,7 @@ export default function EditCreateCoupon({
 					<InputNumber style={{ width: "100%" }} />
 				</Form.Item>
 				<Form.Item
-					label='Max Discount'
+					label='Max Discount(in $)'
 					name='maxDiscount'
 					rules={[{ required: true, message: "Please Enter value", type: "number", min: 0 }]}
 				>

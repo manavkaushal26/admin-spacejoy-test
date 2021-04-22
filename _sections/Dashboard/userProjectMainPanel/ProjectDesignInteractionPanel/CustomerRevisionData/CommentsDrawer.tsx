@@ -1,14 +1,13 @@
-import { CapitalizedText } from "@components/CommonStyledComponents";
+import { editRevisionFormAPI } from "@api/projectApi";
 import { RevisionComments, RevisionForm } from "@customTypes/dashboardTypes";
 import User from "@customTypes/userType";
 import { AvatarColorsList } from "@utils/constants";
-import { getLocalStorageValue } from "@utils/storageUtils";
-import { Avatar, Button, Comment, Drawer, Form, List, Tooltip, notification, Row, Col, Typography } from "antd";
-import TextArea from "antd/lib/input/TextArea";
-import React, { useMemo, useState } from "react";
-import { editRevisionFormAPI } from "@api/projectApi";
-import moment from "moment";
 import fetcher from "@utils/fetcher";
+import { getLocalStorageValue } from "@utils/storageUtils";
+import { Avatar, Button, Col, Comment, Drawer, Form, List, notification, Row, Tooltip, Typography } from "antd";
+import TextArea from "antd/lib/input/TextArea";
+import moment from "moment-timezone";
+import React, { useMemo, useState } from "react";
 
 const { Text } = Typography;
 interface CommentsDrawer {
@@ -26,10 +25,10 @@ interface CommentList {
 const Editor = ({ onChange, onSubmit, submitting, value }): React.ReactElement => (
 	<div>
 		<Form.Item>
-			<TextArea placeholder="Enter your message" rows={4} onChange={onChange} value={value} />
+			<TextArea placeholder='Enter your message' rows={4} onChange={onChange} value={value} />
 		</Form.Item>
 		<Form.Item>
-			<Button htmlType="submit" loading={submitting} onClick={onSubmit} type="primary">
+			<Button htmlType='submit' loading={submitting} onClick={onSubmit} type='primary'>
 				Add Comment
 			</Button>
 		</Form.Item>
@@ -42,7 +41,7 @@ export const CommentList = ({ comments, authors }: CommentList): React.ReactElem
 			<Col span={24}>
 				<List
 					dataSource={comments}
-					itemLayout="vertical"
+					itemLayout='vertical'
 					renderItem={(comment: RevisionComments): React.ReactNode => {
 						return comment?.text ? (
 							<Comment
@@ -111,7 +110,7 @@ const CommentsDrawer: React.FC<CommentsDrawer> = ({ open, toggleDrawer, revision
 	};
 
 	return (
-		<Drawer visible={open} width={360} onClose={toggleDrawer} title="Customer Communication">
+		<Drawer visible={open} width={360} onClose={toggleDrawer} title='Customer Communication'>
 			<CommentList comments={revisionData.comments} authors={authors} />
 			{/* <Comment
 				avatar={

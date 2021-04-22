@@ -5,7 +5,7 @@ import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import fetcher from "@utils/fetcher";
 import { Col, notification, Row, Spin, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import DetailText from "./DetailText";
 

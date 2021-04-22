@@ -70,7 +70,6 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 		Router.push({ pathname: "/dashboard", query: { pid: user } }, `/dashboard/pid/${user}`);
 	};
 	const setCurrentUserId = (user: string): void => {
-		console.log("user id is ---", user);
 		setCurrentUser(user);
 	};
 	const [projectPhaseUpdateValue, setProjectPhaseUpdateValue] = useState<{

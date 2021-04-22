@@ -2,7 +2,7 @@ import { getOrderItemApi } from "@api/ecommerceApi";
 import { OrderItems, Tracking } from "@customTypes/ecommerceTypes";
 import fetcher from "@utils/fetcher";
 import { Button, Card, Col, Comment, Form, Input, List, notification, Row, Spin, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useState } from "react";
 const { Text, Link } = Typography;
 

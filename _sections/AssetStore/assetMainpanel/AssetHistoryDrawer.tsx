@@ -2,7 +2,7 @@ import { getAssetHistoryApi } from "@api/assetApi";
 import { AssetHistory, HumanizeAssetHistoryType } from "@customTypes/assetInfoTypes";
 import fetcher from "@utils/fetcher";
 import { Card, Col, Drawer, Empty, notification, Row, Timeline, Typography } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 
 const { Text, Paragraph } = Typography;

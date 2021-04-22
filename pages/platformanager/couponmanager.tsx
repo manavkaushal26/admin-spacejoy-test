@@ -11,7 +11,7 @@ import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Input, notification, Row, Space, Table, Typography } from "antd";
 import { FilterDropdownProps } from "antd/lib/table/interface";
-import moment from "moment";
+import moment from "moment-timezone";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";

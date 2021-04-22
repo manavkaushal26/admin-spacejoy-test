@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-useless-escape */
 import { Image } from "antd";
-import moment from "moment";
+import moment from "moment-timezone";
 import React from "react";
 import ReactHtmlParser from "react-html-parser";
 import styled from "styled-components";
