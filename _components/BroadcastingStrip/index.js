@@ -78,7 +78,7 @@ function index({ broadcastingStripData }) {
 					<span className='timer'>
 						Sale ends in:{" "}
 						<CountDownStyled>
-							<CountdownWatch days={broadcastingStripData?.time.valueOf()} />
+							<CountdownWatch days={broadcastingStripData?.time?.valueOf()} />
 						</CountDownStyled>
 					</span>
 				)}
