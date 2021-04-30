@@ -1,4 +1,6 @@
+import { FirestoreProvider } from "@react-firebase/firestore";
 import { AuthProvider } from "@utils/authContext";
+import { firebaseConfig } from "@utils/config";
 import "antd/lib/affix/style";
 import "antd/lib/alert/style";
 import "antd/lib/badge/style";
@@ -46,6 +48,7 @@ import "antd/lib/tooltip/style";
 import "antd/lib/tree/style";
 import "antd/lib/typography/style";
 import "antd/lib/upload/style";
+import firebase from "firebase";
 import moment from "moment-timezone";
 import App from "next/app";
 import Router from "next/router";
@@ -85,16 +88,18 @@ export default class MyApp extends App {
 		const { loading } = this.state;
 		const { Component, pageProps } = this.props;
 		return (
-			<ThemeProvider theme={theme}>
-				<AuthProvider>
-					<div className={`${loading ? "loading" : ""}`}>
-						<Component {...pageProps} />
-						<div className='loader-ring'>
-							<StyledLoaderIcon />
+			<FirestoreProvider {...firebaseConfig} firebase={firebase}>
+				<ThemeProvider theme={theme}>
+					<AuthProvider>
+						<div className={`${loading ? "loading" : ""}`}>
+							<Component {...pageProps} />
+							<div className='loader-ring'>
+								<StyledLoaderIcon />
+							</div>
 						</div>
-					</div>
-				</AuthProvider>
-			</ThemeProvider>
+					</AuthProvider>
+				</ThemeProvider>
+			</FirestoreProvider>
 		);
 	}
 }

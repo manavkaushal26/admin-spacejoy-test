@@ -31,7 +31,7 @@ const SitemapManager: NextPage<{
 
 		try {
 			const response = await fetcher({ endPoint, method: "GET" });
-			console.log(response);
+
 			if (response.statusCode <= 300) {
 				setUrls(response.data);
 			} else {

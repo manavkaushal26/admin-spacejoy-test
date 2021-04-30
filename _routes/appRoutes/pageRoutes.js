@@ -136,6 +136,13 @@ function pageRoute(app, router) {
 		});
 	});
 
+	router.get("/platformanager/siteconfig", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager/siteconfig", {
+			...query,
+		});
+	});
+
 	router.get("/platformanager", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager", {

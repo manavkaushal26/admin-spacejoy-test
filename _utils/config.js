@@ -81,6 +81,17 @@ const company = {
 	},
 };
 
+const firebaseConfig = {
+	apiKey: "AIzaSyC1Ak54VCskX74P9v0h8Mii5mP3e5hqRo0",
+	authDomain: "formal-envelope-244206.firebaseapp.com",
+	databaseURL: "https://formal-envelope-244206.firebaseio.com",
+	projectId: "formal-envelope-244206",
+	storageBucket: "formal-envelope-244206.appspot.com",
+	messagingSenderId: "628064588100",
+	appId: "1:628064588100:web:2a7a4821cc945c8e238711",
+	documentId: isProduction ? "UEbQGWxVzqbEk3s4c1m4" : "IRw24GvvWBkVMqNoE1fZ",
+};
+
 // ${secureDeliveryURL}/image/upload/v1566896729/web/design-page-banner.jpg
 const cloudinary = {
 	cloudName: "spacejoy",
@@ -93,6 +104,7 @@ const cloudinary = {
 
 module.exports = {
 	page,
+	firebaseConfig,
 	cookieNames,
 	company,
 	cloudinary,
