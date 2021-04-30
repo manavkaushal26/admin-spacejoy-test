@@ -6,6 +6,7 @@
 	"dependencies": {
 		"@ant-design/dark-theme": "^2.0.2",
 		"@ant-design/icons": "^4.2.1",
+		"@react-firebase/firestore": "^0.5.5",
 		"@tinymce/tinymce-react": "^3.6.0",
 		"@zeit/next-less": "^1.0.1",
 		"antd": "^4.6.1",
@@ -13,6 +14,7 @@
 		"clevertap-react": "^1.0.0",
 		"compression": "^1.7.4",
 		"express": "^4.17.1",
+		"firebase": "^8.4.2",
 		"helmet": "^3.20.0",
 		"hotkeys-js": "^3.7.3",
 		"html-react-parser": "^0.10.3",
@@ -34,6 +36,7 @@
 		"react": "^16.13.1",
 		"react-beautiful-dnd": "^13.0.0",
 		"react-compare-image": "^1.4.1",
+		"react-countdown": "^2.3.1",
 		"react-csv": "^2.0.3",
 		"react-dom": "^16.13.1",
 		"react-ga": "^2.6.0",

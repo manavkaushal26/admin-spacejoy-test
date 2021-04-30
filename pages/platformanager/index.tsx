@@ -61,6 +61,15 @@ const MetaCards = [
 		allowedRoles: [Role.Admin, Role.Owner, Role["Account Manager"]],
 	},
 	{
+		name: "Site Config",
+		description: "Update customer portal banners",
+		action: "redirect",
+		to: "/platformanager/siteconfig",
+		url: "/platformanager/siteconfig",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
+	{
 		name: "Sitemap Manager",
 		description: "Manage Sitemap in platform",
 		action: "redirect",

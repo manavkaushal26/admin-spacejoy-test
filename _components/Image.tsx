@@ -161,7 +161,7 @@ const Image: React.FC<Image> = ({ src, height, width, alt, caption, autoAdjust, 
 				height={imgHeight}
 				src={source}
 				fallback={FallbackImage}
-				placeholder={<img src={FallbackImage} />}
+				placeholder={<img src={FallbackImage} height={height} />}
 				preview={preview}
 				{...props}
 			/>
