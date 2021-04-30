@@ -74,11 +74,11 @@ function index({ broadcastingStripData }) {
 				</span>
 				<span> {broadcastingStripData?.afterCoupon}</span>
 				&nbsp;
-				{broadcastingStripData?.countdownVisible && (
+				{broadcastingStripData?.timerVisible && (
 					<span className='timer'>
 						Sale ends in:{" "}
 						<CountDownStyled>
-							<CountdownWatch days={broadcastingStripData?.countdownTime} />
+							<CountdownWatch days={broadcastingStripData?.time.valueOf()} />
 						</CountDownStyled>
 					</span>
 				)}

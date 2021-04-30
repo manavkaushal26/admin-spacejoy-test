@@ -25,6 +25,7 @@ const CountdownStyled = styled.div`
 			font-size: 1.2rem;
 			line-height: 0rem;
 			margin: 1rem 0;
+			color: #fff;
 			@media (max-width: 768px) {
 				font-size: 1rem;
 				margin: 1rem 0;

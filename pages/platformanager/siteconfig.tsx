@@ -1,19 +1,20 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import BroadcastingStrip from "@components/BroadcastingStrip";
 import { FirestoreDocument, FirestoreMutation } from "@react-firebase/firestore";
+import { ModifiedDivider } from "@sections/AssetStore/styled";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
-import { company } from "@utils/config";
+import { company, firebaseConfig } from "@utils/config";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, DatePicker, Divider, Form, Input, message, Row, Spin, Switch, Typography } from "antd";
+import { Button, Col, DatePicker, Divider, Form, Input, message, Modal, Row, Spin, Switch, Typography } from "antd";
 import moment from "moment";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { LoudPaddingDiv } from ".";
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const stripDomainInLink = str => {
 	return str.replace("https://res.cloudinary.com/spacejoy/image/upload/", "").replace("https://www.spacejoy.com");
@@ -30,13 +31,14 @@ const initialValues = {
 		hp3: "",
 		hp3Link: "",
 		hp3Alt: "",
-
+		timerVisible: false,
 		visible: false,
 	},
 	injectBanner: {
 		cdn: "",
 		visible: false,
 		alt: "",
+		timerVisible: false,
 	},
 	cartBanner: {
 		cdn: "",
@@ -47,6 +49,7 @@ const initialValues = {
 		time: "",
 		visible: false,
 		endMessage: "",
+		color: "#000000",
 	},
 	broadcast: {
 		beforePulseDot: "",
@@ -56,6 +59,7 @@ const initialValues = {
 		broadcaststripVisible: false,
 		afterCoupon: "",
 		pulseDot: false,
+		timerVisible: false,
 	},
 };
 
@@ -87,13 +91,13 @@ const SitemapManager: NextPage = () => {
 							<Divider style={{ marginTop: "0rem" }} />
 						</Col>
 						<Col span={24}>
-							<FirestoreDocument path='/siteConfig/IRw24GvvWBkVMqNoE1fZ'>
+							<FirestoreDocument path={`/siteConfig/${firebaseConfig.documentId}`}>
 								{d => {
 									const time = d.value?.countdown?.time ? moment(d.value?.countdown?.time) : null;
 									form.setFieldsValue({ ...d.value, countdown: { ...d.value?.countdown, time: time } });
 									return (
 										<Spin spinning={loading || d.isLoading}>
-											<FirestoreMutation type='update' path='/siteConfig/IRw24GvvWBkVMqNoE1fZ'>
+											<FirestoreMutation type='update' path={`/siteConfig/${firebaseConfig.documentId}`}>
 												{({ runMutation }) => {
 													return (
 														<Form
@@ -102,18 +106,23 @@ const SitemapManager: NextPage = () => {
 															labelCol={{ span: 24 }}
 															onFinish={data => {
 																setLoading(false);
-
-																runMutation({
-																	...data,
-																	countdown: { ...data.countdown, time: data.countdown.time.valueOf() },
-																})
-																	.then(resp => {
-																		message.success("Saved config successfully");
-																		setLoading(false);
-																	})
-																	.catch(e => {
-																		message.error("Failed to save. Please try again");
-																	});
+																Modal.confirm({
+																	title: "Are you sure?",
+																	content: "Changes made will be immediately visible to customer",
+																	onOk: () => {
+																		runMutation({
+																			...data,
+																			countdown: { ...data.countdown, time: data.countdown.time.valueOf() },
+																		})
+																			.then(() => {
+																				message.success("Saved config successfully");
+																				setLoading(false);
+																			})
+																			.catch(e => {
+																				message.error("Failed to save. Please try again");
+																			});
+																	},
+																});
 															}}
 														>
 															<Row>
@@ -137,7 +146,7 @@ const SitemapManager: NextPage = () => {
 																		<Col sm={24} md={12}>
 																			<Form.Item
 																				name={["homepage", "hp1Alt"]}
-																				label='Alt Tag for Image'
+																				label='Alt tag'
 																				normalize={stripDomainInLink}
 																			>
 																				<Input />
@@ -153,8 +162,19 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 
-																		<Col sm={0} md={12} />
+																		<Col span={12}>
+																			<Form.Item
+																				name={["homepage", "timerVisible"]}
+																				label='Timer Visible?'
+																				valuePropName='checked'
+																			>
+																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																			</Form.Item>
+																		</Col>
 
+																		<Col span={24}>
+																			<ModifiedDivider />
+																		</Col>
 																		<Col sm={24} md={12}>
 																			<Form.Item
 																				name={["homepage", "hp2"]}
@@ -168,7 +188,7 @@ const SitemapManager: NextPage = () => {
 																		<Col sm={24} md={12}>
 																			<Form.Item
 																				name={["homepage", "hp2Alt"]}
-																				label='Alt Tag for Image'
+																				label='Alt tag'
 																				normalize={stripDomainInLink}
 																			>
 																				<Input />
@@ -184,7 +204,9 @@ const SitemapManager: NextPage = () => {
 																				<Input />
 																			</Form.Item>
 																		</Col>
-																		<Col sm={0} md={12} />
+																		<Col span={24}>
+																			<ModifiedDivider />
+																		</Col>
 
 																		<Col sm={24} md={12}>
 																			<Form.Item
@@ -199,7 +221,7 @@ const SitemapManager: NextPage = () => {
 																		<Col sm={24} md={12}>
 																			<Form.Item
 																				name={["homepage", "hp3Alt"]}
-																				label='Alt Tag for Image'
+																				label='Alt tag'
 																				normalize={stripDomainInLink}
 																			>
 																				<Input />
@@ -245,16 +267,25 @@ const SitemapManager: NextPage = () => {
 																		<Col sm={24} md={12}>
 																			<Form.Item
 																				name={["injectBanner", "alt"]}
-																				label='Alt Tag for Image'
+																				label='Alt tag'
 																				normalize={stripDomainInLink}
 																			>
 																				<Input />
 																			</Form.Item>
 																		</Col>
-																		<Col sm={24} md={12}>
+																		<Col span={12}>
 																			<Form.Item
 																				name={["injectBanner", "visible"]}
 																				label='Inject banner Visible?'
+																				valuePropName='checked'
+																			>
+																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																			</Form.Item>
+																		</Col>
+																		<Col span={12}>
+																			<Form.Item
+																				name={["injectBanner", "timerVisible"]}
+																				label='Timer Visible?'
 																				valuePropName='checked'
 																			>
 																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
@@ -291,7 +322,7 @@ const SitemapManager: NextPage = () => {
 																		<Col sm={24} md={12}>
 																			<Form.Item
 																				name={["cartBanner", "alt"]}
-																				label='Alt Tag for Image'
+																				label='Alt tag'
 																				normalize={stripDomainInLink}
 																			>
 																				<Input />
@@ -330,17 +361,25 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["countdown", "visible"]}
-																				label='Count Down Timer Visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																		<Col span={24}>
 																			<Form.Item name={["countdown", "endMessage"]} label='Countdown expiry message'>
 																				<Input />
+																			</Form.Item>
+																		</Col>
+																		<Col sm={24} md={12}>
+																			<Form.Item name={["countdown", "color"]} label='Text Color'>
+																				<Input type='color' />
+																			</Form.Item>
+																		</Col>
+																		<Col>
+																			<Form.Item shouldUpdate>
+																				{({ getFieldValue }) => {
+																					const color = getFieldValue(["countdown", "color"]);
+																					return (
+																						<Text strong style={{ color: color }}>
+																							Sample text to view color
+																						</Text>
+																					);
+																				}}
 																			</Form.Item>
 																		</Col>
 																	</Row>
@@ -354,10 +393,25 @@ const SitemapManager: NextPage = () => {
 																			</Title>
 																		</Col>
 																		<Col span={24}>
-																			<Form.Item shouldUpdate>
+																			<Form.Item
+																				shouldUpdate={(prevValues, newValues) => {
+																					if (
+																						prevValues.countdown !== newValues.countdown ||
+																						prevValues.broadcast !== newValues.broadcast
+																					) {
+																						return true;
+																					}
+																				}}
+																			>
 																				{({ getFieldsValue }) => {
+																					const fieldValues = getFieldsValue(true);
 																					return (
-																						<BroadcastingStrip broadcastingStripData={getFieldsValue(true).broadcast} />
+																						<BroadcastingStrip
+																							broadcastingStripData={{
+																								...fieldValues.broadcast,
+																								...fieldValues.countdown,
+																							}}
+																						/>
 																					);
 																				}}
 																			</Form.Item>
@@ -386,7 +440,7 @@ const SitemapManager: NextPage = () => {
 																				<Input />
 																			</Form.Item>
 																		</Col>
-																		<Col sm={24} md={8}>
+																		<Col sm={12} md={6}>
 																			<Form.Item
 																				name={["broadcast", "isHighlightCoupon"]}
 																				label='Is Highlighted text a Coupon?'
@@ -396,7 +450,7 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 
-																		<Col sm={24} md={8}>
+																		<Col sm={12} md={6}>
 																			<Form.Item
 																				name={["broadcast", "broadcaststripVisible"]}
 																				label='Strip Visible to customer?'
@@ -405,10 +459,19 @@ const SitemapManager: NextPage = () => {
 																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
 																			</Form.Item>
 																		</Col>
-																		<Col sm={24} md={8}>
+																		<Col sm={12} md={6}>
 																			<Form.Item
 																				name={["broadcast", "pulseDot"]}
 																				label='Pulse dot visible?'
+																				valuePropName='checked'
+																			>
+																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																			</Form.Item>
+																		</Col>
+																		<Col sm={12} md={6}>
+																			<Form.Item
+																				name={["broadcast", "timerVisible"]}
+																				label='Timer Visible?'
 																				valuePropName='checked'
 																			>
 																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
