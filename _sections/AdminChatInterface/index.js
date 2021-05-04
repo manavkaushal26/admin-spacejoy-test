@@ -50,7 +50,7 @@ const ReloadChat = styled.span`
 	font-size: 10px;
 	cursor: pointer;
 	position: absolute;
-	bottom: 45px;
+	bottom: 90px;
 	z-index: 999;
 	transform: translateX(-50%);
 	left: 50%;
@@ -76,6 +76,7 @@ const ResolvedMessage = styled.div`
 	text-align: center;
 	font-size: 16px;
 	font-weight: bold;
+	padding-bottom: 1.5rem;
 `;
 
 const Index = ({ projectId, designID }) => {
@@ -343,7 +344,7 @@ const Index = ({ projectId, designID }) => {
 			</Spin>
 			<ChatViewActions>
 				<Input.TextArea
-					style={{ height: "40px", resize: "none", width: "calc(100% - 50px)", left: "50px", zIndex: 1 }}
+					style={{ height: "80px", resize: "none", width: "calc(100% - 50px)", left: "50px", zIndex: 1 }}
 					value={currentComment}
 					onChange={updateCurrentComment}
 					placeholder='Type your message here ...'
