@@ -1,15 +1,14 @@
 import { updateNotesApi } from "@api/designApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { DesignerNotes, DetailedDesign } from "@customTypes/dashboardTypes";
-import User from "@customTypes/userType";
+import useAuth from "@utils/authContext";
 import { dateFromObjectId, getValueSafely, stringToUrl } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { getLocalStorageValue } from "@utils/storageUtils";
 import { Avatar, Button, Card, Comment, Form, List, message, Row } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 import parse from "html-react-parser";
 import moment from "moment-timezone";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { CustomDiv } from "../styled";
 
 interface NotesTab {
@@ -23,12 +22,9 @@ const NotesImageURL =
 
 const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 	const [designerNotes, setDesignerNotes] = useState<DesignerNotes[]>(designData.designerNotes);
-	const [authVerification, setAuthVerification] = useState<User>(null);
 	const [newNote, setNewNote] = useState<string>("");
 
-	useEffect(() => {
-		setAuthVerification(getLocalStorageValue<User>("authVerification"));
-	}, []);
+	const { user: authVerification } = useAuth();
 
 	const saveNotes: (notes: DesignerNotes[]) => Promise<void> = async (notes = []) => {
 		const endpoint = updateNotesApi(designData._id);

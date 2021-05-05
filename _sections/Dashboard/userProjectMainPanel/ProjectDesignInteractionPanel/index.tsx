@@ -63,6 +63,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 					<PhaseTimeline
 						completedPhases={projectData?.completedPhases || []}
 						currentPhase={projectData?.currentPhase}
+						projectId={projectData?._id}
 					/>
 				</PaddedDiv>
 			</Tabs.TabPane>

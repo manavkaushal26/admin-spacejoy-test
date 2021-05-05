@@ -43,3 +43,7 @@ export const editRevisionFormAPI = (projectId: string): string => {
 export const changeToDARAPI = (projectId: string): string => {
 	return `/v2/project/${projectId}/revision/dar`;
 };
+
+export const getProjectTimelineApi = (projectId: string) => {
+	return `/v1/projects/${projectId}/timeline`;
+};
