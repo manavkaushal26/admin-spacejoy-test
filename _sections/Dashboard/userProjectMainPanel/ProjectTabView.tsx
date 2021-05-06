@@ -7,15 +7,14 @@ import {
 	HumanizeDesignPhases,
 	PhaseCustomerNames,
 	PhaseInternalNames,
-	RevisionForm,
+	RevisionForm
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
-import { DisabledLabel } from "@sections/Dashboard/styled";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
 import PipelineTab from "@sections/Dashboard/userProjectMainPanel/pipelineTab";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, notification, PageHeader, Popconfirm, Row, Spin, Tabs } from "antd";
+import { Alert, Button, Col, notification, PageHeader, Popconfirm, Row, Spin, Tabs } from "antd";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import { SilentDivider } from "../styled";
@@ -273,7 +272,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						<SilentDivider />
 					</Col>
 					<Col span={24}>
-						{pause ? <DisabledLabel>This project is currently paused</DisabledLabel> : null}
+						{pause ? <Alert message='This project is currently paused' type='error' /> : null}
 						<ScrollableTabs activeKey={activeTab} onChange={onTabChange} defaultActiveKey='pipeline'>
 							{!projectData && (
 								<TabPane tab='Team' key='team'>

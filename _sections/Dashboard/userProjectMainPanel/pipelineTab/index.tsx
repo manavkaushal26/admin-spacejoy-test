@@ -149,19 +149,14 @@ export default function PipelineTab({
 		}
 		setUpdationPhase(null);
 	};
-	const disabled = {
-		"data-disabled": pause ? "disabled" : "",
-	};
-	const styleObj = {
-		...(pause && { cursor: "not-allowed" }),
-	};
+
 	return (
 		<div>
 			<Title level={2}>Task Overview</Title>
-			<StepsContainer style={styleObj}>
+			<StepsContainer>
 				{steps.map(step => {
 					return (
-						<Tile key={step.phaseName} {...disabled}>
+						<Tile key={step.phaseName}>
 							<ShadowDiv active={step.phaseName === stage} onClick={(): void => onClick(step.phaseName)}>
 								<Row style={{ padding: "1rem 1rem" }} justify='space-between' gutter={[16, 16]}>
 									<Col>

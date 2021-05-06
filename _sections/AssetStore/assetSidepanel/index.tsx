@@ -1,6 +1,6 @@
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { MetaDataType } from "@customTypes/moodboardTypes";
-import { AssetStatus } from "@customTypes/userType";
+import { AssetStatus, Role } from "@customTypes/userType";
 import Filter from "@sections/AssetStore/assetSidepanel/filters/CategoryFilter";
 import {
 	colorsExamples,
@@ -11,7 +11,8 @@ import {
 } from "@sections/AssetStore/exampleConstants";
 import { AssetAction, AssetStoreState, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
-import { Avatar, Button, Col, Input, List, Popover, Radio, Row, Switch, Tabs, Tree, Typography } from "antd";
+import useAuth from "@utils/authContext";
+import { Alert, Avatar, Button, Col, Input, List, Popover, Radio, Row, Switch, Tabs, Tree, Typography } from "antd";
 import { DataNode } from "antd/lib/tree";
 import React, { useEffect, useMemo, useState } from "react";
 import { FilterCard } from "../styled";
@@ -120,6 +121,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 	});
 
 	const { priceRange, widthRange, depthRange, heightRange } = filterState;
+	const { user } = useAuth();
 
 	useEffect(() => {
 		dispatch({ type: ASSET_ACTION_TYPES.UPDATE_RANGE_FILTERS, value: filterState });
@@ -301,33 +303,39 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 												dispatch={dispatch}
 											/>
 										</Col>
-										<Col span={24}>
-											<Row gutter={[2, 2]}>
-												<Col span={24}>
-													<Text strong>Status</Text>
-												</Col>
-												<Col span={24}>
-													<Radio.Group name='status' onChange={onStatusChange} value={state.status}>
-														{Object.entries(AssetStatus).map(([name, value]) => {
-															return (
-																<Radio
-																	key={value}
-																	style={{
-																		display: "block",
-																		height: "30px",
-																		lineHeight: "30px",
-																	}}
-																	value={value}
-																>
-																	{name}
-																</Radio>
-															);
-														})}
-														<Radio value=''>All</Radio>
-													</Radio.Group>
-												</Col>
-											</Row>
-										</Col>
+										{user.role !== Role.Designer && user.role !== Role["Account Manager"] ? (
+											<Col span={24}>
+												<Row gutter={[2, 2]}>
+													<Col span={24}>
+														<Text strong>Status</Text>
+													</Col>
+													<Col span={24}>
+														<Radio.Group name='status' onChange={onStatusChange} value={state.status}>
+															{Object.entries(AssetStatus).map(([name, value]) => {
+																return (
+																	<Radio
+																		key={value}
+																		style={{
+																			display: "block",
+																			height: "30px",
+																			lineHeight: "30px",
+																		}}
+																		value={value}
+																	>
+																		{name}
+																	</Radio>
+																);
+															})}
+															<Radio value=''>All</Radio>
+														</Radio.Group>
+													</Col>
+												</Row>
+											</Col>
+										) : (
+											<Col span={24}>
+												<Alert message='Displaying only Active status Assets' type='info' />
+											</Col>
+										)}
 									</Row>
 								</Col>
 							</Row>
