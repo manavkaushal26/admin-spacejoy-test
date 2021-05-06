@@ -15,11 +15,6 @@ interface NotesTab {
 	designData: DetailedDesign;
 }
 
-const NotesImageURL =
-	process.env.NODE_ENV === "production"
-		? "q_80,h_125/v1576131412/call_customer_b1xjqf.svg"
-		: "q_80,h_125/v1574849424/shared/call_customer_b1xjqf.svg";
-
 const NotesTab = ({ designData }: NotesTab): JSX.Element => {
 	const [designerNotes, setDesignerNotes] = useState<DesignerNotes[]>(designData.designerNotes);
 	const [newNote, setNewNote] = useState<string>("");

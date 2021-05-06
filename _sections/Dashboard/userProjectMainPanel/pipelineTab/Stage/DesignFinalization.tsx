@@ -74,7 +74,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData }) => {
 	return (
 		<StepDiv>
 			<Row gutter={[8, 8]}>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[4, 4]}>
 						<Col span={24}>
 							<Text strong>Description</Text>
@@ -88,7 +88,7 @@ const DesignFinalization: React.FC<DesignFinalization> = ({ designData }) => {
 						</Col>
 					</Row>
 				</Col>
-				<Col>
+				<Col span={24}>
 					<Row gutter={[4, 4]}>
 						{designImages.map(image => {
 							return (
