@@ -1,5 +1,5 @@
 import { DetailedProject, DetailedProjectTeamMember, PaymentStatus } from "@customTypes/dashboardTypes";
-import { ProjectRoles } from "@customTypes/userType";
+import { ProjectRoles, Role } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import { Col, Collapse, Row, Tooltip, Typography } from "antd";
 import moment from "moment-timezone";
@@ -72,6 +72,10 @@ const TeamTooltip: React.FC<{
 		() => getValueSafely(() => groupedTeam[ProjectRoles["Senior 3D Artist"]].join(", "), ""),
 		[groupedTeam]
 	);
+	const assistantDesigners = useMemo(
+		() => getValueSafely(() => groupedTeam[ProjectRoles["Assistant Designer"]].join(", "), ""),
+		[groupedTeam]
+	);
 
 	const artistTeam = useMemo(() => getValueSafely(() => groupedTeam[ProjectRoles["3D Artist"]].join(", "), ""), [
 		groupedTeam,
@@ -92,6 +96,11 @@ const TeamTooltip: React.FC<{
 		[groupedRevisionTeam]
 	);
 
+	const revisionAssistantDesigners = useMemo(
+		() => getValueSafely(() => groupedRevisionTeam[ProjectRoles["Assistant Designer"]].join(", "), ""),
+		[groupedRevisionTeam]
+	);
+
 	const revisionAccountManagers = useMemo(
 		() => getValueSafely(() => groupedRevisionTeam[ProjectRoles["Account Manager"]].join(", "), ""),
 		[groupedRevisionTeam]
@@ -100,127 +109,163 @@ const TeamTooltip: React.FC<{
 	return (
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
-				<Text strong style={{ color: "white" }}>
-					Base Team
-				</Text>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
+				<Row>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							Account Managers:
+						<Text strong style={{ color: "white" }}>
+							Base Team
 						</Text>
 					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{accountManagers.length ? accountManagers : "Not Assigned"}
-						</Text>
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Account Managers:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{accountManagers.length ? accountManagers : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Designers:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{designerTeam.length ? designerTeam : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Assistant designers:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{assistantDesigners.length ? assistantDesigners : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Senior 3D Artists:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{seniorArtistsTeam.length ? seniorArtistsTeam : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
+					</Col>
+					<Col span={12}>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									3D Artists:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{artistTeam.length ? artistTeam : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
 					</Col>
 				</Row>
 			</Col>
 			<Col span={24}>
-				<Row gutter={[4, 4]}>
+				<SilentDivider />
+			</Col>
+			<Col span={24}>
+				<Row>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							Designers:
+						<Text strong style={{ color: "white" }}>
+							Revision Team
 						</Text>
 					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{designerTeam.length ? designerTeam : "Not Assigned"}
-						</Text>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							Senior 3D Artists:
-						</Text>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Account Managers:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{revisionAccountManagers.length ? revisionAccountManagers : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
 					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{seniorArtistsTeam.length ? seniorArtistsTeam : "Not Assigned"}
-						</Text>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							3D Artists:
-						</Text>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Designers:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{revisionDesignerTeam.length ? revisionDesignerTeam : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
 					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{artistTeam.length ? artistTeam : "Not Assigned"}
-						</Text>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<SilentDivider style={{ borderColor: "white" }} />
-			</Col>
-			<Col span={24}>
-				<Text strong style={{ color: "white" }}>
-					Revision Team
-				</Text>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							Account Managers:
-						</Text>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Assistant designers:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{revisionAssistantDesigners.length ? revisionAssistantDesigners : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
 					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{revisionAccountManagers.length ? revisionAccountManagers : "Not Assigned"}
-						</Text>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							Designers:
-						</Text>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									Senior 3D Artists:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{revisionSeniorArtistTeam.length ? revisionSeniorArtistTeam : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
 					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{revisionDesignerTeam.length ? revisionDesignerTeam : "Not Assigned"}
-						</Text>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
 					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							Senior 3D Artists:
-						</Text>
-					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{revisionSeniorArtistTeam.length ? revisionSeniorArtistTeam : "Not Assigned"}
-						</Text>
-					</Col>
-				</Row>
-			</Col>
-			<Col span={24}>
-				<Row gutter={[4, 4]}>
-					<Col span={24}>
-						<Text style={{ textTransform: "capitalize", color: "white" }} strong>
-							3D Artists:
-						</Text>
-					</Col>
-					<Col>
-						<Text style={{ textTransform: "capitalize", color: "white" }}>
-							{revisionArtistTeam.length ? revisionArtistTeam : "Not Assigned"}
-						</Text>
+						<Row gutter={[4, 4]}>
+							<Col span={24}>
+								<Text style={{ textTransform: "capitalize", color: "white" }} strong>
+									3D Artists:
+								</Text>
+							</Col>
+							<Col>
+								<Text style={{ textTransform: "capitalize", color: "white" }}>
+									{revisionArtistTeam.length ? revisionArtistTeam : "Not Assigned"}
+								</Text>
+							</Col>
+						</Row>
 					</Col>
 				</Row>
 			</Col>
@@ -243,7 +288,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		() =>
 			team
 				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles.Designer;
+					return getValueSafely(() => member.member.role, Role.Designer) === Role.Designer;
 				})
 				.map(teamMember => {
 					return getValueSafely(() => teamMember.member.profile.name, teamMember.memberName);
@@ -256,7 +301,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		() =>
 			team
 				.filter(member => {
-					return getValueSafely(() => member.member.role, ProjectRoles.Designer) === ProjectRoles["Account Manager"];
+					return getValueSafely(() => member.member.role, Role.Designer) === Role["Account Manager"];
 				})
 				.map(manager => {
 					return getValueSafely(() => manager.member.profile.name, manager.memberName);
@@ -323,7 +368,11 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								<Text strong>Assigned Team:</Text>
 							</Col>
 							<Col>
-								<Tooltip color='#006d75' title={<TeamTooltip team={team} revisionTeam={revisionTeam} />}>
+								<Tooltip
+									color='#006d75'
+									trigger='click'
+									title={<TeamTooltip team={team} revisionTeam={revisionTeam} />}
+								>
 									<ModifiedText textTransform='capitalize' type='secondary'>
 										{designerTeam || "Not assigned"}
 									</ModifiedText>

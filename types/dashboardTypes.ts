@@ -1,9 +1,10 @@
-import { ProjectRoles, Role, Status } from "./userType";
+import { Role, Status } from "./userType";
 
 export enum ProjectScope {
 	customer = Role.Customer,
 	designer = Role.Designer,
 	admin = Role.Admin,
+	assistantDesigner = Role.assistantDesigner,
 }
 
 export enum PhaseInternalNames {
@@ -271,7 +272,7 @@ export interface TeamMember {
 		lastName: string;
 		name: string;
 	};
-	role: ProjectRoles;
+	role: Role;
 	email: string;
 	status: Status;
 }

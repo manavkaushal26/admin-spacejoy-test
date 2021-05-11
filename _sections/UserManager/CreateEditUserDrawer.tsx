@@ -91,17 +91,19 @@ const CreateEditUserDrawer: React.FC<CreateEditUserDrawer> = ({ userId, onSave, 
 							</Form.Item>
 						</>
 					)}
-					<Form.Item name='role' label='Role' rules={[{ required: true }]}>
-						<Select>
-							{Object.entries(Role).map(([label, value]) => {
-								return (
-									<Select.Option value={value} key={value}>
-										{label}
-									</Select.Option>
-								);
-							})}
-						</Select>
-					</Form.Item>
+					{userData?.role !== Role.Customer && (
+						<Form.Item name='role' label='Role' rules={[{ required: true }]}>
+							<Select>
+								{Object.entries(Role).map(([label, value]) => {
+									return (
+										<Select.Option value={value} key={value}>
+											{label}
+										</Select.Option>
+									);
+								})}
+							</Select>
+						</Form.Item>
+					)}
 					<Form.Item>
 						<Button htmlType='submit' type='primary'>
 							Save
