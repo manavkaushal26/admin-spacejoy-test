@@ -47,7 +47,7 @@ const intialState: DesignerTabState = {
 
 const fetchDesigners = async (setLoading, state: DesignerTabState, dispatch): Promise<void> => {
 	setLoading(true);
-	const endpoint = `${userApi()}?skip=${(state.currentPage - 1) * 6}&limit=6`;
+	const endpoint = `${userApi()}?skip=${(state.currentPage - 1) * 12}&limit=12`;
 	const responseData = await fetcher({
 		endPoint: endpoint,
 		method: "POST",
@@ -274,7 +274,7 @@ const ProjectTeamTab: React.FC<DesignerTabInterface> = ({ type, projectId }): JS
 						<Col span={24}>
 							<Row justify='center'>
 								<Pagination
-									pageSize={6}
+									pageSize={12}
 									hideOnSinglePage
 									current={state.currentPage}
 									onChange={onPageChange}

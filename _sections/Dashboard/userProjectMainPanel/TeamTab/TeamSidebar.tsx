@@ -94,6 +94,11 @@ export default function TeamSidebar({
 		state.assignedTeam,
 	]);
 
+	const assignedAssistantDesigners = useMemo(
+		() => getValueSafely(() => groupedTeam[ProjectRoles["Assistant Designer"]], []),
+		[state.assignedTeam]
+	);
+
 	return (
 		<Row>
 			<Col span={24}>
@@ -191,6 +196,54 @@ export default function TeamSidebar({
 				</Row>
 			</Col>
 			<Col span={24}>
+				<SilentDivider />
+			</Col>
+			<Col span={24}>
+				<Row>
+					<Col span={24}>
+						<Text strong>Assistant Designers</Text>
+					</Col>
+					<Col span={24}>
+						<SilentDivider />
+					</Col>
+					<Col span={24}>
+						<Row gutter={[8, 8]}>
+							{assignedAssistantDesigners.length ? (
+								assignedAssistantDesigners.map(teamMember => (
+									<Col lg={6} md={8} sm={12} key={teamMember._id}>
+										<NoBodyCard
+											size='small'
+											title={<SelectedTeamMemberCard teamMember={teamMember} />}
+											extra={
+												<Checkbox
+													onChange={e => {
+														onDesignerSelect(teamMember._id, e.target.checked);
+													}}
+													checked={selectedDesignersId
+														.map(member => {
+															return member._id;
+														})
+														.includes(teamMember._id)}
+												/>
+											}
+										/>
+									</Col>
+								))
+							) : (
+								<Col span={24}>
+									<Row justify='center'>
+										<Empty description='No Assistant designers assigned' />
+									</Row>
+								</Col>
+							)}
+						</Row>
+					</Col>
+				</Row>
+			</Col>
+			<Col span={24}>
+				<SilentDivider />
+			</Col>
+			<Col span={24}>
 				<Row>
 					<Col span={24}>
 						<Text strong>Senior 3D Artists</Text>
@@ -224,7 +277,7 @@ export default function TeamSidebar({
 							) : (
 								<Col span={24}>
 									<Row justify='center' align='middle'>
-										<Empty description='No Senior Designers Assigned' />
+										<Empty description='No Senior designers assigned' />
 									</Row>
 								</Col>
 							)}
@@ -232,7 +285,9 @@ export default function TeamSidebar({
 					</Col>
 				</Row>
 			</Col>
-
+			<Col span={24}>
+				<SilentDivider />
+			</Col>
 			<Col span={24}>
 				<Row>
 					<Col span={24}>
@@ -267,7 +322,7 @@ export default function TeamSidebar({
 							) : (
 								<Col span={24}>
 									<Row justify='center'>
-										<Empty description='No Designers Assigned' />
+										<Empty description='No 3D artists assigned' />
 									</Row>
 								</Col>
 							)}

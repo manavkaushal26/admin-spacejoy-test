@@ -54,6 +54,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 			Role.BlogAdmin,
 			Role["Senior 3D Artist"],
 			Role.Analyst,
+			Role["Assistant Designer"],
 		],
 	},
 	{
@@ -71,6 +72,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 			Role.Owner,
 			Role["Senior 3D Artist"],
 			Role.Analyst,
+			Role["Assistant Designer"],
 		],
 	},
 	{
@@ -91,6 +93,7 @@ const launchpadLocations: LaunchpadLocations[] = [
 			Role.Owner,
 			Role["Senior 3D Artist"],
 			Role.Analyst,
+			Role["Assistant Designer"],
 		],
 	},
 	{

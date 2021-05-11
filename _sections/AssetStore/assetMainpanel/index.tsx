@@ -427,8 +427,9 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 					<Col>
 						<Pagination
 							current={pageCount}
-							defaultPageSize={35}
+							pageSize={36}
 							hideOnSinglePage
+							showSizeChanger={false}
 							total={totalCount}
 							onChange={(page): void => setPageCount(page)}
 						/>
