@@ -4,7 +4,7 @@ export enum ProjectScope {
 	customer = Role.Customer,
 	designer = Role.Designer,
 	admin = Role.Admin,
-	assistantDesigner = Role.assistantDesigner,
+	assistantDesigner = Role["Assistant Designer"],
 }
 
 export enum PhaseInternalNames {
