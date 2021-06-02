@@ -8,7 +8,6 @@ import {
 	FileImageOutlined,
 	HeatMapOutlined,
 	LinkOutlined,
-	RedoOutlined,
 	UserOutlined,
 } from "@ant-design/icons";
 import { getSingleAssetApi } from "@api/designApi";
@@ -18,9 +17,6 @@ import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
-import AssetAvailability from "@utils/componentUtils/AssetAvailable";
-import PriceData from "@utils/componentUtils/AssetPrice";
-import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import { Button, Col, message, notification, Popconfirm, Result, Row, Skeleton, Typography } from "antd";
 import moment from "moment-timezone";
@@ -94,19 +90,19 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 		assetEntryId,
 	]);
 
-	const { scrapedData, triggerScraping, scraping, error: scrapingError } = useScraper(
-		selectedAssetId,
-		[selectedAssetId],
-		true
-	);
+	// const { scrapedData, triggerScraping, scraping, error: scrapingError } = useScraper(
+	// 	selectedAssetId,
+	// 	[selectedAssetId],
+	// 	true
+	// );
 
-	useEffect(() => {
-		if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
-	}, [scraping]);
+	// useEffect(() => {
+	// 	if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
+	// }, [scraping]);
 
-	useEffect(() => {
-		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
-	}, [scrapingError]);
+	// useEffect(() => {
+	// 	if (scrapingError) notification.error({ message: "Failed to scrape Data" });
+	// }, [scrapingError]);
 
 	const [historyOpen, setHistoryOpen] = useState(false);
 
@@ -326,19 +322,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 												</Col>
 											</Row>
 										</Col>
-										<Col>
-											<Button
-												size='small'
-												type='link'
-												onClick={triggerScraping}
-												icon={<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />}
-											>
-												{scrapedData ? "Refetch Data" : "Fetch Data"}
-											</Button>
-										</Col>
 									</Row>
 								</Col>
-								<Col span={24}>
+								{/* <Col span={24}>
 									<Row gutter={[8, 8]}>
 										<Col>
 											<Text strong>Current Price:</Text>
@@ -354,20 +340,15 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										</Col>
 									</Row>
 								</Col>
+								 */}
 								<Col>
 									<Row gutter={[8, 8]}>
 										<Col>
-											<Text strong>Availability</Text>:
+											<Text strong>Availability score</Text>:
 										</Col>
 
 										<Col>
-											<Text>
-												{scrapedData ? (
-													<AssetAvailability scrapedData={scrapedData[selectedAssetData?._id]} />
-												) : (
-													"Not Scraped Yet"
-												)}
-											</Text>
+											<Text>{selectedAssetData?.scraper?.availabilityScore}</Text>
 										</Col>
 									</Row>
 								</Col>

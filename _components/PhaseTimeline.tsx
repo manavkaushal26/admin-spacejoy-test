@@ -7,8 +7,6 @@ import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
 const PhaseTimeline: React.FC<{ completedPhases: Phase[]; currentPhase?: Phase; projectId: string }> = ({
-	completedPhases,
-	currentPhase,
 	projectId,
 }) => {
 	const [timeline, setTimeline] = useState([]);
@@ -51,6 +49,7 @@ const PhaseTimeline: React.FC<{ completedPhases: Phase[]; currentPhase?: Phase; 
 										</Row>
 									}
 								/>
+								<DetailText name='Comments' value={phase.comments.join(", ")} />
 								<DetailText
 									name='Resumed on'
 									value={phase.resumedAt ? moment(phase.resumedAt).format("MM-DD-YYYY") : "Not yet resumed"}

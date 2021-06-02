@@ -2,7 +2,7 @@ import { PlusOutlined, RollbackOutlined } from "@ant-design/icons";
 import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import AssetCartModal from "@sections/AssetStore/assetCart";
-import { assetStoreInitialState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
+import { assetStoreInitialState, AssetStoreState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
@@ -10,6 +10,7 @@ import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
+import { getSessionStorageValue, setSessionStorageValue } from "@utils/storageUtils";
 import { Button, Col, message, Row, Skeleton, Spin } from "antd";
 import { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
@@ -87,7 +88,10 @@ const FAB = styled.button`
 `;
 
 const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntryId }): JSX.Element => {
-	const [state, dispatch] = useReducer(reducer, assetStoreInitialState);
+	const sessionStoreState = useMemo<AssetStoreState>(() => {
+		return getSessionStorageValue("assetFilters");
+	}, []);
+	const [state, dispatch] = useReducer(reducer, { ...assetStoreInitialState, ...sessionStoreState });
 	const Router = useRouter();
 	// const [editAssetData, setEditAssetData] = useState<AssetType>(null);
 
@@ -109,6 +113,10 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 		}
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: false });
 	};
+
+	useEffect(() => {
+		setSessionStorageValue<AssetStoreState>("assetFilters", state);
+	}, [state]);
 
 	useEffect(() => {
 		if (projectId) {
@@ -171,12 +179,12 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 		}
 		if (!!projectId && !!designId) {
 			Router.push(
-				{ pathname: "/dashboard", query: { designId, pid: projectId } },
-				`/dashboard/pid/${projectId}/did/${designId}`
+				{ pathname: "/dashboard", query: { designId, pid: projectId, activeKey: "moodboard" } },
+				`/dashboard/pid/${projectId}/did/${designId}?activeKey=moodboard`
 			);
 			return;
 		}
-		Router.back();
+		Router.push("/launchpad");
 	};
 
 	const toggleCart = (): void => {

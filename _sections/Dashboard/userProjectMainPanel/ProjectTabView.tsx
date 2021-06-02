@@ -7,7 +7,7 @@ import {
 	HumanizeDesignPhases,
 	PhaseCustomerNames,
 	PhaseInternalNames,
-	RevisionForm
+	RevisionForm,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import MoodboardTab from "@sections/Dashboard/userProjectMainPanel/moodboardTab";
@@ -24,6 +24,7 @@ import DesignFooter from "./DesignFooter.js";
 import NotesTab from "./NotesTab";
 import ProjectDesignInteractionPanel from "./ProjectDesignInteractionPanel";
 import CustomerFeedbackTab from "./ProjectDesignInteractionPanel/CustomerFeedbackTab";
+import CustomerRevisionData from "./ProjectDesignInteractionPanel/CustomerRevisionData";
 import TeamTab from "./TeamTab";
 const { TabPane } = Tabs;
 
@@ -344,6 +345,11 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 							<TabPane tab='Design Footer' key='design_footer'>
 								<DesignFooter designData={designData} />
 							</TabPane>
+							{revisionFormData?._id && (
+								<Tabs.TabPane tab='Revision' key='customerFeedback'>
+									<CustomerRevisionData revisionData={revisionFormData} updateRevisionData={updateRevisionData} />
+								</Tabs.TabPane>
+							)}
 						</ScrollableTabs>
 					</Col>
 					<EditDesignModal

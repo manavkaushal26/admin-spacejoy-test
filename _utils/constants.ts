@@ -11,6 +11,7 @@ export const allowedRoles = [
 	Role.BlogAdmin,
 	Role.Analyst,
 	Role["Senior 3D Artist"],
+	Role["Assistant Designer"],
 ];
 
 export const AvatarColorsList = [

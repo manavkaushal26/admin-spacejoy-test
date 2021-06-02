@@ -110,6 +110,7 @@ export interface AssetType {
 		mountType: MountTypes;
 		clampValue: -1 | 0;
 	};
+	scraper?: { availabilityScore?: number };
 	available: boolean;
 	dimension: {
 		depth: number;
