@@ -8,7 +8,7 @@ import {
 	QuizStateLabels,
 	RoomNameSearch,
 } from "@customTypes/dashboardTypes";
-import { Status } from "@customTypes/userType";
+import { Role, Status } from "@customTypes/userType";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Button, Checkbox, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
@@ -50,7 +50,7 @@ const TabSearch: React.FC<{
 				method: "POST",
 				body: {
 					data: {
-						role: { search: "array", value: ["designer", "account manager"] },
+						role: { search: "array", value: [Role.Designer, Role["Account Manager"], Role["Assistant Designer"]] },
 					},
 				},
 			});
