@@ -3,6 +3,8 @@ import {
 	CustomerType,
 	HumanizePhaseInternalNames,
 	PhaseInternalNames,
+	ProjectSelectionTypeLabel,
+	ProjectSelectionTypeValues,
 	QuizState,
 	QuizStateLabels,
 } from "@customTypes/dashboardTypes";
@@ -31,6 +33,7 @@ interface SidebarCard {
 	quizCompletionStatus: QuizState;
 	onSelect: (userId: CustomerType | string) => void;
 	projectCustomer: CustomerType | string;
+	projectSelectionType: ProjectSelectionTypeValues;
 }
 
 const HighlightedSpan = styled.span<{ type: string }>`
@@ -104,6 +107,7 @@ const SidebarCard: React.FC<SidebarCard> = ({
 	quizCompletionStatus,
 	isDelayed,
 	onSelect,
+	projectSelectionType,
 	projectCustomer,
 }) => {
 	return (
@@ -139,11 +143,14 @@ const SidebarCard: React.FC<SidebarCard> = ({
 									<Col span={24}>
 										<small>
 											<Text>{subHeading || "Room design"}</Text>
-											{endTime && (
+											<br />
+											{endTime ? (
 												<>
-													<Text> / Deliver by : </Text>
+													<Text>Deliver by : </Text>
 													<Text strong>{endTime.format("MM-DD-YYYY")}</Text>
 												</>
+											) : (
+												<Text strong>Not started</Text>
 											)}
 										</small>
 									</Col>
@@ -178,6 +185,10 @@ const SidebarCard: React.FC<SidebarCard> = ({
 									<Col span={24}>
 										<Text strong>Quiz Status: </Text>
 										<Text>{QuizStateLabels[quizCompletionStatus]}</Text>
+									</Col>
+									<Col span={24}>
+										<Text strong>Project type: </Text>
+										<Text>{ProjectSelectionTypeLabel[projectSelectionType || "default"]}</Text>
 									</Col>
 								</Row>
 							</Col>

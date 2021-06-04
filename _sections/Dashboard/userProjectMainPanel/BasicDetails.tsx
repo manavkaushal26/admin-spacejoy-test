@@ -1,4 +1,9 @@
-import { DetailedProject, DetailedProjectTeamMember, PaymentStatus } from "@customTypes/dashboardTypes";
+import {
+	DetailedProject,
+	DetailedProjectTeamMember,
+	PaymentStatus,
+	ProjectSelectionTypeLabel,
+} from "@customTypes/dashboardTypes";
 import { ProjectRoles, Role } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import { Col, Collapse, Row, Tooltip, Typography } from "antd";
@@ -274,7 +279,7 @@ const TeamTooltip: React.FC<{
 };
 
 const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
-	const { _id, name, createdAt, team, customer, startedAt, revisionTeam } = projectData;
+	const { _id, name, createdAt, team, customer, startedAt, revisionTeam, projectSelectionType } = projectData;
 
 	const items = getValueSafely(
 		() =>
@@ -357,7 +362,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 							</Col>
 							<Col>
 								<ModifiedText textTransform='capitalize' type='secondary'>
-									{paymentStatus}
+									{projectSelectionType === "" ? paymentStatus : "Free"}
 								</ModifiedText>
 							</Col>
 						</Row>
@@ -368,11 +373,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								<Text strong>Assigned Team:</Text>
 							</Col>
 							<Col>
-								<Tooltip
-									color='#006d75'
-									trigger='click'
-									title={<TeamTooltip team={team} revisionTeam={revisionTeam} />}
-								>
+								<Tooltip color='#006d75' title={<TeamTooltip team={team} revisionTeam={revisionTeam} />}>
 									<ModifiedText textTransform='capitalize' type='secondary'>
 										{designerTeam || "Not assigned"}
 									</ModifiedText>
@@ -437,9 +438,11 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								<Text strong>Package:</Text>
 							</Col>
 							<Col>
-								<ModifiedText textTransform='capitalize' type='secondary'>
-									{getValueSafely(() => items.join(", "), "N/A")}
-								</ModifiedText>
+								{ProjectSelectionTypeLabel[projectSelectionType] || (
+									<ModifiedText textTransform='capitalize' type='secondary'>
+										{getValueSafely(() => items.join(", "), "N/A")}
+									</ModifiedText>
+								)}
 							</Col>
 						</Row>
 					</Col>

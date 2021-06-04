@@ -8,7 +8,12 @@ import {
 } from "@ant-design/icons";
 import { delayProjectApi, editProjectApi, startProjectApi } from "@api/projectApi";
 import ProgressBar from "@components/ProgressBar";
-import { DetailedProject, HumanizePhaseInternalNames, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import {
+	DetailedProject,
+	HumanizePhaseInternalNames,
+	PhaseInternalNames,
+	ProjectSelectionTypeLabel,
+} from "@customTypes/dashboardTypes";
 import PauseProjectModal from "@sections/Dashboard/ProjectPauseModal";
 import {
 	convertDaysToMilliseconds,
@@ -124,6 +129,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 		customer,
 		startedAt,
 		endedAt,
+		projectSelectionType,
 		currentPhase: {
 			name: { internalName: phase },
 			startTime: phaseStartTime,
@@ -283,7 +289,7 @@ const ProjectSummary: React.FC<ProjectSummaryProps> = ({
 							<Row>
 								<Col span={24}>
 									<SilentTitle ellipsis level={3}>
-										{displayName}
+										{displayName} ({ProjectSelectionTypeLabel[projectSelectionType || "default"]})
 									</SilentTitle>
 								</Col>
 								<Col span={24}>

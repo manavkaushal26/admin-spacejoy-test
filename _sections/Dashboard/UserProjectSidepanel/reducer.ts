@@ -1,6 +1,7 @@
 import { PhaseInternalNames, QuizState, UserProjectType } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import moment from "moment-timezone";
+import { ProjectSelectionTypeValues } from "./../../../types/dashboardTypes";
 
 export interface UserProjectSidePanelState {
 	nameSearchText: string;
@@ -9,6 +10,7 @@ export interface UserProjectSidePanelState {
 	pageCount: number;
 	hasMore: boolean;
 	sortOrder: 1 | -1;
+	projectSelectionType: ProjectSelectionTypeValues | "all";
 	sortBy: SortFields;
 	currentTab: string;
 	status: Status;
@@ -66,6 +68,7 @@ export enum SortFields {
 export const UserProjectSidePanelInitialState: UserProjectSidePanelState = {
 	nameSearchText: "",
 	designerSearchText: "",
+	projectSelectionType: "all",
 	data: [],
 	pageCount: 0,
 	phase: [],

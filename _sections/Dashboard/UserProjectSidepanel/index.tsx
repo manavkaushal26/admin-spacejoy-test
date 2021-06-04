@@ -1,5 +1,10 @@
 import { searchProjectsApi } from "@api/projectApi";
-import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
+import {
+	PhaseCustomerNames,
+	PhaseInternalNames,
+	ProjectSelectionTypeValues,
+	UserProjectType,
+} from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
@@ -29,6 +34,7 @@ interface GetProjectSearchBodyType {
 	skip?: number;
 	limit?: number;
 	pause?: boolean;
+	projectSelectionType: ProjectSelectionTypeValues | "all";
 }
 
 export const getProjectSearchBody = ({
@@ -47,10 +53,14 @@ export const getProjectSearchBody = ({
 	skip,
 	limit,
 	pause,
+	projectSelectionType,
 }: GetProjectSearchBodyType): {
 	filter: Record<
 		string,
-		Record<string, string | PhaseInternalNames[] | string[] | boolean> | string | PhaseInternalNames[]
+		| Record<string, string | PhaseInternalNames[] | string[] | boolean>
+		| string
+		| PhaseInternalNames[]
+		| ProjectSelectionTypeValues
 	>;
 } => {
 	const startedAtMap = startedAt?.map(value => {
@@ -88,6 +98,16 @@ export const getProjectSearchBody = ({
 			"pause": {
 				search: "single",
 				value: pause,
+			},
+			...{
+				...(projectSelectionType === "all"
+					? {}
+					: {
+							projectSelectionType: {
+								search: "single",
+								value: projectSelectionType,
+							},
+					  }),
 			},
 			"email": email,
 			...(quizStatus ? { "quizStatus.currentState": { search: "single", value: quizStatus } } : {}),
@@ -171,6 +191,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			skip: startIndex,
 			limit: endIndex - startIndex + 1,
 			pause: state.pause,
+			projectSelectionType: state.projectSelectionType,
 		});
 
 		const resData = await fetcher({
