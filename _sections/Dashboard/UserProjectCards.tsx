@@ -14,6 +14,7 @@ const UserProjectCard: React.FC<{
 		_id: projectId,
 		name: room,
 		startedAt,
+		projectSelectionType,
 		customerName,
 		currentPhase: {
 			name: { internalName: phase },
@@ -66,6 +67,7 @@ const UserProjectCard: React.FC<{
 			status={status}
 			onClick={handleSelectCard}
 			onSelect={setCurrentUserId}
+			projectSelectionType={projectSelectionType}
 			selectedId={selectedUser}
 			quizCompletionStatus={quizCompletionStatus}
 			projectCustomer={customerId}

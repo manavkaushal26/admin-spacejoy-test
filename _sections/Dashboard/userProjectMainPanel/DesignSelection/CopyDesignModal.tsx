@@ -1,5 +1,6 @@
 import { createDesignApi, designCopyApi } from "@api/designApi";
 import { DetailedProject, PhaseInternalNames } from "@customTypes/dashboardTypes";
+import useAuth from "@utils/authContext";
 import fetcher from "@utils/fetcher";
 import { Button, Col, Input, message, Modal, Row, Select, Typography } from "antd";
 import React, { useState } from "react";
@@ -40,6 +41,8 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 	copyDesignModalVisible,
 }) => {
 	const [selectedDesignId, setSelectedDesignId] = useState<string>(null);
+	const { user } = useAuth();
+
 	const [roomName, setRoomName] = useState<string>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -72,6 +75,12 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 				data: {
 					name: roomName,
 					project: projectData._id,
+					owner:
+						!isDIY &&
+						projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision &&
+						selectedDesignId !== null
+							? user.id
+							: projectData?.customer?._id,
 				},
 			},
 		});
@@ -89,7 +98,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 		projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
 			? "Revision Room Name"
 			: "Add Design";
-
+	const isDIY = projectData?.projectSelectionType === "diy";
 	return (
 		<Modal
 			visible={copyDesignModalVisible}

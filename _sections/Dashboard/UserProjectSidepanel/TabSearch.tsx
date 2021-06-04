@@ -4,6 +4,9 @@ import {
 	HumanizeDesignPhases,
 	HumanizeNewProjectPhaseInternalNames,
 	PhaseInternalNames,
+	ProjectSelectionTypeEnum,
+	ProjectSelectionTypeLabel,
+	ProjectSelectionTypeValues,
 	QuizStateArray,
 	QuizStateLabels,
 	RoomNameSearch,
@@ -11,7 +14,7 @@ import {
 import { Role, Status } from "@customTypes/userType";
 import { debounce } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Checkbox, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
+import { Checkbox, Col, DatePicker, Input, InputNumber, Row, Select, Spin, Switch, Typography } from "antd";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
@@ -40,7 +43,6 @@ const TabSearch: React.FC<{
 	const [selectDesigner, setSelectDesigner] = useState<string>();
 	const [isRevisionFilterApplied, setRevisionFilter] = useState<boolean>(false);
 	const [pausedProjectFilter, setPausedProjectFilter] = useState<boolean>(false);
-
 	const fetchDesignerNames = async (): Promise<void> => {
 		const endPoint = `${userApi()}?limit=50`;
 		setFetching(true);
@@ -144,7 +146,7 @@ const TabSearch: React.FC<{
 
 	const handleSelectFilter = (
 		value,
-		type: "phase" | "name" | "sort" | "status" | "quizStatus" | "designPhase"
+		type: "phase" | "name" | "sort" | "status" | "quizStatus" | "designPhase" | "projectSelectionType"
 	): void => {
 		if (type === "sort") {
 			setSelectedSort(JSON.parse(value));
@@ -206,11 +208,11 @@ const TabSearch: React.FC<{
 		<Row gutter={[8, 8]}>
 			<Col span={24}>
 				<Row justify='space-between'>
-					<Col>
+					{/* <Col>
 						<Button size='small' type='primary' onClick={downloadCSV}>
 							<small>Download as JSON</small>
 						</Button>
-					</Col>
+					</Col> */}
 					<Col>
 						<SilentButton
 							onClick={(): void => {
@@ -228,6 +230,32 @@ const TabSearch: React.FC<{
 			</Col>
 			<Col span={24}>
 				<Row gutter={[4, 16]}>
+					<Col span={24}>
+						<Row gutter={[0, 4]}>
+							<Col span={24}>
+								<Text strong>Project type</Text>
+							</Col>
+							<Col span={24}>
+								<Select
+									style={{ width: "100%" }}
+									placeholder='Project Type'
+									value={state.projectSelectionType}
+									onChange={data => handleSelectFilter(data, "projectSelectionType")}
+								>
+									<Option key={"all"} value={"all"}>
+										All
+									</Option>
+									{Object.values(ProjectSelectionTypeEnum).map(value => {
+										return (
+											<Option key={ProjectSelectionTypeLabel[value]} value={ProjectSelectionTypeValues[value]}>
+												{ProjectSelectionTypeLabel[value]}
+											</Option>
+										);
+									})}
+								</Select>
+							</Col>
+						</Row>
+					</Col>
 					<Col span={24}>
 						<Row gutter={[0, 4]}>
 							<Col span={24}>

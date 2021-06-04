@@ -115,6 +115,23 @@ export interface CustomerType {
 	id: string;
 }
 
+export enum ProjectSelectionTypeEnum {
+	default = "default",
+	inspiration = "inspiration",
+	diy = "diy",
+}
+
+export enum ProjectSelectionTypeLabel {
+	"default" = "Paid",
+	inspiration = "Inspiration",
+	diy = "DIY",
+}
+
+export enum ProjectSelectionTypeValues {
+	default = "",
+	inspiration = "inspiration",
+	diy = "diy",
+}
 export interface UserProjectType {
 	createdAt: string;
 	endedAt: string;
@@ -124,6 +141,7 @@ export interface UserProjectType {
 	status: Status;
 	name: string;
 	customerName: string;
+	projectSelectionType: ProjectSelectionTypeValues;
 	quizStatus: {
 		currentState: QuizState;
 	};
@@ -310,6 +328,7 @@ export interface DetailedProject {
 	chat: [];
 	_id: string;
 	name: string;
+	projectSelectionType: ProjectSelectionTypeValues;
 	customer: UserData;
 	currentPhase: Phase;
 	order: Order;
