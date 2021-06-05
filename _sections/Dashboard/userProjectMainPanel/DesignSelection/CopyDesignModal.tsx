@@ -61,6 +61,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 			setSelectedDesignId(null);
 		}
 	};
+	const isDIY = projectData?.projectSelectionType === "diy";
 
 	const onSubmit = async (): Promise<void> => {
 		setLoading(true);
@@ -75,12 +76,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 				data: {
 					name: roomName,
 					project: projectData._id,
-					owner:
-						!isDIY &&
-						projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision &&
-						selectedDesignId !== null
-							? user.id
-							: projectData?.customer?._id,
+					owner: !isDIY ? user.id : projectData?.customer?._id,
 				},
 			},
 		});
@@ -98,7 +94,6 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 		projectData.currentPhase.name.internalName === PhaseInternalNames.designsInRevision
 			? "Revision Room Name"
 			: "Add Design";
-	const isDIY = projectData?.projectSelectionType === "diy";
 	return (
 		<Modal
 			visible={copyDesignModalVisible}
