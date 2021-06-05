@@ -34,7 +34,7 @@ interface GetProjectSearchBodyType {
 	skip?: number;
 	limit?: number;
 	pause?: boolean;
-	projectSelectionType: ProjectSelectionTypeValues | "all";
+	projectSelectionType?: ProjectSelectionTypeValues | "all";
 }
 
 export const getProjectSearchBody = ({
