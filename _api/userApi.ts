@@ -39,3 +39,7 @@ export const fetchChatAssets = (project: string, design: string): string => {
 		return `/v1/userProjectDiscussions/projectChat?project=${project}`;
 	}
 };
+
+export const broadcastMessageApi = (): string => {
+	return "/v1/userProjectDiscussions/broadcastMessage";
+};
