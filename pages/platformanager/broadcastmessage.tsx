@@ -7,6 +7,7 @@ import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, DatePicker, Form, Input, Modal, notification, Row, Typography } from "antd";
+import moment from "moment-timezone";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -21,11 +22,16 @@ const formatToSend = data => {
 	dataToSend.end = data.dateRange[1].toISOString();
 	return dataToSend;
 };
+
+function disabledDate(current) {
+	// Can not select days before today and today
+	return current && current > moment().endOf("day");
+}
+
 const BroadcastMessage: NextPage = () => {
 	const router = useRouter();
 
 	const sendData = async data => {
-		console.log("here", data);
 		const endPoint = broadcastMessageApi();
 		try {
 			const result = await fetcher({ endPoint, method: "POST", body: formatToSend(data) });
@@ -71,7 +77,11 @@ const BroadcastMessage: NextPage = () => {
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
-							<Form labelCol={{ span: 24 }} initialValues={{ message: "", dateRange: [] }} onFinish={confirmData}>
+							<Form
+								labelCol={{ span: 24 }}
+								initialValues={{ message: "", dateRange: [moment().startOf("week"), moment()] }}
+								onFinish={confirmData}
+							>
 								<Row>
 									<Col span={24}>
 										<Form.Item name='message' label='Message to customer' rules={[{ required: true }]}>
@@ -80,7 +90,21 @@ const BroadcastMessage: NextPage = () => {
 									</Col>
 									<Col span={24}>
 										<Form.Item name='dateRange' label='Send to projects created between:' rules={[{ required: true }]}>
-											<DatePicker.RangePicker />
+											<DatePicker.RangePicker
+												disabledDate={disabledDate}
+												ranges={{
+													"This week": [moment().startOf("week"), moment()],
+													"Last week": [
+														moment().startOf("week").subtract(1, "week"),
+														moment().startOf("week").subtract(1, "day"),
+													],
+													"This Month": [moment().startOf("month"), moment()],
+													"Last Month": [
+														moment().startOf("month").subtract(1, "month"),
+														moment().startOf("month").subtract(1, "day"),
+													],
+												}}
+											/>
 										</Form.Item>
 									</Col>
 									<Col span={24}>
