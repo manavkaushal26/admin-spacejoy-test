@@ -16,8 +16,18 @@ import React, { useState } from "react";
 import { LoudPaddingDiv } from ".";
 const { Title, Text } = Typography;
 
-const stripDomainInLink = str => {
-	return str.replace("https://res.cloudinary.com/spacejoy/image/upload/", "").replace("https://www.spacejoy.com");
+const stripDomainInLink = (str: string) => {
+	const trimmedString = str
+		.replace("https://res.cloudinary.com/spacejoy/image/upload/", "")
+		.replace("https://www.spacejoy.com", "")
+		.replace("http://www.spacejoy.com", "")
+		.replace("www.spacejoy.com", "")
+		.replace("spacejoy.com", "");
+
+	if (!trimmedString.startsWith("/") && trimmedString.length > 0) {
+		return `/${trimmedString}`;
+	}
+	return trimmedString;
 };
 
 const initialValues = {
@@ -60,6 +70,7 @@ const initialValues = {
 		afterCoupon: "",
 		pulseDot: false,
 		timerVisible: false,
+		link: "",
 	},
 };
 
@@ -144,11 +155,7 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp1Alt"]}
-																				label='Alt tag'
-																				normalize={stripDomainInLink}
-																			>
+																			<Form.Item name={["homepage", "hp1Alt"]} label='Alt tag'>
 																				<Input />
 																			</Form.Item>
 																		</Col>
@@ -186,11 +193,7 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp2Alt"]}
-																				label='Alt tag'
-																				normalize={stripDomainInLink}
-																			>
+																			<Form.Item name={["homepage", "hp2Alt"]} label='Alt tag'>
 																				<Input />
 																			</Form.Item>
 																		</Col>
@@ -219,11 +222,7 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp3Alt"]}
-																				label='Alt tag'
-																				normalize={stripDomainInLink}
-																			>
+																			<Form.Item name={["homepage", "hp3Alt"]} label='Alt tag'>
 																				<Input />
 																			</Form.Item>
 																		</Col>
@@ -265,11 +264,7 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["injectBanner", "alt"]}
-																				label='Alt tag'
-																				normalize={stripDomainInLink}
-																			>
+																			<Form.Item name={["injectBanner", "alt"]} label='Alt tag'>
 																				<Input />
 																			</Form.Item>
 																		</Col>
@@ -320,11 +315,7 @@ const SitemapManager: NextPage = () => {
 																			</Form.Item>
 																		</Col>
 																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["cartBanner", "alt"]}
-																				label='Alt tag'
-																				normalize={stripDomainInLink}
-																			>
+																			<Form.Item name={["cartBanner", "alt"]} label='Alt tag'>
 																				<Input />
 																			</Form.Item>
 																		</Col>
@@ -437,6 +428,15 @@ const SitemapManager: NextPage = () => {
 																		</Col>
 																		<Col sm={24} md={12}>
 																			<Form.Item name={["broadcast", "afterCoupon"]} label='After Highlighted text'>
+																				<Input />
+																			</Form.Item>
+																		</Col>
+																		<Col span={24}>
+																			<Form.Item
+																				name={["broadcast", "link"]}
+																				label='Broadcast Link to'
+																				normalize={stripDomainInLink}
+																			>
 																				<Input />
 																			</Form.Item>
 																		</Col>

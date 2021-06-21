@@ -68,9 +68,9 @@ function index({ broadcastingStripData }) {
 				{broadcastingStripData?.beforePulseDot}
 				{broadcastingStripData?.pulseDot && <PulseDot />}
 				{broadcastingStripData?.afterPulseDot}
-				<span className=''>
+				<span>
 					{broadcastingStripData?.isHighlightCoupon ? " Use code:" : ""}
-					<strong className='text-red'> {broadcastingStripData?.highlightText}</strong>
+					<strong> {broadcastingStripData?.highlightText}</strong>
 				</span>
 				<span> {broadcastingStripData?.afterCoupon}</span>
 				&nbsp;
