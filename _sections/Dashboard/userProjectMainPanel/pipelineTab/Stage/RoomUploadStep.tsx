@@ -46,7 +46,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 	const [roomFileList, setRoomFileList] = useState<UploadFile<any>[]>([]);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 	const [isGlobal, setIsGlobal] = useState<boolean>(false);
-	const [isNewRoom, setIsNewRoom] = useState<boolean>(!projectId);
+	const [isNewRoom, setIsNewRoom] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (designData) {
@@ -153,6 +153,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		} else if (uploadFileType === "source") {
 			setSourceFileList(fileList);
 		}
+		setIsNewRoom(false);
 	};
 
 	const room = useMemo(() => designData.room, [designData.room]);
@@ -336,18 +337,15 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 											<Radio style={radioStyle} value>
 												<Row>Create New Room</Row>
 											</Radio>
-											{!!projectId && (
-												<Radio style={radioStyle} value={false}>
-													<Row>
-														<Col>
-															<Text>
-																Update Current Room{" "}
-																<small>Note:- All Designs with the same room will be affected</small>
-															</Text>
-														</Col>
-													</Row>
-												</Radio>
-											)}
+											<Radio style={radioStyle} value={false}>
+												<Row>
+													<Col>
+														<Text>
+															Update Current Room <small>Note:- All Designs with the same room will be affected</small>
+														</Text>
+													</Col>
+												</Row>
+											</Radio>
 										</Radio.Group>
 									</Col>
 								</Row>

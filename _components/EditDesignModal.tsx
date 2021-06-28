@@ -117,7 +117,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 							<Text>Title</Text>
 						</Col>
 						<Col span={24}>
-							<Input onChange={handleChange} placeholder="Title" value={title} name="title" />
+							<Input onChange={handleChange} placeholder='Title' value={title} name='title' />
 						</Col>
 					</Row>
 				</Col>
@@ -129,7 +129,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						<Col span={24}>
 							<Select
 								showSearch
-								optionFilterProp="children"
+								optionFilterProp='children'
 								value={selectedTheme}
 								onChange={handleSelect}
 								style={{ width: "100%" }}
@@ -175,7 +175,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 								value={tags}
 								onChange={(value): void => handleSelect(value, "tags")}
 								tokenSeparators={[","]}
-								mode="tags"
+								mode='tags'
 							/>
 						</Col>
 					</Row>
@@ -189,9 +189,9 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						<Col span={24}>
 							<Input.TextArea
 								onChange={handleChange}
-								placeholder="Description"
+								placeholder='Description'
 								value={description}
-								name="description"
+								name='description'
 							/>
 						</Col>
 					</Row>
@@ -205,9 +205,9 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 						<Col span={24}>
 							<Input.TextArea
 								onChange={handleChange}
-								placeholder="Long Description"
+								placeholder='Long Description'
 								value={longDescription}
-								name="longDescription"
+								name='longDescription'
 							/>
 						</Col>
 					</Row>
@@ -224,7 +224,7 @@ const EditDesignModal: React.FC<EditDesignModal> = ({
 								value={attributeList}
 								onChange={(value: string[]): void => handleSelect(value, "attributeList")}
 								tokenSeparators={["["]}
-								mode="tags"
+								mode='tags'
 							/>
 						</Col>
 					</Row>

@@ -3,7 +3,6 @@ import { deleteDesignApi, designCopyApi } from "@api/designApi";
 import { editProjectApi, editRevisionFormAPI, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import DesignCard from "@components/DesignCard";
-import EditDesignModal from "@components/EditDesignModal";
 import {
 	DesignImgTypes,
 	DesignInterface,
@@ -320,7 +319,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								role={userRole}
 								creatorRole={design.design?.owner?.role}
 								confirmMarkAsRevision={confirmMarkAsRevision}
-								onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
+								// onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
 								coverImage={getValueSafely(
 									() => {
 										const renderImages = design.design.designImages.filter(
@@ -441,13 +440,13 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					</Row>
 				)}
 			</Col>
-			<EditDesignModal
+			{/* <EditDesignModal
 				onOk={onOkClickInCopyDesignModal}
 				visible={editDesignModalVisible}
 				onCancel={onClose}
 				confirmLoading={loading}
 				designData={designToBeCopied}
-			/>
+			/> */}
 			<CopyDesignModal
 				refetchData={refetchData}
 				projectData={projectData}
