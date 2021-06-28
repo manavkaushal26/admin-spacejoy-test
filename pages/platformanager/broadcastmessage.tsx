@@ -39,19 +39,6 @@ const BroadcastMessage: NextPage = () => {
 		setFileList(prevFileList => [...prevFileList, file]);
 		return false;
 	};
-	const sendData = async file => {
-		const endPoint = bulkMessageApi();
-		try {
-			const result = await fetcher({ endPoint, method: "POST", body: formatToSend(data) });
-			if (result.statusCode <= 300) {
-				notification.success({ message: "Message sent to users" });
-			} else {
-				throw result.data.error;
-			}
-		} catch (e) {
-			notification.error({ message: e.message });
-		}
-	};
 
 	const handleUpload = async (): Promise<void> => {
 		if (message !== "") {
