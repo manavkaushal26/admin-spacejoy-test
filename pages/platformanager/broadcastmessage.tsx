@@ -1,17 +1,16 @@
-import { ArrowLeftOutlined } from "@ant-design/icons";
-import { broadcastMessageApi } from "@api/userApi";
+import { ArrowLeftOutlined, UploadOutlined } from "@ant-design/icons";
+import { bulkMessageApi } from "@api/userApi";
 import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
 import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, DatePicker, Form, Input, Modal, notification, Row, Typography } from "antd";
-import moment from "moment-timezone";
+import { Button, Col, Input, Modal, notification, Row, Typography, Upload } from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { LoudPaddingDiv } from ".";
 
 const { Title, Text } = Typography;
@@ -23,16 +22,25 @@ const formatToSend = data => {
 	return dataToSend;
 };
 
-function disabledDate(current) {
-	// Can not select days before today and today
-	return current && current > moment().endOf("day");
-}
-
 const BroadcastMessage: NextPage = () => {
 	const router = useRouter();
+	const [fileList, setFileList] = useState([]);
+	const [message, setMessage] = useState("");
+	const [loading, setLoading] = useState(false);
 
-	const sendData = async data => {
-		const endPoint = broadcastMessageApi();
+	const onChange = (e): void => {
+		const {
+			target: { value },
+		} = e;
+		setMessage(value);
+	};
+
+	const beforeUpload = (file): boolean => {
+		setFileList(prevFileList => [...prevFileList, file]);
+		return false;
+	};
+	const sendData = async file => {
+		const endPoint = bulkMessageApi();
 		try {
 			const result = await fetcher({ endPoint, method: "POST", body: formatToSend(data) });
 			if (result.statusCode <= 300) {
@@ -45,8 +53,38 @@ const BroadcastMessage: NextPage = () => {
 		}
 	};
 
-	const confirmData = data => {
-		Modal.confirm({ title: "Send message to users?", onOk: () => sendData(data) });
+	const handleUpload = async (): Promise<void> => {
+		if (message !== "") {
+			const endPoint = bulkMessageApi();
+			setLoading(true);
+			const formData = new FormData();
+			fileList.forEach(file => {
+				formData.append("file", file, file.fileName);
+			});
+
+			formData.append("messages", message);
+
+			const response = await fetcher({
+				isMultipartForm: true,
+				endPoint,
+				method: "POST",
+				body: formData,
+			});
+
+			if (response.statusCode <= 300) {
+				setFileList([]);
+				setMessage("");
+				notification.success({ message: "File uploaded successfully." });
+			} else {
+				notification.error({ message: "Something went wrong. Please try again later" });
+			}
+
+			setLoading(false);
+		}
+	};
+
+	const confirmData = () => {
+		Modal.confirm({ title: `Send "${message}" to customers?`, onOk: () => handleUpload() });
 	};
 
 	return (
@@ -77,45 +115,32 @@ const BroadcastMessage: NextPage = () => {
 							<SilentDivider />
 						</Col>
 						<Col span={24}>
-							<Form
-								labelCol={{ span: 24 }}
-								initialValues={{ message: "", dateRange: [moment().startOf("week"), moment()] }}
-								onFinish={confirmData}
-							>
-								<Row>
-									<Col span={24}>
-										<Form.Item name='message' label='Message to customer' rules={[{ required: true }]}>
-											<Input.TextArea />
-										</Form.Item>
-									</Col>
-									<Col span={24}>
-										<Form.Item name='dateRange' label='Send to projects created between:' rules={[{ required: true }]}>
-											<DatePicker.RangePicker
-												disabledDate={disabledDate}
-												ranges={{
-													"This week": [moment().startOf("week"), moment()],
-													"Last week": [
-														moment().startOf("week").subtract(1, "week"),
-														moment().startOf("week").subtract(1, "day"),
-													],
-													"This Month": [moment().startOf("month"), moment()],
-													"Last Month": [
-														moment().startOf("month").subtract(1, "month"),
-														moment().startOf("month").subtract(1, "day"),
-													],
-												}}
-											/>
-										</Form.Item>
-									</Col>
-									<Col span={24}>
-										<Row justify='end'>
-											<Button type='primary' htmlType='submit'>
-												Send
-											</Button>
-										</Row>
-									</Col>
-								</Row>
-							</Form>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<Text>Message to Customer</Text>
+								</Col>
+								<Col span={24}>
+									<Input.TextArea onChange={onChange} />
+								</Col>
+								<Col span={24}>
+									<Text>Select file with Project Id&apos;s</Text>
+								</Col>
+								<Col span={24}>
+									<Upload beforeUpload={beforeUpload} accept='.csv'>
+										<Button disabled={!message} icon={<UploadOutlined />}>
+											Select file
+										</Button>
+									</Upload>
+								</Col>
+
+								<Col span={24}>
+									<Row justify='end'>
+										<Button type='primary' htmlType='submit' onClick={confirmData}>
+											Send
+										</Button>
+									</Row>
+								</Col>
+							</Row>
 						</Col>
 					</Row>
 				</LoudPaddingDiv>

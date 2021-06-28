@@ -40,6 +40,6 @@ export const fetchChatAssets = (project: string, design: string): string => {
 	}
 };
 
-export const broadcastMessageApi = (): string => {
-	return "/v1/userProjectDiscussions/broadcastMessage";
+export const bulkMessageApi = (): string => {
+	return "/v1/userProjectDiscussions/bulkMessage";
 };
