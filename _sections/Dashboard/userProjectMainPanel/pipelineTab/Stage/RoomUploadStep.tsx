@@ -1,8 +1,6 @@
 import { CheckCircleTwoTone, CheckOutlined, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import { updateSubtasks } from "@api/designApi";
 import { uploadRoomApi } from "@api/pipelineApi";
-import dynamic from "next/dynamic";
-
 import {
 	DesignPhases,
 	DetailedDesign,
@@ -20,6 +18,7 @@ import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import { Button, Col, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import dynamic from "next/dynamic";
 import React, { useEffect, useMemo, useState } from "react";
 
 const ModelViewer = dynamic(() => import("@components/ModelViewer"));
@@ -47,7 +46,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 	const [roomFileList, setRoomFileList] = useState<UploadFile<any>[]>([]);
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 	const [isGlobal, setIsGlobal] = useState<boolean>(false);
-	const [isNewRoom, setIsNewRoom] = useState<boolean>(false);
+	const [isNewRoom, setIsNewRoom] = useState<boolean>(!projectId);
 
 	useEffect(() => {
 		if (designData) {
@@ -337,15 +336,18 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 											<Radio style={radioStyle} value>
 												<Row>Create New Room</Row>
 											</Radio>
-											<Radio style={radioStyle} value={false}>
-												<Row>
-													<Col>
-														<Text>
-															Update Current Room <small>Note:- All Designs with the same room will be affected</small>
-														</Text>
-													</Col>
-												</Row>
-											</Radio>
+											{!!projectId && (
+												<Radio style={radioStyle} value={false}>
+													<Row>
+														<Col>
+															<Text>
+																Update Current Room{" "}
+																<small>Note:- All Designs with the same room will be affected</small>
+															</Text>
+														</Col>
+													</Row>
+												</Radio>
+											)}
 										</Radio.Group>
 									</Col>
 								</Row>
@@ -359,7 +361,6 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 								</Col>
 								<Col>
 									<Upload
-										disabled={!projectId}
 										supportServerRender
 										name='file'
 										fileList={roomFileList}
@@ -370,7 +371,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 										data={{ name: roomName, fileType: model3dFiles, roomType }}
 										accept={ModelToExtensionMap[model3dFiles]}
 									>
-										<Button disabled={!roomName || !projectId}>
+										<Button disabled={!roomName}>
 											<UploadOutlined /> Click to Upload
 										</Button>
 									</Upload>
@@ -385,7 +386,6 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 									</Col>
 									<Col>
 										<Upload
-											disabled={!projectId}
 											supportServerRender
 											name='file'
 											fileList={sourceFileList}
@@ -396,7 +396,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 											data={{ name: roomName, fileType: "source", roomType }}
 											accept='.blend'
 										>
-											<Button disabled={!roomName || !projectId}>
+											<Button disabled={!roomName}>
 												<UploadOutlined />
 												Click to Upload
 											</Button>
