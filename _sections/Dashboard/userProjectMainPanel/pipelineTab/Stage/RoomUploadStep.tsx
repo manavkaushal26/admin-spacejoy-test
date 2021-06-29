@@ -1,6 +1,8 @@
 import { CheckCircleTwoTone, CheckOutlined, LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import { updateSubtasks } from "@api/designApi";
 import { uploadRoomApi } from "@api/pipelineApi";
+import dynamic from "next/dynamic";
+
 import {
 	DesignPhases,
 	DetailedDesign,
@@ -18,7 +20,6 @@ import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import { Button, Col, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
-import dynamic from "next/dynamic";
 import React, { useEffect, useMemo, useState } from "react";
 
 const ModelViewer = dynamic(() => import("@components/ModelViewer"));
@@ -153,7 +154,6 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		} else if (uploadFileType === "source") {
 			setSourceFileList(fileList);
 		}
-		setIsNewRoom(false);
 	};
 
 	const room = useMemo(() => designData.room, [designData.room]);
@@ -359,6 +359,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 								</Col>
 								<Col>
 									<Upload
+										disabled={!projectId}
 										supportServerRender
 										name='file'
 										fileList={roomFileList}
@@ -369,7 +370,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 										data={{ name: roomName, fileType: model3dFiles, roomType }}
 										accept={ModelToExtensionMap[model3dFiles]}
 									>
-										<Button disabled={!roomName}>
+										<Button disabled={!roomName || !projectId}>
 											<UploadOutlined /> Click to Upload
 										</Button>
 									</Upload>
@@ -384,6 +385,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 									</Col>
 									<Col>
 										<Upload
+											disabled={!projectId}
 											supportServerRender
 											name='file'
 											fileList={sourceFileList}
@@ -394,7 +396,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 											data={{ name: roomName, fileType: "source", roomType }}
 											accept='.blend'
 										>
-											<Button disabled={!roomName}>
+											<Button disabled={!roomName || !projectId}>
 												<UploadOutlined />
 												Click to Upload
 											</Button>

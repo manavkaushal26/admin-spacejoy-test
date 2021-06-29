@@ -21,6 +21,7 @@ import { Alert, Button, Col, message, Modal, notification, Popconfirm, Row, Sele
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CopyDesignModal from "./CopyDesignModal";
+import EditDesignModal from "@components/EditDesignModal";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -319,7 +320,7 @@ const DesignSelection: React.FC<DesignSelection> = ({
 								role={userRole}
 								creatorRole={design.design?.owner?.role}
 								confirmMarkAsRevision={confirmMarkAsRevision}
-								// onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
+								onCopyAsDesignExampleClick={onCopyAsDesignExampleClick}
 								coverImage={getValueSafely(
 									() => {
 										const renderImages = design.design.designImages.filter(
@@ -440,13 +441,13 @@ const DesignSelection: React.FC<DesignSelection> = ({
 					</Row>
 				)}
 			</Col>
-			{/* <EditDesignModal
+			<EditDesignModal
 				onOk={onOkClickInCopyDesignModal}
 				visible={editDesignModalVisible}
 				onCancel={onClose}
 				confirmLoading={loading}
 				designData={designToBeCopied}
-			/> */}
+			/>
 			<CopyDesignModal
 				refetchData={refetchData}
 				projectData={projectData}
