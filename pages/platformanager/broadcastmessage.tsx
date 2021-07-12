@@ -49,7 +49,7 @@ const BroadcastMessage: NextPage = () => {
 				formData.append("file", file, file.fileName);
 			});
 
-			formData.append("messages", message);
+			formData.append("message", message);
 
 			const response = await fetcher({
 				isMultipartForm: true,
