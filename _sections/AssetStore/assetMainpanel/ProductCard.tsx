@@ -19,7 +19,6 @@ interface AssetCards {
 	height?: string;
 	noVertical?: boolean;
 	width?: string;
-	verticalMap?: Record<string, string>;
 	actions?: ReactNode[];
 	scrapedData?: ScrapedAssetType;
 }
@@ -124,7 +123,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 							</Col>
 							<Col span={16}>
 								<CapitalizedText style={{ width: "100%", overflow: "hidden" }} ellipsis>{` ${getValueSafely<string>(
-									() => asset.meta.vertical,
+									() => asset.meta.vertical as string,
 									"Undefined"
 								)}`}</CapitalizedText>
 							</Col>

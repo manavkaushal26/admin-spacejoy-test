@@ -2,6 +2,7 @@ import { CloseOutlined, DeleteOutlined, VideoCameraOutlined } from "@ant-design/
 import { AllJobs, RenderEngineStatus } from "@customTypes/renderEngineTypes";
 import { Card, Col, notification, Popconfirm, Progress, Row, Typography } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
+import { Socket } from "socket.io-client";
 
 const { Text } = Typography;
 
@@ -10,7 +11,7 @@ interface JobCard {
 	onClick: (job: AllJobs) => void;
 	startJob: (jobId: string) => void;
 	onDelete: (jobId: string) => void;
-	socket: SocketIOClient.Socket;
+	socket: Socket;
 	cancelJob: (jobId: string) => void;
 }
 
@@ -118,7 +119,6 @@ const JobCard: React.FC<JobCard> = ({ job: jobInitialData, onClick, startJob, on
 						});
 						setProgressData(previousState => ({ ...previousState, completion: 100 }));
 						setProgressError(true);
-						socket.removeAllListeners();
 					}
 				});
 				socket.on("Job.Render.Complete", id => {

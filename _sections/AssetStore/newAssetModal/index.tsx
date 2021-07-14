@@ -207,6 +207,12 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 		if (assetData) {
 			const newState = {
 				...assetData,
+				meta: {
+					category: getValueSafely(() => assetData.meta.category as string, ""),
+					subcategory: getValueSafely(() => assetData.meta.subcategory as string, ""),
+					vertical: getValueSafely(() => assetData.meta.vertical as string, ""),
+					theme: getValueSafely(() => assetData.meta.theme as string, ""),
+				},
 				retailer: getValueSafely(() => assetData.retailer._id, ""),
 				spatialData: {
 					mountType: getValueSafely(() => assetData.spatialData.mountType, MountTypes.attached),
