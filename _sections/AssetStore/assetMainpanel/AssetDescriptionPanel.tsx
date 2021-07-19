@@ -13,7 +13,7 @@ import {
 import { getSingleAssetApi } from "@api/designApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
-import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
+import { AssetType, MetaDescriptiveType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
@@ -48,9 +48,6 @@ interface AssetDescriptionPanelProps {
 	projectId: string;
 	dispatch: React.Dispatch<AssetAction>;
 	dataLoading: boolean;
-	verticalMap?: Record<string, string>;
-	categoryMap?: Record<string, string>;
-	subCategoryMap?: Record<string, string>;
 	themeIdToNameMap: Record<string, string>;
 }
 
@@ -69,9 +66,6 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	projectId,
 	dispatch,
 	dataLoading,
-	verticalMap,
-	categoryMap,
-	subCategoryMap,
 	editAsset,
 	themeIdToNameMap,
 }) => {
@@ -126,9 +120,9 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 			setSelectedAssetData({
 				...response.data,
 				meta: {
-					category: getValueSafely(() => category._id, "Undefined"),
-					subcategory: getValueSafely(() => subcategory._id, "Undefined"),
-					vertical: getValueSafely(() => vertical._id, "Undefined"),
+					category: getValueSafely(() => category, "Undefined"),
+					subcategory: getValueSafely(() => subcategory, "Undefined"),
+					vertical: getValueSafely(() => vertical, "Undefined"),
 					theme: getValueSafely(() => theme._id, "Undefined"),
 				},
 			});
@@ -446,25 +440,34 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 										<Col span={24}>
 											<Text strong>Category: </Text>
 											<CapitalizedText>
-												{getValueSafely(() => categoryMap[selectedAssetData.meta.category], "Undefined")}
+												{getValueSafely(
+													() => (selectedAssetData.meta.category as MetaDescriptiveType)?.name,
+													"Undefined"
+												)}
 											</CapitalizedText>
 										</Col>
 										<Col span={24}>
 											<Text strong>Sub-Category: </Text>
 											<CapitalizedText>
-												{getValueSafely(() => subCategoryMap[selectedAssetData.meta.subcategory], "Undefined")}
+												{getValueSafely(
+													() => (selectedAssetData.meta.subcategory as MetaDescriptiveType)?.name,
+													"Undefined"
+												)}
 											</CapitalizedText>
 										</Col>
 										<Col span={24}>
 											<Text strong>Vertical: </Text>
 											<CapitalizedText>
-												{getValueSafely(() => verticalMap[selectedAssetData.meta.vertical], "Undefined")}
+												{getValueSafely(
+													() => (selectedAssetData.meta.vertical as MetaDescriptiveType)?.name,
+													"Undefined"
+												)}
 											</CapitalizedText>
 										</Col>
 										<Col span={24}>
 											<Text strong>Theme: </Text>
 											<CapitalizedText>
-												{getValueSafely(() => themeIdToNameMap[selectedAssetData.meta.theme], "Undefined")}
+												{getValueSafely(() => themeIdToNameMap[selectedAssetData.meta.theme as string], "Undefined")}
 											</CapitalizedText>
 										</Col>
 									</Row>

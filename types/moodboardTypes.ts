@@ -14,27 +14,30 @@ export interface RetailersList {
 	name: string;
 }
 
-enum CategoryNames {
-	FURNITURE = "Furniture",
-	DECOR = "Decor",
-	LIGHTING = "Lighting",
-	FURNISHING = "Furnishing",
-	WALL_ART = "Wall Art",
-	APPLIANCES = "Appliances",
-	OUTDOOR = "Outdoor",
-	OTHERS = "Others",
-	NON_SHOPPABLE = "Non Shoppable",
-}
-
-export interface CategoriesList {
+export interface VerticalsList {
 	_id: string;
-	name: CategoryNames;
+	name: string;
+	description: string;
+	category: string;
+	subcategory: string;
+	isActive: boolean;
+	mountType: string;
 }
 
 export interface SubcategoryList {
 	_id: string;
 	name: string;
+	description: string;
 	category: string;
+	isActive: boolean;
+	verticals: VerticalsList[];
+}
+export interface CategoriesList {
+	_id: string;
+	name: string;
+	description: string;
+	isActive: boolean;
+	subCategories: SubcategoryList[];
 }
 
 export interface Themes {
@@ -43,30 +46,12 @@ export interface Themes {
 	description?: string;
 }
 
-export interface VerticalsList {
-	_id: string;
-	name: string;
-	category: string;
-	subcategory: string;
-}
-
 export interface MetaDataType {
 	retailers: {
 		list: RetailersList[];
 		count: number;
 	};
-	categories: {
-		list: CategoriesList[];
-		count: number;
-	};
-	subcategories: {
-		list: SubcategoryList[];
-		count: number;
-	};
-	verticals: {
-		list: VerticalsList[];
-		count: number;
-	};
+	categoryTree: CategoriesList[];
 	themes: {
 		list: Themes[];
 		count: number;
@@ -87,6 +72,10 @@ export enum ModeOfOperation {
 	Both = "both",
 }
 
+export interface MetaDescriptiveType {
+	_id: string;
+	name: string;
+}
 export interface AssetType {
 	name: string;
 	price: number;
@@ -118,10 +107,10 @@ export interface AssetType {
 		height: number;
 	};
 	meta: {
-		category: string;
-		subcategory: string;
-		vertical: string;
-		theme: string;
+		category: string | MetaDescriptiveType;
+		subcategory: string | MetaDescriptiveType;
+		vertical: string | MetaDescriptiveType;
+		theme: string | MetaDescriptiveType;
 	};
 	retailLink: string;
 	cdn: string;

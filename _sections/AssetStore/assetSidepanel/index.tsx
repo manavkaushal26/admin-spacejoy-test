@@ -165,16 +165,19 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 		dispatch({ type: ASSET_ACTION_TYPES.STATUS, value });
 	};
 
-	const renderTreeNodes = (options: Array<CategoryMap>): DataNode[] => {
-		return options.map(item => {
+	const renderTreeNodes = (
+		options: Array<CategoryMap>,
+		level: "category" | "subCategory" | "verticals" = "category"
+	): DataNode[] => {
+		return options?.map(item => {
 			if (item.children) {
 				return {
-					key: `${item.title.name}-${item.title.level}`,
+					key: `${item.title.name}-${item?.title?.level}`,
 					title: item.title.name,
 					children: renderTreeNodes(item.children),
 				};
 			}
-			return { key: `${item.title.name}-${item.title.level}`, title: item.title.name };
+			return { key: `${item.title.name}-${level}`, title: item.title.name };
 		});
 	};
 

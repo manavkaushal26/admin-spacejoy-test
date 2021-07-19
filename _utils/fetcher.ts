@@ -16,7 +16,7 @@ interface FetcherParams {
 async function fetcher({
 	ctx,
 	endPoint,
-	method,
+	method = "GET",
 	body,
 	hasBaseURL,
 	isMultipartForm,

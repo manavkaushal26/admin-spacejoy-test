@@ -37,7 +37,7 @@ interface AssetStoreProps {
 	projectId: string;
 }
 
-interface CategoryMap {
+export interface CategoryMap {
 	key: string;
 	title: {
 		name: string;
@@ -100,7 +100,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 		const response = await fetcher({ endPoint: endpoint, method: "GET" });
 
 		if (response.statusCode === 200) {
-			dispatch({ type: ASSET_ACTION_TYPES.METADATA, value: response.data });
+			dispatch({ type: ASSET_ACTION_TYPES.METADATA, value: response.data?.fulfillmentValue });
 		}
 	};
 
@@ -222,30 +222,22 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 
 	const categoryMap: Array<CategoryMap> = useMemo(() => {
 		if (state.metaData) {
-			return state.metaData.categories.list.map(elem => {
+			return state.metaData.categoryTree?.map(elem => {
 				return {
 					title: { name: elem.name, level: "category" },
 					key: elem._id,
-					children: state.metaData.subcategories.list
-						.filter(subElem => {
-							return subElem.category === elem._id;
-						})
-						.map(subElem => {
-							return {
-								title: { name: subElem.name, level: "subCategory" },
-								key: subElem._id,
-								children: state.metaData.verticals.list
-									.filter(vert => {
-										return vert.subcategory === subElem._id;
-									})
-									.map(filtVert => {
-										return {
-											title: { name: filtVert.name, level: "verticals" },
-											key: filtVert._id,
-										};
-									}),
-							};
-						}),
+					children: elem?.subCategories.map(subElem => {
+						return {
+							title: { name: subElem.name, level: "subCategory" },
+							key: subElem._id,
+							children: subElem?.verticals.map(filtVert => {
+								return {
+									title: { name: filtVert.name, level: "verticals" },
+									key: filtVert._id,
+								};
+							}),
+						};
+					}),
 				};
 			});
 		}
@@ -312,6 +304,7 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 									designId={designId}
 									moodboard={state.moodboard}
 									addRemoveAsset={addRemoveAsset}
+									categoryMap={categoryMap}
 								/>
 							</PaddedDiv>
 						</MaxHeightDiv>

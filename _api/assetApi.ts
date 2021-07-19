@@ -25,3 +25,15 @@ export const uploadProductImagesApi = (assetId: string): string => {
 export const updateAssetStockApi = (): string => {
 	return "/asset/stock/update";
 };
+
+export const skuAvailableForRetailersApi = (): string => {
+	return "/v1/retailers/feedAvailable";
+};
+
+export const getSkuSocketEventNameApi = (): string => {
+	return "/v1/scraperService/socketEventName";
+};
+
+export const startSkuFetchingApi = (): string => {
+	return "/v1/scraperService/scrapeSku";
+};

@@ -130,7 +130,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 
 	useEffect(() => {
 		return (): void => {
-			socket.removeAllListeners();
 			socket.disconnect();
 		};
 	}, []);
