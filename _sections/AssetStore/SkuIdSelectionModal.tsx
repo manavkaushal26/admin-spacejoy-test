@@ -1,6 +1,6 @@
 import { getValueSafely } from "@utils/commonUtils";
-import { Col, Input, Modal, Pagination, Radio, Row, Select, Typography } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import { Col, Empty, Input, Modal, Pagination, Radio, Row, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { SkuData } from "./useSkuIdFetcher";
 
@@ -58,27 +58,36 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 	const [selectedSkuId, setSelectedSkuId] = useState(getValueSafely(() => skuList[0]?.sku, ""));
 	const [pageNumber, setPageNumber] = useState(0);
 	const [limit] = useState(12);
-	const [searchValue, setSearchValue] = useState("");
-	const [searchKey, setSearchKey] = useState(Object.keys(searchCriteria)[0]);
-	const [displaySkuList, setDisplaySkuList] = useState([...skuList]);
+	const [titleSearchValue, setTitleSearchValue] = useState("");
+	const [priceSearchValue, setPriceSearchValue] = useState("");
+	const [skuSearchValue, setskuSearchValue] = useState("");
 
-	const searchRef = useRef();
+	const [displaySkuList, setDisplaySkuList] = useState([...skuList]);
 
 	const searchFunction = () => {
 		setDisplaySkuList(
 			skuList.filter(sku => {
-				return sku[searchCriteria[searchKey].key].toString().toLowerCase().includes(searchValue);
+				const titleMatch = sku?.title?.toString().toLowerCase().includes(titleSearchValue);
+				const skuMatch = sku?.sku?.toString().toLowerCase().includes(skuSearchValue);
+				const priceMatch = priceSearchValue !== "" ? sku?.price?.toString().toLowerCase() === priceSearchValue : true;
+
+				return titleMatch && skuMatch && priceMatch;
 			})
 		);
 		setPageNumber(0);
 	};
 
-	const onInputChange = e => {
+	const onInputChange = (e, type) => {
 		const {
 			target: { value },
 		} = e;
-
-		setSearchValue(value.toLowerCase());
+		if (type === "title") {
+			setTitleSearchValue(value);
+		} else if (type === "price") {
+			setPriceSearchValue(value);
+		} else {
+			setskuSearchValue(value);
+		}
 	};
 
 	useEffect(() => {
@@ -89,7 +98,7 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 		return () => {
 			clearTimeout(id);
 		};
-	}, [searchValue, skuList]);
+	}, [titleSearchValue, priceSearchValue, skuSearchValue, skuList]);
 
 	useEffect(() => {
 		if (skuList?.length) {
@@ -113,10 +122,6 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 		toggleModal();
 	};
 
-	const searchKeyChange = value => {
-		setSearchKey(value);
-	};
-
 	return (
 		<Modal
 			title='Select SKU Id'
@@ -129,40 +134,53 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 			okButtonProps={{ title: "Submit" }}
 		>
 			<Row gutter={[16, 16]}>
-				<Col span={24} style={{ position: "sticky", top: "-24px", background: "white", zIndex: 9 }}>
+				<Col
+					span={24}
+					style={{ position: "sticky", top: "-24px", background: "white", zIndex: 9, paddingBottom: "1rem" }}
+				>
 					<Row gutter={[8, 8]}>
-						<Col xs={24} sm={18}>
+						<Col sm={24} md={8}>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>
-									<label htmlFor='searchQuery'>Search </label>
+									<label htmlFor='searchQuery'>Name</label>
 								</Col>
 								<Col span={24}>
 									<Input
-										onChange={onInputChange}
-										key={searchKey}
-										defaultValue={searchValue}
+										onChange={e => onInputChange(e, "title")}
+										defaultValue={titleSearchValue}
 										id='searchQuery'
-										placeholder={`${searchKey[0].toLocaleUpperCase()}${searchKey.slice(1, searchKey.length)}`}
+										placeholder={"Name"}
 									/>
 								</Col>
 							</Row>
 						</Col>
-						<Col xs={24} sm={6}>
+						<Col sm={12} md={8}>
 							<Row gutter={[8, 8]}>
 								<Col span={24}>
-									<label htmlFor='searchQuery'>By</label>
+									<label htmlFor='price'>Price </label>
 								</Col>
 								<Col span={24}>
-									<Select style={{ width: "100%" }} value={searchKey} onChange={searchKeyChange}>
-										{Object.keys(searchCriteria).map(key => {
-											return (
-												<Select.Option key={key} value={key} style={{ textTransform: "capitalize" }}>
-													{searchCriteria[key].key[0].toLocaleUpperCase()}
-													{searchCriteria[key].key.slice(1, searchCriteria[key].key.length)}
-												</Select.Option>
-											);
-										})}
-									</Select>
+									<Input
+										onChange={e => onInputChange(e, "price")}
+										defaultValue={titleSearchValue}
+										id='price'
+										placeholder={"Price"}
+									/>
+								</Col>
+							</Row>
+						</Col>
+						<Col sm={12} md={8}>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<label htmlFor='sku'>SKU </label>
+								</Col>
+								<Col span={24}>
+									<Input
+										onChange={e => onInputChange(e, "sku")}
+										defaultValue={titleSearchValue}
+										id='sku'
+										placeholder={"SKU"}
+									/>
 								</Col>
 							</Row>
 						</Col>
@@ -198,6 +216,7 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 							})}
 						</Row>
 					</Radio.Group>
+					<Row justify='space-around'>{displaySkuList?.length === 0 && <Empty description='No SKU found' />}</Row>
 				</Col>
 				<Col span={24}>
 					<Row justify='center'>

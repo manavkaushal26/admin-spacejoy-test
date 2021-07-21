@@ -48,6 +48,9 @@ export const useSkuIdFetcher = () => {
 			});
 			startFetching();
 		}
+		return () => {
+			socket.off(socketEventName);
+		};
 	}, [socketEventName]);
 
 	const fetchSkuId = async () => {
@@ -66,6 +69,11 @@ export const useSkuIdFetcher = () => {
 		if (retailerUrl !== "") {
 			fetchSkuId();
 		}
+		return () => {
+			setSkuIds([]);
+			setSocketEventName("");
+			setUrlMightHaveProblem({ hasProblem: false, message: "" });
+		};
 	}, [retailerUrl]);
 
 	const debouncedSetUrl = useCallback(debounce(setRetailerUrl, 400), []);
