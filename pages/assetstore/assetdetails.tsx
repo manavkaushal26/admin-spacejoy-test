@@ -5,13 +5,13 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import {
 	assetCreateOrUpdationApi,
 	markMissingAssetAsComplete,
 	skuAvailableForRetailersApi,
-	uploadProductImagesApi,
+	uploadProductImagesApi
 } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
@@ -47,7 +47,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload,
+	Upload
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -1162,10 +1162,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	<Form.Item
 																		labelCol={{ span: 24 }}
 																		name='sku'
-																		label='SKU Id'
+																		label='SKU'
 																		rules={[{ required: skuAvailableRetailers.includes(retailer) }]}
 																	>
 																		<Input
+																			disabled={skuIds.length > 0}
 																			addonAfter={
 																				skuIds.length > 1 && (
 																					<Tooltip placement='top' title='Select another SKU'>
