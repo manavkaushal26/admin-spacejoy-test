@@ -9,7 +9,7 @@
 		"@react-firebase/firestore": "^0.5.5",
 		"@tinymce/tinymce-react": "^3.6.0",
 		"@zeit/next-less": "^1.0.1",
-		"antd": "^4.6.1",
+		"antd": "^4.16.8",
 		"body-parser": "^1.19.0",
 		"clevertap-react": "^1.0.0",
 		"compression": "^1.7.4",
