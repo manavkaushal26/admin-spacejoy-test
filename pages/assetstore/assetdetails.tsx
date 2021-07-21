@@ -831,12 +831,19 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 
 	const onSelectSku = (skuData: SkuData) => {
 		form.setFieldsValue({
-			...(skuData?.title ? { name: skuData.title } : {}),
-
+			...(skuData?.title
+				? { name: skuData.title?.endsWith("-") ? skuData.title?.slice(0, -1).trim() : skuData.title?.trim() }
+				: {}),
 			...(skuData?.price ? { price: skuData.price } : {}),
 			sku: skuData?.sku,
 		});
 	};
+
+	useEffect(() => {
+		if (skuLoading) {
+			notification.open({ message: "Fetching SKU's for URL", description: "Please wait", icon: <LoadingOutlined /> });
+		}
+	}, [skuLoading]);
 
 	useEffect(() => {
 		if (skuIds.length > 1) {
