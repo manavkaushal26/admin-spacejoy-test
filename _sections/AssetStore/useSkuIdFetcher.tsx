@@ -27,7 +27,7 @@ export const useSkuIdFetcher = () => {
 
 		if (!(response.statusCode <= 300)) {
 			setLoading(false);
-			notification.error({ message: "Failed to initate Socket response for SKU Id" });
+			notification.error({ message: response.data?.message || "Failed to initate Socket response for SKU Id" });
 		}
 	};
 
@@ -61,7 +61,7 @@ export const useSkuIdFetcher = () => {
 		if (response.statusCode === 200) {
 			setSocketEventName(response.data?.socketEvent);
 		} else {
-			notification.error({ message: "Failed to scrape SKU's. Please contact tech team" });
+			notification.error({ message: response.data?.message || "Failed to scrape SKU's. Please contact tech team" });
 		}
 	};
 
