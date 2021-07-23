@@ -158,6 +158,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				),
 				"weight": parseFloat(response.data.weight || 0),
 				"price": parseFloat(response.data.price || 0),
+				"sku": response.data?.sku || "",
 			});
 		} else {
 			notification.error({ message: "Failed to load asset data" });

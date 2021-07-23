@@ -300,7 +300,6 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	const prefix = useMemo(() => {
 		return order?.originalOrder && order?.originalOrder?.amount !== order?.amount ? "Current " : "";
 	}, [order?.originalOrder, order?.amount]);
-	console.log(orderCoupons, orderOffers);
 	return (
 		<PageLayout pageName='Order Tracking'>
 			<Head>

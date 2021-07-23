@@ -67,8 +67,8 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 	const searchFunction = () => {
 		setDisplaySkuList(
 			skuList.filter(sku => {
-				const titleMatch = sku?.title?.toString().toLowerCase().includes(titleSearchValue);
-				const skuMatch = sku?.sku?.toString().toLowerCase().includes(skuSearchValue);
+				const titleMatch = sku?.title?.toString().toLowerCase().includes(titleSearchValue.toLowerCase());
+				const skuMatch = sku?.sku?.toString().toLowerCase().includes(skuSearchValue.toLowerCase());
 				const priceMatch = priceSearchValue !== "" ? sku?.price?.toString().toLowerCase() === priceSearchValue : true;
 
 				return titleMatch && skuMatch && priceMatch;
@@ -82,11 +82,11 @@ const SkuIdSelectionModal: React.FC<SkuIdSelectionModalType> = ({ skuList, isOpe
 			target: { value },
 		} = e;
 		if (type === "title") {
-			setTitleSearchValue(value);
+			setTitleSearchValue(value.toLowerCase());
 		} else if (type === "price") {
 			setPriceSearchValue(value);
 		} else {
-			setskuSearchValue(value);
+			setskuSearchValue(value.toLowerCase());
 		}
 	};
 
