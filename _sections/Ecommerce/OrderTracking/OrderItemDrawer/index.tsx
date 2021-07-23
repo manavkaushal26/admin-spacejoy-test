@@ -29,7 +29,8 @@ const OrderItemDrawer: React.FC<OrderItemDrawer> = ({ orderItemData, open, close
 	const [form] = useForm();
 
 	const onKeyChange = value => {
-		setActiveCollapseKey(activeCollapseKey.length ? value[1] || "" : value[0]);
+		console.log("value", value);
+		setActiveCollapseKey(value[1]);
 	};
 
 	const updateOrderItemData = (data: Partial<OrderItems>) => {
