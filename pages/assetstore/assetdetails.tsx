@@ -1,4 +1,5 @@
 import {
+	AimOutlined,
 	CheckCircleTwoTone,
 	CloseCircleTwoTone,
 	LinkOutlined,
@@ -6,13 +7,19 @@ import {
 	PlusOutlined,
 	UploadOutlined
 } from "@ant-design/icons";
-import { assetCreateOrUpdationApi, markMissingAssetAsComplete, uploadProductImagesApi } from "@api/assetApi";
+import {
+	assetCreateOrUpdationApi,
+	markMissingAssetAsComplete,
+	skuAvailableForRetailersApi,
+	uploadProductImagesApi
+} from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import { MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus, Status } from "@customTypes/userType";
+import { SkuData, useSkuIdFetcher } from "@sections/AssetStore/useSkuIdFetcher";
 import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
@@ -48,6 +55,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useMemo, useState } from "react";
+import SkuIdSelectionModal from "../../_sections/AssetStore/SkuIdSelectionModal";
 
 const { Title, Text } = Typography;
 
@@ -102,7 +110,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		const response = await fetcher({ endPoint: endpoint, method: "GET" });
 
 		if (response.statusCode === 200) {
-			setMetadata(response.data);
+			setMetadata(response.data?.fulfillmentValue);
 		}
 	};
 
@@ -181,9 +189,12 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	useEffect(() => {
 		form.setFieldsValue(state);
 	}, [state]);
-
 	useEffect(() => {
 		fetchMetaData();
+		fetchSkuAvailabilityListForRetailers();
+	}, []);
+
+	useEffect(() => {
 		if (assetId) {
 			fetchAssetData();
 		}
@@ -356,32 +367,24 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		setModel3dFiles(selectedValue as Model3DFiles);
 	};
 
-	const categoryMap: CategoryMap[] = useMemo(() => {
+	const categoryMap: Array<CategoryMap> = useMemo(() => {
 		if (metadata) {
-			return metadata.categories.list.map(elem => {
+			return metadata.categoryTree?.map(elem => {
 				return {
 					title: { name: elem.name, level: "category" },
 					key: elem._id,
-					children: metadata.subcategories.list
-						.filter(subElem => {
-							return subElem.category === elem._id;
-						})
-						.map(subElem => {
-							return {
-								title: { name: subElem.name, level: "subCategory" },
-								key: subElem._id,
-								children: metadata.verticals.list
-									.filter(vert => {
-										return vert.subcategory === subElem._id;
-									})
-									.map(filtVert => {
-										return {
-											title: { name: filtVert.name, level: "verticals" },
-											key: filtVert._id,
-										};
-									}),
-							};
-						}),
+					children: elem?.subCategories.map(subElem => {
+						return {
+							title: { name: subElem.name, level: "subCategory" },
+							key: subElem._id,
+							children: subElem?.verticals.map(filtVert => {
+								return {
+									title: { name: filtVert.name, level: "verticals" },
+									key: filtVert._id,
+								};
+							}),
+						};
+					}),
 				};
 			});
 		}
@@ -799,6 +802,59 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		});
 	};
 
+	//************************************ SKU ID Section **************************************
+
+	const [skuAvailableRetailers, setSkuAvailableRetailers] = useState([]);
+	const [skuModalVisible, setSkuModalVisible] = useState(false);
+	const fetchSkuAvailabilityListForRetailers = async () => {
+		const endPoint = skuAvailableForRetailersApi();
+
+		const response = await fetcher({ endPoint, method: "GET" });
+		if (response.statusCode <= 300) {
+			setSkuAvailableRetailers(response.data.retailers);
+		} else {
+			notification.error({ message: "Failed to fetch retailers with feed available" });
+		}
+	};
+
+	const { setRetailerUrl, loading: skuLoading, skuIds, urlMightHaveProblem } = useSkuIdFetcher();
+
+	useEffect(() => {
+		if (urlMightHaveProblem.hasProblem) {
+			Modal.warn({ title: urlMightHaveProblem.message, content: <Text>Please check the URL</Text> });
+		}
+	}, [urlMightHaveProblem]);
+
+	const toggleSkuModal = () => {
+		setSkuModalVisible(prevState => !prevState);
+	};
+
+	const onSelectSku = (skuData: SkuData) => {
+		form.setFieldsValue({
+			...(skuData?.title
+				? { name: skuData.title?.endsWith("-") ? skuData.title?.slice(0, -1).trim() : skuData.title?.trim() }
+				: {}),
+			...(skuData?.price ? { price: skuData.price } : {}),
+			sku: skuData?.sku,
+		});
+	};
+
+	useEffect(() => {
+		if (skuLoading) {
+			notification.open({ message: "Fetching SKU's for URL", description: "Please wait", icon: <LoadingOutlined /> });
+		}
+	}, [skuLoading]);
+
+	useEffect(() => {
+		if (skuIds.length > 1) {
+			toggleSkuModal();
+		} else if (skuIds.length === 1) {
+			onSelectSku(skuIds[0]);
+		}
+	}, [skuIds]);
+
+	//************************************ SKU ID Section **************************************
+
 	return (
 		<PageLayout pageName='Asset Editing'>
 			<Head>
@@ -881,7 +937,15 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														</Form.Item>
 													</Col>
 													<Col span={24}>
-														<Form.Item label='URL' name='retailLink' rules={[{ required: true, type: "url" }]}>
+														<Form.Item
+															label={`URL ${skuLoading ? "(Fetching SKU Id's..)" : ""}`}
+															name='retailLink'
+															normalize={value => {
+																setRetailerUrl(value);
+																return value;
+															}}
+															rules={[{ required: true, type: "url" }]}
+														>
 															<Input
 																addonAfter={
 																	<Tooltip placement='top' title='Open URL'>
@@ -892,29 +956,23 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														</Form.Item>
 													</Col>
 													<Col span={8}>
-														<Form.Item shouldUpdate>
-															{() => {
-																return (
-																	<Form.Item
-																		name={["meta.category"]}
-																		label='Category'
-																		labelCol={{ span: 24 }}
-																		rules={[{ required: true }]}
-																		normalize={value => {
-																			form.setFieldsValue({ "meta.vertical": "", "meta.subcategory": "" });
-																			return value;
-																		}}
-																	>
-																		<Select showSearch optionFilterProp='children' placeholder='Select A Category'>
-																			{categoryMap.map(category => (
-																				<Select.Option key={category.key} value={category.key}>
-																					{category.title.name}
-																				</Select.Option>
-																			))}
-																		</Select>
-																	</Form.Item>
-																);
+														<Form.Item
+															name={["meta.category"]}
+															label='Category'
+															labelCol={{ span: 24 }}
+															rules={[{ required: true }]}
+															normalize={value => {
+																form.setFieldsValue({ "meta.vertical": "", "meta.subcategory": "" });
+																return value;
 															}}
+														>
+															<Select showSearch optionFilterProp='children' placeholder='Select A Category'>
+																{categoryMap?.map(category => (
+																	<Select.Option key={category.key} value={category.key}>
+																		{category.title.name}
+																	</Select.Option>
+																))}
+															</Select>
 														</Form.Item>
 													</Col>
 													<Col span={8}>
@@ -938,7 +996,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																			placeholder='Select A Sub Category'
 																		>
 																			{categoryMap
-																				.find(category => {
+																				?.find(category => {
 																					return category.key === form.getFieldValue(["meta.category"]);
 																				})
 																				?.children?.map(category => (
@@ -968,7 +1026,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																		placeholder='Select A Vertical'
 																	>
 																		{categoryMap
-																			.find(category => category.key === form.getFieldValue(["meta.category"]))
+																			?.find(category => category.key === form.getFieldValue(["meta.category"]))
 																			?.children.find(
 																				subCategory => subCategory.key === form.getFieldValue(["meta.subcategory"])
 																			)
@@ -1090,6 +1148,36 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 													<Col span={12}>
 														<Form.Item name='colors' label='Color' rules={[{ required: true }]}>
 															<Select mode='tags' open={false} tokenSeparators={[","]} />
+														</Form.Item>
+													</Col>
+													<Col span={12}>
+														<Form.Item
+															shouldUpdate={(prevValues, currentValues) => {
+																return prevValues.retailer !== currentValues.retailer;
+															}}
+														>
+															{({ getFieldValue }) => {
+																const retailer = getFieldValue("retailer");
+																return (
+																	<Form.Item
+																		labelCol={{ span: 24 }}
+																		name='sku'
+																		label='SKU'
+																		rules={[{ required: skuAvailableRetailers.includes(retailer) }]}
+																	>
+																		<Input
+																			disabled={skuIds.length > 0}
+																			addonAfter={
+																				skuIds.length > 1 && (
+																					<Tooltip placement='top' title='Select another SKU'>
+																						<AimOutlined onClick={toggleSkuModal} />
+																					</Tooltip>
+																				)
+																			}
+																		/>
+																	</Form.Item>
+																);
+															}}
 														</Form.Item>
 													</Col>
 												</Row>
@@ -1311,6 +1399,12 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				previewImage={preview.previewImage}
 				previewVisible={preview.previewVisible}
 				altText='previewImages'
+			/>
+			<SkuIdSelectionModal
+				skuList={skuIds}
+				isOpen={skuModalVisible}
+				toggleModal={toggleSkuModal}
+				onSelect={onSelectSku}
 			/>
 		</PageLayout>
 	);

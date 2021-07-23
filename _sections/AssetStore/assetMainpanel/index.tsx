@@ -9,10 +9,11 @@ import fetcher from "@utils/fetcher";
 import { Col, Drawer, message, Pagination, Popconfirm, Row, Skeleton, Tooltip, Typography } from "antd";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { CategoryMap } from "pages/assetstore";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ProductCard from "./ProductCard";
-import { categoryIdNameMapper, isAssetInMoodboard, subCategoryIdNameMapper, verticalIdNameMapper } from "./utils";
+import { isAssetInMoodboard } from "./utils";
 
 const { Title, Text } = Typography;
 
@@ -35,6 +36,7 @@ interface AssetMainPanelProps {
 	designId: string;
 	dispatch: React.Dispatch<AssetAction>;
 	projectId: string;
+	categoryMap: CategoryMap[];
 	themeIdToNameMap: Record<string, string>;
 }
 
@@ -148,6 +150,7 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	dispatch,
 	projectId,
 	themeIdToNameMap,
+	categoryMap,
 }) => {
 	const [assetData, setAssetData] = useState<AssetType[]>([]);
 	const [selectedAssetId, setSelectedAssetId] = useState<string>(null);
@@ -158,10 +161,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 	const onCardClick = (selectedId): void => {
 		setSelectedAssetId(selectedId);
 	};
-
-	const subCategoryMap = useMemo(() => {
-		return subCategoryIdNameMapper(state.metaData);
-	}, [state.metaData]);
 
 	useEffect(() => {
 		const aeid = assetEntryId;
@@ -174,7 +173,13 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 			setPrimaryAsset(asset.asset);
 			dispatch({
 				type: ASSET_ACTION_TYPES.SUB_CATEGORY,
-				value: subCategoryMap[getValueSafely(() => asset.asset.meta.subcategory, "")],
+				value: getValueSafely(
+					() =>
+						categoryMap
+							.find(category => category.key === asset.asset.meta.category)
+							.children.find(subCat => subCat.key === asset.asset.meta.subcategory).title.name,
+					""
+				),
 			});
 		}
 		return (): void => {
@@ -226,14 +231,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 		state.preferredRetailer,
 	]);
 	const Router = useRouter();
-
-	const categoryMap = useMemo(() => {
-		return categoryIdNameMapper(state.metaData);
-	}, [state.metaData]);
-
-	const verticalMap = useMemo(() => {
-		return verticalIdNameMapper(state.metaData);
-	}, [state.metaData]);
 
 	const onButtonClick = async (assetId: string, assetInMoodboard: boolean): Promise<void> => {
 		dispatch({ type: ASSET_ACTION_TYPES.LOADING_STATUS, value: true });
@@ -413,7 +410,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 							<Col sm={12} key={asset._id} md={8} lg={6}>
 								<ProductCard
 									actions={projectId ? getActions(asset._id, assetInMoodboard) : []}
-									verticalMap={verticalMap}
 									asset={asset}
 									onCardClick={onCardClick}
 								/>
@@ -447,9 +443,6 @@ const AssetMainPanel: (props: AssetMainPanelProps) => JSX.Element = ({
 					assetEntryId={assetEntryId}
 					selectedAssetId={selectedAssetId}
 					setSelectedAssetId={setSelectedAssetId}
-					categoryMap={categoryMap}
-					verticalMap={verticalMap}
-					subCategoryMap={subCategoryMap}
 					designId={designId}
 					moodboard={moodboard}
 					addRemoveAsset={addRemoveAsset}

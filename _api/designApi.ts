@@ -19,7 +19,7 @@ export const deleteDesignApi: (designId) => string = designId => {
 };
 
 export const getMetaDataApi: () => string = () => {
-	return "/unity/meta";
+	return "/v2/unity/meta";
 };
 
 export const updateNotesApi: (designId: string) => string = designId => {
