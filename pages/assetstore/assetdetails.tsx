@@ -838,6 +838,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			...(skuData?.price ? { price: skuData.price } : {}),
 			sku: skuData?.sku,
 		});
+		setChangedState({
+			...changedState,
+			sku: skuData?.sku,
+		});
 	};
 
 	useEffect(() => {
