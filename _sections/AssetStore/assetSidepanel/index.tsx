@@ -171,11 +171,19 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 	): DataNode[] => {
 		return options?.map(item => {
 			if (item.children) {
-				return {
-					key: `${item.title.name}-${item?.title?.level}`,
-					title: item.title.name,
-					children: renderTreeNodes(item.children),
-				};
+				if (level === "category")
+					return {
+						key: `${item.title.name}-${item?.title?.level}`,
+						title: item.title.name,
+						children: renderTreeNodes(item.children, "subCategory"),
+					};
+				else {
+					return {
+						key: `${item.title.name}-${item?.title?.level}`,
+						title: item.title.name,
+						children: renderTreeNodes(item.children, "verticals"),
+					};
+				}
 			}
 			return { key: `${item.title.name}-${level}`, title: item.title.name };
 		});

@@ -25,7 +25,7 @@ interface CategoryFilterProps {
 const BlockCheckboxGroup = styled(CheckboxGroup)`
 	display: block;
 	.ant-checkbox-group-item {
-		display: block;
+		display: flex;
 		margin: 6px 0px;
 		span {
 			text-transform: capitalize;
