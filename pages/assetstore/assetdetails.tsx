@@ -159,6 +159,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				"weight": parseFloat(response.data.weight || 0),
 				"price": parseFloat(response.data.price || 0),
 				"sku": response.data?.sku || "",
+				"msrp": response.data?.msrp || "",
 			});
 		} else {
 			notification.error({ message: "Failed to load asset data" });
@@ -840,7 +841,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		});
 		setChangedState({
 			...changedState,
+			...(skuData?.title
+				? { name: skuData.title?.endsWith("-") ? skuData.title?.slice(0, -1).trim() : skuData.title?.trim() }
+				: {}),
 			sku: skuData?.sku,
+			...(skuData?.price ? { price: skuData.price } : {}),
 		});
 	};
 
@@ -1155,38 +1160,47 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															<Select mode='tags' open={false} tokenSeparators={[","]} />
 														</Form.Item>
 													</Col>
-													{!assetId && (
-														<Col span={12}>
-															<Form.Item
-																shouldUpdate={(prevValues, currentValues) => {
-																	return prevValues.retailer !== currentValues.retailer;
-																}}
-															>
-																{({ getFieldValue }) => {
-																	const retailer = getFieldValue("retailer");
-																	return (
-																		<Form.Item
-																			labelCol={{ span: 24 }}
-																			name='sku'
-																			label='SKU'
-																			rules={[{ required: skuAvailableRetailers.includes(retailer) }]}
-																		>
-																			<Input
-																				disabled={skuIds.length > 0}
-																				addonAfter={
-																					skuIds.length > 1 && (
-																						<Tooltip placement='top' title='Select another SKU'>
-																							<AimOutlined onClick={toggleSkuModal} />
-																						</Tooltip>
-																					)
-																				}
-																			/>
-																		</Form.Item>
-																	);
-																}}
-															</Form.Item>
-														</Col>
-													)}
+
+													<Col span={12}>
+														<Form.Item
+															shouldUpdate={(prevValues, currentValues) => {
+																return prevValues.retailer !== currentValues.retailer;
+															}}
+														>
+															{({ getFieldValue }) => {
+																const retailer = getFieldValue("retailer");
+																return (
+																	<Form.Item
+																		labelCol={{ span: 24 }}
+																		name='sku'
+																		label='SKU'
+																		rules={[{ required: skuAvailableRetailers.includes(retailer) }]}
+																	>
+																		<Input
+																			disabled={skuIds.length > 0}
+																			addonAfter={
+																				skuIds.length > 1 && (
+																					<Tooltip placement='top' title='Select another SKU'>
+																						<AimOutlined onClick={toggleSkuModal} />
+																					</Tooltip>
+																				)
+																			}
+																		/>
+																	</Form.Item>
+																);
+															}}
+														</Form.Item>
+													</Col>
+													<Col span='12'>
+														<Form.Item
+															labelCol={{ span: 24 }}
+															name='msrp'
+															label='MSRP'
+															rules={[{ required: true, type: "number", min: 0 }]}
+														>
+															<InputNumber style={{ width: "100%" }} />
+														</Form.Item>
+													</Col>
 												</Row>
 											</Col>
 										</Row>

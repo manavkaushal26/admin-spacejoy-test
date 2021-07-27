@@ -50,7 +50,7 @@ export const deleteUploadedImageApi = (designId: string, imageId: string): strin
 };
 
 export const getSingleAssetApi: (assetId: string) => string = assetId => {
-	return `/v1/products/${assetId}`;
+	return `/v1/products/${assetId}/details`;
 };
 
 export const getMoodboardApi: (designId: string, assetEntryId?: string) => string = (designId, assetEntryId) => {
