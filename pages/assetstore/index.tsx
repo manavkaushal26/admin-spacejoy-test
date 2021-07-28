@@ -46,28 +46,6 @@ export interface CategoryMap {
 	children?: Array<CategoryMap>;
 }
 
-const ParentContainer = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-
-	> * {
-		flex-grow: 1;
-		flex-shrink: 1;
-	}
-`;
-const SidebarContainer = styled.div`
-	flex-basis: 35ch;
-	flex-grow: 1;
-	@media only screen and (max-width: 768px) {
-		flex-basis: 30ch;
-	}
-`;
-const MainContentContainer = styled.div`
-	flex-basis: 0;
-	flex-grow: 999;
-	min-width: 50%;
-`;
-
 const FAB = styled.button`
 	position: absolute;
 	bottom: 1.5rem;
@@ -260,8 +238,8 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 				{IndexPageMeta}
 			</Head>
 			<Spin spinning={state.loading}>
-				<ParentContainer>
-					<SidebarContainer>
+				<Row>
+					<Col sm={8} md={6} lg={4}>
 						<MaxHeightDiv style={{ flexDirection: "column" }}>
 							<Row>
 								<Col span={24}>
@@ -290,8 +268,8 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 								</Col>
 							</Row>
 						</MaxHeightDiv>
-					</SidebarContainer>
-					<MainContentContainer>
+					</Col>
+					<Col sm={16} md={18} lg={20}>
 						<MaxHeightDiv>
 							<PaddedDiv>
 								<DynamicMainPanel
@@ -308,8 +286,8 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 								/>
 							</PaddedDiv>
 						</MaxHeightDiv>
-					</MainContentContainer>
-				</ParentContainer>
+					</Col>
+				</Row>
 				<FAB onClick={toggleNewAssetModal}>
 					<PlusOutlined style={{ color: "white" }} />
 				</FAB>
