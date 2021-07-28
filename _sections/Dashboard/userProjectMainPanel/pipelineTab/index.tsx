@@ -117,7 +117,8 @@ export default function PipelineTab({
 
 	const updateDesignState = async (currentStage, status: Status | "reset", e = undefined): Promise<void> => {
 		if (e) e.stopPropagation();
-		if (currentStage === DesignPhases.design3D && designData.description.length === 0) {
+		console.log("currentStage", currentStage);
+		if (currentStage === DesignPhases.design3D && (!designData.description || designData.description?.length === 0)) {
 			notification.warn({ message: "Please add designer note before proceeding" });
 			return;
 		}
