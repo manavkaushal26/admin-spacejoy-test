@@ -1,7 +1,6 @@
 import { PhaseCustomerNames, PhaseInternalNames, UserProjectType } from "@customTypes/dashboardTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import UserProjectMainPanel from "@sections/Dashboard/userProjectMainPanel";
-import SQResponse from "@sections/Dashboard/userProjectMainPanel/ProjectDesignInteractionPanel/StyleQuizResponse";
 import Sidebar from "@sections/Dashboard/UserProjectSidepanel";
 import { UserProjectSidePanelInitialState } from "@sections/Dashboard/UserProjectSidepanel/reducer";
 import { PaddedDiv } from "@sections/Header/styled";
@@ -119,7 +118,6 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 			projectPhase: phase,
 		});
 	};
-	const UserStyleQuizRes = <SQResponse userId={currentUser} />;
 	return (
 		<PageLayout pageName='Dashboard'>
 			<Head>
@@ -167,7 +165,6 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 										setDates={setDates}
 										currentTab={currentTab}
 										setSearchFiltersChanged={setSearchFiltersChanged}
-										userStyleQuizResult={UserStyleQuizRes}
 									/>
 								</PaddedDiv>
 							</MaxHeightDiv>

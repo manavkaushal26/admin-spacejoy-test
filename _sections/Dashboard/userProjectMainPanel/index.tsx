@@ -32,7 +32,6 @@ const userProjectMainPanel: React.FC<{
 	dates: Partial<UserProjectType>;
 	setDates: React.Dispatch<React.SetStateAction<Partial<DetailedProject>>>;
 	setSearchFiltersChanged: React.Dispatch<React.SetStateAction<UserProjectSidePanelState>>;
-	userStyleQuizResult?: React.ReactNode;
 }> = ({
 	updateProjectPhaseInSidepanel,
 	userProjectId,
@@ -41,7 +40,6 @@ const userProjectMainPanel: React.FC<{
 	setDates,
 	currentTab,
 	setSearchFiltersChanged,
-	userStyleQuizResult,
 }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -172,7 +170,6 @@ const userProjectMainPanel: React.FC<{
 								designId={designId}
 								setProjectData={setProjectData}
 								revisionFormData={revisionFormData}
-								userStyleQuizResult={userStyleQuizResult}
 							/>
 						</Col>
 					</>

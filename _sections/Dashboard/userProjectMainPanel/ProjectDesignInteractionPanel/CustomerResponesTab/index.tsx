@@ -4,13 +4,13 @@ import { getValueSafely } from "@utils/commonUtils";
 import { Col, Radio, Row } from "antd";
 import React, { useState } from "react";
 import DetailedCustomerRequirement from "../DetailedCustomerRequirement";
+import UserStyleQuizResponse from "../StyleQuizResponse";
 
 interface CustomerResponsesTab {
 	projectData: DetailedProject;
-	userStyleQuizResult?: React.ReactNode;
 }
 
-const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData, userStyleQuizResult }) => {
+const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData }) => {
 	const formData = getValueSafely(() => projectData.form, null);
 	const [currentTab, setCurrentTab] = useState<"quiz1" | "quiz2" | "quiz3">("quiz1");
 	return (
@@ -41,7 +41,9 @@ const CustomerResponsesTab: React.FC<CustomerResponsesTab> = ({ projectData, use
 			)}
 			{currentTab === "quiz3" && (
 				<Col span={24}>
-					<div>{userStyleQuizResult}</div>
+					<div>
+						<UserStyleQuizResponse userId={projectData.customer._id} />
+					</div>
 				</Col>
 			)}
 		</Row>

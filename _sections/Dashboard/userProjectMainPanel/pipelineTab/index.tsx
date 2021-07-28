@@ -11,7 +11,7 @@ import { Status } from "@customTypes/userType";
 import { ShadowDiv, StatusButton, StepsContainer, Tile } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Avatar, Button, Col, message, Popconfirm, Row, Typography } from "antd";
+import { Avatar, Button, Col, notification, Popconfirm, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import Stage from "./Stage";
 
@@ -117,6 +117,10 @@ export default function PipelineTab({
 
 	const updateDesignState = async (currentStage, status: Status | "reset", e = undefined): Promise<void> => {
 		if (e) e.stopPropagation();
+		if (currentStage === DesignPhases.design3D && designData.description.length === 0) {
+			notification.warn({ message: "Please add designer note before proceeding" });
+			return;
+		}
 		setUpdationPhase(currentStage);
 		const endpoint = updateDesignPhase(designData._id);
 		let updatedStatus: Status;
@@ -127,6 +131,7 @@ export default function PipelineTab({
 		} else if (status === "reset") {
 			updatedStatus = Status.active;
 		}
+
 		const response = await fetcher({
 			endPoint: endpoint,
 			method: "PUT",
@@ -145,7 +150,7 @@ export default function PipelineTab({
 				phases: { ...response.data.designPhase },
 			});
 		} else {
-			message.error(response.message);
+			notification.error({ message: response.message });
 		}
 		setUpdationPhase(null);
 	};
