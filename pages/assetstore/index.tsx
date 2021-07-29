@@ -10,7 +10,9 @@ import { company } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { getSessionStorageValue, setSessionStorageValue } from "@utils/storageUtils";
-import { Button, Col, message, Row, Skeleton, Spin } from "antd";
+import { Button, Col, message, Row, Skeleton } from "antd";
+import Spin from "antd/lib/spin";
+import "antd/lib/spin/style";
 import { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import Head from "next/head";
@@ -50,6 +52,7 @@ const FAB = styled.button`
 	bottom: 1.5rem;
 	right: 1.5rem;
 	width: 56px;
+	z-index: 10;
 	height: 56px;
 	font-size: 2.2rem;
 	border-radius: 28px;
@@ -236,57 +239,54 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 				<title>Asset Store | {company.product}</title>
 				{IndexPageMeta}
 			</Head>
-			<Spin spinning={state.loading}>
-				<Row>
-					<Col sm={8} md={6} lg={4}>
-						<Row style={{ position: "sticky", top: 70 }}>
-							<Col span={24}>
-								<Row gutter={[8, 8]}>
+			<Row style={{ position: "relative" }}>
+				<Col sm={8} md={6} lg={4}>
+					<Row style={{ position: "sticky", top: 70 }}>
+						<Col span={24}>
+							<Row gutter={[8, 8]}>
+								<Col span={24}>
+									<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type='primary'>
+										{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
+									</Button>
+								</Col>
+								{designId && (
 									<Col span={24}>
-										<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type='primary'>
-											{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
+										<Button onClick={toggleCart} block type='default'>
+											Open Cart
 										</Button>
 									</Col>
-									{designId && (
-										<Col span={24}>
-											<Button onClick={toggleCart} block type='default'>
-												Open Cart
-											</Button>
-										</Col>
-									)}
-								</Row>
-							</Col>
-							<Col span={24}>
-								<DynamicSidepanel
-									state={state}
+								)}
+							</Row>
+						</Col>
+						<Col span={24}>
+							<DynamicSidepanel state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
+						</Col>
+					</Row>
+				</Col>
+				<Col sm={16} md={18} lg={20}>
+					<PaddedDiv style={{ padding: "1rem 1rem", overflow: "auto" }}>
+						<Spin spinning={state.loading}>
+							<div>
+								<DynamicMainPanel
+									themeIdToNameMap={themeIdToNameMap}
+									editAsset={editAsset}
+									projectId={projectId}
 									dispatch={dispatch}
-									metaData={state.metaData}
+									state={state}
+									assetEntryId={assetEntryId}
+									designId={designId}
+									moodboard={state.moodboard}
+									addRemoveAsset={addRemoveAsset}
 									categoryMap={categoryMap}
 								/>
-							</Col>
-						</Row>
-					</Col>
-					<Col sm={16} md={18} lg={20}>
-						<PaddedDiv style={{ padding: "1rem 1rem" }}>
-							<DynamicMainPanel
-								themeIdToNameMap={themeIdToNameMap}
-								editAsset={editAsset}
-								projectId={projectId}
-								dispatch={dispatch}
-								state={state}
-								assetEntryId={assetEntryId}
-								designId={designId}
-								moodboard={state.moodboard}
-								addRemoveAsset={addRemoveAsset}
-								categoryMap={categoryMap}
-							/>
-						</PaddedDiv>
-					</Col>
-				</Row>
-				<FAB onClick={toggleNewAssetModal}>
-					<PlusOutlined style={{ color: "white" }} />
-				</FAB>
-			</Spin>
+							</div>
+						</Spin>
+					</PaddedDiv>
+				</Col>
+			</Row>
+			<FAB onClick={toggleNewAssetModal}>
+				<PlusOutlined style={{ color: "white" }} />
+			</FAB>
 
 			{/* <NewAssetModal
 				dispatchAssetStore={dispatch}
