@@ -8,7 +8,6 @@ const dev = process.env.NODE_ENV !== "production";
 
 const MainStyled = styled(AntdLayout)<{ isServer: boolean }>`
 	padding-top: 70px;
-	height: calc(100vh);
 	position: relative;
 	&.client-server-identifier {
 		&:after {

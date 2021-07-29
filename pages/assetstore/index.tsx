@@ -3,7 +3,6 @@ import { getMetaDataApi, getMoodboardApi } from "@api/designApi";
 import { AssetType, MoodboardAsset } from "@customTypes/moodboardTypes";
 import AssetCartModal from "@sections/AssetStore/assetCart";
 import { assetStoreInitialState, AssetStoreState, ASSET_ACTION_TYPES, reducer } from "@sections/AssetStore/reducer";
-import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import { PaddedDiv } from "@sections/Header/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
@@ -240,52 +239,48 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 			<Spin spinning={state.loading}>
 				<Row>
 					<Col sm={8} md={6} lg={4}>
-						<MaxHeightDiv style={{ flexDirection: "column" }}>
-							<Row>
-								<Col span={24}>
-									<Row gutter={[8, 8]}>
+						<Row style={{ position: "sticky", top: 70 }}>
+							<Col span={24}>
+								<Row gutter={[8, 8]}>
+									<Col span={24}>
+										<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type='primary'>
+											{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
+										</Button>
+									</Col>
+									{designId && (
 										<Col span={24}>
-											<Button icon={<RollbackOutlined />} onClick={goToButtonClick} block type='primary'>
-												{assetEntryId ? "Go to Primary Asset Selection" : " Go Back"}
+											<Button onClick={toggleCart} block type='default'>
+												Open Cart
 											</Button>
 										</Col>
-										{designId && (
-											<Col span={24}>
-												<Button onClick={toggleCart} block type='default'>
-													Open Cart
-												</Button>
-											</Col>
-										)}
-									</Row>
-								</Col>
-								<Col span={24}>
-									<DynamicSidepanel
-										state={state}
-										dispatch={dispatch}
-										metaData={state.metaData}
-										categoryMap={categoryMap}
-									/>
-								</Col>
-							</Row>
-						</MaxHeightDiv>
-					</Col>
-					<Col sm={16} md={18} lg={20}>
-						<MaxHeightDiv>
-							<PaddedDiv>
-								<DynamicMainPanel
-									themeIdToNameMap={themeIdToNameMap}
-									editAsset={editAsset}
-									projectId={projectId}
-									dispatch={dispatch}
+									)}
+								</Row>
+							</Col>
+							<Col span={24}>
+								<DynamicSidepanel
 									state={state}
-									assetEntryId={assetEntryId}
-									designId={designId}
-									moodboard={state.moodboard}
-									addRemoveAsset={addRemoveAsset}
+									dispatch={dispatch}
+									metaData={state.metaData}
 									categoryMap={categoryMap}
 								/>
-							</PaddedDiv>
-						</MaxHeightDiv>
+							</Col>
+						</Row>
+					</Col>
+					<Col sm={16} md={18} lg={20}>
+						<PaddedDiv style={{ padding: "1rem 1rem" }}>
+							<DynamicMainPanel
+								themeIdToNameMap={themeIdToNameMap}
+								editAsset={editAsset}
+								projectId={projectId}
+								dispatch={dispatch}
+								state={state}
+								assetEntryId={assetEntryId}
+								designId={designId}
+								moodboard={state.moodboard}
+								addRemoveAsset={addRemoveAsset}
+								categoryMap={categoryMap}
+							/>
+						</PaddedDiv>
 					</Col>
 				</Row>
 				<FAB onClick={toggleNewAssetModal}>

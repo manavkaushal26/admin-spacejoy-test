@@ -151,9 +151,7 @@ const CapitalizedTitle = styled(Title)`
 	margin-bottom: 0px !important;
 `;
 
-const GreyMaxHeightDiv = styled.div`
-	height: calc(100vh - 70px);
-`;
+const GreyMaxHeightDiv = styled.div``;
 
 const IconBackground = styled.div<{ color: string }>`
 	padding: 1rem;

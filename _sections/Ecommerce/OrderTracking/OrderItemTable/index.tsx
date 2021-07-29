@@ -2,9 +2,8 @@ import { SearchOutlined } from "@ant-design/icons";
 import Image from "@components/Image";
 import { OrderItems, OrderItemStatus } from "@customTypes/ecommerceTypes";
 import { ScrapedAssetType } from "@customTypes/moodboardTypes";
-import PriceData from "@utils/componentUtils/AssetPrice";
 import { company } from "@utils/config";
-import { Button, Col, Input, Row, Table, Tooltip, Typography } from "antd";
+import { Button, Col, Input, Row, Table, Typography } from "antd";
 import React, { useState } from "react";
 import UpdateAssetDataModal from "./UpdateAssetDataModal";
 
@@ -14,26 +13,9 @@ interface OrderItemTable {
 	orderItems: OrderItems[];
 	toggleOrderItemDrawer?: (data: OrderItems) => void;
 	orderId?: string;
-	scrapedData?: Record<string, ScrapedAssetType>;
 }
 
-const Availability = ({ scrapedData }: { scrapedData: ScrapedAssetType }) => {
-	if (scrapedData?.scrape) {
-		if (scrapedData.scrape?.available) {
-			return <>Available</>;
-		} else {
-			return <>Out Of Stock</>;
-		}
-	} else {
-		return (
-			<Tooltip title='Not Available'>
-				<span>N/A</span>
-			</Tooltip>
-		);
-	}
-};
-
-const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemDrawer, orderId, scrapedData }) => {
+const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemDrawer, orderId }) => {
 	const [searchText, setSearchText] = useState("");
 	const [singleScrapedData, setSingleScrapedData] = useState<ScrapedAssetType>(undefined);
 	const [modalVisible, setModalVisible] = useState<boolean>(false);
@@ -142,49 +124,6 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 				<Table.Column key='_id' title='Quantity' dataIndex='quantity' />
 				<Table.Column key='_id' title='Price' dataIndex='price' render={text => <>${text}</>} />
 
-				{scrapedData && (
-					<Table.Column
-						key='_id'
-						title='Retailer Price'
-						render={(_, record: OrderItems) => {
-							return <PriceData scrapedData={scrapedData[record?.product?._id]} />;
-						}}
-					/>
-				)}
-				{scrapedData && (
-					<Table.Column
-						key='_id'
-						title='Difference'
-						render={(_, record: OrderItems) => {
-							if (scrapedData[record?.product?._id]?.scrape?.price) {
-								const difference = scrapedData[record?.product?._id]?.scrape?.price - record?.product?.price;
-								const fixedDifference = difference.toFixed(2);
-								return (
-									<>
-										{difference < 0 ? `-$${-fixedDifference}` : `$${-fixedDifference}`} (
-										{((difference * 100) / record?.product?.price).toFixed(2)}%)
-									</>
-								);
-							} else if (scrapedData[record?.product?._id]?.scrape?.prices) {
-								const priceRange = scrapedData[record?.product?._id]?.scrape?.prices.join("-");
-								return <>${priceRange}</>;
-							} else {
-								return (
-									<Tooltip title='Not Available'>
-										<>N/A</>
-									</Tooltip>
-								);
-							}
-						}}
-					/>
-				)}
-				{scrapedData && (
-					<Table.Column
-						key='_id'
-						title='Availability'
-						render={(_, record: OrderItems) => <Availability scrapedData={scrapedData[record?.product?._id]} />}
-					/>
-				)}
 				<Table.Column
 					key='_id'
 					title='Total'
@@ -211,16 +150,6 @@ const OrderItemTable: React.FC<OrderItemTable> = ({ orderItems, toggleOrderItemD
 										</Link>
 									)}
 								</Col>
-								{scrapedData && !!scrapedData[record?.product?._id] && (
-									<Col>
-										<Button
-											type='link'
-											onClick={() => toggleModal(scrapedData[record?.product?._id], record?.product?.name)}
-										>
-											Update Asset
-										</Button>
-									</Col>
-								)}
 							</>
 						</Row>
 					)}

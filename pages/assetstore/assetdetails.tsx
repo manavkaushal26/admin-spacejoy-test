@@ -234,8 +234,12 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				]);
 			}
 			if (state.spatialData) {
-				const { glb = undefined, legacy_obj: legacyObj = undefined, source = undefined, sourceHighPoly = undefined } =
-					state?.spatialData?.fileUrls || {};
+				const {
+					glb = undefined,
+					legacy_obj: legacyObj = undefined,
+					source = undefined,
+					sourceHighPoly = undefined,
+				} = state?.spatialData?.fileUrls || {};
 
 				if (model3dFiles === Model3DFiles.Glb) {
 					if (glb) {
@@ -452,11 +456,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		return false;
 	};
 
-	const formatResponseOnReceive: (dimension: {
+	const formatResponseOnReceive: (dimension: { width: number; height: number; depth: number }) => {
 		width: number;
 		height: number;
 		depth: number;
-	}) => { width: number; height: number; depth: number } = dimension => {
+	} = dimension => {
 		return {
 			height: convertToInches(dimension.height),
 			width: convertToInches(dimension.width),

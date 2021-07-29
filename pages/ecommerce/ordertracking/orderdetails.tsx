@@ -1,4 +1,4 @@
-import { ArrowLeftOutlined, RedoOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 import { getDesignMapping, getOrderApi } from "@api/ecommerceApi";
 import { EcommerceOrderStatusReverseMap, EcommOrder, OrderItems } from "@customTypes/ecommerceTypes";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
@@ -13,7 +13,6 @@ import PaymentsDrawer from "@sections/Ecommerce/OrderTracking/PaymentsDrawer";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { company } from "@utils/config";
-import { useScraper } from "@utils/customHooks/useScraper";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, Descriptions, notification, Row, Spin, Typography } from "antd";
@@ -43,18 +42,6 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 	const [emailModalVisible, setEmailModalVisible] = useState<boolean>(false);
 	const [orderCoupons, setOrderCoupons] = useState<[]>([]);
 	const [orderOffers, setOrderOffers] = useState<[]>([]);
-	const { scrapedData, error: scrapingError, scraping, triggerScraping } = useScraper(
-		orderId,
-		order?.orderItems.map(item => item?.product?._id)
-	);
-
-	useEffect(() => {
-		if (scraping) notification.info({ message: "Scraping Products data. This may take a minute" });
-	}, [scraping]);
-
-	useEffect(() => {
-		if (scrapingError) notification.error({ message: "Failed to scrape Data" });
-	}, [scrapingError]);
 
 	const Router = useRouter();
 
@@ -465,32 +452,10 @@ const OrderTracking: NextPage<OrderTracking> = ({ orderId, orderItemId, orderDat
 									<Col>
 										<Title level={4}>Product List</Title>
 									</Col>
-									{scraping ? (
-										<Col>
-											<Link>
-												<Row gutter={[4, 4]} align='middle'>
-													<Col>
-														<RedoOutlined spin={scraping} style={{ transform: "rotate(180deg)" }} />
-													</Col>
-													<Col>Fetching Asset data</Col>
-												</Row>
-											</Link>
-										</Col>
-									) : (
-										<Col>
-											<Button type='link' onClick={triggerScraping}>
-												Fetch Asset Data
-											</Button>
-										</Col>
-									)}
 								</Row>
 							</Col>
 							<Col span={24}>
-								<OrderItemTable
-									scrapedData={scrapedData}
-									orderItems={order?.orderItems}
-									toggleOrderItemDrawer={toggleOrderItemDrawer}
-								/>
+								<OrderItemTable orderItems={order?.orderItems} toggleOrderItemDrawer={toggleOrderItemDrawer} />
 							</Col>
 						</Row>
 					</Spin>
