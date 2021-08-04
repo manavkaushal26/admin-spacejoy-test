@@ -17,12 +17,12 @@ export enum Role {
 }
 
 export enum ProjectRoles {
-	Designer = "designer",
-	"Account Manager" = "account manager",
-	Administrator = "admin",
-	"3D Artist" = "3d artist",
-	"Senior 3D Artist" = "senior3dArtist",
-	"Assistant Designer" = "assistantDesigner",
+	Designer = Role.Designer,
+	"Account Manager" = Role["Account Manager"],
+	Administrator = Role.Admin,
+	"3D Artist" = Role["3D Artist"],
+	"Senior 3D Artist" = Role["Senior 3D Artist"],
+	"Assistant Designer" = Role["Assistant Designer"],
 }
 
 export enum Status {

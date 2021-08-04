@@ -19,11 +19,9 @@ export const useSkuIdFetcher = () => {
 	const [socketEventName, setSocketEventName] = useState("");
 	const [urlMightHaveProblem, setUrlMightHaveProblem] = useState({ hasProblem: false, message: "" });
 	const socket = useMemo(() => io("https://socket.spacejoy.com"), []);
-
 	const startFetching = async () => {
 		const endPoint = startSkuFetchingApi();
-
-		const response = await fetcher({ endPoint, method: "POST", body: { url: retailerUrl } });
+		const response = await fetcher({ endPoint, method: "POST", body: { socketId: socket.id, url: retailerUrl } });
 
 		if (!(response.statusCode <= 300)) {
 			setLoading(false);

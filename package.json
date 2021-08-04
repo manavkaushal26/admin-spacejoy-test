@@ -7,6 +7,7 @@
 		"@ant-design/dark-theme": "^2.0.2",
 		"@ant-design/icons": "^4.2.1",
 		"@react-firebase/firestore": "^0.5.5",
+		"@tailwindcss/aspect-ratio": "^0.2.1",
 		"@tinymce/tinymce-react": "^3.6.0",
 		"@zeit/next-less": "^1.0.1",
 		"antd": "^4.16.8",
