@@ -44,3 +44,7 @@ export const getAllCoupons = (search: boolean): string => {
 export const createEditCouponApi = (couponId: string): string => {
 	return `/coupon${couponId ? `/${couponId}` : ""}`;
 };
+
+export const saveSiteConfigApi = (): string => {
+	return "/v1/firestore/siteConfig";
+};

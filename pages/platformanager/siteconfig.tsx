@@ -1,11 +1,13 @@
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { saveSiteConfigApi } from "@api/metaApi";
 import BroadcastingStrip from "@components/BroadcastingStrip";
-import { FirestoreDocument, FirestoreMutation } from "@react-firebase/firestore";
+import { FirestoreDocument } from "@react-firebase/firestore";
 import { ModifiedDivider } from "@sections/AssetStore/styled";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
 import { company, firebaseConfig } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
 import { Button, Col, DatePicker, Divider, Form, Input, message, Modal, Row, Spin, Switch, Typography } from "antd";
 import moment from "moment";
@@ -79,6 +81,44 @@ const SitemapManager: NextPage = () => {
 	const router = useRouter();
 	const [form] = Form.useForm();
 
+	const saveForm = async data => {
+		const endPoint = saveSiteConfigApi();
+
+		const response = await fetcher({
+			endPoint,
+			method: "POST",
+			body: {
+				...data,
+			},
+		});
+		if (response.statusCode === 200) {
+			return true;
+		} else {
+			throw new Error();
+		}
+	};
+
+	const onFinish = data => {
+		setLoading(false);
+		Modal.confirm({
+			title: "Are you sure?",
+			content: "Changes made will be immediately visible to customer",
+			onOk: () => {
+				saveForm({
+					...data,
+					countdown: { ...data.countdown, time: data.countdown.time.valueOf() },
+				})
+					.then(() => {
+						message.success("Saved config successfully");
+						setLoading(false);
+					})
+					.catch(() => {
+						message.error("Failed to save. Please try again");
+					});
+			},
+		});
+	};
+
 	return (
 		<PageLayout pageName='Site Config'>
 			<Head>
@@ -102,398 +142,366 @@ const SitemapManager: NextPage = () => {
 							<Divider style={{ marginTop: "0rem" }} />
 						</Col>
 						<Col span={24}>
-							<FirestoreDocument path={`/siteConfig/${firebaseConfig.documentId}`}>
+							<FirestoreDocument path={`/${firebaseConfig.databaseId}/${firebaseConfig.documentId}`}>
 								{d => {
 									const time = d.value?.countdown?.time ? moment(d.value?.countdown?.time) : null;
 									form.setFieldsValue({ ...d.value, countdown: { ...d.value?.countdown, time: time } });
 									return (
 										<Spin spinning={loading || d.isLoading}>
-											<FirestoreMutation type='update' path={`/siteConfig/${firebaseConfig.documentId}`}>
-												{({ runMutation }) => {
-													return (
-														<Form
-															form={form}
-															initialValues={initialValues}
-															labelCol={{ span: 24 }}
-															onFinish={data => {
-																setLoading(false);
-																Modal.confirm({
-																	title: "Are you sure?",
-																	content: "Changes made will be immediately visible to customer",
-																	onOk: () => {
-																		runMutation({
-																			...data,
-																			countdown: { ...data.countdown, time: data.countdown.time.valueOf() },
-																		})
-																			.then(() => {
-																				message.success("Saved config successfully");
-																				setLoading(false);
-																			})
-																			.catch(e => {
-																				message.error("Failed to save. Please try again");
-																			});
-																	},
-																});
-															}}
-														>
-															<Row>
-																<Col>
-																	<Row gutter={[16, 8]}>
-																		<Col span={24}>
-																			<Title level={4} underline>
-																				Home Page Banners
-																			</Title>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp1"]}
-																				label='Home page Portrait'
-																				normalize={stripDomainInLink}
-																				rules={[{ required: true }]}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["homepage", "hp1Alt"]} label='Alt tag'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp1Link"]}
-																				label='Home page Portrait link to'
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
+											<Form form={form} initialValues={initialValues} labelCol={{ span: 24 }} onFinish={onFinish}>
+												<Row>
+													<Col>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Home Page Banners
+																</Title>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["homepage", "hp1"]}
+																	label='Home page Portrait'
+																	normalize={stripDomainInLink}
+																	rules={[{ required: true }]}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["homepage", "hp1Alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["homepage", "hp1Link"]}
+																	label='Home page Portrait link to'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
 
-																		<Col span={12}>
-																			<Form.Item
-																				name={["homepage", "timerVisible"]}
-																				label='Timer Visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["homepage", "timerVisible"]}
+																	label='Timer Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
 
-																		<Col span={24}>
-																			<ModifiedDivider />
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp2"]}
-																				label='Home page Landscape 1'
-																				normalize={stripDomainInLink}
-																				rules={[{ required: true }]}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["homepage", "hp2Alt"]} label='Alt tag'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
+															<Col span={24}>
+																<ModifiedDivider />
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["homepage", "hp2"]}
+																	label='Home page Landscape 1'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["homepage", "hp2Alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
 
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp2Link"]}
-																				label='Home page Landscape 1 link to'
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col span={24}>
-																			<ModifiedDivider />
-																		</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["homepage", "hp2Link"]}
+																	label='Home page Landscape 1 link to'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col span={24}>
+																<ModifiedDivider />
+															</Col>
 
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp3"]}
-																				label='Home page Landscape 2'
-																				normalize={stripDomainInLink}
-																				rules={[{ required: true }]}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["homepage", "hp3Alt"]} label='Alt tag'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["homepage", "hp3Link"]}
-																				label='Home page Landscape 2 link to'
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																	</Row>
-																</Col>
-																<Col span={24}>
-																	<Row gutter={[16, 8]}>
-																		<Col span={24}>
-																			<Title level={4} underline>
-																				Inject Banner
-																			</Title>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["injectBanner", "cdn"]}
-																				label='Inject banner'
-																				normalize={stripDomainInLink}
-																				rules={[{ required: true }]}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["injectBanner", "link"]}
-																				label='Inject banner Link'
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["injectBanner", "alt"]} label='Alt tag'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col span={12}>
-																			<Form.Item
-																				name={["injectBanner", "visible"]}
-																				label='Inject banner Visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																		<Col span={12}>
-																			<Form.Item
-																				name={["injectBanner", "timerVisible"]}
-																				label='Timer Visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																	</Row>
-																</Col>
-																<Col span={24}>
-																	<Row gutter={[16, 8]}>
-																		<Col span={24}>
-																			<Title level={4} underline>
-																				Cart Banner
-																			</Title>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["cartBanner", "cdn"]}
-																				label='Cart banner'
-																				rules={[{ required: true }]}
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["cartBanner", "link"]}
-																				label='Cart banner Link to'
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["cartBanner", "alt"]} label='Alt tag'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["cartBanner", "visible"]}
-																				label='Cart Banner visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																	</Row>
-																</Col>
-																<Col span={24}>
-																	<Row gutter={[16, 8]}>
-																		<Col span={24}>
-																			<Title level={4} underline>
-																				Countdown Timer
-																			</Title>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["countdown", "time"]}
-																				label='Countdown timer end time'
-																				rules={[{ required: true }]}
-																			>
-																				<DatePicker
-																					showTime
-																					// disabledDate={date => {
-																					// 	return date < moment();
-																					// }}
-																				/>
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["countdown", "endMessage"]} label='Countdown expiry message'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["countdown", "color"]} label='Text Color'>
-																				<Input type='color' />
-																			</Form.Item>
-																		</Col>
-																		<Col>
-																			<Form.Item shouldUpdate>
-																				{({ getFieldValue }) => {
-																					const color = getFieldValue(["countdown", "color"]);
-																					return (
-																						<Text strong style={{ color: color }}>
-																							Sample text to view color
-																						</Text>
-																					);
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["homepage", "hp3"]}
+																	label='Home page Landscape 2'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["homepage", "hp3Alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["homepage", "hp3Link"]}
+																	label='Home page Landscape 2 link to'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
+													<Col span={24}>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Inject Banner
+																</Title>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["injectBanner", "cdn"]}
+																	label='Inject banner'
+																	normalize={stripDomainInLink}
+																	rules={[{ required: true }]}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["injectBanner", "link"]}
+																	label='Inject banner Link'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["injectBanner", "alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["injectBanner", "visible"]}
+																	label='Inject banner Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["injectBanner", "timerVisible"]}
+																	label='Timer Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
+													<Col span={24}>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Cart Banner
+																</Title>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["cartBanner", "cdn"]}
+																	label='Cart banner'
+																	rules={[{ required: true }]}
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["cartBanner", "link"]}
+																	label='Cart banner Link to'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["cartBanner", "alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["cartBanner", "visible"]}
+																	label='Cart Banner visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
+													<Col span={24}>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Countdown Timer
+																</Title>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["countdown", "time"]}
+																	label='Countdown timer end time'
+																	rules={[{ required: true }]}
+																>
+																	<DatePicker
+																		showTime
+																		// disabledDate={date => {
+																		// 	return date < moment();
+																		// }}
+																	/>
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["countdown", "endMessage"]} label='Countdown expiry message'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["countdown", "color"]} label='Text Color'>
+																	<Input type='color' />
+																</Form.Item>
+															</Col>
+															<Col>
+																<Form.Item shouldUpdate>
+																	{({ getFieldValue }) => {
+																		const color = getFieldValue(["countdown", "color"]);
+																		return (
+																			<Text strong style={{ color: color }}>
+																				Sample text to view color
+																			</Text>
+																		);
+																	}}
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
+
+													<Col span={24}>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Broadcast strip
+																</Title>
+															</Col>
+															<Col span={24}>
+																<Form.Item
+																	shouldUpdate={(prevValues, newValues) => {
+																		if (
+																			prevValues.countdown !== newValues.countdown ||
+																			prevValues.broadcast !== newValues.broadcast
+																		) {
+																			return true;
+																		}
+																	}}
+																>
+																	{({ getFieldsValue }) => {
+																		const fieldValues = getFieldsValue(true);
+																		return (
+																			<BroadcastingStrip
+																				broadcastingStripData={{
+																					...fieldValues.broadcast,
+																					...fieldValues.countdown,
 																				}}
-																			</Form.Item>
-																		</Col>
-																	</Row>
-																</Col>
+																			/>
+																		);
+																	}}
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["broadcast", "beforePulseDot"]}
+																	label='Before Pulse dot'
+																	rules={[{ required: true }]}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["broadcast", "afterPulseDot"]} label='After Pulse Dot'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["broadcast", "highlightText"]} label='Highlighted Text'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["broadcast", "afterCoupon"]} label='After Highlighted text'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col span={24}>
+																<Form.Item
+																	name={["broadcast", "link"]}
+																	label='Broadcast Link to'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={12} md={6}>
+																<Form.Item
+																	name={["broadcast", "isHighlightCoupon"]}
+																	label='Is Highlighted text a Coupon?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
 
-																<Col span={24}>
-																	<Row gutter={[16, 8]}>
-																		<Col span={24}>
-																			<Title level={4} underline>
-																				Broadcast strip
-																			</Title>
-																		</Col>
-																		<Col span={24}>
-																			<Form.Item
-																				shouldUpdate={(prevValues, newValues) => {
-																					if (
-																						prevValues.countdown !== newValues.countdown ||
-																						prevValues.broadcast !== newValues.broadcast
-																					) {
-																						return true;
-																					}
-																				}}
-																			>
-																				{({ getFieldsValue }) => {
-																					const fieldValues = getFieldsValue(true);
-																					return (
-																						<BroadcastingStrip
-																							broadcastingStripData={{
-																								...fieldValues.broadcast,
-																								...fieldValues.countdown,
-																							}}
-																						/>
-																					);
-																				}}
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item
-																				name={["broadcast", "beforePulseDot"]}
-																				label='Before Pulse dot'
-																				rules={[{ required: true }]}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["broadcast", "afterPulseDot"]} label='After Pulse Dot'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["broadcast", "highlightText"]} label='Highlighted Text'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={24} md={12}>
-																			<Form.Item name={["broadcast", "afterCoupon"]} label='After Highlighted text'>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col span={24}>
-																			<Form.Item
-																				name={["broadcast", "link"]}
-																				label='Broadcast Link to'
-																				normalize={stripDomainInLink}
-																			>
-																				<Input />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={12} md={6}>
-																			<Form.Item
-																				name={["broadcast", "isHighlightCoupon"]}
-																				label='Is Highlighted text a Coupon?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
+															<Col sm={12} md={6}>
+																<Form.Item
+																	name={["broadcast", "broadcaststripVisible"]}
+																	label='Strip Visible to customer?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+															<Col sm={12} md={6}>
+																<Form.Item
+																	name={["broadcast", "pulseDot"]}
+																	label='Pulse dot visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+															<Col sm={12} md={6}>
+																<Form.Item
+																	name={["broadcast", "timerVisible"]}
+																	label='Timer Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
 
-																		<Col sm={12} md={6}>
-																			<Form.Item
-																				name={["broadcast", "broadcaststripVisible"]}
-																				label='Strip Visible to customer?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={12} md={6}>
-																			<Form.Item
-																				name={["broadcast", "pulseDot"]}
-																				label='Pulse dot visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																		<Col sm={12} md={6}>
-																			<Form.Item
-																				name={["broadcast", "timerVisible"]}
-																				label='Timer Visible?'
-																				valuePropName='checked'
-																			>
-																				<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
-																			</Form.Item>
-																		</Col>
-																	</Row>
-																</Col>
-
-																<Col span={24}>
-																	<Row justify='end'>
-																		<Form.Item>
-																			<Button htmlType='submit' type='primary'>
-																				Submit
-																			</Button>
-																		</Form.Item>
-																	</Row>
-																</Col>
-															</Row>
-														</Form>
-													);
-												}}
-											</FirestoreMutation>
+													<Col span={24}>
+														<Row justify='end'>
+															<Form.Item>
+																<Button htmlType='submit' type='primary'>
+																	Submit
+																</Button>
+															</Form.Item>
+														</Row>
+													</Col>
+												</Row>
+											</Form>
 										</Spin>
 									);
 								}}
