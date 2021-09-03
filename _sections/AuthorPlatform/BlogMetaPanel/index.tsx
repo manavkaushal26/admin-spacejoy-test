@@ -115,7 +115,7 @@ const onSaveBlog = async (
 					}
 				}
 			} else {
-				notification.error({ message: response.message });
+				notification.error({ message: response.message || response.data });
 			}
 		} catch (e) {
 			notification.error({ message: "Error Saving Article" });

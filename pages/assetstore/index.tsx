@@ -44,7 +44,7 @@ export interface CategoryMap {
 		name: string;
 		level: string;
 	};
-	children?: Array<CategoryMap>;
+	children?: CategoryMap[];
 }
 
 const FAB = styled.button`

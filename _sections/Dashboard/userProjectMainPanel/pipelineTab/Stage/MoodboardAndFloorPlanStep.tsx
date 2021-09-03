@@ -1,9 +1,7 @@
 import {
 	CheckCircleTwoTone,
-	CheckOutlined,
-	LoadingOutlined,
-	UploadOutlined,
-	CloseCircleTwoTone,
+	CheckOutlined, CloseCircleTwoTone, LoadingOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import { deleteUploadedImageApi, updateSubtasks } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";

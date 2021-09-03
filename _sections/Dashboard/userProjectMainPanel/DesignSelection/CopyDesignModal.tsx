@@ -85,7 +85,7 @@ const CopyDesignModal: React.FC<CopyDesignModal> = ({
 			message.success("Revision Design Created Succesfully");
 			toggleModal();
 		} else {
-			message.error(response.message);
+			message.error(response.message || response.data);
 		}
 		setLoading(false);
 	};

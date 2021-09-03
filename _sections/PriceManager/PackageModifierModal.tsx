@@ -74,7 +74,10 @@ const PackageModifierModal: React.FC<PackageModifierModal> = ({ editRecordId, to
 					fetchPriceData();
 					setEditPackage(response.data);
 				} else {
-					notification.error({ message: "There was an error updating package", description: response.message });
+					notification.error({
+						message: "There was an error updating package",
+						description: response.message || response.data,
+					});
 				}
 			} catch (e) {
 				notification.error({ message: "Failed to update packages" });

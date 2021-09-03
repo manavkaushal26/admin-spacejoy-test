@@ -54,7 +54,6 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 				statusCode,
 			} = res;
 			if (statusCode <= 300) {
-				console.log(data);
 				setActiveStyle(data[0]?.styleIds[0]);
 				setSecondaryStyle(data[0]?.styleIds[1]);
 				return data[0].quizId || "";
@@ -119,19 +118,17 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 					<div key={userStyle?.id}>
 						<h2 style={{ textTransform: "capitalize" }}>{styleCategory}</h2>
 						{values[0] &&
-							values[0].map(
-								(value: LogObject): JSX.Element => {
-									return (
-										<>
-											<StyledImage
-												src={`//res.cloudinary.com/spacejoy/image/upload/q_70,w_300/${value?.cdn}`}
-												width='100%'
-											/>
-											&nbsp;
-										</>
-									);
-								}
-							)}
+							values[0].map((value: LogObject): JSX.Element => {
+								return (
+									<>
+										<StyledImage
+											src={`//res.cloudinary.com/spacejoy/image/upload/q_70,w_300/${value?.cdn}`}
+											width='100%'
+										/>
+										&nbsp;
+									</>
+								);
+							})}
 						<br></br>
 						<br></br>
 					</div>

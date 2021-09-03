@@ -66,9 +66,10 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 		onSave({ requestedProducts: updatedList });
 	};
 
-	const authors = useMemo(() => Array.from(new Set(revisionData.comments.map(comment => comment.authorName))), [
-		revisionData,
-	]);
+	const authors = useMemo(
+		() => Array.from(new Set(revisionData.comments.map(comment => comment.authorName))),
+		[revisionData]
+	);
 
 	return (
 		<>
@@ -106,8 +107,8 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 										);
 									})
 								) : (
-										<Empty description='No new products requested' />
-									)}
+									<Empty description='No new products requested' />
+								)}
 							</Row>
 						</Col>
 					</Row>
@@ -145,7 +146,6 @@ const CustomerRevisionData: React.FC<CustomerRevisionData> = ({ revisionData, up
 						</Col>
 					</Card>
 				</Col>
-
 			</Row>
 			<EditRevisionDataDrawer
 				open={editRevison}

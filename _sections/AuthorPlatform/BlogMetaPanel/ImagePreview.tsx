@@ -46,7 +46,7 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 
 			setImage(null);
 		} else {
-			notification.error({ message: response.message });
+			notification.error({ message: response.message || response.data });
 			setLoading(false);
 		}
 	};
@@ -102,7 +102,6 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 
 	const imageCdn = getValueSafely(() => image.cdn, "");
 	const imageType = getValueSafely(() => image.imgType, DesignImgTypes.Render);
-	console.log("imageCdn, imageType", imageCdn, imageType);
 	return (
 		<StyledBorderlessModal
 			visible={!!image}
