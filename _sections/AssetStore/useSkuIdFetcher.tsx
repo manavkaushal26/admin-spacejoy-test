@@ -64,9 +64,6 @@ export const useSkuIdFetcher = () => {
 	};
 
 	useEffect(() => {
-		if (retailerUrl !== "") {
-			fetchSkuId();
-		}
 		return () => {
 			setSkuIds([]);
 			setSocketEventName("");
@@ -76,5 +73,5 @@ export const useSkuIdFetcher = () => {
 
 	const debouncedSetUrl = useCallback(debounce(setRetailerUrl, 400), []);
 
-	return { setRetailerUrl: debouncedSetUrl, loading, skuIds, urlMightHaveProblem };
+	return { setRetailerUrl: debouncedSetUrl, loading, skuIds, urlMightHaveProblem, fetchSkuId };
 };

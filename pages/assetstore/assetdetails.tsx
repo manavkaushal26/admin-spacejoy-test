@@ -127,6 +127,8 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	}, [state._id]);
 
+	const { setRetailerUrl, loading: skuLoading, skuIds, urlMightHaveProblem, fetchSkuId } = useSkuIdFetcher();
+
 	const fetchAssetData = async (): Promise<void> => {
 		setLoading(true);
 		const endPoint = getSingleAssetApi(assetId);
@@ -139,6 +141,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				vertical: { _id: "", name: "Undefined" },
 				theme: { _id: "", name: "Undefined" },
 			});
+			setRetailerUrl(response?.data?.retailLink || "");
 			setState({
 				...response.data,
 				"meta.category": getValueSafely(() => category._id, "Undefined"),
@@ -823,11 +826,21 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	};
 
-	const { setRetailerUrl, loading: skuLoading, skuIds, urlMightHaveProblem } = useSkuIdFetcher();
-
 	useEffect(() => {
 		if (urlMightHaveProblem.hasProblem) {
-			Modal.warn({ title: urlMightHaveProblem.message, content: <Text>Please check the URL</Text> });
+			Modal.confirm({
+				title: urlMightHaveProblem.message,
+				content: (
+					<Text>
+						Please check the URL or Retry. If the problem occurs again please post a message in slack with details.
+					</Text>
+				),
+				okButtonProps: {
+					onClick: () => fetchSkuId(),
+				},
+				okText: "Retry",
+				cancelText: "Cancel",
+			});
 		}
 	}, [urlMightHaveProblem]);
 
@@ -952,7 +965,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 													</Col>
 													<Col span={24}>
 														<Form.Item
-															label={`URL ${skuLoading ? "(Fetching SKU Id's..)" : ""}`}
+															label={"URL"}
 															name='retailLink'
 															normalize={value => {
 																setRetailerUrl(value);
@@ -1177,8 +1190,24 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	<Form.Item
 																		labelCol={{ span: 24 }}
 																		name='sku'
-																		label='SKU'
-																		rules={[{ required: skuAvailableRetailers.includes(retailer) }]}
+																		label={
+																			<Row justify='space-between' align='middle'>
+																				<div>SKU</div>
+																				<Button
+																					style={{ marginLeft: "1rem" }}
+																					onClick={fetchSkuId}
+																					loading={skuLoading}
+																				>
+																					Fetch SKU
+																				</Button>
+																			</Row>
+																		}
+																		rules={[
+																			{
+																				required:
+																					skuAvailableRetailers.includes(retailer) && !urlMightHaveProblem.hasProblem,
+																			},
+																		]}
 																	>
 																		<Input
 																			disabled={skuIds.length > 0}
@@ -1190,6 +1219,12 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																				)
 																			}
 																		/>
+																		<Row>
+																			<Text type='danger'>
+																				* Do not enter any other value other than the SKU Id. This is a very important
+																				field
+																			</Text>
+																		</Row>
 																	</Form.Item>
 																);
 															}}
