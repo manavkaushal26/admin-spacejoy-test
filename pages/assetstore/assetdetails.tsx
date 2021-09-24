@@ -836,7 +836,10 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 					</Text>
 				),
 				okButtonProps: {
-					onClick: () => fetchSkuId(),
+					onClick: () => {
+						fetchSkuId();
+						Modal.destroyAll();
+					},
 				},
 				okText: "Retry",
 				cancelText: "Cancel",
@@ -876,6 +879,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		if (skuIds.length > 1) {
 			toggleSkuModal();
 		} else if (skuIds.length === 1) {
+			console.log("skuIds", skuIds[0]);
 			onSelectSku(skuIds[0]);
 		}
 	}, [skuIds]);
@@ -1186,6 +1190,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														>
 															{({ getFieldValue }) => {
 																const retailer = getFieldValue("retailer");
+																const sku = getFieldValue("sku");
 																return (
 																	<Form.Item
 																		labelCol={{ span: 24 }}
@@ -1211,6 +1216,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	>
 																		<Input
 																			disabled={skuIds.length > 0}
+																			value={sku}
 																			addonAfter={
 																				skuIds.length > 1 && (
 																					<Tooltip placement='top' title='Select another SKU'>

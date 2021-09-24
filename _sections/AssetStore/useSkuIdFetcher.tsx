@@ -29,6 +29,13 @@ export const useSkuIdFetcher = () => {
 		}
 	};
 
+	const resetState = () => {
+		setSkuIds([]);
+		setSocketEventName("");
+		setUrlMightHaveProblem({ hasProblem: false, message: "" });
+		setLoading(false);
+	};
+
 	useEffect(() => {
 		if (socketEventName !== "") {
 			socket.on(socketEventName, data => {
@@ -52,8 +59,8 @@ export const useSkuIdFetcher = () => {
 	}, [socketEventName]);
 
 	const fetchSkuId = async () => {
+		resetState();
 		setLoading(true);
-
 		const endPoint = getSkuSocketEventNameApi();
 		const response = await fetcher({ endPoint, method: "POST", body: { url: retailerUrl, type: "sku" } });
 		if (response.statusCode === 200) {
@@ -65,9 +72,7 @@ export const useSkuIdFetcher = () => {
 
 	useEffect(() => {
 		return () => {
-			setSkuIds([]);
-			setSocketEventName("");
-			setUrlMightHaveProblem({ hasProblem: false, message: "" });
+			resetState();
 		};
 	}, [retailerUrl]);
 
