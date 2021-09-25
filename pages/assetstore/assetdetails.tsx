@@ -5,13 +5,13 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined,
+	UploadOutlined
 } from "@ant-design/icons";
 import {
 	assetCreateOrUpdationApi,
 	markMissingAssetAsComplete,
 	skuAvailableForRetailersApi,
-	uploadProductImagesApi,
+	uploadProductImagesApi
 } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
@@ -47,7 +47,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload,
+	Upload
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -173,6 +173,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	const onFieldsChange = changedFieldsData => {
+		console.log("changedFieldsData", changedFieldsData);
 		if (changedFieldsData.length) {
 			if (changedFieldsData[0].name.length > 1) {
 				setChangedState({
@@ -706,6 +707,14 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		}
 	};
 
+	const onSkuChange = e => {
+		const {
+			target: { value },
+		} = e;
+		form.setFieldsValue({ sku: value });
+		setChangedState({ ...changedState, sku: value });
+	};
+
 	const onPriceChange = value => {
 		if (!value) {
 			if (changedState.shoppable !== false) {
@@ -879,7 +888,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		if (skuIds.length > 1) {
 			toggleSkuModal();
 		} else if (skuIds.length === 1) {
-			console.log("skuIds", skuIds[0]);
 			onSelectSku(skuIds[0]);
 		}
 	}, [skuIds]);
@@ -1185,7 +1193,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 													<Col span={12}>
 														<Form.Item
 															shouldUpdate={(prevValues, currentValues) => {
-																return prevValues.retailer !== currentValues.retailer;
+																return (
+																	prevValues.retailer !== currentValues.retailer || prevValues.sku !== currentValues.sku
+																);
 															}}
 														>
 															{({ getFieldValue }) => {
@@ -1215,8 +1225,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																		]}
 																	>
 																		<Input
-																			disabled={skuIds.length > 0}
 																			value={sku}
+																			disabled={skuIds.length > 0}
+																			onChange={onSkuChange}
 																			addonAfter={
 																				skuIds.length > 1 && (
 																					<Tooltip placement='top' title='Select another SKU'>
