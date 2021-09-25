@@ -5,13 +5,13 @@ import {
 	LinkOutlined,
 	LoadingOutlined,
 	PlusOutlined,
-	UploadOutlined
+	UploadOutlined,
 } from "@ant-design/icons";
 import {
 	assetCreateOrUpdationApi,
 	markMissingAssetAsComplete,
 	skuAvailableForRetailersApi,
-	uploadProductImagesApi
+	uploadProductImagesApi,
 } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
@@ -47,7 +47,7 @@ import {
 	Switch,
 	Tooltip,
 	Typography,
-	Upload
+	Upload,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -173,7 +173,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	const handleCancel = (): void => setPreview({ previewImage: "", previewVisible: false });
 
 	const onFieldsChange = changedFieldsData => {
-		console.log("changedFieldsData", changedFieldsData);
 		if (changedFieldsData.length) {
 			if (changedFieldsData[0].name.length > 1) {
 				setChangedState({
