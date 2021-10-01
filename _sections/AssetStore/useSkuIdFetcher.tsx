@@ -10,6 +10,9 @@ export interface SkuData {
 	title: string;
 	img: string;
 	price: number;
+	fill?: {
+		retailLink?: string;
+	};
 }
 
 export const useSkuIdFetcher = () => {
@@ -17,11 +20,19 @@ export const useSkuIdFetcher = () => {
 	const [loading, setLoading] = useState(false);
 	const [retailerUrl, setRetailerUrl] = useState("");
 	const [socketEventName, setSocketEventName] = useState("");
-	const [urlMightHaveProblem, setUrlMightHaveProblem] = useState({ hasProblem: false, message: "" });
+	const [urlMightHaveProblem, setUrlMightHaveProblem] = useState({
+		hasProblem: false,
+		message: "",
+		fill: { retailLink: null },
+	});
 	const socket = useMemo(() => io("https://socket.spacejoy.com"), []);
 	const startFetching = async () => {
 		const endPoint = startSkuFetchingApi();
-		const response = await fetcher({ endPoint, method: "POST", body: { socketId: socket.id, url: retailerUrl } });
+		const response = await fetcher({
+			endPoint,
+			method: "POST",
+			body: { socketId: socket.id, url: retailerUrl },
+		});
 
 		if (!(response.statusCode <= 300)) {
 			setLoading(false);
@@ -32,7 +43,7 @@ export const useSkuIdFetcher = () => {
 	const resetState = () => {
 		setSkuIds([]);
 		setSocketEventName("");
-		setUrlMightHaveProblem({ hasProblem: false, message: "" });
+		setUrlMightHaveProblem({ hasProblem: false, message: "", fill: { retailLink: null } });
 		setLoading(false);
 	};
 
@@ -47,6 +58,7 @@ export const useSkuIdFetcher = () => {
 					setUrlMightHaveProblem({
 						hasProblem: true,
 						message: data?.message,
+						fill: { retailLink: data?.fill?.retailLink },
 					});
 				}
 				setLoading(false);

@@ -838,13 +838,20 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		if (urlMightHaveProblem.hasProblem) {
 			Modal.confirm({
 				title: urlMightHaveProblem.message,
-				content: (
+				content: urlMightHaveProblem?.fill?.retailLink ? (
+					<Text>
+						Do you want to retry by replacing the URL with <Text code>{urlMightHaveProblem?.fill?.retailLink}</Text>?
+					</Text>
+				) : (
 					<Text>
 						Please check the URL or Retry. If the problem occurs again please post a message in slack with details.
 					</Text>
 				),
 				okButtonProps: {
 					onClick: () => {
+						if (urlMightHaveProblem?.fill?.retailLink) {
+							onSelectSku({ fill: { retailLink: urlMightHaveProblem?.fill?.retailLink } });
+						}
 						fetchSkuId();
 						Modal.destroyAll();
 					},
@@ -859,13 +866,14 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		setSkuModalVisible(prevState => !prevState);
 	};
 
-	const onSelectSku = (skuData: SkuData) => {
+	const onSelectSku = (skuData: Partial<SkuData>) => {
 		form.setFieldsValue({
 			...(skuData?.title
 				? { name: skuData.title?.endsWith("-") ? skuData.title?.slice(0, -1).trim() : skuData.title?.trim() }
 				: {}),
 			...(skuData?.price ? { price: skuData.price } : {}),
 			sku: skuData?.sku,
+			...(skuData?.fill?.retailLink ? { retailLink: skuData?.fill?.retailLink } : {}),
 		});
 		setChangedState({
 			...changedState,
@@ -874,6 +882,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 				: {}),
 			sku: skuData?.sku,
 			...(skuData?.price ? { price: skuData.price } : {}),
+			...(skuData?.fill?.retailLink ? { retailLink: skuData?.fill?.retailLink } : {}),
 		});
 	};
 
