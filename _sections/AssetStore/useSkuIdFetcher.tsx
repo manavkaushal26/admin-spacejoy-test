@@ -70,11 +70,11 @@ export const useSkuIdFetcher = () => {
 		};
 	}, [socketEventName]);
 
-	const fetchSkuId = async () => {
+	const fetchSkuId = async (urlParam?: string) => {
 		resetState();
 		setLoading(true);
 		const endPoint = getSkuSocketEventNameApi();
-		const response = await fetcher({ endPoint, method: "POST", body: { url: retailerUrl, type: "sku" } });
+		const response = await fetcher({ endPoint, method: "POST", body: { url: urlParam || retailerUrl, type: "sku" } });
 		if (response.statusCode === 200) {
 			setSocketEventName(response.data?.socketEvent);
 		} else {

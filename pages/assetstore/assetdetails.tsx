@@ -852,7 +852,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 						if (urlMightHaveProblem?.fill?.retailLink) {
 							onSelectSku({ fill: { retailLink: urlMightHaveProblem?.fill?.retailLink } });
 						}
-						fetchSkuId();
+						fetchSkuId(urlMightHaveProblem?.fill?.retailLink);
 						Modal.destroyAll();
 					},
 				},
@@ -1221,7 +1221,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																				<div>SKU</div>
 																				<Button
 																					style={{ marginLeft: "1rem" }}
-																					onClick={fetchSkuId}
+																					onClick={() => fetchSkuId()}
 																					loading={skuLoading}
 																				>
 																					Fetch SKU
