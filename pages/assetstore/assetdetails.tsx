@@ -875,6 +875,9 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 			sku: skuData?.sku,
 			...(skuData?.fill?.retailLink ? { retailLink: skuData?.fill?.retailLink } : {}),
 		});
+		if (skuData?.fill?.retailLink) {
+			setRetailerUrl(skuData?.fill?.retailLink);
+		}
 		setChangedState({
 			...changedState,
 			...(skuData?.title
