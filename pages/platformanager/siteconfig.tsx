@@ -88,6 +88,7 @@ const initialValues = {
 	productSection: {
 		isVisibile: false,
 		productHeading: "",
+		sectionSubheading: "",
 		listOfProducts: [],
 	},
 	broadcast: {
@@ -583,11 +584,21 @@ const SitemapManager: NextPage = () => {
 																<Form.Item
 																	name={["productSection", "productHeading"]}
 																	label='Section heading'
-																	normalize={(value: string) => value.trim()}
+																	// normalize={(value: string) => value.trim()}
 																>
 																	<Input />
 																</Form.Item>
 															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["productSection", "sectionSubheading"]}
+																	label='Section subheading'
+																	// normalize={(value: string) => value.trim()}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+
 															<Col span={12}>
 																<Form.Item
 																	name={["productSection", "isVisible"]}
