@@ -135,7 +135,7 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 	return (
 		<FirestoreDocument path={`/${firebaseConfig.notificationDatabase}/${user?.id}`}>
 			{data => {
-				const { value: { notifications } = {} } = data;
+				const notifications = data?.value?.notfications || [];
 				const filteredNotifications = notifications?.filter(notification => notification.type === "newDesignMsg");
 				return (
 					<nav>
