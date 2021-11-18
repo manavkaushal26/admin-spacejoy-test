@@ -1,4 +1,4 @@
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV !== "production";
 
 const page = {
 	appName: "SpaceJoyWeb",
@@ -89,6 +89,8 @@ const firebaseConfig = {
 	storageBucket: "formal-envelope-244206.appspot.com",
 	messagingSenderId: "628064588100",
 	appId: "1:628064588100:web:2a7a4821cc945c8e238711",
+	notificationDatabase: isProduction ? "notification" : "notificationStaging",
+
 	databaseId: isProduction ? "siteConfig" : "siteConfigStaging",
 	documentId: "main",
 };

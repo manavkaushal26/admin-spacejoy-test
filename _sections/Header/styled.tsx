@@ -18,6 +18,7 @@ export const HorizontalListStyled = styled.ul<{ align: string }>`
 	text-align: ${({ align = "center" }): string => align};
 	li {
 		line-height: normal;
+		position: relative;
 		text-align: left;
 		display: inline-block;
 		list-style: none;

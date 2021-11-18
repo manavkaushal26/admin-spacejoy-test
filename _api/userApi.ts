@@ -40,6 +40,10 @@ export const fetchChatAssets = (project: string, design: string): string => {
 	}
 };
 
+export const clearAllNotificationsApi = (): string => {
+	return "/v1/firestore/clearNotification";
+};
+
 export const bulkMessageApi = (): string => {
 	return "/v1/userProjectDiscussions/bulkMessaging";
 };

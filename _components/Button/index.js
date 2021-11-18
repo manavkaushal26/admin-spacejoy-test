@@ -118,14 +118,16 @@ const ButtonStyled = styled(ButtonNormalStyled)`
 	}
 `;
 
-function Button(props) {
+function Button(props, ref) {
 	const { children, raw, disabled, submitInProgress } = props;
 	return (
 		<>
 			{raw ? (
-				<ButtonNormalStyled {...props}>{children}</ButtonNormalStyled>
+				<ButtonNormalStyled ref={ref} {...props}>
+					{children}
+				</ButtonNormalStyled>
 			) : (
-				<ButtonStyled {...props} disabled={submitInProgress || disabled}>
+				<ButtonStyled ref={ref} {...props} disabled={submitInProgress || disabled}>
 					<div className='true-center'>
 						{submitInProgress ? (
 							<SVGIcon name='spinner' className='loading-spinner' height={17} width={17} />
@@ -155,6 +157,7 @@ Button.defaultProps = {
 	value: "",
 	label: "",
 	event: "",
+	className: "",
 	data: {},
 };
 
@@ -172,9 +175,10 @@ Button.propTypes = {
 	submitInProgress: PropTypes.bool,
 	action: PropTypes.string,
 	label: PropTypes.string,
+	className: PropTypes.string,
 	event: PropTypes.string,
 	value: PropTypes.string,
 	data: PropTypes.shape({}),
 };
 
-export default Button;
+export default React.forwardRef(Button);
