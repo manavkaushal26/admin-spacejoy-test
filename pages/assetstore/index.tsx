@@ -48,7 +48,7 @@ export interface CategoryMap {
 }
 
 const FAB = styled.button`
-	position: absolute;
+	position: fixed;
 	bottom: 1.5rem;
 	right: 1.5rem;
 	width: 56px;
