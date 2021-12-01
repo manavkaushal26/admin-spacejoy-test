@@ -37,6 +37,7 @@ interface AssetSidePanelProps {
 	dispatch: React.Dispatch<AssetAction>;
 	state: AssetStoreState;
 	categoryMap: Array<CategoryMap>;
+	designId?: string;
 }
 
 const addLevel = (level: string, elem): string => {
@@ -112,7 +113,13 @@ const SearchExamples = () => {
 	);
 };
 
-const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, state, categoryMap }): JSX.Element => {
+const AssetSidePanel: React.FC<AssetSidePanelProps> = ({
+	metaData,
+	dispatch,
+	state,
+	categoryMap,
+	designId,
+}): JSX.Element => {
 	const [filterState, setFilterState] = useState<Record<ValueName, [number, number]>>({
 		priceRange: state.priceRange,
 		widthRange: state.widthRange,
@@ -323,6 +330,11 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 													<Col span={24}>
 														<Radio.Group name='status' onChange={onStatusChange} value={state.status}>
 															{Object.entries(AssetStatus).map(([name, value]) => {
+																if (designId) {
+																	if (value != AssetStatus?.Active) {
+																		return null;
+																	}
+																}
 																return (
 																	<Radio
 																		key={value}
@@ -337,7 +349,18 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({ metaData, dispatch, sta
 																	</Radio>
 																);
 															})}
-															<Radio value=''>All</Radio>
+															{!designId && (
+																<Radio
+																	style={{
+																		display: "block",
+																		height: "30px",
+																		lineHeight: "30px",
+																	}}
+																	value=''
+																>
+																	All
+																</Radio>
+															)}
 														</Radio.Group>
 													</Col>
 												</Row>

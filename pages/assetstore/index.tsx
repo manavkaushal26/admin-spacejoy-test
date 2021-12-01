@@ -259,7 +259,13 @@ const AssetStore: NextPage<AssetStoreProps> = ({ projectId, designId, assetEntry
 							</Row>
 						</Col>
 						<Col span={24}>
-							<DynamicSidepanel state={state} dispatch={dispatch} metaData={state.metaData} categoryMap={categoryMap} />
+							<DynamicSidepanel
+								designId={designId}
+								state={state}
+								dispatch={dispatch}
+								metaData={state.metaData}
+								categoryMap={categoryMap}
+							/>
 						</Col>
 					</Row>
 				</Col>
