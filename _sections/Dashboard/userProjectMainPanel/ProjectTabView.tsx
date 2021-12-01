@@ -31,6 +31,7 @@ const { TabPane } = Tabs;
 interface ProjectTabViewProps {
 	projectData?: DetailedProject;
 	designId: string;
+	chatdid?: string;
 	onSelectDesign?: (designId?: string) => void;
 	setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 	refetchData?: () => void;
@@ -60,6 +61,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 	setLoading,
 	refetchData,
 	onTabChangeCallback,
+	chatdid,
 	setProjectData,
 	currentTab,
 	updateRevisionData,
@@ -365,6 +367,7 @@ const ProjectTabView: React.FC<ProjectTabViewProps> = ({
 						<ProjectDesignInteractionPanel
 							updateRevisionData={updateRevisionData}
 							revisionFormData={revisionFormData}
+							chatdid={chatdid}
 							refetchData={refetchData}
 							setProjectData={setProjectData}
 							projectData={projectData}

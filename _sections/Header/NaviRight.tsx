@@ -163,8 +163,13 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 										{filteredNotifications?.map(notification => (
 											<Link
 												key={`${notification?.time}-${notification?.title}`}
-												href={{ pathname: "/dashboard", query: { pid: notification?.meta?.pid } }}
-												as={`/dashboard/pid/${notification?.meta?.pid}`}
+												href={{
+													pathname: "/dashboard",
+													query: { pid: notification?.meta?.pid, chatdid: notification?.meta?.did },
+												}}
+												as={`/dashboard/pid/${notification?.meta?.pid}${
+													notification?.meta?.did ? `?chatdid=${notification?.meta?.did}` : ""
+												}`}
 											>
 												<a>
 													<div className='notification' onClick={toggleNotificationDropdown}>

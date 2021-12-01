@@ -28,6 +28,7 @@ const userProjectMainPanel: React.FC<{
 	) => void;
 	currentTab: string;
 	userProjectId: string;
+	chatdid: string;
 	designId: string;
 	dates: Partial<UserProjectType>;
 	setDates: React.Dispatch<React.SetStateAction<Partial<DetailedProject>>>;
@@ -37,6 +38,7 @@ const userProjectMainPanel: React.FC<{
 	userProjectId,
 	designId,
 	dates,
+	chatdid,
 	setDates,
 	currentTab,
 	setSearchFiltersChanged,
@@ -165,6 +167,7 @@ const userProjectMainPanel: React.FC<{
 								currentTab={currentTab}
 								refetchData={refetchAllData}
 								setLoading={setLoading}
+								chatdid={chatdid}
 								projectData={projectData}
 								onSelectDesign={onSelectDesign}
 								designId={designId}

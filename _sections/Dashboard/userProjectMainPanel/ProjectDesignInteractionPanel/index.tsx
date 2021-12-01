@@ -7,7 +7,7 @@ import CustomerRatings from "@sections/CustomerRatings";
 import DesignSelection from "@sections/Dashboard/userProjectMainPanel/DesignSelection";
 import { PaddedDiv } from "@sections/Header/styled";
 import { Tabs } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import ProjectTeamTab from "../ProjectTeamTab";
 import CustomerFeedbackTab from "./CustomerFeedbackTab";
 import CustomerResponsesTab from "./CustomerResponesTab";
@@ -19,7 +19,8 @@ interface ProjectDesignInteractionPanel {
 	setProjectData: React.Dispatch<React.SetStateAction<DetailedProject>>;
 	revisionFormData: RevisionForm;
 	updateRevisionData: (revisionForm: RevisionForm) => void;
-	customerRatings: Partial<{}>;
+	customerRatings: Partial<any>;
+	chatdid: string;
 }
 
 const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = ({
@@ -27,13 +28,16 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 	setProjectData,
 	projectData,
 	onSelectDesign,
+	chatdid,
 	revisionFormData,
 	updateRevisionData,
 	customerRatings,
 }) => {
 	const { id: projectId, designs, customer } = projectData;
+	const [activeTab, setActiveTab] = useState<string>(chatdid ? "chat" : "designSelection");
+
 	return (
-		<Tabs>
+		<Tabs activeKey={activeTab} onChange={setActiveTab}>
 			<Tabs.TabPane tab='Designs' key='designSelection'>
 				<DesignSelection
 					refetchData={refetchData}
@@ -76,7 +80,7 @@ const ProjectDesignInteractionPanel: React.FC<ProjectDesignInteractionPanel> = (
 				</Tabs>
 			</Tabs.TabPane>
 			<Tabs.TabPane tab='Chat' key='chat'>
-				<ChatWrapper projectId={projectId} designs={designs}></ChatWrapper>
+				<ChatWrapper projectId={projectId} chatdid={chatdid} designs={designs}></ChatWrapper>
 			</Tabs.TabPane>
 			<Tabs.TabPane tab='Cart Data' key='cart-data'>
 				<CartDetails id={customer?._id}></CartDetails>

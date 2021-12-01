@@ -1,11 +1,12 @@
 import ChatPanel from "@sections/AdminChatInterface";
 import { Tabs } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
-const ChatWrapper = ({ projectId, designs }) => {
+const ChatWrapper = ({ projectId, designs, chatdid }) => {
+	const [activeKey, setActiveKey] = useState(chatdid || projectId);
 	return (
-		<Tabs>
-			<Tabs.TabPane tab='General'>
+		<Tabs activeKey={activeKey} onChange={setActiveKey}>
+			<Tabs.TabPane tab='General' key={projectId}>
 				<ChatPanel projectId={projectId} designID={null} />
 			</Tabs.TabPane>
 			{designs.map(designItem => {

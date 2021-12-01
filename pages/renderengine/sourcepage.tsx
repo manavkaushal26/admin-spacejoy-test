@@ -102,8 +102,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 				});
 			});
 			socket.on("Job.Cam.Finish", data => {
-				console.log("data", data);
-
 				setSourceData({
 					...sourceData,
 					cameras: data.data,
@@ -116,8 +114,6 @@ const SourcePage: NextPage<SourcePageProps> = ({ sourceData: fetchedSourceData }
 				});
 			});
 			socket.on("Job.Cam.Error", data => {
-				console.log("data", data);
-
 				notification.open({
 					message: "Completed",
 					key,

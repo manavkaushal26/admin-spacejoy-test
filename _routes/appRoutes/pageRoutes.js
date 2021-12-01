@@ -31,15 +31,16 @@ function pageRoute(app, router) {
 			pid: params.projectId,
 			designId: params.designId,
 			...query,
+			...params,
 		});
 	});
 	router.get("/dashboard/pid/:projectId", TokenCheckMiddleware, (req, res) => {
-		const { params } = req;
-		app.render(req, res, "/dashboard", { pid: params.projectId });
+		const { params, query } = req;
+		app.render(req, res, "/dashboard", { pid: params.projectId, ...params, ...query });
 	});
 	router.get("/dashboard", TokenCheckMiddleware, (req, res) => {
-		const { params } = req;
-		app.render(req, res, "/dashboard", params);
+		const { params, query } = req;
+		app.render(req, res, "/dashboard", { ...params, query });
 	});
 
 	// *************************************************************************************************************************

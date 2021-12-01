@@ -18,6 +18,7 @@ import React, { useEffect, useState } from "react";
 interface DashboardProps {
 	projectId: string;
 	designId: string;
+	chatdid: string;
 	currentTab: string;
 }
 
@@ -33,7 +34,7 @@ const handleResize = (setIsDesktop): void => {
 
 const debouncedHandleResize = debounce(handleResize, 100);
 
-const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }): JSX.Element => {
+const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab, chatdid }): JSX.Element => {
 	const [selectedUser, setSelectedUser] = useState<string>("");
 	const [loading] = useState<boolean>(false);
 	const [dates, setDates] = useState<Partial<UserProjectType>>(null);
@@ -163,6 +164,7 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 										userProjectId={selectedUser}
 										dates={dates}
 										setDates={setDates}
+										chatdid={chatdid}
 										currentTab={currentTab}
 										setSearchFiltersChanged={setSearchFiltersChanged}
 									/>
@@ -178,13 +180,13 @@ const dashboard: NextPage<DashboardProps> = ({ projectId, designId, currentTab }
 
 export const getServerSideProps: GetServerSideProps<DashboardProps> = async ctx => {
 	const {
-		query: { pid = "", designId: did = "", activeKey = "" },
+		query: { pid = "", designId: did = "", activeKey = "", chatdid = "" },
 	} = ctx;
 	const designId: string = did as string;
 	const projectId: string = pid as string;
 	const currentTab: string = activeKey as string;
-
-	return { props: { projectId, designId, currentTab } };
+	const chatDid = chatdid as string;
+	return { props: { projectId, designId, currentTab, chatdid: chatDid } };
 };
 
 export default ProtectRoute(dashboard);
