@@ -135,7 +135,7 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 	return (
 		<FirestoreDocument path={`/${firebaseConfig.notificationDatabase}/${user?.id}`}>
 			{data => {
-				const notifications = data?.value?.notfications || [];
+				const notifications = data?.value?.notifications || [];
 				const filteredNotifications = notifications?.filter(notification => notification.type === "newDesignMsg");
 				return (
 					<nav>
@@ -174,7 +174,7 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 												<a>
 													<div className='notification' onClick={toggleNotificationDropdown}>
 														<div className='time'>{moment(1631699584192)?.fromNow()}</div>
-														<div className='title'>{notification?.title}</div>
+														<div className='title'>{notification?.title || "New Message"}</div>
 													</div>
 												</a>
 											</Link>
