@@ -8,10 +8,10 @@ import useAuth from "@utils/authContext";
 import { firebaseConfig } from "@utils/config";
 import { allowedRoles } from "@utils/constants";
 import fetcher from "@utils/fetcher";
-import { Modal, notification, Typography } from "antd";
+import { Divider, notification, Typography } from "antd";
 import moment from "moment";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import ActiveLink from "./ActiveLink";
 import { HorizontalListStyled } from "./styled";
@@ -112,6 +112,9 @@ const NotificationStuff = styled.button`
 const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 	const notificationButtonRef = React.useRef<HTMLButtonElement>(null);
 	const [notificationDropdownVisible, setNotificationDropdownVisible] = useState(false);
+
+	const clickRef = useRef(false);
+
 	const { user } = useAuth();
 	const clearNotification = async () => {
 		const endPoint = clearAllNotificationsApi();
@@ -121,66 +124,95 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 		}
 	};
 
-	const onClear = () => {
-		Modal.confirm({
-			title: "Clear all notifications?",
-			onOk: clearNotification,
-		});
-	};
-
 	const toggleNotificationDropdown = e => {
+		clickRef.current = true;
 		setNotificationDropdownVisible(!notificationDropdownVisible);
 	};
+
+	useEffect(() => {
+		if (!notificationDropdownVisible && clickRef.current) {
+			clearNotification();
+		}
+	}, [notificationDropdownVisible, clickRef?.current]);
 
 	return (
 		<FirestoreDocument path={`/${firebaseConfig.notificationDatabase}/${user?.id}`}>
 			{data => {
 				const notifications = data?.value?.notifications || [];
-				const filteredNotifications = notifications?.filter(
-					notification => notification.type === "newDesignMsg" && !notification.read
-				);
+				const topFiftyNotifications = notifications.slice(0, 50);
+				const designNotifications = topFiftyNotifications?.filter(notification => notification.type === "newDesignMsg");
+
+				const unreadNotifications = designNotifications.filter(notification => {
+					return !notification.read;
+				});
+				const readNotifications = designNotifications.filter(notification => {
+					return notification.read;
+				});
 				return (
 					<nav>
 						<HorizontalListStyled align='right'>
 							<li>
 								<NotificationStuff ref={notificationButtonRef} onClick={toggleNotificationDropdown}>
 									<MessageOutlined style={{ fontSize: "1.2rem" }} />
-									{filteredNotifications?.length > 0 && <div className='badge'>{filteredNotifications?.length}</div>}
+									{unreadNotifications?.length > 0 && <div className='badge'>{unreadNotifications?.length}</div>}
 								</NotificationStuff>
 								{notificationDropdownVisible && (
 									<NotificationPanel>
 										<Title level={5} className='sticky title-card'>
-											Notification panel {filteredNotifications?.length > 0 && `(${filteredNotifications?.length})`}
-											{!(filteredNotifications?.length === 0) && (
-												<Button raw className='clear-btn' onClick={onClear}>
-													Clear all
-												</Button>
-											)}
+											Notification panel {designNotifications?.length > 0 && `(${designNotifications?.length})`}
 										</Title>
-										{filteredNotifications?.length === 0 && (
-											<div className='notification'>
-												<div className='title'>All caught up</div>
-											</div>
+										<Divider />
+
+										{unreadNotifications?.length > 0 && (
+											<>
+												<Text underline>New Notifications</Text>
+												{unreadNotifications?.map(notification => (
+													<Link
+														key={`${notification?.time}-${notification?.title}`}
+														href={{
+															pathname: "/dashboard",
+															query: { pid: notification?.meta?.pid, chatdid: notification?.meta?.did },
+														}}
+														as={`/dashboard/pid/${notification?.meta?.pid}${
+															notification?.meta?.did ? `?chatdid=${notification?.meta?.did}` : ""
+														}`}
+													>
+														<a>
+															<div className='notification' onClick={toggleNotificationDropdown}>
+																<div className='time'>{moment(notification?.time)?.fromNow()}</div>
+																<div className='title'>{notification?.title || "New Message"}</div>
+															</div>
+														</a>
+													</Link>
+												))}
+											</>
 										)}
-										{filteredNotifications?.map(notification => (
-											<Link
-												key={`${notification?.time}-${notification?.title}`}
-												href={{
-													pathname: "/dashboard",
-													query: { pid: notification?.meta?.pid, chatdid: notification?.meta?.did },
-												}}
-												as={`/dashboard/pid/${notification?.meta?.pid}${
-													notification?.meta?.did ? `?chatdid=${notification?.meta?.did}` : ""
-												}`}
-											>
-												<a>
-													<div className='notification' onClick={toggleNotificationDropdown}>
-														<div className='time'>{moment(1631699584192)?.fromNow()}</div>
-														<div className='title'>{notification?.title || "New Message"}</div>
-													</div>
-												</a>
-											</Link>
-										))}
+										{readNotifications?.length > 0 && (
+											<>
+												<Text underline>Older Notifications</Text>
+												{readNotifications?.map(notification => (
+													<>
+														<Link
+															key={`${notification?.time}-${notification?.title}`}
+															href={{
+																pathname: "/dashboard",
+																query: { pid: notification?.meta?.pid, chatdid: notification?.meta?.did },
+															}}
+															as={`/dashboard/pid/${notification?.meta?.pid}${
+																notification?.meta?.did ? `?chatdid=${notification?.meta?.did}` : ""
+															}`}
+														>
+															<a>
+																<div className='notification' onClick={toggleNotificationDropdown}>
+																	<div className='time'>{moment(notification?.time)?.fromNow()}</div>
+																	<div className='title'>{notification?.title || "New Message"}</div>
+																</div>
+															</a>
+														</Link>
+													</>
+												))}
+											</>
+										)}
 									</NotificationPanel>
 								)}
 							</li>
