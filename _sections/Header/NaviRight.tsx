@@ -136,7 +136,9 @@ const NavRight: React.FC<NavRight> = ({ authVerification, logout }) => {
 		<FirestoreDocument path={`/${firebaseConfig.notificationDatabase}/${user?.id}`}>
 			{data => {
 				const notifications = data?.value?.notifications || [];
-				const filteredNotifications = notifications?.filter(notification => notification.type === "newDesignMsg");
+				const filteredNotifications = notifications?.filter(
+					notification => notification.type === "newDesignMsg" && !notification.read
+				);
 				return (
 					<nav>
 						<HorizontalListStyled align='right'>
