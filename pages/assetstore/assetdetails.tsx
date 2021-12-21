@@ -943,10 +943,39 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 															<Input.TextArea placeholder='Fill N/A if not available' />
 														</Form.Item>
 													</Col>
+													<Col span={24}>
+														<Form.Item
+															label={"URL"}
+															name='retailLink'
+															normalize={value => {
+																setRetailerUrl(value);
+																return value;
+															}}
+															rules={[{ required: true, type: "url" }]}
+														>
+															<Input
+																addonAfter={
+																	<Tooltip placement='top' title='Open URL'>
+																		<LinkOutlined onClick={openInNewWindow} />
+																	</Tooltip>
+																}
+															/>
+														</Form.Item>
+													</Col>
 													<Col span={8}>
 														<Form.Item
 															name='price'
 															label='Price (USD)'
+															rules={[{ required: true, type: "number", min: 0 }]}
+														>
+															<InputNumber style={{ width: "100%" }} />
+														</Form.Item>
+													</Col>
+													<Col span='12'>
+														<Form.Item
+															labelCol={{ span: 24 }}
+															name='msrp'
+															label='MSRP'
 															rules={[{ required: true, type: "number", min: 0 }]}
 														>
 															<InputNumber style={{ width: "100%" }} />
@@ -984,25 +1013,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	</Select.Option>
 																))}
 															</Select>
-														</Form.Item>
-													</Col>
-													<Col span={24}>
-														<Form.Item
-															label={"URL"}
-															name='retailLink'
-															normalize={value => {
-																setRetailerUrl(value);
-																return value;
-															}}
-															rules={[{ required: true, type: "url" }]}
-														>
-															<Input
-																addonAfter={
-																	<Tooltip placement='top' title='Open URL'>
-																		<LinkOutlined onClick={openInNewWindow} />
-																	</Tooltip>
-																}
-															/>
 														</Form.Item>
 													</Col>
 													<Col span={8}>
@@ -1256,16 +1266,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 																	</Form.Item>
 																);
 															}}
-														</Form.Item>
-													</Col>
-													<Col span='12'>
-														<Form.Item
-															labelCol={{ span: 24 }}
-															name='msrp'
-															label='MSRP'
-															rules={[{ required: true, type: "number", min: 0 }]}
-														>
-															<InputNumber style={{ width: "100%" }} />
 														</Form.Item>
 													</Col>
 												</Row>
