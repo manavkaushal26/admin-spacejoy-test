@@ -25,7 +25,6 @@ import {
 	Switch,
 	Typography,
 } from "antd";
-import CollapsePanel from "antd/lib/collapse/CollapsePanel";
 import moment from "moment";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -178,7 +177,7 @@ const SitemapManager: NextPage = () => {
 										<Spin spinning={loading || d.isLoading}>
 											<Form form={form} initialValues={initialValues} labelCol={{ span: 24 }} onFinish={onFinish}>
 												<Collapse defaultActiveKey={["siteConfig"]}>
-													<CollapsePanel key='siteConfig' header='Site Config'>
+													<Collapse.Panel forceRender key='siteConfig' header='Site Config'>
 														<Row>
 															<Col>
 																<Row gutter={[16, 8]}>
@@ -572,8 +571,8 @@ const SitemapManager: NextPage = () => {
 																</Row>
 															</Col>
 														</Row>
-													</CollapsePanel>
-													<CollapsePanel key='saleConfig' header='Sale Config'>
+													</Collapse.Panel>
+													<Collapse.Panel forceRender key='saleConfig' header='Sale Config'>
 														<Row gutter={[16, 16]}>
 															<Col span={24}>
 																<Title level={4} underline>
@@ -624,7 +623,7 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 														</Row>
-													</CollapsePanel>
+													</Collapse.Panel>
 												</Collapse>
 												<Col span={24} style={{ marginTop: "1rem" }}>
 													<Row justify='end'>
