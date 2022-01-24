@@ -761,12 +761,6 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 	};
 
 	useEffect(() => {
-		if ("description" in changedState) {
-			onDescriptionChange(changedState["description"]);
-		}
-	}, [changedState.price]);
-
-	useEffect(() => {
 		if ("price" in changedState) {
 			onPriceChange(changedState["price"]);
 		}
