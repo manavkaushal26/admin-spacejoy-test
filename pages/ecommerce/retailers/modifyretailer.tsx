@@ -2,7 +2,6 @@ import { ArrowLeftOutlined, PlusOutlined } from "@ant-design/icons";
 import { uploadRetailerImageApi } from "@api/ecommerceApi";
 import { retailerApi } from "@api/retailerApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
-import RichText from "@components/RichText";
 import { EcommRetailer } from "@customTypes/assetInfoTypes";
 import { Status } from "@customTypes/userType";
 import { MaxHeightDiv } from "@sections/Dashboard/styled";
@@ -193,26 +192,6 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 			previewVisible: true,
 		});
 	};
-	const onDescriptionChange = value => {
-		formRef.current.setFieldsValue({ description: value });
-		setChangedFields({ ...changedFields, description: value });
-	};
-	const onShippingPolicyChange = value => {
-		formRef.current.setFieldsValue({ shippingPolicy: value });
-		setChangedFields({ ...changedFields, shippingPolicy: value });
-	};
-	const onCancellationPolicyChange = value => {
-		formRef.current.setFieldsValue({ cancellationPolicy: value });
-		setChangedFields({ ...changedFields, cancellationPolicy: value });
-	};
-	const onRefundPolicyChange = value => {
-		formRef.current.setFieldsValue({ refundPolicy: value });
-		setChangedFields({ ...changedFields, refundPolicy: value });
-	};
-	const onReturnPolicyChange = value => {
-		formRef.current.setFieldsValue({ returnPolicy: value });
-		setChangedFields({ ...changedFields, returnPolicy: value });
-	};
 
 	return (
 		<PageLayout pageName='Modify Retailer'>
@@ -262,11 +241,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 									</Col>
 									<Col span={24}>
 										<Form.Item label='Description' name='description'>
-											<RichText
-												id='descriptionRetailerPage'
-												initialValue={retailer.description}
-												onTextChange={onDescriptionChange}
-											/>
+											<Input.TextArea />
 										</Form.Item>
 									</Col>
 									<Col sm={24} md={12}>
@@ -354,38 +329,22 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 									</Col>
 									<Col span={24}>
 										<Form.Item label='Shipping Policy' name='shippingPolicy' rules={[{ required: true }]}>
-											<RichText
-												id='shippingPolicyRetailerPage'
-												initialValue={retailer.shippingPolicy}
-												onTextChange={onShippingPolicyChange}
-											/>
+											<Input.TextArea />
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item label='Cancellation Policy' name='cancellationPolicy' rules={[{ required: true }]}>
-											<RichText
-												id='cancellationPolicyRetailerPage'
-												initialValue={retailer.cancellationPolicy}
-												onTextChange={onCancellationPolicyChange}
-											/>
+											<Input.TextArea />
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item label='Refund Policy' name='refundPolicy'>
-											<RichText
-												id='refundPolicyRetailerPage'
-												initialValue={retailer.refundPolicy}
-												onTextChange={onRefundPolicyChange}
-											/>
+											<Input.TextArea />
 										</Form.Item>
 									</Col>
 									<Col span={24}>
 										<Form.Item label='Return Policy' name='returnPolicy'>
-											<RichText
-												id='returnPolicyRetailerPage'
-												initialValue={retailer.returnPolicy}
-												onTextChange={onReturnPolicyChange}
-											/>
+											<Input.TextArea />
 										</Form.Item>
 									</Col>
 									<Col span={24}>
