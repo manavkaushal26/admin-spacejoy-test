@@ -35,6 +35,10 @@ class MyDocument extends Document {
 					<link rel='preload' href='/static/styles/style.css?v1.0.4' as='style' />
 					<link rel='manifest' href='/manifest.json' />
 					<link href='/static/styles/style.css?v1.0.4' rel='stylesheet' />
+					<script
+						src='https://cdn.tiny.cloud/1/nodxa0klye29turh3kyb50oizr3vzfpjakvcb1bfwg6heqrq/tinymce/5/tinymce.min.js'
+						referrerpolicy='origin'
+					></script>
 				</Head>
 				<body>
 					<Main />

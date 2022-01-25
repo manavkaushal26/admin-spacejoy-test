@@ -15,6 +15,7 @@ import {
 } from "@api/assetApi";
 import { getMetaDataApi, getSingleAssetApi, uploadAssetModelApi } from "@api/designApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
+import RichText from "@components/RichText";
 import { MountTypes, MountTypesLabels } from "@customTypes/assetInfoTypes";
 import { Model3DFiles, ModelToExtensionMap } from "@customTypes/dashboardTypes";
 import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
@@ -714,6 +715,35 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 		setChangedState({ ...changedState, sku: value });
 	};
 
+	const onDescriptionChange = value => {
+		form.setFieldsValue({ description: value });
+		setChangedState({ ...changedState, description: value });
+	};
+	const onShippingPolicyChange = value => {
+		form.setFieldsValue({ shippingPolicy: value });
+		setChangedState({ ...changedState, shippingPolicy: value });
+	};
+	const onCancellationPolicyChange = value => {
+		form.setFieldsValue({ cancellationPolicy: value });
+		setChangedState({ ...changedState, cancellationPolicy: value });
+	};
+	const onRefundPolicyChange = value => {
+		form.setFieldsValue({ refundPolicy: value });
+		setChangedState({ ...changedState, refundPolicy: value });
+	};
+	const onReturnPolicyChange = value => {
+		form.setFieldsValue({ returnPolicy: value });
+		setChangedState({ ...changedState, returnPolicy: value });
+	};
+	const onWarrantPolicyChange = value => {
+		form.setFieldsValue({ warrantInfo: value });
+		setChangedState({ ...changedState, warrantInfo: value });
+	};
+	const onAssemblyPolicyChange = value => {
+		form.setFieldsValue({ assemblyInfo: value });
+		setChangedState({ ...changedState, assemblyInfo: value });
+	};
+
 	const onPriceChange = value => {
 		if (!value) {
 			if (changedState.shoppable !== false) {
@@ -940,7 +970,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 													</Col>
 													<Col span={24}>
 														<Form.Item name='description' label='Description'>
-															<Input.TextArea placeholder='Fill N/A if not available' />
+															<RichText
+																id='descriptionAssetPage'
+																initialValue={state.description}
+																onTextChange={onDescriptionChange}
+															/>
 														</Form.Item>
 													</Col>
 													<Col span={24}>
@@ -1311,32 +1345,56 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 											</Col>
 											<Col span={24}>
 												<Form.Item name='shippingPolicy' label='Shipping Policy'>
-													<Input.TextArea />
+													<RichText
+														id='shippingPolicyAssetPage'
+														initialValue={state.shippingPolicy}
+														onTextChange={onShippingPolicyChange}
+													/>
 												</Form.Item>
 											</Col>
 											<Col span={24}>
 												<Form.Item name='cancellationPolicy' label='Cancellation Policy'>
-													<Input.TextArea />
+													<RichText
+														id='cancellationPolicyAssetPage'
+														initialValue={state.cancellationPolicy}
+														onTextChange={onCancellationPolicyChange}
+													/>
 												</Form.Item>
 											</Col>
 											<Col span={24}>
 												<Form.Item name='refundPolicy' label='Refund Policy'>
-													<Input.TextArea />
+													<RichText
+														id='refundPolicyAssetPage'
+														initialValue={state.refundPolicy}
+														onTextChange={onRefundPolicyChange}
+													/>
 												</Form.Item>
 											</Col>
 											<Col span={24}>
 												<Form.Item name='returnPolicy' label='Return Policy'>
-													<Input.TextArea />
+													<RichText
+														id='returnPolicyAssetPage'
+														initialValue={state.returnPolicy}
+														onTextChange={onReturnPolicyChange}
+													/>
 												</Form.Item>
 											</Col>
 											<Col span={24}>
 												<Form.Item name='warrantyInfo' label='Warranty Policy'>
-													<Input.TextArea />
+													<RichText
+														id='warrantyInfoAssetPage'
+														initialValue={state.warrantyInfo}
+														onTextChange={onWarrantPolicyChange}
+													/>
 												</Form.Item>
 											</Col>
 											<Col span={24}>
 												<Form.Item name='assemblyInfo' label='Assembly Policy'>
-													<Input.TextArea />
+													<RichText
+														id='assemblyInfoAssetPage'
+														initialValue={state.assemblyInfo}
+														onTextChange={onAssemblyPolicyChange}
+													/>
 												</Form.Item>
 											</Col>
 										</Row>
