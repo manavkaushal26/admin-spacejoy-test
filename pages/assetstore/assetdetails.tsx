@@ -1123,6 +1123,11 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 														</Form.Item>
 													</Col>
 													<Col span={12}>
+														<Form.Item name='inStock' label='In Stock' valuePropName='checked'>
+															<Switch size='default' checkedChildren='Yes' unCheckedChildren='No' />
+														</Form.Item>
+													</Col>
+													<Col span={12}>
 														<Form.Item
 															labelCol={{ span: 24 }}
 															name='status'
