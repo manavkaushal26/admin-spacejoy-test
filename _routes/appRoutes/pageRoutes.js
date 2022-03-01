@@ -151,6 +151,13 @@ function pageRoute(app, router) {
 		});
 	});
 
+	router.get("/platformanager/newsiteconfig", TokenCheckMiddleware, (req, res) => {
+		const { query } = req;
+		app.render(req, res, "/platformanager/newsiteconfig", {
+			...query,
+		});
+	});
+
 	router.get("/platformanager", TokenCheckMiddleware, (req, res) => {
 		const { query } = req;
 		app.render(req, res, "/platformanager", {

@@ -70,6 +70,15 @@ const MetaCards = [
 		allowedRoles: [Role.Admin, Role.Owner],
 	},
 	{
+		name: "New Site Config",
+		description: "Update customer portal banners for new website",
+		action: "redirect",
+		to: "/platformanager/newsiteconfig",
+		url: "/platformanager/newsiteconfig",
+		query: {},
+		allowedRoles: [Role.Admin, Role.Owner],
+	},
+	{
 		name: "Sitemap Manager",
 		description: "Manage Sitemap in platform",
 		action: "redirect",
