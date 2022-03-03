@@ -9,7 +9,21 @@ import { ProtectRoute } from "@utils/authContext";
 import { company, firebaseConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, DatePicker, Divider, Form, Input, message, Modal, Row, Spin, Switch, Typography } from "antd";
+import {
+	Button,
+	Col,
+	DatePicker,
+	Divider,
+	Form,
+	Input,
+	message,
+	Modal,
+	Row,
+	Spin,
+	Switch,
+	Tabs,
+	Typography,
+} from "antd";
 import moment from "moment";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -17,6 +31,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { LoudPaddingDiv } from ".";
 const { Title, Text } = Typography;
+const TabPane = Tabs.TabPane;
 
 const stripDomainInLink = (str: string) => {
 	const trimmedString = str
@@ -52,12 +67,6 @@ const initialValues = {
 		alt: "",
 		timerVisible: false,
 	},
-	shopInjectBanner: {
-		cdn: "",
-		visible: false,
-		alt: "",
-		timerVisible: false,
-	},
 	cartBanner: {
 		cdn: "",
 		visible: false,
@@ -68,12 +77,6 @@ const initialValues = {
 		visible: false,
 		endMessage: "",
 		color: "#000000",
-	},
-	productSection: {
-		isVisibile: false,
-		productHeading: "",
-		sectionSubheading: "",
-		listOfProducts: [],
 	},
 	broadcast: {
 		beforePulseDot: "",
@@ -164,7 +167,7 @@ const SitemapManager: NextPage = () => {
 			onOk: () => {
 				saveForm({
 					...firebaseDataUpdated,
-					countdown: { ...firebaseDataUpdated.countdown, time: firebaseDataUpdated.countdown.time.valueOf() },
+					countdownV2: { ...firebaseDataUpdated.countdownV2, time: firebaseDataUpdated.countdownV2.time.valueOf() },
 				})
 					.then(() => {
 						message.success("Saved config successfully");
@@ -192,7 +195,7 @@ const SitemapManager: NextPage = () => {
 									<Col>
 										<ArrowLeftOutlined onClick={() => router.back()} />
 									</Col>
-									<Col>Site Config</Col>
+									<Col>New Site Config</Col>
 								</Row>
 							</Title>
 						</Col>
@@ -202,10 +205,10 @@ const SitemapManager: NextPage = () => {
 						<Col span={24}>
 							<FirestoreDocument path={`/${firebaseConfig.databaseId}/${firebaseConfig.documentId}`}>
 								{d => {
-									const time = d.value?.countdown?.time ? moment(d.value?.countdown?.time) : null;
+									const timeV2 = d.value?.countdownV2?.time ? moment(d.value?.countdownV2?.time) : null;
 									form.setFieldsValue({
 										...d.value,
-										countdown: { ...d.value?.countdown, time: time },
+										countdownV2: { ...d.value?.countdownV2, time: timeV2 },
 									});
 									return (
 										<Spin spinning={loading || d.isLoading}>
@@ -225,7 +228,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["homepage", "hp1"]}
+																	name={["homepageV2", "hp1"]}
 																	label='Home page Portrait'
 																	normalize={stripDomainInLink}
 																	rules={[{ required: true }]}
@@ -234,13 +237,13 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["homepage", "hp1Alt"]} label='Alt tag'>
+																<Form.Item name={["homepageV2", "hp1Alt"]} label='Alt tag'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["homepage", "hp1Link"]}
+																	name={["homepageV2", "hp1Link"]}
 																	label='Home page Portrait link to'
 																	normalize={stripDomainInLink}
 																>
@@ -250,7 +253,7 @@ const SitemapManager: NextPage = () => {
 
 															<Col span={12}>
 																<Form.Item
-																	name={["homepage", "timerVisible"]}
+																	name={["homepageV2", "timerVisible"]}
 																	label='Timer Visible?'
 																	valuePropName='checked'
 																>
@@ -263,7 +266,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["homepage", "hp2"]}
+																	name={["homepageV2", "hp2"]}
 																	label='Home page Landscape 1'
 																	normalize={stripDomainInLink}
 																>
@@ -271,14 +274,14 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["homepage", "hp2Alt"]} label='Alt tag'>
+																<Form.Item name={["homepageV2", "hp2Alt"]} label='Alt tag'>
 																	<Input />
 																</Form.Item>
 															</Col>
 
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["homepage", "hp2Link"]}
+																	name={["homepageV2", "hp2Link"]}
 																	label='Home page Landscape 1 link to'
 																	normalize={stripDomainInLink}
 																>
@@ -291,7 +294,7 @@ const SitemapManager: NextPage = () => {
 
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["homepage", "hp3"]}
+																	name={["homepageV2", "hp3"]}
 																	label='Home page Landscape 2'
 																	normalize={stripDomainInLink}
 																>
@@ -299,13 +302,13 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["homepage", "hp3Alt"]} label='Alt tag'>
+																<Form.Item name={["homepageV2", "hp3Alt"]} label='Alt tag'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["homepage", "hp3Link"]}
+																	name={["homepageV2", "hp3Link"]}
 																	label='Home page Landscape 2 link to'
 																	normalize={stripDomainInLink}
 																>
@@ -323,7 +326,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["injectBanner", "cdn"]}
+																	name={["injectBannerV2", "cdn"]}
 																	label='Inject banner'
 																	normalize={stripDomainInLink}
 																	rules={[{ required: true }]}
@@ -333,7 +336,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["injectBanner", "link"]}
+																	name={["injectBannerV2", "link"]}
 																	label='Inject banner Link'
 																	normalize={stripDomainInLink}
 																>
@@ -341,13 +344,13 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["injectBanner", "alt"]} label='Alt tag'>
+																<Form.Item name={["injectBannerV2", "alt"]} label='Alt tag'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col span={12}>
 																<Form.Item
-																	name={["injectBanner", "visible"]}
+																	name={["injectBannerV2", "visible"]}
 																	label='Inject banner Visible?'
 																	valuePropName='checked'
 																>
@@ -356,7 +359,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col span={12}>
 																<Form.Item
-																	name={["injectBanner", "timerVisible"]}
+																	name={["injectBannerV2", "timerVisible"]}
 																	label='Timer Visible?'
 																	valuePropName='checked'
 																>
@@ -374,7 +377,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["cartBanner", "cdn"]}
+																	name={["cartBannerV2", "cdn"]}
 																	label='Cart banner'
 																	rules={[{ required: true }]}
 																	normalize={stripDomainInLink}
@@ -384,7 +387,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["cartBanner", "link"]}
+																	name={["cartBannerV2", "link"]}
 																	label='Cart banner Link to'
 																	normalize={stripDomainInLink}
 																>
@@ -392,13 +395,13 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["cartBanner", "alt"]} label='Alt tag'>
+																<Form.Item name={["cartBannerV2", "alt"]} label='Alt tag'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["cartBanner", "visible"]}
+																	name={["cartBannerV2", "visible"]}
 																	label='Cart Banner visible?'
 																	valuePropName='checked'
 																>
@@ -416,7 +419,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["countdown", "time"]}
+																	name={["countdownV2", "time"]}
 																	label='Countdown timer end time'
 																	rules={[{ required: true }]}
 																>
@@ -429,12 +432,12 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["countdown", "endMessage"]} label='Countdown expiry message'>
+																<Form.Item name={["countdownV2", "endMessage"]} label='Countdown expiry message'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["countdown", "color"]} label='Text Color'>
+																<Form.Item name={["countdownV2", "color"]} label='Text Color'>
 																	<Input type='color' />
 																</Form.Item>
 															</Col>
@@ -486,7 +489,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={24} md={12}>
 																<Form.Item
-																	name={["broadcast", "beforePulseDot"]}
+																	name={["broadcastV2", "beforePulseDot"]}
 																	label='Before Pulse dot'
 																	rules={[{ required: true }]}
 																>
@@ -494,23 +497,23 @@ const SitemapManager: NextPage = () => {
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["broadcast", "afterPulseDot"]} label='After Pulse Dot'>
+																<Form.Item name={["broadcastV2", "afterPulseDot"]} label='After Pulse Dot'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["broadcast", "highlightText"]} label='Highlighted Text'>
+																<Form.Item name={["broadcastV2", "highlightText"]} label='Highlighted Text'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col sm={24} md={12}>
-																<Form.Item name={["broadcast", "afterCoupon"]} label='After Highlighted text'>
+																<Form.Item name={["broadcastV2", "afterCoupon"]} label='After Highlighted text'>
 																	<Input />
 																</Form.Item>
 															</Col>
 															<Col span={24}>
 																<Form.Item
-																	name={["broadcast", "link"]}
+																	name={["broadcastV2", "link"]}
 																	label='Broadcast Link to'
 																	normalize={stripDomainInLink}
 																>
@@ -519,7 +522,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={12} md={6}>
 																<Form.Item
-																	name={["broadcast", "isHighlightCoupon"]}
+																	name={["broadcastV2", "isHighlightCoupon"]}
 																	label='Is Highlighted text a Coupon?'
 																	valuePropName='checked'
 																>
@@ -529,7 +532,7 @@ const SitemapManager: NextPage = () => {
 
 															<Col sm={12} md={6}>
 																<Form.Item
-																	name={["broadcast", "broadcaststripVisible"]}
+																	name={["broadcastV2", "broadcaststripVisible"]}
 																	label='Strip Visible to customer?'
 																	valuePropName='checked'
 																>
@@ -538,7 +541,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={12} md={6}>
 																<Form.Item
-																	name={["broadcast", "pulseDot"]}
+																	name={["broadcastV2", "pulseDot"]}
 																	label='Pulse dot visible?'
 																	valuePropName='checked'
 																>
@@ -547,7 +550,7 @@ const SitemapManager: NextPage = () => {
 															</Col>
 															<Col sm={12} md={6}>
 																<Form.Item
-																	name={["broadcast", "timerVisible"]}
+																	name={["broadcastV2", "timerVisible"]}
 																	label='Timer Visible?'
 																	valuePropName='checked'
 																>

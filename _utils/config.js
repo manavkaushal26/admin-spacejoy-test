@@ -90,8 +90,7 @@ const firebaseConfig = {
 	messagingSenderId: "628064588100",
 	appId: "1:628064588100:web:2a7a4821cc945c8e238711",
 	notificationDatabase: isProduction ? "notification" : "notificationStaging",
-
-	databaseId: isProduction ? "siteConfig" : "siteConfigStaging",
+	databaseId: isProduction ? "siteConfig" : "siteConfig-devStaging",
 	documentId: "main",
 };
 
