@@ -52,12 +52,6 @@ const initialValues = {
 		alt: "",
 		timerVisible: false,
 	},
-	shopInjectBanner: {
-		cdn: "",
-		visible: false,
-		alt: "",
-		timerVisible: false,
-	},
 	cartBanner: {
 		cdn: "",
 		visible: false,
@@ -68,12 +62,6 @@ const initialValues = {
 		visible: false,
 		endMessage: "",
 		color: "#000000",
-	},
-	productSection: {
-		isVisibile: false,
-		productHeading: "",
-		sectionSubheading: "",
-		listOfProducts: [],
 	},
 	broadcast: {
 		beforePulseDot: "",
@@ -100,6 +88,18 @@ const initialValues = {
 		visible: false,
 	},
 	injectBannerV2: {
+		cdn: "",
+		visible: false,
+		alt: "",
+		timerVisible: false,
+	},
+	designListingV2: {
+		cdn: "",
+		visible: false,
+		alt: "",
+		timerVisible: false,
+	},
+	designViewV2: {
 		cdn: "",
 		visible: false,
 		alt: "",

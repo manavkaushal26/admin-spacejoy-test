@@ -71,7 +71,7 @@ const MetaCards = [
 	},
 	{
 		name: "New Site Config",
-		description: "Update customer portal banners for new website",
+		description: "Update new website banners",
 		action: "redirect",
 		to: "/platformanager/newsiteconfig",
 		url: "/platformanager/newsiteconfig",
