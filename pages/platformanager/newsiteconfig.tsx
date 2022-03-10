@@ -108,6 +108,18 @@ const initialValues = {
 		alt: "",
 		timerVisible: false,
 	},
+	designListingV2: {
+		cdn: "",
+		visible: false,
+		alt: "",
+		timerVisible: false,
+	},
+	designViewV2: {
+		cdn: "",
+		visible: false,
+		alt: "",
+		timerVisible: false,
+	},
 	cartBannerV2: {
 		cdn: "",
 		visible: false,
@@ -321,7 +333,7 @@ const SitemapManager: NextPage = () => {
 														<Row gutter={[16, 8]}>
 															<Col span={24}>
 																<Title level={4} underline>
-																	Inject Banner
+																	Shop Page Banners
 																</Title>
 															</Col>
 															<Col sm={24} md={12}>
@@ -360,6 +372,108 @@ const SitemapManager: NextPage = () => {
 															<Col span={12}>
 																<Form.Item
 																	name={["injectBannerV2", "timerVisible"]}
+																	label='Timer Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
+													<Col span={24}>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Design Listing Page Banners
+																</Title>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["designListingV2", "cdn"]}
+																	label='Design Listing banner'
+																	normalize={stripDomainInLink}
+																	rules={[{ required: true }]}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["designListingV2", "link"]}
+																	label='Design listing banner Link'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["designListingV2", "alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["designListingV2", "visible"]}
+																	label='Design listing banner Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["designListingV2", "timerVisible"]}
+																	label='Timer Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+														</Row>
+													</Col>
+													<Col span={24}>
+														<Row gutter={[16, 8]}>
+															<Col span={24}>
+																<Title level={4} underline>
+																	Design View Page Banners
+																</Title>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["designViewV2", "cdn"]}
+																	label='Design View banner'
+																	normalize={stripDomainInLink}
+																	rules={[{ required: true }]}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item
+																	name={["designViewV2", "link"]}
+																	label='Design View banner Link'
+																	normalize={stripDomainInLink}
+																>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col sm={24} md={12}>
+																<Form.Item name={["designViewV2", "alt"]} label='Alt tag'>
+																	<Input />
+																</Form.Item>
+															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["designViewV2", "visible"]}
+																	label='Design View banner Visible?'
+																	valuePropName='checked'
+																>
+																	<Switch checkedChildren={"Yes"} unCheckedChildren={"No"} />
+																</Form.Item>
+															</Col>
+															<Col span={12}>
+																<Form.Item
+																	name={["designViewV2", "timerVisible"]}
 																	label='Timer Visible?'
 																	valuePropName='checked'
 																>
