@@ -155,6 +155,23 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Col>
 					</Row>
 				</Col>
+				<Col span={24}>
+					<Row gutter={[4, 4]}>
+						<Col span={8}>
+							<Text style={{ width: "100%", overflow: "hidden" }} ellipsis strong>
+								Incentive:{" "}
+							</Text>
+						</Col>
+						<Col span={16}>
+							<Col>
+								<DollarCircleFilled />
+								<Text style={{ background: "rgba(253, 203, 110, 0.1)" }}>
+									{getValueSafely<string | number>(() => ((asset?.incentive / 100) * asset.price).toFixed(2), "N/A")}
+								</Text>
+							</Col>
+						</Col>
+					</Row>
+				</Col>
 				{scrapedData && (
 					<Col span={24}>
 						<Row gutter={[10, 0]}>
