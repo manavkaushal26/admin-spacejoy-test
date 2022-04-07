@@ -159,7 +159,10 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Col>
 					</Row>
 				</Col>
-				{(user.role === Role.Admin || user.role === Role.Designer || user.role === Role["Account Manager"]) && (
+				{(user.role === Role.Owner ||
+					user.role === Role.Admin ||
+					user.role === Role.Designer ||
+					user.role === Role["Account Manager"]) && (
 					<Col span={24}>
 						<Row gutter={[4, 4]}>
 							<Col span={8}>
@@ -169,7 +172,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 							</Col>
 							<Col span={16}>
 								<Col>
-									<DollarCircleFilled />
+									<DollarCircleFilled />{" "}
 									<Text style={{ background: "rgba(253, 203, 110, 0.1)" }}>
 										{getValueSafely<string | number>(() => ((asset?.incentive / 100) * asset.price).toFixed(2), "N/A")}
 									</Text>
