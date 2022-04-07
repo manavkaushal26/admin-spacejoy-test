@@ -103,6 +103,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 						clampValue: asset.clampValue,
 					},
 					inStock: asset.inStock,
+					incentive: asset.incentive,
 					dimension: {
 						depth: asset.depth,
 						width: asset.width,

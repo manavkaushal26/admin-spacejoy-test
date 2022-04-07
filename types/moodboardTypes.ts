@@ -88,6 +88,7 @@ export interface AssetType {
 	productImages: ImageType[];
 	status: Status;
 	inStock: boolean;
+	incentive?: number;
 	shoppable: boolean;
 	spatialData: {
 		fileUrls: {
@@ -174,6 +175,7 @@ export interface AssetStoreSearchResponse {
 	name: string;
 	price: number;
 	inStock: boolean;
+	incentive?: number;
 	retailLink: string;
 	retailer: string;
 	shoppable: true;

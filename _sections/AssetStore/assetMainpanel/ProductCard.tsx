@@ -2,6 +2,8 @@ import { DollarCircleFilled, LinkOutlined } from "@ant-design/icons";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
 import { AssetType, ScrapedAssetType } from "@customTypes/moodboardTypes";
+import { Role } from "@customTypes/userType";
+import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import AssetAvailability from "@utils/componentUtils/AssetAvailable";
 import PriceData from "@utils/componentUtils/AssetPrice";
@@ -49,6 +51,8 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 	actions,
 	scrapedData,
 }) => {
+	const { user } = useAuth();
+
 	const availability = useMemo(() => {
 		if (asset.inStock !== undefined) {
 			if (asset.inStock) {
@@ -155,6 +159,25 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Col>
 					</Row>
 				</Col>
+				{(user.role === Role.Admin || user.role === Role.Designer || user.role === Role["Account Manager"]) && (
+					<Col span={24}>
+						<Row gutter={[4, 4]}>
+							<Col span={8}>
+								<Text style={{ width: "100%", overflow: "hidden" }} ellipsis strong>
+									Incentive:{" "}
+								</Text>
+							</Col>
+							<Col span={16}>
+								<Col>
+									<DollarCircleFilled />
+									<Text style={{ background: "rgba(253, 203, 110, 0.1)" }}>
+										{getValueSafely<string | number>(() => ((asset?.incentive / 100) * asset.price).toFixed(2), "N/A")}
+									</Text>
+								</Col>
+							</Col>
+						</Row>
+					</Col>
+				)}
 				{scrapedData && (
 					<Col span={24}>
 						<Row gutter={[10, 0]}>
