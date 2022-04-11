@@ -87,6 +87,31 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 		>
 			<Row>
 				<Col span={24}>
+					<Row gutter={[4, 4]} justify='space-between'>
+						<Col>
+							<Row gutter={[4, 4]}>
+								<Col>
+									<DollarCircleFilled />
+								</Col>
+								<Col>
+									<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
+								</Col>
+							</Row>
+						</Col>
+						<Col>
+							{availability && (
+								<Col span={24}>
+									<Row>
+										<Col>
+											<Text strong>{availability}</Text>
+										</Col>
+									</Row>
+								</Col>
+							)}
+						</Col>
+					</Row>
+				</Col>
+				<Col span={24}>
 					<Row gutter={[4, 4]}>
 						<Col>
 							<LinkOutlined />
@@ -134,53 +159,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Row>
 					</Col>
 				)}
-				<Col span={24}>
-					<Row gutter={[4, 4]} justify='space-between'>
-						<Col>
-							<Row gutter={[4, 4]}>
-								<Col>
-									<DollarCircleFilled />
-								</Col>
-								<Col>
-									<Text strong>{getValueSafely<string | number>(() => asset.price, "N/A")}</Text>
-								</Col>
-							</Row>
-						</Col>
-						<Col>
-							{availability && (
-								<Col span={24}>
-									<Row>
-										<Col>
-											<Text strong>{availability}</Text>
-										</Col>
-									</Row>
-								</Col>
-							)}
-						</Col>
-					</Row>
-				</Col>
-				{(user.role === Role.Owner ||
-					user.role === Role.Admin ||
-					user.role === Role.Designer ||
-					user.role === Role["Account Manager"]) && (
-					<Col span={24}>
-						<Row gutter={[4, 4]}>
-							<Col span={8}>
-								<Text style={{ width: "100%", overflow: "hidden" }} ellipsis strong>
-									Incentive:{" "}
-								</Text>
-							</Col>
-							<Col span={16}>
-								<Col>
-									<DollarCircleFilled />{" "}
-									<Text style={{ background: "rgba(253, 203, 110, 0.1)" }}>
-										{getValueSafely<string | number>(() => ((asset?.incentive / 100) * asset.price).toFixed(2), "N/A")}
-									</Text>
-								</Col>
-							</Col>
-						</Row>
-					</Col>
-				)}
+
 				{scrapedData && (
 					<Col span={24}>
 						<Row gutter={[10, 0]}>
@@ -237,6 +216,33 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 						</Col>
 					</Row>
 				</Col>
+
+				{asset?.incentive &&
+					(user.role === Role.Owner ||
+						user.role === Role.Admin ||
+						user.role === Role.Designer ||
+						user.role === Role["Account Manager"]) && (
+						<Col style={{ background: "rgb(151, 207, 151)", padding: "0px 20px" }} span={24}>
+							<Row gutter={[4, 4]} justify='space-between'>
+								<Col>
+									<Text style={{ width: "100%", overflow: "hidden" }} ellipsis strong>
+										Incentive:{" "}
+									</Text>
+								</Col>
+								<Col>
+									<Col>
+										<DollarCircleFilled />{" "}
+										<Text>
+											{getValueSafely<string | number>(
+												() => ((asset?.incentive / 100) * asset.price).toFixed(2),
+												"N/A"
+											)}
+										</Text>
+									</Col>
+								</Col>
+							</Row>
+						</Col>
+					)}
 			</Row>
 		</Card>
 	);
