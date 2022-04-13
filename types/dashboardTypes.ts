@@ -355,15 +355,21 @@ export interface DetailedProject {
 interface Retailer {
 	_id: string;
 	name: string;
+	incentive?: {
+		designer: number;
+	};
 }
 
 export interface Assets {
+	retailer: any;
+	price: any;
 	billable: boolean;
 	hidden: boolean;
 	_id: string;
 	asset: {
 		name: string;
 		price: number;
+		incentive?: number;
 		retailer: Retailer;
 		retailLink: string;
 		cdn: string;

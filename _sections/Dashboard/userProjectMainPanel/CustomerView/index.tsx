@@ -2,14 +2,16 @@ import { CheckOutlined, CloseOutlined, RedoOutlined } from "@ant-design/icons";
 import Card from "@components/Card";
 import Image from "@components/Image";
 import { DesignImgTypes, DetailedDesign, DetailedProject } from "@customTypes/dashboardTypes";
+import { Role } from "@customTypes/userType";
 import ProductCard from "@sections/AssetStore/assetMainpanel/ProductCard";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
+import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import config, { cloudinary } from "@utils/config";
 import { useScraper } from "@utils/customHooks/useScraper";
 import { Button, Card as AntdCard, Col, Divider, notification, Row, Typography } from "antd";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ReactPannellum from "react-pannellum";
 import styled from "styled-components";
 
@@ -85,11 +87,35 @@ const PackageDetails: React.FC<{
 };
 
 const CustomerView: React.FC<CustomerView> = ({ designData, projectName, projectData }) => {
+	const { user } = useAuth();
+	const [incentiveTotal, setIncentiveTotal] = useState(0);
 	const pannelumImage = designData.designImages.find(image => image.imgType === DesignImgTypes.Panorama);
-	const { scrapedData, scraping, triggerScraping, error: scrapingError } = useScraper(
+	const {
+		scrapedData,
+		scraping,
+		triggerScraping,
+		error: scrapingError,
+	} = useScraper(
 		designData._id,
 		designData?.assets?.map(asset => asset?.asset?._id)
 	);
+
+	const calculateTotalIncentive = designData => {
+		const total = designData?.assets.reduce((acc, asset) => {
+			if (asset.asset?.incentive ?? asset.asset?.retailer?.incentive?.designer) {
+				acc += Number(
+					((asset.asset?.incentive ?? asset.asset?.retailer?.incentive?.designer / 100) * asset.asset.price).toFixed(2)
+				);
+			}
+			return acc;
+		}, 0);
+
+		return total.toFixed(2);
+	};
+
+	useEffect(() => {
+		setIncentiveTotal(calculateTotalIncentive(designData));
+	}, [designData]);
 
 	const nonBillableAssets = useMemo(
 		() => designData.assets.filter(asset => !asset.billable || !asset.asset?.shoppable),
@@ -211,6 +237,18 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 							</Col>
 						</Row>
 					</Col>
+					{(user.role === Role.Owner ||
+						user.role === Role.Admin ||
+						user.role === Role.Designer ||
+						user.role === Role["Account Manager"]) && (
+						<Col span={24}>
+							<Row>
+								<Col>
+									<Title level={5}>Design Incentive: $ {incentiveTotal}</Title>
+								</Col>
+							</Row>
+						</Col>
+					)}
 					<Col span={24}>
 						<Row gutter={[8, 8]}>
 							{designData.assets.map(asset => {
