@@ -244,7 +244,10 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 						<Col span={24}>
 							<Row>
 								<Col>
-									<Title level={5}>Design Incentive: $ {incentiveTotal}</Title>
+									<span>
+										<Text style={{ fontSize: "18px" }}>Designer Incentive: </Text>
+										<span style={{ color: "green", fontSize: "22px", fontWeight: "bold" }}>${incentiveTotal}</span>
+									</span>
 								</Col>
 							</Row>
 						</Col>
