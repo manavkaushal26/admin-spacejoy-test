@@ -217,7 +217,8 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 					</Row>
 				</Col>
 
-				{asset?.incentive &&
+				{((asset?.incentive && asset?.incentive !== 0) ||
+					(asset?.retailer?.incentive?.designer && asset?.retailer?.incentive?.designer !== 0)) &&
 					(user.role === Role.Owner ||
 						user.role === Role.Admin ||
 						user.role === Role.Designer ||
@@ -234,7 +235,8 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 										<DollarCircleFilled />{" "}
 										<Text>
 											{getValueSafely<string | number>(
-												() => ((asset?.incentive / 100) * asset.price).toFixed(2),
+												() =>
+													((asset?.incentive ?? asset?.retailer?.incentive?.designer / 100) * asset.price).toFixed(2),
 												"N/A"
 											)}
 										</Text>

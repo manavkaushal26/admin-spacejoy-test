@@ -82,6 +82,9 @@ export interface AssetType {
 	currency: Currency;
 	description: string;
 	retailer: {
+		incentive?: {
+			designer: number;
+		};
 		_id: string;
 		name: string;
 	};
