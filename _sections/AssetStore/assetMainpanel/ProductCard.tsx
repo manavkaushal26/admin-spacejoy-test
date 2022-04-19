@@ -234,11 +234,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 									<Col>
 										<DollarCircleFilled />{" "}
 										<Text>
-											{getValueSafely<string | number>(
-												() =>
-													((asset?.incentive ?? asset?.retailer?.incentive?.designer / 100) * asset.price).toFixed(2),
-												"N/A"
-											)}
+											{(((asset?.incentive ?? asset?.retailer?.incentive?.designer) / 100) * asset.price).toFixed(2)}
 										</Text>
 									</Col>
 								</Col>
