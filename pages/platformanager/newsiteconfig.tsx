@@ -673,6 +673,15 @@ const SitemapManager: NextPage = () => {
 															</Col>
 														</Row>
 													</Col>
+													<Col span={24}>
+														<Row justify='end'>
+															<Form.Item>
+																<Button htmlType='submit' type='primary'>
+																	Submit
+																</Button>
+															</Form.Item>
+														</Row>
+													</Col>
 
 													<Col span={24}>
 														<Row justify='end'>
