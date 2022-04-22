@@ -9,7 +9,21 @@ import { ProtectRoute } from "@utils/authContext";
 import { company, firebaseConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import IndexPageMeta from "@utils/meta";
-import { Button, Col, DatePicker, Divider, Form, Input, message, Modal, Row, Spin, Switch, Typography } from "antd";
+import {
+	Button,
+	Col,
+	DatePicker,
+	Divider,
+	Form,
+	Input,
+	message,
+	Modal,
+	Row,
+	Select,
+	Spin,
+	Switch,
+	Typography,
+} from "antd";
 import moment from "moment";
 import { NextPage } from "next";
 import Head from "next/head";
@@ -557,6 +571,21 @@ const SitemapManager: NextPage = () => {
 														</Row>
 													</Col>
 
+													<Col span={24}>
+														<Form.Item
+															name={["productSection", "listOfProducts"]}
+															label="List of products (',' separated)"
+															normalize={(value: string[]) => value.map(entry => entry.trim())}
+														>
+															<Select
+																mode='tags'
+																style={{ width: "100%" }}
+																placeholder="Product Id's"
+																tokenSeparators={[", ", ","]}
+																open={false}
+															/>
+														</Form.Item>
+													</Col>
 													<Col span={24}>
 														<Row justify='end'>
 															<Form.Item>
