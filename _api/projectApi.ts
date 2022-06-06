@@ -47,3 +47,20 @@ export const changeToDARAPI = (projectId: string): string => {
 export const getProjectTimelineApi = (projectId: string) => {
 	return `/v1/projects/${projectId}/timeline`;
 };
+
+// APIs for incentive feature
+export const getCartInformationApiEndpoint = (): string => {
+	return "/admin/cart/information";
+};
+
+export const getShoppingDataApiEndpoint = (): string => {
+	return "/admin/shopping/information";
+};
+
+export const getIncentiveCalApiEndpoint = (): string => {
+	return "/admin/calculate/incentive";
+};
+
+export const getProjectsOverviewApiEndpoint = (): string => {
+	return "/admin/project/overview";
+};
