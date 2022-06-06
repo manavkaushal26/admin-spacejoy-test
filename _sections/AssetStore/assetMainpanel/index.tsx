@@ -67,7 +67,7 @@ const fetchAndPopulate: FetchAndPopulate = async (state, pageCount, setAssetData
 		method: "POST",
 		body: {
 			searchText: state.searchText.trim(),
-			sort: "createdAt",
+			sort: { key: "incentive", order: 0 },
 			wildcard: state.wildcard,
 			...{ ...(state.preferredRetailer ? { projectId: "randomString" } : {}) },
 			filters: {
