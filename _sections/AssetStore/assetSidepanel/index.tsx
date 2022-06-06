@@ -299,6 +299,30 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({
 										<Col span={24}>
 											<Filter
 												value={state.retailerFilter}
+												name={{ categoryName: "Wholesaler", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
+												options={metaData.retailers.list
+													.filter(item => item.isWholesale === true)
+													.sort((a, b) => {
+														if (a.name.toLowerCase() > b.name.toLowerCase()) {
+															return 1;
+														}
+														if (b.name.toLowerCase() > a.name.toLowerCase()) {
+															return -1;
+														}
+														return 0;
+													})
+													.map(elem => {
+														return { label: elem.name, value: elem.name };
+													})}
+												dispatch={dispatch}
+											/>
+										</Col>
+										<Col span={24}>
+											<SilentDivider />
+										</Col>
+										<Col span={24}>
+											<Filter
+												value={state.retailerFilter}
 												name={{ categoryName: "Retailer", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
 												extra={{
 													name: ASSET_ACTION_TYPES.PREFERRED_RETAILER,
@@ -306,6 +330,7 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({
 													type: "switch",
 												}}
 												options={metaData.retailers.list
+													.filter(item => item.isWholesale !== true)
 													.sort((a, b) => {
 														if (a.name.toLowerCase() > b.name.toLowerCase()) {
 															return 1;

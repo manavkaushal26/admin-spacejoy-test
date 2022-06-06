@@ -16,7 +16,7 @@ interface CategoryFilterProps {
 		categoryName: string;
 		dispatchName: ASSET_ACTION_TYPES;
 	};
-	extra: ExtraOption;
+	extra?: ExtraOption;
 	options: { label: string; value: string }[];
 	dispatch: React.Dispatch<AssetAction>;
 	value: string[];

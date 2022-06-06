@@ -12,6 +12,7 @@ export interface RetailersList {
 	serviceType: ServiceType;
 	_id: string;
 	name: string;
+	isWholesale?: boolean;
 }
 
 export interface VerticalsList {
