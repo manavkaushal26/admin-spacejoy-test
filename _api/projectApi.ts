@@ -50,17 +50,17 @@ export const getProjectTimelineApi = (projectId: string) => {
 
 // APIs for incentive feature
 export const getCartInformationApiEndpoint = (): string => {
-	return "/admin/cart/information";
+	return "/v1/admin/cart/information";
 };
 
 export const getShoppingDataApiEndpoint = (): string => {
-	return "/admin/shopping/information";
+	return "/v1/admin/shopping/information";
 };
 
 export const getIncentiveCalApiEndpoint = (): string => {
-	return "/admin/calculate/incentive";
+	return "/v1/admin/calculate/incentive";
 };
 
 export const getProjectsOverviewApiEndpoint = (): string => {
-	return "/admin/project/overview";
+	return "/v1/admin/project/overview";
 };
