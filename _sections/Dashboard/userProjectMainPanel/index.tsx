@@ -2,7 +2,6 @@ import {
 	getCartInformationApiEndpoint,
 	getIncentiveCalApiEndpoint,
 	getRevisionFormForProjectId,
-	getShoppingDataApiEndpoint,
 } from "@api/projectApi";
 import {
 	DetailedProject,
@@ -55,6 +54,7 @@ const userProjectMainPanel: React.FC<{
 }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [incentiveDashLoading, setIncentiveDashLoading] = useState(false);
 	const Router = useRouter();
 	const [revisionFormData, setRevisionFormData] = useState<RevisionForm>(null);
 	const [cartInformation, setCartInfo] = useState<CartInfoProps>({ result: [], totalCartSize: 0 });
@@ -77,6 +77,7 @@ const userProjectMainPanel: React.FC<{
 	const { user } = useAuth();
 
 	async function getCartInformation() {
+		setIncentiveDashLoading(true);
 		try {
 			const endPoint = getCartInformationApiEndpoint();
 			const res = await fetcher({
@@ -91,31 +92,13 @@ const userProjectMainPanel: React.FC<{
 		} catch (error) {
 			// eslint-disable-next-line no-console
 			console.log(error);
-		}
-	}
-
-	async function getShoppingData() {
-		try {
-			const endPoint = getShoppingDataApiEndpoint();
-			const res = await fetcher({
-				endPoint,
-				method: "POST",
-				body: {
-					email: user.email,
-				},
-			});
-			if (res.statusCode <= 300) {
-				setShoppingData(res.data);
-			} else {
-				setShoppingData({ orders: [], totalLastMonthOrders: 0 });
-			}
-		} catch (error) {
-			// eslint-disable-next-line no-console
-			console.log(error);
+		} finally {
+			setIncentiveDashLoading(false);
 		}
 	}
 
 	async function getIncentiveCalculationData() {
+		setIncentiveDashLoading(true);
 		try {
 			const endPoint = getIncentiveCalApiEndpoint();
 			const res = await fetcher({
@@ -123,7 +106,8 @@ const userProjectMainPanel: React.FC<{
 				method: "GET",
 			});
 			if (res.statusCode <= 300) {
-				setIncentiveCalData(res.data);
+				setIncentiveCalData(res.data.totalDesignIncentive);
+				setShoppingData(res.data.monthlyDesignIncentive);
 			} else {
 				setIncentiveCalData({
 					totalDesignIncentive: {
@@ -131,6 +115,8 @@ const userProjectMainPanel: React.FC<{
 						projects: [],
 						size: 0,
 					},
+				});
+				setShoppingData({
 					monthlyDesignIncentive: {
 						monthlyIncentive: 0,
 						projects: [],
@@ -141,6 +127,8 @@ const userProjectMainPanel: React.FC<{
 		} catch (error) {
 			// eslint-disable-next-line no-console
 			console.log(error);
+		} finally {
+			setIncentiveDashLoading(false);
 		}
 	}
 
@@ -148,12 +136,6 @@ const userProjectMainPanel: React.FC<{
 		getCartInformation();
 		getIncentiveCalculationData();
 	}, []);
-
-	useEffect(() => {
-		if (user.email !== undefined) {
-			getShoppingData();
-		}
-	}, [user.email]);
 
 	const fetchAndPopulateProjectData = async (): Promise<void> => {
 		setLoading(true);
@@ -256,9 +238,9 @@ const userProjectMainPanel: React.FC<{
 		switch (actionPanelView) {
 			case "CartInformation":
 				return <IncentiveCart data={cartInformation} setActionPanelView={setActionPanelView} />;
-			case "ShoppingData":
+			case "LastMonthIncentiveCalData":
 				return <ShoppingData data={shoppingData} setActionPanelView={setActionPanelView} />;
-			case "IncentiveCalData":
+			case "TotalIncentiveCalData":
 				return <IncentiveCalView data={incentiveCalData} setActionPanelView={setActionPanelView} />;
 			default:
 				return (
@@ -268,6 +250,7 @@ const userProjectMainPanel: React.FC<{
 						shoppingData={shoppingData}
 						incentiveData={incentiveCalData}
 						setActionPanelView={setActionPanelView}
+						loader={incentiveDashLoading}
 					/>
 				);
 		}

@@ -64,3 +64,7 @@ export const getIncentiveCalApiEndpoint = (): string => {
 export const getProjectsOverviewApiEndpoint = (): string => {
 	return "/v1/admin/project/overview";
 };
+
+export const getOrderFromOrderIdApiEndpoint = (): string => {
+	return "/v1/admin/order/cartitems";
+};

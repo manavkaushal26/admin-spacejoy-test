@@ -1,14 +1,35 @@
-import { getProjectsOverviewApiEndpoint } from "@api/projectApi";
+import { getOrderFromOrderIdApiEndpoint, getProjectsOverviewApiEndpoint } from "@api/projectApi";
+import { CapitalizedText } from "@components/CommonStyledComponents";
+import { cloudinary } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { Button, Row, Table, Typography } from "antd";
+import { Button, Modal, Row, Space, Table, Typography } from "antd";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 
-const { Title } = Typography;
+const { Title, Text, Link } = Typography;
 
 const IncentiveCalView = ({ data, setActionPanelView }) => {
 	const [loading, setLoading] = useState(false);
+	const [visible, setVisible] = useState(false);
 	const [projectsData, setProjectsData] = useState([]);
+	const [itemsData, setItemsData] = useState({ orderItems: [], size: 0, totalCartPrice: "" });
+	const [itemsLoading, setItemsLoading] = useState(false);
+
+	const showModal = () => {
+		setVisible(true);
+	};
+
+	const handleOk = () => {
+		setLoading(true);
+		setTimeout(() => {
+			setLoading(false);
+			setVisible(false);
+		}, 3000);
+	};
+
+	const handleCancel = () => {
+		setVisible(false);
+	};
 
 	async function getProjectsInformation() {
 		setLoading(true);
@@ -17,7 +38,7 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			const res = await fetcher({
 				endPoint,
 				method: "POST",
-				body: { projects: data.totalDesignIncentive.projects },
+				body: { projects: data.projects },
 			});
 			if (res.statusCode <= 300) {
 				setProjectsData(res.data);
@@ -32,30 +53,60 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 		}
 	}
 
+	async function getOrderItemsFromOrderId(orderId: string) {
+		setItemsLoading(true);
+		try {
+			const endPoint = getOrderFromOrderIdApiEndpoint();
+			const res = await fetcher({
+				endPoint,
+				method: "POST",
+				body: { orderId: orderId },
+			});
+			if (res.statusCode <= 300) {
+				setItemsData(res.data);
+			} else {
+				setItemsData({ orderItems: [], size: 0, totalCartPrice: "" });
+			}
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.log(error);
+		} finally {
+			setItemsLoading(false);
+		}
+	}
+
 	useEffect(() => {
 		getProjectsInformation();
 	}, []);
 
 	const IncentiveCalTableColumns = [
 		{
-			title: "Customer Name",
-			key: "customerName",
-			render: rowData => rowData?.customer?.profile?.name,
-		},
-		{
 			title: "Project Name",
 			key: "projectName",
-			render: rowData => rowData?.project?.name,
+			render: rowData => (!rowData?.project ? "-" : rowData?.project?.name),
 		},
 		{
 			title: "Project ID",
 			key: "projectId",
-			render: rowData => rowData?.project?._id,
+			render: rowData => (!rowData?.project ? "-" : rowData?.project?._id),
 		},
 		{
 			title: "Order Id",
-			dataIndex: "order",
+			// dataIndex: "order",
 			key: "order",
+			// eslint-disable-next-line react/display-name
+			render: rowData => (
+				<Space size='middle'>
+					<a
+						onClick={() => {
+							getOrderItemsFromOrderId(rowData.order);
+							showModal();
+						}}
+					>
+						{rowData.order}
+					</a>
+				</Space>
+			),
 		},
 		{
 			title: "Order Created (Month)",
@@ -66,6 +117,83 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			title: "Incentive",
 			key: "incentive",
 			render: rowData => (rowData.incentive === 0 ? "-" : `$${rowData.incentive}`),
+		},
+	];
+
+	const orderCartItemsTableColumns = [
+		{
+			title: "Product Name",
+			key: "product",
+			// eslint-disable-next-line react/display-name
+			render: rowData => (
+				<Link href={`https://spacejoy.com/product-view/${rowData?.product._id}`} target='_blank'>
+					<Space>
+						<img
+							src={`${cloudinary.baseDeliveryURL}/${rowData?.product?.cdn}`}
+							alt=''
+							width={50}
+							height={50}
+							style={{ border: "1px solid #d3d3d3" }}
+						/>
+						<Link>{rowData?.product?.name}</Link>
+					</Space>
+				</Link>
+			),
+		},
+		{
+			title: "Retailer",
+			key: "retailer",
+			// eslint-disable-next-line react/display-name
+			render: rowData =>
+				!rowData?.product?.retailer ? "-" : <CapitalizedText>{rowData.product.retailer.name}</CapitalizedText>,
+		},
+		{
+			title: "Price",
+			key: "price",
+			render: rowData => (rowData?.price === 0 ? "-" : `$${rowData.price.toFixed(2)}`),
+		},
+		{
+			title: "Incentive Per Product",
+			key: "incentive",
+			// eslint-disable-next-line react/display-name
+			render: rowData => {
+				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
+					<Text>
+						$
+						{(
+							(rowData?.product?.incentive ?? rowData?.product?.retailer?.incentive?.designer / 100) * rowData?.price
+						).toFixed(2)}
+					</Text>
+				) : (
+					0
+				);
+			},
+		},
+		{
+			title: "Qty.",
+			dataIndex: "quantity",
+			key: "quantity",
+		},
+		{
+			title: "Incentive Per Product * Qty.",
+			key: "totalIncentive",
+			// eslint-disable-next-line react/display-name
+			render: rowData => {
+				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
+					<Text>
+						$
+						{(
+							(rowData?.product?.incentive
+								? rowData?.product?.incentive
+								: rowData?.product?.retailer?.incentive?.designer / 100) *
+							rowData?.price *
+							rowData?.quantity
+						).toFixed(2)}
+					</Text>
+				) : (
+					0
+				);
+			},
 		},
 	];
 
@@ -83,10 +211,36 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			</Row>
 			<Row style={{ marginBottom: "1rem" }}>
 				<Title level={4}>
-					Total Design Incentive: <span style={{ color: "red" }}>${data.totalDesignIncentive.totalIncentive}</span>
+					Total Design Incentive: <span style={{ color: "#1890ff" }}>${data?.totalIncentive}</span>
 				</Title>
 			</Row>
 			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} />
+			<Modal
+				visible={visible}
+				title='Order Items'
+				onOk={handleOk}
+				onCancel={handleCancel}
+				footer={[
+					<Button key='back' onClick={handleCancel}>
+						Close
+					</Button>,
+				]}
+				afterClose={() => setItemsData({ orderItems: [], size: 0, totalCartPrice: "" })}
+				width={1000}
+			>
+				<Row style={{ marginBottom: "1rem" }}>
+					<Title level={4}>
+						Total Cart Value:{" "}
+						<span style={{ color: "#1890ff" }}>{itemsData?.totalCartPrice ? `$${itemsData.totalCartPrice}` : ""}</span>
+					</Title>
+				</Row>
+				<Table
+					dataSource={itemsData ? itemsData.orderItems : []}
+					columns={orderCartItemsTableColumns}
+					loading={itemsLoading}
+					bordered
+				/>
+			</Modal>
 		</div>
 	);
 };
