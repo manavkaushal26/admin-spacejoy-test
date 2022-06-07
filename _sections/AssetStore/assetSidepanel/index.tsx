@@ -302,15 +302,15 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({
 												name={{ categoryName: "Wholesaler", dispatchName: ASSET_ACTION_TYPES.RETAILER }}
 												options={metaData.retailers.list
 													.filter(item => item.isWholesale === true)
-													.sort((a, b) => {
-														if (a.name.toLowerCase() > b.name.toLowerCase()) {
-															return 1;
-														}
-														if (b.name.toLowerCase() > a.name.toLowerCase()) {
-															return -1;
-														}
-														return 0;
-													})
+													// .sort((a, b) => {
+													// 	if (a.name.toLowerCase() > b.name.toLowerCase()) {
+													// 		return 1;
+													// 	}
+													// 	if (b.name.toLowerCase() > a.name.toLowerCase()) {
+													// 		return -1;
+													// 	}
+													// 	return 0;
+													// })
 													.map(elem => {
 														return { label: elem.name, value: elem.name };
 													})}
@@ -331,15 +331,15 @@ const AssetSidePanel: React.FC<AssetSidePanelProps> = ({
 												}}
 												options={metaData.retailers.list
 													.filter(item => item.isWholesale !== true)
-													.sort((a, b) => {
-														if (a.name.toLowerCase() > b.name.toLowerCase()) {
-															return 1;
-														}
-														if (b.name.toLowerCase() > a.name.toLowerCase()) {
-															return -1;
-														}
-														return 0;
-													})
+													// .sort((a, b) => {
+													// 	if (a.name.toLowerCase() > b.name.toLowerCase()) {
+													// 		return 1;
+													// 	}
+													// 	if (b.name.toLowerCase() > a.name.toLowerCase()) {
+													// 		return -1;
+													// 	}
+													// 	return 0;
+													// })
 													.map(elem => {
 														return { label: elem.name, value: elem.name };
 													})}
