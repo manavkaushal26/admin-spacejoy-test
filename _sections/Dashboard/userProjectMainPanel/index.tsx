@@ -54,6 +54,7 @@ const userProjectMainPanel: React.FC<{
 }): JSX.Element => {
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [incentiveCartInfoLoading, setIncentiveCartInfoLoading] = useState(false);
 	const [incentiveDashLoading, setIncentiveDashLoading] = useState(false);
 	const Router = useRouter();
 	const [revisionFormData, setRevisionFormData] = useState<RevisionForm>(null);
@@ -77,7 +78,7 @@ const userProjectMainPanel: React.FC<{
 	const { user } = useAuth();
 
 	async function getCartInformation() {
-		setIncentiveDashLoading(true);
+		setIncentiveCartInfoLoading(true);
 		try {
 			const endPoint = getCartInformationApiEndpoint();
 			const res = await fetcher({
@@ -93,7 +94,7 @@ const userProjectMainPanel: React.FC<{
 			// eslint-disable-next-line no-console
 			console.log(error);
 		} finally {
-			setIncentiveDashLoading(false);
+			setIncentiveCartInfoLoading(false);
 		}
 	}
 
@@ -251,6 +252,7 @@ const userProjectMainPanel: React.FC<{
 						incentiveData={incentiveCalData}
 						setActionPanelView={setActionPanelView}
 						loader={incentiveDashLoading}
+						cartLoading={incentiveCartInfoLoading}
 					/>
 				);
 		}

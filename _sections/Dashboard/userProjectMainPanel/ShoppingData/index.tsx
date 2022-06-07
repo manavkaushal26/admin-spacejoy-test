@@ -166,7 +166,7 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			</Row>
 			<Row style={{ marginBottom: "1rem" }}>
 				<Title level={4}>
-					Total Last Month Design Incentive: <span style={{ color: "#1890ff" }}>${data?.monthlyIncentive}</span>
+					Last Month Design Incentive: <span style={{ color: "#1890ff" }}>${data?.monthlyIncentive}</span>
 				</Title>
 			</Row>
 			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} />

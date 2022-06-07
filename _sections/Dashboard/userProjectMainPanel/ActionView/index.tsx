@@ -19,6 +19,7 @@ interface ActionView {
 	incentiveData: any;
 	setActionPanelView: (bool) => void;
 	loader?: boolean;
+	cartLoading?: boolean;
 }
 
 const ActionView: React.FC<ActionView> = ({
@@ -28,6 +29,7 @@ const ActionView: React.FC<ActionView> = ({
 	incentiveData,
 	setActionPanelView,
 	loader,
+	cartLoading,
 }) => {
 	const { user } = useAuth();
 	const router = useRouter();
@@ -55,7 +57,7 @@ const ActionView: React.FC<ActionView> = ({
 												onClick={() => {
 													setActionPanelView("CartInformation");
 												}}
-												loader={loader}
+												loader={cartLoading}
 											/>
 										</Col>
 										<Col span={6}>
