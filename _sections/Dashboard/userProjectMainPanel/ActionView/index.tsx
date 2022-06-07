@@ -5,6 +5,7 @@ import { UserProjectSidePanelState } from "@sections/Dashboard/UserProjectSidepa
 import useAuth from "@utils/authContext";
 import { phaseBasedFilters, quizStatusBasedFilters, timeBasedFilters } from "@utils/searchFilterConstants";
 import { Col, Row, Typography } from "antd";
+import { useRouter } from "next/router";
 import React from "react";
 import ActionViewCard from "./ActionViewCard";
 import ProjectCountCard from "./ProjectCountCard";
@@ -17,6 +18,8 @@ interface ActionView {
 	shoppingData: any;
 	incentiveData: any;
 	setActionPanelView: (bool) => void;
+	loader?: boolean;
+	cartLoading?: boolean;
 }
 
 const ActionView: React.FC<ActionView> = ({
@@ -25,8 +28,11 @@ const ActionView: React.FC<ActionView> = ({
 	shoppingData,
 	incentiveData,
 	setActionPanelView,
+	loader,
+	cartLoading,
 }) => {
 	const { user } = useAuth();
+	const router = useRouter();
 
 	return (
 		<>
@@ -45,32 +51,36 @@ const ActionView: React.FC<ActionView> = ({
 									<Row gutter={[8, 8]}>
 										<Col span={6}>
 											<ActionViewCard
-												label='Customer Cart'
+												label='Customer Carts'
 												btnText='Click to view'
 												count={cartInfoData.totalCartSize}
 												onClick={() => {
 													setActionPanelView("CartInformation");
 												}}
+												loader={cartLoading}
 											/>
 										</Col>
 										<Col span={6}>
 											<ActionViewCard
-												label='Total Last Month Orders'
+												label='Last Month Design Incentive'
 												btnText='Click to view'
-												count={shoppingData.totalLastMonthOrders}
+												count={shoppingData?.monthlyIncentive}
 												onClick={() => {
-													setActionPanelView("ShoppingData");
+													setActionPanelView("LastMonthIncentiveCalData");
 												}}
+												dollar
+												loader={loader}
 											/>
 										</Col>
 										<Col span={6}>
 											<ActionViewCard
-												label='Design Incentive'
+												label='Total Design Incentive'
 												btnText='Click to view'
-												count={incentiveData?.totalDesignIncentive?.totalIncentive}
+												count={incentiveData?.totalIncentive}
 												onClick={() => {
-													setActionPanelView("IncentiveCalData");
+													setActionPanelView("TotalIncentiveCalData");
 												}}
+												loader={loader}
 												dollar
 											/>
 										</Col>

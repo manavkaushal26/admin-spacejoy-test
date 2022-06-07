@@ -1,3 +1,4 @@
+import { CapitalizedText } from "@components/CommonStyledComponents";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
 import React, { useState } from "react";
 
@@ -49,8 +50,13 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 		},
 		{
 			title: "Total Items In Cart",
-			dataIndex: "size",
 			key: "size",
+			render: rowData => (rowData?.size === 0 ? "-" : rowData.size),
+		},
+		{
+			title: "Total Cart Value",
+			key: "totalValue",
+			render: rowData => (rowData?.totalCartPrice === 0 ? "-" : `$${rowData.totalCartPrice}`),
 		},
 		{
 			title: "Incentives (estd.)",
@@ -65,7 +71,7 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 								(item?.product?.incentive ?? item?.product?.retailer?.incentive?.designer / 100) *
 								item?.product?.price *
 								item?.quantity
-							).toFixed(2)
+							)
 					)
 					.filter(number => !isNaN(number));
 
@@ -73,7 +79,7 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 					sum += tempArray[i];
 				}
 
-				return `$${sum}`;
+				return sum === 0 ? "-" : `$${sum.toFixed(2)}`;
 			},
 		},
 		{
@@ -116,6 +122,18 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 			),
 		},
 		{
+			title: "Retailer",
+			key: "retailer",
+			// eslint-disable-next-line react/display-name
+			render: rowData =>
+				!rowData?.product?.retailer ? "-" : <CapitalizedText>{rowData.product.retailer.name}</CapitalizedText>,
+		},
+		{
+			title: "Price",
+			key: "price",
+			render: rowData => (rowData?.product?.price === 0 ? "-" : `$${rowData.product.price}`),
+		},
+		{
 			title: "Incentive Per Product",
 			key: "incentive",
 			// eslint-disable-next-line react/display-name
@@ -139,7 +157,7 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 			key: "quantity",
 		},
 		{
-			title: "Total Incentive Per Product",
+			title: "Incentive Per Product * Qty.",
 			key: "totalIncentive",
 			// eslint-disable-next-line react/display-name
 			render: rowData => {

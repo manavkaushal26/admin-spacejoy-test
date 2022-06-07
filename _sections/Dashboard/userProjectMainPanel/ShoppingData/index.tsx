@@ -1,89 +1,119 @@
+import { getOrderFromOrderIdApiEndpoint, getProjectsOverviewApiEndpoint } from "@api/projectApi";
+import { CapitalizedText } from "@components/CommonStyledComponents";
 import { cloudinary } from "@utils/config";
+import fetcher from "@utils/fetcher";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
-import React, { useState } from "react";
+import moment from "moment-timezone";
+import React, { useEffect, useState } from "react";
 
-const { Text, Link } = Typography;
+const { Title, Link } = Typography;
 
-const ShoppingData = ({ data, setActionPanelView }) => {
+const IncentiveCalView = ({ data, setActionPanelView }) => {
 	const [loading, setLoading] = useState(false);
 	const [visible, setVisible] = useState(false);
-	const [itemsData, setItemsData] = useState([]);
-
-	const ordersData = data?.orders;
+	const [projectsData, setProjectsData] = useState([]);
+	const [itemsData, setItemsData] = useState({ orderItems: [], size: 0, totalCartPrice: "" });
+	const [itemsLoading, setItemsLoading] = useState(false);
 
 	const showModal = () => {
 		setVisible(true);
 	};
 
-	const handleOk = () => {
-		setLoading(true);
-		setTimeout(() => {
-			setLoading(false);
-			setVisible(false);
-		}, 3000);
-	};
-
 	const handleCancel = () => {
 		setVisible(false);
+		setItemsData({ orderItems: [], size: 0, totalCartPrice: "" });
 	};
 
-	const shoppingDataTableColumns = [
+	async function getProjectsInformation() {
+		setLoading(true);
+		try {
+			const endPoint = getProjectsOverviewApiEndpoint();
+			const res = await fetcher({
+				endPoint,
+				method: "POST",
+				body: { projects: data.projects },
+			});
+			if (res.statusCode <= 300) {
+				setProjectsData(res.data);
+			} else {
+				setProjectsData([]);
+			}
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.log(error);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	async function getOrderItemsFromOrderId(orderId: string) {
+		setItemsLoading(true);
+		try {
+			const endPoint = getOrderFromOrderIdApiEndpoint();
+			const res = await fetcher({
+				endPoint,
+				method: "POST",
+				body: { orderId: orderId },
+			});
+			if (res.statusCode <= 300) {
+				setItemsData(res.data);
+			} else {
+				setItemsData({ orderItems: [], size: 0, totalCartPrice: "" });
+			}
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.log(error);
+		} finally {
+			setItemsLoading(false);
+		}
+	}
+
+	useEffect(() => {
+		getProjectsInformation();
+	}, []);
+
+	const IncentiveCalTableColumns = [
+		{
+			title: "Project Name",
+			key: "projectName",
+			render: rowData => (!rowData?.project ? "-" : rowData?.project?.name),
+		},
+		{
+			title: "Project ID",
+			key: "projectId",
+			render: rowData => (!rowData?.project ? "-" : rowData?.project?._id),
+		},
 		{
 			title: "Order Id",
-			dataIndex: "orderId",
-			key: "orderId",
-		},
-		{
-			title: "Total Number of items",
-			key: "totalQty",
-			// eslint-disable-next-line react/display-name
-			render: rowData =>
-				rowData.orderItems.map(item => item.quantity).reduce((prev: number, next: number) => prev + next, 0),
-		},
-		{
-			title: "Total Incentive",
-			key: "totalIncentive",
-			render: rowData => {
-				let sum = 0;
-
-				const tempArray = rowData?.orderItems
-					?.map(
-						item =>
-							+(
-								(item?.product?.incentive ?? item?.product?.retailer?.incentive?.designer / 100) *
-								item?.price *
-								item?.quantity
-							).toFixed(2)
-					)
-					.filter(number => !isNaN(number));
-
-				for (let i = 0; i < tempArray.length; i++) {
-					sum += tempArray[i];
-				}
-
-				return sum === 0 ? "-" : `$${sum}`;
-			},
-		},
-		{
-			title: "Action",
-			key: "action",
+			// dataIndex: "order",
+			key: "order",
 			// eslint-disable-next-line react/display-name
 			render: rowData => (
 				<Space size='middle'>
 					<a
 						onClick={() => {
-							setItemsData(rowData?.orderItems);
+							getOrderItemsFromOrderId(rowData.order);
 							showModal();
 						}}
 					>
-						View Items
+						{rowData.order}
 					</a>
 				</Space>
 			),
 		},
+		{
+			title: "Order Created (Month)",
+			key: "orderCreationDate",
+			render: rowData => moment(rowData.orderCreationDate).format("MMMM, YYYY"),
+		},
+		{
+			title: "Incentive",
+			key: "incentive",
+			render: rowData => (rowData.incentive === 0 ? "-" : `$${rowData.incentive}`),
+		},
 	];
 
-	const shoppingDataItemsTableColumns = [
+	const orderCartItemsTableColumns = [
 		{
 			title: "Product Name",
 			key: "product",
@@ -104,47 +134,21 @@ const ShoppingData = ({ data, setActionPanelView }) => {
 			),
 		},
 		{
-			title: "Incentive Per Product",
-			key: "incentive",
+			title: "Retailer",
+			key: "retailer",
 			// eslint-disable-next-line react/display-name
-			render: rowData => {
-				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
-					<Text>
-						$
-						{(
-							(rowData?.product?.incentive ?? rowData?.product?.retailer?.incentive?.designer / 100) * rowData?.price
-						).toFixed(2)}
-					</Text>
-				) : (
-					0
-				);
-			},
+			render: rowData =>
+				!rowData?.product?.retailer ? "-" : <CapitalizedText>{rowData.product.retailer.name}</CapitalizedText>,
+		},
+		{
+			title: "Price",
+			key: "price",
+			render: rowData => (rowData?.price === 0 ? "-" : `$${rowData.price.toFixed(2)}`),
 		},
 		{
 			title: "Qty.",
 			dataIndex: "quantity",
 			key: "quantity",
-		},
-		{
-			title: "Total Incentive Per Product",
-			key: "totalIncentive",
-			// eslint-disable-next-line react/display-name
-			render: rowData => {
-				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
-					<Text>
-						$
-						{(
-							(rowData?.product?.incentive
-								? rowData?.product?.incentive
-								: rowData?.product?.retailer?.incentive?.designer / 100) *
-							rowData?.price *
-							rowData?.quantity
-						).toFixed(2)}
-					</Text>
-				) : (
-					0
-				);
-			},
 		},
 	];
 
@@ -160,11 +164,15 @@ const ShoppingData = ({ data, setActionPanelView }) => {
 					Back
 				</Button>
 			</Row>
-			<Table dataSource={ordersData} columns={shoppingDataTableColumns} />
+			<Row style={{ marginBottom: "1rem" }}>
+				<Title level={4}>
+					Last Month Design Incentive: <span style={{ color: "#1890ff" }}>${data?.monthlyIncentive}</span>
+				</Title>
+			</Row>
+			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} />
 			<Modal
 				visible={visible}
-				title='Per Product Incentives'
-				onOk={handleOk}
+				title='Order Items'
 				onCancel={handleCancel}
 				footer={[
 					<Button key='back' onClick={handleCancel}>
@@ -173,10 +181,15 @@ const ShoppingData = ({ data, setActionPanelView }) => {
 				]}
 				width={1000}
 			>
-				<Table dataSource={itemsData} columns={shoppingDataItemsTableColumns} bordered />
+				<Table
+					dataSource={itemsData ? itemsData.orderItems : []}
+					columns={orderCartItemsTableColumns}
+					loading={itemsLoading}
+					bordered
+				/>
 			</Modal>
 		</div>
 	);
 };
 
-export default ShoppingData;
+export default IncentiveCalView;
