@@ -81,6 +81,18 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 
 	const IncentiveCalTableColumns = [
 		{
+			title: "Customer Name",
+			key: "customerName",
+			render: rowData =>
+				rowData.customer ? `${rowData.customer.profile.firstName} ${rowData.customer.profile.lastName}` : null,
+		},
+		{
+			title: "Email",
+			key: "userEmail",
+			// eslint-disable-next-line react/display-name
+			render: rowData => (rowData.customer ? `${rowData.customer.email}` : null),
+		},
+		{
 			title: "Project Name",
 			key: "projectName",
 			render: rowData => (!rowData?.project ? "-" : rowData?.project?.name),
@@ -88,7 +100,17 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 		{
 			title: "Project ID",
 			key: "projectId",
-			render: rowData => (!rowData?.project ? "-" : rowData?.project?._id),
+			// eslint-disable-next-line react/display-name
+			render: rowData =>
+				!rowData?.project ? (
+					"-"
+				) : (
+					<Link>
+						<a href={`/dashboard/pid/${rowData?.project?._id}`} target='_blank' rel='noopener noreferrer'>
+							{rowData?.project?._id}
+						</a>
+					</Link>
+				),
 		},
 		{
 			title: "Order Id",
@@ -109,9 +131,10 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			),
 		},
 		{
-			title: "Order Created (Month)",
+			title: "Order Created",
 			key: "orderCreationDate",
-			render: rowData => moment(rowData.orderCreationDate).format("MMMM, YYYY"),
+			width: 150,
+			render: rowData => moment(rowData.orderCreationDate).format("ll"),
 		},
 		{
 			title: "Incentive",

@@ -1,5 +1,7 @@
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
+import type { ColumnsType } from "antd/lib/table";
+import moment from "moment";
 import React, { useState } from "react";
 
 const { Text, Link } = Typography;
@@ -25,22 +27,22 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 		setVisible(false);
 	};
 
-	const userCartTableColumns = [
+	const userCartTableColumns: ColumnsType = [
 		{
-			title: "User",
+			title: "Customer Name",
 			key: "userName",
+			fixed: "left",
 			// eslint-disable-next-line react/display-name
 			render: rowData => (
-				<Space size='middle'>
-					<p>
-						{rowData?.user?.profile?.firstName} {rowData?.user?.profile?.lastName}
-					</p>
-				</Space>
+				<p>
+					{rowData?.user?.profile?.firstName} {rowData?.user?.profile?.lastName}
+				</p>
 			),
 		},
 		{
 			title: "Email",
 			key: "userEmail",
+			width: 250,
 			// eslint-disable-next-line react/display-name
 			render: rowData => (
 				<Space size='middle'>
@@ -83,8 +85,19 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 			},
 		},
 		{
+			title: "Created",
+			key: "createdAt",
+			render: rowData => moment(rowData.createdAt).format("ll"),
+		},
+		{
+			title: "Last Updated",
+			key: "updatedAt",
+			render: rowData => moment(rowData.updatedAt).format("ll"),
+		},
+		{
 			title: "Action",
 			key: "action",
+			fixed: "right",
 			// eslint-disable-next-line react/display-name
 			render: rowData => (
 				<Space size='middle'>
@@ -101,7 +114,7 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 		},
 	];
 
-	const userCartItemsTableColumns = [
+	const userCartItemsTableColumns: ColumnsType = [
 		{
 			title: "Product Name",
 			key: "product",
@@ -191,7 +204,7 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 					Back
 				</Button>
 			</Row>
-			<Table dataSource={data?.result} columns={userCartTableColumns} />
+			<Table dataSource={data?.result} columns={userCartTableColumns} scroll={{ x: 1300, y: 450 }} bordered />
 			<Modal
 				visible={visible}
 				title='Per Product Incentives'
