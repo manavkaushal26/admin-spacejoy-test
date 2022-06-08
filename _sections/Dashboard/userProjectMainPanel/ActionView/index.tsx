@@ -62,7 +62,7 @@ const ActionView: React.FC<ActionView> = ({
 										</Col>
 										<Col span={6}>
 											<ActionViewCard
-												label='Last Month Design Incentive'
+												label='Last Month Orders/Incentive'
 												btnText='Click to view'
 												count={shoppingData?.monthlyIncentive}
 												onClick={() => {

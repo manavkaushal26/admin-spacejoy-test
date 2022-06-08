@@ -3,10 +3,11 @@ import { CapitalizedText } from "@components/CommonStyledComponents";
 import { cloudinary } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
+import type { ColumnsType } from "antd/lib/table";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 
-const { Title, Link } = Typography;
+const { Title, Link, Text } = Typography;
 
 const IncentiveCalView = ({ data, setActionPanelView }) => {
 	const [loading, setLoading] = useState(false);
@@ -72,7 +73,18 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 		getProjectsInformation();
 	}, []);
 
-	const IncentiveCalTableColumns = [
+	const IncentiveCalTableColumns: ColumnsType = [
+		{
+			title: "Customer Name",
+			key: "customerName",
+			render: rowData =>
+				rowData.customer ? `${rowData.customer.profile.firstName} ${rowData.customer.profile.lastName}` : null,
+		},
+		{
+			title: "Email",
+			key: "userEmail",
+			render: rowData => (rowData.customer ? `${rowData.customer.email}` : null),
+		},
 		{
 			title: "Project Name",
 			key: "projectName",
@@ -81,11 +93,20 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 		{
 			title: "Project ID",
 			key: "projectId",
-			render: rowData => (!rowData?.project ? "-" : rowData?.project?._id),
+			// eslint-disable-next-line react/display-name
+			render: rowData =>
+				!rowData?.project ? (
+					"-"
+				) : (
+					<Link>
+						<a href={`/dashboard/pid/${rowData?.project?._id}`} target='_blank' rel='noopener noreferrer'>
+							{rowData?.project?._id}
+						</a>
+					</Link>
+				),
 		},
 		{
 			title: "Order Id",
-			// dataIndex: "order",
 			key: "order",
 			// eslint-disable-next-line react/display-name
 			render: rowData => (
@@ -104,16 +125,18 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 		{
 			title: "Order Created (Month)",
 			key: "orderCreationDate",
-			render: rowData => moment(rowData.orderCreationDate).format("MMMM, YYYY"),
+			render: rowData => moment(rowData.orderCreationDate).format("ll"),
 		},
 		{
 			title: "Incentive",
 			key: "incentive",
+			width: 100,
+			fixed: "right",
 			render: rowData => (rowData.incentive === 0 ? "-" : `$${rowData.incentive}`),
 		},
 	];
 
-	const orderCartItemsTableColumns = [
+	const orderCartItemsTableColumns: ColumnsType = [
 		{
 			title: "Product Name",
 			key: "product",
@@ -146,9 +169,48 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			render: rowData => (rowData?.price === 0 ? "-" : `$${rowData.price.toFixed(2)}`),
 		},
 		{
+			title: "Incentive Per Product",
+			key: "incentive",
+			// eslint-disable-next-line react/display-name
+			render: rowData => {
+				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
+					<Text>
+						$
+						{(
+							(rowData?.product?.incentive ?? rowData?.product?.retailer?.incentive?.designer / 100) * rowData?.price
+						).toFixed(2)}
+					</Text>
+				) : (
+					0
+				);
+			},
+		},
+		{
 			title: "Qty.",
 			dataIndex: "quantity",
 			key: "quantity",
+		},
+		{
+			title: "Incentive Per Product * Qty.",
+			key: "totalIncentive",
+			fixed: "right",
+			// eslint-disable-next-line react/display-name
+			render: rowData => {
+				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
+					<Text>
+						$
+						{(
+							(rowData?.product?.incentive
+								? rowData?.product?.incentive
+								: rowData?.product?.retailer?.incentive?.designer / 100) *
+							rowData?.price *
+							rowData?.quantity
+						).toFixed(2)}
+					</Text>
+				) : (
+					0
+				);
+			},
 		},
 	];
 
@@ -166,7 +228,7 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			</Row>
 			<Row style={{ marginBottom: "1rem" }}>
 				<Title level={4}>
-					Last Month Design Incentive: <span style={{ color: "#1890ff" }}>${data?.monthlyIncentive}</span>
+					Last Month Orders/Incentive: <span style={{ color: "#1890ff" }}>${data?.monthlyIncentive}</span>
 				</Title>
 			</Row>
 			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} />
@@ -181,6 +243,12 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 				]}
 				width={1000}
 			>
+				<Row style={{ marginBottom: "1rem" }}>
+					<Title level={4}>
+						Total Cart Value:{" "}
+						<span style={{ color: "#1890ff" }}>{itemsData?.totalCartPrice ? `$${itemsData.totalCartPrice}` : ""}</span>
+					</Title>
+				</Row>
 				<Table
 					dataSource={itemsData ? itemsData.orderItems : []}
 					columns={orderCartItemsTableColumns}
