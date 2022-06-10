@@ -6,7 +6,7 @@ import React, { useState } from "react";
 
 const { Text, Link } = Typography;
 
-const IncentiveCart = ({ data, setActionPanelView }) => {
+const IncentiveCart = ({ data, setActionPanelView, user }) => {
 	const [loading, setLoading] = useState(false);
 	const [visible, setVisible] = useState(false);
 	const [itemsData, setItemsData] = useState([]);
@@ -88,6 +88,9 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 			title: "Created",
 			key: "createdAt",
 			render: rowData => moment(rowData.createdAt).format("ll"),
+			defaultSortOrder: "descend",
+			sorter: (a: any, b: any) => new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf(),
+			sortDirections: ["ascend", "descend", "ascend"],
 		},
 		{
 			title: "Last Updated",
@@ -204,7 +207,7 @@ const IncentiveCart = ({ data, setActionPanelView }) => {
 					Back
 				</Button>
 			</Row>
-			<Table dataSource={data?.result} columns={userCartTableColumns} scroll={{ x: 1300, y: 450 }} bordered />
+			<Table dataSource={data?.result} columns={userCartTableColumns} scroll={{ x: 1300 }} bordered />
 			<Modal
 				visible={visible}
 				title='Per Product Incentives'

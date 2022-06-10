@@ -1,51 +1,35 @@
-import { getOrderFromOrderIdApiEndpoint, getProjectsOverviewApiEndpoint } from "@api/projectApi";
+import { getOrderFromOrderIdApiEndpoint } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { cloudinary } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/lib/table";
-import moment from "moment-timezone";
-import React, { useEffect, useState } from "react";
+import moment from "moment";
+import React, { useState } from "react";
 
-const { Title, Link, Text } = Typography;
+const { Text, Title, Link } = Typography;
 
-const IncentiveCalView = ({ data, setActionPanelView, user }) => {
+const DesignerLeaderboard = ({ data, setActionPanelView }) => {
 	const [loading, setLoading] = useState(false);
 	const [visible, setVisible] = useState(false);
-	const [projectsData, setProjectsData] = useState([]);
-	const [itemsData, setItemsData] = useState({ orderItems: [], size: 0, totalCartPrice: "" });
 	const [itemsLoading, setItemsLoading] = useState(false);
+	const [itemsData, setItemsData] = useState({ orderItems: [], size: 0, totalCartPrice: "" });
 
 	const showModal = () => {
 		setVisible(true);
 	};
 
-	const handleCancel = () => {
-		setVisible(false);
-		setItemsData({ orderItems: [], size: 0, totalCartPrice: "" });
+	const handleOk = () => {
+		setLoading(true);
+		setTimeout(() => {
+			setLoading(false);
+			setVisible(false);
+		}, 3000);
 	};
 
-	async function getProjectsInformation() {
-		setLoading(true);
-		try {
-			const endPoint = getProjectsOverviewApiEndpoint();
-			const res = await fetcher({
-				endPoint,
-				method: "POST",
-				body: { projects: data.projects },
-			});
-			if (res.statusCode <= 300) {
-				setProjectsData(res.data);
-			} else {
-				setProjectsData([]);
-			}
-		} catch (error) {
-			// eslint-disable-next-line no-console
-			console.log(error);
-		} finally {
-			setLoading(false);
-		}
-	}
+	const handleCancel = () => {
+		setVisible(false);
+	};
 
 	async function getOrderItemsFromOrderId(orderId: string) {
 		setItemsLoading(true);
@@ -69,82 +53,66 @@ const IncentiveCalView = ({ data, setActionPanelView, user }) => {
 		}
 	}
 
-	useEffect(() => {
-		getProjectsInformation();
-	}, []);
+	const expandedRowRender = rowData => {
+		const columns: ColumnsType = [
+			{
+				title: "Order Id",
+				key: "orderId",
+				// eslint-disable-next-line react/display-name
+				render: row =>
+					row?.orderId ? (
+						<Link
+							onClick={() => {
+								getOrderItemsFromOrderId(row.orderId);
+								showModal();
+							}}
+						>
+							{row.orderId}
+						</Link>
+					) : (
+						"-"
+					),
+			},
+			{
+				title: "Incentive",
+				key: "incentive",
+				render: row => `$${row?.incentive}`,
+				sorter: (a: any, b: any) => a.incentive - b.incentive,
+				sortDirections: ["ascend", "descend", "ascend"],
+			},
+			{
+				title: "Order Created",
+				key: "orderCreated",
+				render: row => moment(row.subListInfo).format("LL"),
+				defaultSortOrder: "descend",
+				sorter: (a: any, b: any) => new Date(a.subListInfo).valueOf() - new Date(b.subListInfo).valueOf(),
+				sortDirections: ["ascend", "descend", "ascend"],
+			},
+		];
 
-	const IncentiveCalTableColumns: ColumnsType = [
+		return <Table columns={columns} dataSource={rowData.subListInfo} pagination={false} />;
+	};
+
+	const columns: ColumnsType = [
+		{ title: "Designer Name", key: "name", render: row => (row?.designerInfo ? row.designerInfo.profile.name : "-") },
 		{
-			title: "Customer Name",
-			key: "customerName",
-			render: rowData =>
-				rowData.customer ? `${rowData.customer.profile.firstName} ${rowData.customer.profile.lastName}` : null,
+			title: "Total Order Value",
+			key: "totalOrderValue",
+			render: row => (row?.totalOrderValue ? `$${row.totalOrderValue}` : null),
 		},
 		{
-			title: "Email",
-			key: "userEmail",
-			render: rowData => (rowData.customer ? `${rowData.customer.email}` : null),
+			title: "Total Incentive Earned",
+			key: "totalIncentiveEarned",
+			render: row => (row?.totalIncentiveEarned ? `$${row.totalIncentiveEarned}` : null),
 		},
 		{
-			title: "Project Name",
-			key: "projectName",
-			render: rowData => (!rowData?.project ? "-" : rowData?.project?.name),
-		},
-		{
-			title: "Project ID",
-			key: "projectId",
-			// eslint-disable-next-line react/display-name
-			render: rowData =>
-				!rowData?.project ? (
-					"-"
-				) : (
-					<Link>
-						<a href={`/dashboard/pid/${rowData?.project?._id}`} target='_blank' rel='noopener noreferrer'>
-							{rowData?.project?._id}
-						</a>
-					</Link>
-				),
-		},
-		{
-			title: "Designer Name",
-			key: "designerName",
-			render: row => (row?.designer ? row.designer.profile.name : user?.name),
-		},
-		{
-			title: "Order Id",
-			key: "order",
-			// eslint-disable-next-line react/display-name
-			render: rowData => (
-				<Space size='middle'>
-					<a
-						onClick={() => {
-							getOrderItemsFromOrderId(rowData.order);
-							showModal();
-						}}
-					>
-						{rowData.order}
-					</a>
-				</Space>
-			),
-		},
-		{
-			title: "Order Created",
-			key: "orderCreationDate",
-			render: rowData => moment(rowData.orderCreationDate).format("ll"),
-			defaultSortOrder: "descend",
-			sorter: (a: any, b: any) => new Date(a.orderCreationDate).valueOf() - new Date(b.orderCreationDate).valueOf(),
-			sortDirections: ["ascend", "descend", "ascend"],
-		},
-		{
-			title: "Incentive",
-			key: "incentive",
-			width: 100,
-			fixed: "right",
-			render: rowData => (rowData.incentive === 0 ? "-" : `$${rowData.incentive}`),
+			title: "Rank",
+			dataIndex: "ranking",
+			key: "ranking",
 		},
 	];
 
-	const orderCartItemsTableColumns: ColumnsType = [
+	const orderCartItemsTableColumns = [
 		{
 			title: "Product Name",
 			key: "product",
@@ -201,7 +169,6 @@ const IncentiveCalView = ({ data, setActionPanelView, user }) => {
 		{
 			title: "Incentive Per Product * Qty.",
 			key: "totalIncentive",
-			fixed: "right",
 			// eslint-disable-next-line react/display-name
 			render: rowData => {
 				return rowData?.product?.incentive || rowData?.product?.retailer?.incentive?.designer ? (
@@ -234,21 +201,24 @@ const IncentiveCalView = ({ data, setActionPanelView, user }) => {
 					Back
 				</Button>
 			</Row>
-			<Row style={{ marginBottom: "1rem" }}>
-				<Title level={4}>
-					Last Month Orders/Incentive: <span style={{ color: "#1890ff" }}>${data?.monthlyIncentive}</span>
-				</Title>
-			</Row>
-			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} scroll={{ x: 1300 }} />
+			<Table
+				dataSource={data?.leaderboard}
+				rowKey={(record: any) => record._id}
+				columns={columns}
+				expandable={{ expandedRowRender }}
+				pagination={false}
+			/>
 			<Modal
 				visible={visible}
 				title='Order Items'
+				onOk={handleOk}
 				onCancel={handleCancel}
 				footer={[
 					<Button key='back' onClick={handleCancel}>
 						Close
 					</Button>,
 				]}
+				afterClose={() => setItemsData({ orderItems: [], size: 0, totalCartPrice: "" })}
 				width={1000}
 			>
 				<Row style={{ marginBottom: "1rem" }}>
@@ -268,4 +238,4 @@ const IncentiveCalView = ({ data, setActionPanelView, user }) => {
 	);
 };
 
-export default IncentiveCalView;
+export default DesignerLeaderboard;

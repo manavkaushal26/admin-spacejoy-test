@@ -3,12 +3,13 @@ import { CapitalizedText } from "@components/CommonStyledComponents";
 import { cloudinary } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
+import type { ColumnsType } from "antd/lib/table";
 import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 
 const { Title, Text, Link } = Typography;
 
-const IncentiveCalView = ({ data, setActionPanelView }) => {
+const IncentiveCalView = ({ data, setActionPanelView, user }) => {
 	const [loading, setLoading] = useState(false);
 	const [visible, setVisible] = useState(false);
 	const [projectsData, setProjectsData] = useState([]);
@@ -79,7 +80,7 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 		getProjectsInformation();
 	}, []);
 
-	const IncentiveCalTableColumns = [
+	const IncentiveCalTableColumns: ColumnsType = [
 		{
 			title: "Customer Name",
 			key: "customerName",
@@ -113,6 +114,11 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 				),
 		},
 		{
+			title: "Designer Name",
+			key: "designerName",
+			render: row => (row?.designer ? row.designer.profile.name : user?.name),
+		},
+		{
 			title: "Order Id",
 			// dataIndex: "order",
 			key: "order",
@@ -135,11 +141,15 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 			key: "orderCreationDate",
 			width: 150,
 			render: rowData => moment(rowData.orderCreationDate).format("ll"),
+			defaultSortOrder: "descend",
+			sorter: (a: any, b: any) => new Date(a.orderCreationDate).valueOf() - new Date(b.orderCreationDate).valueOf(),
+			sortDirections: ["ascend", "descend", "ascend"],
 		},
 		{
 			title: "Incentive",
 			key: "incentive",
 			render: rowData => (rowData.incentive === 0 ? "-" : `$${rowData.incentive}`),
+			fixed: "right",
 		},
 	];
 
@@ -237,7 +247,7 @@ const IncentiveCalView = ({ data, setActionPanelView }) => {
 					Total Design Incentive: <span style={{ color: "#1890ff" }}>${data?.totalIncentive}</span>
 				</Title>
 			</Row>
-			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} />
+			<Table dataSource={projectsData} columns={IncentiveCalTableColumns} loading={loading} scroll={{ x: 1300 }} />
 			<Modal
 				visible={visible}
 				title='Order Items'

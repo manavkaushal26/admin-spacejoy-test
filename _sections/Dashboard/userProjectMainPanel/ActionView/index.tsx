@@ -5,7 +5,6 @@ import { UserProjectSidePanelState } from "@sections/Dashboard/UserProjectSidepa
 import useAuth from "@utils/authContext";
 import { phaseBasedFilters, quizStatusBasedFilters, timeBasedFilters } from "@utils/searchFilterConstants";
 import { Col, Row, Typography } from "antd";
-import { useRouter } from "next/router";
 import React from "react";
 import ActionViewCard from "./ActionViewCard";
 import ProjectCountCard from "./ProjectCountCard";
@@ -17,6 +16,7 @@ interface ActionView {
 	cartInfoData: CartInfoProps;
 	shoppingData: any;
 	incentiveData: any;
+	leaderboardData: any;
 	setActionPanelView: (bool) => void;
 	loader?: boolean;
 	cartLoading?: boolean;
@@ -27,12 +27,12 @@ const ActionView: React.FC<ActionView> = ({
 	cartInfoData,
 	shoppingData,
 	incentiveData,
+	leaderboardData,
 	setActionPanelView,
 	loader,
 	cartLoading,
 }) => {
 	const { user } = useAuth();
-	const router = useRouter();
 
 	return (
 		<>
@@ -51,7 +51,22 @@ const ActionView: React.FC<ActionView> = ({
 									<Row gutter={[8, 8]}>
 										<Col span={6}>
 											<ActionViewCard
-												label='Customer Carts'
+												label='Designer Leaderboard'
+												btnText='Click to view'
+												count={
+													leaderboardData?.leaderboard?.length
+														? leaderboardData.leaderboard[0]?.designerInfo?.profile?.name
+														: ""
+												}
+												onClick={() => {
+													setActionPanelView("DesignerLeaderboard");
+												}}
+												loader={loader}
+											/>
+										</Col>
+										<Col span={6}>
+											<ActionViewCard
+												label='Customer Carts (3 months)'
 												btnText='Click to view'
 												count={cartInfoData.totalCartSize}
 												onClick={() => {
