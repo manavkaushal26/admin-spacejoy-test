@@ -1,6 +1,7 @@
 import {
 	getCartInformationApiEndpoint,
 	getIncentiveCalApiEndpoint,
+	getLeaderBoardApiEndpoint,
 	getRevisionFormForProjectId,
 } from "@api/projectApi";
 import {
@@ -12,15 +13,16 @@ import {
 } from "@customTypes/dashboardTypes";
 import { CartInfoProps } from "@customTypes/IncentiveTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
+import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
 import { Col, notification, Row, Spin } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import useAuth from "../../../_utils/authContext";
 import { VerticalPaddedDiv } from "../styled";
 import { UserProjectSidePanelState } from "../UserProjectSidepanel/reducer";
 import ActionView from "./ActionView";
+import DesignerLeaderboard from "./DesignerLeaderboard";
 import IncentiveCalView from "./IncentiveCalView/index";
 import IncentiveCart from "./IncentiveCart/index";
 import ProjectSummary from "./ProjectSummary";
@@ -52,6 +54,7 @@ const userProjectMainPanel: React.FC<{
 	currentTab,
 	setSearchFiltersChanged,
 }): JSX.Element => {
+	const { user } = useAuth();
 	const [projectData, setProjectData] = useState<DetailedProject>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [incentiveCartInfoLoading, setIncentiveCartInfoLoading] = useState(false);
@@ -72,10 +75,9 @@ const userProjectMainPanel: React.FC<{
 			size: 0,
 		},
 	});
+	const [leaderBoardData, setLeaderBoardData] = useState([]);
 
 	const [actionPanelView, setActionPanelView] = useState("ActionPanel");
-
-	const { user } = useAuth();
 
 	async function getCartInformation() {
 		setIncentiveCartInfoLoading(true);
@@ -133,7 +135,26 @@ const userProjectMainPanel: React.FC<{
 		}
 	}
 
+	async function getLeaderBoardData() {
+		try {
+			const endPoint = getLeaderBoardApiEndpoint();
+			const res = await fetcher({
+				endPoint,
+				method: "GET",
+			});
+			if (res.statusCode <= 300) {
+				setLeaderBoardData(res.data);
+			} else {
+				setLeaderBoardData([]);
+			}
+		} catch (error) {
+			// eslint-disable-next-line no-console
+			console.log(error);
+		}
+	}
+
 	useEffect(() => {
+		getLeaderBoardData();
 		getCartInformation();
 		getIncentiveCalculationData();
 	}, []);
@@ -238,11 +259,13 @@ const userProjectMainPanel: React.FC<{
 	const renderComponentView = () => {
 		switch (actionPanelView) {
 			case "CartInformation":
-				return <IncentiveCart data={cartInformation} setActionPanelView={setActionPanelView} />;
+				return <IncentiveCart data={cartInformation} setActionPanelView={setActionPanelView} user={user} />;
 			case "LastMonthIncentiveCalData":
-				return <ShoppingData data={shoppingData} setActionPanelView={setActionPanelView} />;
+				return <ShoppingData data={shoppingData} setActionPanelView={setActionPanelView} user={user} />;
 			case "TotalIncentiveCalData":
-				return <IncentiveCalView data={incentiveCalData} setActionPanelView={setActionPanelView} />;
+				return <IncentiveCalView data={incentiveCalData} setActionPanelView={setActionPanelView} user={user} />;
+			case "DesignerLeaderboard":
+				return <DesignerLeaderboard data={leaderBoardData} setActionPanelView={setActionPanelView} />;
 			default:
 				return (
 					<ActionView
@@ -250,6 +273,7 @@ const userProjectMainPanel: React.FC<{
 						cartInfoData={cartInformation}
 						shoppingData={shoppingData}
 						incentiveData={incentiveCalData}
+						leaderboardData={leaderBoardData}
 						setActionPanelView={setActionPanelView}
 						loader={incentiveDashLoading}
 						cartLoading={incentiveCartInfoLoading}

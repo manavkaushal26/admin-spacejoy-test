@@ -6,7 +6,7 @@ const { Text } = Typography;
 interface ActionViewCardInterface {
 	label: string;
 	btnText: string;
-	count?: number;
+	count?: number | string;
 	dollar?: boolean;
 	onClick: () => void;
 	loader?: boolean;

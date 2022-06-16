@@ -49,6 +49,10 @@ export const getProjectTimelineApi = (projectId: string) => {
 };
 
 // APIs for incentive feature
+export const getLeaderBoardApiEndpoint = (): string => {
+	return "/v1/admin/designer/leaderboards";
+};
+
 export const getCartInformationApiEndpoint = (): string => {
 	return "/v1/admin/cart/information";
 };

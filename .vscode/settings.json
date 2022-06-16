@@ -11,4 +11,7 @@
 	"eslint.codeActionsOnSave.mode": "all",
 	"files.trimFinalNewlines": true,
 	"files.trimTrailingWhitespace": true,
+	"cSpell.ignoreWords": [
+		"Leaderboard"
+	],
 }
