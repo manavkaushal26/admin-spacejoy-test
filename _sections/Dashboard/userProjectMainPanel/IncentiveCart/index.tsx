@@ -1,8 +1,9 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/lib/table";
 import moment from "moment";
-import React, { useState } from "react";
+import { useState } from "react";
 
 const { Text, Link } = Typography;
 
@@ -59,6 +60,11 @@ const IncentiveCart = ({ data, setActionPanelView, user }) => {
 			title: "Total Cart Value",
 			key: "totalValue",
 			render: rowData => (rowData?.totalCartPrice === 0 ? "-" : `$${rowData.totalCartPrice}`),
+		},
+		{
+			title: "Designer Name",
+			key: "designerName",
+			render: rowData => (!rowData?.designerName ? "-" : `${rowData.designerName.name}`),
 		},
 		{
 			title: "Incentives (estd.)",

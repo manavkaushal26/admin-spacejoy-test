@@ -56,7 +56,7 @@ const ActionView: React.FC<ActionView> = ({
 												count={
 													leaderboardData?.leaderboard?.length
 														? leaderboardData.leaderboard[0]?.designerInfo?.profile?.name
-														: ""
+														: "-"
 												}
 												onClick={() => {
 													setActionPanelView("DesignerLeaderboard");
