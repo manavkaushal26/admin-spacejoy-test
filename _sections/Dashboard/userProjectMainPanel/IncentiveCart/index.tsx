@@ -64,7 +64,7 @@ const IncentiveCart = ({ data, setActionPanelView, user }) => {
 		{
 			title: "Designer Name",
 			key: "designerName",
-			render: rowData => (!rowData?.designerName ? "-" : `${rowData.designerName.name}`),
+			render: rowData => (Object.keys(rowData?.designerName).length === 0 ? "-" : `${rowData.designerName.name}`),
 		},
 		{
 			title: "Incentives (estd.)",
@@ -91,17 +91,9 @@ const IncentiveCart = ({ data, setActionPanelView, user }) => {
 			},
 		},
 		{
-			title: "Created",
-			key: "createdAt",
-			render: rowData => moment(rowData.createdAt).format("ll"),
-			defaultSortOrder: "descend",
-			sorter: (a: any, b: any) => new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf(),
-			sortDirections: ["ascend", "descend", "ascend"],
-		},
-		{
-			title: "Last Updated",
-			key: "updatedAt",
-			render: rowData => moment(rowData.updatedAt).format("ll"),
+			title: "Project Created",
+			key: "projectCreated",
+			render: rowData => moment(rowData.projectCreated).format("ll"),
 		},
 		{
 			title: "Action",
