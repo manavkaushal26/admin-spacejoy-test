@@ -96,6 +96,19 @@ const IncentiveCart = ({ data, setActionPanelView, user }) => {
 			render: rowData => moment(rowData.projectCreated).format("ll"),
 		},
 		{
+			title: "Created",
+			key: "createdAt",
+			render: rowData => moment(rowData.createdAt).format("ll"),
+		},
+		{
+			title: "Last Updated",
+			key: "updatedAt",
+			render: rowData => moment(rowData.updatedAt).format("ll"),
+			defaultSortOrder: "descend",
+			sorter: (a: any, b: any) => new Date(a.createdAt).valueOf() - new Date(b.createdAt).valueOf(),
+			sortDirections: ["ascend", "descend", "ascend"],
+		},
+		{
 			title: "Action",
 			key: "action",
 			fixed: "right",
