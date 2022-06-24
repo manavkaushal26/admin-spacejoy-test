@@ -64,7 +64,10 @@ const IncentiveCart = ({ data, setActionPanelView, user }) => {
 		{
 			title: "Designer Name",
 			key: "designerName",
-			render: rowData => (Object.keys(rowData?.designerName).length === 0 ? "-" : `${rowData.designerName.name}`),
+			render: rowData =>
+				rowData?.designerName === null || Object.keys(rowData?.designerName).length === 0
+					? "-"
+					: `${rowData.designerName.name}`,
 		},
 		{
 			title: "Incentives (estd.)",
