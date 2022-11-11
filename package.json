@@ -11,7 +11,7 @@
 		"@tinymce/tinymce-react": "^3.6.0",
 		"@zeit/next-less": "^1.0.1",
 		"antd": "^4.16.8",
-		"axios": "^1.1.3",
+		"axios": "1.0.0",
 		"body-parser": "^1.19.0",
 		"clevertap-react": "^1.0.0",
 		"compression": "^1.7.4",
