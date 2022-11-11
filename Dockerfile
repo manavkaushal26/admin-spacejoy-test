@@ -8,6 +8,9 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json yarn.lock /usr/src/app/
+RUN apk add --update python make g++\
+	&& rm -rf /var/cache/apk/*
+
 RUN yarn
 
 # Bundle app source
