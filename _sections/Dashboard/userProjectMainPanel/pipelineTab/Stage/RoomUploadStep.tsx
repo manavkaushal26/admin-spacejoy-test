@@ -18,6 +18,7 @@ import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import { Button, Col, Input, notification, Radio, Row, Select, Typography, Upload } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
+import axios from "axios";
 import dynamic from "next/dynamic";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -47,6 +48,18 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 	const [sourceFileList, setSourceFileList] = useState<UploadFile<any>[]>([]);
 	const [isGlobal, setIsGlobal] = useState<boolean>(false);
 	const [isNewRoom, setIsNewRoom] = useState<boolean>(false);
+	const [files, setFiles] = useState({
+		room: {
+			url: "",
+			file: {},
+			link: "",
+		},
+		source: {
+			url: "",
+			file: {},
+			link: "",
+		},
+	});
 
 	useEffect(() => {
 		if (designData) {
@@ -114,7 +127,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		}
 	};
 
-	const uploadRoomUrl = useMemo(
+	const submitRoomUrlAfterUpload = useMemo(
 		() =>
 			`${uploadRoomApi(
 				designData._id,
@@ -136,7 +149,24 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		}
 	};
 
-	const handleOnFileUploadChange = (uploadFileType: "room" | "source", info: UploadChangeParam<UploadFile>): void => {
+	const uploadFileToGoogleStorage = async (url, fileType, file) => {
+		if (url.length !== 0) {
+			const response = await axios.put(url, file, { headers: { "Content-Type": "application/octet-stream" } });
+
+			if (response.status <= 301) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	};
+
+	const handleOnChange = async (
+		uploadFileType: "room" | "source",
+		info: UploadChangeParam<UploadFile>
+	): Promise<void> => {
 		let fileList = [...info.fileList];
 
 		fileList = fileList.slice(-1);
@@ -152,6 +182,94 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 			setRoomFileList(fileList);
 		} else if (uploadFileType === "source") {
 			setSourceFileList(fileList);
+		}
+	};
+
+	const submitRoomData = async options => {
+		const isUploadComplete = await uploadFileToGoogleStorage(files.room.url, "room", files.room.file);
+		const { onError, data, action } = options;
+
+		const config = {
+			headers: { Authorization: getCookie(null, cookieNames.authToken) },
+		};
+		try {
+			if (isUploadComplete) {
+				await axios
+					.post(action, data, config)
+					.then(res => {
+						setDesignData({
+							...designData,
+							room: { ...designData.room, ...res.data.data },
+						});
+						notification.success({
+							message: "Success",
+							description: "Glb File Updated In DB",
+						});
+					})
+					.catch(err => {
+						setDesignData({
+							...designData,
+							room: { ...designData.room },
+						});
+						notification.success({
+							message: "Error",
+							description: err.message,
+						});
+					});
+			}
+		} catch (err) {
+			setDesignData({
+				...designData,
+				room: { ...designData.room },
+			});
+			onError(() => {
+				notification.error({
+					message: "Error",
+					description: err.message,
+				});
+			});
+		}
+	};
+	const submitSourceData = async options => {
+		const isUploadComplete = await uploadFileToGoogleStorage(files.source.url, "source", files.source.file);
+		const { onError, data, action } = options;
+
+		const config = {
+			headers: { Authorization: getCookie(null, cookieNames.authToken) },
+		};
+
+		try {
+			if (isUploadComplete) {
+				await axios
+					.post(action, data, config)
+					.then(res => {
+						setDesignData({
+							...designData,
+							room: { ...designData.room, ...res.data.data },
+						});
+						notification.success({
+							message: "Success",
+							description: "Source File Updated In DB",
+						});
+					})
+					.catch(err => {
+						setDesignData({
+							...designData,
+							room: { ...designData.room },
+						});
+						notification.success({
+							message: "Error",
+							description: err.message,
+						});
+					});
+			}
+		} catch (err) {
+			onError(() => {
+				notification.error({
+					message: "Error",
+					description: err.message,
+				});
+			});
 		}
 	};
 
@@ -250,7 +368,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 								<Text strong>Room Model View</Text>
 							</Col>
 							<Col>
-								<ModelViewer centerCamera type='glb' pathToFile={designData.room.spatialData.fileUrls.glb} />
+								<ModelViewer centerCamera type='glb' pathToFile={designData?.room?.spatialData?.fileUrls?.glb} />
 							</Col>
 						</Row>
 					</Col>
@@ -361,14 +479,39 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 									<Upload
 										disabled={!projectId}
 										supportServerRender
-										name='file'
 										fileList={roomFileList}
-										action={uploadRoomUrl}
+										action={submitRoomUrlAfterUpload}
+										beforeUpload={async file => {
+											const roomUploadUrl = await fetcher({
+												endPoint: "/v1/signUrl/room",
+												method: "POST",
+												body: {
+													roomId: designData.room._id,
+													fileType: "glb",
+												},
+											});
+											if (roomUploadUrl.statusCode <= 301) {
+												setFiles({
+													...files,
+													room: {
+														...files.room,
+														url: roomUploadUrl.data.url,
+														file: file,
+														link: roomUploadUrl.data.link,
+													},
+												});
+											} else {
+												notification.error({
+													message: "Failed",
+													description: "Error While Getting Room Upload URL",
+												});
+											}
+										}}
 										onRemove={(): false => false}
-										onChange={(info): void => handleOnFileUploadChange("room", info)}
-										headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-										data={{ name: roomName, fileType: model3dFiles, roomType }}
+										onChange={info => handleOnChange("room", info)}
+										data={{ file: files.room.link, name: roomName, fileType: model3dFiles, roomType }}
 										accept={ModelToExtensionMap[model3dFiles]}
+										customRequest={submitRoomData}
 									>
 										<Button disabled={!roomName || !projectId}>
 											<UploadOutlined /> Click to Upload
@@ -387,14 +530,41 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 										<Upload
 											disabled={!projectId}
 											supportServerRender
-											name='file'
 											fileList={sourceFileList}
-											action={uploadRoomUrl}
+											action={submitRoomUrlAfterUpload}
+											beforeUpload={async file => {
+												const sourceUploadUrl = await fetcher({
+													endPoint: "/v1/signUrl/room",
+													method: "POST",
+													body: {
+														roomId: designData.room._id,
+														fileType: "source",
+													},
+												});
+												if (sourceUploadUrl.statusCode <= 301) {
+													setFiles({
+														...files,
+														source: {
+															...files.source,
+															url: sourceUploadUrl.data.url,
+															file: file,
+															link: sourceUploadUrl.data.link,
+														},
+													});
+													return true;
+												} else {
+													notification.error({
+														message: "Failed",
+														description: "Error While Getting Source Upload URL",
+													});
+													return false;
+												}
+											}}
 											onRemove={(): false => false}
-											onChange={(info): void => handleOnFileUploadChange("source", info)}
-											headers={{ Authorization: getCookie(null, cookieNames.authToken) }}
-											data={{ name: roomName, fileType: "source", roomType }}
+											onChange={(info): Promise<void> => handleOnChange("source", info)}
+											data={{ file: files.source.link, name: roomName, fileType: "source", roomType }}
 											accept='.blend'
+											customRequest={submitSourceData}
 										>
 											<Button disabled={!roomName || !projectId}>
 												<UploadOutlined />
