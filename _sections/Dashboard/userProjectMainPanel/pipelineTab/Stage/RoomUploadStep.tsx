@@ -7,7 +7,7 @@ import {
 	Model3DFiles,
 	ModelToExtensionMap,
 	RoomLabels,
-	RoomTypes,
+	RoomTypes
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { SilentDivider, StatusButton } from "@sections/Dashboard/styled";
@@ -61,49 +61,53 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		},
 	});
 
+	console.log({ designData });
+
+	const submitRoomUrlAfterUpload = useMemo(
+		() =>
+			`${uploadRoomApi(
+				designData._id,
+				getValueSafely(() => (!isNewRoom ? designData.room._id : undefined), undefined)
+			)}${isGlobal ? "?isGlobal=true" : ""}`,
+		[designData._id, designData.room, isGlobal, isNewRoom]
+	);
+
 	useEffect(() => {
 		if (designData) {
-			if (designData.room) {
-				const {
-					room: {
-						spatialData: {
-							fileUrls: { glb, source, legacy_obj: legacyObj },
-						},
-					},
-				} = designData;
-				if (glb) {
-					const uploadedRoomFiles = glb.split("/").pop();
+			if (designData?.room) {
+				if (room?.spatialData?.fileUrls?.glb) {
+					const uploadedRoomFiles = room.spatialData.fileUrls.glb.split("/").pop();
 					setRoomFileList([
 						{
 							uid: "-1",
 							name: uploadedRoomFiles,
 							status: "done",
-							url: glb,
+							url: room.spatialData.fileUrls.glb,
 							size: 0,
 							type: "application/octet-stream",
 						},
 					]);
-				} else if (legacyObj) {
-					const uploadedRoomFiles = legacyObj.split("/").pop();
+				} else if (room?.spatialData?.fileUrls?.legacy_obj) {
+					const uploadedRoomFiles = room.spatialData.fileUrls.legacy_obj.split("/").pop();
 					setRoomFileList([
 						{
 							uid: "-1",
 							name: uploadedRoomFiles,
 							status: "done",
-							url: legacyObj,
+							url: room.spatialData.fileUrls.legacy_obj,
 							size: 0,
 							type: "application/octet-stream",
 						},
 					]);
 				}
-				if (source) {
-					const fileName = source.split("/").pop();
+				if (room?.spatialData?.fileUrls?.source) {
+					const fileName = room.spatialData.fileUrls.source.split("/").pop();
 					setSourceFileList([
 						{
 							uid: "-1",
 							name: fileName,
 							status: "done",
-							url: source,
+							url: room.spatialData.fileUrls.source,
 							size: 0,
 							type: "application/octet-stream",
 						},
@@ -127,15 +131,6 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		}
 	};
 
-	const submitRoomUrlAfterUpload = useMemo(
-		() =>
-			`${uploadRoomApi(
-				designData._id,
-				getValueSafely(() => (!isNewRoom ? designData.room._id : undefined), undefined)
-			)}${isGlobal ? "?isGlobal=true" : ""}`,
-		[designData._id, designData.room, isGlobal, isNewRoom]
-	);
-
 	const onChange = (e): void => {
 		const {
 			target: { name, value },
@@ -151,15 +146,14 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 
 	const uploadFileToGoogleStorage = async (url, fileType, file) => {
 		if (url.length !== 0) {
-			const response = await axios.put(url, file, { headers: { "Content-Type": "application/octet-stream" } });
-
-			if (response.status <= 301) {
+			try {
+				await axios.put(url, file, { headers: { "Content-Type": "application/octet-stream" } });
 				return true;
-			} else {
+			} catch (error) {
 				return false;
 			}
 		} else {
-			return false;
+			notification.error({ message: "Error", description: "URL is empty" });
 		}
 	};
 
@@ -168,7 +162,6 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		info: UploadChangeParam<UploadFile>
 	): Promise<void> => {
 		let fileList = [...info.fileList];
-
 		fileList = fileList.slice(-1);
 		// 1. Limit the number of uploaded files
 		// Only to show one recent uploaded files, and old ones will be replaced by the new
@@ -186,13 +179,12 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 	};
 
 	const submitRoomData = async options => {
-		const isUploadComplete = await uploadFileToGoogleStorage(files.room.url, "room", files.room.file);
 		const { onError, data, action } = options;
-
 		const config = {
 			headers: { Authorization: getCookie(null, cookieNames.authToken) },
 		};
 		try {
+			const isUploadComplete = await uploadFileToGoogleStorage(files.room.url, "room", files.room.file);
 			if (isUploadComplete) {
 				await axios
 					.post(action, data, config)
@@ -482,15 +474,15 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 										fileList={roomFileList}
 										action={submitRoomUrlAfterUpload}
 										beforeUpload={async file => {
-											const roomUploadUrl = await fetcher({
-												endPoint: "/v1/signUrl/room",
-												method: "POST",
-												body: {
-													roomId: designData.room._id,
-													fileType: "glb",
-												},
-											});
-											if (roomUploadUrl.statusCode <= 301) {
+											try {
+												const roomUploadUrl = await fetcher({
+													endPoint: "/v1/signUrl/room",
+													method: "POST",
+													body: {
+														roomId: designData.room && designData.room._id ? designData.room._id : Date.now(),
+														fileType: "glb",
+													},
+												});
 												setFiles({
 													...files,
 													room: {
@@ -500,7 +492,7 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 														link: roomUploadUrl.data.link,
 													},
 												});
-											} else {
+											} catch (error) {
 												notification.error({
 													message: "Failed",
 													description: "Error While Getting Room Upload URL",
