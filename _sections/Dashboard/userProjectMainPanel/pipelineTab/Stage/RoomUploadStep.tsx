@@ -221,14 +221,12 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 		}
 	};
 	const submitSourceData = async options => {
-		const isUploadComplete = await uploadFileToGoogleStorage(files.source.url, "source", files.source.file);
 		const { onError, data, action } = options;
-
 		const config = {
 			headers: { Authorization: getCookie(null, cookieNames.authToken) },
 		};
-
 		try {
+			const isUploadComplete = await uploadFileToGoogleStorage(files.source.url, "source", files.source.file);
 			if (isUploadComplete) {
 				await axios
 					.post(action, data, config)
@@ -523,15 +521,15 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 											fileList={sourceFileList}
 											action={submitRoomUrlAfterUpload}
 											beforeUpload={async file => {
-												const sourceUploadUrl = await fetcher({
-													endPoint: "/v1/signUrl/room",
-													method: "POST",
-													body: {
-														roomId: designData.room._id,
-														fileType: "source",
-													},
-												});
-												if (sourceUploadUrl.statusCode <= 301) {
+												try {
+													const sourceUploadUrl = await fetcher({
+														endPoint: "/v1/signUrl/room",
+														method: "POST",
+														body: {
+															roomId: designData.room && designData.room._id ? designData.room._id : Date.now(),
+															fileType: "source",
+														},
+													});
 													setFiles({
 														...files,
 														source: {
@@ -541,13 +539,11 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 															link: sourceUploadUrl.data.link,
 														},
 													});
-													return true;
-												} else {
+												} catch (error) {
 													notification.error({
 														message: "Failed",
 														description: "Error While Getting Source Upload URL",
 													});
-													return false;
 												}
 											}}
 											onRemove={(): false => false}
