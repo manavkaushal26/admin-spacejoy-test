@@ -7,7 +7,7 @@ import {
 	Model3DFiles,
 	ModelToExtensionMap,
 	RoomLabels,
-	RoomTypes
+	RoomTypes,
 } from "@customTypes/dashboardTypes";
 import { Status } from "@customTypes/userType";
 import { SilentDivider, StatusButton } from "@sections/Dashboard/styled";
@@ -60,8 +60,6 @@ const RoomUploadStep: React.FC<Stage> = ({ designData, setDesignData, projectId,
 			link: "",
 		},
 	});
-
-	console.log({ designData });
 
 	const submitRoomUrlAfterUpload = useMemo(
 		() =>
