@@ -282,6 +282,9 @@ interface Order {
 	items: Packages[];
 	_id: string;
 	id: string;
+	coupon: string;
+	discount: number;
+	payableamount: number;
 }
 export interface TeamMember {
 	_id: string;
@@ -332,6 +335,7 @@ export interface DetailedProject {
 	customer: UserData;
 	currentPhase: Phase;
 	order: Order;
+	coupon: string;
 	form: FormType[];
 	completedPhases: Phase[];
 	designs: DesignInterface[];

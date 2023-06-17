@@ -289,6 +289,7 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 		[]
 	);
 
+
 	const designerTeam = useMemo(
 		() =>
 			team
@@ -316,7 +317,9 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 	);
 
 	const paymentStatus = getValueSafely(() => projectData.order.paymentStatus, PaymentStatus.pending);
-
+	const couponCode = getValueSafely(() => projectData.order.coupon, '');
+	const discount = getValueSafely(() => projectData.order.discount, 0);
+	const payableamount = getValueSafely(() => projectData.order.payableamount, 0);
 	return (
 		<Collapse>
 			<Collapse.Panel header='Project Details' key='projectDetails'>
@@ -441,6 +444,48 @@ const BasicDetails: React.FC<BasicDetailsProps> = ({ projectData }) => {
 								{ProjectSelectionTypeLabel[projectSelectionType] || (
 									<ModifiedText textTransform='capitalize' type='secondary'>
 										{getValueSafely(() => items.join(", "), "N/A")}
+									</ModifiedText>
+								)}
+							</Col>
+						</Row>
+					</Col>
+					<Col sm={12} md={12} lg={8} xl={8}>
+						<Row gutter={[4, 8]}>
+							<Col>
+								<Text strong>Coupon Code:</Text>
+							</Col>
+							<Col>
+								{ProjectSelectionTypeLabel[projectSelectionType] || (
+									<ModifiedText textTransform='capitalize' type='secondary'>
+										{getValueSafely(() => couponCode, "N/A")}
+									</ModifiedText>
+								)}
+							</Col>
+						</Row>
+					</Col>
+					<Col sm={12} md={12} lg={8} xl={8}>
+						<Row gutter={[4, 8]}>
+							<Col>
+								<Text strong>Discount Amount:</Text>
+							</Col>
+							<Col>
+								{ProjectSelectionTypeLabel[projectSelectionType] || (
+									<ModifiedText textTransform='capitalize' type='secondary'>
+										{getValueSafely(() => discount, 0)}
+									</ModifiedText>
+								)}
+							</Col>
+						</Row>
+					</Col>
+					<Col sm={12} md={12} lg={8} xl={8}>
+						<Row gutter={[4, 8]}>
+							<Col>
+								<Text strong>Final Amount:</Text>
+							</Col>
+							<Col>
+								{ProjectSelectionTypeLabel[projectSelectionType] || (
+									<ModifiedText textTransform='capitalize' type='secondary'>
+										{getValueSafely(() => payableamount, 0)}
 									</ModifiedText>
 								)}
 							</Col>
