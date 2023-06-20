@@ -12,11 +12,11 @@ import { Button, Col, Drawer, Row } from "antd";
 import { Moment } from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import LoadingCard from "../LoadingCard";
-import { MaxHeightDiv } from "../styled";
 import UserProjectCard from "../UserProjectCards";
+import { MaxHeightDiv } from "../styled";
 import ProjectInfiniteLoaderWrapper from "./ProjectInfiniteLoaderWrapper";
-import { SortFields, UserProjectSidePanelState } from "./reducer";
 import TabSearch from "./TabSearch";
+import { SortFields, UserProjectSidePanelState } from "./reducer";
 
 interface GetProjectSearchBodyType {
 	nameSearchText: string;
@@ -229,7 +229,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 	const onSearchSubmit = (): void => {
 		setCount(0);
 		setData([]);
-		loadMoreItems(0, 149);
+		loadMoreItems(0, 19);
 		toggleDrawer();
 	};
 
@@ -241,7 +241,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 			if (!loading) {
 				setCount(0);
 				setData([]);
-				loadMoreItems(0, 149);
+				loadMoreItems(0, 19);
 			}
 		}
 	}, [changedState]);
@@ -287,7 +287,7 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 
 	return (
 		<MaxHeightDiv style={{ position: "relative", overflow: "hidden", backgroundColor: "#f2f4f6" }} ref={scrollRef}>
-			<Row gutter={[8, 8]}>
+			<Row gutter={[8, 8]} style={{ position: "relative" }}>
 				<Col span={24}>
 					<Button block type='primary' onClick={toggleDrawer}>
 						Sort &amp; filter ({loading ? 0 : count} Results)
@@ -320,23 +320,25 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 						</Col>
 					</Row>
 				</Drawer>
-				{loading && (
+				{/* Implement better logic here to render the loading card while loading */}
+				{!hasNextPage ? (
 					<Col span={24}>
 						<LoadingCard />
 					</Col>
+				) : (
+					<Col span={24}>
+						<ProjectInfiniteLoaderWrapper
+							infiniteLoaderRef={infiniteLoaderRef}
+							hasNextPage={hasNextPage}
+							items={data}
+							count={count}
+							Row={CardRow}
+							loadNextPage={loadMoreItems}
+							isNextPageLoading={loading}
+							height={getValueSafely(() => scrollRef.current.offsetHeight - 44, 700)}
+						/>
+					</Col>
 				)}
-				<Col span={24}>
-					<ProjectInfiniteLoaderWrapper
-						infiniteLoaderRef={infiniteLoaderRef}
-						hasNextPage={hasNextPage}
-						items={data}
-						count={count}
-						Row={CardRow}
-						loadNextPage={loadMoreItems}
-						isNextPageLoading={loading}
-						height={getValueSafely(() => scrollRef.current.offsetHeight - 44, 700)}
-					/>
-				</Col>
 			</Row>
 		</MaxHeightDiv>
 	);

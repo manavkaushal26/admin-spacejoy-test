@@ -58,7 +58,7 @@ const ProjectInfiniteLoaderWrapper: React.FC<ProjectInfiniteLoaderWrapper> = ({
 			isItemLoaded={isItemLoaded}
 			itemCount={itemCount}
 			loadMoreItems={loadMoreItems}
-			minimumBatchSize={150}
+			minimumBatchSize={20}
 		>
 			{({ onItemsRendered, ref }): JSX.Element => (
 				<List
