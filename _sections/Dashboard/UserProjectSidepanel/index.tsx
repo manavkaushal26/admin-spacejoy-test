@@ -321,24 +321,23 @@ const UserProjectSidePanel: React.FC<SidebarProps> = ({
 					</Row>
 				</Drawer>
 				{/* Implement better logic here to render the loading card while loading */}
-				{!hasNextPage ? (
-					<Col span={24}>
-						<LoadingCard />
-					</Col>
-				) : (
-					<Col span={24}>
-						<ProjectInfiniteLoaderWrapper
-							infiniteLoaderRef={infiniteLoaderRef}
-							hasNextPage={hasNextPage}
-							items={data}
-							count={count}
-							Row={CardRow}
-							loadNextPage={loadMoreItems}
-							isNextPageLoading={loading}
-							height={getValueSafely(() => scrollRef.current.offsetHeight - 44, 700)}
-						/>
+				{loading && (
+					<Col span={24} style={{ padding: "0 2rem" }}>
+						Loading...
 					</Col>
 				)}
+				<Col span={24}>
+					<ProjectInfiniteLoaderWrapper
+						infiniteLoaderRef={infiniteLoaderRef}
+						hasNextPage={hasNextPage}
+						items={data}
+						count={count}
+						Row={CardRow}
+						loadNextPage={loadMoreItems}
+						isNextPageLoading={loading}
+						height={getValueSafely(() => scrollRef.current.offsetHeight - 44, 700)}
+					/>
+				</Col>
 			</Row>
 		</MaxHeightDiv>
 	);
