@@ -16,7 +16,6 @@ import { Card, Col, Row, Typography } from "antd";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
 import styled from "styled-components";
 
 const { Text, Title } = Typography;
@@ -129,6 +128,16 @@ const launchpadLocations: LaunchpadLocations[] = [
 		title: "Style Quiz",
 		description: "All things Style Quiz",
 		url: "/stylequiz",
+		icon: <ShopTwoTone style={{ fontSize: "3rem" }} twoToneColor='#fa541c' />,
+		color: "#fa541c",
+		backgroundColor: "#fff2e8",
+		notActive: false,
+		allowedRoles: [Role.Admin, Role.Owner, Role.Analyst],
+	},
+	{
+		title: "Reports",
+		description: "All things Style Quiz",
+		url: "/reports",
 		icon: <ShopTwoTone style={{ fontSize: "3rem" }} twoToneColor='#fa541c' />,
 		color: "#fa541c",
 		backgroundColor: "#fff2e8",
