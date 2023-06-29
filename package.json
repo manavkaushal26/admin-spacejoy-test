@@ -116,7 +116,7 @@
 		"webpack": "^4.43.0"
 	},
 	"scripts": {
-		"dev": "node server.js",
+		"dev": "NODE_ENV=local node server.js",
 		"dev2": "set NODE_ENV=local | node server.js",
 		"build": "NODE_OPTIONS='--max_old_space_size=4096' next build",
 		"start": "NODE_ENV=production node server.js",
