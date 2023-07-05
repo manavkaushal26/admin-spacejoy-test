@@ -8,6 +8,11 @@ function pageRoute(app, router) {
 		app.render(req, res, "/launchpad", params);
 	});
 
+	router.get("/reports", TokenCheckMiddleware, (req, res) => {
+		const { params } = req;
+		app.render(req, res, "/reports", params);
+	});
+
 	// *************************************************************************************************************************
 
 	// **************************************************** Design Examples ****************************************************
