@@ -19,10 +19,10 @@ import moment from "moment-timezone";
 import React, { useEffect, useState } from "react";
 import { SilentButton, SilentDivider } from "../styled";
 import {
-	phaseDefaultValues,
 	SortOptions,
 	UserProjectSidePanelInitialState,
 	UserProjectSidePanelState,
+	phaseDefaultValues,
 } from "./reducer";
 const { RangePicker } = DatePicker;
 const { Text } = Typography;
@@ -44,7 +44,7 @@ const TabSearch: React.FC<{
 	const [isRevisionFilterApplied, setRevisionFilter] = useState<boolean>(false);
 	const [pausedProjectFilter, setPausedProjectFilter] = useState<boolean>(false);
 	const fetchDesignerNames = async (): Promise<void> => {
-		const endPoint = `${userApi()}?limit=50`;
+		const endPoint = `${userApi()}?limit=100`;
 		setFetching(true);
 		try {
 			const response = await fetcher({
@@ -62,7 +62,7 @@ const TabSearch: React.FC<{
 					id: `${designer.id}`,
 				}))
 			);
-		} catch (e) {}
+		} catch (e) { }
 		setFetching(false);
 	};
 
