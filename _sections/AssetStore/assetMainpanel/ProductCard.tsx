@@ -7,9 +7,8 @@ import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import AssetAvailability from "@utils/componentUtils/AssetAvailable";
 import PriceData from "@utils/componentUtils/AssetPrice";
-import config from "@utils/config";
 import { Card, Col, Row, Typography } from "antd";
-import React, { ReactNode, useMemo } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 const { Text, Link } = Typography;
@@ -53,7 +52,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 }) => {
 	const { user } = useAuth();
 
-	const availability = useMemo(() => {
+	const availability = React.useMemo(() => {
 		if (asset.inStock !== undefined) {
 			if (asset.inStock) {
 				return <ColouredSpan bg='green'>Available</ColouredSpan>;
@@ -122,7 +121,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 									onClick={e => e.stopPropagation()}
 									target='_blank'
 									rel='noopener noreferrer'
-									href={getValueSafely(() => `${config.company.customerPortalLink}/product-view/${asset._id}`, "#")}
+									href={getValueSafely(() => `${asset.retailLink}`, "#")}
 								>
 									{getValueSafely(() => asset.retailer.name, "N/A")}
 								</a>
