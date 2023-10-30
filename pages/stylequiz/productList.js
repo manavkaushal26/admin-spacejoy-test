@@ -221,6 +221,7 @@ export default function ProductsList({ query }) {
 										.map(item => {
 											return (
 												<Col sm={12} md={8} lg={6} key={item?.id}>
+													{/* q_70,w_300,h_180 */}
 													<Card
 														actions={[
 															<Switch
@@ -242,7 +243,7 @@ export default function ProductsList({ query }) {
 															</Popconfirm>,
 														]}
 														hoverable
-														cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
+														cover={<Image src={`/${item?.cdn}.jpg`} width='100%' staticUrl />}
 													></Card>
 												</Col>
 											);

@@ -2,7 +2,7 @@ import { CheckSquareTwoTone, CloseSquareFilled } from "@ant-design/icons";
 import Image from "@components/Image";
 import { QuizAnswerFieldType, QuizContext, QuizUserResponse } from "@customTypes/dashboardTypes";
 import { getValueSafely, stringToUrl } from "@utils/commonUtils";
-import { cloudinary } from "@utils/config";
+import { imageKitConfig } from "@utils/config";
 import { Col, Row, Typography } from "antd";
 import parse from "html-react-parser";
 import React from "react";
@@ -69,16 +69,16 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 			);
 		case QuizAnswerFieldType.Image:
 		case QuizAnswerFieldType.File: {
-			if (files.length !== 0) {
+			if (files?.length !== 0) {
 				return (
 					<>
 						{files.map(file => {
 							const isImage =
-								file.cdn.endsWith("jpg") ||
-								file.cdn.endsWith("jpeg") ||
-								file.cdn.endsWith("png") ||
-								file.cdn.endsWith("heic") ||
-								file.cdn.endsWith("gif");
+								file?.cdn?.endsWith("jpg") ||
+								file?.cdn?.endsWith("jpeg") ||
+								file?.cdn?.endsWith("png") ||
+								file?.cdn?.endsWith("heic") ||
+								file?.cdn?.endsWith("gif");
 							return (
 								<Col {...(isImage ? { sm: 12, md: 8, lg: 6 } : {})} key={file._id}>
 									<Row justify='center' gutter={[4, 4]}>
@@ -86,7 +86,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 											<a
 												{...(!isImage
 													? {
-															href: `${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`,
+															href: `${imageKitConfig.baseDeliveryURL}/image/upload/${file.cdn}`,
 															rel: "noopener noreferrer",
 															target: "_blank",
 													  }
@@ -97,7 +97,7 @@ const QuizResponse: React.FC<QuizResponse> = ({ context, response }) => {
 										</Col>
 										<Col span={24}>
 											<Text style={{ width: "100%" }} ellipsis copyable>
-												{`${cloudinary.baseDeliveryURL}/image/upload/${file.cdn}`}
+												{`${imageKitConfig.baseDeliveryURL}/image/upload/${file.cdn}`}
 											</Text>
 										</Col>
 									</Row>

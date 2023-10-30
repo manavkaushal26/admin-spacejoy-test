@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { getMetaDataApi } from "@api/designApi";
 import { getAllCollections, getAllCollectionsMeta } from "@api/metaApi";
@@ -15,7 +16,7 @@ import { Button, Card, Col, notification, Pagination, Row, Typography } from "an
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const { Title } = Typography;
@@ -141,17 +142,12 @@ const CollectionsMeta: NextPage<{
 								{collections.map(collection => {
 									return (
 										<Col key={collection._id} sm={12} md={8} lg={6}>
+											{/* w_300,c_pad/ */}
 											<Card
 												style={{ background: collection.bg || "white" }}
 												hoverable
 												onClick={(): void => onClick(collection._id, "open")}
-												cover={
-													<Image
-														onClick={e => e.stopPropagation()}
-														src={`w_300,c_pad/${collection.cdnThumbnail}`}
-														preview
-													/>
-												}
+												cover={<Image onClick={e => e.stopPropagation()} src={`${collection.cdnThumbnail}`} />}
 											>
 												<Card.Meta title={collection.name} />
 											</Card>

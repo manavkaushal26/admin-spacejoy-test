@@ -14,11 +14,11 @@ import { getSingleAssetApi } from "@api/designApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import Image from "@components/Image";
 import { AssetType, MetaDescriptiveType, MoodboardAsset } from "@customTypes/moodboardTypes";
-import { AssetAction, ASSET_ACTION_TYPES } from "@sections/AssetStore/reducer";
+import { ASSET_ACTION_TYPES, AssetAction } from "@sections/AssetStore/reducer";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Button, Col, message, notification, Popconfirm, Result, Row, Skeleton, Typography } from "antd";
+import { Button, Col, Popconfirm, Result, Row, Skeleton, Typography, message, notification } from "antd";
 import moment from "moment-timezone";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
@@ -78,11 +78,10 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 	}>(null);
 	const [selectedAssetData, setSelectedAssetData] = useState<AssetType>(null);
 	const Router = useRouter();
-	const assetInMoodboard = useMemo(() => isAssetInMoodboard(moodboard, selectedAssetId, assetEntryId), [
-		selectedAssetId,
-		moodboard,
-		assetEntryId,
-	]);
+	const assetInMoodboard = useMemo(
+		() => isAssetInMoodboard(moodboard, selectedAssetId, assetEntryId),
+		[selectedAssetId, moodboard, assetEntryId]
+	);
 
 	// const { scrapedData, triggerScraping, scraping, error: scrapingError } = useScraper(
 	// 	selectedAssetId,
@@ -244,11 +243,12 @@ const AssetDescriptionPanel: (props: AssetDescriptionPanelProps) => JSX.Element 
 								<Col>
 									<Image
 										width='100%'
-										src={`w_400,c_pad/${getValueSafely(
+										//w_400,c_pad/
+										src={`${getValueSafely(
 											() =>
-												selectedAssetData?.productImages
+												selectedAssetData?.productImages?.length !== 0
 													? selectedAssetData?.productImages[0].cdn
-													: undefined || selectedAssetData.cdn,
+													: selectedAssetData.cdn,
 											"v1581080070/admin/productImagePlaceholder.jpg"
 										)}`}
 										preview

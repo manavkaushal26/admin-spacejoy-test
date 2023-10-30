@@ -2,7 +2,7 @@ const isProduction = process.env.NODE_ENV === "production";
 
 const page = {
 	appName: "SpaceJoyWeb",
-	apiBaseUrl: isProduction ? "https://api.spacejoy.com/api" : "https://api.spacejoy.com/api",
+	apiBaseUrl: isProduction ? "https://staging2.spacejoy.com/api" : "https://staging2.spacejoy.com/api",
 	localApiBaseUrl: "172.20.10.111:3000",
 	placeKey: "AIzaSyDsLNNs6HOOBILlbiMfr9hn9w3_CTxPlRA",
 	googleSiteVerification: "AvMwlYBDLdgqosxOUuNf114TxPVJtkY3lm3jxDpqLMY",
@@ -104,6 +104,11 @@ const cloudinary = {
 	apiBaseURL: "//api.cloudinary.com/v1_1/spacejoy",
 };
 
+const imageKitConfig = {
+	baseDeliveryURLStatic: "https://ik.imagekit.io/spacejoy/spacejoy/image/upload",
+	baseDeliveryURL: "https://ik.imagekit.io/spacejoy",
+};
+
 module.exports = {
 	page,
 	firebaseConfig,
@@ -112,4 +117,5 @@ module.exports = {
 	cloudinary,
 	projectConfig,
 	pusherConfig,
+	imageKitConfig,
 };

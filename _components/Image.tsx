@@ -98,7 +98,7 @@
 // export default React.memo(Image);
 
 import FallbackImage from "@static/images/fallback-background.svg";
-import { cloudinary } from "@utils/config";
+import { getImageKitUrl } from "@utils/helper";
 import { Image as AntdImage } from "antd";
 import React, { useEffect, useState } from "react";
 
@@ -110,12 +110,22 @@ interface Image {
 	caption?: string;
 	autoAdjust?: boolean;
 	preview?: boolean;
+	staticUrl?: boolean;
 	onClick?: (e?: any) => void;
 }
 
-const Image: React.FC<Image> = ({ src, height, width, alt, caption, autoAdjust, preview = false, ...props }) => {
+const Image: React.FC<Image> = ({
+	src,
+	height,
+	width,
+	alt,
+	caption,
+	autoAdjust,
+	preview = false,
+	staticUrl = false,
+	...props
+}) => {
 	const [source, setSource] = useState("");
-
 	const [imgHeight, setImageHeight] = useState(height);
 	const [imgWidth, setImageWidth] = useState(width);
 
@@ -124,11 +134,12 @@ const Image: React.FC<Image> = ({ src, height, width, alt, caption, autoAdjust, 
 			src.includes("storage.googleapis.com") ||
 			src.includes("api.homefuly.com") ||
 			src.includes("kakarender.s3.ap-south-1.amazonaws.com") ||
-			src.includes("res.cloudinary.com")
+			src.includes("res.cloudinary.com") ||
+			src.includes("ik.imagekit.io")
 		) {
 			setSource(src);
 		} else {
-			setSource(`${cloudinary.baseDeliveryURL}/image/upload/f_auto,q_auto/${src}`);
+			setSource(getImageKitUrl(src, staticUrl));
 		}
 	}, []);
 

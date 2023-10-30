@@ -69,15 +69,7 @@ const ProductCard: (props: AssetCards) => JSX.Element = ({
 			size='small'
 			cover={
 				<ImageContainer>
-					<Image
-						width='auto'
-						height='250px'
-						src={
-							asset?.productImages
-								? `h_250,w_250,c_pad,b_white/${asset.productImages[0]?.cdn}`
-								: undefined || `h_250,ar_1,c_pad,b_white/${asset?.cdn}`
-						}
-					/>
+					<Image width='auto' height='250px' src={asset?.cdn} />
 				</ImageContainer>
 			}
 			actions={actions || []}

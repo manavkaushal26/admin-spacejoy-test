@@ -2,9 +2,9 @@ import { deleteUploadedBlogImage } from "@api/blogApi";
 import Image from "@components/Image";
 import { DesignImgTypes, ImageInterface } from "@customTypes/dashboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
-import { cloudinary } from "@utils/config";
+import { imageKitConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
-import { Button, Col, Modal, notification, Row, Typography } from "antd";
+import { Button, Col, Modal, Row, Typography, notification } from "antd";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AuthorPlatformProps } from "..";
@@ -122,7 +122,8 @@ const ImagePreview: React.FC<ImagePreview> = ({ state, dispatch, image, setImage
 								<>
 									<Col>
 										<Row justify='center'>
-											<Text copyable={{ text: `${cloudinary.baseDeliveryURL}/w_800/${imageCdn}` }}>
+											{/* /w_800/ */}
+											<Text copyable={{ text: `${imageKitConfig.baseDeliveryURL}/${imageCdn}` }}>
 												Click Icon to copy URL to Image
 											</Text>
 										</Row>

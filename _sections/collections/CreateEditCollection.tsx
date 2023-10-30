@@ -11,10 +11,10 @@ import { SizeAdjustedModal } from "@sections/AssetStore/styled";
 import DesignFooter from "@sections/Dashboard/userProjectMainPanel/DesignFooter.js";
 import { Editor } from "@tinymce/tinymce-react";
 import { getBase64, getValueSafely } from "@utils/commonUtils";
-import { cloudinary, company, cookieNames, page } from "@utils/config";
+import { company, cookieNames, imageKitConfig, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Input, notification, Row, Select, Spin, Tooltip, Typography, Upload } from "antd";
+import { Button, Col, Input, Row, Select, Spin, Tooltip, Typography, Upload, notification } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
 import CollectionFAQ from "./CollectionFAQ";
@@ -79,7 +79,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						uid: "-1",
 						name: collectionData.cdnThumbnail.split("/").pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${collectionData.cdnThumbnail}`,
+						url: `${imageKitConfig.baseDeliveryURL}${collectionData.cdnThumbnail}`,
 						size: 0,
 						type: "application/octet-stream",
 					},
@@ -91,7 +91,7 @@ const CreateEditCollection: React.FC<CreateEditCollection> = ({ id, isOpen, onSa
 						uid: "-1",
 						name: collectionData.cdnCover.split("/").pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${collectionData.cdnCover}`,
+						url: `${imageKitConfig.baseDeliveryURL}/${collectionData.cdnCover}`,
 						size: 0,
 						type: "application/octet-stream",
 					},

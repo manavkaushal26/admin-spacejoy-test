@@ -1,7 +1,9 @@
 import {
 	CheckCircleTwoTone,
-	CheckOutlined, CloseCircleTwoTone, LoadingOutlined,
-	UploadOutlined
+	CheckOutlined,
+	CloseCircleTwoTone,
+	LoadingOutlined,
+	UploadOutlined,
 } from "@ant-design/icons";
 import { deleteUploadedImageApi, updateSubtasks } from "@api/designApi";
 import { uploadRenderImages } from "@api/pipelineApi";
@@ -11,10 +13,10 @@ import { Status } from "@customTypes/userType";
 import { SilentDivider, StatusButton } from "@sections/Dashboard/styled";
 import { StepDiv } from "@sections/Dashboard/userProjectMainPanel/pipelineTab/styled";
 import { getBase64, getValueSafely } from "@utils/commonUtils";
-import { cloudinary, cookieNames } from "@utils/config";
+import { cookieNames, imageKitConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, message, Modal, notification, Row, Typography, Upload } from "antd";
+import { Button, Col, Modal, Row, Typography, Upload, message, notification } from "antd";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
 
@@ -72,7 +74,7 @@ const MoodboardAndFloorPlanStep: React.FC<MoodboardAndFloorPlanStep> = ({
 				return {
 					uid: image._id,
 					name: filename,
-					url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+					url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 					size: 0,
 					type: "image/*",
 				};

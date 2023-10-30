@@ -1,19 +1,19 @@
-import { UploadOutlined, LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, UploadOutlined } from "@ant-design/icons";
 import { deleteUploadedImageApi } from "@api/designApi";
-import { uploadRenderImages, editDesignApi } from "@api/pipelineApi";
+import { editDesignApi, uploadRenderImages } from "@api/pipelineApi";
 import ImageDisplayModal from "@components/ImageDisplayModal";
 import {
+	DesignImagesInterface,
 	DesignImgTypes,
 	DetailedDesign,
 	PhaseType,
 	RenderImgUploadTypes,
-	DesignImagesInterface,
 } from "@customTypes/dashboardTypes";
 import { getBase64 } from "@utils/commonUtils";
-import { cloudinary, cookieNames } from "@utils/config";
+import { cookieNames, imageKitConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, message, Modal, Row, Select, Typography, notification } from "antd";
+import { Button, Col, Modal, Row, Select, Typography, message, notification } from "antd";
 import Upload, { UploadChangeParam } from "antd/lib/upload";
 import { UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useState } from "react";
@@ -122,7 +122,7 @@ const RenderStep: React.FC<RenderStep> = ({ designData, setDesignData }) => {
 				return {
 					uid: image._id,
 					name: filename,
-					url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+					url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 					size: 0,
 					type: "image/*",
 				};

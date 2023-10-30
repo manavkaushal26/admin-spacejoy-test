@@ -13,7 +13,7 @@ import PageLayout from "@sections/Layout";
 import { redirectToLocation } from "@utils/authContext";
 import chatFetcher from "@utils/chatFetcher";
 import { styleFetcher, updateResource } from "@utils/styleQuizHelper";
-import { Button, Col, Input, Modal, notification, Popconfirm, Row, Spin, Switch, Table, Typography } from "antd";
+import { Button, Col, Input, Modal, Popconfirm, Row, Spin, Switch, Table, Typography, notification } from "antd";
 import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useRef, useState } from "react";
@@ -272,7 +272,10 @@ export default function StylesList() {
 									title='Image'
 									dataIndex='cdn'
 									align='left'
-									render={(text, record) => <Image style={{ maxWidth: 120 }} src={`q_70,w_120/${text}`} />}
+									// q_70,w_120/
+									render={(text, record) => {
+										return <Image style={{ maxWidth: 120 }} src={record.image} />;
+									}}
 								/>
 								<Table.Column
 									key='id'

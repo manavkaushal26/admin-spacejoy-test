@@ -3,6 +3,7 @@ import { deleteDesignApi, designCopyApi } from "@api/designApi";
 import { editProjectApi, editRevisionFormAPI, notifyCustomerApi, updateProjectPhase } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
 import DesignCard from "@components/DesignCard";
+import EditDesignModal from "@components/EditDesignModal";
 import {
 	DesignImgTypes,
 	DesignInterface,
@@ -14,14 +15,13 @@ import {
 } from "@customTypes/dashboardTypes";
 import { Role, Status } from "@customTypes/userType";
 import { getHumanizedActivePhase, getValueSafely } from "@utils/commonUtils";
-import { cookieNames } from "@utils/config";
+import { cookieNames, imageKitConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Alert, Button, Col, message, Modal, notification, Popconfirm, Row, Select, Typography } from "antd";
+import { Alert, Button, Col, Modal, Popconfirm, Row, Select, Typography, message, notification } from "antd";
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import CopyDesignModal from "./CopyDesignModal";
-import EditDesignModal from "@components/EditDesignModal";
 
 const { Text } = Typography;
 const { Option } = Select;
@@ -334,14 +334,14 @@ const DesignSelection: React.FC<DesignSelection> = ({
 									process.env.NODE_ENV === "production"
 										? [
 												{
-													cdn: "/v1581057410/admin/designImagePlaceholder.jpg",
+													cdn: `${imageKitConfig.baseDeliveryURLStatic}/v1581057410/admin/designImagePlaceholder.jpg`,
 													_id: "1",
 													imgType: DesignImgTypes.Render,
 												},
 										  ]
 										: [
 												{
-													cdn: "/v1581057545/admin/designImagePlaceholder.jpg",
+													cdn: `${imageKitConfig.baseDeliveryURLStatic}/v1581057410/admin/designImagePlaceholder.jpg`,
 													_id: "1",
 													imgType: DesignImgTypes.Render,
 												},

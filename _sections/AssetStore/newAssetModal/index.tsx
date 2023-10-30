@@ -15,11 +15,11 @@ import { AssetType, MetaDataType } from "@customTypes/moodboardTypes";
 import { AssetStatus, Status } from "@customTypes/userType";
 import { SilentDivider } from "@sections/Dashboard/styled";
 import { convertToFeet, convertToInches, getBase64, getValueSafely } from "@utils/commonUtils";
-import { cloudinary, cookieNames } from "@utils/config";
+import { cookieNames, imageKitConfig } from "@utils/config";
 import { MountAndClampValuesForVerticals } from "@utils/constants";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
-import { Button, Col, Input, notification, Radio, Row, Select, Switch, Tooltip, Typography, Upload } from "antd";
+import { Button, Col, Input, Radio, Row, Select, Switch, Tooltip, Typography, Upload, notification } from "antd";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AssetAction } from "../reducer";
@@ -342,7 +342,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 							uid: index.toString(),
 							name: image.cdn.split("/").pop(),
 							status: "done",
-							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+							url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 							size: 0,
 							type: "image/*",
 						};
@@ -354,7 +354,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						uid: "-1",
 						name: state.cdn.split("/").pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${state.cdn}`,
+						url: `${imageKitConfig.baseDeliveryURL}/${state.cdn}`,
 						size: 0,
 						type: "image/*",
 					},
@@ -692,7 +692,7 @@ const NewAssetModal: React.FC<NewAssetModal> = ({
 						uid: index.toString(),
 						name: image.cdn.split("/").pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+						url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 						size: 0,
 						type: "application/octet-stream",
 					};

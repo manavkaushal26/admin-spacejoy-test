@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { searchRetailerApi } from "@api/ecommerceApi";
 import Image from "@components/Image";
@@ -13,7 +14,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const { Title } = Typography;
 
@@ -132,11 +133,10 @@ const Retailer: NextPage = () => {
 										return (
 											<Col sm={12} md={8} lg={6} key={retailer._id}>
 												<Link href={`/ecommerce/retailers/modifyretailer?id=${retailer._id}&mode=edit`}>
+													{/* h_164,c_pad/ */}
 													<Card
 														hoverable
-														cover={
-															<Image height={164} src={`h_164,c_pad/${retailer.logoCdn || ""}`} alt={retailer.name} />
-														}
+														cover={<Image height={164} src={`${retailer.logoCdn || ""}`} alt={retailer.name} />}
 													>
 														<Card.Meta title={retailer.name} />
 													</Card>

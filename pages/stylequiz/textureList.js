@@ -158,6 +158,7 @@ export default function TextureList() {
 										.map(item => {
 											return (
 												<Col sm={12} md={8} lg={6} key={item?.id}>
+													{/* q_50,w_300,h_180 */}
 													<Card
 														key={item?.id}
 														actions={[
@@ -180,7 +181,7 @@ export default function TextureList() {
 															</Popconfirm>,
 														]}
 														hoverable
-														cover={<Image src={`q_50,w_300,h_180/${item?.cdn}`} />}
+														cover={<Image src={`/${item?.cdn}.jpg`} staticUrl />}
 													></Card>
 												</Col>
 											);

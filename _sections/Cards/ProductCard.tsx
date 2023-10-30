@@ -1,6 +1,7 @@
 import Button from "@components/Button";
 import { Assets } from "@customTypes/dashboardTypes";
 import { getValueSafely } from "@utils/commonUtils";
+import { imageKitConfig } from "@utils/config";
 import { removeSpaces } from "@utils/helper";
 import { Col, Row } from "antd";
 import Link from "next/link";
@@ -97,11 +98,9 @@ const ProductCard: React.FC<ProductCard> = ({ assets, gridCount, designName, des
 					<Col md={11} lg={7} key={item._id}>
 						<Row align='middle'>
 							<Col span={24}>
+								{/* /w_300 */}
 								<ProductImageWrapperStyled
-									url={`//res.cloudinary.com/spacejoy/image/upload/w_300/${getValueSafely(
-										() => item.asset.cdn,
-										"N/A"
-									)}`}
+									url={`${imageKitConfig.baseDeliveryURL}/${getValueSafely(() => item.asset.cdn, "N/A")}`}
 									size={size}
 								/>
 							</Col>

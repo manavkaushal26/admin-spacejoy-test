@@ -4,7 +4,7 @@ import { Role } from "@customTypes/userType";
 import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import { Card, Col, Row, Tag, Typography } from "antd";
 import React, { ReactNode, useEffect, useState } from "react";
-import styled, { css, FlattenSimpleInterpolation } from "styled-components";
+import styled, { FlattenSimpleInterpolation, css } from "styled-components";
 import Image from "./Image";
 
 interface DesignCardProps {
@@ -152,7 +152,9 @@ const DesignCard: React.FC<DesignCardProps> = ({
 							<BiggerButtonCarousel autoplay>
 								{coverImage.map(image => (
 									<div key={image._id}>
-										<Image width='100%' src={`w_300,ar_1.82,c_fill/${image.cdn}`} />
+										{/* /w_300,ar_1.82,c_fill */}
+										{/* /tr:w-300,ar-1.82-1,c-maintain_ratio */}
+										<Image width='100%' src={`${image.cdn}`} />
 									</div>
 								))}
 							</BiggerButtonCarousel>

@@ -1,3 +1,4 @@
+import { imageKitConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Image } from "antd";
 import React, { useEffect, useState } from "react";
@@ -121,10 +122,8 @@ const UserStyleQuizResponse: React.FC<{ userId: string }> = ({ userId }) => {
 							values[0].map((value: LogObject): JSX.Element => {
 								return (
 									<>
-										<StyledImage
-											src={`//res.cloudinary.com/spacejoy/image/upload/q_70,w_300/${value?.cdn}`}
-											width='100%'
-										/>
+										{/* /q_70,w_300 */}
+										<StyledImage src={`${imageKitConfig.baseDeliveryURL}/${value?.cdn}`} width='100%' />
 										&nbsp;
 									</>
 								);

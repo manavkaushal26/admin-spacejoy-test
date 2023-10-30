@@ -24,7 +24,7 @@ import { MaxHeightDiv, SilentDivider } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute, redirectToLocation } from "@utils/authContext";
 import { convertToFeet, convertToInches, getBase64, getValueSafely } from "@utils/commonUtils";
-import { cloudinary, company, cookieNames } from "@utils/config";
+import { company, cookieNames, imageKitConfig } from "@utils/config";
 import { MountAndClampValuesForVerticals } from "@utils/constants";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
@@ -38,7 +38,6 @@ import {
 	Input,
 	InputNumber,
 	Modal,
-	notification,
 	PageHeader,
 	Row,
 	Select,
@@ -48,13 +47,14 @@ import {
 	Tooltip,
 	Typography,
 	Upload,
+	notification,
 } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import SkuIdSelectionModal from "../../_sections/AssetStore/SkuIdSelectionModal";
 
 const { Title, Text } = Typography;
@@ -218,7 +218,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 							uid: image._id,
 							name: image?.cdn?.split("/")?.pop(),
 							status: "done",
-							url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+							url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 							size: 0,
 							type: "image/*",
 						};
@@ -230,7 +230,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 						uid: "-1",
 						name: state?.cdn?.split("/")?.pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${state.cdn}`,
+						url: `${imageKitConfig.baseDeliveryURL}/${state.cdn}`,
 						size: 0,
 						type: "application/octet-stream",
 					},
@@ -489,7 +489,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 						uid: image._id,
 						name: image.cdn.split("/").pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+						url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 						size: 0,
 						type: "application/octet-stream",
 					};
@@ -532,7 +532,7 @@ const AssetDetailPage: NextPage<AssetStoreProps> = ({ assetId, mai, designId, re
 						uid: image._id,
 						name: image.cdn.split("/").pop(),
 						status: "done",
-						url: `${cloudinary.baseDeliveryURL}/image/upload/${image.cdn}`,
+						url: `${imageKitConfig.baseDeliveryURL}/${image.cdn}`,
 						size: 0,
 						type: "application/octet-stream",
 					};

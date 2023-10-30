@@ -4,6 +4,7 @@ import {
 	getLeaderBoardApiEndpoint,
 	getRevisionFormForProjectId,
 } from "@api/projectApi";
+import { CartInfoProps } from "@customTypes/IncentiveTypes";
 import {
 	DetailedProject,
 	PhaseCustomerNames,
@@ -11,16 +12,15 @@ import {
 	RevisionForm,
 	UserProjectType,
 } from "@customTypes/dashboardTypes";
-import { CartInfoProps } from "@customTypes/IncentiveTypes";
 import BasicDetails from "@sections/Dashboard/userProjectMainPanel/BasicDetails";
 import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
 import fetcher from "@utils/fetcher";
-import { Col, notification, Row, Spin } from "antd";
+import { Col, Row, Spin, notification } from "antd";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { VerticalPaddedDiv } from "../styled";
 import { UserProjectSidePanelState } from "../UserProjectSidepanel/reducer";
+import { VerticalPaddedDiv } from "../styled";
 import ActionView from "./ActionView";
 import DesignerLeaderboard from "./DesignerLeaderboard";
 import IncentiveCalView from "./IncentiveCalView/index";

@@ -1,11 +1,11 @@
 import { getOrderFromOrderIdApiEndpoint, getProjectsOverviewApiEndpoint } from "@api/projectApi";
 import { CapitalizedText } from "@components/CommonStyledComponents";
-import { cloudinary } from "@utils/config";
+import { imageKitConfig } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import { Button, Modal, Row, Space, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/lib/table";
 import moment from "moment-timezone";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const { Title, Text, Link } = Typography;
 
@@ -162,7 +162,7 @@ const IncentiveCalView = ({ data, setActionPanelView, user }) => {
 				<Link href={`https://spacejoy.com/product-view/${rowData?.product._id}`} target='_blank'>
 					<Space>
 						<img
-							src={`${cloudinary.baseDeliveryURL}/${rowData?.product?.cdn}`}
+							src={`${imageKitConfig.baseDeliveryURL}/${rowData?.product?.cdn}`}
 							alt=''
 							width={50}
 							height={50}

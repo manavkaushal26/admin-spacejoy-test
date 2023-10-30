@@ -10,6 +10,7 @@ import { LoudPaddingDiv } from "pages/platformanager";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ScoreModal from "./scoreModal";
+
 const { Title } = Typography;
 const StyledInput = styled(Input)`
 	opacity: 0;
@@ -255,6 +256,7 @@ export default function ImageList({ query }) {
 										.map(item => {
 											return (
 												<Col sm={12} md={8} lg={8} key={item?.id}>
+													{/* q_70,w_300,h_180 */}
 													<Card
 														actions={[
 															<Switch
@@ -278,7 +280,7 @@ export default function ImageList({ query }) {
 															</Popconfirm>,
 														]}
 														hoverable
-														cover={<Image src={`q_70,w_300,h_180/${item?.cdn}`} width='100%' />}
+														cover={<Image src={`/${item?.cdn}.jpg`} width='100%' staticUrl />}
 													></Card>
 												</Col>
 											);

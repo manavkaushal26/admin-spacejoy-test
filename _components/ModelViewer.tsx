@@ -15,10 +15,10 @@ import {
 	PlaneGeometry,
 	PointLight,
 	Scene,
-	sRGBEncoding,
 	Vector2,
 	Vector3,
 	WebGLRenderer,
+	sRGBEncoding,
 } from "three";
 import GLTFLoader from "three-gltf-loader";
 

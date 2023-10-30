@@ -8,9 +8,9 @@ import { BiggerButtonCarousel } from "@sections/Dashboard/styled";
 import SectionHeader from "@sections/SectionHeader";
 import useAuth from "@utils/authContext";
 import { getValueSafely } from "@utils/commonUtils";
-import config, { cloudinary } from "@utils/config";
+import { imageKitConfig } from "@utils/config";
 import { useScraper } from "@utils/customHooks/useScraper";
-import { Button, Card as AntdCard, Col, Divider, notification, Row, Typography } from "antd";
+import { Card as AntdCard, Button, Col, Divider, Row, Typography, notification } from "antd";
 import React, { useEffect, useMemo, useState } from "react";
 import ReactPannellum from "react-pannellum";
 import styled from "styled-components";
@@ -149,7 +149,8 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 						.map(image => (
 							<Row key={image._id}>
 								<Col span={24}>
-									<Image width='100%' src={`w_auto/${image.cdn}`} preview />
+									{/* w_auto */}
+									<Image width='100%' src={`${image.cdn}`} preview />
 								</Col>
 								<Col span={24}>
 									<Row justify='space-around'>
@@ -165,7 +166,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 										</Col>
 										<Col>
 											<a
-												href={`${config.cloudinary.baseDeliveryURL}/${image.cdn}`}
+												href={`${imageKitConfig.baseDeliveryURL}${image.cdn}`}
 												download={`${designData.name}-${image._id}-cdn.jpg`}
 												target='_blank'
 												rel='noreferrer noopener'
@@ -184,7 +185,7 @@ const CustomerView: React.FC<CustomerView> = ({ designData, projectName, project
 					<ReactPannellum
 						id='renderPanorama'
 						sceneId='firstScene'
-						imageSource={`${cloudinary.baseDeliveryURL}/image/upload/${pannelumImage.cdn}`}
+						imageSource={`${imageKitConfig.baseDeliveryURL}/${pannelumImage.cdn}`}
 						{...PannellumOptions}
 					/>
 				</Col>

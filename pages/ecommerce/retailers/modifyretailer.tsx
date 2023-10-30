@@ -8,7 +8,7 @@ import { MaxHeightDiv } from "@sections/Dashboard/styled";
 import PageLayout from "@sections/Layout";
 import { ProtectRoute } from "@utils/authContext";
 import { getBase64 } from "@utils/commonUtils";
-import { cloudinary, cookieNames, page } from "@utils/config";
+import { cookieNames, imageKitConfig, page } from "@utils/config";
 import fetcher from "@utils/fetcher";
 import getCookie from "@utils/getCookie";
 import IndexPageMeta from "@utils/meta";
@@ -18,7 +18,6 @@ import {
 	Form,
 	Input,
 	InputNumber,
-	notification,
 	Radio,
 	Row,
 	Select,
@@ -26,6 +25,7 @@ import {
 	Spin,
 	Typography,
 	Upload,
+	notification,
 } from "antd";
 import { FormInstance } from "antd/lib/form";
 import { UploadChangeParam, UploadFile } from "antd/lib/upload/interface";
@@ -34,7 +34,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LoudPaddingDiv } from "pages/platformanager";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const { Text, Title } = Typography;
 
@@ -87,7 +87,7 @@ const ModifyRetailer: NextPage<ModifyRetailer> = ({ mode = "new", retailerId, re
 					uid: "-1",
 					name: retailer.logoCdn.split("/").pop(),
 					status: "done",
-					url: `${cloudinary.baseDeliveryURL}/image/upload/${retailer.logoCdn}`,
+					url: `${imageKitConfig.baseDeliveryURL}/${retailer.logoCdn}`,
 					size: 0,
 					type: "application/octet-stream",
 				},
