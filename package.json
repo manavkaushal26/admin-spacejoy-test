@@ -134,6 +134,9 @@
 			"pre-commit": "npm run precommit"
 		}
 	},
+	"engines": {
+		"node": "16.x"
+	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC"
